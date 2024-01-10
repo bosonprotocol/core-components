@@ -1,23 +1,24 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { theme } from "../../../../theme";
 import { useAccount } from "../../../../hooks/connection/connection";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
-import { OfferFullDescriptionView } from "./OfferFullDescriptionView/OfferFullDescriptionView";
 import { ReturnUseProductByUuid } from "../../../../hooks/products/useProductByUuid";
+import { theme } from "../../../../theme";
+import { Exchange } from "../../../../types/exchange";
 import { VariantV1 } from "../../../../types/variants";
-import { OfferVariantView, OfferVariantViewProps } from "./OfferVariantView";
+import Loading from "../../../ui/loading/Loading";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import { BosonFooter } from "../common/BosonFooter";
-import { useConfigContext } from "../../../config/ConfigContext";
 import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
-import { CommitOfferPolicyView } from "./OfferPolicyView/CommitOfferPolicyView";
-import useCheckExchangePolicy from "../../../../hooks/useCheckExchangePolicy";
-import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useConvertionRate";
+import { CommitSuccess } from "./CommitSuccess/CommitSuccess";
 import { ContractualAgreementView } from "./ContractualAgreementView/ContractualAgreementView";
 import { LicenseAgreementView } from "./LicenseAgreementView/LicenseAgreementView";
-import { CommitSuccess } from "./CommitSuccess/CommitSuccess";
-import { Exchange } from "../../../../types/exchange";
-import Loading from "../../../ui/loading/Loading";
+import { OfferFullDescriptionView } from "./OfferFullDescriptionView/OfferFullDescriptionView";
+import { CommitOfferPolicyView } from "./OfferPolicyView/CommitOfferPolicyView";
+import { OfferVariantView, OfferVariantViewProps } from "./OfferVariantView";
+import {
+  DetailContextProps,
+  DetailViewProvider
+} from "./DetailView/common/DetailViewProvider";
 
 const colors = theme.colors.light;
 enum ActiveStep {
@@ -38,7 +39,7 @@ export type CommitNonModalProps = {
   isLoading: boolean;
   fairExchangePolicyRules: string;
   hideModal?: NonModalProps["hideModal"];
-  offerViewOnExchangePolicyClick?: OfferVariantViewProps["onExchangePolicyClick"];
+  onExchangePolicyClick?: OfferVariantViewProps["onExchangePolicyClick"];
   offerViewOnPurchaseOverview?: OfferVariantViewProps["onPurchaseOverview"];
   offerViewOnViewFullDescription?: OfferVariantViewProps["onViewFullDescription"];
   forcedAccount?: string;
@@ -71,7 +72,7 @@ function CommitNonModal({
   disableVariationsSelects,
   isLoading,
   fairExchangePolicyRules,
-  offerViewOnExchangePolicyClick,
+  onExchangePolicyClick,
   offerViewOnPurchaseOverview,
   offerViewOnViewFullDescription,
   forcedAccount,
@@ -105,10 +106,6 @@ function CommitNonModal({
       setSelectedVariant(defaultVariant);
     }
   }, [defaultVariant]);
-  const {
-    store: { tokens: defaultTokens }
-  } = useConvertionRate();
-  const { config: coreConfig } = useConfigContext();
 
   const [{ currentStep }, setStep] = useState<{
     previousStep: ActiveStep[];
@@ -139,7 +136,13 @@ function CommitNonModal({
   }, []);
   const { address } = useAccount();
   const disconnect = useDisconnect();
-
+  const [providerProps, setProviderProps] = useState<DetailContextProps>();
+  const onGetDetailViewProviderProps = useCallback(
+    (providerProps: DetailContextProps) => {
+      setProviderProps(providerProps);
+    },
+    []
+  );
   if (
     forcedAccount &&
     address &&
@@ -175,7 +178,7 @@ function CommitNonModal({
           disableVariationsSelects={disableVariationsSelects}
           onExchangePolicyClick={() => {
             setActiveStep(ActiveStep.EXCHANGE_POLICY);
-            offerViewOnExchangePolicyClick?.();
+            onExchangePolicyClick?.();
           }}
           onPurchaseOverview={() => {
             setActiveStep(ActiveStep.PURCHASE_OVERVIEW);
@@ -192,13 +195,19 @@ function CommitNonModal({
             setActiveStep(ActiveStep.COMMIT_SUCESS);
             setExchangeInfo({ exchangeId, txHash });
           }}
-          fairExchangePolicyRules={fairExchangePolicyRules}
+          onGetDetailViewProviderProps={onGetDetailViewProviderProps}
         />
-      ) : currentStep === ActiveStep.OFFER_FULL_DESCRIPTION ? (
-        <OfferFullDescriptionView
-          onBackClick={goToPreviousStep}
-          offer={selectedVariant.offer}
-        />
+      ) : currentStep === ActiveStep.OFFER_FULL_DESCRIPTION && providerProps ? (
+        <DetailViewProvider {...providerProps}>
+          <OfferFullDescriptionView
+            onBackClick={goToPreviousStep}
+            onExchangePolicyClick={() => {
+              setActiveStep(ActiveStep.EXCHANGE_POLICY);
+              onExchangePolicyClick?.();
+            }}
+            offer={selectedVariant.offer}
+          />
+        </DetailViewProvider>
       ) : currentStep === ActiveStep.PURCHASE_OVERVIEW ? (
         <PurchaseOverviewView onBackClick={goToPreviousStep} />
       ) : currentStep === ActiveStep.EXCHANGE_POLICY ? (

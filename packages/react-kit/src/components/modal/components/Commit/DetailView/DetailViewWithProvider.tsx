@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   InnerDetailViewWithPortal,
   DetailViewWithPortalProps
@@ -6,7 +6,11 @@ import {
 import InnerDetailViewWithCTAs, {
   DetailViewWithCTAsProps
 } from "./InnerDetailViewWithCTAs";
-import { DetailViewProvider } from "./common/DetailViewProvider";
+import {
+  DetailContextProps,
+  DetailViewProvider,
+  useDetailViewContext
+} from "./common/DetailViewProvider";
 import { useExchangeTokenBalance } from "../../../../../hooks/offer/useExchangeTokenBalance";
 import dayjs from "dayjs";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
@@ -14,14 +18,14 @@ import useCheckTokenGatedOffer from "../../../../../hooks/tokenGated/useCheckTok
 import { useConfigContext } from "../../../../config/ConfigContext";
 import { useSellers } from "../../../../../hooks/useSellers";
 import Loading from "../../../../ui/loading/Loading";
+import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
 
-export type DetailViewWithProviderProps =
-  | DetailViewWithCTAsProps
-  | DetailViewWithPortalProps;
+export type DetailViewWithProviderProps = ConsumerProps &
+  (DetailViewWithCTAsProps | DetailViewWithPortalProps);
 export const DetailViewWithProvider: React.FC<DetailViewWithProviderProps> = (
   props
 ) => {
-  const { selectedVariant } = props;
+  const { selectedVariant, onGetProviderProps } = props;
   const withCTAs = !("children" in props);
   const { offer } = selectedVariant;
 
@@ -59,6 +63,16 @@ export const DetailViewWithProvider: React.FC<DetailViewWithProviderProps> = (
     commitProxyAddress,
     offer
   });
+  // const {
+  //   store: { tokens: defaultTokens }
+  // } = useConvertionRate();
+  const exchangePolicyCheckResult = useCheckExchangePolicy({
+    offerId: offer.id,
+    defaultDisputeResolverId:
+      config.config.defaultDisputeResolverId || "unknown",
+    defaultTokens: config.config.defaultTokens ?? [], // TODO: check default tokens list
+    fairExchangePolicyRules: config.fairExchangePolicyRules
+  });
   const {
     data: sellers,
     isLoading: isSellersLoading,
@@ -85,12 +99,9 @@ export const DetailViewWithProvider: React.FC<DetailViewWithProviderProps> = (
     return <Loading />;
   }
   if (isSellersError) {
-    return (
-      <div data-testid="errorOffer">
-        There has been an error, please try again later...
-      </div>
-    );
+    return <div>There has been an error, please try again later...</div>;
   }
+
   return (
     <DetailViewProvider
       quantity={quantity}
@@ -101,12 +112,27 @@ export const DetailViewWithProvider: React.FC<DetailViewWithProviderProps> = (
       isExpiredOffer={isExpiredOffer}
       isConditionMet={isConditionMet}
       hasSellerEnoughFunds={hasSellerEnoughFunds}
+      exchangePolicyCheckResult={exchangePolicyCheckResult}
     >
       {withCTAs ? (
         <InnerDetailViewWithCTAs {...props} />
       ) : (
         <InnerDetailViewWithPortal {...props} />
       )}
+      <Consumer onGetProviderProps={onGetProviderProps} />
     </DetailViewProvider>
   );
+};
+
+type ConsumerProps = {
+  onGetProviderProps?: (props: DetailContextProps) => void;
+};
+const Consumer = ({ onGetProviderProps }: ConsumerProps) => {
+  const contextProps = useDetailViewContext();
+  useEffect(() => {
+    if (onGetProviderProps) {
+      onGetProviderProps(contextProps);
+    }
+  }, [onGetProviderProps, contextProps]);
+  return null;
 };

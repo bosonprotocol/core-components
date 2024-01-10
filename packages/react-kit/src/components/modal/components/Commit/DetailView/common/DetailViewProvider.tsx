@@ -1,7 +1,8 @@
+import { CheckExchangePolicyResult } from "@bosonprotocol/core-sdk/dist/cjs/offers";
 import { BigNumber } from "ethers";
 import React, { ReactNode, createContext, useContext } from "react";
 
-type ContextProps = {
+export type DetailContextProps = {
   quantity: number;
   isBuyerInsufficientFunds: boolean;
   balanceLoading: boolean;
@@ -10,10 +11,13 @@ type ContextProps = {
   isExpiredOffer: boolean;
   isConditionMet: boolean;
   hasSellerEnoughFunds: boolean;
+  exchangePolicyCheckResult: CheckExchangePolicyResult | undefined;
 };
-const DetailViewContext = createContext<ContextProps | undefined>(undefined);
+const DetailViewContext = createContext<DetailContextProps | undefined>(
+  undefined
+);
 
-type DetailViewProviderProps = ContextProps & {
+type DetailViewProviderProps = DetailContextProps & {
   children: ReactNode;
 };
 

@@ -1,8 +1,8 @@
 import { EvaluationMethod, TokenType } from "@bosonprotocol/common";
-import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { ArrowSquareUpRight, Check, X } from "phosphor-react";
 import React, { CSSProperties, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
+import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { theme } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { Image } from "../../../../image/Image";
@@ -12,11 +12,8 @@ const colors = theme.colors.light;
 
 interface Props {
   offer: Offer;
-  commitProxyAddress?: string;
-  openseaLinkToOriginalMainnetCollection?: string;
-  isConditionMet?: boolean;
+  isConditionMet: boolean;
   style?: CSSProperties;
-  coreSDK: CoreSDK;
 }
 
 /**
@@ -27,15 +24,10 @@ interface Props {
  * method 2 - specific token
  */
 
-export const TokenGatedList = ({
-  offer,
-  commitProxyAddress,
-  openseaLinkToOriginalMainnetCollection,
-  isConditionMet,
-  style,
-  coreSDK
-}: Props) => {
+export const TokenGatedItem = ({ offer, isConditionMet, style }: Props) => {
   const { condition } = offer;
+  const coreSDK = useCoreSDKWithContext();
+
   const [tokenInfo, setTokenInfo] = useState({
     name: "",
     decimals: "18",

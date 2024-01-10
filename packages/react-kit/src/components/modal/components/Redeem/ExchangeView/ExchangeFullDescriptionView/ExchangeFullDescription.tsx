@@ -1,7 +1,7 @@
 import React from "react";
 import { Exchange } from "../../../../../../types/exchange";
 import DetailTransactions from "../../../common/detail/DetailTransactions";
-import { OfferFullDescription } from "../../../common/OfferFullDescription";
+import { OfferFullDescription } from "../../../common/OfferFullDescription/OfferFullDescription";
 
 interface ExchangeFullDescriptionProps {
   exchange: Exchange;

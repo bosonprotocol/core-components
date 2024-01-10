@@ -1,26 +1,29 @@
 import React, { ReactNode, useMemo } from "react";
-import { Offer } from "../../../../types/offer";
-import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
-import { theme } from "../../../../theme";
-import Typography from "../../../ui/Typography";
-import Grid from "../../../ui/Grid";
-import DetailTable from "./detail/DetailTable";
-import { Tabs } from "../../../ui/Tabs";
-import { isTruthy } from "../../../../types/helpers";
-import DetailSlider from "./detail/DetailSlider";
-import { Content } from "../../nonModal/styles";
-import { DetailChart } from "../../../detail/DetailChart";
+import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
+import { theme } from "../../../../../theme";
+import { isTruthy } from "../../../../../types/helpers";
+import { Offer } from "../../../../../types/offer";
+import { DetailChart } from "../../../../detail/DetailChart";
+import Grid from "../../../../ui/Grid";
+import { Tabs } from "../../../../ui/Tabs";
+import Typography from "../../../../ui/Typography";
+import { Content } from "../../../nonModal/styles";
+import DetailSlider from "../detail/DetailSlider";
+import DetailTable from "../detail/DetailTable";
+import { GeneralProductData } from "./GeneralProductData";
 
 const colors = theme.colors.light;
 
 interface OfferFullDescriptionProps {
   offer: Offer;
   children?: ReactNode;
+  onExchangePolicyClick: () => void;
 }
 
 export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
   offer,
-  children
+  children,
+  onExchangePolicyClick
 }) => {
   const {
     description,
@@ -39,6 +42,18 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
   return (
     <Tabs
       data={[
+        {
+          id: "general-product-data",
+          title: "General Product data",
+          content: (
+            <Content>
+              <GeneralProductData
+                offer={offer}
+                onExchangePolicyClick={onExchangePolicyClick}
+              />
+            </Content>
+          )
+        },
         {
           id: "physical-product-data",
           title: "Physical Product data",

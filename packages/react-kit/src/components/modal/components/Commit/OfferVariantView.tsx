@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { breakpoint } from "../../../../lib/ui/breakpoint";
@@ -14,6 +14,8 @@ import VariationSelects from "../common/VariationSelects";
 import DetailSlider from "../common/detail/DetailSlider";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import { DetailViewWithProvider } from "./DetailView/DetailViewWithProvider";
+import { Image } from "../../../image/Image";
+import { DetailContextProps } from "./DetailView/common/DetailViewProvider";
 
 const colors = theme.colors.light;
 const selectWidth = "10rem";
@@ -83,10 +85,10 @@ export type OfferVariantViewProps = {
   onPurchaseOverview: () => void;
   onViewFullDescription: () => void;
   onLicenseAgreementClick: () => void;
+  onGetDetailViewProviderProps: (providerProps: DetailContextProps) => void;
   selectedVariant: VariantV1;
   allVariants: VariantV1[];
   showBosonLogo?: boolean;
-  fairExchangePolicyRules: string;
   disableVariationsSelects?: boolean;
 };
 
@@ -107,7 +109,7 @@ export function OfferVariantView({
   onLicenseAgreementClick,
   onPurchaseOverview,
   onViewFullDescription,
-  fairExchangePolicyRules
+  onGetDetailViewProviderProps
 }: OfferVariantViewProps) {
   const [isCommitting, setIsComitting] = useState(false);
   const { offer } = selectedVariant;
@@ -137,6 +139,12 @@ export function OfferVariantView({
     });
   }, [dispatch, isCommitting, offer.metadata.name]);
   const hasVariations = !!selectedVariant.variations?.length;
+  const innerOnGetProviderProps = useCallback(
+    (providerProps: DetailContextProps) => {
+      onGetDetailViewProviderProps(providerProps);
+    },
+    [onGetDetailViewProviderProps]
+  );
   return (
     <>
       {isCommitting ? (
@@ -203,6 +211,7 @@ export function OfferVariantView({
               onPurchaseOverview={onPurchaseOverview}
               hasMultipleVariants={false}
               isPreview={false}
+              onGetProviderProps={innerOnGetProviderProps}
             />
           </VariationsAndWhiteWidget>
         </GridContainer>

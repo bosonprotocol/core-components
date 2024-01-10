@@ -17,7 +17,7 @@ export const ExternalDetailView: React.FC<ExternalDetailViewProps> = (
 ) => {
   return (
     <CommitWidgetProviders {...props.providerProps}>
-      <DetailViewWithProvider {...props}></DetailViewWithProvider>
+      <DetailViewWithProvider {...props} />
     </CommitWidgetProviders>
   );
 };

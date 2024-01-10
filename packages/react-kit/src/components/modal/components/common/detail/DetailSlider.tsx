@@ -15,7 +15,6 @@ import { breakpointNumbers } from "../../../../../lib/ui/breakpoint";
 import { theme } from "../../../../../theme";
 import Grid from "../../../../ui/Grid";
 import IpfsImage from "../../../../ui/IpfsImage";
-import ThemedButton from "../../../../ui/ThemedButton";
 import Video from "../../../../ui/Video";
 import { zIndex } from "../../../../ui/zIndex";
 import { GlideSlide } from "./Detail.style";

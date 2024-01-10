@@ -597,6 +597,7 @@ export const ContactSellerButton = styled(RaiseProblemButton)`
 `;
 
 export const Break = styled.span`
+  display: block;
   width: 100%;
   height: 2px;
   background: ${colors.border};

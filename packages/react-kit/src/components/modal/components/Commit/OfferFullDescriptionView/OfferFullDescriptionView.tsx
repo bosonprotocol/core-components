@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { theme } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { OfferFullDescription } from "../../common/OfferFullDescription";
+import { OfferFullDescription } from "../../common/OfferFullDescription/OfferFullDescription";
 import Grid from "../../../../ui/Grid";
 import { ArrowLeft } from "phosphor-react";
 import Typography from "../../../../ui/Typography";
@@ -11,9 +11,14 @@ const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
   offer: Offer;
+  onExchangePolicyClick: () => void;
 }
 
-export function OfferFullDescriptionView({ onBackClick, offer }: Props) {
+export function OfferFullDescriptionView({
+  onBackClick,
+  offer,
+  onExchangePolicyClick
+}: Props) {
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
@@ -36,5 +41,10 @@ export function OfferFullDescriptionView({ onBackClick, offer }: Props) {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, offer.metadata.name]);
-  return <OfferFullDescription offer={offer} />;
+  return (
+    <OfferFullDescription
+      offer={offer}
+      onExchangePolicyClick={onExchangePolicyClick}
+    />
+  );
 }
