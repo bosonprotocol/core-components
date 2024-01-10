@@ -3,7 +3,7 @@ export const swapQueryParameters = {
   outputCurrency: "outputCurrency",
   exactAmount: "exactAmount",
   exactField: "exactField"
-};
+} as const;
 
 export enum Field {
   INPUT = "INPUT",

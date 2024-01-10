@@ -5,6 +5,7 @@ import React, {
   ElementRef,
   ReactNode,
   forwardRef,
+  useCallback,
   useMemo,
   useRef,
   useState
@@ -82,6 +83,13 @@ export type DetailViewProps = {
   // onCommit: (exchangeId: string, txHash: string) => void;
   // onCommitting: (txHash: string) => void;
   onPurchaseOverview: () => void;
+  onClickBuyOrSwap?: (arg0: {
+    swapParams: {
+      outputCurrency: string;
+      exactAmount: string;
+      exactField: string;
+    };
+  }) => void;
   // exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
 };
 
@@ -99,7 +107,8 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
       hasMultipleVariants,
       isBosonExclusive,
       onExchangePolicyClick,
-      onPurchaseOverview
+      onPurchaseOverview,
+      onClickBuyOrSwap
     },
     ref
   ) => {
@@ -163,6 +172,42 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
 
     const [isDetailsOpen, setDetailsOpen] = useState<boolean>(true);
     const closeDetailsRef = useRef(true);
+    const swapParams = useMemo(
+      () =>
+        ({
+          [swapQueryParameters.outputCurrency]: offer.exchangeToken.address,
+          [swapQueryParameters.exactAmount]: minNeededBalance
+            ? utils.formatUnits(
+                minNeededBalance || "",
+                offer.exchangeToken.decimals
+              )
+            : "",
+          [swapQueryParameters.exactField]: Field.OUTPUT.toLowerCase()
+        } as const),
+      [
+        minNeededBalance,
+        offer.exchangeToken.address,
+        offer.exchangeToken.decimals
+      ]
+    );
+    const BuyOrSwapContainer = useCallback(
+      ({ children }: { children: ReactNode }) => {
+        return onClickBuyOrSwap ? (
+          <>{children}</>
+        ) : (
+          <a
+            style={{ all: "inherit", fontWeight: "600" }}
+            target="__blank"
+            href={`https://bosonapp.io/#/swap?${new URLSearchParams(
+              swapParams
+            ).toString()}`}
+          >
+            {children}
+          </a>
+        );
+      },
+      [onClickBuyOrSwap, swapParams]
+    );
     return (
       <Widget>
         {isBosonExclusive &&
@@ -204,24 +249,13 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
               style={{
                 width: "100%"
               }}
+              {...(onClickBuyOrSwap && {
+                onClick: () => onClickBuyOrSwap({ swapParams })
+              })}
             >
-              <a
-                style={{ all: "inherit", fontWeight: "600" }}
-                target="__blank"
-                href={`https://bosonapp.io/#/swap?${new URLSearchParams({
-                  [swapQueryParameters.outputCurrency]:
-                    offer.exchangeToken.address,
-                  [swapQueryParameters.exactAmount]: minNeededBalance
-                    ? utils.formatUnits(
-                        minNeededBalance || "",
-                        offer.exchangeToken.decimals
-                      )
-                    : "",
-                  [swapQueryParameters.exactField]: Field.OUTPUT.toLowerCase()
-                }).toString()}`}
-              >
+              <BuyOrSwapContainer>
                 Buy or Swap {tokenOrCoinSymbol} <SwapArrows size={24} />
-              </a>
+              </BuyOrSwapContainer>
             </Button>
           </Grid>
         )}

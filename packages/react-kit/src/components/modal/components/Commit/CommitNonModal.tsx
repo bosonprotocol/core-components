@@ -31,13 +31,15 @@ enum ActiveStep {
   OFFER_FULL_DESCRIPTION
 }
 
-export type CommitNonModalProps = {
+export type CommitNonModalProps = Pick<
+  OfferVariantViewProps,
+  "onClickBuyOrSwap"
+> & {
   product?: ReturnUseProductByUuid;
   showBosonLogo?: boolean;
   defaultSelectedOfferId?: string;
   disableVariationsSelects?: boolean;
   isLoading: boolean;
-  fairExchangePolicyRules: string;
   hideModal?: NonModalProps["hideModal"];
   onExchangePolicyClick?: OfferVariantViewProps["onExchangePolicyClick"];
   offerViewOnPurchaseOverview?: OfferVariantViewProps["onPurchaseOverview"];
@@ -71,10 +73,10 @@ function CommitNonModal({
   defaultSelectedOfferId,
   disableVariationsSelects,
   isLoading,
-  fairExchangePolicyRules,
   onExchangePolicyClick,
   offerViewOnPurchaseOverview,
   offerViewOnViewFullDescription,
+  onClickBuyOrSwap,
   forcedAccount,
   hideModal
 }: CommitNonModalProps) {
@@ -196,6 +198,7 @@ function CommitNonModal({
             setExchangeInfo({ exchangeId, txHash });
           }}
           onGetDetailViewProviderProps={onGetDetailViewProviderProps}
+          onClickBuyOrSwap={onClickBuyOrSwap}
         />
       ) : currentStep === ActiveStep.OFFER_FULL_DESCRIPTION &&
         providerPropsRef.current ? (

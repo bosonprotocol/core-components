@@ -15,6 +15,7 @@ import DetailSlider from "../common/detail/DetailSlider";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import { DetailViewWithProvider } from "./DetailView/DetailViewWithProvider";
 import { DetailContextProps } from "./DetailView/common/DetailViewProvider";
+import { DetailViewProps } from "./DetailView/common/DetailViewCore";
 
 const colors = theme.colors.light;
 const selectWidth = "10rem";
@@ -78,7 +79,10 @@ const VariationsAndWhiteWidget = styled(Grid)`
   }
 `;
 
-export type OfferVariantViewProps = {
+export type OfferVariantViewProps = Pick<
+  DetailViewProps,
+  "onClickBuyOrSwap"
+> & {
   onCommit: (exchangeId: string, txHash: string) => void;
   onExchangePolicyClick: () => void;
   onPurchaseOverview: () => void;
@@ -108,7 +112,8 @@ export function OfferVariantView({
   onLicenseAgreementClick,
   onPurchaseOverview,
   onViewFullDescription,
-  onGetDetailViewProviderProps
+  onGetDetailViewProviderProps,
+  onClickBuyOrSwap
 }: OfferVariantViewProps) {
   const [isCommitting, setIsComitting] = useState(false);
   const { offer } = selectedVariant;
@@ -217,6 +222,7 @@ export function OfferVariantView({
               hasMultipleVariants={false}
               isPreview={false}
               onGetProviderProps={innerOnGetProviderProps}
+              onClickBuyOrSwap={onClickBuyOrSwap}
             />
           </VariationsAndWhiteWidget>
         </GridContainer>

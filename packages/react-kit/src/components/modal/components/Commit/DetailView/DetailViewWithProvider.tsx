@@ -20,11 +20,12 @@ import {
   useDetailViewContext
 } from "./common/DetailViewProvider";
 
-export type DetailViewWithProviderProps = ConsumerProps &
-  (DetailViewWithCTAsProps | DetailViewWithPortalProps);
-export const DetailViewWithProvider: React.FC<DetailViewWithProviderProps> = (
-  props
-) => {
+export type DetailViewWithProviderProps =
+  | DetailViewWithCTAsProps
+  | DetailViewWithPortalProps;
+export const DetailViewWithProvider: React.FC<
+  ConsumerProps & DetailViewWithProviderProps
+> = (props) => {
   const { selectedVariant, onGetProviderProps } = props;
   const withCTAs = !("children" in props);
   const { offer } = selectedVariant;
