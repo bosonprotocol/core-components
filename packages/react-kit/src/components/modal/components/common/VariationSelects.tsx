@@ -166,7 +166,7 @@ const getIsEmptyOption = (
 
 interface Props {
   selectedVariant: VariantV1;
-  setSelectedVariant?: Dispatch<SetStateAction<VariantV1 | undefined>>;
+  setSelectedVariant: Dispatch<SetStateAction<VariantV1 | undefined>>;
   variants: VariantV1[];
   disabled?: boolean;
 }

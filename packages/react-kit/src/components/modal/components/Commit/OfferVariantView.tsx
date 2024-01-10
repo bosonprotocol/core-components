@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 import styled from "styled-components";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { breakpoint } from "../../../../lib/ui/breakpoint";
@@ -90,6 +97,7 @@ export type OfferVariantViewProps = Pick<
   onLicenseAgreementClick: () => void;
   onGetDetailViewProviderProps: (providerProps: DetailContextProps) => void;
   selectedVariant: VariantV1;
+  setSelectedVariant: Dispatch<SetStateAction<VariantV1 | undefined>>;
   allVariants: VariantV1[];
   showBosonLogo?: boolean;
   disableVariationsSelects?: boolean;
@@ -113,7 +121,8 @@ export function OfferVariantView({
   onPurchaseOverview,
   onViewFullDescription,
   onGetDetailViewProviderProps,
-  onClickBuyOrSwap
+  onClickBuyOrSwap,
+  setSelectedVariant
 }: OfferVariantViewProps) {
   const [isCommitting, setIsComitting] = useState(false);
   const { offer } = selectedVariant;
@@ -203,6 +212,7 @@ export function OfferVariantView({
             {hasVariations && (
               <ResponsiveVariationSelects
                 selectedVariant={selectedVariant}
+                setSelectedVariant={setSelectedVariant}
                 variants={allVariants}
                 disabled={allVariants.length < 2 || disableVariationsSelects}
               />

@@ -177,6 +177,7 @@ function CommitNonModal({
           showBosonLogo={showBosonLogo}
           allVariants={variantsWithV1 ?? [selectedVariant]}
           selectedVariant={selectedVariant}
+          setSelectedVariant={setSelectedVariant}
           disableVariationsSelects={disableVariationsSelects}
           onExchangePolicyClick={() => {
             setActiveStep(ActiveStep.EXCHANGE_POLICY);
