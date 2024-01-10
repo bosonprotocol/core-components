@@ -37,7 +37,11 @@ const VideoWrapper = styled.div<{ $hasOnClick?: boolean }>`
     left: 50%;
     transform: translate(-50%, -50%);
     transition: all 300ms ease-in-out; */
-    pointer-events: none;
+    ${({ $hasOnClick }) =>
+      !$hasOnClick &&
+      css`
+        pointer-events: none;
+      `}
   }
 
   [data-testid="statuses"] {
@@ -190,9 +194,6 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
     <VideoWrapper {...rest} $hasOnClick={!!rest.onClick}>
       {children || ""}
       {videoSrc && (
-        // TODO: fix types
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         <VideoContainer
           data-testid={dataTestId}
           {...videoProps}

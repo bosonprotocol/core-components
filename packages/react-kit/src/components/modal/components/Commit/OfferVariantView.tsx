@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
-import { breakpoint } from "../../../../lib/ui/breakpoint";
+import { breakpoint, breakpointNumbers } from "../../../../lib/ui/breakpoint";
 import { theme } from "../../../../theme";
 import { isTruthy } from "../../../../types/helpers";
 import { VariantV1 } from "../../../../types/variants";
@@ -68,9 +68,11 @@ const ResponsiveVariationSelects = styled(VariationSelects)`
 const ImageWrapper = styled.div`
   container-type: inline-size;
   position: relative;
-  max-width: 35rem !important;
   min-width: 50%;
   width: -webkit-fill-available;
+  ${breakpoint.s} {
+    max-width: 35rem !important;
+  }
 `;
 
 const ImageAndSellerIdContainer = styled(Grid)`
@@ -83,6 +85,23 @@ const ImageAndSellerIdContainer = styled(Grid)`
 const VariationsAndWhiteWidget = styled(Grid)`
   ${breakpoint.s} {
     max-width: 550px;
+  }
+`;
+
+const PreviewSlider = styled(DetailSlider)`
+  margin-top: 1rem;
+
+  .glide__slides {
+    background-color: unset;
+    /* > * {
+      height: 9.375rem;
+      aspect-ratio: 1;
+      > * {
+        top: 50%;
+        transform: translateY(-50%);
+        object-fit: contain;
+      }
+    } */
   }
 `;
 
@@ -104,11 +123,21 @@ export type OfferVariantViewProps = Pick<
 };
 
 const SLIDER_OPTIONS = {
-  type: "carousel" as const,
+  type: "carousel",
   startAt: 0,
   gap: 20,
-  perView: 1
-};
+  perView: 1,
+  focusAt: "center"
+} as const;
+
+const SLIDER_PREVIEW_OPTIONS = {
+  type: "slider",
+  startAt: 0,
+  gap: 20,
+  perView: 4,
+  focusAt: "center",
+  animationTimingFunc: "ease"
+} as const;
 
 export function OfferVariantView({
   selectedVariant,
@@ -160,6 +189,18 @@ export function OfferVariantView({
     },
     [onGetDetailViewProviderProps]
   );
+  const [sliderIndex, setSliderIndex] = useState<number>(0);
+  const sliderOptions = useMemo(() => {
+    return { ...SLIDER_OPTIONS, startAt: sliderIndex };
+  }, [sliderIndex]);
+  const sumMediaFiles = allImages.length + (animationUrl ? 1 : 0);
+  const previewSliderOptions = useMemo(() => {
+    return {
+      ...SLIDER_PREVIEW_OPTIONS,
+      perView: sumMediaFiles,
+      startAt: sliderIndex
+    };
+  }, [sliderIndex, sumMediaFiles]);
   return (
     <>
       {isCommitting ? (
@@ -183,22 +224,38 @@ export function OfferVariantView({
           style={{ paddingTop: "1rem" }}
           rowGap="3rem"
         >
-          <ImageAndSellerIdContainer flexDirection="column">
+          <ImageAndSellerIdContainer flexDirection="column" flex={1}>
             <ImageWrapper>
-              <>
-                {(allImages.length > 0 || animationUrl) && (
-                  <DetailSlider
-                    animationUrl={animationUrl}
-                    images={allImages}
-                    sliderOptions={SLIDER_OPTIONS}
-                  />
-                )}
-              </>
+              {(allImages.length > 0 || animationUrl) && (
+                <DetailSlider
+                  animationUrl={animationUrl}
+                  images={allImages}
+                  sliderOptions={sliderOptions}
+                  arrowsAbove={false}
+                  data-slider
+                  onChangeMedia={({ index }) => {
+                    setSliderIndex(index);
+                  }}
+                />
+              )}
 
               <SellerAndDescription
                 offer={offer}
                 onViewFullDescription={onViewFullDescription}
               />
+              {sumMediaFiles > 1 && (
+                <PreviewSlider
+                  animationUrl={animationUrl}
+                  images={allImages}
+                  sliderOptions={previewSliderOptions}
+                  arrowsAbove={false}
+                  highlightActive
+                  data-preview
+                  onChangeMedia={({ index }) => {
+                    setSliderIndex(index);
+                  }}
+                />
+              )}
             </ImageWrapper>
           </ImageAndSellerIdContainer>
           <VariationsAndWhiteWidget

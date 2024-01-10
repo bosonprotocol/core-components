@@ -1,7 +1,8 @@
 import "@glidejs/glide/dist/css/glide.core.min.css";
+import Glide, { Swipe, Controls } from "@glidejs/glide/dist/glide.modular.esm";
 
-import Glide from "@glidejs/glide";
 import React, {
+  ElementRef,
   ReactNode,
   forwardRef,
   useEffect,
@@ -10,7 +11,7 @@ import React, {
   useRef
 } from "react";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { breakpointNumbers } from "../../../../../lib/ui/breakpoint";
 import { theme } from "../../../../../theme";
 import Grid from "../../../../ui/Grid";
@@ -39,10 +40,29 @@ const SLIDER_OPTIONS = {
   }
 };
 
-const GlideSlides = styled.div`
+const Container = styled.div`
+  max-width: 100%;
+`;
+
+const GlideSlides = styled.div<{ $highlightActive: boolean }>`
   background: ${colors.white};
   > * {
     align-self: center;
+  }
+  .glide__slide {
+    border-radius: 8px;
+    &--active {
+      ${({ $highlightActive }) =>
+        $highlightActive &&
+        css`
+          border: 1px solid ${colors.darkGrey};
+          outline: 3px solid ${colors.blue};
+          outline-offset: -2px;
+        `}
+    }
+    video {
+      display: flex;
+    }
   }
 `;
 
@@ -70,16 +90,16 @@ const ArrowSvg = styled.svg`
   }
 `;
 
-type Direction = "<" | ">";
 interface Props {
   animationUrl?: string;
   images: Array<string>;
   sliderOptions?: ConstructorParameters<typeof Glide>[1];
-  arrowsAbove?: boolean;
+  arrowsAbove: boolean;
+  className?: string;
+  highlightActive?: boolean;
+  onChangeMedia?: (arg0: { index: number }) => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let glide: any = null;
 const DivChildren = forwardRef(
   ({ children, ...rest }: { children: ReactNode; className: string }, ref) => (
     <div {...rest} ref={ref as React.LegacyRef<HTMLDivElement>}>
@@ -92,9 +112,14 @@ export default function DetailSlider({
   animationUrl,
   images,
   sliderOptions = SLIDER_OPTIONS,
-  arrowsAbove
+  arrowsAbove,
+  highlightActive,
+  className,
+  onChangeMedia
 }: Props) {
+  const glideRef = useRef<Glide>();
   const ref = useRef<HTMLDivElement | null>(null);
+  const glideSlidesRef = useRef<HTMLDivElement | null>(null);
   const [reinitializeGlide, reinitiliazeGlide] = useReducer(
     (state) => state + 1,
     0
@@ -112,27 +137,48 @@ export default function DetailSlider({
   }, [images, animationUrl]);
   useEffect(() => {
     if (media.length !== 0 && ref.current !== null) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      glide = new Glide(ref.current as any, {
+      glideRef.current = new Glide(ref.current, {
         ...sliderOptions
       });
-      glide.mount();
+      glideRef.current.mount({ Swipe, Controls });
+      glideRef.current.on("run.after", () => {
+        if (glideRef.current) {
+          onChangeMedia?.({ index: glideRef.current.index });
+        }
+      });
     }
 
     return () => {
-      glide?.destroy();
+      glideRef.current?.destroy();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref, media, reinitializeGlide, sliderOptions]);
 
-  const handleSlider = (direction: Direction) => {
-    glide?.go(direction);
-  };
-
+  function onMediaClick(e: MouseEvent) {
+    if (
+      e.target &&
+      "getAttribute" in e.target &&
+      typeof e.target.getAttribute === "function"
+    ) {
+      const index = e.target.getAttribute("data-index");
+      glideRef.current?.go(`=${index}`);
+    }
+  }
+  useEffect(() => {
+    const glideSlide = glideSlidesRef.current;
+    if (glideSlide) {
+      glideSlide.addEventListener("click", onMediaClick);
+    }
+    return () => {
+      glideSlide?.removeEventListener("click", onMediaClick);
+    };
+  }, []);
   if (media.length === 0) {
     return null;
   }
+
   return (
-    <div style={{ maxWidth: "100%" }}>
+    <Container className={className}>
       <DivChildren className="glide" ref={ref}>
         <Grid
           style={
@@ -141,7 +187,8 @@ export default function DetailSlider({
               : {
                   position: "absolute",
                   height: "100%",
-                  zIndex: zIndex.Carousel + 1
+                  zIndex: zIndex.Carousel + 1,
+                  pointerEvents: "none"
                 }
           }
         >
@@ -149,6 +196,8 @@ export default function DetailSlider({
             justifyContent={arrowsAbove ? "flex-end" : "space-between"}
             gap="1rem"
             marginBottom="1rem"
+            className="glide__arrows"
+            data-glide-el="controls"
           >
             <ArrowSvg
               xmlns="http://www.w3.org/2000/svg"
@@ -156,7 +205,9 @@ export default function DetailSlider({
               height="32"
               fill="currentColor"
               viewBox="0 0 256 256"
-              onClick={() => handleSlider("<")}
+              className="glide__arrow glide__arrow--left"
+              data-glide-dir="<"
+              style={{ pointerEvents: "all" }}
             >
               <polyline
                 points="160 208 80 128 160 48"
@@ -181,7 +232,9 @@ export default function DetailSlider({
               height="32"
               viewBox="0 0 256 256"
               stroke-width="16"
-              onClick={() => handleSlider(">")}
+              className="glide__arrow glide__arrow--right"
+              data-glide-dir=">"
+              style={{ pointerEvents: "all" }}
             >
               <polyline
                 points="96 48 176 128 96 208"
@@ -203,14 +256,19 @@ export default function DetailSlider({
           </Grid>
         </Grid>
         <div className="glide__track" data-glide-el="track">
-          <GlideSlides className="glide__slides">
+          <GlideSlides
+            className="glide__slides"
+            $highlightActive={highlightActive ?? false}
+            ref={glideSlidesRef}
+          >
             {media?.map(({ url, type }, index: number) => (
               <GlideSlide className="glide__slide" key={`Slide_${index}`}>
                 <>
                   {type === "image" ? (
                     <IpfsImage
+                      data-index={index}
                       src={url}
-                      style={{ paddingTop: "130%" }}
+                      style={{ paddingTop: "130%", cursor: "pointer" }}
                       dataTestId="sliderImage"
                       optimizationOpts={{
                         height: 500
@@ -227,6 +285,8 @@ export default function DetailSlider({
                   ) : (
                     <Video
                       src={url}
+                      data-index={index}
+                      style={{ cursor: "pointer" }}
                       dataTestId="offerAnimationUrl"
                       videoProps={{ muted: true, loop: true, autoPlay: true }}
                     />
@@ -237,6 +297,6 @@ export default function DetailSlider({
           </GlideSlides>
         </div>
       </DivChildren>
-    </div>
+    </Container>
   );
 }
