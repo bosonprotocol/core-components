@@ -1,10 +1,17 @@
-import React, { ReactNode } from "react";
+import React, { AnchorHTMLAttributes, ReactNode } from "react";
 import { OnClickBuyOrSwapHandler } from "./types";
+import styled from "styled-components";
+
+const SwapAnchor = styled.a`
+  all: inherit;
+  font-weight: 600;
+`;
 
 export const BuyOrSwapContainer = ({
   children,
   swapParams,
-  onClickBuyOrSwap
+  onClickBuyOrSwap,
+  ...rest
 }: {
   children: ReactNode;
   swapParams: {
@@ -12,18 +19,19 @@ export const BuyOrSwapContainer = ({
     exactAmount: string;
     exactField: string;
   };
-} & OnClickBuyOrSwapHandler) => {
+} & OnClickBuyOrSwapHandler &
+  AnchorHTMLAttributes<HTMLAnchorElement>) => {
   return onClickBuyOrSwap ? (
     <>{children}</>
   ) : (
-    <a
-      style={{ all: "inherit", fontWeight: "600" }}
+    <SwapAnchor
+      {...rest}
       target="__blank"
       href={`https://bosonapp.io/#/swap?${new URLSearchParams(
         swapParams
       ).toString()}`}
     >
       {children}
-    </a>
+    </SwapAnchor>
   );
 };

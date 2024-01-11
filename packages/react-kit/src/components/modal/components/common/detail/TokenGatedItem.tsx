@@ -1,6 +1,12 @@
 import { EvaluationMethod, TokenType } from "@bosonprotocol/common";
 import { ArrowSquareUpRight, Check, X } from "phosphor-react";
-import React, { CSSProperties, useEffect, useMemo, useState } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 import styled from "styled-components";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { theme } from "../../../../../theme";
@@ -8,15 +14,14 @@ import { Offer } from "../../../../../types/offer";
 import { Image } from "../../../../image/Image";
 import Grid from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
-import { OnClickBuyOrSwapHandler } from "../../Commit/DetailView/common/types";
 import { BuyOrSwapContainer } from "../../Commit/DetailView/common/BuyOrSwapContainer";
 import { useDetailViewContext } from "../../Commit/DetailView/common/DetailViewProvider";
+import { OnClickBuyOrSwapHandler } from "../../Commit/DetailView/common/types";
 const colors = theme.colors.light;
 
 type Props = OnClickBuyOrSwapHandler & {
   offer: Offer;
   isConditionMet: boolean;
-  style?: CSSProperties;
 };
 
 /**
@@ -30,7 +35,6 @@ type Props = OnClickBuyOrSwapHandler & {
 export const TokenGatedItem = ({
   offer,
   isConditionMet,
-  style,
   onClickBuyOrSwap
 }: Props) => {
   const { condition } = offer;
@@ -66,86 +70,160 @@ export const TokenGatedItem = ({
       }
     })();
   }, [condition, coreSDK]);
-
-  if (!condition) {
-    return null;
-  }
-  const { tokenAddress } = condition;
-
-  const rangeText =
-    condition.minTokenId === condition.maxTokenId
-      ? `ID: ${condition.minTokenId}`
-      : `IDs: ${condition.minTokenId}-
-  ${condition.maxTokenId}`;
+  const { tokenAddress } = condition ?? {};
   const ContractButton = (
     <a
       href={coreSDK.getTxExplorerUrl?.(tokenAddress, true)}
       target="_blank"
       rel="noreferrer"
+      style={{ flex: 0 }}
     >
       <ThemedButton size="regular" themeVal="blankSecondary">
         Contract <ArrowSquareUpRight />
       </ThemedButton>
     </a>
   );
-  const BuyButton =
-    condition.tokenType === TokenType.FungibleToken ? (
-      <BuyOrSwapContainer swapParams={swapParams}>
-        <ThemedButton
-          size="regular"
-          themeVal="blankSecondary"
-          onClick={() =>
-            onClickBuyOrSwap?.({
-              swapParams
-            })
-          }
-        >
-          Buy <ArrowSquareUpRight />
-        </ThemedButton>
-      </BuyOrSwapContainer>
-    ) : (
-      <a
-        href={coreSDK.getTxExplorerUrl?.(tokenAddress, true)}
-        target="_blank"
-        rel="noreferrer"
+  const BuyButton = !condition ? null : condition.tokenType ===
+    TokenType.FungibleToken ? (
+    <BuyOrSwapContainer swapParams={swapParams} style={{ flex: 0 }}>
+      <ThemedButton
+        size="regular"
+        themeVal="blankSecondary"
+        onClick={() =>
+          onClickBuyOrSwap?.({
+            swapParams
+          })
+        }
       >
-        <ThemedButton size="regular" themeVal="blankSecondary">
-          Buy <ArrowSquareUpRight />
-        </ThemedButton>
-      </a>
-    );
-  const ConditionUI = (
-    <>
-      {isConditionMet ? (
-        <Check color={colors.green} size={24} style={{ minWidth: "24px" }} />
-      ) : (
-        <X color={colors.red} size={24} style={{ minWidth: "24px" }} />
-      )}
-    </>
+        Buy <ArrowSquareUpRight />
+      </ThemedButton>
+    </BuyOrSwapContainer>
+  ) : (
+    <a
+      href={coreSDK.getTxExplorerUrl?.(tokenAddress, true)}
+      target="_blank"
+      rel="noreferrer"
+      style={{ flex: 0 }}
+    >
+      <ThemedButton size="regular" themeVal="blankSecondary">
+        Buy <ArrowSquareUpRight />
+      </ThemedButton>
+    </a>
+  );
+  const ConditionUI = useMemo(
+    () => (
+      <>
+        {isConditionMet ? (
+          <Check color={colors.green} size={24} style={{ minWidth: "24px" }} />
+        ) : (
+          <X color={colors.red} size={24} style={{ minWidth: "24px" }} />
+        )}
+      </>
+    ),
+    [isConditionMet]
   );
   const ActionButton = isConditionMet ? ContractButton : BuyButton;
-  const Icon = (
-    <>
-      {sellerAvatar && (
-        <TokenIcon>
-          <Image src={sellerAvatar} />
-        </TokenIcon>
-      )}
-    </>
+  const Icon = useMemo(
+    () => (
+      <>
+        {sellerAvatar && (
+          <TokenIcon>
+            <Image src={sellerAvatar} />
+          </TokenIcon>
+        )}
+      </>
+    ),
+    [sellerAvatar]
   );
+  const Condition = useCallback(
+    ({ children }: { children: ReactNode }) => {
+      return (
+        <>
+          <Grid
+            gap="1rem"
+            justifyContent="flex-start"
+            flexWrap="wrap"
+            style={{ flex: "1 0" }}
+          >
+            {Icon}
+            {children}
+            {ConditionUI}
+          </Grid>
+          {ActionButton}
+        </>
+      );
+    },
+    [ActionButton, ConditionUI, Icon]
+  );
+  if (!condition) {
+    return null;
+  }
+
+  const rangeText =
+    condition.minTokenId === condition.maxTokenId
+      ? `ID: ${condition.minTokenId}`
+      : `IDs: ${condition.minTokenId}-${condition.maxTokenId}`;
+
   return (
     <Grid
       padding="0 0"
-      style={style}
       justifyContent="space-between"
       alignItems="center"
       flexWrap="wrap"
       gap="1rem"
-      flex="0"
+      flex="1 0"
     >
       {condition.tokenType === TokenType.FungibleToken ? (
+        <Condition>
+          <div>{condition.threshold}x</div>
+          <Grid
+            flexGrow={0}
+            flexShrink={0}
+            gap="1rem"
+            justifyContent="flex-start"
+            flex={0}
+            $width="auto"
+          >
+            <div>{tokenInfo.symbol} Tokens</div>
+          </Grid>
+        </Condition>
+      ) : condition.tokenType === TokenType.NonFungibleToken ? (
         <>
-          <Grid gap="1rem" justifyContent="flex-start">
+          {condition.method === EvaluationMethod.Threshold ? (
+            <Condition>
+              <div>{condition.threshold}x</div>
+              <Grid
+                flexGrow={0}
+                flexShrink={0}
+                gap="1rem"
+                justifyContent="flex-start"
+                flex={0}
+                $width="auto"
+              >
+                <div>NFTs</div>
+              </Grid>
+            </Condition>
+          ) : condition.method === EvaluationMethod.TokenRange ? (
+            <Condition>
+              <div>1x</div>
+              <Grid
+                flexGrow={0}
+                flexShrink={0}
+                gap="1rem"
+                justifyContent="flex-start"
+                flex={0}
+                $width="auto"
+              >
+                <Grid flexDirection="column">NFT {rangeText}</Grid>
+              </Grid>
+            </Condition>
+          ) : (
+            <></>
+          )}
+        </>
+      ) : condition.tokenType === TokenType.MultiToken ? (
+        <>
+          <Grid gap="1rem" justifyContent="flex-start" flexWrap="wrap">
             {Icon}
             <div>{condition.threshold}x</div>
             <Grid
@@ -156,70 +234,8 @@ export const TokenGatedItem = ({
               flex={0}
               $width="auto"
             >
-              <div>{tokenInfo.symbol} Tokens</div>
-              {ConditionUI}
-            </Grid>{" "}
-          </Grid>
-          {ActionButton}
-        </>
-      ) : condition.tokenType === TokenType.NonFungibleToken ? (
-        <>
-          {condition.method === EvaluationMethod.Threshold ? (
-            <>
-              <Grid gap="1rem" justifyContent="flex-start">
-                {Icon}
-                <div>{condition.threshold}x</div>{" "}
-                <Grid
-                  flexGrow={0}
-                  flexShrink={0}
-                  gap="1rem"
-                  justifyContent="flex-start"
-                  flex={0}
-                  $width="auto"
-                >
-                  <div>NFTs</div> {ConditionUI}
-                </Grid>{" "}
-              </Grid>
-              {ActionButton}
-            </>
-          ) : condition.method === EvaluationMethod.TokenRange ? (
-            <>
-              <Grid gap="1rem" justifyContent="flex-start">
-                {Icon}
-                <div>1x</div>{" "}
-                <Grid
-                  flexGrow={0}
-                  flexShrink={0}
-                  gap="1rem"
-                  justifyContent="flex-start"
-                  flex={0}
-                  $width="auto"
-                >
-                  <Grid flexDirection="column">NFT {rangeText}</Grid>{" "}
-                  {ConditionUI}{" "}
-                </Grid>
-              </Grid>
-              {ActionButton}
-            </>
-          ) : (
-            <></>
-          )}
-        </>
-      ) : condition.tokenType === TokenType.MultiToken ? (
-        <>
-          <Grid gap="1rem" justifyContent="flex-start">
-            {Icon}
-            <div>{condition.threshold}x</div>{" "}
-            <Grid
-              flexGrow={0}
-              flexShrink={0}
-              gap="1rem"
-              justifyContent="flex-start"
-              flex={0}
-              $width="auto"
-            >
-              <Grid flexDirection="column">NFT {rangeText}</Grid> {ConditionUI}
-            </Grid>{" "}
+              <Grid flexDirection="column">NFT {rangeText}</Grid>
+            </Grid>
           </Grid>
           {ActionButton}
         </>

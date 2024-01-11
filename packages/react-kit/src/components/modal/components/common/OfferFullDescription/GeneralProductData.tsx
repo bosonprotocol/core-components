@@ -28,6 +28,7 @@ const StyledPrice = styled(Price)`
   }
 `;
 const TokenGatedGrid = styled.div`
+  width: 100%;
   display: grid;
   grid-column-gap: 2rem;
   grid-row-gap: 2rem;
@@ -75,7 +76,12 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
   );
   const isPhygital = false; // TODO: change
   return (
-    <>
+    <Grid
+      flexDirection="column"
+      gap="0.5rem"
+      alignItems="flex-start"
+      justifyContent="space-between"
+    >
       <GridContainer
         itemsPerRow={{
           xs: 1,
@@ -84,7 +90,7 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
           l: 3,
           xl: 3
         }}
-        style={{ alignItems: "center" }}
+        style={{ alignItems: "center", width: "100%" }}
       >
         <Typography tag="h3">Price</Typography>
         <StyledPrice
@@ -148,6 +154,6 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
         data={OFFER_DETAIL_DATA}
         inheritColor={false}
       />
-    </>
+    </Grid>
   );
 };
