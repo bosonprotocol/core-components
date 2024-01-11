@@ -135,8 +135,9 @@ const SLIDER_PREVIEW_OPTIONS = {
   startAt: 0,
   gap: 20,
   perView: 4,
-  focusAt: "center",
-  animationTimingFunc: "ease"
+  focusAt: 0,
+  animationTimingFunc: "ease",
+  bound: true
 } as const;
 
 export function OfferVariantView({

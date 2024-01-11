@@ -13,7 +13,12 @@ import DetailTable from "../detail/DetailTable";
 import { GeneralProductData } from "./GeneralProductData";
 
 const colors = theme.colors.light;
-
+const SLIDER_OPTIONS = {
+  type: "slider",
+  startAt: 0,
+  gap: 20,
+  perView: 3
+} as const;
 interface OfferFullDescriptionProps {
   offer: Offer;
   children?: ReactNode;
@@ -74,6 +79,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
                     animationUrl={animationUrl}
                     images={allImages}
                     arrowsAbove
+                    sliderOptions={SLIDER_OPTIONS}
                   />
                 )}
               </>

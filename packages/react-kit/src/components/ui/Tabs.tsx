@@ -37,7 +37,7 @@ const TabTitle = styled.div<{ $isActive: boolean }>`
     width: 100%;
     display: block;
     text-align: center;
-    padding: 1rem 0;
+    padding: 1rem 0.25rem;
     white-space: nowrap;
   }
 `;

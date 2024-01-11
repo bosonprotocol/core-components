@@ -100,11 +100,15 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
         </span>
       </GridContainer>
       <Break />
-      <TokenGatedGrid>
-        <Typography tag="h3">Token Gated Offer</Typography>
-        <TokenGatedItem offer={offer} isConditionMet={isConditionMet} />
-      </TokenGatedGrid>
-      <Break />
+      {offer.condition && (
+        <>
+          <TokenGatedGrid>
+            <Typography tag="h3">Token Gated Offer</Typography>
+            <TokenGatedItem offer={offer} isConditionMet={isConditionMet} />
+          </TokenGatedGrid>
+          <Break />
+        </>
+      )}
       {isPhygital && (
         <>
           <Typography tag="h3">Phygital Product</Typography>

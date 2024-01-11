@@ -22,7 +22,7 @@ import { GlideSlide } from "./Detail.style";
 const colors = theme.colors.light;
 
 const SLIDER_OPTIONS = {
-  type: "carousel" as const,
+  type: "carousel",
   startAt: 0,
   gap: 20,
   perView: 3,
@@ -37,7 +37,7 @@ const SLIDER_OPTIONS = {
       perView: 1
     }
   }
-};
+} as const;
 
 const Container = styled.div`
   max-width: 100%;
@@ -139,12 +139,18 @@ export default function DetailSlider({
         : imgs
     ) as { url: string; type: "image" | "video" }[];
   }, [images, animationUrl]);
+  const sumMediaFiles = media.length + (animationUrl ? 1 : 0);
+  const showArrows = sumMediaFiles > 1;
+  const draggable = showArrows;
   useEffect(() => {
     if (media.length !== 0 && ref.current !== null) {
       glideRef.current = new Glide(ref.current, {
         ...sliderOptions
       });
-      glideRef.current.mount({ Swipe, Controls });
+      glideRef.current.mount({
+        ...(draggable && { Swipe }),
+        ...(showArrows && { Controls })
+      });
       glideRef.current.on("run.after", () => {
         if (glideRef.current) {
           onChangeMedia?.({ index: glideRef.current.index });
@@ -184,81 +190,83 @@ export default function DetailSlider({
   return (
     <Container className={className}>
       <DivChildren className="glide" ref={ref}>
-        <Grid
-          style={
-            arrowsAbove
-              ? undefined
-              : {
-                  position: "absolute",
-                  height: "100%",
-                  zIndex: zIndex.Carousel + 1,
-                  pointerEvents: "none"
-                }
-          }
-        >
+        {showArrows && (
           <Grid
-            justifyContent={arrowsAbove ? "flex-end" : "space-between"}
-            gap="1rem"
-            marginBottom="1rem"
-            className="glide__arrows"
-            data-glide-el="controls"
+            style={
+              arrowsAbove
+                ? undefined
+                : {
+                    position: "absolute",
+                    height: "100%",
+                    zIndex: zIndex.Carousel + 1,
+                    pointerEvents: "none"
+                  }
+            }
           >
-            <ArrowSvg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              fill="currentColor"
-              viewBox="0 0 256 256"
-              className="glide__arrow glide__arrow--left"
-              data-glide-dir="<"
-              style={{ pointerEvents: "all" }}
+            <Grid
+              justifyContent={arrowsAbove ? "flex-end" : "space-between"}
+              gap="1rem"
+              marginBottom="1rem"
+              className="glide__arrows"
+              data-glide-el="controls"
             >
-              <polyline
-                points="160 208 80 128 160 48"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="20"
-                className="first-layer"
-              ></polyline>
-              <polyline
-                points="160 208 80 128 160 48"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="15"
-                className="second-layer"
-              ></polyline>
-            </ArrowSvg>
-            <ArrowSvg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              viewBox="0 0 256 256"
-              stroke-width="16"
-              className="glide__arrow glide__arrow--right"
-              data-glide-dir=">"
-              style={{ pointerEvents: "all" }}
-            >
-              <polyline
-                points="96 48 176 128 96 208"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="20"
-                className="first-layer"
-              ></polyline>
-              <polyline
-                points="96 48 176 128 96 208"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="15"
-                className="second-layer"
-              ></polyline>
-            </ArrowSvg>
+              <ArrowSvg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                fill="currentColor"
+                viewBox="0 0 256 256"
+                className="glide__arrow glide__arrow--left"
+                data-glide-dir="<"
+                style={{ pointerEvents: "all" }}
+              >
+                <polyline
+                  points="160 208 80 128 160 48"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="20"
+                  className="first-layer"
+                ></polyline>
+                <polyline
+                  points="160 208 80 128 160 48"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="15"
+                  className="second-layer"
+                ></polyline>
+              </ArrowSvg>
+              <ArrowSvg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 256 256"
+                stroke-width="16"
+                className="glide__arrow glide__arrow--right"
+                data-glide-dir=">"
+                style={{ pointerEvents: "all" }}
+              >
+                <polyline
+                  points="96 48 176 128 96 208"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="20"
+                  className="first-layer"
+                ></polyline>
+                <polyline
+                  points="96 48 176 128 96 208"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="15"
+                  className="second-layer"
+                ></polyline>
+              </ArrowSvg>
+            </Grid>
           </Grid>
-        </Grid>
+        )}
         <div className="glide__track" data-glide-el="track">
           <GlideSlides
             className="glide__slides"
