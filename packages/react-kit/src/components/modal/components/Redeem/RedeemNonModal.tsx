@@ -304,7 +304,6 @@ function RedeemNonModal({
     redemptionConfirmedHandler
   );
   const [exchange, setExchange] = useState<Exchange | null>(null);
-  const { sellers, isLoading } = useCurrentSellers();
   const doFetchSellersFromSellerIds = !!sellerIds?.length;
   const {
     sellers: sellersFromSellerIds,
@@ -319,11 +318,7 @@ function RedeemNonModal({
     exchangeState,
     deliveryInfo: initialDeliveryInfo
   } = useRedemptionContext();
-  const seller = sellers?.[0];
-  const emailPreference =
-    seller?.metadata?.contactPreference === ContactPreference.XMTP_AND_EMAIL ||
-    exchange?.offer?.metadata?.productV1Seller?.contactPreference ===
-      ContactPreference.XMTP_AND_EMAIL;
+  const emailPreference = true; // TODO: this should depend on the seller of the selected exchange
   const validationSchema = useMemo(() => {
     return Yup.object({
       [FormModel.formFields.name.name]: Yup.string()
@@ -444,7 +439,7 @@ function RedeemNonModal({
     );
   }
 
-  if (isLoading || areSellersFromSellerIdsLoading) {
+  if (areSellersFromSellerIdsLoading) {
     return <Loading />;
   }
   const jsx = checkSignatures({

@@ -232,6 +232,20 @@ query getOfferCollectionsQuery(
   }
 }
 
+query getAuthTokenIds(
+  $tokenIdSkip: Int
+  $tokenIdFirst: Int
+  $authTokenType: Int
+) {
+  sellers(
+    skip: $tokenIdSkip
+    first: $tokenIdFirst
+    where: {authTokenType: $authTokenType}
+  ) {
+    ...AuthTokenIdFields
+  }
+}
+
 fragment OfferCollectionFields on OfferCollection {
   ...BaseOfferCollectionFields
   seller {
@@ -391,6 +405,12 @@ fragment BaseSellerFields on Seller {
       ...SalesChannelFields
     }
   }
+}
+
+fragment AuthTokenIdFields on Seller {
+  id
+  sellerId
+  authTokenId
 }
 
 fragment PendingSellerFields on PendingSeller {

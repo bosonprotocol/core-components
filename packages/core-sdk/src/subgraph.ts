@@ -14728,6 +14728,22 @@ export type GetOfferCollectionsQueryQuery = {
   }>;
 };
 
+export type GetAuthTokenIdsQueryVariables = Exact<{
+  tokenIdSkip?: InputMaybe<Scalars["Int"]>;
+  tokenIdFirst?: InputMaybe<Scalars["Int"]>;
+  authTokenType?: InputMaybe<Scalars["Int"]>;
+}>;
+
+export type GetAuthTokenIdsQuery = {
+  __typename?: "Query";
+  sellers: Array<{
+    __typename?: "Seller";
+    id: string;
+    sellerId: string;
+    authTokenId: string;
+  }>;
+};
+
 export type OfferCollectionFieldsFragment = {
   __typename?: "OfferCollection";
   id: string;
@@ -16456,6 +16472,13 @@ export type BaseSellerFieldsFragment = {
       }> | null;
     }> | null;
   } | null;
+};
+
+export type AuthTokenIdFieldsFragment = {
+  __typename?: "Seller";
+  id: string;
+  sellerId: string;
+  authTokenId: string;
 };
 
 export type PendingSellerFieldsFragment = {
@@ -37999,6 +38022,13 @@ export const SellerFieldsFragmentDoc = gql`
   ${BaseExchangeFieldsFragmentDoc}
   ${BaseEventLogFieldsFragmentDoc}
 `;
+export const AuthTokenIdFieldsFragmentDoc = gql`
+  fragment AuthTokenIdFields on Seller {
+    id
+    sellerId
+    authTokenId
+  }
+`;
 export const BuyerFieldsFragmentDoc = gql`
   fragment BuyerFields on Buyer {
     ...BaseBuyerFields
@@ -38574,6 +38604,22 @@ export const GetOfferCollectionsQueryDocument = gql`
   }
   ${OfferCollectionFieldsFragmentDoc}
 `;
+export const GetAuthTokenIdsDocument = gql`
+  query getAuthTokenIds(
+    $tokenIdSkip: Int
+    $tokenIdFirst: Int
+    $authTokenType: Int
+  ) {
+    sellers(
+      skip: $tokenIdSkip
+      first: $tokenIdFirst
+      where: { authTokenType: $authTokenType }
+    ) {
+      ...AuthTokenIdFields
+    }
+  }
+  ${AuthTokenIdFieldsFragmentDoc}
+`;
 export const GetDisputeByIdQueryDocument = gql`
   query getDisputeByIdQuery(
     $disputeId: ID!
@@ -39145,6 +39191,21 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "getOfferCollectionsQuery",
+        "query"
+      );
+    },
+    getAuthTokenIds(
+      variables?: GetAuthTokenIdsQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetAuthTokenIdsQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetAuthTokenIdsQuery>(
+            GetAuthTokenIdsDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getAuthTokenIds",
         "query"
       );
     },
