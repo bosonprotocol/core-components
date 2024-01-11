@@ -33,8 +33,7 @@ const Container = styled.div<{ $mediaHeight: SlickSliderProps["mediaHeight"] }>`
           margin-right: 0.5rem;
         }
         width: auto !important;
-        .image-container,
-        .video-container {
+        > * > * {
           padding-top: initial;
           height: ${({ $mediaHeight }) => $mediaHeight};
           aspect-ratio: 1;
