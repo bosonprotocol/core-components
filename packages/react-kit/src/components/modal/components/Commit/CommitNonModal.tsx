@@ -179,6 +179,7 @@ function CommitNonModal({
           selectedVariant={selectedVariant}
           setSelectedVariant={setSelectedVariant}
           disableVariationsSelects={disableVariationsSelects}
+          loadingViewFullDescription={!providerPropsRef.current}
           onExchangePolicyClick={() => {
             setActiveStep(ActiveStep.EXCHANGE_POLICY);
             onExchangePolicyClick?.();
@@ -246,7 +247,7 @@ function CommitNonModal({
           commitHash={exchangeInfo?.txHash}
         />
       ) : (
-        <p>Wrong step...something went wrong</p>
+        <p>Something went wrong...please try again</p>
       )}
     </>
   );

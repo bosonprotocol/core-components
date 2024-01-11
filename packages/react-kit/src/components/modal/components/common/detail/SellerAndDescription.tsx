@@ -5,6 +5,7 @@ import { theme } from "../../../../../theme";
 import SellerID from "../../../../avatar/SellerID";
 import Grid from "../../../../ui/Grid";
 import { Offer } from "../../../../../types/offer";
+import { LoadingBubble } from "../../../../skeleton/common";
 
 const colors = theme.colors.light;
 
@@ -46,13 +47,18 @@ const Container = styled(Grid)`
 type Props = {
   offer: Offer;
   onViewFullDescription: () => void;
+  loadingViewFullDescription: boolean;
 };
 const StyledTextAlignLeft = styled(TextAlignLeft)`
   && {
     stroke: none;
   }
 `;
-export function SellerAndDescription({ offer, onViewFullDescription }: Props) {
+export function SellerAndDescription({
+  offer,
+  onViewFullDescription,
+  loadingViewFullDescription
+}: Props) {
   return (
     <Container flex="1" gap="1rem">
       <SellerID
@@ -62,10 +68,21 @@ export function SellerAndDescription({ offer, onViewFullDescription }: Props) {
         withProfileImage
         className="seller-id"
       />
-      <div onClick={onViewFullDescription} className="description">
-        <span style={{ textAlign: "right" }}>View full offer description</span>
-        <StyledTextAlignLeft size={30} color={colors.accent} />
-      </div>
+      {loadingViewFullDescription ? (
+        <LoadingBubble
+          $width="100%"
+          $height="30px"
+          $backgroundColor={colors.darkGrey}
+          style={{ flex: "initial" }}
+        />
+      ) : (
+        <div onClick={onViewFullDescription} className="description">
+          <span style={{ textAlign: "right" }}>
+            View full offer description
+          </span>
+          <StyledTextAlignLeft size={30} color={colors.accent} />
+        </div>
+      )}
     </Container>
   );
 }

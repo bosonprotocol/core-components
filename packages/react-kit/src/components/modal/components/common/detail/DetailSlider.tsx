@@ -157,7 +157,6 @@ export default function DetailSlider({
           onChangeMedia?.({ index: glideRef.current.index });
         }
       });
-      console.log("glideRef.current", glideRef.current);
     }
 
     return () => {

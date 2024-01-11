@@ -108,6 +108,7 @@ export type OfferVariantViewProps = Pick<
   allVariants: VariantV1[];
   showBosonLogo?: boolean;
   disableVariationsSelects?: boolean;
+  loadingViewFullDescription: boolean;
 };
 
 const SLIDER_OPTIONS = {
@@ -123,6 +124,7 @@ export function OfferVariantView({
   allVariants,
   showBosonLogo,
   disableVariationsSelects,
+  loadingViewFullDescription,
   onCommit,
   onExchangePolicyClick,
   onLicenseAgreementClick,
@@ -226,6 +228,7 @@ export function OfferVariantView({
               <SellerAndDescription
                 offer={offer}
                 onViewFullDescription={onViewFullDescription}
+                loadingViewFullDescription={loadingViewFullDescription}
               />
               {sumMediaFiles > 1 && (
                 <PreviewSlickSlider

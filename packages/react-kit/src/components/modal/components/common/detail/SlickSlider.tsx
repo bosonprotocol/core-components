@@ -186,7 +186,6 @@ export const SlickSlider: React.FC<SlickSliderProps> = ({
   activeIndex
 }) => {
   const Slider = _Slider as unknown as (props: Settings) => ReactElement;
-  console.log({ activeIndex });
   return (
     <Container className={className} $mediaHeight={mediaHeight}>
       <Slider {...settings}>
