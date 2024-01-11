@@ -3,15 +3,14 @@ import { gql } from "graphql-request";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { AuthTokenType } from "..";
-import { Profile } from "../lib/lens/generated";
-import { getLensTokenIdDecimal, getLensTokenIdHex } from "../lib/lens/profile";
+import { getLensTokenIdDecimal } from "../lib/lens/profile";
 import { fetchSubgraph } from "../lib/subgraph/subgraph";
-import useGetLensProfiles from "./lens/useGetLensProfiles";
 import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
 import { SellerFieldsFragment } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { useAccount } from "./connection/connection";
 import { useErc721OwnerOf } from "./erc/erc721";
 import { useConfigContext } from "../components/config/ConfigContext";
+import { isTruthy } from "../types/helpers";
 
 interface Props {
   address?: string;
@@ -318,12 +317,14 @@ export function useCurrentSellers(
   );
   const profileIds = useMemo(
     () =>
-      sellerValues.map((seller) => {
-        if (Number(seller?.authTokenId)) {
-          return seller?.authTokenId;
-        }
-        return null;
-      }),
+      sellerValues
+        .map((seller) => {
+          if (Number(seller?.authTokenId)) {
+            return seller?.authTokenId;
+          }
+          return null;
+        })
+        .filter(isTruthy),
     [sellerValues]
   );
   const enableResultLens =
