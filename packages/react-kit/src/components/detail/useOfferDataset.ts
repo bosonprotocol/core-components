@@ -1,11 +1,11 @@
 /* eslint @typescript-eslint/no-explicit-any: "off" */
 import dayjs from "dayjs";
 import minMax from "dayjs/plugin/minMax";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
-import { Offer } from "./../../types/offer";
-import { theme } from "../../theme";
 import { getDateTimestamp } from "../../lib/dates/getDateTimestamp";
+import { theme } from "../../theme";
+import { Offer } from "./../../types/offer";
 const colors = theme.colors.light;
 dayjs.extend(minMax);
 

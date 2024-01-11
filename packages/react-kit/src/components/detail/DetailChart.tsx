@@ -41,9 +41,10 @@ ChartJS.register(
 interface Props {
   offer: Offer;
   title?: string;
+  className?: string;
 }
 
-export function DetailChart({ offer, title }: Props) {
+export function DetailChart({ offer, title, className }: Props) {
   const { options, data, display } = useOfferDataset(offer);
 
   if (!display) {
@@ -51,10 +52,13 @@ export function DetailChart({ offer, title }: Props) {
   }
 
   return (
-    <div>
+    <div className={className}>
       <Typography tag="h3">{title || "Graph"}</Typography>
       <ChartWrapper>
-        <Line options={options} data={data} />
+        <Line
+          options={{ ...options, maintainAspectRatio: false }}
+          data={data}
+        />
       </ChartWrapper>
     </div>
   );
