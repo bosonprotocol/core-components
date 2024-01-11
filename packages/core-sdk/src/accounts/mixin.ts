@@ -67,16 +67,16 @@ export class AccountsMixin extends BaseCoreSDK {
   }
 
   /**
-   * Returns seller entity from subgraph.
-   * @param treasury - Treasury address of seller entity to query for.
+   * Returns seller entities from subgraph.
+   * @param treasury - Treasury address of seller entities to query for.
    * @param queryVars - Optional query variables to skip, order or filter.
-   * @returns Seller entity from subgraph.
+   * @returns Seller entities from subgraph.
    */
-  public async getSellerByTreasury(
+  public async getSellersByTreasury(
     treasury: string,
     queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment> {
-    return accounts.subgraph.getSellerByTreasury(
+  ): Promise<subgraph.SellerFieldsFragment[]> {
+    return accounts.subgraph.getSellersByTreasury(
       this._subgraphUrl,
       treasury,
       queryVars

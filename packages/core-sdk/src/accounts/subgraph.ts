@@ -105,11 +105,11 @@ export async function getSellerByAdmin(
   return sellers[0];
 }
 
-export async function getSellerByTreasury(
+export async function getSellersByTreasury(
   subgraphUrl: string,
   treasuryAddress: string,
   queryVars: GetSellersQueryQueryVariables = {}
-): Promise<SellerFieldsFragment> {
+): Promise<SellerFieldsFragment[]> {
   const sellers = await getSellers(subgraphUrl, {
     sellersFilter: {
       ...queryVars.sellersFilter,
@@ -117,7 +117,7 @@ export async function getSellerByTreasury(
     },
     ...queryVars
   });
-  return sellers[0];
+  return sellers;
 }
 
 export async function getSellerByAuthToken(
