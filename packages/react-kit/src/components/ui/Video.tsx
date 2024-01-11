@@ -54,7 +54,7 @@ const VideoWrapper = styled.div<{ $hasOnClick?: boolean }>`
   }
 `;
 
-const VideoContainer = styled.video`
+const VideoHtml = styled.video`
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -191,10 +191,14 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
   }
 
   return (
-    <VideoWrapper {...rest} $hasOnClick={!!rest.onClick}>
+    <VideoWrapper
+      {...rest}
+      $hasOnClick={!!rest.onClick}
+      className="video-container"
+    >
       {children || ""}
       {videoSrc && (
-        <VideoContainer
+        <VideoHtml
           data-testid={dataTestId}
           {...videoProps}
           src={mp4Src || ""}

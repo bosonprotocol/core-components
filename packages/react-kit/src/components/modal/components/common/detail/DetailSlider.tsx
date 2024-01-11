@@ -140,21 +140,17 @@ export default function DetailSlider({
     ) as { url: string; type: "image" | "video" }[];
   }, [images, animationUrl]);
   const sumMediaFiles = media.length + (animationUrl ? 1 : 0);
-  const showArrows = true;
-  //sumMediaFiles > 1 && (sliderOptions.perView ?? 1) > sumMediaFiles;
+  const showArrows =
+    sumMediaFiles > 1 && (sliderOptions.perView ?? 1) > sumMediaFiles;
   const draggable = showArrows;
   useEffect(() => {
     if (media.length !== 0 && ref.current !== null) {
       glideRef.current = new Glide(ref.current, {
         ...sliderOptions
       });
-      // glideRef.current.mount({
-      //   ...(draggable && { Swipe }),
-      //   ...(showArrows && { Controls })
-      // });
       glideRef.current.mount({
-        Swipe,
-        Controls
+        ...(draggable && { Swipe }),
+        ...(showArrows && { Controls })
       });
       glideRef.current.on("run.after", () => {
         if (glideRef.current) {
@@ -177,7 +173,6 @@ export default function DetailSlider({
       lastActiveRef.current?.classList.remove("active");
       e.target.classList.add("active");
       lastActiveRef.current = e.target;
-      console.log(glideSlidesRef.current?.children);
       if (index !== null) {
         onChangeMedia?.({ index: +index });
         // glideRef.current?.go(`=${index}`);
@@ -192,6 +187,7 @@ export default function DetailSlider({
     return () => {
       glideSlide?.removeEventListener("click", onMediaClick);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (media.length === 0) {
     return null;

@@ -20,6 +20,7 @@ import { useNonModalContext } from "../../nonModal/NonModal";
 import VariationSelects from "../common/VariationSelects";
 import DetailSlider from "../common/detail/DetailSlider";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
+import { SlickSlider } from "../common/detail/SlickSlider";
 import { DetailViewWithProvider } from "./DetailView/DetailViewWithProvider";
 import { DetailViewProps } from "./DetailView/common/DetailViewCore";
 import { DetailContextProps } from "./DetailView/common/DetailViewProvider";
@@ -88,21 +89,8 @@ const VariationsAndWhiteWidget = styled(Grid)`
   }
 `;
 
-const PreviewSlider = styled(DetailSlider)`
+const PreviewSlickSlider = styled(SlickSlider)`
   margin-top: 1rem;
-
-  .glide__slides {
-    background-color: unset;
-    /* > * {
-      height: 9.375rem;
-      aspect-ratio: 1;
-      > * {
-        top: 50%;
-        transform: translateY(-50%);
-        object-fit: contain;
-      }
-    } */
-  }
 `;
 
 export type OfferVariantViewProps = Pick<
@@ -128,16 +116,6 @@ const SLIDER_OPTIONS = {
   gap: 20,
   perView: 1,
   focusAt: "center"
-} as const;
-
-const SLIDER_PREVIEW_OPTIONS = {
-  type: "slider",
-  startAt: 0,
-  gap: 20,
-  perView: 3,
-  focusAt: 0,
-  animationTimingFunc: "ease",
-  bound: true
 } as const;
 
 export function OfferVariantView({
@@ -195,13 +173,18 @@ export function OfferVariantView({
     return { ...SLIDER_OPTIONS, startAt: sliderIndex };
   }, [sliderIndex]);
   const sumMediaFiles = allImages.length + (animationUrl ? 1 : 0);
-  const previewSliderOptions = useMemo(() => {
-    return {
-      ...SLIDER_PREVIEW_OPTIONS,
-      // perView: sumMediaFiles,
-      startAt: sliderIndex
-    };
-  }, [sliderIndex, sumMediaFiles]);
+
+  const mediaFiles = useMemo(() => {
+    const imgs = [...images.map((img) => ({ url: img, type: "image" }))];
+    return (
+      animationUrl
+        ? [
+            { url: animationUrl, type: "video" },
+            ...images.map((img) => ({ url: img, type: "image" }))
+          ]
+        : imgs
+    ) as { url: string; type: "image" | "video" }[];
+  }, [images, animationUrl]);
   return (
     <>
       {isCommitting ? (
@@ -245,16 +228,14 @@ export function OfferVariantView({
                 onViewFullDescription={onViewFullDescription}
               />
               {sumMediaFiles > 1 && (
-                <PreviewSlider
-                  animationUrl={animationUrl}
-                  images={allImages}
-                  sliderOptions={previewSliderOptions}
-                  arrowsAbove={false}
-                  highlightActive
-                  data-preview
-                  onChangeMedia={({ index }) => {
+                <PreviewSlickSlider
+                  mediaFiles={mediaFiles}
+                  onMediaClick={({ index }) => {
                     setSliderIndex(index);
                   }}
+                  activeIndex={sliderIndex}
+                  imageOptimizationOpts={{ height: 75 }}
+                  mediaHeight="75px"
                 />
               )}
             </ImageWrapper>

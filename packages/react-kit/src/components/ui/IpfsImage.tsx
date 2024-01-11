@@ -132,7 +132,7 @@ const IpfsImage: React.FC<IImage & React.HTMLAttributes<HTMLDivElement>> = ({
           )}
         </ImagePlaceholder>
       </ImageWrapper>
-      <ImageWrapper {...rest} hide={!isSuccess}>
+      <ImageWrapper {...rest} hide={!isSuccess} className="image-container">
         {children || ""}
         <ImageContainer
           data-testid={dataTestId}
