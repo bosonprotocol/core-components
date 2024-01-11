@@ -84,7 +84,7 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
     >
       <GridContainer
         itemsPerRow={{
-          xs: 1,
+          xs: 3,
           s: 3,
           m: 3,
           l: 3,
@@ -127,7 +127,7 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
           <Break />
           <GridContainer
             itemsPerRow={{
-              xs: 1,
+              xs: 3,
               s: 3,
               m: 3,
               l: 3,
