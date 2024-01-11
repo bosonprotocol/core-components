@@ -50,13 +50,13 @@ const GlideSlides = styled.div<{ $highlightActive: boolean }>`
   }
   .glide__slide {
     border-radius: 8px;
-    &--active {
+    /* &--active, */
+    .active {
       ${({ $highlightActive }) =>
         $highlightActive &&
         css`
-          border: 1px solid ${colors.darkGrey};
-          outline: 3px solid ${colors.blue};
-          outline-offset: -2px;
+          /* border: 1px solid ${colors.darkGrey}; */
+          border: 4px solid ${colors.blue};
         `}
     }
     img,
@@ -140,22 +140,28 @@ export default function DetailSlider({
     ) as { url: string; type: "image" | "video" }[];
   }, [images, animationUrl]);
   const sumMediaFiles = media.length + (animationUrl ? 1 : 0);
-  const showArrows = sumMediaFiles > 1;
+  const showArrows = true;
+  //sumMediaFiles > 1 && (sliderOptions.perView ?? 1) > sumMediaFiles;
   const draggable = showArrows;
   useEffect(() => {
     if (media.length !== 0 && ref.current !== null) {
       glideRef.current = new Glide(ref.current, {
         ...sliderOptions
       });
+      // glideRef.current.mount({
+      //   ...(draggable && { Swipe }),
+      //   ...(showArrows && { Controls })
+      // });
       glideRef.current.mount({
-        ...(draggable && { Swipe }),
-        ...(showArrows && { Controls })
+        Swipe,
+        Controls
       });
       glideRef.current.on("run.after", () => {
         if (glideRef.current) {
           onChangeMedia?.({ index: glideRef.current.index });
         }
       });
+      console.log("glideRef.current", glideRef.current);
     }
 
     return () => {
@@ -164,14 +170,18 @@ export default function DetailSlider({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref, media, reinitializeGlide, sliderOptions]);
 
+  const lastActiveRef = useRef<Element>();
   function onMediaClick(e: MouseEvent) {
-    if (
-      e.target &&
-      "getAttribute" in e.target &&
-      typeof e.target.getAttribute === "function"
-    ) {
+    if (e.target instanceof Element) {
       const index = e.target.getAttribute("data-index");
-      glideRef.current?.go(`=${index}`);
+      lastActiveRef.current?.classList.remove("active");
+      e.target.classList.add("active");
+      lastActiveRef.current = e.target;
+      console.log(glideSlidesRef.current?.children);
+      if (index !== null) {
+        onChangeMedia?.({ index: +index });
+        // glideRef.current?.go(`=${index}`);
+      }
     }
   }
   useEffect(() => {

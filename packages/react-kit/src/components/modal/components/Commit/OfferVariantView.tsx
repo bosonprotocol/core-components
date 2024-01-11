@@ -134,7 +134,7 @@ const SLIDER_PREVIEW_OPTIONS = {
   type: "slider",
   startAt: 0,
   gap: 20,
-  perView: 4,
+  perView: 3,
   focusAt: 0,
   animationTimingFunc: "ease",
   bound: true
@@ -198,7 +198,7 @@ export function OfferVariantView({
   const previewSliderOptions = useMemo(() => {
     return {
       ...SLIDER_PREVIEW_OPTIONS,
-      perView: sumMediaFiles,
+      // perView: sumMediaFiles,
       startAt: sliderIndex
     };
   }, [sliderIndex, sumMediaFiles]);
