@@ -1,11 +1,7 @@
-import { offers } from "@bosonprotocol/core-sdk";
-import { utils } from "ethers";
 import { ArrowsLeftRight, Cube, Info, Lock, LockOpen } from "phosphor-react";
 import React, {
   ElementRef,
-  ReactNode,
   forwardRef,
-  useCallback,
   useMemo,
   useRef,
   useState
@@ -13,13 +9,8 @@ import React, {
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../../../../../assets/logo.svg";
-import {
-  Field,
-  swapQueryParameters
-} from "../../../../../../lib/parameters/swap";
 import { useDisplayFloat } from "../../../../../../lib/price/prices";
 import { theme } from "../../../../../../theme";
-import { VariantV1 } from "../../../../../../types/variants";
 import { Button } from "../../../../../buttons/Button";
 import { useConfigContext } from "../../../../../config/ConfigContext";
 import Price from "../../../../../price/Price";
@@ -37,9 +28,11 @@ import {
 import DetailTable from "../../../common/detail/DetailTable";
 import { TokenGatedItem } from "../../../common/detail/TokenGatedItem";
 import { useNotCommittableOfferStatus } from "../../useNotCommittableOfferStatus";
+import { BuyOrSwapContainer } from "./BuyOrSwapContainer";
 import { useDetailViewContext } from "./DetailViewProvider";
 import { QuantityDisplay } from "./QuantityDisplay";
 import { getOfferDetailData } from "./getOfferDetailData";
+import { DetailViewProps } from "./types";
 
 const colors = theme.colors.light;
 
@@ -68,31 +61,6 @@ const Widget = styled(BaseWidget)`
   padding-top: 2rem;
 `;
 
-export type DetailViewProps = {
-  selectedVariant: VariantV1;
-  // allVariants: VariantV1[];
-  // disableVariationsSelects?: boolean;
-  children: ReactNode;
-  isPreview: boolean;
-  hasMultipleVariants: boolean;
-  showBosonLogo: boolean;
-  // onLicenseAgreementClick: () => void;
-  onExchangePolicyClick: (args: {
-    exchangePolicyCheckResult: offers.CheckExchangePolicyResult | undefined;
-  }) => void;
-  // onCommit: (exchangeId: string, txHash: string) => void;
-  // onCommitting: (txHash: string) => void;
-  onPurchaseOverview: () => void;
-  onClickBuyOrSwap?: (arg0: {
-    swapParams: {
-      outputCurrency: string;
-      exactAmount: string;
-      exactField: string;
-    };
-  }) => void;
-  // exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
-};
-
 type Props = { isBosonExclusive: boolean } & DetailViewProps;
 
 export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
@@ -117,7 +85,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
     const {
       quantity,
       isBuyerInsufficientFunds,
-      exchangeTokenBalance,
+      swapParams,
       isOfferNotValidYet,
       isExpiredOffer,
       isConditionMet,
@@ -134,8 +102,6 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
       decimals: offer.exchangeToken.decimals,
       symbol: offer.exchangeToken.symbol
     });
-
-    const minNeededBalance = exchangeTokenBalance?.sub(offer.price).mul(-1);
 
     const OFFER_DETAIL_DATA = useMemo(
       () =>
@@ -172,42 +138,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
 
     const [isDetailsOpen, setDetailsOpen] = useState<boolean>(true);
     const closeDetailsRef = useRef(true);
-    const swapParams = useMemo(
-      () =>
-        ({
-          [swapQueryParameters.outputCurrency]: offer.exchangeToken.address,
-          [swapQueryParameters.exactAmount]: minNeededBalance
-            ? utils.formatUnits(
-                minNeededBalance || "",
-                offer.exchangeToken.decimals
-              )
-            : "",
-          [swapQueryParameters.exactField]: Field.OUTPUT.toLowerCase()
-        } as const),
-      [
-        minNeededBalance,
-        offer.exchangeToken.address,
-        offer.exchangeToken.decimals
-      ]
-    );
-    const BuyOrSwapContainer = useCallback(
-      ({ children }: { children: ReactNode }) => {
-        return onClickBuyOrSwap ? (
-          <>{children}</>
-        ) : (
-          <a
-            style={{ all: "inherit", fontWeight: "600" }}
-            target="__blank"
-            href={`https://bosonapp.io/#/swap?${new URLSearchParams(
-              swapParams
-            ).toString()}`}
-          >
-            {children}
-          </a>
-        );
-      },
-      [onClickBuyOrSwap, swapParams]
-    );
+
     return (
       <Widget>
         {isBosonExclusive &&
@@ -253,7 +184,10 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
                 onClick: () => onClickBuyOrSwap({ swapParams })
               })}
             >
-              <BuyOrSwapContainer>
+              <BuyOrSwapContainer
+                swapParams={swapParams}
+                onClickBuyOrSwap={onClickBuyOrSwap}
+              >
                 Buy or Swap {tokenOrCoinSymbol} <SwapArrows size={24} />
               </BuyOrSwapContainer>
             </Button>
@@ -271,7 +205,11 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
               }
             }}
           >
-            <TokenGatedItem offer={offer} isConditionMet={isConditionMet} />
+            <TokenGatedItem
+              offer={offer}
+              isConditionMet={isConditionMet}
+              onClickBuyOrSwap={onClickBuyOrSwap}
+            />
           </DetailsSummary>
         )}
         <DetailsSummary

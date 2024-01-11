@@ -8,13 +8,16 @@ import { Offer } from "../../../../../types/offer";
 import { Image } from "../../../../image/Image";
 import Grid from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
+import { OnClickBuyOrSwapHandler } from "../../Commit/DetailView/common/types";
+import { BuyOrSwapContainer } from "../../Commit/DetailView/common/BuyOrSwapContainer";
+import { useDetailViewContext } from "../../Commit/DetailView/common/DetailViewProvider";
 const colors = theme.colors.light;
 
-interface Props {
+type Props = OnClickBuyOrSwapHandler & {
   offer: Offer;
   isConditionMet: boolean;
   style?: CSSProperties;
-}
+};
 
 /**
  * tokenType 0 - 20
@@ -24,9 +27,15 @@ interface Props {
  * method 2 - specific token
  */
 
-export const TokenGatedItem = ({ offer, isConditionMet, style }: Props) => {
+export const TokenGatedItem = ({
+  offer,
+  isConditionMet,
+  style,
+  onClickBuyOrSwap
+}: Props) => {
   const { condition } = offer;
   const coreSDK = useCoreSDKWithContext();
+  const { swapParams } = useDetailViewContext();
 
   const [tokenInfo, setTokenInfo] = useState({
     name: "",
@@ -79,17 +88,32 @@ export const TokenGatedItem = ({ offer, isConditionMet, style }: Props) => {
       </ThemedButton>
     </a>
   );
-  const BuyButton = (
-    <a
-      href={coreSDK.getTxExplorerUrl?.(tokenAddress, true)}
-      target="_blank"
-      rel="noreferrer"
-    >
-      <ThemedButton size="regular" themeVal="blankSecondary">
-        Buy <ArrowSquareUpRight />
-      </ThemedButton>
-    </a>
-  );
+  const BuyButton =
+    condition.tokenType === TokenType.FungibleToken ? (
+      <BuyOrSwapContainer swapParams={swapParams}>
+        <ThemedButton
+          size="regular"
+          themeVal="blankSecondary"
+          onClick={() =>
+            onClickBuyOrSwap?.({
+              swapParams
+            })
+          }
+        >
+          Buy <ArrowSquareUpRight />
+        </ThemedButton>
+      </BuyOrSwapContainer>
+    ) : (
+      <a
+        href={coreSDK.getTxExplorerUrl?.(tokenAddress, true)}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <ThemedButton size="regular" themeVal="blankSecondary">
+          Buy <ArrowSquareUpRight />
+        </ThemedButton>
+      </a>
+    );
   const ConditionUI = (
     <>
       {isConditionMet ? (

@@ -6,18 +6,20 @@ import { OfferFullDescription } from "../../common/OfferFullDescription/OfferFul
 import Grid from "../../../../ui/Grid";
 import { ArrowLeft } from "phosphor-react";
 import Typography from "../../../../ui/Typography";
+import { OnClickBuyOrSwapHandler } from "../DetailView/common/types";
 
 const colors = theme.colors.light;
-interface Props {
+type Props = OnClickBuyOrSwapHandler & {
   onBackClick: () => void;
   offer: Offer;
   onExchangePolicyClick: () => void;
-}
+};
 
 export function OfferFullDescriptionView({
   onBackClick,
   offer,
-  onExchangePolicyClick
+  onExchangePolicyClick,
+  onClickBuyOrSwap
 }: Props) {
   const dispatch = useNonModalContext();
   useEffect(() => {
@@ -45,6 +47,7 @@ export function OfferFullDescriptionView({
     <OfferFullDescription
       offer={offer}
       onExchangePolicyClick={onExchangePolicyClick}
+      onClickBuyOrSwap={onClickBuyOrSwap}
     />
   );
 }

@@ -19,6 +19,8 @@ import {
   DetailViewProvider,
   useDetailViewContext
 } from "./common/DetailViewProvider";
+import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
+import { utils } from "ethers";
 
 export type DetailViewWithProviderProps =
   | DetailViewWithCTAsProps
@@ -96,6 +98,26 @@ export const DetailViewWithProvider: React.FC<
     offerRequiredDeposit > 0
       ? Number(sellerAvailableDeposit) >= offerRequiredDeposit
       : true;
+  const minNeededBalance = exchangeTokenBalance?.sub(offer.price).mul(-1);
+
+  const swapParams = useMemo(
+    () =>
+      ({
+        [swapQueryParameters.outputCurrency]: offer.exchangeToken.address,
+        [swapQueryParameters.exactAmount]: minNeededBalance
+          ? utils.formatUnits(
+              minNeededBalance || "",
+              offer.exchangeToken.decimals
+            )
+          : "",
+        [swapQueryParameters.exactField]: Field.OUTPUT.toLowerCase()
+      } as const),
+    [
+      minNeededBalance,
+      offer.exchangeToken.address,
+      offer.exchangeToken.decimals
+    ]
+  );
   if (isSellersLoading) {
     return <Loading />;
   }
@@ -114,6 +136,7 @@ export const DetailViewWithProvider: React.FC<
       isConditionMet={isConditionMet}
       hasSellerEnoughFunds={hasSellerEnoughFunds}
       exchangePolicyCheckResult={exchangePolicyCheckResult}
+      swapParams={swapParams}
     >
       {withCTAs ? (
         <InnerDetailViewWithCTAs {...props} />

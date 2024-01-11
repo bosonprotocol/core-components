@@ -212,6 +212,7 @@ function CommitNonModal({
               onExchangePolicyClick?.();
             }}
             offer={selectedVariant.offer}
+            onClickBuyOrSwap={onClickBuyOrSwap}
           />
         </DetailViewProvider>
       ) : currentStep === ActiveStep.PURCHASE_OVERVIEW ? (

@@ -12,6 +12,7 @@ import DetailSlider from "../detail/DetailSlider";
 import DetailTable from "../detail/DetailTable";
 import { GeneralProductData } from "./GeneralProductData";
 import styled from "styled-components";
+import { OnClickBuyOrSwapHandler } from "../../Commit/DetailView/common/types";
 
 const colors = theme.colors.light;
 const SLIDER_OPTIONS = {
@@ -27,16 +28,17 @@ const InventoryGraph = styled(DetailChart)`
     min-height: 250px;
   }
 `;
-interface OfferFullDescriptionProps {
+type OfferFullDescriptionProps = OnClickBuyOrSwapHandler & {
   offer: Offer;
   children?: ReactNode;
   onExchangePolicyClick: () => void;
-}
+};
 
 export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
   offer,
   children,
-  onExchangePolicyClick
+  onExchangePolicyClick,
+  onClickBuyOrSwap
 }) => {
   const {
     description,
@@ -63,6 +65,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
               <GeneralProductData
                 offer={offer}
                 onExchangePolicyClick={onExchangePolicyClick}
+                onClickBuyOrSwap={onClickBuyOrSwap}
               />
             </Content>
           )

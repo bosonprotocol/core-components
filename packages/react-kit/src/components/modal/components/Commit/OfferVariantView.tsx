@@ -22,8 +22,8 @@ import DetailSlider from "../common/detail/DetailSlider";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import { SlickSlider } from "../common/detail/SlickSlider";
 import { DetailViewWithProvider } from "./DetailView/DetailViewWithProvider";
-import { DetailViewProps } from "./DetailView/common/DetailViewCore";
 import { DetailContextProps } from "./DetailView/common/DetailViewProvider";
+import { OnClickBuyOrSwapHandler } from "./DetailView/common/types";
 
 const colors = theme.colors.light;
 const selectWidth = "10rem";
@@ -93,10 +93,7 @@ const PreviewSlickSlider = styled(SlickSlider)`
   margin-top: 1rem;
 `;
 
-export type OfferVariantViewProps = Pick<
-  DetailViewProps,
-  "onClickBuyOrSwap"
-> & {
+export type OfferVariantViewProps = OnClickBuyOrSwapHandler & {
   onCommit: (exchangeId: string, txHash: string) => void;
   onExchangePolicyClick: () => void;
   onPurchaseOverview: () => void;

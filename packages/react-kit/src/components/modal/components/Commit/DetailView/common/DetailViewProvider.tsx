@@ -12,6 +12,11 @@ export type DetailContextProps = {
   isConditionMet: boolean;
   hasSellerEnoughFunds: boolean;
   exchangePolicyCheckResult: CheckExchangePolicyResult | undefined;
+  swapParams: {
+    outputCurrency: string;
+    exactAmount: string;
+    exactField: string;
+  };
 };
 const DetailViewContext = createContext<DetailContextProps | undefined>(
   undefined

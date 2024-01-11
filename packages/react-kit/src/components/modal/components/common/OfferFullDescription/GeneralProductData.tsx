@@ -16,6 +16,7 @@ import { getOfferDetailData } from "../../Commit/DetailView/common/getOfferDetai
 import { useConvertedPrice } from "../../../../price/useConvertedPrice";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import { useDisplayFloat } from "../../../../../lib/price/prices";
+import { OnClickBuyOrSwapHandler } from "../../Commit/DetailView/common/types";
 const colors = theme.colors.light;
 
 const StyledPrice = styled(Price)`
@@ -39,14 +40,15 @@ const TokenGatedGrid = styled.div`
     }
   }
 `;
-type GeneralProductDataProps = {
+type GeneralProductDataProps = OnClickBuyOrSwapHandler & {
   offer: Offer;
   onExchangePolicyClick: () => void;
 };
 
 export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
   offer,
-  onExchangePolicyClick
+  onExchangePolicyClick,
+  onClickBuyOrSwap
 }) => {
   const notCommittableOfferStatus = useNotCommittableOfferStatus({
     isOfferVoided: offer.voided
@@ -104,7 +106,11 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
         <>
           <TokenGatedGrid>
             <Typography tag="h3">Token Gated Offer</Typography>
-            <TokenGatedItem offer={offer} isConditionMet={isConditionMet} />
+            <TokenGatedItem
+              offer={offer}
+              isConditionMet={isConditionMet}
+              onClickBuyOrSwap={onClickBuyOrSwap}
+            />
           </TokenGatedGrid>
           <Break />
         </>

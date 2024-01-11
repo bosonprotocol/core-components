@@ -185,6 +185,7 @@ export function ExchangeView({
               <SellerAndDescription
                 offer={exchange.offer}
                 onViewFullDescription={onViewFullDescription}
+                loadingViewFullDescription={false}
               />
             </ImageWrapper>
           </Grid>

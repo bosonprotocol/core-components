@@ -29,8 +29,8 @@ import {
 } from "../../../../widgets/finance/storage/useLocalStorage";
 import { useModal } from "../../../useModal";
 import { InnerDetailViewWithPortal } from "./InnerDetailViewWithPortal";
-import { DetailViewProps } from "./common/DetailViewCore";
 import { useDetailViewContext } from "./common/DetailViewProvider";
+import { DetailViewProps } from "./common/types";
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
 
 const CommitButtonWrapper = styled.div<{
