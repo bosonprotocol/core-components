@@ -159,7 +159,7 @@ export class AccountsMixin extends BaseCoreSDK {
         }
       }
     }
-    return undefined;
+    return;
   }
 
   /**
