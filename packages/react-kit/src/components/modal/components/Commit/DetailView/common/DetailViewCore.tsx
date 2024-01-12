@@ -173,24 +173,25 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
         </div>
         {isNotCommittableOffer && isBuyerInsufficientFunds && (
           <Grid marginBottom="1rem">
-            <Button
-              size="regular"
-              variant="accentInverted"
-              withBosonStyle
-              style={{
-                width: "100%"
-              }}
-              {...(onClickBuyOrSwap && {
-                onClick: () => onClickBuyOrSwap({ swapParams })
-              })}
+            <BuyOrSwapContainer
+              swapParams={swapParams}
+              onClickBuyOrSwap={onClickBuyOrSwap}
+              style={{ padding: 0 }}
             >
-              <BuyOrSwapContainer
-                swapParams={swapParams}
-                onClickBuyOrSwap={onClickBuyOrSwap}
+              <Button
+                size="regular"
+                variant="accentInverted"
+                withBosonStyle
+                style={{
+                  width: "100%"
+                }}
+                {...(onClickBuyOrSwap && {
+                  onClick: () => onClickBuyOrSwap({ swapParams })
+                })}
               >
                 Buy or Swap {tokenOrCoinSymbol} <SwapArrows size={24} />
-              </BuyOrSwapContainer>
-            </Button>
+              </Button>
+            </BuyOrSwapContainer>
           </Grid>
         )}
         {!isBuyerInsufficientFunds && children}

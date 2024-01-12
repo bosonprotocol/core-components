@@ -139,8 +139,14 @@ function CommitNonModal({
   const { address } = useAccount();
   const disconnect = useDisconnect();
   const providerPropsRef = useRef<DetailContextProps>();
+  const [loadingViewFullDescription, setLoadingViewFullDescription] = useState(
+    !providerPropsRef.current
+  );
   const onGetDetailViewProviderProps = useCallback(
     (providerProps: DetailContextProps) => {
+      if (!providerPropsRef.current && providerProps) {
+        setLoadingViewFullDescription(false);
+      }
       providerPropsRef.current = providerProps;
     },
     []
@@ -179,7 +185,7 @@ function CommitNonModal({
           selectedVariant={selectedVariant}
           setSelectedVariant={setSelectedVariant}
           disableVariationsSelects={disableVariationsSelects}
-          loadingViewFullDescription={!providerPropsRef.current}
+          loadingViewFullDescription={loadingViewFullDescription}
           onExchangePolicyClick={() => {
             setActiveStep(ActiveStep.EXCHANGE_POLICY);
             onExchangePolicyClick?.();
