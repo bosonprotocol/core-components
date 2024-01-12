@@ -49,13 +49,11 @@ const BlackLogo = styled(Logo)`
 `;
 
 const Widget = styled(BaseWidget)`
-  padding-top: 2rem;
+  padding-top: 1rem;
 `;
 
 type Props = {
   isBosonExclusive: boolean;
-  topChildren?: ReactNode;
-  bottomChildren?: ReactNode;
 } & DetailViewProps;
 
 export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
@@ -117,7 +115,12 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
             <BosonExclusiveContainer>BOSON EXCLUSIVE</BosonExclusiveContainer>,
             forwardedRef?.current
           )}
-        {topChildren}
+        {topChildren && (
+          <>
+            {topChildren}
+            <Break />
+          </>
+        )}
         <div>
           <WidgetUpperGrid style={{ paddingBottom: "0.5rem" }}>
             <StyledPrice
@@ -207,7 +210,12 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
             <Info color={colors.secondary} size={24} />
           </div>
         </Grid>
-        {bottomChildren}
+        {bottomChildren && (
+          <>
+            <Break />
+            {bottomChildren}
+          </>
+        )}
         {showBosonLogo && (
           <>
             <Break />

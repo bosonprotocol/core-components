@@ -17,55 +17,15 @@ import GridContainer from "../../../ui/GridContainer";
 import Typography from "../../../ui/Typography";
 import { WaveLoader } from "../../../ui/loading/WaveLoader/WaveLoader";
 import { useNonModalContext } from "../../nonModal/NonModal";
-import VariationSelects from "../common/VariationSelects";
+import { ResponsiveVariationSelects } from "../common/VariationSelects";
 import DetailSlider from "../common/detail/DetailSlider";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import { SlickSlider } from "../common/detail/SlickSlider";
-import { DetailViewWithProvider } from "./DetailView/DetailViewWithProvider";
+import { CommitDetailViewWithProvider } from "./DetailView/CommitDetailViewWithProvider";
 import { DetailContextProps } from "./DetailView/common/DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "./DetailView/common/types";
 
 const colors = theme.colors.light;
-const selectWidth = "10rem";
-const ResponsiveVariationSelects = styled(VariationSelects)`
-  container-type: inline-size;
-  z-index: calc(var(--wcm-z-index) + 1);
-  width: 100%;
-  && {
-    [data-grid] {
-      [class*="container"] {
-        width: 100%;
-      }
-      [class*="control"] {
-        width: 100%;
-      }
-      flex-direction: column;
-      @container (width > 300px) {
-        justify-content: flex-start;
-        flex-direction: row;
-      }
-      @container (350px < width) {
-        [class*="container"] {
-          width: auto;
-        }
-        [class*="control"] {
-          width: auto;
-        }
-      }
-    }
-  }
-
-  [class*="control"] {
-    background-color: ${colors.white};
-    border-color: ${colors.white};
-    max-width: 100%;
-    width: ${selectWidth};
-  }
-  [class*="menu"] {
-    max-width: 100%;
-    width: ${selectWidth};
-  }
-`;
 const ImageWrapper = styled.div`
   container-type: inline-size;
   position: relative;
@@ -100,6 +60,7 @@ export type OfferVariantViewProps = OnClickBuyOrSwapHandler & {
   onViewFullDescription: () => void;
   onLicenseAgreementClick: () => void;
   onGetDetailViewProviderProps: (providerProps: DetailContextProps) => void;
+  onAlreadyOwnOfferClick: () => void;
   selectedVariant: VariantV1;
   setSelectedVariant: Dispatch<SetStateAction<VariantV1 | undefined>>;
   allVariants: VariantV1[];
@@ -129,6 +90,7 @@ export function OfferVariantView({
   onViewFullDescription,
   onGetDetailViewProviderProps,
   onClickBuyOrSwap,
+  onAlreadyOwnOfferClick,
   setSelectedVariant
 }: OfferVariantViewProps) {
   const [isCommitting, setIsComitting] = useState(false);
@@ -136,7 +98,7 @@ export function OfferVariantView({
 
   const { offerImg, animationUrl, images } = offer
     ? getOfferDetails(offer)
-    : ({} as ReturnType<typeof getOfferDetails>);
+    : { offerImg: undefined, animationUrl: undefined, images: undefined };
   const allImages = useMemo(() => {
     return Array.from(new Set([offerImg || "", ...(images || [])])).filter(
       isTruthy
@@ -171,19 +133,18 @@ export function OfferVariantView({
   const sliderOptions = useMemo(() => {
     return { ...SLIDER_OPTIONS, startAt: sliderIndex };
   }, [sliderIndex]);
-  const sumMediaFiles = allImages.length + (animationUrl ? 1 : 0);
 
   const mediaFiles = useMemo(() => {
-    const imgs = [...images.map((img) => ({ url: img, type: "image" }))];
+    const imgs = [...allImages.map((img) => ({ url: img, type: "image" }))];
     return (
       animationUrl
         ? [
             { url: animationUrl, type: "video" },
-            ...images.map((img) => ({ url: img, type: "image" }))
+            ...allImages.map((img) => ({ url: img, type: "image" }))
           ]
         : imgs
     ) as { url: string; type: "image" | "video" }[];
-  }, [images, animationUrl]);
+  }, [allImages, animationUrl]);
   return (
     <>
       {isCommitting ? (
@@ -227,7 +188,7 @@ export function OfferVariantView({
                 onViewFullDescription={onViewFullDescription}
                 loadingViewFullDescription={loadingViewFullDescription}
               />
-              {sumMediaFiles > 1 && (
+              {mediaFiles.length > 1 && (
                 <PreviewSlickSlider
                   mediaFiles={mediaFiles}
                   onMediaClick={({ index }) => {
@@ -257,7 +218,7 @@ export function OfferVariantView({
               />
             )}
 
-            <DetailViewWithProvider
+            <CommitDetailViewWithProvider
               showBosonLogo={showBosonLogo ?? false}
               selectedVariant={selectedVariant}
               onExchangePolicyClick={onExchangePolicyClick}
@@ -272,6 +233,7 @@ export function OfferVariantView({
               isPreview={false}
               onGetProviderProps={innerOnGetProviderProps}
               onClickBuyOrSwap={onClickBuyOrSwap}
+              onAlreadyOwnOfferClick={onAlreadyOwnOfferClick}
             />
           </VariationsAndWhiteWidget>
         </GridContainer>

@@ -52,6 +52,10 @@ import {
   ExpireVoucherViewProps
 } from "./ExchangeView/expireVoucher/ExpireVoucherView";
 import { ContactPreference } from "./const";
+import {
+  DetailContextProps,
+  DetailViewProvider
+} from "../Commit/DetailView/common/DetailViewProvider";
 
 const colors = theme.colors.light;
 const UlWithWordBreak = styled.ul`
@@ -196,31 +200,32 @@ export type RedeemNonModalProps = Pick<
   | "deliveryInfoHandler"
   | "redemptionSubmittedHandler"
   | "redemptionConfirmedHandler"
-> & {
-  sellerIds?: string[];
-  exchange?: Exchange;
-  fairExchangePolicyRules: string;
-  raiseDisputeForExchangeUrl: string;
-  hideModal?: NonModalProps["hideModal"];
-  myItemsOnExchangeCardClick?: MyItemsProps["onExchangeCardClick"];
-  myItemsOnRedeemClick?: MyItemsProps["onRedeemClick"];
-  myItemsOnCancelExchange?: MyItemsProps["onCancelExchange"];
-  myItemsOnRaiseDisputeClick?: MyItemsProps["onRaiseDisputeClick"];
-  myItemsOnAvatarClick?: MyItemsProps["onAvatarClick"];
-  onExchangePolicyClick?: ExchangeViewProps["onExchangePolicyClick"];
-  exchangeViewOnPurchaseOverview?: ExchangeViewProps["onPurchaseOverview"];
-  exchangeViewOnViewFullDescription?: ExchangeViewProps["onViewFullDescription"];
-  exchangeViewOnCancelExchange?: ExchangeViewProps["onCancelExchange"];
-  exchangeViewOnExpireVoucherClick?: ExchangeViewProps["onExpireVoucherClick"];
-  exchangeViewOnRaiseDisputeClick?: ExchangeViewProps["onRaiseDisputeClick"];
-  expireVoucherViewOnSuccess?: ExpireVoucherViewProps["onSuccess"];
-  cancellationViewOnSuccess?: CancellationViewProps["onSuccess"];
-  confirmationViewOnSuccess?: ConfirmationViewProps["onSuccess"];
-  forcedAccount?: string;
-  parentOrigin?: string | null;
-  signatures?: string[] | undefined | null;
-  withExternalSigner: boolean | undefined | null;
-};
+> &
+  Pick<ExchangeViewProps, "onClickBuyOrSwap"> & {
+    sellerIds?: string[];
+    exchange?: Exchange;
+    fairExchangePolicyRules: string;
+    raiseDisputeForExchangeUrl: string;
+    hideModal?: NonModalProps["hideModal"];
+    myItemsOnExchangeCardClick?: MyItemsProps["onExchangeCardClick"];
+    myItemsOnRedeemClick?: MyItemsProps["onRedeemClick"];
+    myItemsOnCancelExchange?: MyItemsProps["onCancelExchange"];
+    myItemsOnRaiseDisputeClick?: MyItemsProps["onRaiseDisputeClick"];
+    myItemsOnAvatarClick?: MyItemsProps["onAvatarClick"];
+    onExchangePolicyClick?: ExchangeViewProps["onExchangePolicyClick"];
+    exchangeViewOnPurchaseOverview?: ExchangeViewProps["onPurchaseOverview"];
+    exchangeViewOnViewFullDescription?: ExchangeViewProps["onViewFullDescription"];
+    exchangeViewOnCancelExchange?: ExchangeViewProps["onCancelExchange"];
+    exchangeViewOnExpireVoucherClick?: ExchangeViewProps["onExpireVoucherClick"];
+    exchangeViewOnRaiseDisputeClick?: ExchangeViewProps["onRaiseDisputeClick"];
+    expireVoucherViewOnSuccess?: ExpireVoucherViewProps["onSuccess"];
+    cancellationViewOnSuccess?: CancellationViewProps["onSuccess"];
+    confirmationViewOnSuccess?: ConfirmationViewProps["onSuccess"];
+    forcedAccount?: string;
+    parentOrigin?: string | null;
+    signatures?: string[] | undefined | null;
+    withExternalSigner: boolean | undefined | null;
+  };
 
 export default function RedeemWrapper({
   hideModal,
@@ -294,6 +299,7 @@ function RedeemNonModal({
   deliveryInfoHandler,
   redemptionSubmittedHandler,
   redemptionConfirmedHandler,
+  onClickBuyOrSwap,
   signatures,
   parentOrigin
 }: RedeemNonModalProps) {
@@ -416,7 +422,19 @@ function RedeemNonModal({
       });
     }
   }, [address, currentStep, widgetAction, showRedemptionOverview]);
-
+  const providerPropsRef = useRef<DetailContextProps>();
+  const [loadingViewFullDescription, setLoadingViewFullDescription] = useState(
+    !providerPropsRef.current
+  );
+  const onGetDetailViewProviderProps = useCallback(
+    (providerProps: DetailContextProps) => {
+      if (!providerPropsRef.current && providerProps) {
+        setLoadingViewFullDescription(false);
+      }
+      providerPropsRef.current = providerProps;
+    },
+    []
+  );
   if (
     forcedAccount &&
     address &&
@@ -460,7 +478,9 @@ function RedeemNonModal({
       window.open(raiseDisputeForExchangeUrlWithId, "_blank");
     }
   };
-
+  const onContractualAgreementClick = () => {
+    setActiveStep(ActiveStep.CONTRACTUAL_AGREEMENT);
+  };
   return (
     <>
       <Formik<FormType>
@@ -580,16 +600,23 @@ function RedeemNonModal({
                   }}
                   fairExchangePolicyRules={fairExchangePolicyRules}
                   defaultDisputeResolverId={defaultDisputeResolverId}
+                  loadingViewFullDescription={loadingViewFullDescription}
+                  onGetDetailViewProviderProps={onGetDetailViewProviderProps}
+                  onContractualAgreementClick={onContractualAgreementClick}
+                  onClickBuyOrSwap={onClickBuyOrSwap}
                 />
-              ) : currentStep === ActiveStep.EXCHANGE_FULL_DESCRIPTION ? (
-                <ExchangeFullDescriptionView
-                  onBackClick={goToPreviousStep}
-                  exchange={exchange || selectedExchange || null}
-                  onExchangePolicyClick={() => {
-                    setActiveStep(ActiveStep.EXCHANGE_POLICY);
-                    onExchangePolicyClick?.();
-                  }}
-                />
+              ) : currentStep === ActiveStep.EXCHANGE_FULL_DESCRIPTION &&
+                providerPropsRef.current ? (
+                <DetailViewProvider {...providerPropsRef.current}>
+                  <ExchangeFullDescriptionView
+                    onBackClick={goToPreviousStep}
+                    exchange={exchange || selectedExchange || null}
+                    onExchangePolicyClick={() => {
+                      setActiveStep(ActiveStep.EXCHANGE_POLICY);
+                      onExchangePolicyClick?.();
+                    }}
+                  />
+                </DetailViewProvider>
               ) : currentStep === ActiveStep.EXPIRE_VOUCHER_VIEW ? (
                 <ExpireVoucherView
                   onBackClick={goToPreviousStep}
@@ -626,9 +653,7 @@ function RedeemNonModal({
                 <RedeemOfferPolicyView
                   offer={exchange?.offer}
                   onBackClick={goToPreviousStep}
-                  onContractualAgreementClick={() =>
-                    setActiveStep(ActiveStep.CONTRACTUAL_AGREEMENT)
-                  }
+                  onContractualAgreementClick={onContractualAgreementClick}
                   onLicenseAgreementClick={() =>
                     setActiveStep(ActiveStep.LICENSE_AGREEMENT)
                   }

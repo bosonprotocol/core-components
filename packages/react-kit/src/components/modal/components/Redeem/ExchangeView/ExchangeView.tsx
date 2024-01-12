@@ -1,5 +1,5 @@
 import { House } from "phosphor-react";
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { useSellers } from "../../../../../hooks/useSellers";
@@ -10,7 +10,9 @@ import Loading from "../../../../ui/loading/Loading";
 import Typography from "../../../../ui/Typography";
 import DetailOpenSea from "../../common/DetailOpenSea";
 import DetailView from "./DetailView/DetailView";
-import VariationSelects from "../../common/VariationSelects";
+import VariationSelects, {
+  ResponsiveVariationSelects
+} from "../../common/VariationSelects";
 import { isTruthy } from "../../../../../types/helpers";
 import GridContainer from "../../../../ui/GridContainer";
 import { theme } from "../../../../../theme";
@@ -19,6 +21,11 @@ import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy"
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { SellerAndDescription } from "../../common/detail/SellerAndDescription";
 import DetailSlider from "../../common/detail/DetailSlider";
+import { breakpoint } from "../../../../../lib/ui/breakpoint";
+import { SlickSlider } from "../../common/detail/SlickSlider";
+import { ExchangeDetailViewWithProvider } from "../../Commit/DetailView/ExchangeDetailViewWithProvider";
+import { DetailContextProps } from "../../Commit/DetailView/common/DetailViewProvider";
+import { OnClickBuyOrSwapHandler } from "../../Commit/DetailView/common/types";
 
 const colors = theme.colors.light;
 
@@ -29,7 +36,24 @@ const ImageWrapper = styled.div`
   width: -webkit-fill-available;
 `;
 
-export type ExchangeViewProps = {
+const ImageAndSellerIdContainer = styled(Grid)`
+  align-items: center;
+  ${breakpoint.s} {
+    align-items: flex-end;
+  }
+`;
+
+const VariationsAndWhiteWidget = styled(Grid)`
+  ${breakpoint.s} {
+    max-width: 550px;
+  }
+`;
+
+const PreviewSlickSlider = styled(SlickSlider)`
+  margin-top: 1rem;
+`;
+
+export type ExchangeViewProps = OnClickBuyOrSwapHandler & {
   onHouseClick: () => void;
   onNextClick: () => void;
   onCancelExchange: () => void;
@@ -38,10 +62,14 @@ export type ExchangeViewProps = {
   onViewFullDescription: () => void;
   onExpireVoucherClick: () => void;
   onRaiseDisputeClick: () => void;
+  onContractualAgreementClick: () => void;
+  onGetDetailViewProviderProps: (providerProps: DetailContextProps) => void;
+  showBosonLogo?: boolean;
   exchangeId: string;
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
   isValid: boolean;
+  loadingViewFullDescription: boolean;
 };
 
 const SLIDER_OPTIONS = {
@@ -62,7 +90,13 @@ export function ExchangeView({
   onRaiseDisputeClick,
   exchangeId,
   fairExchangePolicyRules,
-  defaultDisputeResolverId
+  defaultDisputeResolverId,
+  isValid,
+  onClickBuyOrSwap,
+  loadingViewFullDescription,
+  onContractualAgreementClick,
+  onGetDetailViewProviderProps,
+  showBosonLogo
 }: ExchangeViewProps) {
   const {
     data: exchanges,
@@ -86,24 +120,6 @@ export function ExchangeView({
     offer,
     variations
   };
-  const { data: sellers } = useSellers(
-    {
-      id: offer?.seller.id,
-      includeFunds: true
-    },
-    {
-      enabled: !!offer?.seller.id
-    }
-  );
-
-  const sellerAvailableDeposit = sellers?.[0]?.funds?.find(
-    (fund) => fund.token.address === offer?.exchangeToken.address
-  )?.availableAmount;
-  const offerRequiredDeposit = Number(offer?.sellerDeposit || 0);
-  const hasSellerEnoughFunds =
-    offerRequiredDeposit > 0
-      ? Number(sellerAvailableDeposit) >= offerRequiredDeposit
-      : true;
   const { offerImg, animationUrl, images } = offer
     ? getOfferDetails(offer)
     : ({} as ReturnType<typeof getOfferDetails>);
@@ -112,16 +128,7 @@ export function ExchangeView({
       isTruthy
     );
   }, [offerImg, images]);
-  const {
-    store: { tokens: defaultTokens }
-  } = useConvertionRate();
 
-  const exchangePolicyCheckResult = useCheckExchangePolicy({
-    offerId: exchange?.offer?.id,
-    fairExchangePolicyRules,
-    defaultDisputeResolverId: defaultDisputeResolverId || "unknown",
-    defaultTokens: defaultTokens || []
-  });
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
@@ -133,11 +140,6 @@ export function ExchangeView({
               size={32}
               style={{ cursor: "pointer", flexShrink: 0 }}
             />
-            {offer && (
-              <Typography tag="h3" style={{ flex: "1 1" }}>
-                {offer.metadata.name}
-              </Typography>
-            )}
           </Grid>
         ),
         contentStyle: {
@@ -147,6 +149,28 @@ export function ExchangeView({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, offer]);
+  const innerOnGetProviderProps = useCallback(
+    (providerProps: DetailContextProps) => {
+      onGetDetailViewProviderProps(providerProps);
+    },
+    [onGetDetailViewProviderProps]
+  );
+  const [sliderIndex, setSliderIndex] = useState<number>(0);
+  const sliderOptions = useMemo(() => {
+    return { ...SLIDER_OPTIONS, startAt: sliderIndex };
+  }, [sliderIndex]);
+
+  const mediaFiles = useMemo(() => {
+    const imgs = [...allImages.map((img) => ({ url: img, type: "image" }))];
+    return (
+      animationUrl
+        ? [
+            { url: animationUrl, type: "video" },
+            ...allImages.map((img) => ({ url: img, type: "image" }))
+          ]
+        : imgs
+    ) as { url: string; type: "image" | "video" }[];
+  }, [allImages, animationUrl]);
   return (
     <>
       {isLoading ? (
@@ -166,41 +190,61 @@ export function ExchangeView({
             l: 2,
             xl: 2
           }}
+          style={{ paddingTop: "1rem" }}
+          rowGap="3rem"
         >
-          <Grid flexDirection="column" alignItems="center">
+          <ImageAndSellerIdContainer flexDirection="column" flex={1}>
             <ImageWrapper>
               <DetailOpenSea exchange={exchange} />
 
-              <>
-                {(allImages.length > 0 || animationUrl) && (
-                  <DetailSlider
-                    animationUrl={animationUrl}
-                    images={allImages}
-                    sliderOptions={SLIDER_OPTIONS}
-                    arrowsAbove={false}
-                  />
-                )}
-              </>
+              {(allImages.length > 0 || animationUrl) && (
+                <DetailSlider
+                  animationUrl={animationUrl}
+                  images={allImages}
+                  sliderOptions={sliderOptions}
+                  arrowsAbove={false}
+                  data-slider
+                  onChangeMedia={({ index }) => {
+                    setSliderIndex(index);
+                  }}
+                />
+              )}
 
               <SellerAndDescription
                 offer={exchange.offer}
                 onViewFullDescription={onViewFullDescription}
-                loadingViewFullDescription={false}
+                loadingViewFullDescription={loadingViewFullDescription}
               />
-            </ImageWrapper>
-          </Grid>
-          <Grid flexDirection="column" gap="1rem" justifyContent="flex-start">
-            {hasVariations && (
-              <div style={{ width: "100%" }}>
-                <VariationSelects
-                  selectedVariant={variant as VariantV1}
-                  variants={[variant] as VariantV1[]}
-                  setSelectedVariant={undefined}
-                  disabled
+              {mediaFiles.length > 1 && (
+                <PreviewSlickSlider
+                  mediaFiles={mediaFiles}
+                  onMediaClick={({ index }) => {
+                    setSliderIndex(index);
+                  }}
+                  activeIndex={sliderIndex}
+                  imageOptimizationOpts={{ height: 75 }}
+                  mediaHeight="75px"
                 />
-              </div>
+              )}
+            </ImageWrapper>
+          </ImageAndSellerIdContainer>
+          <VariationsAndWhiteWidget
+            flexDirection="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography tag="h3" marginTop="0" marginBottom="1rem">
+              {offer.metadata.name || ""}
+            </Typography>
+            {hasVariations && (
+              <ResponsiveVariationSelects
+                selectedVariant={variant as VariantV1}
+                variants={[variant] as VariantV1[]}
+                setSelectedVariant={undefined}
+                disabled
+              />
             )}
-            <DetailView
+            {/* <DetailView
               hasSellerEnoughFunds={hasSellerEnoughFunds}
               offer={offer}
               exchange={exchange}
@@ -213,8 +257,24 @@ export function ExchangeView({
               hasMultipleVariants={false}
               isPreview={false}
               exchangePolicyCheckResult={exchangePolicyCheckResult}
+            /> */}
+            <ExchangeDetailViewWithProvider
+              showBosonLogo={showBosonLogo ?? false}
+              selectedVariant={variant as VariantV1}
+              exchange={exchange}
+              onExchangePolicyClick={onExchangePolicyClick}
+              onRedeem={onNextClick}
+              onExpireVoucherClick={onExpireVoucherClick}
+              onRaiseDisputeClick={onRaiseDisputeClick}
+              onPurchaseOverview={onPurchaseOverview}
+              onCancelExchangeClick={onCancelExchange}
+              onContractualAgreementClick={onContractualAgreementClick}
+              hasMultipleVariants={false}
+              isPreview={false}
+              onGetProviderProps={innerOnGetProviderProps}
+              onClickBuyOrSwap={onClickBuyOrSwap}
             />
-          </Grid>
+          </VariationsAndWhiteWidget>
         </GridContainer>
       )}
     </>

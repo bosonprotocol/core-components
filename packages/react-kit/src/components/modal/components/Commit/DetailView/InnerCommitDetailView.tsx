@@ -3,8 +3,8 @@ import { Provider } from "@bosonprotocol/ethers-sdk";
 import { useAccountModal } from "@rainbow-me/rainbowkit";
 import * as Sentry from "@sentry/browser";
 import { BigNumberish, ethers, providers } from "ethers";
-import { ArrowsLeftRight, Spinner } from "phosphor-react";
-import React, { useCallback, useRef, useState } from "react";
+import { ArrowRight, ArrowsLeftRight, Spinner } from "phosphor-react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import styled, { css } from "styled-components";
 import {
@@ -17,6 +17,7 @@ import {
   getHasUserRejectedTx
 } from "../../../../../lib/errors/transactions";
 import { poll } from "../../../../../lib/promises/promises";
+import { theme } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import { CommitButton } from "../../../../cta/offer/CommitButton";
@@ -33,7 +34,9 @@ import { InnerDetailViewWithPortal } from "./InnerDetailViewWithPortal";
 import { BuyOrSwapContainer } from "./common/BuyOrSwapContainer";
 import { useDetailViewContext } from "./common/DetailViewProvider";
 import { DetailViewProps } from "./common/types";
-import { useNotCommittableOfferStatus } from "../useNotCommittableOfferStatus";
+import { useBuyers } from "../../../../../hooks/useBuyers";
+const colors = theme.colors.light;
+
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
 
 const CommitButtonWrapper = styled.div<{
@@ -81,6 +84,7 @@ export type InnerCommitDetailViewProps = Omit<
     onLicenseAgreementClick: () => void;
     onCommit: (exchangeId: string, txHash: string) => void;
     onCommitting: (txHash: string) => void;
+    onAlreadyOwnOfferClick: () => void;
   },
   "children" | "hasSellerEnoughFunds"
 >;
@@ -91,6 +95,7 @@ export default function InnerCommitDetailView(
     onLicenseAgreementClick,
     onCommit,
     onCommitting,
+    onAlreadyOwnOfferClick,
     selectedVariant,
     isPreview
   } = props;
@@ -252,9 +257,44 @@ export default function InnerCommitDetailView(
     offer.voided ||
     !hasSellerEnoughFunds ||
     isBuyerInsufficientFunds;
-
+  const { data: buyers } = useBuyers(
+    {
+      wallet: address
+    },
+    { enabled: !!address }
+  );
+  const buyer = buyers?.[0];
+  const userCommittedOffersLength = useMemo(
+    () =>
+      buyer
+        ? offer.exchanges?.filter((elem) => elem?.buyer?.id === buyer.id).length
+        : 0,
+    [offer, buyer]
+  );
   return (
-    <InnerDetailViewWithPortal {...props}>
+    <InnerDetailViewWithPortal
+      {...props}
+      topChildren={
+        <>
+          {address && !!userCommittedOffersLength && (
+            <Grid
+              alignItems="center"
+              justifyContent="space-between"
+              style={{ margin: "0 0 1rem 0", cursor: "pointer" }}
+              onClick={() => onAlreadyOwnOfferClick()}
+            >
+              <p
+                style={{ color: colors.orange, margin: 0, fontSize: "0.75rem" }}
+              >
+                You already own {userCommittedOffersLength}{" "}
+                <b>{offer.metadata.name}</b> rNFT
+              </p>
+              <ArrowRight size={18} color={colors.orange} />
+            </Grid>
+          )}
+        </>
+      }
+    >
       {isNotCommittableOffer && isBuyerInsufficientFunds && (
         <Grid marginBottom="1rem">
           <BuyOrSwapContainer

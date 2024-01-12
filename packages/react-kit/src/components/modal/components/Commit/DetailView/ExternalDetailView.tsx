@@ -1,14 +1,14 @@
 import React from "react";
 import {
-  DetailViewWithProvider,
-  DetailViewWithProviderProps
-} from "./DetailViewWithProvider";
-import {
   CommitWidgetProviders,
   CommitWidgetProvidersProps
 } from "../../../../widgets/commit/CommitWidgetProviders";
+import {
+  CommitDetailViewWithProvider,
+  CommitDetailViewWithProviderProps
+} from "./CommitDetailViewWithProvider";
 
-export type ExternalDetailViewProps = DetailViewWithProviderProps & {
+export type ExternalDetailViewProps = CommitDetailViewWithProviderProps & {
   providerProps: Omit<CommitWidgetProvidersProps, "children">;
 };
 
@@ -17,7 +17,7 @@ export const ExternalDetailView: React.FC<ExternalDetailViewProps> = (
 ) => {
   return (
     <CommitWidgetProviders {...props.providerProps}>
-      <DetailViewWithProvider {...props} />
+      <CommitDetailViewWithProvider {...props} />
     </CommitWidgetProviders>
   );
 };

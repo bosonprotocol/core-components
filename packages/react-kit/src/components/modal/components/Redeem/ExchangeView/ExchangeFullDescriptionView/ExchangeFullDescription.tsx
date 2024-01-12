@@ -2,15 +2,16 @@ import React from "react";
 import { Exchange } from "../../../../../../types/exchange";
 import DetailTransactions from "../../../common/detail/DetailTransactions";
 import { OfferFullDescription } from "../../../common/OfferFullDescription/OfferFullDescription";
+import { OnClickBuyOrSwapHandler } from "../../../Commit/DetailView/common/types";
 
-interface ExchangeFullDescriptionProps {
+interface ExchangeFullDescriptionProps extends OnClickBuyOrSwapHandler {
   exchange: Exchange;
   onExchangePolicyClick: () => void;
 }
 
 export const ExchangeFullDescription: React.FC<
   ExchangeFullDescriptionProps
-> = ({ exchange, onExchangePolicyClick }) => {
+> = ({ exchange, onExchangePolicyClick, onClickBuyOrSwap }) => {
   const { offer } = exchange;
   const buyerAddress = exchange.buyer.wallet;
 
@@ -18,6 +19,7 @@ export const ExchangeFullDescription: React.FC<
     <OfferFullDescription
       offer={offer}
       onExchangePolicyClick={onExchangePolicyClick}
+      onClickBuyOrSwap={onClickBuyOrSwap}
     >
       <DetailTransactions
         title="Transaction History (this item)"

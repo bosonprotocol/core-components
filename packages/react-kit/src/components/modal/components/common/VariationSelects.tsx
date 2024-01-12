@@ -14,7 +14,49 @@ import SimpleError from "../../../error/SimpleError";
 import { Select } from "../../../form";
 import { SelectDataProps } from "../../../form/types";
 import Grid from "../../../ui/Grid";
+import { theme } from "../../../../theme";
+import styled from "styled-components";
+const colors = theme.colors.light;
+const selectWidth = "10rem";
+export const ResponsiveVariationSelects = styled(VariationSelects)`
+  container-type: inline-size;
+  z-index: calc(var(--wcm-z-index) + 1);
+  width: 100%;
+  && {
+    [data-grid] {
+      [class*="container"] {
+        width: 100%;
+      }
+      [class*="control"] {
+        width: 100%;
+      }
+      flex-direction: column;
+      @container (width > 300px) {
+        justify-content: flex-start;
+        flex-direction: row;
+      }
+      @container (350px < width) {
+        [class*="container"] {
+          width: auto;
+        }
+        [class*="control"] {
+          width: auto;
+        }
+      }
+    }
+  }
 
+  [class*="control"] {
+    background-color: ${colors.white};
+    border-color: ${colors.white};
+    max-width: 100%;
+    width: ${selectWidth};
+  }
+  [class*="menu"] {
+    max-width: 100%;
+    width: ${selectWidth};
+  }
+`;
 interface Quantity {
   type: string[];
   quantityAvailable: string;

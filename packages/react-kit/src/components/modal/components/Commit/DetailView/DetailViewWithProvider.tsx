@@ -1,29 +1,28 @@
 import dayjs from "dayjs";
 import { utils } from "ethers";
-import React, { useEffect, useMemo } from "react";
+import React, { ReactNode, useEffect, useMemo } from "react";
 import { useExchangeTokenBalance } from "../../../../../hooks/offer/useExchangeTokenBalance";
 import useCheckTokenGatedOffer from "../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
 import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
 import { useSellers } from "../../../../../hooks/useSellers";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
 import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
+import { VariantV1 } from "../../../../../types/variants";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import Loading from "../../../../ui/loading/Loading";
-import {
-  InnerDetailWithProviderCommit,
-  InnerDetailWithProviderCommitProps
-} from "./InnerDetailWithProviderCommit";
 import {
   DetailContextProps,
   DetailViewProvider,
   useDetailViewContext
 } from "./common/DetailViewProvider";
 
-export type DetailViewWithProviderProps = InnerDetailWithProviderCommitProps;
+export type DetailViewWithProviderProps = ConsumerProps & {
+  selectedVariant: VariantV1;
+};
 export const DetailViewWithProvider: React.FC<
-  ConsumerProps & DetailViewWithProviderProps
+  DetailViewWithProviderProps & { children: ReactNode }
 > = (props) => {
-  const { selectedVariant, onGetProviderProps } = props;
+  const { selectedVariant, onGetProviderProps, children } = props;
   const { offer } = selectedVariant;
 
   const quantity = useMemo<number>(
@@ -132,7 +131,7 @@ export const DetailViewWithProvider: React.FC<
       exchangePolicyCheckResult={exchangePolicyCheckResult}
       swapParams={swapParams}
     >
-      <InnerDetailWithProviderCommit {...props} />
+      {children}
       <Consumer onGetProviderProps={onGetProviderProps} />
     </DetailViewProvider>
   );

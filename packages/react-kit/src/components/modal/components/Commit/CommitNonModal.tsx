@@ -33,7 +33,7 @@ enum ActiveStep {
 
 export type CommitNonModalProps = Pick<
   OfferVariantViewProps,
-  "onClickBuyOrSwap"
+  "onClickBuyOrSwap" | "onAlreadyOwnOfferClick"
 > & {
   product?: ReturnUseProductByUuid;
   showBosonLogo?: boolean;
@@ -62,7 +62,7 @@ export default function CommitWrapper({
       lookAndFeel="regular"
       showConnectButton={!props.withExternalSigner}
     >
-      <CommitNonModal hideModal={hideModal} {...props} />
+      <CommitNonModal {...props} />
     </NonModal>
   );
 }
@@ -74,11 +74,11 @@ function CommitNonModal({
   disableVariationsSelects,
   isLoading,
   onExchangePolicyClick,
+  onAlreadyOwnOfferClick,
   offerViewOnPurchaseOverview,
   offerViewOnViewFullDescription,
   onClickBuyOrSwap,
-  forcedAccount,
-  hideModal
+  forcedAccount
 }: CommitNonModalProps) {
   const variants = productResult?.variants;
   const variantsWithV1 = variants?.filter(
@@ -207,6 +207,7 @@ function CommitNonModal({
           }}
           onGetDetailViewProviderProps={onGetDetailViewProviderProps}
           onClickBuyOrSwap={onClickBuyOrSwap}
+          onAlreadyOwnOfferClick={onAlreadyOwnOfferClick}
         />
       ) : currentStep === ActiveStep.OFFER_FULL_DESCRIPTION &&
         providerPropsRef.current ? (

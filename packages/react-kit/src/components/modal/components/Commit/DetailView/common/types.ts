@@ -8,6 +8,8 @@ export type DetailViewProps = OnClickBuyOrSwapHandler & {
   // disableVariationsSelects?: boolean;
   priceSibling?: ReactNode;
   children: ReactNode;
+  topChildren?: ReactNode;
+  bottomChildren?: ReactNode;
   isPreview: boolean;
   hasMultipleVariants: boolean;
   showBosonLogo: boolean;

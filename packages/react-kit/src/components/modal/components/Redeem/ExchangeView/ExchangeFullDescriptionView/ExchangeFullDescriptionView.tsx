@@ -6,9 +6,10 @@ import { Exchange } from "../../../../../../types/exchange";
 import { ExchangeFullDescription } from "./ExchangeFullDescription";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
 import { theme } from "../../../../../../theme";
+import { OnClickBuyOrSwapHandler } from "../../../Commit/DetailView/common/types";
 
 const colors = theme.colors.light;
-interface Props {
+interface Props extends OnClickBuyOrSwapHandler {
   onBackClick: () => void;
   exchange: Exchange | null;
   onExchangePolicyClick: () => void;
@@ -17,7 +18,8 @@ interface Props {
 export function ExchangeFullDescriptionView({
   onBackClick,
   exchange,
-  onExchangePolicyClick
+  onExchangePolicyClick,
+  onClickBuyOrSwap
 }: Props) {
   const dispatch = useNonModalContext();
   useEffect(() => {
@@ -36,7 +38,8 @@ export function ExchangeFullDescriptionView({
           </Grid>
         ),
         contentStyle: {
-          background: colors.white
+          background: colors.white,
+          padding: 0
         }
       }
     });
@@ -50,6 +53,7 @@ export function ExchangeFullDescriptionView({
         <ExchangeFullDescription
           exchange={exchange}
           onExchangePolicyClick={onExchangePolicyClick}
+          onClickBuyOrSwap={onClickBuyOrSwap}
         />
       )}
     </>
