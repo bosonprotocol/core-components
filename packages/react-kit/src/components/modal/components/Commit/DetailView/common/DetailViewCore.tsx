@@ -28,7 +28,6 @@ import {
 import DetailTable from "../../../common/detail/DetailTable";
 import { TokenGatedItem } from "../../../common/detail/TokenGatedItem";
 import { useDetailViewContext } from "./DetailViewProvider";
-import { QuantityDisplay } from "./QuantityDisplay";
 import { getOfferDetailData } from "./getOfferDetailData";
 import { DetailViewProps } from "./types";
 
@@ -55,7 +54,6 @@ const Widget = styled(BaseWidget)`
 
 type Props = {
   isBosonExclusive: boolean;
-  status?: string;
   topChildren?: ReactNode;
   bottomChildren?: ReactNode;
 } & DetailViewProps;
@@ -65,9 +63,9 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
     {
       selectedVariant,
       topChildren,
+      priceSibling,
       children,
       bottomChildren,
-      status,
       // allVariants,
       // disableVariationsSelects,
       showBosonLogo,
@@ -82,7 +80,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
   ) => {
     const forwardedRef = ref as React.MutableRefObject<ElementRef<"div">>;
     const { offer } = selectedVariant;
-    const { quantity, isConditionMet, exchangePolicyCheckResult } =
+    const { isConditionMet, exchangePolicyCheckResult } =
       useDetailViewContext();
 
     const config = useConfigContext();
@@ -106,11 +104,6 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
         }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [offer, convertedPrice, config, displayFloat]
-    );
-
-    const quantityInitial = useMemo<number>(
-      () => Number(offer?.quantityInitial || 0),
-      [offer?.quantityInitial]
     );
 
     const [isDetailsOpen, setDetailsOpen] = useState<boolean>(true);
@@ -137,16 +130,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
               withBosonStyles
               withAsterisk={isPreview && hasMultipleVariants}
             />
-            {status ? (
-              <span style={{ color: colors.orange, textAlign: "right" }}>
-                {status}
-              </span>
-            ) : (
-              <QuantityDisplay
-                quantityInitial={quantityInitial}
-                quantity={quantity}
-              />
-            )}
+            {priceSibling}
           </WidgetUpperGrid>
         </div>
         {children}

@@ -6,6 +6,7 @@ export type DetailViewProps = OnClickBuyOrSwapHandler & {
   selectedVariant: VariantV1;
   // allVariants: VariantV1[];
   // disableVariationsSelects?: boolean;
+  priceSibling?: ReactNode;
   children: ReactNode;
   isPreview: boolean;
   hasMultipleVariants: boolean;

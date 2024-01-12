@@ -1,35 +1,29 @@
 import dayjs from "dayjs";
+import { utils } from "ethers";
 import React, { useEffect, useMemo } from "react";
 import { useExchangeTokenBalance } from "../../../../../hooks/offer/useExchangeTokenBalance";
 import useCheckTokenGatedOffer from "../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
 import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
 import { useSellers } from "../../../../../hooks/useSellers";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
+import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import Loading from "../../../../ui/loading/Loading";
-import InnerCommitDetailView, {
-  InnerCommitDetailViewProps
-} from "./InnerCommitDetailView";
+import {
+  InnerDetailWithProviderCommit,
+  InnerDetailWithProviderCommitProps
+} from "./InnerDetailWithProviderCommit";
 import {
   DetailContextProps,
   DetailViewProvider,
   useDetailViewContext
 } from "./common/DetailViewProvider";
-import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
-import { utils } from "ethers";
-import {
-  InnerDetailViewWithPortal,
-  InnerDetailViewWithPortalProps
-} from "./InnerDetailViewWithPortal";
 
-export type DetailViewWithProviderProps =
-  | InnerCommitDetailViewProps
-  | InnerDetailViewWithPortalProps;
+export type DetailViewWithProviderProps = InnerDetailWithProviderCommitProps;
 export const DetailViewWithProvider: React.FC<
   ConsumerProps & DetailViewWithProviderProps
 > = (props) => {
   const { selectedVariant, onGetProviderProps } = props;
-  const withCTAs = !("children" in props);
   const { offer } = selectedVariant;
 
   const quantity = useMemo<number>(
@@ -138,11 +132,7 @@ export const DetailViewWithProvider: React.FC<
       exchangePolicyCheckResult={exchangePolicyCheckResult}
       swapParams={swapParams}
     >
-      {withCTAs ? (
-        <InnerCommitDetailView {...props} />
-      ) : (
-        <InnerDetailViewWithPortal {...props} />
-      )}
+      <InnerDetailWithProviderCommit {...props} />
       <Consumer onGetProviderProps={onGetProviderProps} />
     </DetailViewProvider>
   );

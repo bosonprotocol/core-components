@@ -33,6 +33,7 @@ import { InnerDetailViewWithPortal } from "./InnerDetailViewWithPortal";
 import { BuyOrSwapContainer } from "./common/BuyOrSwapContainer";
 import { useDetailViewContext } from "./common/DetailViewProvider";
 import { DetailViewProps } from "./common/types";
+import { useNotCommittableOfferStatus } from "../useNotCommittableOfferStatus";
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
 
 const CommitButtonWrapper = styled.div<{
@@ -251,6 +252,7 @@ export default function InnerCommitDetailView(
     offer.voided ||
     !hasSellerEnoughFunds ||
     isBuyerInsufficientFunds;
+
   return (
     <InnerDetailViewWithPortal {...props}>
       {isNotCommittableOffer && isBuyerInsufficientFunds && (
