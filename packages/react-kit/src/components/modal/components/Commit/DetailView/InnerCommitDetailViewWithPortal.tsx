@@ -44,8 +44,8 @@ const SwapArrows = styled(ArrowsLeftRight)`
   }
 `;
 
-export type DetailViewWithPortalProps = DetailViewProps;
-export function InnerDetailViewWithPortal(props: DetailViewProps) {
+export type InnerCommitDetailViewWithPortalProps = DetailViewProps;
+export function InnerCommitDetailViewWithPortal(props: DetailViewProps) {
   const portalRef = useRef<ElementRef<"div">>(null);
   const {
     quantity,

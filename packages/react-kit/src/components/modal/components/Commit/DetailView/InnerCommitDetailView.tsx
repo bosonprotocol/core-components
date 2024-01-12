@@ -28,7 +28,7 @@ import {
   saveItemInStorage
 } from "../../../../widgets/finance/storage/useLocalStorage";
 import { useModal } from "../../../useModal";
-import { InnerDetailViewWithPortal } from "./InnerDetailViewWithPortal";
+import { InnerCommitDetailViewWithPortal } from "./InnerCommitDetailViewWithPortal";
 import { useDetailViewContext } from "./common/DetailViewProvider";
 import { DetailViewProps } from "./common/types";
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
@@ -235,7 +235,7 @@ export default function InnerCommitDetailView(
   };
 
   return (
-    <InnerDetailViewWithPortal {...props}>
+    <InnerCommitDetailViewWithPortal {...props}>
       <Grid flexDirection="column" alignItems="center" margin="1.5rem 0">
         <CommitWrapper justifyContent="space-between">
           <Grid flexDirection="column" alignItems="center">
@@ -310,6 +310,6 @@ export default function InnerCommitDetailView(
           </Grid>
         </CommitWrapper>
       </Grid>
-    </InnerDetailViewWithPortal>
+    </InnerCommitDetailViewWithPortal>
   );
 }

@@ -11,9 +11,9 @@ import InnerCommitDetailView, {
   InnerCommitDetailViewProps
 } from "./InnerCommitDetailView";
 import {
-  DetailViewWithPortalProps,
-  InnerDetailViewWithPortal
-} from "./InnerDetailViewWithPortal";
+  InnerCommitDetailViewWithPortalProps,
+  InnerCommitDetailViewWithPortal
+} from "./InnerCommitDetailViewWithPortal";
 import {
   DetailContextProps,
   DetailViewProvider,
@@ -24,7 +24,7 @@ import { utils } from "ethers";
 
 export type DetailViewWithProviderProps =
   | InnerCommitDetailViewProps
-  | DetailViewWithPortalProps;
+  | InnerCommitDetailViewWithPortalProps;
 export const DetailViewWithProvider: React.FC<
   ConsumerProps & DetailViewWithProviderProps
 > = (props) => {
@@ -141,7 +141,7 @@ export const DetailViewWithProvider: React.FC<
       {withCTAs ? (
         <InnerCommitDetailView {...props} />
       ) : (
-        <InnerDetailViewWithPortal {...props} />
+        <InnerCommitDetailViewWithPortal {...props} />
       )}
       <Consumer onGetProviderProps={onGetProviderProps} />
     </DetailViewProvider>
