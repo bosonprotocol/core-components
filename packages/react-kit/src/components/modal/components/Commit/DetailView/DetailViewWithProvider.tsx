@@ -7,9 +7,9 @@ import { useSellers } from "../../../../../hooks/useSellers";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import Loading from "../../../../ui/loading/Loading";
-import InnerDetailViewWithCTAs, {
-  DetailViewWithCTAsProps
-} from "./InnerDetailViewWithCTAs";
+import InnerCommitDetailView, {
+  InnerCommitDetailViewProps
+} from "./InnerCommitDetailView";
 import {
   DetailViewWithPortalProps,
   InnerDetailViewWithPortal
@@ -23,7 +23,7 @@ import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
 import { utils } from "ethers";
 
 export type DetailViewWithProviderProps =
-  | DetailViewWithCTAsProps
+  | InnerCommitDetailViewProps
   | DetailViewWithPortalProps;
 export const DetailViewWithProvider: React.FC<
   ConsumerProps & DetailViewWithProviderProps
@@ -139,7 +139,7 @@ export const DetailViewWithProvider: React.FC<
       swapParams={swapParams}
     >
       {withCTAs ? (
-        <InnerDetailViewWithCTAs {...props} />
+        <InnerCommitDetailView {...props} />
       ) : (
         <InnerDetailViewWithPortal {...props} />
       )}

@@ -69,7 +69,7 @@ const CommitWrapper = styled(Grid)`
   }
 `;
 
-export type DetailViewWithCTAsProps = Omit<
+export type InnerCommitDetailViewProps = Omit<
   DetailViewProps & {
     onLicenseAgreementClick: () => void;
     onCommit: (exchangeId: string, txHash: string) => void;
@@ -77,8 +77,8 @@ export type DetailViewWithCTAsProps = Omit<
   },
   "children" | "hasSellerEnoughFunds"
 >;
-export default function InnerDetailViewWithCTAs(
-  props: DetailViewWithCTAsProps
+export default function InnerCommitDetailView(
+  props: InnerCommitDetailViewProps
 ) {
   const {
     onLicenseAgreementClick,

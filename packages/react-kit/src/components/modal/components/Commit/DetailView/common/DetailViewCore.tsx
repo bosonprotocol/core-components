@@ -1,6 +1,7 @@
-import { ArrowsLeftRight, Cube, Info, Lock, LockOpen } from "phosphor-react";
+import { Cube, Info, Lock, LockOpen } from "phosphor-react";
 import React, {
   ElementRef,
+  ReactNode,
   forwardRef,
   useMemo,
   useRef,
@@ -11,7 +12,6 @@ import styled from "styled-components";
 import { ReactComponent as Logo } from "../../../../../../assets/logo.svg";
 import { useDisplayFloat } from "../../../../../../lib/price/prices";
 import { theme } from "../../../../../../theme";
-import { Button } from "../../../../../buttons/Button";
 import { useConfigContext } from "../../../../../config/ConfigContext";
 import Price from "../../../../../price/Price";
 import { useConvertedPrice } from "../../../../../price/useConvertedPrice";
@@ -27,8 +27,6 @@ import {
 } from "../../../common/detail/Detail.style";
 import DetailTable from "../../../common/detail/DetailTable";
 import { TokenGatedItem } from "../../../common/detail/TokenGatedItem";
-import { useNotCommittableOfferStatus } from "../../useNotCommittableOfferStatus";
-import { BuyOrSwapContainer } from "./BuyOrSwapContainer";
 import { useDetailViewContext } from "./DetailViewProvider";
 import { QuantityDisplay } from "./QuantityDisplay";
 import { getOfferDetailData } from "./getOfferDetailData";
@@ -45,12 +43,6 @@ const StyledPrice = styled(Price)`
   }
 `;
 
-const SwapArrows = styled(ArrowsLeftRight)`
-  && {
-    stroke: none;
-  }
-`;
-
 const BlackLogo = styled(Logo)`
   width: 6.25rem;
   height: fit-content;
@@ -61,13 +53,21 @@ const Widget = styled(BaseWidget)`
   padding-top: 2rem;
 `;
 
-type Props = { isBosonExclusive: boolean } & DetailViewProps;
+type Props = {
+  isBosonExclusive: boolean;
+  status: string;
+  topChildren?: ReactNode;
+  bottomChildren?: ReactNode;
+} & DetailViewProps;
 
 export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
   (
     {
       selectedVariant,
+      topChildren,
       children,
+      bottomChildren,
+      status,
       // allVariants,
       // disableVariationsSelects,
       showBosonLogo,
@@ -82,16 +82,8 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
   ) => {
     const forwardedRef = ref as React.MutableRefObject<ElementRef<"div">>;
     const { offer } = selectedVariant;
-    const {
-      quantity,
-      isBuyerInsufficientFunds,
-      swapParams,
-      isOfferNotValidYet,
-      isExpiredOffer,
-      isConditionMet,
-      hasSellerEnoughFunds,
-      exchangePolicyCheckResult
-    } = useDetailViewContext();
+    const { quantity, isConditionMet, exchangePolicyCheckResult } =
+      useDetailViewContext();
 
     const config = useConfigContext();
 
@@ -121,21 +113,6 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
       [offer?.quantityInitial]
     );
 
-    const isOfferEmpty = quantity < 1;
-
-    const isNotCommittableOffer =
-      isOfferEmpty ||
-      isOfferNotValidYet ||
-      isExpiredOffer ||
-      offer.voided ||
-      !hasSellerEnoughFunds ||
-      isBuyerInsufficientFunds;
-
-    const tokenOrCoinSymbol = offer.exchangeToken.symbol;
-    const notCommittableOfferStatus = useNotCommittableOfferStatus({
-      isOfferVoided: offer.voided
-    });
-
     const [isDetailsOpen, setDetailsOpen] = useState<boolean>(true);
     const closeDetailsRef = useRef(true);
 
@@ -147,6 +124,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
             <BosonExclusiveContainer>BOSON EXCLUSIVE</BosonExclusiveContainer>,
             forwardedRef?.current
           )}
+        {topChildren}
         <div>
           <WidgetUpperGrid style={{ paddingBottom: "0.5rem" }}>
             <StyledPrice
@@ -159,9 +137,9 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
               withBosonStyles
               withAsterisk={isPreview && hasMultipleVariants}
             />
-            {notCommittableOfferStatus ? (
+            {status ? (
               <span style={{ color: colors.orange, textAlign: "right" }}>
-                {notCommittableOfferStatus}
+                {status}
               </span>
             ) : (
               <QuantityDisplay
@@ -171,30 +149,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
             )}
           </WidgetUpperGrid>
         </div>
-        {isNotCommittableOffer && isBuyerInsufficientFunds && (
-          <Grid marginBottom="1rem">
-            <BuyOrSwapContainer
-              swapParams={swapParams}
-              onClickBuyOrSwap={onClickBuyOrSwap}
-              style={{ padding: 0 }}
-            >
-              <Button
-                size="regular"
-                variant="accentInverted"
-                withBosonStyle
-                style={{
-                  width: "100%"
-                }}
-                {...(onClickBuyOrSwap && {
-                  onClick: () => onClickBuyOrSwap({ swapParams })
-                })}
-              >
-                Buy or Swap {tokenOrCoinSymbol} <SwapArrows size={24} />
-              </Button>
-            </BuyOrSwapContainer>
-          </Grid>
-        )}
-        {!isBuyerInsufficientFunds && children}
+        {children}
         {offer.condition && (
           <DetailsSummary
             summaryText="Token Gated Offer"
@@ -268,6 +223,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
             <Info color={colors.secondary} size={24} />
           </div>
         </Grid>
+        {bottomChildren}
         {showBosonLogo && (
           <>
             <Break />

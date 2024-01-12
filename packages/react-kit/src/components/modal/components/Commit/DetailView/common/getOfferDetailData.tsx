@@ -178,13 +178,14 @@ export const getOfferDetailData = ({
         ) : (
           <Typography
             tag="p"
-            color={colors.orange}
+            color="purple"
             $fontSize={fontSizeExchangePolicy}
             alignItems="center"
           >
             {customisedExchangePolicy}
             <ArrowSquareOut
               size={20}
+              color="purple"
               onClick={() => handleShowExchangePolicy()}
               style={{ cursor: "pointer", minWidth: "20px" }}
             />
