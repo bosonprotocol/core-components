@@ -3,7 +3,7 @@ import { Provider } from "@bosonprotocol/ethers-sdk";
 import { useAccountModal } from "@rainbow-me/rainbowkit";
 import * as Sentry from "@sentry/browser";
 import { BigNumberish, ethers, providers } from "ethers";
-import { Spinner } from "phosphor-react";
+import { ArrowsLeftRight, Spinner } from "phosphor-react";
 import React, { useCallback, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import styled, { css } from "styled-components";
@@ -17,6 +17,7 @@ import {
   getHasUserRejectedTx
 } from "../../../../../lib/errors/transactions";
 import { poll } from "../../../../../lib/promises/promises";
+import { Button } from "../../../../buttons/Button";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import { CommitButton } from "../../../../cta/offer/CommitButton";
 import SuccessTransactionToast from "../../../../toasts/SuccessTransactionToast";
@@ -28,7 +29,8 @@ import {
   saveItemInStorage
 } from "../../../../widgets/finance/storage/useLocalStorage";
 import { useModal } from "../../../useModal";
-import { InnerCommitDetailViewWithPortal } from "./InnerCommitDetailViewWithPortal";
+import { InnerDetailViewWithPortal } from "./InnerDetailViewWithPortal";
+import { BuyOrSwapContainer } from "./common/BuyOrSwapContainer";
 import { useDetailViewContext } from "./common/DetailViewProvider";
 import { DetailViewProps } from "./common/types";
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
@@ -68,7 +70,11 @@ const CommitWrapper = styled(Grid)`
     }
   }
 `;
-
+const SwapArrows = styled(ArrowsLeftRight)`
+  && {
+    stroke: none;
+  }
+`;
 export type InnerCommitDetailViewProps = Omit<
   DetailViewProps & {
     onLicenseAgreementClick: () => void;
@@ -95,7 +101,8 @@ export default function InnerCommitDetailView(
     isOfferNotValidYet,
     isExpiredOffer,
     isConditionMet,
-    hasSellerEnoughFunds
+    hasSellerEnoughFunds,
+    swapParams
   } = useDetailViewContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [
@@ -233,83 +240,118 @@ export default function InnerCommitDetailView(
     }
     setCommitType(null);
   };
+  const { onClickBuyOrSwap } = props;
+  const tokenOrCoinSymbol = offer.exchangeToken.symbol;
+  const isOfferEmpty = quantity < 1;
 
+  const isNotCommittableOffer =
+    isOfferEmpty ||
+    isOfferNotValidYet ||
+    isExpiredOffer ||
+    offer.voided ||
+    !hasSellerEnoughFunds ||
+    isBuyerInsufficientFunds;
   return (
-    <InnerCommitDetailViewWithPortal {...props}>
-      <Grid flexDirection="column" alignItems="center" margin="1.5rem 0">
-        <CommitWrapper justifyContent="space-between">
-          <Grid flexDirection="column" alignItems="center">
-            <CommitButtonWrapper
-              disabled={!!isCommitDisabled}
-              role="button"
-              $pointerEvents={!address ? "none" : "all"}
-              onClick={() => {
-                if (!address) {
-                  saveItemInStorage("isConnectWalletFromCommit", true);
-                  setIsCommittingFromNotConnectedWallet(true);
-                  openAccountModal?.();
-                }
+    <InnerDetailViewWithPortal {...props}>
+      {isNotCommittableOffer && isBuyerInsufficientFunds && (
+        <Grid marginBottom="1rem">
+          <BuyOrSwapContainer
+            swapParams={swapParams}
+            onClickBuyOrSwap={onClickBuyOrSwap}
+            style={{ padding: 0 }}
+          >
+            <Button
+              size="regular"
+              variant="accentInverted"
+              withBosonStyle
+              style={{
+                width: "100%"
               }}
+              {...(onClickBuyOrSwap && {
+                onClick: () => onClickBuyOrSwap({ swapParams })
+              })}
             >
-              {balanceLoading && address ? (
-                <ThemedButton disabled>
-                  <Spinner />
-                </ThemedButton>
-              ) : (
-                <>
-                  {/* TODO: handle commit proxy button {showCommitProxyButton ? (
-                <CommitProxyButton />
-              ) : ( */}
-                  <CommitButton
-                    coreSdkConfig={{
-                      envName: protocolConfig.envName,
-                      configId: protocolConfig.configId,
-                      web3Provider: signer?.provider as Provider,
-                      metaTx: protocolConfig.metaTx
-                    }}
-                    variant="primaryFill"
-                    isPauseCommitting={!address}
-                    buttonRef={commitButtonRef}
-                    onGetSignerAddress={handleOnGetSignerAddress}
-                    disabled={!!isCommitDisabled}
-                    offerId={offer.id}
-                    exchangeToken={offer.exchangeToken.address}
-                    price={offer.price}
-                    onError={onCommitError}
-                    onPendingSignature={onCommitPendingSignature}
-                    onPendingTransaction={onCommitPendingTransaction}
-                    onSuccess={onCommitSuccess}
-                    withBosonStyle
-                    extraInfo="Step 1/2"
-                    id="commit"
-                  />
-                  {/* )} */}
-                </>
-              )}
-            </CommitButtonWrapper>
-            <Typography
-              $fontSize="0.8rem"
-              marginTop="0.25rem"
-              style={{ display: "block" }}
-            >
-              By proceeding to Commit, I agree to the{" "}
-              <span
-                style={{
-                  fontSize: "inherit",
-                  cursor: "pointer",
-                  textDecoration: "underline"
-                }}
+              Buy or Swap {tokenOrCoinSymbol} <SwapArrows size={24} />
+            </Button>
+          </BuyOrSwapContainer>
+        </Grid>
+      )}
+      {!isBuyerInsufficientFunds && (
+        <Grid flexDirection="column" alignItems="center" margin="1.5rem 0">
+          <CommitWrapper justifyContent="space-between">
+            <Grid flexDirection="column" alignItems="center">
+              <CommitButtonWrapper
+                disabled={!!isCommitDisabled}
+                role="button"
+                $pointerEvents={!address ? "none" : "all"}
                 onClick={() => {
-                  onLicenseAgreementClick();
+                  if (!address) {
+                    saveItemInStorage("isConnectWalletFromCommit", true);
+                    setIsCommittingFromNotConnectedWallet(true);
+                    openAccountModal?.();
+                  }
                 }}
               >
-                rNFT Terms
-              </span>
-              .
-            </Typography>
-          </Grid>
-        </CommitWrapper>
-      </Grid>
-    </InnerCommitDetailViewWithPortal>
+                {balanceLoading && address ? (
+                  <ThemedButton disabled>
+                    <Spinner />
+                  </ThemedButton>
+                ) : (
+                  <>
+                    {/* TODO: handle commit proxy button {showCommitProxyButton ? (
+                <CommitProxyButton />
+              ) : ( */}
+                    <CommitButton
+                      coreSdkConfig={{
+                        envName: protocolConfig.envName,
+                        configId: protocolConfig.configId,
+                        web3Provider: signer?.provider as Provider,
+                        metaTx: protocolConfig.metaTx
+                      }}
+                      variant="primaryFill"
+                      isPauseCommitting={!address}
+                      buttonRef={commitButtonRef}
+                      onGetSignerAddress={handleOnGetSignerAddress}
+                      disabled={!!isCommitDisabled}
+                      offerId={offer.id}
+                      exchangeToken={offer.exchangeToken.address}
+                      price={offer.price}
+                      onError={onCommitError}
+                      onPendingSignature={onCommitPendingSignature}
+                      onPendingTransaction={onCommitPendingTransaction}
+                      onSuccess={onCommitSuccess}
+                      withBosonStyle
+                      extraInfo="Step 1/2"
+                      id="commit"
+                    />
+                    {/* )} */}
+                  </>
+                )}
+              </CommitButtonWrapper>
+              <Typography
+                $fontSize="0.8rem"
+                marginTop="0.25rem"
+                style={{ display: "block" }}
+              >
+                By proceeding to Commit, I agree to the{" "}
+                <span
+                  style={{
+                    fontSize: "inherit",
+                    cursor: "pointer",
+                    textDecoration: "underline"
+                  }}
+                  onClick={() => {
+                    onLicenseAgreementClick();
+                  }}
+                >
+                  rNFT Terms
+                </span>
+                .
+              </Typography>
+            </Grid>
+          </CommitWrapper>
+        </Grid>
+      )}
+    </InnerDetailViewWithPortal>
   );
 }

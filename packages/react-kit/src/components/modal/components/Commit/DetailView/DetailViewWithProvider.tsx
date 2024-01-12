@@ -11,20 +11,20 @@ import InnerCommitDetailView, {
   InnerCommitDetailViewProps
 } from "./InnerCommitDetailView";
 import {
-  InnerCommitDetailViewWithPortalProps,
-  InnerCommitDetailViewWithPortal
-} from "./InnerCommitDetailViewWithPortal";
-import {
   DetailContextProps,
   DetailViewProvider,
   useDetailViewContext
 } from "./common/DetailViewProvider";
 import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
 import { utils } from "ethers";
+import {
+  InnerDetailViewWithPortal,
+  InnerDetailViewWithPortalProps
+} from "./InnerDetailViewWithPortal";
 
 export type DetailViewWithProviderProps =
   | InnerCommitDetailViewProps
-  | InnerCommitDetailViewWithPortalProps;
+  | InnerDetailViewWithPortalProps;
 export const DetailViewWithProvider: React.FC<
   ConsumerProps & DetailViewWithProviderProps
 > = (props) => {
@@ -141,7 +141,7 @@ export const DetailViewWithProvider: React.FC<
       {withCTAs ? (
         <InnerCommitDetailView {...props} />
       ) : (
-        <InnerCommitDetailViewWithPortal {...props} />
+        <InnerDetailViewWithPortal {...props} />
       )}
       <Consumer onGetProviderProps={onGetProviderProps} />
     </DetailViewProvider>

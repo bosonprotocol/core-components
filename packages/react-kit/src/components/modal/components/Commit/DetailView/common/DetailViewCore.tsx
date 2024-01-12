@@ -55,7 +55,7 @@ const Widget = styled(BaseWidget)`
 
 type Props = {
   isBosonExclusive: boolean;
-  status: string;
+  status?: string;
   topChildren?: ReactNode;
   bottomChildren?: ReactNode;
 } & DetailViewProps;
