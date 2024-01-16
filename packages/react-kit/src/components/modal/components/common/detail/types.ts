@@ -1,17 +1,18 @@
 import { offers } from "@bosonprotocol/core-sdk";
 import { ReactNode } from "react";
 import { VariantV1 } from "../../../../../types/variants";
+import { Exchange } from "../../../../../types/exchange";
 
 export type DetailViewProps = OnClickBuyOrSwapHandler & {
   selectedVariant: VariantV1;
+  exchange?: Exchange;
   // allVariants: VariantV1[];
   // disableVariationsSelects?: boolean;
   priceSibling?: ReactNode;
   children: ReactNode;
   topChildren?: ReactNode;
   bottomChildren?: ReactNode;
-  isPreview: boolean;
-  hasMultipleVariants: boolean;
+  showPriceAsterisk: boolean;
   showBosonLogo: boolean;
   // onLicenseAgreementClick: () => void;
   onExchangePolicyClick: (args: {

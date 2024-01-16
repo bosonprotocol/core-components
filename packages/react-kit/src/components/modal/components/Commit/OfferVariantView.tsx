@@ -229,8 +229,7 @@ export function OfferVariantView({
               }}
               onCommitting={() => setIsComitting(true)}
               onPurchaseOverview={onPurchaseOverview}
-              hasMultipleVariants={false}
-              isPreview={false}
+              showPriceAsterisk={false}
               onGetProviderProps={innerOnGetProviderProps}
               onClickBuyOrSwap={onClickBuyOrSwap}
               onAlreadyOwnOfferClick={onAlreadyOwnOfferClick}

@@ -63,11 +63,11 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
       priceSibling,
       children,
       bottomChildren,
+      exchange,
       // allVariants,
       // disableVariationsSelects,
       showBosonLogo,
-      isPreview = false,
-      hasMultipleVariants,
+      showPriceAsterisk,
       isBosonExclusive,
       onExchangePolicyClick,
       onPurchaseOverview,
@@ -96,11 +96,12 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
           config,
           displayFloat,
           offer,
+          exchange,
           onExchangePolicyClick,
           exchangePolicyCheckResult
         }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [offer, convertedPrice, config, displayFloat]
+      [offer, exchange, convertedPrice, config, displayFloat]
     );
 
     const [isDetailsOpen, setDetailsOpen] = useState<boolean>(true);
@@ -130,7 +131,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
               tag="h3"
               convert
               withBosonStyles
-              withAsterisk={isPreview && hasMultipleVariants}
+              withAsterisk={showPriceAsterisk}
             />
             {priceSibling}
           </WidgetUpperGrid>

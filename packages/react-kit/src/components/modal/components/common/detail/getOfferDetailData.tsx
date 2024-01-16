@@ -16,6 +16,7 @@ import { useConfigContext } from "../../../../config/ConfigContext";
 import Typography from "../../../../ui/Typography";
 import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { DetailViewProps } from "./types";
+import { Exchange } from "../../../../../types/exchange";
 
 const fontSizeExchangePolicy = "0.625rem";
 
@@ -23,18 +24,24 @@ export const getOfferDetailData = ({
   config,
   displayFloat,
   offer,
+  exchange,
   onExchangePolicyClick,
   exchangePolicyCheckResult
 }: {
   config: ReturnType<typeof useConfigContext>;
   displayFloat: ReturnType<typeof useDisplayFloat>;
   offer: Offer;
+  exchange?: Exchange;
   onExchangePolicyClick: DetailViewProps["onExchangePolicyClick"];
   exchangePolicyCheckResult: offers.CheckExchangePolicyResult | undefined;
 }) => {
   const redeemableUntil = dayjs(
-    Number(`${offer.voucherRedeemableUntilDate}000`)
+    Number(`${exchange?.validUntilDate ?? offer.voucherRedeemableUntilDate}000`)
   ).format(config.dateFormat);
+  const redeemableFromDayJs = dayjs(
+    Number(`${offer.voucherRedeemableFromDate}000`)
+  );
+  const redeemableFrom = redeemableFromDayJs.format(config.dateFormat);
   const calcPercentage = getCalcPercentage(displayFloat);
 
   const { formatted } = calcPercentage(offer, "buyerCancelPenalty");
@@ -45,18 +52,43 @@ export const getOfferDetailData = ({
     (offer.metadata as subgraph.ProductV1MetadataEntity)?.exchangePolicy
       ?.label || "Unspecified"
   ).replace("fairExchangePolicy", "Fair Exchange Policy");
-
+  const redeemableFromValues =
+    offer.voucherRedeemableFromDate && redeemableFromDayJs.isAfter(Date.now())
+      ? [
+          {
+            name: "Redeemable from",
+            info: (
+              <>
+                <Typography tag="h6">
+                  <b>Redeemable</b>
+                </Typography>
+                <Typography tag="p">
+                  If you don't redeem your NFT during the redemption period, it
+                  will expire and you will receive back the price minus the
+                  Buyer cancel penalty
+                </Typography>
+              </>
+            ),
+            value: <Typography tag="p">{redeemableFrom}</Typography>
+          }
+        ]
+      : [];
   const handleShowExchangePolicy = () => {
     onExchangePolicyClick({
       exchangePolicyCheckResult
     });
   };
   const canBeRedeemedFrom = dayjs(
-    getDateTimestamp(offer.voucherRedeemableFromDate) +
-      Number(offer.voucherValidDuration || "0")
+    getDateTimestamp(
+      Math.max(
+        Number(exchange?.committedDate || "0"),
+        Number(offer.voucherRedeemableFromDate || "0")
+      ).toString()
+    ) + Number(offer.voucherValidDuration || "0")
   );
   return [
-    ...(offer.voucherRedeemableFromDate !== "0"
+    ...redeemableFromValues,
+    ...(offer.voucherRedeemableFromDate !== "0" || !!exchange?.committedDate
       ? [
           {
             name: "Redeemable from",
@@ -82,7 +114,7 @@ export const getOfferDetailData = ({
       : []),
     {
       name:
-        offer.voucherRedeemableUntilDate !== "0"
+        offer.voucherRedeemableUntilDate !== "0" || exchange?.validUntilDate
           ? "Redeemable until"
           : "Redeemable for",
       info: (
@@ -91,7 +123,8 @@ export const getOfferDetailData = ({
             <b>Redeemable</b>
           </Typography>
           <Typography tag="p">
-            {offer.voucherRedeemableUntilDate !== "0"
+            {offer.voucherRedeemableUntilDate !== "0" ||
+            exchange?.validUntilDate
               ? "If you don't redeem your NFT during the redemption period, it will expire and you will receive back the price minus the Buyer cancel penalty."
               : "Your NFT is available for redemption during this period, calculated from the date it was committed. If you do not redeem the NFT in this period, it will expire and you will receive back the price minus the buyer cancellation penalty."}
           </Typography>
@@ -99,7 +132,7 @@ export const getOfferDetailData = ({
       ),
       value: (
         <Typography tag="p">
-          {offer.voucherRedeemableUntilDate !== "0"
+          {offer.voucherRedeemableUntilDate !== "0" || exchange?.validUntilDate
             ? redeemableUntil
             : `${redeemableForXDays} day${redeemableForXDays === 1 ? "" : "s"}`}
         </Typography>

@@ -252,8 +252,7 @@ export function ExchangeView({
               onPurchaseOverview={onPurchaseOverview}
               onCancelExchangeClick={onCancelExchange}
               onContractualAgreementClick={onContractualAgreementClick}
-              hasMultipleVariants={false}
-              isPreview={false}
+              showPriceAsterisk={false}
               onGetProviderProps={innerOnGetProviderProps}
               onClickBuyOrSwap={onClickBuyOrSwap}
             />

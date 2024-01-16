@@ -17,10 +17,13 @@ import Typography from "../../../../ui/Typography";
 import { ButtonSize } from "../../../../ui/buttonSize";
 import {
   RaiseProblemButton,
+  RedeemLeftButton,
   StyledCancelButton
 } from "../../common/detail/Detail.style";
 import { InnerDetailViewWithPortal } from "../../common/detail/InnerDetailViewWithPortal";
 import { DetailViewProps } from "../../common/detail/types";
+import dayjs from "dayjs";
+import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
 const colors = theme.colors.light;
 
 const RedeemButton = styled(Button)`
@@ -77,7 +80,6 @@ export default function InnerExchangeDetailView(
 ) {
   const {
     exchange,
-    isPreview,
     onRedeem,
     onExpireVoucherClick,
     onRaiseDisputeClick,
@@ -103,7 +105,17 @@ export default function InnerExchangeDetailView(
       exchangeStatus as unknown as exchanges.ExtendedExchangeState
     );
   const isInWrongChain = useIsConnectedToWrongChain();
-  const isRedeemDisabled = isPreview || !isBuyer || isExchangeExpired;
+  const isRedeemDisabled = !isBuyer || isExchangeExpired;
+  const voucherRedeemableUntilDate = dayjs(
+    getDateTimestamp(
+      exchange?.validUntilDate ?? exchange.offer.voucherRedeemableUntilDate
+    )
+  );
+  const nowDate = dayjs();
+
+  const totalHours = voucherRedeemableUntilDate.diff(nowDate, "hours");
+  const redeemableDays = Math.floor(totalHours / 24);
+  const redeemableHours = totalHours - redeemableDays * 24;
   return (
     <InnerDetailViewWithPortal
       {...props}
@@ -114,7 +126,7 @@ export default function InnerExchangeDetailView(
               <RedeemButton
                 variant="primaryFill"
                 size={ButtonSize.Large}
-                disabled={isInWrongChain || isPreview || !isBuyer}
+                disabled={isInWrongChain || !isBuyer}
                 onClick={() => {
                   onRedeem?.();
                 }}
@@ -179,6 +191,12 @@ export default function InnerExchangeDetailView(
             </Typography>
             <ArrowRight size={18} color={colors.darkGrey} />
           </Grid>
+        ) : isToRedeem ? (
+          <RedeemLeftButton>
+            {redeemableDays > 0
+              ? `${redeemableDays} days left to Redeem`
+              : `${redeemableHours} hours left to Redeem`}
+          </RedeemLeftButton>
         ) : null
       }
       bottomChildren={
