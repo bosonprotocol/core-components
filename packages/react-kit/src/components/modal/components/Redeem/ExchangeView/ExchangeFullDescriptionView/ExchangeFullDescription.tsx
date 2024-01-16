@@ -2,7 +2,7 @@ import React from "react";
 import { Exchange } from "../../../../../../types/exchange";
 import DetailTransactions from "../../../common/detail/DetailTransactions";
 import { OfferFullDescription } from "../../../common/OfferFullDescription/OfferFullDescription";
-import { OnClickBuyOrSwapHandler } from "../../../Commit/DetailView/common/types";
+import { OnClickBuyOrSwapHandler } from "../../../common/detail/types";
 
 interface ExchangeFullDescriptionProps extends OnClickBuyOrSwapHandler {
   exchange: Exchange;

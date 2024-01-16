@@ -9,23 +9,23 @@ import React, {
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../../../../../assets/logo.svg";
-import { useDisplayFloat } from "../../../../../../lib/price/prices";
-import { theme } from "../../../../../../theme";
-import { useConfigContext } from "../../../../../config/ConfigContext";
-import Price from "../../../../../price/Price";
-import { useConvertedPrice } from "../../../../../price/useConvertedPrice";
-import { DetailsSummary } from "../../../../../ui/DetailsSummary";
-import Grid from "../../../../../ui/Grid";
-import Typography from "../../../../../ui/Typography";
+import { useDisplayFloat } from "../../../../../lib/price/prices";
+import { theme } from "../../../../../theme";
+import { useConfigContext } from "../../../../config/ConfigContext";
+import Price from "../../../../price/Price";
+import { useConvertedPrice } from "../../../../price/useConvertedPrice";
+import { DetailsSummary } from "../../../../ui/DetailsSummary";
+import Grid from "../../../../ui/Grid";
+import Typography from "../../../../ui/Typography";
 import {
   BaseWidget,
   BosonExclusiveContainer,
   Break,
   CommitAndRedeemButton,
   WidgetUpperGrid
-} from "../../../common/detail/Detail.style";
-import DetailTable from "../../../common/detail/DetailTable";
-import { TokenGatedItem } from "../../../common/detail/TokenGatedItem";
+} from "./Detail.style";
+import DetailTable from "./DetailTable";
+import { TokenGatedItem } from "./TokenGatedItem";
 import { useDetailViewContext } from "./DetailViewProvider";
 import { getOfferDetailData } from "./getOfferDetailData";
 import { DetailViewProps } from "./types";

@@ -1,6 +1,6 @@
 import { offers } from "@bosonprotocol/core-sdk";
 import { ReactNode } from "react";
-import { VariantV1 } from "../../../../../../types/variants";
+import { VariantV1 } from "../../../../../types/variants";
 
 export type DetailViewProps = OnClickBuyOrSwapHandler & {
   selectedVariant: VariantV1;

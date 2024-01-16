@@ -3,10 +3,10 @@ import React from "react";
 import styled from "styled-components";
 import { Button } from "../../../../buttons/Button";
 import Grid from "../../../../ui/Grid";
-import { InnerDetailViewWithPortal } from "./InnerDetailViewWithPortal";
-import { BuyOrSwapContainer } from "./common/BuyOrSwapContainer";
-import { useDetailViewContext } from "./common/DetailViewProvider";
-import { DetailViewProps } from "./common/types";
+import { InnerDetailViewWithPortal } from "../../common/detail/InnerDetailViewWithPortal";
+import { BuyOrSwapContainer } from "../../common/detail/BuyOrSwapContainer";
+import { useDetailViewContext } from "../../common/detail/DetailViewProvider";
+import { DetailViewProps } from "../../common/detail/types";
 
 const SwapArrows = styled(ArrowsLeftRight)`
   && {

@@ -6,7 +6,7 @@ import { Exchange } from "../../../../../../types/exchange";
 import { ExchangeFullDescription } from "./ExchangeFullDescription";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
 import { theme } from "../../../../../../theme";
-import { OnClickBuyOrSwapHandler } from "../../../Commit/DetailView/common/types";
+import { OnClickBuyOrSwapHandler } from "../../../common/detail/types";
 
 const colors = theme.colors.light;
 interface Props extends OnClickBuyOrSwapHandler {

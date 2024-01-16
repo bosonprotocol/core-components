@@ -2,13 +2,13 @@ import React from "react";
 import {
   DetailViewWithProvider,
   DetailViewWithProviderProps
-} from "./DetailViewWithProvider";
+} from "../../common/detail/DetailViewWithProvider";
 import {
   InnerDetailWithProviderExchange,
   InnerDetailWithProviderExchangeProps
 } from "./InnerDetailWithProviderExchange";
 
-type ExchangeDetailViewWithProviderProps =
+export type ExchangeDetailViewWithProviderProps =
   InnerDetailWithProviderExchangeProps & DetailViewWithProviderProps;
 
 export const ExchangeDetailViewWithProvider: React.FC<

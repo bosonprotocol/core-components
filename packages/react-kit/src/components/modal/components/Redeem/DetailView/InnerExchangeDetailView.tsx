@@ -19,8 +19,8 @@ import {
   RaiseProblemButton,
   StyledCancelButton
 } from "../../common/detail/Detail.style";
-import { InnerDetailViewWithPortal } from "./InnerDetailViewWithPortal";
-import { DetailViewProps } from "./common/types";
+import { InnerDetailViewWithPortal } from "../../common/detail/InnerDetailViewWithPortal";
+import { DetailViewProps } from "../../common/detail/types";
 const colors = theme.colors.light;
 
 const RedeemButton = styled(Button)`

@@ -6,7 +6,7 @@ import { OfferFullDescription } from "../../common/OfferFullDescription/OfferFul
 import Grid from "../../../../ui/Grid";
 import { ArrowLeft } from "phosphor-react";
 import Typography from "../../../../ui/Typography";
-import { OnClickBuyOrSwapHandler } from "../DetailView/common/types";
+import { OnClickBuyOrSwapHandler } from "../../common/detail/types";
 
 const colors = theme.colors.light;
 type Props = OnClickBuyOrSwapHandler & {

@@ -7,8 +7,8 @@ import InnerCommitDetailView, {
 import {
   InnerDetailViewWithPortal,
   InnerDetailViewWithPortalProps
-} from "./InnerDetailViewWithPortal";
-import { useDetailViewContext } from "./common/DetailViewProvider";
+} from "../../common/detail/InnerDetailViewWithPortal";
+import { useDetailViewContext } from "../../common/detail/DetailViewProvider";
 import { QuantityDisplay } from "./common/QuantityDisplay";
 const colors = theme.colors.light;
 

@@ -1,8 +1,8 @@
 import React, { ElementRef, useRef } from "react";
 import styled, { css } from "styled-components";
 import Grid from "../../../../ui/Grid";
-import { DetailViewCore } from "./common/DetailViewCore";
-import { DetailViewProps } from "./common/types";
+import { DetailViewCore } from "./DetailViewCore";
+import { DetailViewProps } from "./types";
 
 const BosonExclusive = styled.div<{
   $hasVariations: boolean;

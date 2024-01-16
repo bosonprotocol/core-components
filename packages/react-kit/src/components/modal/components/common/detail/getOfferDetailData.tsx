@@ -5,16 +5,16 @@ import React from "react";
 import {
   buyerAndSellerAgreementIncluding,
   customisedExchangePolicy
-} from "../../../../../../lib/const/policies";
-import { getDateTimestamp } from "../../../../../../lib/dates/getDateTimestamp";
+} from "../../../../../lib/const/policies";
+import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
 import {
   getCalcPercentage,
   useDisplayFloat
-} from "../../../../../../lib/price/prices";
-import { Offer } from "../../../../../../types/offer";
-import { useConfigContext } from "../../../../../config/ConfigContext";
-import Typography from "../../../../../ui/Typography";
-import { DetailDisputeResolver } from "../../../common/detail/DetailDisputeResolver";
+} from "../../../../../lib/price/prices";
+import { Offer } from "../../../../../types/offer";
+import { useConfigContext } from "../../../../config/ConfigContext";
+import Typography from "../../../../ui/Typography";
+import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { DetailViewProps } from "./types";
 
 const fontSizeExchangePolicy = "0.625rem";

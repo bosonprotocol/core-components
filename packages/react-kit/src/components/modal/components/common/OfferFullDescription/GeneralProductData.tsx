@@ -8,15 +8,15 @@ import { Break } from "../detail/Detail.style";
 import { theme } from "../../../../../theme";
 import { useNotCommittableOfferStatus } from "../../Commit/useNotCommittableOfferStatus";
 import { TokenGatedItem } from "../detail/TokenGatedItem";
-import { useDetailViewContext } from "../../Commit/DetailView/common/DetailViewProvider";
+import { useDetailViewContext } from "../detail/DetailViewProvider";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
 import Grid from "../../../../ui/Grid";
 import DetailTable from "../detail/DetailTable";
-import { getOfferDetailData } from "../../Commit/DetailView/common/getOfferDetailData";
+import { getOfferDetailData } from "../detail/getOfferDetailData";
 import { useConvertedPrice } from "../../../../price/useConvertedPrice";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import { useDisplayFloat } from "../../../../../lib/price/prices";
-import { OnClickBuyOrSwapHandler } from "../../Commit/DetailView/common/types";
+import { OnClickBuyOrSwapHandler } from "../detail/types";
 const colors = theme.colors.light;
 
 const StyledPrice = styled(Price)`

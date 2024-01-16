@@ -14,7 +14,7 @@ import {
   DetailContextProps,
   DetailViewProvider,
   useDetailViewContext
-} from "./common/DetailViewProvider";
+} from "./DetailViewProvider";
 
 export type DetailViewWithProviderProps = ConsumerProps & {
   selectedVariant: VariantV1;

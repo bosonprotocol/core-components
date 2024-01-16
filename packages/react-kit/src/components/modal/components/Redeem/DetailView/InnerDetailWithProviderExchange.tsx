@@ -2,7 +2,7 @@ import React from "react";
 import {
   InnerDetailViewWithPortal,
   InnerDetailViewWithPortalProps
-} from "./InnerDetailViewWithPortal";
+} from "../../common/detail/InnerDetailViewWithPortal";
 import InnerExchangeDetailView, {
   InnerExchangeDetailViewProps
 } from "./InnerExchangeDetailView";

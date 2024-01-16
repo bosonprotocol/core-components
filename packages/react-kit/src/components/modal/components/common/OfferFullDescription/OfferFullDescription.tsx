@@ -12,7 +12,7 @@ import DetailSlider from "../detail/DetailSlider";
 import DetailTable from "../detail/DetailTable";
 import { GeneralProductData } from "./GeneralProductData";
 import styled from "styled-components";
-import { OnClickBuyOrSwapHandler } from "../../Commit/DetailView/common/types";
+import { OnClickBuyOrSwapHandler } from "../detail/types";
 
 const colors = theme.colors.light;
 const SLIDER_OPTIONS = {

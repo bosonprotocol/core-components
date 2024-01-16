@@ -18,7 +18,7 @@ import { OfferVariantView, OfferVariantViewProps } from "./OfferVariantView";
 import {
   DetailContextProps,
   DetailViewProvider
-} from "./DetailView/common/DetailViewProvider";
+} from "../common/detail/DetailViewProvider";
 
 const colors = theme.colors.light;
 enum ActiveStep {

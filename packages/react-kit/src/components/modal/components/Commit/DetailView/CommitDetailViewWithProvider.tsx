@@ -6,7 +6,7 @@ import {
 import {
   DetailViewWithProvider,
   DetailViewWithProviderProps
-} from "./DetailViewWithProvider";
+} from "../../common/detail/DetailViewWithProvider";
 
 export type CommitDetailViewWithProviderProps =
   InnerDetailWithProviderCommitProps & DetailViewWithProviderProps;

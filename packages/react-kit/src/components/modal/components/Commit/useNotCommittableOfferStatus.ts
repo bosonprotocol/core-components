@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useDetailViewContext } from "./DetailView/common/DetailViewProvider";
+import { useDetailViewContext } from "../common/detail/DetailViewProvider";
 
 export const useNotCommittableOfferStatus = ({
   isOfferVoided

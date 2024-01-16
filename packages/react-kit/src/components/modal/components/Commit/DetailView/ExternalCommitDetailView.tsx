@@ -8,13 +8,14 @@ import {
   CommitDetailViewWithProviderProps
 } from "./CommitDetailViewWithProvider";
 
-export type ExternalDetailViewProps = CommitDetailViewWithProviderProps & {
-  providerProps: Omit<CommitWidgetProvidersProps, "children">;
-};
+export type ExternalCommitDetailViewProps =
+  CommitDetailViewWithProviderProps & {
+    providerProps: Omit<CommitWidgetProvidersProps, "children">;
+  };
 
-export const ExternalDetailView: React.FC<ExternalDetailViewProps> = (
-  props
-) => {
+export const ExternalCommitDetailView: React.FC<
+  ExternalCommitDetailViewProps
+> = (props) => {
   return (
     <CommitWidgetProviders {...props.providerProps}>
       <CommitDetailViewWithProvider {...props} />

@@ -22,8 +22,8 @@ import DetailSlider from "../common/detail/DetailSlider";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import { SlickSlider } from "../common/detail/SlickSlider";
 import { CommitDetailViewWithProvider } from "./DetailView/CommitDetailViewWithProvider";
-import { DetailContextProps } from "./DetailView/common/DetailViewProvider";
-import { OnClickBuyOrSwapHandler } from "./DetailView/common/types";
+import { DetailContextProps } from "../common/detail/DetailViewProvider";
+import { OnClickBuyOrSwapHandler } from "../common/detail/types";
 
 const colors = theme.colors.light;
 const ImageWrapper = styled.div`

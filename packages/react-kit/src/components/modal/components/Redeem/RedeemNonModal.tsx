@@ -55,7 +55,7 @@ import { ContactPreference } from "./const";
 import {
   DetailContextProps,
   DetailViewProvider
-} from "../Commit/DetailView/common/DetailViewProvider";
+} from "../common/detail/DetailViewProvider";
 
 const colors = theme.colors.light;
 const UlWithWordBreak = styled.ul`

@@ -14,9 +14,9 @@ import { Offer } from "../../../../../types/offer";
 import { Image } from "../../../../image/Image";
 import Grid from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
-import { BuyOrSwapContainer } from "../../Commit/DetailView/common/BuyOrSwapContainer";
-import { useDetailViewContext } from "../../Commit/DetailView/common/DetailViewProvider";
-import { OnClickBuyOrSwapHandler } from "../../Commit/DetailView/common/types";
+import { BuyOrSwapContainer } from "./BuyOrSwapContainer";
+import { useDetailViewContext } from "./DetailViewProvider";
+import { OnClickBuyOrSwapHandler } from "./types";
 const colors = theme.colors.light;
 
 type Props = OnClickBuyOrSwapHandler & {

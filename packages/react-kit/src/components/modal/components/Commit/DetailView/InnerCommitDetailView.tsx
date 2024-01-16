@@ -30,10 +30,10 @@ import {
   saveItemInStorage
 } from "../../../../widgets/finance/storage/useLocalStorage";
 import { useModal } from "../../../useModal";
-import { InnerDetailViewWithPortal } from "./InnerDetailViewWithPortal";
-import { BuyOrSwapContainer } from "./common/BuyOrSwapContainer";
-import { useDetailViewContext } from "./common/DetailViewProvider";
-import { DetailViewProps } from "./common/types";
+import { InnerDetailViewWithPortal } from "../../common/detail/InnerDetailViewWithPortal";
+import { BuyOrSwapContainer } from "../../common/detail/BuyOrSwapContainer";
+import { useDetailViewContext } from "../../common/detail/DetailViewProvider";
+import { DetailViewProps } from "../../common/detail/types";
 import { useBuyers } from "../../../../../hooks/useBuyers";
 const colors = theme.colors.light;
 
