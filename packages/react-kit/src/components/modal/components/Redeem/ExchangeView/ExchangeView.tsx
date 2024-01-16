@@ -2,38 +2,35 @@ import { House } from "phosphor-react";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
-import { useSellers } from "../../../../../hooks/useSellers";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
+import { breakpoint } from "../../../../../lib/ui/breakpoint";
+import { theme } from "../../../../../theme";
+import { isTruthy } from "../../../../../types/helpers";
 import { VariantV1 } from "../../../../../types/variants";
 import Grid from "../../../../ui/Grid";
-import Loading from "../../../../ui/loading/Loading";
-import Typography from "../../../../ui/Typography";
-import DetailOpenSea from "../../common/DetailOpenSea";
-import DetailView from "./DetailView/DetailView";
-import VariationSelects, {
-  ResponsiveVariationSelects
-} from "../../common/VariationSelects";
-import { isTruthy } from "../../../../../types/helpers";
 import GridContainer from "../../../../ui/GridContainer";
-import { theme } from "../../../../../theme";
-import { useConvertionRate } from "../../../../widgets/finance/convertion-rate/useConvertionRate";
-import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
+import Typography from "../../../../ui/Typography";
+import Loading from "../../../../ui/loading/Loading";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { SellerAndDescription } from "../../common/detail/SellerAndDescription";
-import DetailSlider from "../../common/detail/DetailSlider";
-import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import { SlickSlider } from "../../common/detail/SlickSlider";
 import { ExchangeDetailViewWithProvider } from "../../Commit/DetailView/ExchangeDetailViewWithProvider";
 import { DetailContextProps } from "../../Commit/DetailView/common/DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "../../Commit/DetailView/common/types";
+import DetailOpenSea from "../../common/DetailOpenSea";
+import { ResponsiveVariationSelects } from "../../common/VariationSelects";
+import DetailSlider from "../../common/detail/DetailSlider";
+import { SellerAndDescription } from "../../common/detail/SellerAndDescription";
+import { SlickSlider } from "../../common/detail/SlickSlider";
 
 const colors = theme.colors.light;
 
 const ImageWrapper = styled.div`
+  container-type: inline-size;
   position: relative;
-  max-width: 35rem !important;
   min-width: 50%;
   width: -webkit-fill-available;
+  ${breakpoint.s} {
+    max-width: 35rem !important;
+  }
 `;
 
 const ImageAndSellerIdContainer = styled(Grid)`
