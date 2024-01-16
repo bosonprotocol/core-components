@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
-import { ReactComponent as Logo } from "../../../../../../assets/logo.svg";
+import { ReactComponent as Logo } from "../../../../../assets/logo.svg";
 import { useDisplayFloat } from "../../../../../lib/price/prices";
 import { theme } from "../../../../../theme";
 import { useConfigContext } from "../../../../config/ConfigContext";
