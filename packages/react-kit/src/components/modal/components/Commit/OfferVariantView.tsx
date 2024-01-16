@@ -60,7 +60,7 @@ export type OfferVariantViewProps = OnClickBuyOrSwapHandler & {
   onViewFullDescription: () => void;
   onLicenseAgreementClick: () => void;
   onGetDetailViewProviderProps: (providerProps: DetailContextProps) => void;
-  onAlreadyOwnOfferClick: () => void;
+  onAlreadyOwnOfferClick?: () => void;
   selectedVariant: VariantV1;
   setSelectedVariant: Dispatch<SetStateAction<VariantV1 | undefined>>;
   allVariants: VariantV1[];

@@ -118,7 +118,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
         {topChildren && (
           <>
             {topChildren}
-            <Break />
+            <Break style={{ margin: "1rem 0" }} />
           </>
         )}
         <div>

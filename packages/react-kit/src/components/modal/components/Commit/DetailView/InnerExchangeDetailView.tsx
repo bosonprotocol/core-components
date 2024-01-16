@@ -146,7 +146,11 @@ export default function InnerExchangeDetailView(
               )}
             </Grid>
           ) : (
-            <ThemedButton themeVal="outline" disabled>
+            <ThemedButton
+              themeVal="outline"
+              disabled
+              style={{ marginBottom: "0.5rem" }}
+            >
               {disabledRedeemText}
               <Check size={24} />
             </ThemedButton>

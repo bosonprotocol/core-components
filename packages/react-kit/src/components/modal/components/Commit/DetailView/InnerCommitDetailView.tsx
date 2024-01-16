@@ -280,7 +280,6 @@ export default function InnerCommitDetailView(
             alignItems="center"
             justifyContent="space-between"
             style={{
-              margin: "0 0 1rem 0",
               ...(onAlreadyOwnOfferClick && { cursor: "pointer" })
             }}
             onClick={() => onAlreadyOwnOfferClick?.()}

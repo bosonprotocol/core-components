@@ -57,9 +57,7 @@ export const Image: React.FC<IBaseImage> = ({
       </ImageWrapper>
       <ImageWrapper {...rest} data-image-wrapper hide={!isLoading}>
         <ImagePlaceholder data-image-placeholder position="static">
-          <div>
-            <Loading />
-          </div>
+          <Loading />
         </ImagePlaceholder>
       </ImageWrapper>
       <ImageWrapper {...rest} data-image-wrapper data-image hide={!isSuccess}>
