@@ -1,27 +1,26 @@
-import React from "react";
-import { InnerDetailViewWithPortal } from "./InnerDetailViewWithPortal";
-import { DetailViewProps } from "./common/types";
-import { Button } from "../../../../buttons/Button";
-import styled from "styled-components";
-import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import { ButtonSize } from "../../../../ui/buttonSize";
-import ThemedButton from "../../../../ui/ThemedButton";
-import { ArrowRight, Check, Question } from "phosphor-react";
-import type { ExtendedExchange } from "../../../../../hooks/useExchanges";
 import { exchanges, subgraph } from "@bosonprotocol/core-sdk";
-import { titleCase } from "../../../../../lib/string/formatText";
+import { ArrowRight, Check, Question } from "phosphor-react";
+import React from "react";
+import styled from "styled-components";
 import {
   useAccount,
   useIsConnectedToWrongChain
 } from "../../../../../hooks/connection/connection";
+import type { ExtendedExchange } from "../../../../../hooks/useExchanges";
+import { titleCase } from "../../../../../lib/string/formatText";
+import { breakpoint } from "../../../../../lib/ui/breakpoint";
+import { theme } from "../../../../../theme";
+import { Button } from "../../../../buttons/Button";
+import Grid from "../../../../ui/Grid";
+import ThemedButton from "../../../../ui/ThemedButton";
+import Typography from "../../../../ui/Typography";
+import { ButtonSize } from "../../../../ui/buttonSize";
 import {
-  ActionMessage,
   RaiseProblemButton,
   StyledCancelButton
 } from "../../common/detail/Detail.style";
-import Grid from "../../../../ui/Grid";
-import Typography from "../../../../ui/Typography";
-import { theme } from "../../../../../theme";
+import { InnerDetailViewWithPortal } from "./InnerDetailViewWithPortal";
+import { DetailViewProps } from "./common/types";
 const colors = theme.colors.light;
 
 const RedeemButton = styled(Button)`

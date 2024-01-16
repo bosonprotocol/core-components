@@ -547,18 +547,6 @@ export const OpenSeaButton = styled.a<{ $disabled: boolean }>`
     `}
 `;
 
-export const ActionMessage = styled.div`
-  border-width: 0;
-  border-bottom: 2px solid ${colors.border};
-  z-index: ${zIndex.OfferStatus};
-  /* padding: 1rem 2rem; */
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  color: ${colors.darkGrey};
-  font-size: 0.75rem;
-  font-weight: 600;
-`;
-
 export const CommitAndRedeemButton = styled(Typography)`
   font-style: normal;
   font-weight: 600;

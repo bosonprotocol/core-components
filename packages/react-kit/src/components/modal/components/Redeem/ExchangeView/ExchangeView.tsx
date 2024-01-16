@@ -241,20 +241,6 @@ export function ExchangeView({
                 disabled
               />
             )}
-            {/* <DetailView
-              hasSellerEnoughFunds={hasSellerEnoughFunds}
-              offer={offer}
-              exchange={exchange}
-              onCancelExchange={onCancelExchange}
-              onExchangePolicyClick={onExchangePolicyClick}
-              onRedeem={onNextClick}
-              onPurchaseOverview={onPurchaseOverview}
-              onExpireVoucherClick={onExpireVoucherClick}
-              onRaiseDisputeClick={onRaiseDisputeClick}
-              hasMultipleVariants={false}
-              isPreview={false}
-              exchangePolicyCheckResult={exchangePolicyCheckResult}
-            /> */}
             <ExchangeDetailViewWithProvider
               showBosonLogo={showBosonLogo ?? false}
               selectedVariant={variant as VariantV1}

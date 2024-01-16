@@ -15,9 +15,7 @@ import { Offer } from "../../../../../../types/offer";
 import { useConfigContext } from "../../../../../config/ConfigContext";
 import Typography from "../../../../../ui/Typography";
 import { DetailDisputeResolver } from "../../../common/detail/DetailDisputeResolver";
-import { theme } from "../../../../../../theme";
 import { DetailViewProps } from "./types";
-const colors = theme.colors.light;
 
 const fontSizeExchangePolicy = "0.625rem";
 
