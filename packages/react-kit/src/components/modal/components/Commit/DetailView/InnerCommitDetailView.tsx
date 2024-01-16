@@ -84,7 +84,7 @@ export type InnerCommitDetailViewProps = Omit<
     onLicenseAgreementClick: () => void;
     onCommit: (exchangeId: string, txHash: string) => void;
     onCommitting: (txHash: string) => void;
-    onAlreadyOwnOfferClick: () => void;
+    onAlreadyOwnOfferClick?: () => void;
   },
   "children" | "hasSellerEnoughFunds"
 >;
@@ -275,24 +275,25 @@ export default function InnerCommitDetailView(
     <InnerDetailViewWithPortal
       {...props}
       topChildren={
-        <>
-          {address && !!userCommittedOffersLength && (
-            <Grid
-              alignItems="center"
-              justifyContent="space-between"
-              style={{ margin: "0 0 1rem 0", cursor: "pointer" }}
-              onClick={() => onAlreadyOwnOfferClick()}
-            >
-              <p
-                style={{ color: colors.orange, margin: 0, fontSize: "0.75rem" }}
-              >
-                You already own {userCommittedOffersLength}{" "}
-                <b>{offer.metadata.name}</b> rNFT
-              </p>
+        address && !!userCommittedOffersLength ? (
+          <Grid
+            alignItems="center"
+            justifyContent="space-between"
+            style={{
+              margin: "0 0 1rem 0",
+              ...(onAlreadyOwnOfferClick && { cursor: "pointer" })
+            }}
+            onClick={() => onAlreadyOwnOfferClick?.()}
+          >
+            <p style={{ color: colors.orange, margin: 0, fontSize: "0.75rem" }}>
+              You already own {userCommittedOffersLength}{" "}
+              <b>{offer.metadata.name}</b> rNFT
+            </p>
+            {onAlreadyOwnOfferClick && (
               <ArrowRight size={18} color={colors.orange} />
-            </Grid>
-          )}
-        </>
+            )}
+          </Grid>
+        ) : null
       }
     >
       {isNotCommittableOffer && isBuyerInsufficientFunds && (

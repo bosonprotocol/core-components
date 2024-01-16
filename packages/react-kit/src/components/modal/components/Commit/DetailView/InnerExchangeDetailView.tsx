@@ -154,33 +154,29 @@ export default function InnerExchangeDetailView(
         </>
       }
       topChildren={
-        <>
-          {isExchangeExpired && (
-            // <ActionMessage>
-            <Grid
-              alignItems="center"
-              justifyContent="space-between"
-              style={{
-                cursor: "pointer"
-              }}
-              onClick={() => {
-                if (exchange) {
-                  onExpireVoucherClick();
-                }
-              }}
+        isExchangeExpired ? (
+          <Grid
+            alignItems="center"
+            justifyContent="space-between"
+            style={{
+              cursor: "pointer"
+            }}
+            onClick={() => {
+              if (exchange) {
+                onExpireVoucherClick();
+              }
+            }}
+          >
+            <Typography
+              tag="p"
+              style={{ color: colors.darkGrey, margin: 0 }}
+              $fontSize="0.75rem"
             >
-              <Typography
-                tag="p"
-                style={{ color: colors.darkGrey, margin: 0 }}
-                $fontSize="0.75rem"
-              >
-                You can withdraw your funds here
-              </Typography>
-              <ArrowRight size={18} color={colors.darkGrey} />
-            </Grid>
-            // </ActionMessage>
-          )}
-        </>
+              You can withdraw your funds here
+            </Typography>
+            <ArrowRight size={18} color={colors.darkGrey} />
+          </Grid>
+        ) : null
       }
       bottomChildren={
         <>

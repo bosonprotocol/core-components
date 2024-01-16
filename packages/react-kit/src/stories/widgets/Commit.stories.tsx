@@ -51,6 +51,9 @@ Commit.args = {
   closeWidgetClick: () => {
     console.log("closeWidgetClick()");
   },
+  // onAlreadyOwnOfferClick: () => { // optional
+  //   console.log("onAlreadyOwnOfferClick");
+  // },
   forcedAccount: "",
   showBosonLogo: false
 };
@@ -85,6 +88,9 @@ CommitTokenGated.args = {
   },
   closeWidgetClick: () => {
     console.log("closeWidgetClick()");
+  },
+  onAlreadyOwnOfferClick: () => {
+    console.log("onAlreadyOwnOfferClick");
   },
   forcedAccount: "",
   showBosonLogo: false
@@ -122,6 +128,9 @@ CommitWithColorAndSizeVariations.args = {
   closeWidgetClick: () => {
     console.log("closeWidgetClick()");
   },
+  onAlreadyOwnOfferClick: () => {
+    console.log("onAlreadyOwnOfferClick");
+  },
   forcedAccount: "",
   showBosonLogo: false
 };
@@ -156,6 +165,9 @@ CommitTokenGated1155.args = {
   },
   closeWidgetClick: () => {
     console.log("closeWidgetClick()");
+  },
+  onAlreadyOwnOfferClick: () => {
+    console.log("onAlreadyOwnOfferClick");
   },
   forcedAccount: "",
   showBosonLogo: false

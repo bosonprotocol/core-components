@@ -141,7 +141,9 @@ export default function DetailSlider({
   }, [images, animationUrl]);
   const sumMediaFiles = media.length + (animationUrl ? 1 : 0);
   const showArrows =
-    sumMediaFiles > 1 && (sliderOptions.perView ?? 1) > sumMediaFiles;
+    sumMediaFiles !== 1 && (sliderOptions.perView ?? 1) === 1
+      ? true
+      : sumMediaFiles > (sliderOptions.perView ?? 1);
   const draggable = showArrows;
   useEffect(() => {
     if (media.length !== 0 && ref.current !== null) {
