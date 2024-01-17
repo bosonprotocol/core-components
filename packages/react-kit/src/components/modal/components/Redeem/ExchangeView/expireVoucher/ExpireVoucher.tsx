@@ -2,10 +2,12 @@ import { subgraph } from "@bosonprotocol/core-sdk";
 import { Provider } from "@bosonprotocol/ethers-sdk";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useAddPendingTransactionWithContext } from "../../../../../../hooks/transactions/usePendingTransactionsWithContext";
+import { useSigner } from "../../../../../../hooks/connection/connection";
 import { useCoreSDKWithContext } from "../../../../../../hooks/core-sdk/useCoreSdkWithContext";
+import { useAddPendingTransactionWithContext } from "../../../../../../hooks/transactions/usePendingTransactionsWithContext";
 import useRefundData from "../../../../../../hooks/useRefundData";
-import { useDisplayFloat } from "../../../../../../lib/price/prices";
+import { extractUserFriendlyError } from "../../../../../../lib/errors/transactions";
+import { useDisplayFloatWithConfig } from "../../../../../../lib/price/prices";
 import { poll } from "../../../../../../lib/promises/promises";
 import { theme } from "../../../../../../theme";
 import { Exchange } from "../../../../../../types/exchange";
@@ -16,12 +18,10 @@ import {
 import { useEnvContext } from "../../../../../environment/EnvironmentContext";
 import SimpleError from "../../../../../error/SimpleError";
 import Grid from "../../../../../ui/Grid";
-import { Spinner } from "../../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import Typography from "../../../../../ui/Typography";
+import { Spinner } from "../../../../../ui/loading/Spinner";
 import DetailTable from "../../../common/detail/DetailTable";
-import { useSigner } from "../../../../../../hooks/connection/connection";
-import { extractUserFriendlyError } from "../../../../../../lib/errors/transactions";
 
 const colors = theme.colors.light;
 
@@ -76,7 +76,7 @@ export default function ExpireVoucher({
   const coreSDK = useCoreSDKWithContext();
   const addPendingTransaction = useAddPendingTransactionWithContext();
   const signer = useSigner();
-  const displayFloat = useDisplayFloat();
+  const displayFloat = useDisplayFloatWithConfig();
 
   const { currency, price, penalty, refund } = useRefundData(
     exchange,

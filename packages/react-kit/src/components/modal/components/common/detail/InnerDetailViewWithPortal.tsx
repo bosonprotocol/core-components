@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import Grid from "../../../../ui/Grid";
 import { DetailViewCore } from "./DetailViewCore";
 import { DetailViewProps } from "./types";
+import { useIsBosonExclusive } from "../../../../../hooks/offer/useIsBosonExclusive";
 
 const BosonExclusive = styled.div<{
   $hasVariations: boolean;
@@ -38,7 +39,9 @@ export function InnerDetailViewWithPortal(props: DetailViewProps) {
   const portalRef = useRef<ElementRef<"div">>(null);
   const { selectedVariant } = props;
   const hasVariations = !!selectedVariant.variations?.length;
-  const isBosonExclusive = true; // TODO: change
+  const isBosonExclusive = useIsBosonExclusive({
+    offer: selectedVariant.offer
+  });
   return (
     <Grid flexDirection="column">
       <BosonExclusive

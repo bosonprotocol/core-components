@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import { useDisplayFloat } from "../../lib/price/prices";
+import { useDisplayFloatWithConfig } from "../../lib/price/prices";
 import { breakpoint } from "../../lib/ui/breakpoint";
 import { theme } from "../../theme";
 import {
@@ -83,7 +83,7 @@ export default function Price({
     decimals,
     symbol: currencySymbol
   });
-  const displayFloat = useDisplayFloat();
+  const displayFloat = useDisplayFloatWithConfig();
 
   return (
     <Root {...rest} $withBosonStyles={withBosonStyles} data-testid="price">

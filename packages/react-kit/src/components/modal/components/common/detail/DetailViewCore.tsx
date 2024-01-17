@@ -1,19 +1,11 @@
 import { Cube, Info, Lock, LockOpen } from "phosphor-react";
-import React, {
-  ElementRef,
-  forwardRef,
-  useMemo,
-  useRef,
-  useState
-} from "react";
+import React, { ElementRef, forwardRef, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../../../../assets/logo.svg";
-import { useDisplayFloat } from "../../../../../lib/price/prices";
 import { theme } from "../../../../../theme";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import Price from "../../../../price/Price";
-import { useConvertedPrice } from "../../../../price/useConvertedPrice";
 import { DetailsSummary } from "../../../../ui/DetailsSummary";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
@@ -25,10 +17,11 @@ import {
   WidgetUpperGrid
 } from "./Detail.style";
 import DetailTable from "./DetailTable";
-import { TokenGatedItem } from "./TokenGatedItem";
 import { useDetailViewContext } from "./DetailViewProvider";
-import { getOfferDetailData } from "./getOfferDetailData";
+import { TokenGatedItem } from "./TokenGatedItem";
 import { DetailViewProps } from "./types";
+import { useGetOfferDetailData } from "./useGetOfferDetailData";
+import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
 
 const colors = theme.colors.light;
 
@@ -82,31 +75,18 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
 
     const config = useConfigContext();
 
-    const displayFloat = useDisplayFloat();
-
-    const convertedPrice = useConvertedPrice({
-      value: offer.price,
-      decimals: offer.exchangeToken.decimals,
-      symbol: offer.exchangeToken.symbol
+    const offerDetailData = useGetOfferDetailData({
+      dateFormat: config.dateFormat,
+      defaultCurrencySymbol: config.defaultCurrency.symbol,
+      offer,
+      exchange,
+      onExchangePolicyClick,
+      exchangePolicyCheckResult
     });
-
-    const OFFER_DETAIL_DATA = useMemo(
-      () =>
-        getOfferDetailData({
-          config,
-          displayFloat,
-          offer,
-          exchange,
-          onExchangePolicyClick,
-          exchangePolicyCheckResult
-        }),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [offer, exchange, convertedPrice, config, displayFloat]
-    );
 
     const [isDetailsOpen, setDetailsOpen] = useState<boolean>(true);
     const closeDetailsRef = useRef(true);
-
+    const isPhygital = useIsPhygital({ offer });
     return (
       <Widget>
         {isBosonExclusive &&
@@ -155,27 +135,29 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
             />
           </DetailsSummary>
         )}
-        <DetailsSummary
-          summaryText="Phygital Product"
-          icon={<Cube size={16} />}
-          onSetOpen={(open) => {
-            if (open && closeDetailsRef.current) {
-              setDetailsOpen(false);
-              closeDetailsRef.current = false;
-            }
-          }}
-        >
-          <Grid flexDirection="column" alignItems="flex-start" gap="1rem">
-            <Typography>
-              This is what you'll get when you purchase this product.
-            </Typography>
-            <Grid flexDirection="column" alignItems="flex-start">
+        {isPhygital && (
+          <DetailsSummary
+            summaryText="Phygital Product"
+            icon={<Cube size={16} />}
+            onSetOpen={(open) => {
+              if (open && closeDetailsRef.current) {
+                setDetailsOpen(false);
+                closeDetailsRef.current = false;
+              }
+            }}
+          >
+            <Grid flexDirection="column" alignItems="flex-start" gap="1rem">
               <Typography>
-                <b>This product includes:</b>
+                This is what you'll get when you purchase this product.
               </Typography>
+              <Grid flexDirection="column" alignItems="flex-start">
+                <Typography>
+                  <b>This product includes:</b>
+                </Typography>
+              </Grid>
             </Grid>
-          </Grid>
-        </DetailsSummary>
+          </DetailsSummary>
+        )}
         <DetailsSummary
           summaryText="Details"
           initiallyOpen
@@ -187,7 +169,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
           <DetailTable
             align={false}
             noBorder
-            data={OFFER_DETAIL_DATA}
+            data={offerDetailData}
             inheritColor={false}
           />
         </DetailsSummary>

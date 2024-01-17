@@ -11,37 +11,38 @@ import {
   getCalcPercentage,
   useDisplayFloat
 } from "../../../../../lib/price/prices";
+import { Exchange } from "../../../../../types/exchange";
 import { Offer } from "../../../../../types/offer";
-import { useConfigContext } from "../../../../config/ConfigContext";
 import Typography from "../../../../ui/Typography";
 import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { DetailViewProps } from "./types";
-import { Exchange } from "../../../../../types/exchange";
 
 const fontSizeExchangePolicy = "0.625rem";
 
-export const getOfferDetailData = ({
-  config,
-  displayFloat,
+export const useGetOfferDetailData = ({
+  dateFormat,
+  defaultCurrencySymbol,
   offer,
   exchange,
   onExchangePolicyClick,
   exchangePolicyCheckResult
 }: {
-  config: ReturnType<typeof useConfigContext>;
-  displayFloat: ReturnType<typeof useDisplayFloat>;
+  dateFormat: string;
+  defaultCurrencySymbol: string;
   offer: Offer;
-  exchange?: Exchange;
+  exchange?: Exchange | null;
   onExchangePolicyClick: DetailViewProps["onExchangePolicyClick"];
   exchangePolicyCheckResult: offers.CheckExchangePolicyResult | undefined;
 }) => {
+  const displayFloat = useDisplayFloat({ defaultCurrencySymbol });
+
   const redeemableUntil = dayjs(
     Number(`${exchange?.validUntilDate ?? offer.voucherRedeemableUntilDate}000`)
-  ).format(config.dateFormat);
+  ).format(dateFormat);
   const redeemableFromDayJs = dayjs(
     Number(`${offer.voucherRedeemableFromDate}000`)
   );
-  const redeemableFrom = redeemableFromDayJs.format(config.dateFormat);
+  const redeemableFrom = redeemableFromDayJs.format(dateFormat);
   const calcPercentage = getCalcPercentage(displayFloat);
 
   const { formatted } = calcPercentage(offer, "buyerCancelPenalty");
@@ -106,7 +107,7 @@ export const getOfferDetailData = ({
             ),
             value: (
               <Typography tag="p">
-                {canBeRedeemedFrom.format(config.dateFormat)}
+                {canBeRedeemedFrom.format(dateFormat)}
               </Typography>
             )
           }

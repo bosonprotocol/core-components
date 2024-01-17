@@ -13,6 +13,8 @@ import DetailTable from "../detail/DetailTable";
 import { GeneralProductData } from "./GeneralProductData";
 import styled from "styled-components";
 import { OnClickBuyOrSwapHandler } from "../detail/types";
+import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
+import { Exchange } from "../../../../../types/exchange";
 
 const colors = theme.colors.light;
 const SLIDER_OPTIONS = {
@@ -30,12 +32,14 @@ const InventoryGraph = styled(DetailChart)`
 `;
 type OfferFullDescriptionProps = OnClickBuyOrSwapHandler & {
   offer: Offer;
+  exchange: Exchange | null;
   children?: ReactNode;
   onExchangePolicyClick: () => void;
 };
 
 export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
   offer,
+  exchange,
   children,
   onExchangePolicyClick,
   onClickBuyOrSwap
@@ -53,7 +57,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
       isTruthy
     );
   }, [offerImg, images]);
-  const isPhygital = false; // TODO: change
+  const isPhygital = useIsPhygital({ offer });
   return (
     <Tabs
       data={[
@@ -64,6 +68,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
             <Content>
               <GeneralProductData
                 offer={offer}
+                exchange={exchange}
                 onExchangePolicyClick={onExchangePolicyClick}
                 onClickBuyOrSwap={onClickBuyOrSwap}
               />

@@ -192,7 +192,7 @@ export default function InnerExchangeDetailView(
             <ArrowRight size={18} color={colors.darkGrey} />
           </Grid>
         ) : isToRedeem ? (
-          <RedeemLeftButton>
+          <RedeemLeftButton style={{ paddingTop: 0, paddingBottom: 0 }}>
             {redeemableDays > 0
               ? `${redeemableDays} days left to Redeem`
               : `${redeemableHours} hours left to Redeem`}

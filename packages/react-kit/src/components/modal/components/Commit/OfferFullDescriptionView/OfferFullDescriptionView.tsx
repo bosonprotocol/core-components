@@ -46,6 +46,7 @@ export function OfferFullDescriptionView({
   return (
     <OfferFullDescription
       offer={offer}
+      exchange={null}
       onExchangePolicyClick={onExchangePolicyClick}
       onClickBuyOrSwap={onClickBuyOrSwap}
     />

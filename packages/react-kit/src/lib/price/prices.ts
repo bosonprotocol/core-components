@@ -1,14 +1,22 @@
 import { BigNumber, utils } from "ethers";
 import { useCallback } from "react";
-import { useConfigContext } from "../../components/config/ConfigContext";
 import { Offer } from "../../types/offer";
+import { useConfigContext } from "../../components/config/ConfigContext";
 
 interface Options {
   fixed?: number;
 }
 
-export const useDisplayFloat = () => {
+export const useDisplayFloatWithConfig = () => {
   const { defaultCurrency } = useConfigContext();
+  return useDisplayFloat({ defaultCurrencySymbol: defaultCurrency.symbol });
+};
+
+export const useDisplayFloat = ({
+  defaultCurrencySymbol
+}: {
+  defaultCurrencySymbol: string;
+}) => {
   return useCallback(
     (
       value: number | string | null | undefined,
@@ -19,18 +27,18 @@ export const useDisplayFloat = () => {
         if (typeof parsedValue === "string" || parsedValue > 0) {
           const currencySymbolIndex = parsedValue
             .toString()
-            .indexOf(defaultCurrency.symbol);
+            .indexOf(defaultCurrencySymbol);
           const addSymbol = (value: string) => {
             return currencySymbolIndex === -1
               ? value
               : currencySymbolIndex === 0
-              ? `${defaultCurrency.symbol} ${value}`
-              : `${value} ${defaultCurrency.symbol}`;
+              ? `${defaultCurrencySymbol} ${value}`
+              : `${value} ${defaultCurrencySymbol}`;
           };
           const valueToDisplay =
             parsedValue
               .toString()
-              .replaceAll(defaultCurrency.symbol, "")
+              .replaceAll(defaultCurrencySymbol, "")
               .trim()
               .match(
                 new RegExp(
@@ -54,7 +62,7 @@ export const useDisplayFloat = () => {
         return "0";
       }
     },
-    [defaultCurrency.symbol]
+    [defaultCurrencySymbol]
   );
 };
 

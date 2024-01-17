@@ -5,7 +5,7 @@ import { convertPrice } from "../lib/price/convertPrice";
 import {
   calcPrice,
   getCalcPercentage,
-  useDisplayFloat
+  useDisplayFloatWithConfig
 } from "../lib/price/prices";
 import { Exchange } from "../types/exchange";
 
@@ -35,7 +35,7 @@ export default function useRefundData(exchange: Exchange, price: string) {
       defaultCurrency
     ]
   );
-  const displayFloat = useDisplayFloat();
+  const displayFloat = useDisplayFloatWithConfig();
   const calcPercentage = getCalcPercentage(displayFloat);
   const penalty = calcPercentage(offer, "buyerCancelPenalty");
   const penaltyPrice = useMemo(

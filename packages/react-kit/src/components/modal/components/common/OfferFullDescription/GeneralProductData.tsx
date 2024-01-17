@@ -1,22 +1,22 @@
-import React, { useMemo } from "react";
+import React from "react";
 import styled from "styled-components";
+import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
+import { breakpoint } from "../../../../../lib/ui/breakpoint";
+import { theme } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
+import { useConfigContext } from "../../../../config/ConfigContext";
 import Price from "../../../../price/Price";
+import Grid from "../../../../ui/Grid";
 import GridContainer from "../../../../ui/GridContainer";
 import Typography from "../../../../ui/Typography";
-import { Break } from "../detail/Detail.style";
-import { theme } from "../../../../../theme";
 import { useNotCommittableOfferStatus } from "../../Commit/useNotCommittableOfferStatus";
-import { TokenGatedItem } from "../detail/TokenGatedItem";
-import { useDetailViewContext } from "../detail/DetailViewProvider";
-import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import Grid from "../../../../ui/Grid";
+import { Break } from "../detail/Detail.style";
 import DetailTable from "../detail/DetailTable";
-import { getOfferDetailData } from "../detail/getOfferDetailData";
-import { useConvertedPrice } from "../../../../price/useConvertedPrice";
-import { useConfigContext } from "../../../../config/ConfigContext";
-import { useDisplayFloat } from "../../../../../lib/price/prices";
+import { useDetailViewContext } from "../detail/DetailViewProvider";
+import { TokenGatedItem } from "../detail/TokenGatedItem";
 import { OnClickBuyOrSwapHandler } from "../detail/types";
+import { useGetOfferDetailData } from "../detail/useGetOfferDetailData";
+import { Exchange } from "../../../../../types/exchange";
 const colors = theme.colors.light;
 
 const StyledPrice = styled(Price)`
@@ -43,11 +43,13 @@ const TokenGatedGrid = styled.div`
 `;
 type GeneralProductDataProps = OnClickBuyOrSwapHandler & {
   offer: Offer;
+  exchange: Exchange | null;
   onExchangePolicyClick: () => void;
 };
 
 export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
   offer,
+  exchange,
   onExchangePolicyClick,
   onClickBuyOrSwap
 }) => {
@@ -56,25 +58,15 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
   });
   const { isConditionMet, exchangePolicyCheckResult } = useDetailViewContext();
   const config = useConfigContext();
-  const convertedPrice = useConvertedPrice({
-    value: offer.price,
-    decimals: offer.exchangeToken.decimals,
-    symbol: offer.exchangeToken.symbol
+  const offerDetailData = useGetOfferDetailData({
+    dateFormat: config.dateFormat,
+    defaultCurrencySymbol: config.defaultCurrency.symbol,
+    offer,
+    exchange,
+    onExchangePolicyClick,
+    exchangePolicyCheckResult
   });
-  const displayFloat = useDisplayFloat();
-  const OFFER_DETAIL_DATA = useMemo(
-    () =>
-      getOfferDetailData({
-        config,
-        displayFloat,
-        offer,
-        onExchangePolicyClick,
-        exchangePolicyCheckResult
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [offer, convertedPrice, config, displayFloat]
-  );
-  const isPhygital = false; // TODO: change
+  const isPhygital = useIsPhygital({ offer });
   return (
     <Grid
       flexDirection="column"
@@ -151,7 +143,7 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
       <DetailTable
         align={false}
         noBorder
-        data={OFFER_DETAIL_DATA}
+        data={offerDetailData}
         inheritColor={false}
       />
     </Grid>
