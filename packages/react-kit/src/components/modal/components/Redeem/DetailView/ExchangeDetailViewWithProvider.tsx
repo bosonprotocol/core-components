@@ -9,13 +9,14 @@ import {
 } from "./InnerDetailWithProviderExchange";
 
 export type ExchangeDetailViewWithProviderProps =
-  InnerDetailWithProviderExchangeProps & DetailViewWithProviderProps;
+  InnerDetailWithProviderExchangeProps &
+    Omit<DetailViewWithProviderProps, "offer">;
 
 export const ExchangeDetailViewWithProvider: React.FC<
   ExchangeDetailViewWithProviderProps
 > = (props) => {
   return (
-    <DetailViewWithProvider {...props}>
+    <DetailViewWithProvider {...props} offer={props.selectedVariant.offer}>
       <InnerDetailWithProviderExchange {...props} />
     </DetailViewWithProvider>
   );

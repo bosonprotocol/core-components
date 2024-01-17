@@ -34,12 +34,23 @@ export function useChainId(): number | undefined {
   const { data: externalSignerChainId } = useExternalSignerChainId();
   const magicChainId = useMagicChainId();
   const isMagicLoggedIn = useIsMagicLoggedIn();
-  const chainIdToReturn = externalSigner
-    ? externalSignerChainId
-    : isMagicLoggedIn
-    ? magicChainId
-    : useNetwork().chain?.id;
-  return chainIdToReturn;
+  let networkChainId: number | undefined;
+  let error: unknown;
+  try {
+    networkChainId = useNetwork().chain?.id;
+  } catch (wagmiError) {
+    error = wagmiError; // error if the provider is not there
+  }
+  if (externalSigner) {
+    return externalSignerChainId;
+  }
+  if (isMagicLoggedIn) {
+    return magicChainId;
+  }
+  if (error) {
+    throw error;
+  }
+  return networkChainId;
 }
 
 export function useIsConnectedToWrongChain(): boolean {

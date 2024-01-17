@@ -20,6 +20,7 @@ import { ResponsiveVariationSelects } from "../../common/VariationSelects";
 import DetailSlider from "../../common/detail/DetailSlider";
 import { SellerAndDescription } from "../../common/detail/SellerAndDescription";
 import { SlickSlider } from "../../common/detail/SlickSlider";
+import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
 
 const colors = theme.colors.light;
 
@@ -50,24 +51,24 @@ const PreviewSlickSlider = styled(SlickSlider)`
   margin-top: 1rem;
 `;
 
-export type ExchangeViewProps = OnClickBuyOrSwapHandler & {
-  onHouseClick: () => void;
-  onNextClick: () => void;
-  onCancelExchange: () => void;
-  onExchangePolicyClick: () => void;
-  onPurchaseOverview: () => void;
-  onViewFullDescription: () => void;
-  onExpireVoucherClick: () => void;
-  onRaiseDisputeClick: () => void;
-  onContractualAgreementClick: () => void;
-  onGetDetailViewProviderProps: (providerProps: DetailContextProps) => void;
-  showBosonLogo?: boolean;
-  exchangeId: string;
-  fairExchangePolicyRules: string;
-  defaultDisputeResolverId: string;
-  isValid: boolean;
-  loadingViewFullDescription: boolean;
-};
+export type ExchangeViewProps = OnClickBuyOrSwapHandler &
+  Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick"> & {
+    onHouseClick: () => void;
+    onNextClick: () => void;
+    onCancelExchange: () => void;
+    onPurchaseOverview: () => void;
+    onViewFullDescription: () => void;
+    onExpireVoucherClick: () => void;
+    onRaiseDisputeClick: () => void;
+    onContractualAgreementClick: () => void;
+    onGetDetailViewProviderProps: (providerProps: DetailContextProps) => void;
+    showBosonLogo?: boolean;
+    exchangeId: string;
+    fairExchangePolicyRules: string;
+    defaultDisputeResolverId: string;
+    isValid: boolean;
+    loadingViewFullDescription: boolean;
+  };
 
 const SLIDER_OPTIONS = {
   type: "carousel" as const,

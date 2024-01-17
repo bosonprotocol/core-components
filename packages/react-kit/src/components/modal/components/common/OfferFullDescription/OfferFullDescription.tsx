@@ -1,20 +1,22 @@
-import React, { ReactNode, useMemo } from "react";
+import React, { useMemo } from "react";
+import styled from "styled-components";
+import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
 import { theme } from "../../../../../theme";
+import { Exchange } from "../../../../../types/exchange";
 import { isTruthy } from "../../../../../types/helpers";
 import { Offer } from "../../../../../types/offer";
 import { DetailChart } from "../../../../detail/DetailChart";
 import Grid from "../../../../ui/Grid";
-import { Tabs } from "../../../../ui/Tabs";
+import { Tabs, TabsProps } from "../../../../ui/Tabs";
 import Typography from "../../../../ui/Typography";
 import { Content } from "../../../nonModal/styles";
 import DetailSlider from "../detail/DetailSlider";
 import DetailTable from "../detail/DetailTable";
-import { GeneralProductData } from "./GeneralProductData";
-import styled from "styled-components";
+import DetailTransactions from "../detail/DetailTransactions";
 import { OnClickBuyOrSwapHandler } from "../detail/types";
-import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
-import { Exchange } from "../../../../../types/exchange";
+import { GeneralProductData } from "./GeneralProductData";
+import { UseGetOfferDetailDataProps } from "../detail/useGetOfferDetailData";
 
 const colors = theme.colors.light;
 const SLIDER_OPTIONS = {
@@ -30,17 +32,18 @@ const InventoryGraph = styled(DetailChart)`
     min-height: 250px;
   }
 `;
-type OfferFullDescriptionProps = OnClickBuyOrSwapHandler & {
+export type OfferFullDescriptionProps = OnClickBuyOrSwapHandler & {
   offer: Offer;
   exchange: Exchange | null;
-  children?: ReactNode;
-  onExchangePolicyClick: () => void;
-};
+  className?: string;
+} & Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick"> &
+  Pick<TabsProps, "withFullViewportWidth">;
 
 export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
   offer,
   exchange,
-  children,
+  className,
+  withFullViewportWidth,
   onExchangePolicyClick,
   onClickBuyOrSwap
 }) => {
@@ -57,9 +60,12 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
       isTruthy
     );
   }, [offerImg, images]);
+  const buyerAddress = exchange?.buyer.wallet;
   const isPhygital = useIsPhygital({ offer });
   return (
     <Tabs
+      withFullViewportWidth={withFullViewportWidth}
+      className={className}
       data={[
         {
           id: "general-product-data",
@@ -148,7 +154,14 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
                   </div>
                 )}
                 <InventoryGraph offer={offer} title="Inventory graph" />
-                {children}
+                {exchange && buyerAddress && (
+                  <DetailTransactions
+                    title="Transaction History (this item)"
+                    exchange={exchange}
+                    offer={offer}
+                    buyerAddress={buyerAddress}
+                  />
+                )}
               </Grid>
             </Content>
           )

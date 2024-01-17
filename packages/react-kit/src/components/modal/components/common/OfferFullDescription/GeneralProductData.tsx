@@ -15,7 +15,10 @@ import DetailTable from "../detail/DetailTable";
 import { useDetailViewContext } from "../detail/DetailViewProvider";
 import { TokenGatedItem } from "../detail/TokenGatedItem";
 import { OnClickBuyOrSwapHandler } from "../detail/types";
-import { useGetOfferDetailData } from "../detail/useGetOfferDetailData";
+import {
+  UseGetOfferDetailDataProps,
+  useGetOfferDetailData
+} from "../detail/useGetOfferDetailData";
 import { Exchange } from "../../../../../types/exchange";
 const colors = theme.colors.light;
 
@@ -44,8 +47,7 @@ const TokenGatedGrid = styled.div`
 type GeneralProductDataProps = OnClickBuyOrSwapHandler & {
   offer: Offer;
   exchange: Exchange | null;
-  onExchangePolicyClick: () => void;
-};
+} & Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick">;
 
 export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
   offer,

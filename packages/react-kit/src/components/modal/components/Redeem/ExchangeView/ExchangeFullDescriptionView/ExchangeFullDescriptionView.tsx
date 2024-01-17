@@ -7,12 +7,14 @@ import { ExchangeFullDescription } from "./ExchangeFullDescription";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
 import { theme } from "../../../../../../theme";
 import { OnClickBuyOrSwapHandler } from "../../../common/detail/types";
+import { UseGetOfferDetailDataProps } from "../../../common/detail/useGetOfferDetailData";
 
 const colors = theme.colors.light;
-interface Props extends OnClickBuyOrSwapHandler {
+interface Props
+  extends OnClickBuyOrSwapHandler,
+    Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick"> {
   onBackClick: () => void;
   exchange: Exchange | null;
-  onExchangePolicyClick: () => void;
 }
 
 export function ExchangeFullDescriptionView({

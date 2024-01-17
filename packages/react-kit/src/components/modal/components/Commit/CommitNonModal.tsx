@@ -186,9 +186,9 @@ function CommitNonModal({
           setSelectedVariant={setSelectedVariant}
           disableVariationsSelects={disableVariationsSelects}
           loadingViewFullDescription={loadingViewFullDescription}
-          onExchangePolicyClick={() => {
+          onExchangePolicyClick={(...args) => {
             setActiveStep(ActiveStep.EXCHANGE_POLICY);
-            onExchangePolicyClick?.();
+            onExchangePolicyClick?.(...args);
           }}
           onPurchaseOverview={() => {
             setActiveStep(ActiveStep.PURCHASE_OVERVIEW);
@@ -214,9 +214,9 @@ function CommitNonModal({
         <DetailViewProvider {...providerPropsRef.current}>
           <OfferFullDescriptionView
             onBackClick={goToPreviousStep}
-            onExchangePolicyClick={() => {
+            onExchangePolicyClick={(...args) => {
               setActiveStep(ActiveStep.EXCHANGE_POLICY);
-              onExchangePolicyClick?.();
+              onExchangePolicyClick?.(...args);
             }}
             offer={selectedVariant.offer}
             onClickBuyOrSwap={onClickBuyOrSwap}
@@ -248,9 +248,6 @@ function CommitNonModal({
       ) : currentStep === ActiveStep.COMMIT_SUCESS ? (
         <CommitSuccess
           onHouseClick={() => setActiveStep(ActiveStep.OFFER_VIEW)}
-          onExchangePolicyClick={() =>
-            setActiveStep(ActiveStep.EXCHANGE_POLICY)
-          }
           exchangeId={exchangeInfo?.exchangeId ?? ""}
           commitHash={exchangeInfo?.txHash}
         />

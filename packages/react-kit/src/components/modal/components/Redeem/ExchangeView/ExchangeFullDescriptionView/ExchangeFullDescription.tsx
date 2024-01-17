@@ -1,33 +1,25 @@
 import React from "react";
 import { Exchange } from "../../../../../../types/exchange";
-import DetailTransactions from "../../../common/detail/DetailTransactions";
 import { OfferFullDescription } from "../../../common/OfferFullDescription/OfferFullDescription";
 import { OnClickBuyOrSwapHandler } from "../../../common/detail/types";
+import { UseGetOfferDetailDataProps } from "../../../common/detail/useGetOfferDetailData";
 
-interface ExchangeFullDescriptionProps extends OnClickBuyOrSwapHandler {
+interface ExchangeFullDescriptionProps
+  extends OnClickBuyOrSwapHandler,
+    Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick"> {
   exchange: Exchange;
-  onExchangePolicyClick: () => void;
 }
 
 export const ExchangeFullDescription: React.FC<
   ExchangeFullDescriptionProps
 > = ({ exchange, onExchangePolicyClick, onClickBuyOrSwap }) => {
   const { offer } = exchange;
-  const buyerAddress = exchange.buyer.wallet;
-
   return (
     <OfferFullDescription
       offer={offer}
       exchange={exchange}
       onExchangePolicyClick={onExchangePolicyClick}
       onClickBuyOrSwap={onClickBuyOrSwap}
-    >
-      <DetailTransactions
-        title="Transaction History (this item)"
-        exchange={exchange}
-        offer={offer}
-        buyerAddress={buyerAddress}
-      />
-    </OfferFullDescription>
+    />
   );
 };

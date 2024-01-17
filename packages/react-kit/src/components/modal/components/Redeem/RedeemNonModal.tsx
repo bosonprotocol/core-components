@@ -572,9 +572,9 @@ function RedeemNonModal({
                 <ExchangeView
                   onHouseClick={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onNextClick={() => setActiveStep(ActiveStep.REDEEM_FORM)}
-                  onExchangePolicyClick={() => {
+                  onExchangePolicyClick={(...args) => {
                     setActiveStep(ActiveStep.EXCHANGE_POLICY);
-                    onExchangePolicyClick?.();
+                    onExchangePolicyClick?.(...args);
                   }}
                   onPurchaseOverview={() => {
                     setActiveStep(ActiveStep.PURCHASE_OVERVIEW);
@@ -611,9 +611,9 @@ function RedeemNonModal({
                   <ExchangeFullDescriptionView
                     onBackClick={goToPreviousStep}
                     exchange={exchange || selectedExchange || null}
-                    onExchangePolicyClick={() => {
+                    onExchangePolicyClick={(...args) => {
                       setActiveStep(ActiveStep.EXCHANGE_POLICY);
-                      onExchangePolicyClick?.();
+                      onExchangePolicyClick?.(...args);
                     }}
                   />
                 </DetailViewProvider>
@@ -682,9 +682,6 @@ function RedeemNonModal({
                 <RedeemSuccess
                   onHouseClick={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onClickDone={() => setActiveStep(ActiveStep.MY_ITEMS)}
-                  onExchangePolicyClick={() =>
-                    setActiveStep(ActiveStep.EXCHANGE_POLICY)
-                  }
                   exchangeId={exchange?.id || ""}
                 />
               ) : (

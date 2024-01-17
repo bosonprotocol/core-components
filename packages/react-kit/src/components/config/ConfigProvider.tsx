@@ -3,6 +3,10 @@ import { isTruthy } from "../../types/helpers";
 import { Context, ConfigContextProps } from "./ConfigContext";
 import { useEnvContext } from "../environment/EnvironmentContext";
 import { getEnvConfigById, getEnvConfigs } from "@bosonprotocol/core-sdk";
+import {
+  EnvironmentProvider,
+  EnvironmentProviderProps
+} from "../environment/EnvironmentProvider";
 
 export type ConfigProviderProps = Omit<
   ConfigContextProps,
@@ -17,8 +21,20 @@ export type ConfigProviderProps = Omit<
   defaultCurrencySymbol: string;
   sellerCurationListBetweenCommas?: string;
   offerCurationListBetweenCommas?: string;
-};
+} & EnvironmentProviderProps;
 export function ConfigProvider({ children, ...rest }: ConfigProviderProps) {
+  return (
+    <EnvironmentProvider
+      envName={rest.envName}
+      configId={rest.configId}
+      metaTx={rest.metaTx}
+    >
+      <InnerConfigProvider {...rest}>{children}</InnerConfigProvider>
+    </EnvironmentProvider>
+  );
+}
+
+function InnerConfigProvider({ children, ...rest }: ConfigProviderProps) {
   const { envName, configId } = useEnvContext();
   const envConfig = useMemo(
     () => getEnvConfigById(envName, configId),

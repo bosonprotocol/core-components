@@ -24,6 +24,7 @@ import { SlickSlider } from "../common/detail/SlickSlider";
 import { CommitDetailViewWithProvider } from "./DetailView/CommitDetailViewWithProvider";
 import { DetailContextProps } from "../common/detail/DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "../common/detail/types";
+import { UseGetOfferDetailDataProps } from "../common/detail/useGetOfferDetailData";
 
 const colors = theme.colors.light;
 const ImageWrapper = styled.div`
@@ -53,21 +54,21 @@ const PreviewSlickSlider = styled(SlickSlider)`
   margin-top: 1rem;
 `;
 
-export type OfferVariantViewProps = OnClickBuyOrSwapHandler & {
-  onCommit: (exchangeId: string, txHash: string) => void;
-  onExchangePolicyClick: () => void;
-  onPurchaseOverview: () => void;
-  onViewFullDescription: () => void;
-  onLicenseAgreementClick: () => void;
-  onGetDetailViewProviderProps: (providerProps: DetailContextProps) => void;
-  onAlreadyOwnOfferClick?: () => void;
-  selectedVariant: VariantV1;
-  setSelectedVariant: Dispatch<SetStateAction<VariantV1 | undefined>>;
-  allVariants: VariantV1[];
-  showBosonLogo?: boolean;
-  disableVariationsSelects?: boolean;
-  loadingViewFullDescription: boolean;
-};
+export type OfferVariantViewProps = OnClickBuyOrSwapHandler &
+  Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick"> & {
+    onCommit: (exchangeId: string, txHash: string) => void;
+    onPurchaseOverview: () => void;
+    onViewFullDescription: () => void;
+    onLicenseAgreementClick: () => void;
+    onGetDetailViewProviderProps: (providerProps: DetailContextProps) => void;
+    onAlreadyOwnOfferClick?: () => void;
+    selectedVariant: VariantV1;
+    setSelectedVariant: Dispatch<SetStateAction<VariantV1 | undefined>>;
+    allVariants: VariantV1[];
+    showBosonLogo?: boolean;
+    disableVariationsSelects?: boolean;
+    loadingViewFullDescription: boolean;
+  };
 
 const SLIDER_OPTIONS = {
   type: "carousel",

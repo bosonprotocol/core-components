@@ -9,13 +9,14 @@ import {
 } from "../../common/detail/DetailViewWithProvider";
 
 export type CommitDetailViewWithProviderProps =
-  InnerDetailWithProviderCommitProps & DetailViewWithProviderProps;
+  InnerDetailWithProviderCommitProps &
+    Omit<DetailViewWithProviderProps, "offer">;
 
 export const CommitDetailViewWithProvider: React.FC<
   CommitDetailViewWithProviderProps
 > = (props) => {
   return (
-    <DetailViewWithProvider {...props}>
+    <DetailViewWithProvider {...props} offer={props.selectedVariant.offer}>
       <InnerDetailWithProviderCommit {...props} />
     </DetailViewWithProvider>
   );

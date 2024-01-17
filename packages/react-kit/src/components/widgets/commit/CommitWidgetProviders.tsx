@@ -6,10 +6,6 @@ import {
   ConfigProvider,
   ConfigProviderProps
 } from "../../config/ConfigProvider";
-import {
-  EnvironmentProvider,
-  EnvironmentProviderProps
-} from "../../environment/EnvironmentProvider";
 import { IpfsProvider, IpfsProviderProps } from "../../ipfs/IpfsProvider";
 import { MagicProvider } from "../../magicLink/MagicContext";
 import ModalProvider from "../../modal/ModalProvider";
@@ -23,7 +19,6 @@ import ConvertionRateProvider, {
 
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
-  EnvironmentProviderProps &
   ConvertionRateProviderProps &
   Omit<WalletConnectionProviderProps, "children" | "envName"> & {
     children: ReactNode;
@@ -43,33 +38,27 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> = ({
   ...props
 }) => {
   return (
-    <EnvironmentProvider
-      envName={props.envName}
-      configId={props.configId}
-      metaTx={props.metaTx}
+    <ConfigProvider
+      magicLinkKey={magicLinkKey}
+      infuraKey={infuraKey}
+      {...props}
     >
       <GlobalStyle />
-      <ConfigProvider
-        magicLinkKey={magicLinkKey}
-        infuraKey={infuraKey}
-        {...props}
-      >
-        <MagicProvider>
-          <QueryClientProvider client={queryClient}>
-            <WalletConnectionProvider
-              walletConnectProjectId={props.walletConnectProjectId}
-            >
-              <ChatProvider>
-                <IpfsProvider {...props}>
-                  <ConvertionRateProvider>
-                    <ModalProvider>{children}</ModalProvider>
-                  </ConvertionRateProvider>
-                </IpfsProvider>
-              </ChatProvider>
-            </WalletConnectionProvider>
-          </QueryClientProvider>
-        </MagicProvider>
-      </ConfigProvider>
-    </EnvironmentProvider>
+      <MagicProvider>
+        <QueryClientProvider client={queryClient}>
+          <WalletConnectionProvider
+            walletConnectProjectId={props.walletConnectProjectId}
+          >
+            <ChatProvider>
+              <IpfsProvider {...props}>
+                <ConvertionRateProvider>
+                  <ModalProvider>{children}</ModalProvider>
+                </ConvertionRateProvider>
+              </IpfsProvider>
+            </ChatProvider>
+          </WalletConnectionProvider>
+        </QueryClientProvider>
+      </MagicProvider>
+    </ConfigProvider>
   );
 };

@@ -30,7 +30,6 @@ const ImageWrapper = styled.div`
 type Props = {
   onClickDone: () => void;
   onHouseClick: () => void;
-  onExchangePolicyClick: () => void;
   exchangeId: string;
 };
 

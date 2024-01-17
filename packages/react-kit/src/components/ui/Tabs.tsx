@@ -1,19 +1,38 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { theme } from "../../theme";
 import Grid from "./Grid";
 
 const colors = theme.colors.light;
-const Headers = styled.div.attrs({ className: "headers" })`
+const Headers = styled.div.attrs({ className: "headers" })<{
+  $withFullViewportWidth: boolean;
+}>`
+  display: flex;
+  gap: 1rem;
+  background-color: ${colors.lightGrey};
+  position: relative;
+  ${({ $withFullViewportWidth }) =>
+    $withFullViewportWidth &&
+    css`
+      &:before {
+        content: "";
+        width: 100vw;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: ${colors.lightGrey};
+        height: 100%;
+        min-height: 20px;
+        z-index: -1;
+      }
+    `}
+`;
+const InnerHeaders = styled.div`
+  width: 100%;
   display: flex;
   gap: 1rem;
   background-color: ${colors.lightGrey};
   overflow-x: auto;
-  /* width: 100vw;
-  margin-left: -50%;
-  transform: translateX(50%);
-  position: absolute;
-  left: 0; */
 `;
 const Content = styled.div`
   width: 100%;
@@ -48,32 +67,40 @@ type TabsData = {
   content: JSX.Element;
 };
 
-interface Props {
+export interface TabsProps {
   data: TabsData[];
+  withFullViewportWidth?: boolean;
+  className?: string;
 }
-export function Tabs({ data: tabsData }: Props) {
+export function Tabs({
+  data: tabsData,
+  className,
+  withFullViewportWidth
+}: TabsProps) {
   const [indexActiveTab, setIndexActiveTab] = useState(0);
 
   const handleActive = (index: number) => () => {
     setIndexActiveTab(index);
   };
   return (
-    <Grid flexDirection="column" alignItems="stretch">
-      <Headers>
-        {tabsData.map((tab, index) => {
-          const isActive = indexActiveTab === index;
-          return (
-            <HeaderTab key={tab.id}>
-              <TabTitle
-                $isActive={isActive}
-                data-testid={`tab-${tab.title}`}
-                onClick={handleActive(index)}
-              >
-                <span>{tab.title}</span>
-              </TabTitle>
-            </HeaderTab>
-          );
-        })}
+    <Grid flexDirection="column" alignItems="stretch" className={className}>
+      <Headers $withFullViewportWidth={withFullViewportWidth ?? false}>
+        <InnerHeaders>
+          {tabsData.map((tab, index) => {
+            const isActive = indexActiveTab === index;
+            return (
+              <HeaderTab key={tab.id}>
+                <TabTitle
+                  $isActive={isActive}
+                  data-testid={`tab-${tab.title}`}
+                  onClick={handleActive(index)}
+                >
+                  <span>{tab.title}</span>
+                </TabTitle>
+              </HeaderTab>
+            );
+          })}
+        </InnerHeaders>
       </Headers>
       <Content>
         {tabsData.map((tab, index) => {

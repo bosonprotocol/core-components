@@ -18,7 +18,14 @@ import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { DetailViewProps } from "./types";
 
 const fontSizeExchangePolicy = "0.625rem";
-
+export type UseGetOfferDetailDataProps = {
+  dateFormat: string;
+  defaultCurrencySymbol: string;
+  offer: Offer;
+  exchange?: Exchange | null;
+  onExchangePolicyClick: DetailViewProps["onExchangePolicyClick"];
+  exchangePolicyCheckResult: offers.CheckExchangePolicyResult | undefined;
+};
 export const useGetOfferDetailData = ({
   dateFormat,
   defaultCurrencySymbol,
@@ -26,14 +33,7 @@ export const useGetOfferDetailData = ({
   exchange,
   onExchangePolicyClick,
   exchangePolicyCheckResult
-}: {
-  dateFormat: string;
-  defaultCurrencySymbol: string;
-  offer: Offer;
-  exchange?: Exchange | null;
-  onExchangePolicyClick: DetailViewProps["onExchangePolicyClick"];
-  exchangePolicyCheckResult: offers.CheckExchangePolicyResult | undefined;
-}) => {
+}: UseGetOfferDetailDataProps) => {
   const displayFloat = useDisplayFloat({ defaultCurrencySymbol });
 
   const redeemableUntil = dayjs(

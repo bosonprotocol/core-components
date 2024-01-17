@@ -339,9 +339,6 @@ export default function InnerCommitDetailView(
                   </ThemedButton>
                 ) : (
                   <>
-                    {/* TODO: handle commit proxy button {showCommitProxyButton ? (
-                <CommitProxyButton />
-              ) : ( */}
                     <CommitButton
                       coreSdkConfig={{
                         envName: protocolConfig.envName,
@@ -365,7 +362,6 @@ export default function InnerCommitDetailView(
                       extraInfo="Step 1/2"
                       id="commit"
                     />
-                    {/* )} */}
                   </>
                 )}
               </CommitButtonWrapper>

@@ -7,13 +7,13 @@ import Grid from "../../../../ui/Grid";
 import { ArrowLeft } from "phosphor-react";
 import Typography from "../../../../ui/Typography";
 import { OnClickBuyOrSwapHandler } from "../../common/detail/types";
+import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
 
 const colors = theme.colors.light;
 type Props = OnClickBuyOrSwapHandler & {
   onBackClick: () => void;
   offer: Offer;
-  onExchangePolicyClick: () => void;
-};
+} & Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick">;
 
 export function OfferFullDescriptionView({
   onBackClick,

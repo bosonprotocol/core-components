@@ -7,7 +7,7 @@ import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy"
 import { useSellers } from "../../../../../hooks/useSellers";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
 import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
-import { VariantV1 } from "../../../../../types/variants";
+import { Offer } from "../../../../../types/offer";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import Loading from "../../../../ui/loading/Loading";
 import {
@@ -17,13 +17,12 @@ import {
 } from "./DetailViewProvider";
 
 export type DetailViewWithProviderProps = ConsumerProps & {
-  selectedVariant: VariantV1;
+  offer: Offer;
 };
 export const DetailViewWithProvider: React.FC<
   DetailViewWithProviderProps & { children: ReactNode }
 > = (props) => {
-  const { selectedVariant, onGetProviderProps, children } = props;
-  const { offer } = selectedVariant;
+  const { offer, onGetProviderProps, children } = props;
 
   const quantity = useMemo<number>(
     () => Number(offer?.quantityAvailable || 0),

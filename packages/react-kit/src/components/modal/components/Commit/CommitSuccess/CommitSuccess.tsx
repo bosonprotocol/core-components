@@ -7,24 +7,23 @@ import {
   Wallet
 } from "phosphor-react";
 import React, { useEffect } from "react";
+import { useExchanges } from "../../../../../hooks/useExchanges";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
-import Grid from "../../../../ui/Grid";
-import Loading from "../../../../ui/loading/Loading";
-import Typography from "../../../../ui/Typography";
+import { getOpenSeaUrl } from "../../../../../lib/opensea/getOpenSeaUrl";
 import { theme } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
-import GridContainer from "../../../../ui/GridContainer";
-import { useNonModalContext } from "../../../nonModal/NonModal";
-import { useExchanges } from "../../../../../hooks/useExchanges";
-import { CardCTA } from "./CardCTA";
-import { getOpenSeaUrl } from "../../../../../lib/opensea/getOpenSeaUrl";
 import { useConfigContext } from "../../../../config/ConfigContext";
+import Grid from "../../../../ui/Grid";
+import GridContainer from "../../../../ui/GridContainer";
+import Typography from "../../../../ui/Typography";
+import Loading from "../../../../ui/loading/Loading";
+import { useNonModalContext } from "../../../nonModal/NonModal";
+import { CardCTA } from "./CardCTA";
 
 const colors = theme.colors.light;
 
 type Props = {
   onHouseClick: () => void;
-  onExchangePolicyClick: () => void;
   exchangeId: string;
   commitHash: string | undefined;
 };
