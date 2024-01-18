@@ -9,7 +9,6 @@ import {
 import { IpfsProvider, IpfsProviderProps } from "../../ipfs/IpfsProvider";
 import { MagicProvider } from "../../magicLink/MagicContext";
 import ModalProvider from "../../modal/ModalProvider";
-import GlobalStyle from "../../styles/GlobalStyle";
 import WalletConnectionProvider, {
   WalletConnectionProviderProps
 } from "../../wallet/WalletConnectionProvider";
@@ -43,7 +42,6 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> = ({
       infuraKey={infuraKey}
       {...props}
     >
-      <GlobalStyle />
       <MagicProvider>
         <QueryClientProvider client={queryClient}>
           <WalletConnectionProvider

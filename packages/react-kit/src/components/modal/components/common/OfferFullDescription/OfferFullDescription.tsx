@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
-import { theme } from "../../../../../theme";
 import { Exchange } from "../../../../../types/exchange";
 import { isTruthy } from "../../../../../types/helpers";
 import { Offer } from "../../../../../types/offer";
@@ -17,14 +16,6 @@ import { SlickSlider, initialSettings } from "../detail/SlickSlider";
 import { OnClickBuyOrSwapHandler } from "../detail/types";
 import { UseGetOfferDetailDataProps } from "../detail/useGetOfferDetailData";
 import { GeneralProductData } from "./GeneralProductData";
-
-const colors = theme.colors.light;
-const SLIDER_OPTIONS = {
-  type: "slider",
-  startAt: 0,
-  gap: 20,
-  perView: 3
-} as const;
 
 const InventoryGraph = styled(DetailChart)`
   width: 100%;
@@ -124,15 +115,13 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
                   {description}
                 </Typography>
                 <Typography tag="h3">Physical Product images</Typography>
-                <>
-                  {mediaFiles.length > 1 && (
-                    <SlickSlider
-                      settings={{ ...initialSettings, slidesToShow: 4 }}
-                      mediaFiles={mediaFiles}
-                      imageOptimizationOpts={{ height: 500 }}
-                    />
-                  )}
-                </>
+
+                <SlickSlider
+                  settings={{ ...initialSettings, slidesToShow: 4 }}
+                  mediaFiles={mediaFiles}
+                  alignLeft
+                  imageOptimizationOpts={{ height: 500 }}
+                />
               </Content>
             )
           } as const,
@@ -171,7 +160,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
                     !!shippingInfo.shippingTable.length) && (
                     <div>
                       <Typography tag="h3">Shipping information</Typography>
-                      <Typography tag="p" style={{ color: colors.darkGrey }}>
+                      <Typography tag="p">
                         Return period: {shippingInfo.returnPeriodInDays}{" "}
                         {shippingInfo.returnPeriodInDays === 1 ? "day" : "days"}
                       </Typography>

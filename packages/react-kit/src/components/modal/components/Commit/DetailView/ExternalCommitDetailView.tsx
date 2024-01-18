@@ -7,6 +7,7 @@ import {
   CommitDetailViewWithProvider,
   CommitDetailViewWithProviderProps
 } from "./CommitDetailViewWithProvider";
+import GlobalStyle from "../../../../styles/GlobalStyle";
 
 export type ExternalCommitDetailViewProps =
   CommitDetailViewWithProviderProps & {
@@ -18,6 +19,7 @@ export const ExternalCommitDetailView: React.FC<
 > = (props) => {
   return (
     <CommitWidgetProviders {...props.providerProps}>
+      <GlobalStyle />
       <CommitDetailViewWithProvider {...props} />
     </CommitWidgetProviders>
   );

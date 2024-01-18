@@ -5,13 +5,13 @@ import _Slider, { Settings } from "react-slick";
 
 import IpfsImage from "../../../../ui/IpfsImage";
 import Video from "../../../../ui/Video";
-import styled, { CSSProperties } from "styled-components";
+import styled, { CSSProperties, css } from "styled-components";
 import { theme } from "../../../../../theme";
 import { ImageOptimizationOpts } from "../../../../../lib/images/images";
 export { Settings } from "react-slick";
 
 const colors = theme.colors.light;
-const Container = styled.div`
+const Container = styled.div<{ $alignLeft: boolean }>`
   .slick-slider {
     position: relative;
     overflow: hidden;
@@ -28,6 +28,12 @@ const Container = styled.div`
     }
     .slick-list {
       .slick-track {
+        ${({ $alignLeft }) =>
+          $alignLeft &&
+          css`
+            margin-left: 0;
+          `}
+
         .slick-slide {
           > * > * {
             padding-top: initial;
@@ -39,7 +45,6 @@ const Container = styled.div`
               position: unset;
               transform: none;
               object-fit: contain;
-              background-color: ${colors.white};
             }
           }
           [data-active="true"] {
@@ -167,6 +172,7 @@ type SlickSliderProps = {
   mediaFiles: { url: string; type: "image" | "video" }[];
   settings?: Settings;
   imageOptimizationOpts?: Partial<ImageOptimizationOpts>;
+  alignLeft?: boolean;
   className?: string;
   onMediaClick?: (arg0: { index: number }) => void;
   activeIndex?: number;
@@ -178,13 +184,14 @@ export const SlickSlider: React.FC<SlickSliderProps> = ({
     height: 500
   },
   className,
+  alignLeft,
   onMediaClick,
   activeIndex
 }) => {
   const Slider = _Slider as unknown as (props: Settings) => ReactElement;
   return (
     <>
-      <Container className={className}>
+      <Container className={className} $alignLeft={alignLeft ?? false}>
         <Slider {...settings}>
           {mediaFiles?.map(({ url, type }, index: number) => (
             <>

@@ -1,5 +1,6 @@
 import { exchanges, subgraph } from "@bosonprotocol/core-sdk";
-import { ArrowRight, Check, Question } from "phosphor-react";
+import dayjs from "dayjs";
+import { ArrowRight, Check } from "phosphor-react";
 import React from "react";
 import styled from "styled-components";
 import {
@@ -7,6 +8,7 @@ import {
   useIsConnectedToWrongChain
 } from "../../../../../hooks/connection/connection";
 import type { ExtendedExchange } from "../../../../../hooks/useExchanges";
+import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
 import { titleCase } from "../../../../../lib/string/formatText";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
 import { theme } from "../../../../../theme";
@@ -22,8 +24,6 @@ import {
 } from "../../common/detail/Detail.style";
 import { InnerDetailViewWithPortal } from "../../common/detail/InnerDetailViewWithPortal";
 import { DetailViewProps } from "../../common/detail/types";
-import dayjs from "dayjs";
-import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
 const colors = theme.colors.light;
 
 const RedeemButton = styled(Button)`

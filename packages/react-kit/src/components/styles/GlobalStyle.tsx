@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle<
     /* zIndex for wallet connect legacy view */    
     --wcm-z-index: ${zIndex.Modal + 100};
   }
-  :root {
+  * {
     --l: 50%;
     --headerBgColor: ${(props) =>
       props.$headerBgColor && !props.$withBosonStyles

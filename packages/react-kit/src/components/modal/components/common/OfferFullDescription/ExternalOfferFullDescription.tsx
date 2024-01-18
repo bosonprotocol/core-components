@@ -13,7 +13,6 @@ import WalletConnectionProvider, {
 } from "../../../../wallet/WalletConnectionProvider";
 import { MagicProvider } from "../../../../magicLink/MagicContext";
 import { QueryClient, QueryClientProvider } from "react-query";
-import GlobalStyle from "../../../../styles/GlobalStyle";
 import { IpfsProvider } from "../../../../ipfs/IpfsProvider";
 
 const queryClient = new QueryClient({
@@ -37,7 +36,6 @@ export const ExternalOfferFullDescription: React.FC<
 > = (props) => {
   return (
     <ConfigProvider {...props.providerProps}>
-      <GlobalStyle />
       <MagicProvider>
         <QueryClientProvider client={queryClient}>
           <WalletConnectionProvider
