@@ -20,7 +20,7 @@ import { useNonModalContext } from "../../nonModal/NonModal";
 import { ResponsiveVariationSelects } from "../common/VariationSelects";
 import DetailSlider from "../common/detail/DetailSlider";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
-import { SlickSlider } from "../common/detail/SlickSlider";
+import { SlickSlider, initialSettings } from "../common/detail/SlickSlider";
 import { CommitDetailViewWithProvider } from "./DetailView/CommitDetailViewWithProvider";
 import { DetailContextProps } from "../common/detail/DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "../common/detail/types";
@@ -176,6 +176,7 @@ export function OfferVariantView({
                   mediaFiles={mediaFiles}
                   sliderOptions={sliderOptions}
                   arrowsAbove={false}
+                  showArrows={false}
                   data-slider
                   onChangeMedia={({ index }) => {
                     setSliderIndex(index);
@@ -190,13 +191,13 @@ export function OfferVariantView({
               />
               {mediaFiles.length > 1 && (
                 <PreviewSlickSlider
+                  settings={{ ...initialSettings, slidesToShow: 8 }}
                   mediaFiles={mediaFiles}
                   onMediaClick={({ index }) => {
                     setSliderIndex(index);
                   }}
                   activeIndex={sliderIndex}
                   imageOptimizationOpts={{ height: 75 }}
-                  mediaHeight="75px"
                 />
               )}
             </ImageWrapper>

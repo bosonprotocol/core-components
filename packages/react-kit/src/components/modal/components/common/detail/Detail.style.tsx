@@ -580,7 +580,7 @@ export const RaiseProblemButton = styled(ThemedButton)`
   padding: 0.75rem 1rem;
 
   font-weight: 600;
-  color: ${colors.orange};
+  color: ${colors.accent};
   cursor: pointer;
   transition: all 150ms ease-in-out;
   &:hover:not(:disabled) {

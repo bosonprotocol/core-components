@@ -11,12 +11,12 @@ import Grid from "../../../../ui/Grid";
 import { Tabs, TabsProps } from "../../../../ui/Tabs";
 import Typography from "../../../../ui/Typography";
 import { Content } from "../../../nonModal/styles";
-import DetailSlider from "../detail/DetailSlider";
 import DetailTable from "../detail/DetailTable";
 import DetailTransactions from "../detail/DetailTransactions";
+import { SlickSlider, initialSettings } from "../detail/SlickSlider";
 import { OnClickBuyOrSwapHandler } from "../detail/types";
-import { GeneralProductData } from "./GeneralProductData";
 import { UseGetOfferDetailDataProps } from "../detail/useGetOfferDetailData";
+import { GeneralProductData } from "./GeneralProductData";
 
 const colors = theme.colors.light;
 const SLIDER_OPTIONS = {
@@ -34,6 +34,7 @@ const InventoryGraph = styled(DetailChart)`
 `;
 export type OfferFullDescriptionProps = OnClickBuyOrSwapHandler & {
   offer: Offer;
+  includeGeneralProductDataTab: boolean;
   exchange: Exchange | null;
   className?: string;
   defaultSelectedTabId?: typeof ids[number];
@@ -53,6 +54,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
   exchange,
   className,
   withFullViewportWidth,
+  includeGeneralProductDataTab,
   defaultSelectedTabId,
   onExchangePolicyClick,
   onClickBuyOrSwap
@@ -90,20 +92,24 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
       defaultSelectedTabId={defaultSelectedTabId}
       data={
         [
-          {
-            id: ids[0],
-            title: "General Product data",
-            content: (
-              <Content>
-                <GeneralProductData
-                  offer={offer}
-                  exchange={exchange}
-                  onExchangePolicyClick={onExchangePolicyClick}
-                  onClickBuyOrSwap={onClickBuyOrSwap}
-                />
-              </Content>
-            )
-          } as const,
+          ...(includeGeneralProductDataTab
+            ? [
+                {
+                  id: ids[0],
+                  title: "General Product data",
+                  content: (
+                    <Content>
+                      <GeneralProductData
+                        offer={offer}
+                        exchange={exchange}
+                        onExchangePolicyClick={onExchangePolicyClick}
+                        onClickBuyOrSwap={onClickBuyOrSwap}
+                      />
+                    </Content>
+                  )
+                } as const
+              ]
+            : []),
           {
             id: ids[1],
             title: "Physical Product data",
@@ -119,11 +125,11 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
                 </Typography>
                 <Typography tag="h3">Physical Product images</Typography>
                 <>
-                  {mediaFiles.length && (
-                    <DetailSlider
+                  {mediaFiles.length > 1 && (
+                    <SlickSlider
+                      settings={{ ...initialSettings, slidesToShow: 4 }}
                       mediaFiles={mediaFiles}
-                      arrowsAbove
-                      sliderOptions={SLIDER_OPTIONS}
+                      imageOptimizationOpts={{ height: 500 }}
                     />
                   )}
                 </>

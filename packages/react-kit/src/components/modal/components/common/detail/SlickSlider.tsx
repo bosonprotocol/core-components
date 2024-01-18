@@ -11,9 +11,11 @@ import { ImageOptimizationOpts } from "../../../../../lib/images/images";
 export { Settings } from "react-slick";
 
 const colors = theme.colors.light;
-const Container = styled.div<{ $mediaHeight: SlickSliderProps["mediaHeight"] }>`
+const Container = styled.div`
   .slick-slider {
     position: relative;
+    overflow: hidden;
+
     .slick-arrow {
       position: absolute;
       &[data-left] {
@@ -24,33 +26,28 @@ const Container = styled.div<{ $mediaHeight: SlickSliderProps["mediaHeight"] }>`
         right: 0;
       }
     }
-    .slick-track {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      .slick-slide {
-        &:not(:last-child) {
-          margin-right: 0.5rem;
-        }
-        width: auto !important;
-        > * > * {
-          padding-top: initial;
-          height: ${({ $mediaHeight }) => $mediaHeight};
-          aspect-ratio: 1;
-          img,
-          video {
-            padding: 0.25rem;
-            position: unset;
-            transform: none;
-            object-fit: contain;
-            background-color: ${colors.white};
+    .slick-list {
+      .slick-track {
+        .slick-slide {
+          > * > * {
+            padding-top: initial;
+            aspect-ratio: 1;
+            height: 100%;
+            img,
+            video {
+              padding: 0.25rem;
+              position: unset;
+              transform: none;
+              object-fit: contain;
+              background-color: ${colors.white};
+            }
           }
-        }
-        [data-active="true"] {
-          border: 4px solid ${colors.blue};
-        }
-        [data-active="false"] {
-          border: 4px solid transparent;
+          [data-active="true"] {
+            border: 4px solid ${colors.blue};
+          }
+          [data-active="false"] {
+            border: 4px solid transparent;
+          }
         }
       }
     }
@@ -158,10 +155,12 @@ export const initialSettings: Settings = {
   infinite: false,
   speed: 500,
   slidesToScroll: 1,
-  slidesToShow: 40,
+  slidesToShow: 2,
   arrows: true,
   nextArrow: <NextArrow />,
-  prevArrow: <PrevArrow />
+  prevArrow: <PrevArrow />,
+  variableWidth: false,
+  adaptiveHeight: false
 };
 type SlickSliderProps = {
   animationUrl?: string;
@@ -169,14 +168,12 @@ type SlickSliderProps = {
   settings?: Settings;
   imageOptimizationOpts?: Partial<ImageOptimizationOpts>;
   className?: string;
-  mediaHeight?: CSSProperties["height"];
   onMediaClick?: (arg0: { index: number }) => void;
   activeIndex?: number;
 };
 export const SlickSlider: React.FC<SlickSliderProps> = ({
   mediaFiles,
   settings = initialSettings,
-  mediaHeight = "75px",
   imageOptimizationOpts = {
     height: 500
   },
@@ -186,36 +183,38 @@ export const SlickSlider: React.FC<SlickSliderProps> = ({
 }) => {
   const Slider = _Slider as unknown as (props: Settings) => ReactElement;
   return (
-    <Container className={className} $mediaHeight={mediaHeight}>
-      <Slider {...settings}>
-        {mediaFiles?.map(({ url, type }, index: number) => (
-          <>
-            {type === "image" ? (
-              <IpfsImage
-                src={url}
-                style={{ cursor: "pointer" }}
-                dataTestId="sliderImage"
-                optimizationOpts={imageOptimizationOpts}
-                onClick={() => {
-                  onMediaClick?.({ index });
-                }}
-                data-active={activeIndex === index ? "true" : "false"}
-              />
-            ) : (
-              <Video
-                src={url}
-                onClick={() => {
-                  onMediaClick?.({ index });
-                }}
-                style={{ cursor: "pointer" }}
-                dataTestId="offerAnimationUrl"
-                videoProps={{ muted: true, loop: true, autoPlay: true }}
-                data-active={activeIndex === index ? "true" : "false"}
-              />
-            )}
-          </>
-        ))}
-      </Slider>
-    </Container>
+    <>
+      <Container className={className}>
+        <Slider {...settings}>
+          {mediaFiles?.map(({ url, type }, index: number) => (
+            <>
+              {type === "image" ? (
+                <IpfsImage
+                  src={url}
+                  style={{ cursor: "pointer" }}
+                  dataTestId="sliderImage"
+                  optimizationOpts={imageOptimizationOpts}
+                  onClick={() => {
+                    onMediaClick?.({ index });
+                  }}
+                  data-active={activeIndex === index ? "true" : "false"}
+                />
+              ) : (
+                <Video
+                  src={url}
+                  onClick={() => {
+                    onMediaClick?.({ index });
+                  }}
+                  style={{ cursor: "pointer" }}
+                  dataTestId="offerAnimationUrl"
+                  videoProps={{ muted: true, loop: true, autoPlay: true }}
+                  data-active={activeIndex === index ? "true" : "false"}
+                />
+              )}
+            </>
+          ))}
+        </Slider>
+      </Container>
+    </>
   );
 };

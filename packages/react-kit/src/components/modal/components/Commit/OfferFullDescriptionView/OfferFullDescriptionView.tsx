@@ -45,6 +45,7 @@ export function OfferFullDescriptionView({
   }, [dispatch, offer.metadata.name]);
   return (
     <OfferFullDescription
+      includeGeneralProductDataTab
       offer={offer}
       exchange={null}
       onExchangePolicyClick={onExchangePolicyClick}

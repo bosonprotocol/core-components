@@ -200,6 +200,7 @@ export function ExchangeView({
                   mediaFiles={mediaFiles}
                   sliderOptions={sliderOptions}
                   arrowsAbove={false}
+                  showArrows={false}
                   data-slider
                   onChangeMedia={({ index }) => {
                     setSliderIndex(index);
@@ -220,7 +221,6 @@ export function ExchangeView({
                   }}
                   activeIndex={sliderIndex}
                   imageOptimizationOpts={{ height: 75 }}
-                  mediaHeight="75px"
                 />
               )}
             </ImageWrapper>

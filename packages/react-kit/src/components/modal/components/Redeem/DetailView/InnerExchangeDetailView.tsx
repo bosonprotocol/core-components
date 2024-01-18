@@ -122,40 +122,47 @@ export default function InnerExchangeDetailView(
       priceSibling={
         <>
           {isToRedeem ? (
-            <Grid flexDirection="column">
-              <RedeemButton
-                variant="primaryFill"
-                size={ButtonSize.Large}
-                disabled={isInWrongChain || !isBuyer}
-                onClick={() => {
-                  onRedeem?.();
-                }}
-                style={{ width: "100%" }}
-              >
-                <span>Redeem</span>
-              </RedeemButton>
-              {isToRedeem && !isRedeemDisabled && (
-                <Typography
-                  $fontSize="0.8rem"
-                  style={{ color: "initial", display: "block" }}
+            <>
+              <div />
+              <Grid flexDirection="column" style={{ gridColumn: "1 / span 2" }}>
+                <RedeemButton
+                  variant="primaryFill"
+                  size={ButtonSize.Large}
+                  disabled={isInWrongChain || !isBuyer}
+                  onClick={() => {
+                    onRedeem?.();
+                  }}
+                  style={{ width: "100%" }}
                 >
-                  By proceeding to Redeem, I agree to the{" "}
-                  <span
+                  <span>Redeem</span>
+                </RedeemButton>
+                {!isRedeemDisabled && (
+                  <Typography
+                    $fontSize="0.8rem"
                     style={{
-                      color: colors.blue,
-                      fontSize: "inherit",
-                      cursor: "pointer"
-                    }}
-                    onClick={() => {
-                      onContractualAgreementClick();
+                      color: "initial",
+                      display: "block",
+                      marginTop: "0.25rem"
                     }}
                   >
-                    Buyer & Seller Agreement
-                  </span>
-                  .
-                </Typography>
-              )}
-            </Grid>
+                    By proceeding to Redeem, I agree to the{" "}
+                    <span
+                      style={{
+                        fontSize: "inherit",
+                        cursor: "pointer",
+                        textDecoration: "underline"
+                      }}
+                      onClick={() => {
+                        onContractualAgreementClick();
+                      }}
+                    >
+                      Buyer & Seller Agreement
+                    </span>
+                    .
+                  </Typography>
+                )}
+              </Grid>
+            </>
           ) : (
             <ThemedButton
               themeVal="outline"
@@ -220,7 +227,7 @@ export default function InnerExchangeDetailView(
                   style={{ fontSize: "0.875rem" }}
                   disabled={isInWrongChain || !isBuyer}
                 >
-                  Cancel
+                  Cancel exchange
                 </StyledCancelButton>
               )}
             </>
@@ -239,7 +246,6 @@ export default function InnerExchangeDetailView(
                   }
                 >
                   Raise a problem
-                  <Question size={18} />
                 </RaiseProblemButton>
               )}
             </>

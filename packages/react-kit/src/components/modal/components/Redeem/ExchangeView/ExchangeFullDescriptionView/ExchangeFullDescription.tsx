@@ -16,6 +16,7 @@ export const ExchangeFullDescription: React.FC<
   const { offer } = exchange;
   return (
     <OfferFullDescription
+      includeGeneralProductDataTab
       offer={offer}
       exchange={exchange}
       onExchangePolicyClick={onExchangePolicyClick}

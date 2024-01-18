@@ -90,6 +90,7 @@ interface Props {
   sliderOptions?: ConstructorParameters<typeof Glide>[1];
   arrowsAbove: boolean;
   className?: string;
+  showArrows?: boolean;
   highlightActive?: boolean;
   onChangeMedia?: (arg0: { index: number }) => void;
 }
@@ -106,6 +107,7 @@ export default function DetailSlider({
   mediaFiles,
   sliderOptions = SLIDER_OPTIONS,
   arrowsAbove,
+  showArrows: outerShowArrows,
   highlightActive,
   className,
   onChangeMedia
@@ -120,7 +122,9 @@ export default function DetailSlider({
 
   const sumMediaFiles = mediaFiles.length;
   const showArrows =
-    sumMediaFiles !== 1 && (sliderOptions.perView ?? 1) === 1
+    outerShowArrows === false
+      ? false
+      : sumMediaFiles !== 1 && (sliderOptions.perView ?? 1) === 1
       ? true
       : sumMediaFiles > (sliderOptions.perView ?? 1);
   const draggable = showArrows;
