@@ -67,17 +67,28 @@ type TabsData = {
   content: JSX.Element;
 };
 
-export interface TabsProps {
-  data: TabsData[];
+export type TabsProps = Parameters<typeof Tabs>[0];
+
+type InnerTabsProps<T extends TabsData> = {
+  data: T[] | readonly T[];
   withFullViewportWidth?: boolean;
+  defaultSelectedTabId?: T["id"];
   className?: string;
-}
-export function Tabs({
+};
+export function Tabs<T extends TabsData>({
   data: tabsData,
   className,
-  withFullViewportWidth
-}: TabsProps) {
-  const [indexActiveTab, setIndexActiveTab] = useState(0);
+  withFullViewportWidth,
+  defaultSelectedTabId
+}: InnerTabsProps<T>) {
+  const [indexActiveTab, setIndexActiveTab] = useState(
+    defaultSelectedTabId
+      ? Math.max(
+          tabsData.findIndex((d) => d.id === defaultSelectedTabId),
+          0
+        )
+      : 0
+  );
 
   const handleActive = (index: number) => () => {
     setIndexActiveTab(index);

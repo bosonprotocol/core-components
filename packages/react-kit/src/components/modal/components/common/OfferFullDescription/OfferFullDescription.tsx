@@ -36,14 +36,24 @@ export type OfferFullDescriptionProps = OnClickBuyOrSwapHandler & {
   offer: Offer;
   exchange: Exchange | null;
   className?: string;
+  defaultSelectedTabId?: typeof ids[number];
 } & Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick"> &
   Pick<TabsProps, "withFullViewportWidth">;
+
+const ids = [
+  "general-product-data",
+  "physical-product-data",
+  "phygital-product-data",
+  "about-creator",
+  "shipping-inventory"
+] as const;
 
 export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
   offer,
   exchange,
   className,
   withFullViewportWidth,
+  defaultSelectedTabId,
   onExchangePolicyClick,
   onClickBuyOrSwap
 }) => {
@@ -66,107 +76,110 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
     <Tabs
       withFullViewportWidth={withFullViewportWidth}
       className={className}
-      data={[
-        {
-          id: "general-product-data",
-          title: "General Product data",
-          content: (
-            <Content>
-              <GeneralProductData
-                offer={offer}
-                exchange={exchange}
-                onExchangePolicyClick={onExchangePolicyClick}
-                onClickBuyOrSwap={onClickBuyOrSwap}
-              />
-            </Content>
-          )
-        },
-        {
-          id: "physical-product-data",
-          title: "Physical Product data",
-          content: (
-            <Content>
-              <Typography tag="h3">Physical Product data</Typography>
-              <Typography
-                tag="p"
-                data-testid="description"
-                style={{ whiteSpace: "pre-wrap" }}
-              >
-                {description}
-              </Typography>
-              <Typography tag="h3">Physical Product images</Typography>
-              <>
-                {(allImages.length > 0 || animationUrl) && (
-                  <DetailSlider
-                    animationUrl={animationUrl}
-                    images={allImages}
-                    arrowsAbove
-                    sliderOptions={SLIDER_OPTIONS}
-                  />
-                )}
-              </>
-            </Content>
-          )
-        },
-        ...(isPhygital
-          ? [
-              {
-                id: "phygital-product-data",
-                title: "Digital Product data",
-                content: (
-                  <Content>
-                    <Typography tag="h3">Digital Product data</Typography>
-                  </Content>
-                )
-              }
-            ]
-          : []),
-        {
-          id: "about-creator",
-          title: "About the creator",
-          content: (
-            <Content>
-              <Typography tag="h3">About the creator</Typography>
-              <Typography tag="p" style={{ whiteSpace: "pre-wrap" }}>
-                {artistDescription}
-              </Typography>
-            </Content>
-          )
-        },
-        {
-          id: "shipping-inventory",
-          title: "Shipping & Inventory",
-          content: (
-            <Content>
-              <Grid flexDirection="column" alignItems="flex-start">
-                {(shippingInfo.returnPeriodInDays !== undefined ||
-                  !!shippingInfo.shippingTable.length) && (
-                  <div>
-                    <Typography tag="h3">Shipping information</Typography>
-                    <Typography tag="p" style={{ color: colors.darkGrey }}>
-                      Return period: {shippingInfo.returnPeriodInDays}{" "}
-                      {shippingInfo.returnPeriodInDays === 1 ? "day" : "days"}
-                    </Typography>
-                    <DetailTable
-                      data={shippingInfo.shippingTable}
-                      inheritColor
+      defaultSelectedTabId={defaultSelectedTabId}
+      data={
+        [
+          {
+            id: ids[0],
+            title: "General Product data",
+            content: (
+              <Content>
+                <GeneralProductData
+                  offer={offer}
+                  exchange={exchange}
+                  onExchangePolicyClick={onExchangePolicyClick}
+                  onClickBuyOrSwap={onClickBuyOrSwap}
+                />
+              </Content>
+            )
+          } as const,
+          {
+            id: ids[1],
+            title: "Physical Product data",
+            content: (
+              <Content>
+                <Typography tag="h3">Physical Product data</Typography>
+                <Typography
+                  tag="p"
+                  data-testid="description"
+                  style={{ whiteSpace: "pre-wrap" }}
+                >
+                  {description}
+                </Typography>
+                <Typography tag="h3">Physical Product images</Typography>
+                <>
+                  {(allImages.length > 0 || animationUrl) && (
+                    <DetailSlider
+                      animationUrl={animationUrl}
+                      images={allImages}
+                      arrowsAbove
+                      sliderOptions={SLIDER_OPTIONS}
                     />
-                  </div>
-                )}
-                <InventoryGraph offer={offer} title="Inventory graph" />
-                {exchange && buyerAddress && (
-                  <DetailTransactions
-                    title="Transaction History (this item)"
-                    exchange={exchange}
-                    offer={offer}
-                    buyerAddress={buyerAddress}
-                  />
-                )}
-              </Grid>
-            </Content>
-          )
-        }
-      ]}
+                  )}
+                </>
+              </Content>
+            )
+          } as const,
+          ...(isPhygital
+            ? ([
+                {
+                  id: ids[2],
+                  title: "Digital Product data",
+                  content: (
+                    <Content>
+                      <Typography tag="h3">Digital Product data</Typography>
+                    </Content>
+                  )
+                } as const
+              ] as const)
+            : []),
+          {
+            id: ids[3],
+            title: "About the creator",
+            content: (
+              <Content>
+                <Typography tag="h3">About the creator</Typography>
+                <Typography tag="p" style={{ whiteSpace: "pre-wrap" }}>
+                  {artistDescription}
+                </Typography>
+              </Content>
+            )
+          } as const,
+          {
+            id: ids[4],
+            title: "Shipping & Inventory",
+            content: (
+              <Content>
+                <Grid flexDirection="column" alignItems="flex-start">
+                  {(shippingInfo.returnPeriodInDays !== undefined ||
+                    !!shippingInfo.shippingTable.length) && (
+                    <div>
+                      <Typography tag="h3">Shipping information</Typography>
+                      <Typography tag="p" style={{ color: colors.darkGrey }}>
+                        Return period: {shippingInfo.returnPeriodInDays}{" "}
+                        {shippingInfo.returnPeriodInDays === 1 ? "day" : "days"}
+                      </Typography>
+                      <DetailTable
+                        data={shippingInfo.shippingTable}
+                        inheritColor
+                      />
+                    </div>
+                  )}
+                  <InventoryGraph offer={offer} title="Inventory graph" />
+                  {exchange && buyerAddress && (
+                    <DetailTransactions
+                      title="Transaction History (this item)"
+                      exchange={exchange}
+                      offer={offer}
+                      buyerAddress={buyerAddress}
+                    />
+                  )}
+                </Grid>
+              </Content>
+            )
+          } as const
+        ] as const
+      }
     />
   );
 };

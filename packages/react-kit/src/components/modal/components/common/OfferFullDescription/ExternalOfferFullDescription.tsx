@@ -23,9 +23,13 @@ const queryClient = new QueryClient({
     }
   }
 });
-export type ExternalOfferFullDescriptionProps = OfferFullDescriptionProps & {
+export type ExternalOfferFullDescriptionProps = Omit<
+  OfferFullDescriptionProps,
+  "defaultSelectedTabId"
+> & {
   providerProps: Omit<ConfigProviderProps, "children"> &
     Omit<WalletConnectionProviderProps, "children" | "envName">;
+  defaultSelectedOfferTabsIdTab?: OfferFullDescriptionProps["defaultSelectedTabId"];
 };
 
 export const ExternalOfferFullDescription: React.FC<
@@ -41,7 +45,10 @@ export const ExternalOfferFullDescription: React.FC<
           >
             <IpfsProvider {...props}>
               <DetailViewWithProvider offer={props.offer}>
-                <OfferFullDescription {...props} />
+                <OfferFullDescription
+                  {...props}
+                  defaultSelectedTabId={props.defaultSelectedOfferTabsIdTab}
+                />
               </DetailViewWithProvider>
             </IpfsProvider>
           </WalletConnectionProvider>
