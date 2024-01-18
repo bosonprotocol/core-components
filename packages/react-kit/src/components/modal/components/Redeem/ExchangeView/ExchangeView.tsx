@@ -195,10 +195,9 @@ export function ExchangeView({
             <ImageWrapper>
               <DetailOpenSea exchange={exchange} />
 
-              {(allImages.length > 0 || animationUrl) && (
+              {mediaFiles.length && (
                 <DetailSlider
-                  animationUrl={animationUrl}
-                  images={allImages}
+                  mediaFiles={mediaFiles}
                   sliderOptions={sliderOptions}
                   arrowsAbove={false}
                   data-slider

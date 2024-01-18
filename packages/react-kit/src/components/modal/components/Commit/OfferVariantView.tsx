@@ -171,10 +171,9 @@ export function OfferVariantView({
         >
           <ImageAndSellerIdContainer flexDirection="column" flex={1}>
             <ImageWrapper>
-              {(allImages.length > 0 || animationUrl) && (
+              {mediaFiles.length && (
                 <DetailSlider
-                  animationUrl={animationUrl}
-                  images={allImages}
+                  mediaFiles={mediaFiles}
                   sliderOptions={sliderOptions}
                   arrowsAbove={false}
                   data-slider

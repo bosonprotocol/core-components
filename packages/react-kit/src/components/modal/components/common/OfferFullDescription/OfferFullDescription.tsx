@@ -70,6 +70,17 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
       isTruthy
     );
   }, [offerImg, images]);
+  const mediaFiles = useMemo(() => {
+    const imgs = [...allImages.map((img) => ({ url: img, type: "image" }))];
+    return (
+      animationUrl
+        ? [
+            { url: animationUrl, type: "video" },
+            ...allImages.map((img) => ({ url: img, type: "image" }))
+          ]
+        : imgs
+    ) as { url: string; type: "image" | "video" }[];
+  }, [allImages, animationUrl]);
   const buyerAddress = exchange?.buyer.wallet;
   const isPhygital = useIsPhygital({ offer });
   return (
@@ -108,10 +119,9 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
                 </Typography>
                 <Typography tag="h3">Physical Product images</Typography>
                 <>
-                  {(allImages.length > 0 || animationUrl) && (
+                  {mediaFiles.length && (
                     <DetailSlider
-                      animationUrl={animationUrl}
-                      images={allImages}
+                      mediaFiles={mediaFiles}
                       arrowsAbove
                       sliderOptions={SLIDER_OPTIONS}
                     />

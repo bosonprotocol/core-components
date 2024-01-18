@@ -5,7 +5,6 @@ import React, {
   ReactNode,
   forwardRef,
   useEffect,
-  useMemo,
   useReducer,
   useRef
 } from "react";
@@ -84,19 +83,10 @@ const ArrowSvg = styled.svg`
       stroke: ${colors.black};
     }
   }
-  &:hover {
-    :nth-of-type(1) {
-      stroke: ${colors.white};
-    }
-    :nth-of-type(2) {
-      stroke: ${colors.black};
-    }
-  }
 `;
 
 interface Props {
-  animationUrl?: string;
-  images: Array<string>;
+  mediaFiles: { url: string; type: "image" | "video" }[];
   sliderOptions?: ConstructorParameters<typeof Glide>[1];
   arrowsAbove: boolean;
   className?: string;
@@ -113,8 +103,7 @@ const DivChildren = forwardRef(
 );
 
 export default function DetailSlider({
-  animationUrl,
-  images,
+  mediaFiles,
   sliderOptions = SLIDER_OPTIONS,
   arrowsAbove,
   highlightActive,
@@ -128,25 +117,15 @@ export default function DetailSlider({
     (state) => state + 1,
     0
   );
-  const media = useMemo(() => {
-    const imgs = [...images.map((img) => ({ url: img, type: "image" }))];
-    return (
-      animationUrl
-        ? [
-            { url: animationUrl, type: "video" },
-            ...images.map((img) => ({ url: img, type: "image" }))
-          ]
-        : imgs
-    ) as { url: string; type: "image" | "video" }[];
-  }, [images, animationUrl]);
-  const sumMediaFiles = media.length + (animationUrl ? 1 : 0);
+
+  const sumMediaFiles = mediaFiles.length;
   const showArrows =
     sumMediaFiles !== 1 && (sliderOptions.perView ?? 1) === 1
       ? true
       : sumMediaFiles > (sliderOptions.perView ?? 1);
   const draggable = showArrows;
   useEffect(() => {
-    if (media.length !== 0 && ref.current !== null) {
+    if (mediaFiles.length !== 0 && ref.current !== null) {
       glideRef.current = new Glide(ref.current, {
         ...sliderOptions
       });
@@ -165,7 +144,7 @@ export default function DetailSlider({
       glideRef.current?.destroy();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ref, media, reinitializeGlide, sliderOptions]);
+  }, [ref, mediaFiles, reinitializeGlide, sliderOptions]);
 
   const lastActiveRef = useRef<Element>();
   function onMediaClick(e: MouseEvent) {
@@ -190,7 +169,7 @@ export default function DetailSlider({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  if (media.length === 0) {
+  if (mediaFiles.length === 0) {
     return null;
   }
 
@@ -280,7 +259,7 @@ export default function DetailSlider({
             $highlightActive={highlightActive ?? false}
             ref={glideSlidesRef}
           >
-            {media?.map(({ url, type }, index: number) => (
+            {mediaFiles?.map(({ url, type }, index: number) => (
               <GlideSlide className="glide__slide" key={`Slide_${index}`}>
                 <>
                   {type === "image" ? (
