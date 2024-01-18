@@ -2,7 +2,7 @@
   "type": "object",
   "properties": {
     "schemaUrl": { "type": "string" },
-    "type": { "type": "string", "enum": ["BASE"] },
+    "type": { "type": "string", "enum": ["rNFT"] },
     "name": { "type": "string" },
     "description": { "type": "string" },
     "image": { "type": "string" },

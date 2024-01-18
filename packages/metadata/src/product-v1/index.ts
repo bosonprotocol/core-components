@@ -1,57 +1,15 @@
 import { buildYup } from "schema-to-yup";
 import { SchemaOf } from "yup";
 import schema from "./schema.json";
+import { RNftMetadata } from "../rNFT";
+import { Media, ProductBase, ProductV1Item, Variation } from "../productV1Item";
 
 export const productV1MetadataSchema: SchemaOf<ProductV1Metadata> = buildYup(
   schema,
   {}
 );
 
-export type Media = {
-  url: string;
-  tag?: string;
-  type?: string;
-  width?: number;
-  height?: number;
-};
-
-export type ProductBase = {
-  title: string;
-  description: string;
-  identification_sKU?: string;
-  identification_productId?: string;
-  identification_productIdType?: string;
-  productionInformation_brandName: string;
-  productionInformation_manufacturer?: string;
-  productionInformation_manufacturerPartNumber?: string;
-  productionInformation_modelNumber?: string;
-  productionInformation_materials?: string[];
-  visuals_images: Media[];
-  visuals_videos?: Media[];
-  packaging_packageQuantity?: string;
-  packaging_dimensions_length?: string;
-  packaging_dimensions_width?: string;
-  packaging_dimensions_height?: string;
-  packaging_dimensions_unit?: string;
-  packaging_weight_value?: string;
-  packaging_weight_unit?: string;
-};
-
-type ProductDetails = {
-  details_category?: string;
-  details_subCategory?: string;
-  details_subCategory2?: string;
-  details_offerCategory: string;
-  details_tags?: string[];
-  details_sections?: string[];
-  details_personalisation?: string[];
-};
-
-type Variation = {
-  type: string;
-  option: string;
-};
-
+// TODO externalize SellerMetadata (rationalize with other Seller metadata?)
 type SellerMetadata = {
   defaultVersion: number;
   name: string;
@@ -66,57 +24,17 @@ type SellerMetadata = {
   contactPreference?: string;
 };
 
-type ShippingMetadata = {
-  defaultVersion?: number;
-  countryOfOrigin?: string;
-  supportedJurisdictions?: {
-    label: string;
-    deliveryTime: string;
-  }[];
-  redemptionPoint?: string;
-  returnPeriod: string;
-};
-
-type ExchangePolicy = {
-  uuid: string;
-  version: number;
-  label?: string;
-  template: string;
-  sellerContactMethod: string;
-  disputeResolverContactMethod: string;
-};
-
-export type ProductV1Metadata = {
-  schemaUrl: string;
-  type: "PRODUCT_V1";
-  uuid: string;
-  name: string;
-  description: string;
-  externalUrl: string;
-  licenseUrl: string;
-  condition?: string;
-  image: string;
-  animationUrl?: string;
-  animationMetadata?: Partial<Pick<Media, "height" | "type" | "width">>;
-  attributes: {
-    trait_type: string;
-    value: string;
-    display_type?: string;
-  }[];
-  product: ProductBase &
-    ProductDetails & {
-      uuid: string;
-      version: number;
-    };
-  variations?: Variation[];
-  seller: SellerMetadata;
-  shipping: ShippingMetadata;
-  exchangePolicy: ExchangePolicy;
-  productOverrides?: Partial<ProductBase>;
-};
+export type ProductV1Metadata = Omit<RNftMetadata, "type"> &
+  Omit<ProductV1Item, "type"> & {
+    type: "PRODUCT_V1";
+    uuid: string;
+    animationMetadata?: Partial<Pick<Media, "height" | "type" | "width">>;
+    seller: SellerMetadata;
+  };
 
 export type ProductV1Variant = Array<Variation>;
 
+// TODO: create createVariantProductMetadata for Bundle (in Bundle submodule)
 export function createVariantProductMetadata(
   productMetadata: ProductV1Metadata,
   variants: Array<{

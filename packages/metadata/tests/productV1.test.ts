@@ -1,9 +1,9 @@
 import {
   createVariantProductMetadata,
   ProductV1Variant,
-  ProductBase,
   ProductV1Metadata
 } from "../src/product-v1";
+import { ProductBase } from "../src/productV1Item";
 import productV1ValidMinimalOffer from "./product-v1/valid/minimalOffer.json";
 
 const types = ["size", "color"];

@@ -1,0 +1,129 @@
+{
+  "schemaUrl": "https://json-schema.org",
+  "type": "ITEM_PRODUCT_V1",
+  "product": {
+    "uuid": "77593bb2-f797-11ec-b939-0242ac120002",
+    "version": 1,
+    "title": "Boson X MetaFactory Hoodie",
+    "description": "The future is here and it starts with a limited edition MetaFactory X Boson Protocol Hoodie... This unisex hoodie, in a metablack coloureway with reflective stripes, is made from a heavyweight French terry cotton. It has an adjustable hood and full colour interior, elasticated trims, reflective lining, and reflective back panels... Nothing says open metaverse more than this collab between MetaFactory and Boson Protocol. Limited Edition: Only 75 ever made.",
+    "identification_sKU": "3f73169e-d785-47f0-b9d9-1861d094a9d8",
+    "identification_productId": "08ec6b0a-3760-4342-b61f-d9f6d48b1492",
+    "identification_productIdType": "GCID",
+    "productionInformation_brandName": "Boson X MetaFactory",
+    "productionInformation_manufacturer": "MetaFactory",
+    "productionInformation_manufacturerPartNumber": "e4dd375d-575b-4916-8216-e244f4deca1a",
+    "productionInformation_modelNumber": "198bb45a-24c7-4a98-afe1-e787f99bb53c",
+    "productionInformation_materials": [
+      "Body: 100% French terry cotton 336 gsm",
+      "Cuffs & hem: 96% cotton 4% polyurethane"
+    ],
+    "details_category": "Fashion",
+    "details_subCategory1": "Men's Fashion",
+    "details_subCategory2": "Hoodies & Sweats",
+    "details_offerCategory": "PHYSICAL",
+    "details_tags": ["Hoodie", "Boson", "MetaFactory"],
+    "details_sections": ["aaaaaa", "bbbbbb"],
+    "details_personalisation": ["cccccc", "dddddd"],
+    "visuals_images": [
+      {
+        "url": "https://bsn-portal-production-image-upload-storage.s3.amazonaws.com/5ba6461b-e4b4-444d-90bf-0c9de1835c35",
+        "tag": "thumbnail"
+      },
+      {
+        "url": "https://bsn-portal-production-image-upload-storage.s3.amazonaws.com/fc11acc4-e27b-4ede-b7d3-f16735fab406",
+        "tag": "opensea"
+      },
+      {
+        "url": "https://bsn-portal-production-image-upload-storage.s3.amazonaws.com/439f8e03-0088-4217-9a5d-1c59fc5d7c46"
+      }
+    ],
+    "visuals_videos": [
+      {
+        "url": "https://bsn-portal-production-image-upload-storage.s3.amazonaws.com/87233bbf-834f-406c-a04c-376abf8bd090"
+      },
+      {
+        "url": "https://bsn-portal-production-image-upload-storage.s3.amazonaws.com/45bcb43f-557b-4696-952d-118ccae21aa9"
+      }
+    ],
+    "packaging_packageQuantity": "1",
+    "packaging_dimensions_length": "30",
+    "packaging_dimensions_width": "20",
+    "packaging_dimensions_height": "3",
+    "packaging_dimensions_unit": "cm",
+    "packaging_weight_value": "1250",
+    "packaging_weight_unit": "g"
+  },
+  "variations": [
+    {
+      "type": "size",
+      "option": "S"
+    },
+    {
+      "type": "color",
+      "option": "black"
+    }
+  ],
+  "shipping": {
+    "defaultVersion": 1,
+    "countryOfOrigin": "UK",
+    "supportedJurisdictions": [
+      {
+        "label": "EU",
+        "deliveryTime": "5"
+      },
+      {
+        "label": "US",
+        "deliveryTime": "10"
+      }
+    ],
+    "redemptionPoint": "https://app.bosonportal.io",
+    "returnPeriod": "14"
+  },
+  "exchangePolicy": {
+    "uuid": "1e82f742-5639-427f-87b2-b91a7e51e40a",
+    "version": 1,
+    "label": "Fair Exchange Policy",
+    "template": "https://github.com/dr-harper/example-rmd-templates/blob/master/inst/rmarkdown/templates/01-minimal/template.yaml",
+    "sellerContactMethod": "DAPP_CHAT",
+    "disputeResolverContactMethod": "EMAIL"
+  },
+  "productOverrides": {
+    "title": "Boson X MetaFactory Hoodie - Small",
+    "description": "The future is here and it starts with a limited edition MetaFactory X Boson Protocol Hoodie - Small... This unisex hoodie, in a metablack coloureway with reflective stripes, is made from a heavyweight French terry cotton. It has an adjustable hood and full colour interior, elasticated trims, reflective lining, and reflective back panels... Nothing says open metaverse more than this collab between MetaFactory and Boson Protocol. Limited Edition: Only 75 ever made.",
+    "identification_sKU": "399aae4a-98c2-4ea1-8af0-6ee89365af0f",
+    "identification_productId": "c998f72b-6951-433d-8390-dd4f4c994a81",
+    "identification_productIdType": "GCID",
+    "productionInformation_brandName": "MetaFactory X Boson",
+    "productionInformation_manufacturer": "MetaFactory Kids",
+    "productionInformation_manufacturerPartNumber": "89962862-4bae-4baf-b87d-cae65dca6a78",
+    "productionInformation_modelNumber": "47553697-c40e-4754-b043-185e8d139027",
+    "productionInformation_materials": [
+      "Body: 100% Indian terry cotton 336 gsm",
+      "Cuffs & hem: 92% cotton 8% polyurethane"
+    ],
+    "visuals_images": [
+      {
+        "url": "https://bsn-portal-production-image-upload-storage.s3.amazonaws.com/110f2ddb-6ca2-40a4-ba96-31d0adfc5ad6",
+        "tag": "thumbnail"
+      },
+      {
+        "url": "https://bsn-portal-production-image-upload-storage.s3.amazonaws.com/d41c4701-05c0-44f5-bc77-b2eb92f70704"
+      }
+    ],
+    "visuals_videos": [
+      {
+        "url": "https://bsn-portal-production-image-upload-storage.s3.amazonaws.com/be0e3fe8-06ac-4497-b462-e92da81914d2"
+      },
+      {
+        "url": "https://bsn-portal-production-image-upload-storage.s3.amazonaws.com/3bad3b5b-17bb-4303-9d92-0dd364eb302c"
+      }
+    ],
+    "packaging_packageQuantity": "2",
+    "packaging_dimensions_length": "25",
+    "packaging_dimensions_width": "15",
+    "packaging_dimensions_height": "2.5",
+    "packaging_dimensions_unit": "cm",
+    "packaging_weight_value": "1150",
+    "packaging_weight_unit": "g"
+  }
+}

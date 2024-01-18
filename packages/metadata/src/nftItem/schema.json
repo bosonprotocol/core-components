@@ -2,13 +2,11 @@
   "type": "object",
   "properties": {
     "schemaUrl": { "type": "string" },
-    "type": { "type": "string", "enum": ["BASE"] },
+    "type": { "type": "string", "enum": ["ITEM_NFT"] },
     "name": { "type": "string" },
     "description": { "type": "string" },
     "image": { "type": "string" },
     "externalUrl": { "type": "string" },
-    "licenseUrl": { "type": "string" },
-    "condition": { "type": "string" },
     "animationUrl": { "type": "string" },
     "attributes": {
       "type": "array",
@@ -23,5 +21,5 @@
       }
     }
   },
-  "required": ["schemaUrl", "type", "name", "description", "externalUrl", "licenseUrl"]
+  "required": ["schemaUrl", "type", "name"]
 }

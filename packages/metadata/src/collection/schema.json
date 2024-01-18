@@ -1,6 +1,7 @@
 {
   "type": "object",
   "properties": {
+    "schemaUrl": { "type": "string" },
     "type": { "type": "string", "enum": ["COLLECTION"] },
     "name": { "type": "string" },
     "description": { "type": "string" },
@@ -11,5 +12,5 @@
       "items": { "type": "string" }
     }
   },
-  "required": ["name", "type"]
+  "required": ["schemaUrl", "type", "name"]
 }
