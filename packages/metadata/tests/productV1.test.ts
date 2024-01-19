@@ -113,7 +113,7 @@ describe("#productV1 tests", () => {
       expect(() =>
         createVariantProductMetadata(productMetadata, variantsOK)
       ).toThrow(
-        /Unable to create variant product Metadata from an already existing variation/
+        /Unable to create variant product Item from an already existing variation/
       );
     });
 
