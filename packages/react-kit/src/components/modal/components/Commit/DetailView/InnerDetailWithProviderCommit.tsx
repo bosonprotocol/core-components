@@ -1,14 +1,12 @@
 import React, { useMemo } from "react";
 import { theme } from "../../../../../theme";
+import { useDetailViewContext } from "../../common/detail/DetailViewProvider";
+import { InnerDetailViewWithPortalProps } from "../../common/detail/InnerDetailViewWithPortal";
 import { useNotCommittableOfferStatus } from "../useNotCommittableOfferStatus";
 import InnerCommitDetailView, {
   InnerCommitDetailViewProps
 } from "./InnerCommitDetailView";
-import {
-  InnerDetailViewWithPortal,
-  InnerDetailViewWithPortalProps
-} from "../../common/detail/InnerDetailViewWithPortal";
-import { useDetailViewContext } from "../../common/detail/DetailViewProvider";
+import { InnerCommitDetailViewWithPortal } from "./InnerCommitDetailViewWithPortal";
 import { QuantityDisplay } from "./common/QuantityDisplay";
 const colors = theme.colors.light;
 
@@ -49,7 +47,10 @@ export const InnerDetailWithProviderCommit: React.FC<
       {withCTAs ? (
         <InnerCommitDetailView {...props} priceSibling={priceSibling} />
       ) : (
-        <InnerDetailViewWithPortal {...props} priceSibling={priceSibling} />
+        <InnerCommitDetailViewWithPortal
+          {...props}
+          priceSibling={priceSibling}
+        />
       )}
     </>
   );
