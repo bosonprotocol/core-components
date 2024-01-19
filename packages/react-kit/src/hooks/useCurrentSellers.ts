@@ -10,6 +10,7 @@ import { SellerFieldsFragment } from "@bosonprotocol/core-sdk/dist/cjs/subgraph"
 import { useAccount } from "./connection/connection";
 import { useErc721OwnerOf } from "./erc/erc721";
 import { useConfigContext } from "../components/config/ConfigContext";
+import { isTruthy } from "../types/helpers";
 
 interface Props {
   address?: string;
@@ -316,12 +317,14 @@ export function useCurrentSellers(
   );
   const profileIds = useMemo(
     () =>
-      sellerValues.map((seller) => {
-        if (Number(seller?.authTokenId)) {
-          return seller?.authTokenId;
-        }
-        return null;
-      }),
+      sellerValues
+        .map((seller) => {
+          if (Number(seller?.authTokenId)) {
+            return seller?.authTokenId;
+          }
+          return null;
+        })
+        .filter(isTruthy),
     [sellerValues]
   );
   const enableResultLens =

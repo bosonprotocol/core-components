@@ -67,16 +67,16 @@ export class AccountsMixin extends BaseCoreSDK {
   }
 
   /**
-   * Returns seller entity from subgraph.
-   * @param treasury - Treasury address of seller entity to query for.
+   * Returns seller entities from subgraph.
+   * @param treasury - Treasury address of seller entities to query for.
    * @param queryVars - Optional query variables to skip, order or filter.
-   * @returns Seller entity from subgraph.
+   * @returns Seller entities from subgraph.
    */
-  public async getSellerByTreasury(
+  public async getSellersByTreasury(
     treasury: string,
     queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment> {
-    return accounts.subgraph.getSellerByTreasury(
+  ): Promise<subgraph.SellerFieldsFragment[]> {
+    return accounts.subgraph.getSellersByTreasury(
       this._subgraphUrl,
       treasury,
       queryVars
@@ -96,7 +96,7 @@ export class AccountsMixin extends BaseCoreSDK {
     if (address === AddressZero) {
       throw new Error(`Unsupported search address '${AddressZero}'`);
     }
-    const seller = await accounts.subgraph.getSellerByAddress(
+    let seller = await accounts.subgraph.getSellerByAddress(
       this._subgraphUrl,
       address,
       queryVars
@@ -104,32 +104,28 @@ export class AccountsMixin extends BaseCoreSDK {
     if (!seller && this._lens?.LENS_HUB_CONTRACT) {
       // If seller is not found per address, try to find per authToken
       const tokenType = AuthTokenType.LENS; // only LENS for now
-      const tokenIds = await this.fetchUserAuthTokens(address, tokenType);
-      const promises: Promise<subgraph.SellerFieldsFragment>[] = [];
-      for (const tokenId of tokenIds) {
-        // Just in case the user owns several auth tokens
-        const sellerPromise = this.getSellerByAuthToken(
-          tokenId,
-          tokenType,
-          queryVars
-        );
-        promises.push(sellerPromise);
-      }
-      return (await Promise.all(promises)).filter((seller) => !!seller);
+      const sellerId = await this.searchSellerFromAuthToken(address, tokenType);
+      seller = sellerId
+        ? await accounts.subgraph.getSellerById(
+            this._subgraphUrl,
+            sellerId,
+            queryVars
+          )
+        : null;
     }
     return [seller].filter((seller) => !!seller);
   }
 
   /**
-   * Returns the array of LENS tokenIds owned by a specified address
+   * Returns the seller id found in the subgraph, if any, based on an authTokenId owned by the specified address
    * @param address - Address of seller entity to query for.
-   * @param queryVars - Optional query variables to skip, order or filter.
-   * @returns Array of tokenIds
+   * @param tokenType - type of authToken to look for.
+   * @returns sellerId if found
    */
-  public async fetchUserAuthTokens(
+  public async searchSellerFromAuthToken(
     address: string,
     tokenType: number
-  ): Promise<Array<string>> {
+  ): Promise<string> {
     if (tokenType !== AuthTokenType.LENS) {
       // only LENS for now
       throw new Error(`Unsupported authTokenType '${tokenType}'`);
@@ -144,18 +140,26 @@ export class AccountsMixin extends BaseCoreSDK {
     });
 
     const balanceBN = BigNumber.from(balance);
-    const promises: Promise<string>[] = [];
-    for (let index = 0; balanceBN.gt(index); index++) {
-      const tokenIdPromise = erc721.handler.tokenOfOwnerByIndex({
-        contractAddress: this._lens?.LENS_HUB_CONTRACT,
-        owner: address,
-        index,
-        web3Lib: this._web3Lib
-      });
-      promises.push(tokenIdPromise);
+    // If balanceBN is > 0, fetch all LENS authTokenId from the subgraph and check owner for each of them
+    if (balanceBN.gt(0)) {
+      const authTokenIdSellers = await accounts.subgraph.getAuthTokenIds(
+        this._subgraphUrl,
+        {
+          authTokenType: AuthTokenType.LENS
+        }
+      );
+      for (const seller of authTokenIdSellers) {
+        const owner = await erc721.handler.ownerOf({
+          contractAddress: this._lens?.LENS_HUB_CONTRACT,
+          tokenId: seller.authTokenId,
+          web3Lib: this._web3Lib
+        });
+        if (owner.toLowerCase() === address.toLowerCase()) {
+          return seller.id;
+        }
+      }
     }
-    const ret = await Promise.all(promises);
-    return ret;
+    return;
   }
 
   /**
