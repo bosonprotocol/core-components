@@ -656,6 +656,7 @@ export async function getSellerMetadataUri(coreSDK: CoreSDK) {
 
 export async function getCollectionMetadataUri(coreSDK: CoreSDK) {
   const collectionMetadataHash = await coreSDK.storeMetadata({
+    schemaUrl: "schema-url.com",
     type: MetadataType.COLLECTION,
     name: "MyCollection",
     description: "MyCollection",

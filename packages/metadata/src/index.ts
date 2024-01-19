@@ -7,6 +7,7 @@ import * as bundle from "./bundle";
 import * as productV1Item from "./productV1Item";
 import * as nftItem from "./nftItem";
 import { MetadataType } from "./iMetadata";
+import { buildUuid } from "./common";
 
 export type AnyMetadata =
   | base.BaseMetadata
@@ -115,13 +116,16 @@ function validateMetadata(metadata: AnyMetadata) {
 }
 
 export {
+  MetadataType,
   validateMetadata,
   base,
   productV1,
   seller,
+  collection,
   rNFT,
   bundle,
   nftItem,
   productV1Item,
-  METADATA_LENGTH_LIMIT
+  METADATA_LENGTH_LIMIT,
+  buildUuid
 };

@@ -27,6 +27,7 @@ import productV1ValidMinimalOffer from "../../scripts/assets/offer_1.metadata.js
 import { SEC_PER_DAY } from "@bosonprotocol/common/src/utils/timestamp";
 import { ProductV1MetadataEntity } from "../../packages/core-sdk/src/subgraph";
 import exchangePolicyRules from "../../packages/core-sdk/tests/exchangePolicy/exchangePolicyRules.local.json";
+import { buildUuid } from "../../packages/metadata/src";
 
 jest.setTimeout(120_000);
 
@@ -41,7 +42,7 @@ type DeepPartial<T> = T extends object
   : T;
 function mockProductV1Metadata(
   template: string,
-  productUuid: string = productV1.buildUuid(),
+  productUuid: string = buildUuid(),
   overrides: DeepPartial<productV1.ProductV1Metadata> = {} as DeepPartial<productV1.ProductV1Metadata>
 ): productV1.ProductV1Metadata {
   return {
@@ -52,7 +53,7 @@ function mockProductV1Metadata(
       ...overrides.product,
       uuid: productUuid
     },
-    uuid: productV1.buildUuid(),
+    uuid: buildUuid(),
     type: MetadataType.PRODUCT_V1,
     exchangePolicy: {
       ...productV1ValidMinimalOffer.exchangePolicy,
@@ -606,7 +607,7 @@ describe("Multi-variant offers tests", () => {
   test("check getProductWithVariants() can be used for single variant product", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
       await initCoreSDKWithFundedWallet(seedWallet);
-    const productUuid = productV1.buildUuid();
+    const productUuid = buildUuid();
     const template = "Hello World!!";
     const productMetadata = mockProductV1Metadata(template, productUuid);
     const { offerArgs } = await createOfferArgs(coreSDK, productMetadata);
@@ -646,7 +647,7 @@ describe("Multi-variant offers tests", () => {
   test("check getProductWithVariants() return the offer exchanges", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
       await initCoreSDKWithFundedWallet(seedWallet);
-    const productUuid = productV1.buildUuid();
+    const productUuid = buildUuid();
     const template = "Hello World!!";
     const productMetadata = mockProductV1Metadata(template, productUuid);
     // Create an offer with 0 price 0 deposit to make it easier to commit
@@ -1065,7 +1066,7 @@ async function prepareMultiVariantOffers(
   coreSDK: CoreSDK,
   offersParams?: Array<Partial<CreateOfferArgs>>
 ) {
-  const productUuid = productV1.buildUuid();
+  const productUuid = buildUuid();
   const productMetadata = mockProductV1Metadata("a template", productUuid);
 
   const variations1 = [

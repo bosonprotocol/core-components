@@ -20,6 +20,7 @@ describe("Offer collections", () => {
   let wallet_A: Wallet, wallet_B: Wallet;
   const customCollectionId = "summer-2024-collection";
   const collectionMetadata1 = {
+    schemaUrl: "schema-url.com",
     type: "COLLECTION",
     name: "MyCollection",
     description: "This is my collection",
@@ -37,6 +38,7 @@ describe("Offer collections", () => {
     ]
   };
   const collectionMetadata2 = {
+    schemaUrl: "schema-url.com",
     type: "COLLECTION",
     name: "MyCollection2",
     description: "This is my 2nd collection",
@@ -302,11 +304,11 @@ describe("Offer collections", () => {
     expect(collections.length).toEqual(2);
     expect(collections[1].externalId).toEqual(collectionMetadata2.name);
     expect(collections[1].metadata).toBeTruthy();
-    expect(collections[1].metadata.name).toEqual(collectionMetadata2.name);
-    expect(collections[1].metadata.externalLink).toEqual(
+    expect(collections[1].metadata?.name).toEqual(collectionMetadata2.name);
+    expect(collections[1].metadata?.externalLink).toEqual(
       collectionMetadata2.external_link
     );
-    expect(collections[1].metadata.collaborators.length).toEqual(
+    expect(collections[1].metadata?.collaborators?.length).toEqual(
       collectionMetadata2.collaborators.length
     );
   });
@@ -314,6 +316,7 @@ describe("Offer collections", () => {
     const { coreSDK: coreSDK, fundedWallet } =
       await initCoreSDKWithFundedWallet(seedWallet20);
     const collectionMetadataUri = await publishNftContractMetadata(coreSDK, {
+      schemaUrl: "schema-url.com",
       type: "COLLECTION"
       // no other fields
     });

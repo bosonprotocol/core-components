@@ -1,4 +1,5 @@
 import { AnyMetadata } from "@bosonprotocol/metadata";
+import { MetadataType } from "@bosonprotocol/metadata/dist/cjs/iMetadata";
 
 export type ERC721Metadata = AnyMetadata & {
   external_url: string;
@@ -11,14 +12,10 @@ export type ERC721Metadata = AnyMetadata & {
  * in our code, we redundantly add the property `external_url` with the value of `externalUrl`.
  */
 export function convertToERC721Metadata(metadata: AnyMetadata): ERC721Metadata {
-  const { externalUrl, animationUrl, ...rest } = metadata;
-
   return {
-    ...rest,
-    externalUrl,
-    external_url: externalUrl,
-    animationUrl,
-    animation_url: animationUrl
+    ...metadata,
+    external_url: metadata["externalUrl"],
+    animation_url: metadata["animationUrl"]
   };
 }
 

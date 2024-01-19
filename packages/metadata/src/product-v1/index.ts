@@ -8,7 +8,9 @@ import {
   ProductV1Variant,
   createVariantProductItem
 } from "../productV1Item";
-import { Media, buildUuid } from "../common";
+import { Media } from "../common";
+
+export { ProductV1Variant };
 
 export const productV1MetadataSchema: SchemaOf<ProductV1Metadata> = buildYup(
   schema,
