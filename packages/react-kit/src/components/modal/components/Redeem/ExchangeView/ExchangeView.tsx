@@ -19,7 +19,7 @@ import DetailOpenSea from "../../common/DetailOpenSea";
 import { ResponsiveVariationSelects } from "../../common/VariationSelects";
 import DetailSlider from "../../common/detail/DetailSlider";
 import { SellerAndDescription } from "../../common/detail/SellerAndDescription";
-import { SlickSlider } from "../../common/detail/SlickSlider";
+import { SlickSlider, initialSettings } from "../../common/detail/SlickSlider";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
 
 const colors = theme.colors.light;
@@ -215,6 +215,7 @@ export function ExchangeView({
               />
               {mediaFiles.length > 1 && (
                 <PreviewSlickSlider
+                  settings={{ ...initialSettings, slidesToShow: 8 }}
                   mediaFiles={mediaFiles}
                   onMediaClick={({ index }) => {
                     setSliderIndex(index);
