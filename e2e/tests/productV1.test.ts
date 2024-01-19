@@ -8,6 +8,7 @@ import { parseEther } from "@ethersproject/units";
 import {
   MetadataType,
   productV1,
+  productV1Item,
   validateMetadata
 } from "@bosonprotocol/metadata";
 import { CreateOfferArgs } from "@bosonprotocol/common";
@@ -40,26 +41,53 @@ type DeepPartial<T> = T extends object
       [P in keyof T]?: DeepPartial<T[P]>;
     }
   : T;
-function mockProductV1Metadata(
-  template: string,
+
+export function mockProductV1Item(
+  template?: string,
   productUuid: string = buildUuid(),
-  overrides: DeepPartial<productV1.ProductV1Metadata> = {} as DeepPartial<productV1.ProductV1Metadata>
-): productV1.ProductV1Metadata {
+  overrides: DeepPartial<productV1Item.ProductV1Item> = {} as DeepPartial<productV1Item.ProductV1Item>
+): productV1Item.ProductV1Item {
   return {
-    ...productV1ValidMinimalOffer,
+    schemaUrl: "schemaUrl",
     ...overrides,
+    type: MetadataType.ITEM_PRODUCT_V1,
+    uuid: buildUuid(),
     product: {
       ...productV1ValidMinimalOffer.product,
       ...overrides.product,
       uuid: productUuid
     },
-    uuid: buildUuid(),
-    type: MetadataType.PRODUCT_V1,
+    productOverrides: {
+      ...overrides.productOverrides
+    },
+    variations: overrides.variations,
+    shipping: {
+      ...productV1ValidMinimalOffer.shipping,
+      ...overrides.shipping
+    },
     exchangePolicy: {
       ...productV1ValidMinimalOffer.exchangePolicy,
       ...overrides.exchangePolicy,
-      template
+      template: template ?? productV1ValidMinimalOffer.exchangePolicy.template
     }
+  } as productV1Item.ProductV1Item;
+}
+
+function mockProductV1Metadata(
+  template: string,
+  productUuid: string = buildUuid(),
+  overrides: DeepPartial<productV1.ProductV1Metadata> = {} as DeepPartial<productV1.ProductV1Metadata>
+): productV1.ProductV1Metadata {
+  const productItem = mockProductV1Item(template, productUuid, {
+    ...overrides,
+    type: MetadataType.ITEM_PRODUCT_V1
+  });
+  return {
+    ...productV1ValidMinimalOffer,
+    ...productItem,
+    ...overrides,
+    uuid: buildUuid(),
+    type: MetadataType.PRODUCT_V1
   } as productV1.ProductV1Metadata;
 }
 

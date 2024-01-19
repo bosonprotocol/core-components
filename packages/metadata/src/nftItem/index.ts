@@ -17,4 +17,8 @@ export type NftItem = Omit<IItemMetadata, "type"> & {
     value: string;
     display_type?: string;
   }[];
+  chainId?: number;
+  contract?: string;
+  tokenId?: string;
+  quantity?: number;
 };
