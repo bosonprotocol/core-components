@@ -26,14 +26,14 @@ export const FieldInput = styled.input<{ error?: any }>`
 
   ${transition}
 
-  :not(:disabled) {
-    :focus,
-    :hover {
+  &:not(:disabled) {
+    &:focus,
+    &:hover {
       border: 1px solid var(--secondary);
     }
   }
 
-  :disabled {
+  &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
   }
@@ -42,31 +42,31 @@ export const FieldInput = styled.input<{ error?: any }>`
     !checkIfValueIsEmpty(error)
       ? css`
           border: 1px solid ${colors.orange};
-          :not(:disabled) {
-            :hover {
+          &:not(:disabled) {
+            &:hover {
               border: 1px solid ${colors.orange};
             }
           }
-          :not(:disabled) {
-            :focus {
+          &:not(:disabled) {
+            &:focus {
               border: 1px solid var(--secondary);
             }
           }
-          ::placeholder {
+          &::placeholder {
             color: ${colors.orange};
             opacity: 1;
           }
-          :-ms-input-placeholder {
+          &:-ms-input-placeholder {
             color: ${colors.orange};
           }
-          ::-ms-input-placeholder {
+          &::-ms-input-placeholder {
             color: ${colors.orange};
           }
         `
       : css`
-          :not(:disabled) {
-            :focus,
-            :hover {
+          &:not(:disabled) {
+            &:focus,
+            &:hover {
               border: 1px solid var(--secondary);
             }
           }
@@ -117,8 +117,8 @@ export const FileUploadWrapper = styled.div<{ choosen: any; error: any }>`
 
   ${transition};
 
-  :focus,
-  :hover {
+  &:focus,
+  &:hover {
     border: 1px solid var(--secondary);
   }
 
@@ -147,7 +147,7 @@ export const FieldFileUploadWrapper = styled.div<{ $disabled: boolean }>`
 
   width: 8rem;
 
-  :hover {
+  &:hover {
     [data-remove] {
       display: flex;
     }
@@ -181,14 +181,14 @@ export const FieldTextArea = styled.textarea<{ error: any }>`
 
   ${transition}
 
-  :not(:disabled) {
-    :focus,
-    :hover {
+  &:not(:disabled) {
+    &:focus,
+    &:hover {
       border: 1px solid var(--secondary);
     }
   }
 
-  :disabled {
+  &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
   }
@@ -197,31 +197,31 @@ export const FieldTextArea = styled.textarea<{ error: any }>`
     !checkIfValueIsEmpty(error)
       ? css`
           border: 1px solid ${colors.orange};
-          ::placeholder {
+          &::placeholder {
             color: ${colors.orange};
             opacity: 1;
           }
-          :-ms-input-placeholder {
+          &:-ms-input-placeholder {
             color: ${colors.orange};
           }
-          ::-ms-input-placeholder {
+          &::-ms-input-placeholder {
             color: ${colors.orange};
           }
-          :not(:disabled) {
-            :hover {
+          &:not(:disabled) {
+            &:hover {
               border: 1px solid ${colors.orange};
             }
           }
-          :not(:disabled) {
-            :focus {
+          &:not(:disabled) {
+            &:focus {
               border: 1px solid var(--secondary);
             }
           }
         `
       : css`
-          :not(:disabled) {
-            :focus,
-            :hover {
+          &:not(:disabled) {
+            &:focus,
+            &:hover {
               border: 1px solid var(--secondary);
             }
           }
@@ -239,7 +239,7 @@ export const FormFieldWrapper = styled(Grid)`
   input,
   textarea {
     background: ${colors.white};
-    :disabled {
+    &:disabled {
       opacity: 1;
     }
   }
@@ -279,16 +279,16 @@ export const CheckboxWrapper = styled.label<{ error: any }>`
   cursor: pointer;
 
   > input {
-    :disabled {
+    &:disabled {
       + div {
         opacity: 0.5;
         cursor: not-allowed;
       }
     }
-    :not(:disabled) {
+    &:not(:disabled) {
       + div {
         cursor: pointer;
-        :hover {
+        &:hover {
           border: 1px solid ${colors.secondary};
           svg {
             opacity: 0.25;
@@ -315,12 +315,12 @@ export const CheckboxWrapper = styled.label<{ error: any }>`
   }
 
   > input {
-    :checked {
+    &:checked {
       + div svg {
         opacity: 1;
       }
     }
-    :not(:checked) {
+    &:not(:checked) {
       + div svg {
         opacity: 0;
       }

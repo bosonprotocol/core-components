@@ -150,10 +150,10 @@ export const CardBottom = styled.div`
     transition: all 0.2s ease 0s;
     width: 100%;
     cursor: pointer;
-    :disabled {
+    &:disabled {
       opacity: 0.4;
     }
-    :hover {
+    &:hover {
       background-color: ${({ theme }) => theme?.colors?.light.secondary};
       border-color: ${({ theme }) => theme?.colors?.light.secondary};
       color: #ffffff;

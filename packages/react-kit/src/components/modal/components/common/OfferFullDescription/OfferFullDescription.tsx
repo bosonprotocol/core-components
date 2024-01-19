@@ -19,7 +19,7 @@ import { GeneralProductData } from "./GeneralProductData";
 
 const InventoryGraph = styled(DetailChart)`
   width: 100%;
-  :last-child {
+  &:last-child {
     min-height: 250px;
   }
 `;

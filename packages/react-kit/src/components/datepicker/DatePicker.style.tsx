@@ -142,7 +142,7 @@ export const CalendarDay = styled(CalendarCell)`
     z-index: 3;
   }
 
-  :after {
+  &:after {
     content: "";
     position: absolute;
     top: 50%;
@@ -157,8 +157,8 @@ export const CalendarDay = styled(CalendarCell)`
     ${transition}
   }
 
-  :hover {
-    :after {
+  &:hover {
+    &:after {
       width: 2rem;
       height: 2rem;
     }
@@ -181,7 +181,7 @@ export const CalendarDay = styled(CalendarCell)`
   ${({ active }) =>
     active &&
     css`
-      :after {
+      &:after {
         background: ${colors.secondary};
         width: 2.25rem;
         height: 2.25rem;
@@ -196,7 +196,7 @@ export const CalendarDay = styled(CalendarCell)`
     between &&
     !active &&
     css`
-      :after {
+      &:after {
         background: ${colors.secondary};
         width: 1.75rem;
         height: 1.75rem;

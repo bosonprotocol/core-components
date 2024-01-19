@@ -24,11 +24,11 @@ export const InputField = styled.input`
   font-size: 1rem;
   line-height: 150%;
   vertical-align: middle;
-  :focus {
+  &:focus {
     outline: none;
     color: ${({ theme }) => theme?.colors?.light.secondary};
   }
-  :focus::placeholder {
+  &:focus::placeholder {
     color: transparent;
   }
 `;

@@ -41,11 +41,11 @@ const Details = styled.details<Pick<DetailsSummaryProps, "$paddingSides">>`
     letter-spacing: 0px;
     text-align: left;
 
-    ::marker {
+    &::marker {
       content: none;
       display: none;
     }
-    ::-webkit-details-marker {
+    &::-webkit-details-marker {
       content: none;
       display: none;
     }
