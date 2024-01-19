@@ -2,7 +2,8 @@ import { buildYup } from "schema-to-yup";
 import { SchemaOf } from "yup";
 import schema from "./schema.json";
 import { RNftMetadata } from "../rNFT";
-import { Media, ProductBase, ProductV1Item, Variation } from "../productV1Item";
+import { ProductBase, ProductV1Item, Variation } from "../productV1Item";
+import { Media } from "../common";
 
 export const productV1MetadataSchema: SchemaOf<ProductV1Metadata> = buildYup(
   schema,

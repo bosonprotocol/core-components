@@ -22,6 +22,41 @@
         "required": ["trait_type", "value"]
       }
     },
+    "seller": {
+      "type": "object",
+      "properties": {
+        "defaultVersion": { "type": "number" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "externalUrl": { "type": "string" },
+        "tokenId": { "type": "string" },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": { "type": "string" },
+              "tag": { "type": "string" }
+            },
+            "required": ["url"]
+          },
+          "minItems": 0
+        },
+        "contactLinks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": { "type": "string" },
+              "tag": { "type": "string" }
+            },
+            "required": ["url", "tag"]
+          },
+          "minItems": 1
+        }
+      },
+      "required": ["defaultVersion", "contactLinks", "name"]
+    },
     "items": {
       "type": "array",
       "items": {
@@ -34,5 +69,5 @@
       "minItems": 1
     }
   },
-  "required": ["schemaUrl", "type", "name", "description", "externalUrl", "licenseUrl", "items"]
+  "required": ["schemaUrl", "type", "name", "description", "externalUrl", "licenseUrl", "seller", "items"]
 }

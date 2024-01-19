@@ -4,7 +4,9 @@ import {
   AnyMetadata,
   productV1,
   productV1Item,
-  nftItem
+  nftItem,
+  bundle,
+  rNFT
 } from "../src/index";
 import productV1ValidFullOffer from "./product-v1/valid/fullOffer.json";
 import productV1ValidMinimalOffer from "./product-v1/valid/minimalOffer.json";
@@ -15,6 +17,12 @@ import { productMissingArguments as productV1Item_productMissingArguments } from
 import nftItemValidMinimal from "./nft-item/valid/minimal.json";
 import nftItemValidFull from "./nft-item/valid/full.json";
 import { missingArguments as nftItemMissingArguments } from "./nft-item/missingArguments";
+import bundleValidMinimal from "./bundle/valid/minimal.json";
+import bundleValidFull from "./bundle/valid/full.json";
+import { missingArguments as bundleMissingArguments } from "./bundle/missingArguments";
+import rNFTValidMinimal from "./rNFT/valid/minimal.json";
+import rNFTValidFull from "./rNFT/valid/full.json";
+import { missingArguments as rNFTMissingArguments } from "./rNFT/missingArguments";
 import cloneDeep from "clone-deep";
 
 describe("#validateMetadata()", () => {
@@ -269,6 +277,96 @@ describe("#validateMetadata()", () => {
       ({ data, error }) => {
         const metadata = {
           ...nftItemValidFull,
+          ...data
+        };
+        const result = expect(() =>
+          validateMetadata(metadata as any as AnyMetadata)
+        );
+        if (error) {
+          result.toThrow(error);
+        }
+      }
+    );
+  });
+
+  describe("BUNDLE", () => {
+    test("throw for invalid object", () => {
+      expect(() =>
+        validateMetadata({
+          type: "BUNDLE"
+        } as unknown as AnyMetadata)
+      ).toThrow();
+    });
+    test("not throw for full metadata schema", () => {
+      expect(
+        validateMetadata(bundleValidFull as unknown as AnyMetadata)
+      ).toBeTruthy();
+    });
+    test("not throw for minimal metadata schema", () => {
+      expect(
+        validateMetadata(bundleValidMinimal as unknown as AnyMetadata)
+      ).toBeTruthy();
+    });
+    test("throw for too long value", () => {
+      const metadata = cloneDeep(
+        bundleValidFull as unknown as bundle.BundleMetadata
+      ) as bundle.BundleMetadata;
+
+      metadata.animationUrl = new Array(10000).join(",");
+      expect(() => validateMetadata(metadata)).toThrow(
+        `Key animationUrl of metadata exceeds 2048 characters`
+      );
+    });
+    test.each(bundleMissingArguments)(
+      "throw for missing argument '$arg'",
+      ({ data, error }) => {
+        const metadata = {
+          ...bundleValidFull,
+          ...data
+        };
+        const result = expect(() =>
+          validateMetadata(metadata as any as AnyMetadata)
+        );
+        if (error) {
+          result.toThrow(error);
+        }
+      }
+    );
+  });
+
+  describe("rNFT", () => {
+    test("throw for invalid object", () => {
+      expect(() =>
+        validateMetadata({
+          type: "rNFT"
+        } as unknown as AnyMetadata)
+      ).toThrow();
+    });
+    test("not throw for full metadata schema", () => {
+      expect(
+        validateMetadata(rNFTValidFull as unknown as AnyMetadata)
+      ).toBeTruthy();
+    });
+    test("not throw for minimal metadata schema", () => {
+      expect(
+        validateMetadata(rNFTValidMinimal as unknown as AnyMetadata)
+      ).toBeTruthy();
+    });
+    test("throw for too long value", () => {
+      const metadata = cloneDeep(
+        rNFTValidFull as unknown as rNFT.RNftMetadata
+      ) as rNFT.RNftMetadata;
+
+      metadata.animationUrl = new Array(10000).join(",");
+      expect(() => validateMetadata(metadata)).toThrow(
+        `Key animationUrl of metadata exceeds 2048 characters`
+      );
+    });
+    test.each(rNFTMissingArguments)(
+      "throw for missing argument '$arg'",
+      ({ data, error }) => {
+        const metadata = {
+          ...rNFTValidFull,
           ...data
         };
         const result = expect(() =>

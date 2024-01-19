@@ -2,19 +2,12 @@ import { buildYup } from "schema-to-yup";
 import { SchemaOf } from "yup";
 import schema from "./schema.json";
 import { IItemMetadata } from "../iMetadata";
+import { Media } from "../common";
 
 export const productV1ItemSchema: SchemaOf<ProductV1Item> = buildYup(
   schema,
   {}
 );
-
-export type Media = {
-  url: string;
-  tag?: string;
-  type?: string;
-  width?: number;
-  height?: number;
-};
 
 export type ProductBase = {
   title: string;
