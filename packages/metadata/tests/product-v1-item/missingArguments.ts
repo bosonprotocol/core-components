@@ -10,6 +10,11 @@ export const productMissingArguments = [
     error: /Metadata validation failed for unknown type/
   },
   {
+    arg: "uuid",
+    data: { uuid: undefined },
+    error: /uuid is a required field/
+  },
+  {
     arg: "product",
     data: { product: undefined },
     error: undefined // don't check the error message

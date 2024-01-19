@@ -2,8 +2,8 @@ import { buildYup } from "schema-to-yup";
 import { SchemaOf } from "yup";
 import schema from "./schema.json";
 import { RNftMetadata } from "../rNFT";
-import { ProductBase, ProductV1Item, Variation } from "../productV1Item";
-import { Media } from "../common";
+import { ProductBase, ProductV1Item, ProductV1Variant } from "../productV1Item";
+import { Media, buildUuid } from "../common";
 
 export const productV1MetadataSchema: SchemaOf<ProductV1Metadata> = buildYup(
   schema,
@@ -28,14 +28,10 @@ type SellerMetadata = {
 export type ProductV1Metadata = Omit<RNftMetadata, "type"> &
   Omit<ProductV1Item, "type"> & {
     type: "PRODUCT_V1";
-    uuid: string;
     animationMetadata?: Partial<Pick<Media, "height" | "type" | "width">>;
     seller: SellerMetadata;
   };
 
-export type ProductV1Variant = Array<Variation>;
-
-// TODO: create createVariantProductMetadata for Bundle (in Bundle submodule)
 export function createVariantProductMetadata(
   productMetadata: ProductV1Metadata,
   variants: Array<{
@@ -123,16 +119,6 @@ function buildVariantProductMetadata(
       attributes: [...productMetadata.attributes, ...variantAttributes]
     };
   });
-}
-
-export function buildUuid(): string {
-  if (typeof window !== "undefined" && window?.crypto) {
-    return window.crypto.randomUUID();
-  } else {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const crypto = require("crypto");
-    return crypto.randomUUID();
-  }
 }
 
 function serializeVariant(variant: ProductV1Variant): string {

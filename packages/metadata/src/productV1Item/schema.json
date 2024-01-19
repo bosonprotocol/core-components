@@ -3,6 +3,7 @@
   "properties": {
     "schemaUrl": { "type": "string" },
     "type": { "type": "string", "enum": ["ITEM_PRODUCT_V1"] },
+    "uuid": { "type": "string" },
     "product": {
       "type": "object",
       "properties": {
@@ -158,6 +159,7 @@
   "required": [
     "schemaUrl",
     "type",
+    "uuid",
     "product",
     "shipping",
     "exchangePolicy"
