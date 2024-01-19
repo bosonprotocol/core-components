@@ -13,7 +13,7 @@ import WalletConnectionProvider, {
 } from "../../../../wallet/WalletConnectionProvider";
 import { MagicProvider } from "../../../../magicLink/MagicContext";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { IpfsProvider } from "../../../../ipfs/IpfsProvider";
+import { IpfsProvider, IpfsProviderProps } from "../../../../ipfs/IpfsProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,7 +27,8 @@ export type ExternalOfferFullDescriptionProps = Omit<
   "defaultSelectedTabId"
 > & {
   providerProps: Omit<ConfigProviderProps, "children"> &
-    Omit<WalletConnectionProviderProps, "children" | "envName">;
+    Omit<WalletConnectionProviderProps, "children" | "envName"> &
+    Omit<IpfsProviderProps, "children">;
   defaultSelectedOfferTabsIdTab?: OfferFullDescriptionProps["defaultSelectedTabId"];
 };
 
@@ -41,7 +42,7 @@ export const ExternalOfferFullDescription: React.FC<
           <WalletConnectionProvider
             walletConnectProjectId={props.providerProps.walletConnectProjectId}
           >
-            <IpfsProvider {...props}>
+            <IpfsProvider {...props.providerProps}>
               <DetailViewWithProvider offer={props.offer}>
                 <OfferFullDescription
                   {...props}

@@ -61,13 +61,20 @@ export const DetailViewWithProvider: React.FC<
   // const {
   //   store: { tokens: defaultTokens }
   // } = useConvertionRate();
-  const exchangePolicyCheckResult = useCheckExchangePolicy({
+  const exchangePolicyCheckResultOfCreatedOffer = useCheckExchangePolicy({
     offerId: offer.id,
     defaultDisputeResolverId:
       config.config.defaultDisputeResolverId || "unknown",
     defaultTokens: config.config.defaultTokens ?? [], // TODO: check default tokens list
     fairExchangePolicyRules: config.fairExchangePolicyRules
   });
+  const exchangePolicyCheckResultOfNonCreatedOffer = {
+    isValid: true,
+    errors: []
+  };
+  const exchangePolicyCheckResult = offer.id
+    ? exchangePolicyCheckResultOfCreatedOffer
+    : exchangePolicyCheckResultOfNonCreatedOffer;
   const {
     data: sellers,
     isLoading: isSellersLoading,

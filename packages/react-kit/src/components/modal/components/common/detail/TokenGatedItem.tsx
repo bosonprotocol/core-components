@@ -17,6 +17,7 @@ import ThemedButton from "../../../../ui/ThemedButton";
 import { BuyOrSwapContainer } from "./BuyOrSwapContainer";
 import { useDetailViewContext } from "./DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "./types";
+import { ethers } from "ethers";
 const colors = theme.colors.light;
 
 type Props = OnClickBuyOrSwapHandler & {
@@ -79,7 +80,7 @@ export const TokenGatedItem = ({
       style={{ flex: 0 }}
     >
       <ThemedButton size="regular" themeVal="blankSecondary">
-        Contract <ArrowSquareUpRight />
+        Contract <ArrowSquareUpRight size="16" />
       </ThemedButton>
     </a>
   );
@@ -95,7 +96,7 @@ export const TokenGatedItem = ({
           })
         }
       >
-        Buy <ArrowSquareUpRight />
+        Buy <ArrowSquareUpRight size="16" />
       </ThemedButton>
     </BuyOrSwapContainer>
   ) : (
@@ -106,7 +107,7 @@ export const TokenGatedItem = ({
       style={{ flex: 0 }}
     >
       <ThemedButton size="regular" themeVal="blankSecondary">
-        Buy <ArrowSquareUpRight />
+        Buy <ArrowSquareUpRight size="16" />
       </ThemedButton>
     </a>
   );
@@ -175,7 +176,9 @@ export const TokenGatedItem = ({
     >
       {condition.tokenType === TokenType.FungibleToken ? (
         <Condition>
-          <div>{condition.threshold}x</div>
+          <div>
+            {ethers.utils.formatUnits(condition.threshold, tokenInfo.decimals)}x
+          </div>
           <Grid
             flexGrow={0}
             flexShrink={0}
