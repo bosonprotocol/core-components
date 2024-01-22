@@ -47,7 +47,7 @@ export const Image: React.FC<IBaseImage> = ({
 
   return (
     <>
-      <ImageWrapper {...rest} data-image-wrapper hide={!isError}>
+      <ImageWrapper {...rest} data-image-wrapper $hide={!isError}>
         <ImagePlaceholder data-image-placeholder position="static">
           {errorConfig.errorIcon ?? null}
           <ImageErrorText>
@@ -55,14 +55,12 @@ export const Image: React.FC<IBaseImage> = ({
           </ImageErrorText>
         </ImagePlaceholder>
       </ImageWrapper>
-      <ImageWrapper {...rest} data-image-wrapper hide={!isLoading}>
+      <ImageWrapper {...rest} data-image-wrapper $hide={!isLoading}>
         <ImagePlaceholder data-image-placeholder position="static">
-          <div>
-            <Loading />
-          </div>
+          <Loading />
         </ImagePlaceholder>
       </ImageWrapper>
-      <ImageWrapper {...rest} data-image-wrapper data-image hide={!isSuccess}>
+      <ImageWrapper {...rest} data-image-wrapper data-image $hide={!isSuccess}>
         {children || ""}
         <ImageContainer
           data-testid={dataTestId}

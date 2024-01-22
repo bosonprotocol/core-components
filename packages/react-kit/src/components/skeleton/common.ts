@@ -16,19 +16,19 @@ export const LoadingBubble = styled.div<{
   $minWidth?: CSSProperties["minWidth"];
   $borderRadius?: CSSProperties["borderRadius"];
   $backgroundColor?: CSSProperties["backgroundColor"];
-  delay?: string;
-  margin?: CSSProperties["margin"];
+  $delay?: string;
+  $margin?: CSSProperties["margin"];
 }>`
   border-radius: 12px;
   ${({ $borderRadius }) =>
-    $borderRadius != undefined && `border-radius: ${$borderRadius};`};
-  ${({ margin }) => margin && `margin: ${margin}`};
+    $borderRadius !== undefined && `border-radius: ${$borderRadius};`};
+  ${({ $margin }) => $margin && `margin: ${$margin}`};
   height: ${({ $height }) => $height ?? "24px"};
   width: 50%;
   width: ${({ $width }) => $width ?? "50%"};
   ${({ $minWidth }) => $minWidth && `minWidth: ${$minWidth};`};
   animation: ${loadingAnimation} 1.5s infinite;
-  ${({ delay }) => delay && `animation-delay: ${delay};`}
+  ${({ $delay }) => $delay && `animation-delay: ${$delay};`}
   animation-fill-mode: both;
   background: ${({ $backgroundColor }) =>
     $backgroundColor

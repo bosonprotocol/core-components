@@ -184,3 +184,22 @@ export async function getProductWithVariants(
     })
   };
 }
+
+export async function getProductWithVariantsFromOfferId(
+  subgraphUrl: string,
+  offerId: string
+): Promise<ReturnType<typeof getProductWithVariants>> {
+  // Look for ProductV1MetadataEntity, filtered by offerId
+  const metadataEntity = await getProductV1MetadataEntityByOfferId(
+    subgraphUrl,
+    offerId
+  );
+  if (!metadataEntity) {
+    return null;
+  }
+  return getProductWithVariants(
+    subgraphUrl,
+    metadataEntity.offer.seller.id,
+    metadataEntity.product.uuid
+  );
+}

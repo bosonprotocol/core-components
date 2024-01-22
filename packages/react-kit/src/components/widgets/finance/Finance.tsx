@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React from "react";
+import React, { ReactNode } from "react";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import { BigNumber, utils } from "ethers";
@@ -18,8 +18,8 @@ import { ProgressStatus } from "../../../lib/progress/progressStatus";
 import { calcPrice } from "../../../lib/price/prices";
 import { useModal } from "../../modal/useModal";
 import { Tooltip } from "../../tooltip/Tooltip";
-import Grid from "../../ui/Grid";
-import Typography from "../../ui/Typography";
+import { Grid } from "../../ui/Grid";
+import { Typography } from "../../ui/Typography";
 import { theme } from "../../../theme";
 import { Button } from "../../buttons/Button";
 import PaginationPages from "../../pagination/PaginationPages";
@@ -76,7 +76,7 @@ const Table = styled.table`
   }
   tbody {
     tr {
-      :hover {
+      &:hover {
         td {
           background-color: ${colors.darkGrey}08;
           cursor: pointer;
@@ -340,7 +340,7 @@ export default function Finance({
           action: (
             <Grid justifyContent="flex-end" gap="1rem">
               <WithdrawButton
-                theme="outline"
+                themeVal="outline"
                 size="small"
                 disabled={!sellerRoles.isAssistant || !address}
                 tooltip={
@@ -487,7 +487,8 @@ export default function Finance({
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     key={`seller_table_thead_th_${i}`}
                   >
-                    {column.render("Header")}
+                    {/* @ts-ignore // TODO: check */}
+                    {column.render("Header") as ReactNode}
                     {/* @ts-ignore// TODO: check */}
                     {i >= 0 && !column.disableSortBy && (
                       <HeaderSorter>
@@ -580,7 +581,7 @@ export default function Finance({
             <Grid justifyContent="flex-end" gap="1rem">
               <Button
                 size="small"
-                theme="blank"
+                themeVal="blank"
                 onClick={() => previousPage()}
                 disabled={!canPreviousPage}
               >
@@ -590,7 +591,7 @@ export default function Finance({
                 <Button
                   key={`page_btn_${pageNumber}`}
                   size="small"
-                  theme="blank"
+                  themeVal="blank"
                   style={{
                     color:
                       pageNumber === pageIndex
@@ -608,7 +609,7 @@ export default function Finance({
               ))}
               <Button
                 size="small"
-                theme="blank"
+                themeVal="blank"
                 onClick={() => nextPage()}
                 disabled={!canNextPage}
               >

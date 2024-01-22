@@ -146,7 +146,7 @@ export default function ConnectButton({
                       return (
                         <ThemedButton
                           onClick={openChainModal}
-                          theme="warning"
+                          themeVal="warning"
                           size={isLteXS ? "small" : "regular"}
                           style={{
                             whiteSpace: "pre",
@@ -193,7 +193,7 @@ export default function ConnectButton({
                         )}
                         <ThemedButton
                           onClick={openAccountModal}
-                          theme="outline"
+                          themeVal="outline"
                           size={isLteXS ? "small" : "regular"}
                           style={{
                             whiteSpace: "pre",
@@ -218,7 +218,7 @@ export default function ConnectButton({
                           <SignOut {...iconProps} onClick={disconnect} />
                         ) : (
                           <ThemedButton
-                            theme="outline"
+                            themeVal="outline"
                             size={isLteXS ? "small" : "regular"}
                             onClick={disconnect}
                           >

@@ -5,8 +5,8 @@ import { theme } from "../../theme";
 
 const colors = theme.colors.light;
 
-const AddressImageContainer = styled.div<{ avatarSize: number }>`
-  border: ${({ avatarSize }) => avatarSize / 40}px solid ${colors.lightGrey};
+const AddressImageContainer = styled.div<{ $avatarSize: number }>`
+  border: ${({ $avatarSize }) => $avatarSize / 40}px solid ${colors.lightGrey};
   border-radius: 50%;
   background-color: ${colors.lightGrey};
   margin-bottom: 5px;
@@ -25,7 +25,7 @@ export default function FallbackAvatar({
   dataTestId = "avatar"
 }: Props) {
   return (
-    <AddressImageContainer avatarSize={size} data-testid={dataTestId}>
+    <AddressImageContainer $avatarSize={size} data-testid={dataTestId}>
       <AccountImage address={address} size={size} />
     </AddressImageContainer>
   );

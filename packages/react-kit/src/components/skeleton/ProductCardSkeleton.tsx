@@ -14,7 +14,7 @@ import {
   ProductCardTitleWrapper,
   ProductCardWrapper
 } from "../productCard/ProductCard.styles";
-import Grid from "../ui/Grid";
+import { Grid } from "../ui/Grid";
 import { theme } from "../../theme";
 import { LoadingBubble } from "./common";
 

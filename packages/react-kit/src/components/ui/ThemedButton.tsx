@@ -4,7 +4,7 @@ import styled, { css, ThemeProvider } from "styled-components";
 import { zIndex } from "./zIndex";
 import { Tooltip } from "../tooltip/Tooltip";
 import * as Styles from "./styles";
-import Typography from "./Typography";
+import { Typography } from "./Typography";
 import { theme } from "../../theme";
 import { Loading } from "../Loading";
 import { ButtonSize } from "./buttonSize";
@@ -68,7 +68,7 @@ const BaseButton = styled.button<{
   ${(props) =>
     props.theme.disabled
       ? css`
-          :disabled {
+          &:disabled {
             background-color: ${props.theme.disabled.background ||
             "transparent"};
             color: ${props.theme.disabled.color || colors.darkGrey};
@@ -78,7 +78,7 @@ const BaseButton = styled.button<{
           }
         `
       : css`
-          :disabled {
+          &:disabled {
             background-color: ${colors.lightGrey};
             color: ${colors.darkGrey};
             border-color: transparent;
@@ -309,7 +309,7 @@ export type IButton = ButtonHTMLAttributes<HTMLButtonElement> & {
   children?: string | React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
   size?: "small" | "regular" | "large" | ButtonSize;
-  theme?: keyof ReturnType<typeof allThemes>;
+  themeVal?: keyof ReturnType<typeof allThemes>;
   type?: "button" | "submit" | "reset" | undefined;
   fill?: boolean;
   step?: number;
@@ -324,7 +324,7 @@ const ThemedButton = forwardRef<HTMLButtonElement, IButton>(
       children,
       onClick,
       size = "regular",
-      theme = "primary",
+      themeVal = "primary",
       type = "button",
       step = 0,
       fill = false,
@@ -342,7 +342,7 @@ const ThemedButton = forwardRef<HTMLButtonElement, IButton>(
       <>
         {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
         {/* @ts-ignore */}
-        <ThemeProvider theme={allThemes({ withBosonStyle })[theme]}>
+        <ThemeProvider theme={allThemes({ withBosonStyle })[themeVal]}>
           {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
           {/* @ts-ignore */}
           <Wrapper {...wrapperParams}>

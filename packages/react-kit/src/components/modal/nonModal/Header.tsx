@@ -2,11 +2,10 @@ import React, { Fragment, ReactNode } from "react";
 import { theme } from "../../../theme";
 import styled from "styled-components";
 import { X } from "phosphor-react";
-import Grid from "../../ui/Grid";
+import { Grid } from "../../ui/Grid";
 import ConnectButton from "../../wallet/ConnectButton";
 import ThemedButton from "../../ui/ThemedButton";
 import { useBreakpoints } from "../../../hooks/useBreakpoints";
-import { zIndex } from "../../ui/zIndex";
 
 const colors = theme.colors.light;
 const Wrapper = styled.div<{ $flexWrap: string }>`
@@ -61,7 +60,7 @@ const Header: React.FC<HeaderProps> = ({
         {closable && (
           <ThemedButton
             data-close
-            theme="blank"
+            themeVal="blank"
             onClick={handleOnClose}
             id="close"
           >

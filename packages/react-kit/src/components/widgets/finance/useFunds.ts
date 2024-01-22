@@ -3,7 +3,7 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { ethers } from "ethers";
 import { useCallback, useEffect, useReducer, useState } from "react";
-import { useCoreSDKWithContext } from "../../../hooks/useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../../../hooks/core-sdk/useCoreSdkWithContext";
 import { ProgressStatus } from "../../../lib/progress/progressStatus";
 import { Token } from "./convertion-rate/ConvertionRateContext";
 

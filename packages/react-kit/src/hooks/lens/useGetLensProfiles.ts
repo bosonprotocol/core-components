@@ -5,7 +5,7 @@ import {
   ProfilesDocument,
   ProfilesQuery
 } from "../../lib/lens/generated";
-import { useCoreSDKWithContext } from "../useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../core-sdk/useCoreSdkWithContext";
 
 type Params = Parameters<typeof getLensProfiles>[1];
 

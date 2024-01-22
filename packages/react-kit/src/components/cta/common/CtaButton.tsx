@@ -8,7 +8,7 @@ import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { ButtonSize } from "../../ui/buttonSize";
-import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
+import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
 
 type Props<T> = CtaButtonProps<T> & {
   defaultLabel?: string;

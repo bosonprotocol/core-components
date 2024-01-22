@@ -8,7 +8,7 @@ import { Loading } from "../../Loading";
 import { TransactionResponse } from "@bosonprotocol/common";
 import { accounts } from "@bosonprotocol/core-sdk";
 import { ButtonSize } from "../../ui/buttonSize";
-import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
+import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
 export type ICreateDisputeResolverButton = {
   exchangeId: BigNumberish;
   disputeResolverToCreate: accounts.CreateDisputeResolverArgs;

@@ -215,7 +215,8 @@ export default function Phone({ name, ...props }: InputProps) {
                             ) : (
                               <GlobeHemisphereWest />
                             )}
-                            {props.children}
+                            {/* @ts-ignore // TODO: check */}
+                            {props.children as any}
                           </ControlGrid>
                         </components.Control>
                       );

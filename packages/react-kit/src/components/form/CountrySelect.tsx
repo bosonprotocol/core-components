@@ -133,7 +133,7 @@ export function CountrySelect({ name, countries, ...props }: Props) {
       <PhoneWrapper>
         {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
-        /* @ts-ignore */}
+          /* @ts-ignore */ }
         <PhoneInput
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           inputComponent={forwardRef((props, ref) => (
@@ -170,7 +170,7 @@ export function CountrySelect({ name, countries, ...props }: Props) {
                             ) : (
                               <GlobeHemisphereWest />
                             )}
-                            {props.children}
+                            {props.children as any}
                           </ControlGrid>
                         </components.Control>
                       );

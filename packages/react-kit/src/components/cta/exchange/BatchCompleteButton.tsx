@@ -3,7 +3,7 @@ import { BigNumberish } from "ethers";
 
 import { CtaButtonProps } from "../common/types";
 import { CtaButton } from "../common/CtaButton";
-import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
+import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
 
 type AdditionalProps = {
   /**

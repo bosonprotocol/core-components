@@ -17,8 +17,8 @@ export async function fetchLens<T, V = Record<string, unknown>>(
       "Content-Type": "application/json"
     });
     return data;
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
   }
   return null;
 }

@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { useCoreSDKWithContext } from "../../../hooks/useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../../../hooks/core-sdk/useCoreSdkWithContext";
 import { fetchSubgraph } from "../../../lib/subgraph/subgraph";
 import { useAccount } from "../../../hooks/connection/connection";
 

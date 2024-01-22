@@ -7,7 +7,7 @@ import Exchanges from "./Exchanges";
 import { ExchangesStates, WithExchangesData } from "./WithExchangesData";
 import { Exchange } from "../../../../../types/exchange";
 import { theme } from "../../../../../theme";
-import GridContainer from "../../../../ui/GridContainer";
+import { GridContainer } from "../../../../ui/GridContainer";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { useAccount } from "../../../../../hooks/connection/connection";

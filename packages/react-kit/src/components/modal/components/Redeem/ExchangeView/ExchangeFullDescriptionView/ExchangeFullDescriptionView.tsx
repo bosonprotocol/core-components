@@ -1,25 +1,34 @@
 import React, { useEffect } from "react";
-import Grid from "../../../../../ui/Grid";
-import Typography from "../../../../../ui/Typography";
+import { Grid } from "../../../../../ui/Grid";
+import { Typography } from "../../../../../ui/Typography";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
 import { ExchangeFullDescription } from "./ExchangeFullDescription";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
 import { theme } from "../../../../../../theme";
+import { OnClickBuyOrSwapHandler } from "../../../common/detail/types";
+import { UseGetOfferDetailDataProps } from "../../../common/detail/useGetOfferDetailData";
 
 const colors = theme.colors.light;
-interface Props {
+interface Props
+  extends OnClickBuyOrSwapHandler,
+    Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick"> {
   onBackClick: () => void;
   exchange: Exchange | null;
 }
 
-export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
+export function ExchangeFullDescriptionView({
+  onBackClick,
+  exchange,
+  onExchangePolicyClick,
+  onClickBuyOrSwap
+}: Props) {
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
         headerComponent: (
-          <Grid style={{ flex: "1" }}>
+          <Grid style={{ flex: "1" }} gap="1rem">
             <ArrowLeft
               onClick={onBackClick}
               size={32}
@@ -31,7 +40,8 @@ export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
           </Grid>
         ),
         contentStyle: {
-          background: colors.white
+          background: colors.white,
+          padding: 0
         }
       }
     });
@@ -42,7 +52,11 @@ export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
       {!exchange ? (
         <p>Exchange could not be retrieved</p>
       ) : (
-        <ExchangeFullDescription exchange={exchange} />
+        <ExchangeFullDescription
+          exchange={exchange}
+          onExchangePolicyClick={onExchangePolicyClick}
+          onClickBuyOrSwap={onClickBuyOrSwap}
+        />
       )}
     </>
   );

@@ -6,7 +6,7 @@ import { Action } from "../../../hooks/useCtaClickHandler";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { CtaButton } from "../common/CtaButton";
 import { CtaButtonProps } from "../common/types";
-import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
+import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
 
 type AdditionalProps = {
   /**

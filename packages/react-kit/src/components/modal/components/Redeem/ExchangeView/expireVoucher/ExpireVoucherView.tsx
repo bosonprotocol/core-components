@@ -4,7 +4,7 @@ import { Exchange } from "../../../../../../types/exchange";
 import ExpireVoucher, { ExpireVoucherProps } from "./ExpireVoucher";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
 import { theme } from "../../../../../../theme";
-import Grid from "../../../../../ui/Grid";
+import { Grid } from "../../../../../ui/Grid";
 
 const colors = theme.colors.light;
 export interface ExpireVoucherViewProps {

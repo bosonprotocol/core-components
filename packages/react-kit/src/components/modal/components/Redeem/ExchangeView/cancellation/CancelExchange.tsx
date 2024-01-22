@@ -1,13 +1,15 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Provider } from "@bosonprotocol/ethers-sdk";
-import { Info as InfoComponent, CheckCircle } from "phosphor-react";
+import { CheckCircle, Info as InfoComponent } from "phosphor-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
+import { useSigner } from "../../../../../../hooks/connection/connection";
+import { useCoreSDKWithContext } from "../../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { useAddPendingTransactionWithContext } from "../../../../../../hooks/transactions/usePendingTransactionsWithContext";
-import { useCoreSDKWithContext } from "../../../../../../hooks/useCoreSdkWithContext";
 import useRefundData from "../../../../../../hooks/useRefundData";
-import { useDisplayFloat } from "../../../../../../lib/price/prices";
+import { extractUserFriendlyError } from "../../../../../../lib/errors/transactions";
+import { useDisplayFloatWithConfig } from "../../../../../../lib/price/prices";
 import { poll } from "../../../../../../lib/promises/promises";
 import { theme } from "../../../../../../theme";
 import { Exchange } from "../../../../../../types/exchange";
@@ -18,16 +20,14 @@ import {
 import { useEnvContext } from "../../../../../environment/EnvironmentContext";
 import SimpleError from "../../../../../error/SimpleError";
 import SuccessTransactionToast from "../../../../../toasts/SuccessTransactionToast";
-import Grid from "../../../../../ui/Grid";
-import { Spinner } from "../../../../../ui/loading/Spinner";
+import { Grid } from "../../../../../ui/Grid";
 import ThemedButton from "../../../../../ui/ThemedButton";
-import DetailTable from "../detail/DetailTable";
-import { useSigner } from "../../../../../../hooks/connection/connection";
+import { Spinner } from "../../../../../ui/loading/Spinner";
 import {
   RedemptionWidgetAction,
   useRedemptionContext
 } from "../../../../../widgets/redemption/provider/RedemptionContext";
-import { extractUserFriendlyError } from "../../../../../../lib/errors/transactions";
+import DetailTable from "../../../common/detail/DetailTable";
 
 const colors = theme.colors.light;
 
@@ -100,7 +100,7 @@ export function CancelExchange({
   const [cancelError, setCancelError] = useState<Error | null>(null);
   const { offer } = exchange;
 
-  const displayFloat = useDisplayFloat();
+  const displayFloat = useDisplayFloatWithConfig();
   const coreSDK = useCoreSDKWithContext();
 
   const addPendingTransaction = useAddPendingTransactionWithContext();
@@ -262,7 +262,7 @@ export function CancelExchange({
           </CancelButton>
         </CancelButtonWrapper>
         {!isCancelModeOnly && (
-          <ThemedButton theme="blankOutline" onClick={() => onBackClick()}>
+          <ThemedButton themeVal="blankOutline" onClick={() => onBackClick()}>
             Back
           </ThemedButton>
         )}

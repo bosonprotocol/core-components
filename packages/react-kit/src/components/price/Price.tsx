@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import { useDisplayFloat } from "../../lib/price/prices";
+import { useDisplayFloatWithConfig } from "../../lib/price/prices";
 import { breakpoint } from "../../lib/ui/breakpoint";
 import { theme } from "../../theme";
 import {
@@ -9,8 +9,8 @@ import {
 } from "../currencyDisplay/CurrencyDisplay";
 import { Tooltip } from "../tooltip/Tooltip";
 
-import Grid from "../ui/Grid";
-import Typography from "../ui/Typography";
+import { Grid } from "../ui/Grid";
+import { Typography } from "../ui/Typography";
 import ConvertedPrice from "./ConvertedPrice";
 
 import { useConvertedPrice } from "./useConvertedPrice";
@@ -83,7 +83,7 @@ export default function Price({
     decimals,
     symbol: currencySymbol
   });
-  const displayFloat = useDisplayFloat();
+  const displayFloat = useDisplayFloatWithConfig();
 
   return (
     <Root {...rest} $withBosonStyles={withBosonStyles} data-testid="price">

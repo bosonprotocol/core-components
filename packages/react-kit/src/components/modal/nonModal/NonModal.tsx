@@ -2,7 +2,8 @@ import React, {
   useContext,
   CSSProperties,
   useReducer,
-  createContext
+  createContext,
+  useMemo
 } from "react";
 import { theme } from "../../../theme";
 import { ReactNode } from "react";
@@ -12,6 +13,7 @@ import Header from "./Header";
 import { Store } from "../ModalContext";
 import { zIndex } from "../../ui/zIndex";
 import { breakpoint } from "../../../lib/ui/breakpoint";
+import { Content } from "./styles";
 
 const colors = theme.colors.light;
 const Root = styled.div`
@@ -90,21 +92,21 @@ const background = {
 
 const Wrapper = styled.div<{
   $size: NonModalProps["size"];
-  $theme: NonModalProps["theme"];
+  $themeVal: NonModalProps["theme"];
   $maxWidths: NonModalProps["maxWidths"];
 }>`
   position: relative;
   z-index: ${zIndex.Modal};
-  color: ${({ $theme }) => {
-    switch ($theme) {
+  color: ${({ $themeVal }) => {
+    switch ($themeVal) {
       case "dark":
         return colors.white;
       default:
         return colors.black;
     }
   }};
-  background-color: ${({ $theme }) => {
-    return background[$theme as keyof typeof background] || colors.white;
+  background-color: ${({ $themeVal }) => {
+    return background[$themeVal as keyof typeof background] || colors.white;
   }};
   border: var(--secondary);
   ${({ $maxWidths }) => {
@@ -162,12 +164,6 @@ const FooterWrapper = styled.div`
   border-top: 2px solid ${colors.border};
 `;
 
-const Content = styled.div<{
-  $size: NonModalProps["size"];
-}>`
-  padding: 2rem;
-`;
-
 export enum ActionKind {
   HEADER = "HEADER",
   CONTENT_STYLE = "CONTENT_STYLE"
@@ -207,26 +203,24 @@ export interface NonModalProps {
   maxWidths?: Store["modalMaxWidth"];
   theme?: NonNullable<Store["theme"]>;
   closable?: boolean;
+  lookAndFeel?: "modal" | "regular";
+  children: ReactNode;
   showConnectButton: boolean;
 }
 
 export default function NonModal({
   children,
-  props: {
-    hideModal,
-    headerComponent,
-    footerComponent: FooterComponent,
-    size = "auto",
-    maxWidths = null,
-    theme = "light",
-    contentStyle: _contentStyle,
-    closable = true,
-    showConnectButton
-  }
-}: {
-  children: React.ReactNode;
-  props: NonModalProps;
-}) {
+  hideModal,
+  headerComponent,
+  footerComponent: FooterComponent,
+  size = "auto",
+  maxWidths = null,
+  theme = "light",
+  contentStyle: _contentStyle,
+  closable = true,
+  lookAndFeel = "modal",
+  showConnectButton
+}: NonModalProps) {
   const handleOnClose = () => {
     if (closable && hideModal) {
       hideModal();
@@ -237,10 +231,26 @@ export default function NonModal({
       headerComponent,
       contentStyle: _contentStyle
     });
-
+  const Container = useMemo(() => {
+    return ({ children }: { children: ReactNode }) => {
+      return lookAndFeel === "modal" ? (
+        <Root data-testid="modal">
+          {children}
+          <RootBG
+            onClick={() => {
+              handleOnClose();
+            }}
+          />
+        </Root>
+      ) : (
+        <>{children}</>
+      );
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lookAndFeel]);
   return (
-    <Root data-testid="modal">
-      <Wrapper $size={size} $theme={theme} $maxWidths={maxWidths}>
+    <Container>
+      <Wrapper $size={size} $themeVal={theme} $maxWidths={maxWidths}>
         <Header
           HeaderComponent={HeaderComponent}
           closable={closable}
@@ -248,18 +258,13 @@ export default function NonModal({
           showConnectButton={showConnectButton}
         />
 
-        <Content $size={size} style={contentStyle}>
+        <Content style={contentStyle}>
           <NonModalContext.Provider value={dispatch}>
             {children}
           </NonModalContext.Provider>
         </Content>
         {FooterComponent && <FooterWrapper>{FooterComponent}</FooterWrapper>}
       </Wrapper>
-      <RootBG
-        onClick={() => {
-          handleOnClose();
-        }}
-      />
-    </Root>
+    </Container>
   );
 }

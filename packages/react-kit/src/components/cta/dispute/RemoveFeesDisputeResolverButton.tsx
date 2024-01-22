@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
-import { useCoreSdk } from "../../../hooks/useCoreSdk";
+import { useCoreSdk } from "../../../hooks/core-sdk/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";

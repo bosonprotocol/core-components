@@ -1,7 +1,7 @@
 import { accounts, subgraph } from "@bosonprotocol/core-sdk";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
-import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
 
 import { useCurationLists } from "./useCurationLists";
 

@@ -52,7 +52,7 @@ const Wrapper = ({
   tooltip,
   tooltipProps
 }: {
-  children: React.ReactNode;
+  children: React.ReactElement;
   tooltip?: string;
   tooltipProps?: Omit<TooltipProps, "content">;
 }) => {
@@ -120,16 +120,18 @@ export const ProductCard = (props: IProductCard) => {
             </ProductCardData>
             <ProductCardPriceWrapper>
               <Wrapper tooltip={tooltip} tooltipProps={tooltipProps}>
-                <ProductCardPrice>Price {asterisk && "*"}</ProductCardPrice>
-                <CurrencyDisplay
-                  value={price}
-                  currency={currency}
-                  style={{
-                    wordBreak: "break-all",
-                    alignItems: "flex-start",
-                    justifyContent: "flex-end"
-                  }}
-                />
+                <>
+                  <ProductCardPrice>Price {asterisk && "*"}</ProductCardPrice>
+                  <CurrencyDisplay
+                    value={price}
+                    currency={currency}
+                    style={{
+                      wordBreak: "break-all",
+                      alignItems: "flex-start",
+                      justifyContent: "flex-end"
+                    }}
+                  />
+                </>
               </Wrapper>
             </ProductCardPriceWrapper>
           </ProductCardBottomContent>

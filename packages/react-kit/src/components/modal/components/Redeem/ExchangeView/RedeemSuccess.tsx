@@ -3,17 +3,17 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import IpfsImage from "../../../../ui/IpfsImage";
 import Loading from "../../../../ui/loading/Loading";
-import Typography from "../../../../ui/Typography";
-import DetailOpenSea from "./detail/DetailOpenSea";
+import { Typography } from "../../../../ui/Typography";
+import DetailOpenSea from "../../common/DetailOpenSea";
 import { useFormikContext } from "formik";
 import { FormType } from "../RedeemFormModel";
 import { theme } from "../../../../../theme";
 import Video from "../../../../ui/Video";
 import { Button } from "../../../../buttons/Button";
-import GridContainer from "../../../../ui/GridContainer";
+import { GridContainer } from "../../../../ui/GridContainer";
 import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { RedeemHeader } from "../RedeemHeader";
@@ -30,7 +30,6 @@ const ImageWrapper = styled.div`
 type Props = {
   onClickDone: () => void;
   onHouseClick: () => void;
-  onExchangePolicyClick: () => void;
   exchangeId: string;
 };
 
@@ -124,7 +123,7 @@ export function RedeemSuccess({
             >
               <CheckCircle size="60" color={colors.green} />
               <Grid flexDirection="column" alignItems="flex-start">
-                <Typography fontWeight="600" $fontSize="1.25rem">
+                <Typography fontWeight="600" fontSize="1.25rem">
                   Congratulations!
                 </Typography>
 

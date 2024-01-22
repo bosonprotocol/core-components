@@ -6,6 +6,7 @@ import {
   getProductV1MetadataEntities,
   getProductV1Products,
   getProductWithVariants,
+  getProductWithVariantsFromOfferId,
   getAllProductsWithVariants,
   getAllProductsWithNotVoidedVariants
 } from "./subgraph";
@@ -86,7 +87,13 @@ export class MetadataMixin extends BaseCoreSDK {
     return getProductWithVariants(this._subgraphUrl, sellerId, productUuid);
   }
 
-  public async getAllProductsWithVariants(
+  public getProductWithVariantsFromOfferId(
+    offerId: string
+  ): ReturnType<typeof getProductWithVariantsFromOfferId> {
+    return getProductWithVariantsFromOfferId(this._subgraphUrl, offerId);
+  }
+
+  public getAllProductsWithVariants(
     queryVars?: subgraph.GetProductV1ProductsWithVariantsQueryQueryVariables
   ): Promise<subgraph.BaseProductV1ProductWithVariantsFieldsFragment[]> {
     return getAllProductsWithVariants(this._subgraphUrl, queryVars);

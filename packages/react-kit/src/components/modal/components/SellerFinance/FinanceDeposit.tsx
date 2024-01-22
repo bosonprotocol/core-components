@@ -1,14 +1,26 @@
-import React from "react";
 import * as Sentry from "@sentry/browser";
+import React from "react";
 
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
 import { useState } from "react";
-import { useBalance } from "wagmi";
 
+import { subgraph } from "@bosonprotocol/core-sdk";
+import { Provider } from "@bosonprotocol/ethers-sdk";
+import { Spinner } from "phosphor-react";
+import { useSigner } from "../../../../hooks/connection/connection";
+import { useCoreSDKWithContext } from "../../../../hooks/core-sdk/useCoreSdkWithContext";
+import { useExchangeTokenBalance } from "../../../../hooks/offer/useExchangeTokenBalance";
+import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
+import {
+  extractUserFriendlyError,
+  getHasUserRejectedTx
+} from "../../../../lib/errors/transactions";
 import { getNumberWithoutDecimals } from "../../../../lib/numbers/numbers";
 import { poll } from "../../../../lib/promises/promises";
-import Grid from "../../../ui/Grid";
-import Typography from "../../../ui/Typography";
+import { DepositFundsButton } from "../../../cta/funds/DepositFundsButton";
+import { useEnvContext } from "../../../environment/EnvironmentContext";
+import { Grid } from "../../../ui/Grid";
+import { Typography } from "../../../ui/Typography";
 import { useModal } from "../../useModal";
 import {
   AmountWrapper,
@@ -16,18 +28,6 @@ import {
   InputWrapper,
   ProtocolStrong
 } from "./FinancesStyles";
-import { Spinner } from "phosphor-react";
-import { Provider } from "@bosonprotocol/ethers-sdk";
-import { DepositFundsButton } from "../../../cta/funds/DepositFundsButton";
-import { useEnvContext } from "../../../environment/EnvironmentContext";
-import { useCoreSDKWithContext } from "../../../../hooks/useCoreSdkWithContext";
-import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
-import { subgraph } from "@bosonprotocol/core-sdk";
-import { useAccount, useSigner } from "../../../../hooks/connection/connection";
-import {
-  extractUserFriendlyError,
-  getHasUserRejectedTx
-} from "../../../../lib/errors/transactions";
 
 interface Props {
   protocolBalance: string;
@@ -56,17 +56,20 @@ export default function FinanceDeposit({
   const [depositError, setDepositError] = useState<unknown>(null);
 
   const signer = useSigner();
-  const { address } = useAccount();
 
-  const { data: dataBalance, refetch } = useBalance(
-    exchangeToken !== ethers.constants.AddressZero
-      ? {
-          address: address as `0x${string}`,
-          token: exchangeToken as `0x${string}`
-        }
-      : { address: address as `0x${string}` }
+  const {
+    balance: dataBalance,
+    refetch,
+    formatted
+  } = useExchangeTokenBalance(
+    {
+      address: exchangeToken,
+      decimals: tokenDecimals
+    },
+    {
+      enabled: true
+    }
   );
-
   const { showModal, hideModal } = useModal();
   const addPendingTransaction = useAddPendingTransactionWithContext();
 
@@ -89,11 +92,11 @@ export default function FinanceDeposit({
 
   return (
     <Grid flexDirection="column" alignItems="flex-start" gap="1.5rem">
-      <Typography tag="p" margin="0" $fontSize="0.75rem">
+      <Typography tag="p" margin="0" fontSize="0.75rem">
         <ProtocolStrong>Protocol Balance:</ProtocolStrong> {protocolBalance}{" "}
         {symbol}
       </Typography>
-      <Typography tag="p" margin="0" $fontSize="0.75rem" fontWeight="600">
+      <Typography tag="p" margin="0" fontSize="0.75rem" fontWeight="600">
         Choose Amount To Deposit:
       </Typography>
       <AmountWrapper>
@@ -112,7 +115,7 @@ export default function FinanceDeposit({
           />
           <div>
             <Typography
-              $fontSize="0.875rem"
+              fontSize="0.875rem"
               margin="0"
               fontWeight="600"
               textAlign="right"
@@ -123,8 +126,8 @@ export default function FinanceDeposit({
               {symbol}
             </Typography>
             {dataBalance && (
-              <Typography $fontSize="0.625rem" margin="0">
-                Balance {dataBalance.formatted}
+              <Typography fontSize="0.625rem" margin="0">
+                Balance {formatted}
               </Typography>
             )}
           </div>
@@ -178,14 +181,14 @@ export default function FinanceDeposit({
                 break;
             }
           }}
-          onSuccess={async (...args) => {
+          onSuccess={async () => {
             await poll(
               async () => {
                 const balance = await refetch();
                 return balance;
               },
               (balance) => {
-                return dataBalance?.formatted === balance.data?.formatted;
+                return dataBalance?.toString() === balance?.toString();
               },
               500
             );
@@ -205,10 +208,10 @@ export default function FinanceDeposit({
             error.message = errorMessage;
             const hasUserRejectedTx = getHasUserRejectedTx(error);
             if (hasUserRejectedTx) {
-              showModal("CONFIRMATION_FAILED");
+              showModal("TRANSACTION_FAILED");
             } else {
               Sentry.captureException(error);
-              showModal("CONFIRMATION_FAILED", {
+              showModal("TRANSACTION_FAILED", {
                 errorMessage: "Something went wrong",
                 detailedErrorMessage: errorMessage
               });
@@ -221,7 +224,7 @@ export default function FinanceDeposit({
           {isBeingDeposit ? (
             <Spinner size={20} />
           ) : (
-            <Typography tag="p" margin="0" $fontSize="0.75rem" fontWeight="600">
+            <Typography tag="p" margin="0" fontSize="0.75rem" fontWeight="600">
               Deposit {symbol}
             </Typography>
           )}

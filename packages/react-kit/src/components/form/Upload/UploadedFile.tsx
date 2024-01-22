@@ -4,9 +4,9 @@ import styled from "styled-components";
 import bytesToSize from "../../../lib/bytes/bytesToSize";
 import { theme } from "../../../theme";
 
-import Grid from "../../ui/Grid";
+import { Grid } from "../../ui/Grid";
 import ThemedButton from "../../ui/ThemedButton";
-import Typography from "../../ui/Typography";
+import { Typography } from "../../ui/Typography";
 const colors = theme.colors.light;
 
 const AttachmentContainer = styled.div<{ $isLeftAligned: boolean }>`
@@ -47,7 +47,7 @@ export default function UploadedFile({
     return (
       <>
         <ImageSquare size={23} />
-        <Typography $fontSize="1rem" fontWeight="400">
+        <Typography fontSize="1rem" fontWeight="400">
           &nbsp;&nbsp; {fileName}
         </Typography>
         {showSize && (
@@ -73,7 +73,7 @@ export default function UploadedFile({
           <FileContent />
         )}
         {handleRemoveFile && (
-          <ThemedButton onClick={() => handleRemoveFile()} theme="blank">
+          <ThemedButton onClick={() => handleRemoveFile()} themeVal="blank">
             <X size={24} />
           </ThemedButton>
         )}

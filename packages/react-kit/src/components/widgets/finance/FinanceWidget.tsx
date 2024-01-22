@@ -1,42 +1,38 @@
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 
-import React, { useMemo } from "react";
-import styled from "styled-components";
-import useOffersBacked from "./useOffersBacked";
-import Loading from "../../ui/loading/Loading";
-import Finance, { Props } from "./Finance";
-import { useSellerRoles } from "./useSellerRoles";
-import { useConvertionRate } from "./convertion-rate/useConvertionRate";
-import { useExchangeTokens } from "./exchange-tokens/useExchangeTokens";
-import { useSellerDeposit } from "./useSellerDeposit";
-import useFunds from "./useFunds";
-import WalletConnectionProvider from "../../wallet/WalletConnectionProvider";
+import { ethers } from "ethers";
+import React, { useEffect, useMemo, useRef } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import {
-  EnvironmentProvider,
-  EnvironmentProviderProps
-} from "../../environment/EnvironmentProvider";
-import ModalProvider from "../../modal/ModalProvider";
-import ConvertionRateProvider, {
-  ConvertionRateProviderProps
-} from "./convertion-rate/ConvertionRateProvider";
-import GlobalStyle from "../../styles/GlobalStyle";
+import styled from "styled-components";
+import { useAccount } from "../../../hooks/connection/connection";
+import { useDisconnect } from "../../../hooks/connection/useDisconnect";
+import { useCurrentSellers } from "../../../hooks/useCurrentSellers";
+import { CONFIG } from "../../../lib/config/config";
 import {
   ConfigProvider,
   ConfigProviderProps
 } from "../../config/ConfigProvider";
-import { CONFIG } from "../../../lib/config/config";
 import { MagicProvider } from "../../magicLink/MagicContext";
+import ModalProvider from "../../modal/ModalProvider";
 import { SignerProvider } from "../../signer/SignerContext";
+import GlobalStyle from "../../styles/GlobalStyle";
+import { Grid } from "../../ui/Grid";
+import Loading from "../../ui/loading/Loading";
 import ConnectButton from "../../wallet/ConnectButton";
-import Grid from "../../ui/Grid";
-import { useCurrentSellers } from "../../../hooks/useCurrentSellers";
-import { useAccount } from "../../../hooks/connection/connection";
-import { useDisconnect } from "../../../hooks/connection/useDisconnect";
-import { ethers } from "ethers";
-import { CommonWidgetTypes } from "../types";
+import WalletConnectionProvider from "../../wallet/WalletConnectionProvider";
 import { getParentWindowOrigin } from "../common";
+import { CommonWidgetTypes } from "../types";
+import Finance, { Props } from "./Finance";
+import ConvertionRateProvider, {
+  ConvertionRateProviderProps
+} from "./convertion-rate/ConvertionRateProvider";
+import { useConvertionRate } from "./convertion-rate/useConvertionRate";
+import { useExchangeTokens } from "./exchange-tokens/useExchangeTokens";
+import useFunds from "./useFunds";
+import useOffersBacked from "./useOffersBacked";
+import { useSellerDeposit } from "./useSellerDeposit";
+import { useSellerRoles } from "./useSellerRoles";
 dayjs.extend(isBetween);
 
 const StyledConnectButton = styled(ConnectButton)`
@@ -90,23 +86,17 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
 
     const offersBacked = useOffersBacked({ ...newProps });
     const disconnect = useDisconnect();
-
+    const addressRef = useRef<string | null>(null);
+    useEffect(() => {
+      if (address) {
+        addressRef.current = null;
+      }
+    }, [address]);
     if (exchangesTokens.isLoading || sellerDeposit.isLoading) {
       return (
         <Wrapper>
           <Loading />
         </Wrapper>
-      );
-    }
-    if (!address) {
-      return <p style={{ textAlign: "center" }}>Please connect your wallet</p>;
-    }
-
-    if (!sellerIdToUse) {
-      return (
-        <p style={{ textAlign: "center" }}>
-          Connect a wallet that has a seller account
-        </p>
       );
     }
     const forcedAccount =
@@ -116,17 +106,34 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
       address &&
       forcedAccount.toLowerCase() !== address.toLowerCase()
     ) {
+      addressRef.current = address;
+      console.error(
+        `disconnect account because connected account (${address}) is not ${forcedAccount}`
+      );
       // force disconnection as the current connected wallet is not the forced one
       disconnect();
     }
 
-    if (forcedAccount) {
+    if (forcedAccount && addressRef.current) {
       return (
         <p style={{ textAlign: "center" }}>
           Please connect this wallet account{" "}
           <strong>{ethers.utils.getAddress(forcedAccount)}</strong> (which is
           linked to the <strong>assistant</strong> role of the seller id{" "}
-          <strong>{sellerId}</strong>). The connected address is {address}
+          <strong>{sellerId}</strong>). The connected address was{" "}
+          {addressRef.current}
+        </p>
+      );
+    }
+
+    if (!address) {
+      return <p style={{ textAlign: "center" }}>Please connect your wallet</p>;
+    }
+
+    if (!sellerIdToUse) {
+      return (
+        <p style={{ textAlign: "center" }}>
+          Connect a wallet that has a seller account
         </p>
       );
     }
@@ -150,7 +157,6 @@ const queryClient = new QueryClient({
 type FinanceWidgetProps = {
   walletConnectProjectId: string;
 } & Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
-  EnvironmentProviderProps &
   CommonWidgetTypes &
   ConvertionRateProviderProps & {
     sellerId: string | null | undefined;
@@ -158,52 +164,40 @@ type FinanceWidgetProps = {
 
 const { infuraKey, magicLinkKey } = CONFIG;
 
-export function FinanceWidget({
-  envName,
-  configId,
-  walletConnectProjectId,
-  sellerId,
-  metaTx,
-  withExternalSigner,
-  ...rest
-}: FinanceWidgetProps) {
+export function FinanceWidget(props: FinanceWidgetProps) {
   const parentOrigin = getParentWindowOrigin();
+  const { walletConnectProjectId, sellerId, withExternalSigner } = props;
   return (
-    <EnvironmentProvider envName={envName} configId={configId} metaTx={metaTx}>
-      {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
-        /* @ts-ignore */}
+    <ConfigProvider
+      magicLinkKey={magicLinkKey}
+      infuraKey={infuraKey}
+      {...props}
+    >
       <GlobalStyle />
-      <ConfigProvider
-        magicLinkKey={magicLinkKey}
-        infuraKey={infuraKey}
-        {...rest}
+      <SignerProvider
+        parentOrigin={parentOrigin}
+        withExternalSigner={withExternalSigner}
       >
-        <SignerProvider
-          parentOrigin={parentOrigin}
-          withExternalSigner={withExternalSigner}
-        >
-          <MagicProvider>
-            <WalletConnectionProvider
-              walletConnectProjectId={walletConnectProjectId}
-            >
-              <QueryClientProvider client={queryClient}>
-                <ConvertionRateProvider>
-                  <ModalProvider>
-                    {!withExternalSigner && (
-                      <Grid justifyContent="flex-end">
-                        <StyledConnectButton showChangeWallet />
-                      </Grid>
-                    )}
-                    <Component sellerId={sellerId ?? undefined} />
-                  </ModalProvider>
-                </ConvertionRateProvider>
-              </QueryClientProvider>
-            </WalletConnectionProvider>
-          </MagicProvider>
-        </SignerProvider>
-      </ConfigProvider>
-    </EnvironmentProvider>
+        <MagicProvider>
+          <WalletConnectionProvider
+            walletConnectProjectId={walletConnectProjectId}
+          >
+            <QueryClientProvider client={queryClient}>
+              <ConvertionRateProvider>
+                <ModalProvider>
+                  {!withExternalSigner && (
+                    <Grid justifyContent="flex-end">
+                      <StyledConnectButton showChangeWallet />
+                    </Grid>
+                  )}
+                  <Component sellerId={sellerId ?? undefined} />
+                </ModalProvider>
+              </ConvertionRateProvider>
+            </QueryClientProvider>
+          </WalletConnectionProvider>
+        </MagicProvider>
+      </SignerProvider>
+    </ConfigProvider>
   );
 }
 

@@ -9,7 +9,7 @@ import { Loading } from "../../Loading";
 import { offers, accounts } from "@bosonprotocol/core-sdk";
 import { TransactionResponse } from "@bosonprotocol/common";
 import { ButtonSize } from "../../ui/buttonSize";
-import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
+import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
 
 type Props = {
   hasSellerAccount: boolean;

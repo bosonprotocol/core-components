@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import License from "../../../../license/License";
@@ -9,16 +9,16 @@ import { theme } from "../../../../../theme";
 const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
-  exchange: Exchange | null;
+  offer: Exchange["offer"] | null | undefined;
 }
 
-export function LicenseAgreementView({ onBackClick, exchange }: Props) {
+export function LicenseAgreementView({ onBackClick, offer }: Props) {
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
         headerComponent: (
-          <Grid style={{ flex: "1" }} gap="1rem">
+          <Grid style={{ flex: "1" }} gap="1rem" justifyContent="flex-start">
             <ArrowLeft
               onClick={onBackClick}
               size={32}
@@ -36,8 +36,8 @@ export function LicenseAgreementView({ onBackClick, exchange }: Props) {
   }, [dispatch]);
   return (
     <>
-      {exchange ? (
-        <License offerId={exchange.offer?.id} offerData={exchange.offer} />
+      {offer ? (
+        <License offerId={offer.id} offerData={offer} />
       ) : (
         <p>Exchange could not be retrieved</p>
       )}

@@ -87,6 +87,7 @@ export const useCallSignerFromIframe = ({
               signer[signerFn] &&
               typeof signer[signerFn] === "function"
             ) {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               result = await signer[signerFn]?.(args[0], args[1]);
             } else {
@@ -151,11 +152,16 @@ export const useCallSignerFromIframe = ({
     return () => {
       window.removeEventListener("message", onMessageReceived);
     };
-  }, [ethersSigner, iframeRef, isIframeLoaded, txMap, childIframeOrigin, loadCounter]);
+  }, [
+    ethersSigner,
+    iframeRef,
+    isIframeLoaded,
+    txMap,
+    childIframeOrigin,
+    loadCounter,
+    signer
+  ]);
   return {
-    reload: useCallback(
-      () => reload(prev => ++prev),
-      [reload],
-    )
-  }
+    reload: useCallback(() => reload((prev) => ++prev), [reload])
+  };
 };

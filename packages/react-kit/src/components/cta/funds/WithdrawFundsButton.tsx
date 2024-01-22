@@ -5,7 +5,7 @@ import { CtaButtonProps } from "../common/types";
 import { CtaButton } from "../common/CtaButton";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { TransactionReceipt } from "@bosonprotocol/common";
-import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
+import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
 
 type AdditionalProps = {
   accountId: string;

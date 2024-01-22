@@ -7,7 +7,7 @@ import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { UpdateSellerArgs, TransactionResponse } from "@bosonprotocol/common";
 import { ButtonSize } from "../../ui/buttonSize";
-import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
+import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
 
 export type IUpdateSellerButton = {
   exchangeId: BigNumberish;
