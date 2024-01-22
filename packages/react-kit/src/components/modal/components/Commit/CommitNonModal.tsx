@@ -21,7 +21,7 @@ import {
 } from "../common/detail/DetailViewProvider";
 
 const colors = theme.colors.light;
-enum ActiveStep {
+enum CommitStep {
   OFFER_VIEW,
   PURCHASE_OVERVIEW,
   COMMIT_SUCESS,
@@ -110,14 +110,14 @@ function CommitNonModal({
   }, [defaultVariant]);
 
   const [{ currentStep }, setStep] = useState<{
-    previousStep: ActiveStep[];
-    currentStep: ActiveStep;
+    previousStep: CommitStep[];
+    currentStep: CommitStep;
   }>({
     previousStep: [],
-    currentStep: ActiveStep.OFFER_VIEW
+    currentStep: CommitStep.OFFER_VIEW
   });
 
-  const setActiveStep = (newCurrentStep: ActiveStep) => {
+  const setActiveStep = (newCurrentStep: CommitStep) => {
     setStep((prev) => ({
       previousStep: [...prev.previousStep, prev.currentStep],
       currentStep: newCurrentStep
@@ -127,7 +127,7 @@ function CommitNonModal({
     setStep((prev) => {
       const { previousStep } = prev;
       const currentStep = previousStep.length
-        ? (previousStep.pop() as ActiveStep)
+        ? (previousStep.pop() as CommitStep)
         : prev.currentStep;
       const previousWithoutLast = previousStep;
       return {
@@ -178,7 +178,7 @@ function CommitNonModal({
 
   return (
     <>
-      {currentStep === ActiveStep.OFFER_VIEW ? (
+      {currentStep === CommitStep.OFFER_VIEW ? (
         <OfferVariantView
           showBosonLogo={showBosonLogo}
           allVariants={variantsWithV1 ?? [selectedVariant]}
@@ -187,67 +187,67 @@ function CommitNonModal({
           disableVariationsSelects={disableVariationsSelects}
           loadingViewFullDescription={loadingViewFullDescription}
           onExchangePolicyClick={(...args) => {
-            setActiveStep(ActiveStep.EXCHANGE_POLICY);
+            setActiveStep(CommitStep.EXCHANGE_POLICY);
             onExchangePolicyClick?.(...args);
           }}
           onPurchaseOverview={() => {
-            setActiveStep(ActiveStep.PURCHASE_OVERVIEW);
+            setActiveStep(CommitStep.PURCHASE_OVERVIEW);
             offerViewOnPurchaseOverview?.();
           }}
           onViewFullDescription={() => {
-            setActiveStep(ActiveStep.OFFER_FULL_DESCRIPTION);
+            setActiveStep(CommitStep.OFFER_FULL_DESCRIPTION);
             offerViewOnViewFullDescription?.();
           }}
           onLicenseAgreementClick={() =>
-            setActiveStep(ActiveStep.LICENSE_AGREEMENT)
+            setActiveStep(CommitStep.LICENSE_AGREEMENT)
           }
           onCommit={(exchangeId, txHash) => {
-            setActiveStep(ActiveStep.COMMIT_SUCESS);
+            setActiveStep(CommitStep.COMMIT_SUCESS);
             setExchangeInfo({ exchangeId, txHash });
           }}
           onGetDetailViewProviderProps={onGetDetailViewProviderProps}
           onClickBuyOrSwap={onClickBuyOrSwap}
           onAlreadyOwnOfferClick={onAlreadyOwnOfferClick}
         />
-      ) : currentStep === ActiveStep.OFFER_FULL_DESCRIPTION &&
+      ) : currentStep === CommitStep.OFFER_FULL_DESCRIPTION &&
         providerPropsRef.current ? (
         <DetailViewProvider {...providerPropsRef.current}>
           <OfferFullDescriptionView
             onBackClick={goToPreviousStep}
             onExchangePolicyClick={(...args) => {
-              setActiveStep(ActiveStep.EXCHANGE_POLICY);
+              setActiveStep(CommitStep.EXCHANGE_POLICY);
               onExchangePolicyClick?.(...args);
             }}
             offer={selectedVariant.offer}
             onClickBuyOrSwap={onClickBuyOrSwap}
           />
         </DetailViewProvider>
-      ) : currentStep === ActiveStep.PURCHASE_OVERVIEW ? (
+      ) : currentStep === CommitStep.PURCHASE_OVERVIEW ? (
         <PurchaseOverviewView onBackClick={goToPreviousStep} />
-      ) : currentStep === ActiveStep.EXCHANGE_POLICY ? (
+      ) : currentStep === CommitStep.EXCHANGE_POLICY ? (
         <CommitOfferPolicyView
           offer={selectedVariant.offer}
           onBackClick={goToPreviousStep}
           onContractualAgreementClick={() =>
-            setActiveStep(ActiveStep.CONTRACTUAL_AGREEMENT)
+            setActiveStep(CommitStep.CONTRACTUAL_AGREEMENT)
           }
           onLicenseAgreementClick={() =>
-            setActiveStep(ActiveStep.LICENSE_AGREEMENT)
+            setActiveStep(CommitStep.LICENSE_AGREEMENT)
           }
         />
-      ) : currentStep === ActiveStep.CONTRACTUAL_AGREEMENT ? (
+      ) : currentStep === CommitStep.CONTRACTUAL_AGREEMENT ? (
         <ContractualAgreementView
           offer={selectedVariant.offer}
           onBackClick={goToPreviousStep}
         />
-      ) : currentStep === ActiveStep.LICENSE_AGREEMENT ? (
+      ) : currentStep === CommitStep.LICENSE_AGREEMENT ? (
         <LicenseAgreementView
           offer={selectedVariant.offer}
           onBackClick={goToPreviousStep}
         />
-      ) : currentStep === ActiveStep.COMMIT_SUCESS ? (
+      ) : currentStep === CommitStep.COMMIT_SUCESS ? (
         <CommitSuccess
-          onHouseClick={() => setActiveStep(ActiveStep.OFFER_VIEW)}
+          onHouseClick={() => setActiveStep(CommitStep.OFFER_VIEW)}
           exchangeId={exchangeInfo?.exchangeId ?? ""}
           commitHash={exchangeInfo?.txHash}
         />
