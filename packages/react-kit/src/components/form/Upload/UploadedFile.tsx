@@ -4,9 +4,9 @@ import styled from "styled-components";
 import bytesToSize from "../../../lib/bytes/bytesToSize";
 import { theme } from "../../../theme";
 
-import Grid from "../../ui/Grid";
+import { Grid } from "../../ui/Grid";
 import ThemedButton from "../../ui/ThemedButton";
-import Typography from "../../ui/Typography";
+import { Typography } from "../../ui/Typography";
 const colors = theme.colors.light;
 
 const AttachmentContainer = styled.div<{ $isLeftAligned: boolean }>`

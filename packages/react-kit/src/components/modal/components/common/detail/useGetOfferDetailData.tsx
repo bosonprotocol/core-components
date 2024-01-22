@@ -13,7 +13,7 @@ import {
 } from "../../../../../lib/price/prices";
 import { Exchange } from "../../../../../types/exchange";
 import { Offer } from "../../../../../types/offer";
-import Typography from "../../../../ui/Typography";
+import { Typography } from "../../../../ui/Typography";
 import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { DetailViewProps } from "./types";
 

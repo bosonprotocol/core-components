@@ -3,9 +3,9 @@ import { theme } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { OfferFullDescription } from "../../common/OfferFullDescription/OfferFullDescription";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import { ArrowLeft } from "phosphor-react";
-import Typography from "../../../../ui/Typography";
+import { Typography } from "../../../../ui/Typography";
 import { OnClickBuyOrSwapHandler } from "../../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
 

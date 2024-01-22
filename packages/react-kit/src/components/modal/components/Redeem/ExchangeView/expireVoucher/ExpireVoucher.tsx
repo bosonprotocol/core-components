@@ -17,9 +17,9 @@ import {
 } from "../../../../../cta/exchange/ExpireButton";
 import { useEnvContext } from "../../../../../environment/EnvironmentContext";
 import SimpleError from "../../../../../error/SimpleError";
-import Grid from "../../../../../ui/Grid";
+import { Grid } from "../../../../../ui/Grid";
 import ThemedButton from "../../../../../ui/ThemedButton";
-import Typography from "../../../../../ui/Typography";
+import { Typography } from "../../../../../ui/Typography";
 import { Spinner } from "../../../../../ui/loading/Spinner";
 import DetailTable from "../../../common/detail/DetailTable";
 

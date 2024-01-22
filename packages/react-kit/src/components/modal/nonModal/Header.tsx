@@ -2,7 +2,7 @@ import React, { Fragment, ReactNode } from "react";
 import { theme } from "../../../theme";
 import styled from "styled-components";
 import { X } from "phosphor-react";
-import Grid from "../../ui/Grid";
+import { Grid } from "../../ui/Grid";
 import ConnectButton from "../../wallet/ConnectButton";
 import ThemedButton from "../../ui/ThemedButton";
 import { useBreakpoints } from "../../../hooks/useBreakpoints";

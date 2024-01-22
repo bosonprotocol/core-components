@@ -26,10 +26,10 @@ import {
 import { useEnvContext } from "../../../../environment/EnvironmentContext";
 import SimpleError from "../../../../error/SimpleError";
 import SuccessTransactionToast from "../../../../toasts/SuccessTransactionToast";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import { Spinner } from "../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../ui/ThemedButton";
-import Typography from "../../../../ui/Typography";
+import { Typography } from "../../../../ui/Typography";
 import { FormModel, FormType } from "../RedeemFormModel";
 import {
   useAccount,

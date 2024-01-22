@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../../theme";
-import Grid from "../ui/Grid";
+import { Grid } from "../ui/Grid";
 import ThemedButton from "../ui/ThemedButton";
-import Typography from "../ui/Typography";
+import { Typography } from "../ui/Typography";
 import { offers, subgraph } from "@bosonprotocol/core-sdk";
 import {
   ArrowSquareOut,

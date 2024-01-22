@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { theme } from "../../theme";
-import Grid from "./Grid";
+import { Grid } from "./Grid";
 
 const colors = theme.colors.light;
 const Headers = styled.div.attrs({ className: "headers" })<{

@@ -19,8 +19,8 @@ import { getNumberWithoutDecimals } from "../../../../lib/numbers/numbers";
 import { poll } from "../../../../lib/promises/promises";
 import { DepositFundsButton } from "../../../cta/funds/DepositFundsButton";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
-import Grid from "../../../ui/Grid";
-import Typography from "../../../ui/Typography";
+import { Grid } from "../../../ui/Grid";
+import { Typography } from "../../../ui/Typography";
 import { useModal } from "../../useModal";
 import {
   AmountWrapper,

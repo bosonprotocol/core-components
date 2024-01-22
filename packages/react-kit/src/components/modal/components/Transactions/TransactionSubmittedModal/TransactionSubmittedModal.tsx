@@ -3,8 +3,8 @@ import { ArrowCircleUp } from "phosphor-react";
 import { useEffect } from "react";
 import styled from "styled-components";
 
-import Grid from "../../../../ui/Grid";
-import Typography from "../../../../ui/Typography";
+import { Grid } from "../../../../ui/Grid";
+import { Typography } from "../../../../ui/Typography";
 import { GenericModalProps } from "../../../ModalContext";
 import { useModal } from "../../../useModal";
 import { theme } from "../../../../../theme";

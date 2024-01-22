@@ -12,7 +12,7 @@ import { theme } from "../../theme";
 import { useIpfsContext } from "../ipfs/IpfsContext";
 import { Loading } from "../Loading";
 
-import Typography from "./Typography";
+import { Typography } from "./Typography";
 import { zIndex } from "./zIndex";
 const colors = theme.colors.light;
 type LoadingStatus = "loading" | "success" | "error";

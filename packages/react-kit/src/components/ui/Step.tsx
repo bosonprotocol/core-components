@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import Typography from "../../components/ui/Typography";
+import { Typography } from "../../components/ui/Typography";
 import { breakpoint } from "../../lib/ui/breakpoint";
 import { theme } from "../../theme";
 import { zIndex } from "./zIndex";

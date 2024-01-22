@@ -2,8 +2,8 @@ import React from "react";
 import { Toast } from "react-hot-toast";
 import { theme } from "../../theme";
 
-import Grid from "../ui/Grid";
-import Typography from "../ui/Typography";
+import { Grid } from "../ui/Grid";
+import { Typography } from "../ui/Typography";
 import SuccessToast from "./common/SuccessToast";
 const colors = theme.colors.light;
 

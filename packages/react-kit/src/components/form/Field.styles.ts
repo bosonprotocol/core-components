@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import { transition } from "../../components/ui/styles";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
 import { theme } from "../../theme";
-import Grid from "../ui/Grid";
+import { Grid } from "../ui/Grid";
 
 const colors = theme.colors.light;
 

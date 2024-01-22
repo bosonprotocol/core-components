@@ -14,7 +14,7 @@ import { theme } from "../../theme";
 import { Loading } from "../Loading";
 
 import { buttonText } from "./styles";
-import Typography from "./Typography";
+import { Typography } from "./Typography";
 import { zIndex } from "./zIndex";
 const colors = theme.colors.light;
 const VideoWrapper = styled.div<{ $hasOnClick?: boolean }>`

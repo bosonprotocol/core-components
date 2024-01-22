@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import Grid from "../../../../ui/Grid";
-import Typography from "../../../../ui/Typography";
+import { Grid } from "../../../../ui/Grid";
+import { Typography } from "../../../../ui/Typography";
 import { ArrowLeft } from "phosphor-react";
 import ContractualAgreement from "../../../../contractualAgreement/ContractualAgreement";
 import { useNonModalContext } from "../../../nonModal/NonModal";

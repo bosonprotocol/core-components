@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import { theme } from "../../../../../theme";
-import Typography from "../../../../ui/Typography";
+import { Typography } from "../../../../ui/Typography";
 const colors = theme.colors.light;
 
 type CardCTAProps = {

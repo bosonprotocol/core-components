@@ -15,7 +15,7 @@ import { Line } from "react-chartjs-2";
 import React from "react";
 
 import { useOfferDataset } from "./useOfferDataset";
-import Typography from "../ui/Typography";
+import { Typography } from "../ui/Typography";
 import styled from "styled-components";
 import { Offer } from "../../types/offer";
 

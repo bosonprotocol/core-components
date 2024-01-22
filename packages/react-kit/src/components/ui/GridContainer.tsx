@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { breakpoint } from "../../lib/ui/breakpoint";
 import React, {
-  AriaAttributes,
   CSSProperties,
   ElementRef,
   HTMLAttributes,
@@ -58,7 +57,7 @@ type InnerGridProps = {
   $defaultSize?: string;
 };
 
-const GridContainer = styled.div<InnerGridProps>`
+const GridContainerDiv = styled.div<InnerGridProps>`
   display: grid;
   grid-column-gap: ${({ $columnGap }) => $columnGap || "2rem"};
   grid-row-gap: ${({ $rowGap }) => $rowGap || "2rem"};
@@ -111,15 +110,13 @@ const GridContainer = styled.div<InnerGridProps>`
 type DivProps = HTMLAttributes<ElementRef<"div">>;
 type Props = DivProps & GridProps;
 
-const GridContainerWithRef = forwardRef<ElementRef<"div">, Props>(
+export const GridContainer = forwardRef<ElementRef<"div">, Props>(
   (props, ref) => {
     const { transientProps, otherProps } = getTransientCustomProps<
       InnerGridProps,
       DivProps
     >(props, pickedProps);
 
-    return <GridContainer {...transientProps} {...otherProps} ref={ref} />;
+    return <GridContainerDiv {...transientProps} {...otherProps} ref={ref} />;
   }
 );
-
-export default GridContainerWithRef;

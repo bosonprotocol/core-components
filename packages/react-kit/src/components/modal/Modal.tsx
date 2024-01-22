@@ -6,7 +6,7 @@ import styled, { css } from "styled-components";
 
 import { theme } from "../../theme";
 import { ModalType, Store } from "./ModalContext";
-import Typography from "../ui/Typography";
+import { Typography } from "../ui/Typography";
 import ThemedButton from "../ui/ThemedButton";
 import { breakpoint } from "../../lib/ui/breakpoint";
 import { zIndex } from "../ui/zIndex";

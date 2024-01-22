@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import PurchaseOverview from "./PurchaseOverview";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { theme } from "../../../../../theme";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 
 const colors = theme.colors.light;
 type Props = {

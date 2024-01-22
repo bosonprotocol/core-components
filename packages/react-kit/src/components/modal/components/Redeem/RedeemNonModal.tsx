@@ -30,7 +30,7 @@ import { theme } from "../../../../theme";
 import { isTruthy } from "../../../../types/helpers";
 import { Loading } from "../../../Loading";
 import { useConfigContext } from "../../../config/ConfigContext";
-import Typography from "../../../ui/Typography";
+import { Typography } from "../../../ui/Typography";
 import {
   RedemptionContextProps,
   RedemptionWidgetAction,

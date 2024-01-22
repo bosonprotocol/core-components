@@ -2,7 +2,7 @@ import { ArrowRight, ArrowsLeftRight } from "phosphor-react";
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { Button } from "../../../../buttons/Button";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import { InnerDetailViewWithPortal } from "../../common/detail/InnerDetailViewWithPortal";
 import { BuyOrSwapContainer } from "../../common/detail/BuyOrSwapContainer";
 import { useDetailViewContext } from "../../common/detail/DetailViewProvider";

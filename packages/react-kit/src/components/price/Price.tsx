@@ -9,8 +9,8 @@ import {
 } from "../currencyDisplay/CurrencyDisplay";
 import { Tooltip } from "../tooltip/Tooltip";
 
-import Grid from "../ui/Grid";
-import Typography from "../ui/Typography";
+import { Grid } from "../ui/Grid";
+import { Typography } from "../ui/Typography";
 import ConvertedPrice from "./ConvertedPrice";
 
 import { useConvertedPrice } from "./useConvertedPrice";

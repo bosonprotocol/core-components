@@ -49,6 +49,9 @@ export * from "./components/modal/components/common/OfferFullDescription/Externa
 export * from "./components/modal/components/common/detail/useGetOfferDetailData";
 export * from "./components/modal/components/Commit/DetailView/ExternalCommitDetailView";
 export * from "./components/modal/components/Redeem/DetailView/ExternalExchangeDetailView";
+export * from "./components/ui/Grid";
+export * from "./components/ui/GridContainer";
+export * from "./components/ui/Typography";
 export * from "./lib/magicLink/logout";
 export * from "./lib/magicLink/provider";
 export * from "./lib/const/networks";

@@ -63,7 +63,7 @@ type Props = {
 } & IGrid &
   HTMLAttributes<unknown>;
 
-const Grid = forwardRef<HTMLDivElement, Props>(
+export const Grid = forwardRef<HTMLDivElement, Props>(
   ({ children, as, style, ...props }, ref) => {
     const { transientProps, otherProps } = getTransientCustomProps<
       InnerGridProps,
@@ -82,5 +82,3 @@ const Grid = forwardRef<HTMLDivElement, Props>(
     );
   }
 );
-
-export default Grid;

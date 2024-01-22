@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import { theme } from "../../../../../theme";
 import SellerID from "../../../../avatar/SellerID";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import { Offer } from "../../../../../types/offer";
 import { LoadingBubble } from "../../../../skeleton/common";
 

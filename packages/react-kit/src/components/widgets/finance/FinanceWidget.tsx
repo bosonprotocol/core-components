@@ -17,7 +17,7 @@ import { MagicProvider } from "../../magicLink/MagicContext";
 import ModalProvider from "../../modal/ModalProvider";
 import { SignerProvider } from "../../signer/SignerContext";
 import GlobalStyle from "../../styles/GlobalStyle";
-import Grid from "../../ui/Grid";
+import { Grid } from "../../ui/Grid";
 import Loading from "../../ui/loading/Loading";
 import ConnectButton from "../../wallet/ConnectButton";
 import WalletConnectionProvider from "../../wallet/WalletConnectionProvider";

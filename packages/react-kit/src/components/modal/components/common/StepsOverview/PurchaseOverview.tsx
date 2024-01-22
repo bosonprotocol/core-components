@@ -6,8 +6,8 @@ import {
   ShoppingCart
 } from "phosphor-react";
 import { useBreakpoints } from "../../../../../hooks/useBreakpoints";
-import Grid from "../../../../ui/Grid";
-import Typography from "../../../../ui/Typography";
+import { Grid } from "../../../../ui/Grid";
+import { Typography } from "../../../../ui/Typography";
 import { LearnMore, ModalBackground } from "../detail/Detail.style";
 import { CommitStep } from "./style";
 import styled from "styled-components";

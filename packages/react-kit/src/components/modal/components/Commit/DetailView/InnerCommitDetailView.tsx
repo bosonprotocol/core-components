@@ -22,9 +22,9 @@ import { Button } from "../../../../buttons/Button";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import { CommitButton } from "../../../../cta/offer/CommitButton";
 import SuccessTransactionToast from "../../../../toasts/SuccessTransactionToast";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
-import Typography from "../../../../ui/Typography";
+import { Typography } from "../../../../ui/Typography";
 import {
   getItemFromStorage,
   saveItemInStorage

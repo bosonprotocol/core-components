@@ -7,7 +7,7 @@ import { theme } from "../../../theme";
 
 import Loading from "../../ui/loading/Loading";
 import ThemedButton from "../../ui/ThemedButton";
-import Typography from "../../ui/Typography";
+import { Typography } from "../../ui/Typography";
 import Error from "../Error";
 import {
   FieldFileUploadWrapper,

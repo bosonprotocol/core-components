@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 
 import { Button } from "../../../../buttons/Button";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import { CommitStep } from "./style";
 import Step from "../../../../ui/Step";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";

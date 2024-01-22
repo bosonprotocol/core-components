@@ -1,8 +1,8 @@
 import { WarningCircle } from "phosphor-react";
 import React, { useEffect } from "react";
 
-import Grid from "../../../../ui/Grid";
-import Typography from "../../../../ui/Typography";
+import { Grid } from "../../../../ui/Grid";
+import { Typography } from "../../../../ui/Typography";
 import { useModal } from "../../../useModal";
 import { theme } from "../../../../../theme";
 import { GenericModalProps } from "../../../ModalContext";

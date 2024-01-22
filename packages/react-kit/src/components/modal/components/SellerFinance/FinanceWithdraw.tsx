@@ -24,8 +24,8 @@ import {
 import { theme } from "../../../../theme";
 import { WithdrawFundsButton } from "../../../cta/funds/WithdrawFundsButton";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
-import Grid from "../../../ui/Grid";
-import Typography from "../../../ui/Typography";
+import { Grid } from "../../../ui/Grid";
+import { Typography } from "../../../ui/Typography";
 import { useModal } from "../../useModal";
 import {
   AmountWrapper,

@@ -1,5 +1,5 @@
 import React from "react";
-import Typography from "../../../../ui/Typography";
+import { Typography } from "../../../../ui/Typography";
 import { ReactComponent } from "../../../../../assets/redeemeum.svg";
 
 export const DetailDisputeResolver = {

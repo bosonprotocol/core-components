@@ -13,9 +13,9 @@ import { titleCase } from "../../../../../lib/string/formatText";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
 import { theme } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
-import Typography from "../../../../ui/Typography";
+import { Typography } from "../../../../ui/Typography";
 import { ButtonSize } from "../../../../ui/buttonSize";
 import {
   RaiseProblemButton,

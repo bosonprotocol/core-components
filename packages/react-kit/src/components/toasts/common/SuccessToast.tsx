@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { theme } from "../../../theme";
 import { Button } from "../../buttons/Button";
-import Grid from "../../ui/Grid";
+import { Grid } from "../../ui/Grid";
 const colors = theme.colors.light;
 
 const Close = styled(X)`

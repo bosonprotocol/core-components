@@ -1,9 +1,9 @@
 import React from "react";
 import { ChatDots, Warning } from "phosphor-react";
 import styled from "styled-components";
-import Grid from "../ui/Grid";
+import { Grid } from "../ui/Grid";
 import ThemedButton from "../ui/ThemedButton";
-import Typography from "../ui/Typography";
+import { Typography } from "../ui/Typography";
 import { Spinner } from "../ui/loading/Spinner";
 import ConnectButton from "../wallet/ConnectButton";
 import { theme } from "../../theme";

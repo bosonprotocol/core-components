@@ -3,8 +3,8 @@ import React, { ReactNode } from "react";
 import styled from "styled-components";
 
 import { theme } from "../../theme";
-import Grid from "../ui/Grid";
-import Typography from "../ui/Typography";
+import { Grid } from "../ui/Grid";
+import { Typography } from "../ui/Typography";
 const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)`

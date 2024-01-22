@@ -1,6 +1,6 @@
 import React, { ElementRef, useRef } from "react";
 import styled, { css } from "styled-components";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import { DetailViewCore } from "./DetailViewCore";
 import { DetailViewProps } from "./types";
 import { useIsBosonExclusive } from "../../../../../hooks/offer/useIsBosonExclusive";

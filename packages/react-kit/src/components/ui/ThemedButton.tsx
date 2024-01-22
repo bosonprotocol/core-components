@@ -4,7 +4,7 @@ import styled, { css, ThemeProvider } from "styled-components";
 import { zIndex } from "./zIndex";
 import { Tooltip } from "../tooltip/Tooltip";
 import * as Styles from "./styles";
-import Typography from "./Typography";
+import { Typography } from "./Typography";
 import { theme } from "../../theme";
 import { Loading } from "../Loading";
 import { ButtonSize } from "./buttonSize";

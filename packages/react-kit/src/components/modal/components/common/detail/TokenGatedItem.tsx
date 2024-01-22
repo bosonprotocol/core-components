@@ -12,7 +12,7 @@ import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkW
 import { theme } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { Image } from "../../../../image/Image";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
 import { BuyOrSwapContainer } from "./BuyOrSwapContainer";
 import { useDetailViewContext } from "./DetailViewProvider";

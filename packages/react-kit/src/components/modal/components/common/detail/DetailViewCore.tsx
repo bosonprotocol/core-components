@@ -7,8 +7,8 @@ import { theme } from "../../../../../theme";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import Price from "../../../../price/Price";
 import { DetailsSummary } from "../../../../ui/DetailsSummary";
-import Grid from "../../../../ui/Grid";
-import Typography from "../../../../ui/Typography";
+import { Grid } from "../../../../ui/Grid";
+import { Typography } from "../../../../ui/Typography";
 import {
   BaseWidget,
   BosonExclusiveContainer,

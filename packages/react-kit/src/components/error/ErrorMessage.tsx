@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 
-import Grid from "../ui/Grid";
-import GridContainer from "../ui/GridContainer";
+import { Grid } from "../ui/Grid";
+import { GridContainer } from "../ui/GridContainer";
 import { breakpoint } from "../../lib/ui/breakpoint";
 
 const margin = "1.75rem";

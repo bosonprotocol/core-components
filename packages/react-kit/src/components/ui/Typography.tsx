@@ -86,7 +86,7 @@ export type ITypography = WrapperProps &
     className?: string;
   };
 
-const Typography: React.FC<ITypography> = ({
+export const Typography: React.FC<ITypography> = ({
   tag = "div",
   children,
   style = {},
@@ -111,5 +111,3 @@ const Typography: React.FC<ITypography> = ({
     </Wrapper>
   );
 };
-
-export default Typography;

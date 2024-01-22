@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { IPrice } from "../../../../../lib/price/convertPrice";
 import { theme } from "../../../../../theme";
 import { useConvertedPrice } from "../../../../price/useConvertedPrice";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import { Offer } from "../../../../../types/offer";
 import { Image } from "../../../../image/Image";
 const colors = theme.colors.light;
