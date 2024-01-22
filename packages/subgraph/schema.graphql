@@ -1,6 +1,12 @@
 enum MetadataType {
   BASE
   PRODUCT_V1
+  BUNDLE
+}
+
+enum ItemMetadataType {
+  ITEM_PRODUCT_V1
+  ITEM_NFT
 }
 
 interface MetadataInterface {
@@ -35,6 +41,13 @@ interface MetadataInterface {
   quantityAvailable: BigInt!
   numberOfCommits: BigInt!
   numberOfRedemptions: BigInt!
+}
+
+interface ItemMetadataInterface {
+  id: ID!
+  schemaUrl: String! # JSON schema URL
+  type: ItemMetadataType!
+  bundle: BundleMetadataEntity!
 }
 
 type SellerContactLink @entity {
@@ -193,6 +206,79 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   shipping: ProductV1ShippingOption
   exchangePolicy: ProductV1ExchangePolicy!
   productOverrides: ProductV1ProductOverrides
+}
+
+type BundleMetadataEntity implements MetadataInterface @entity {
+  """
+  Fields compliant to metadata standard
+  """
+  id: ID!
+  name: String!
+  description: String!
+  externalUrl: String! # Arbitrary URL which is linked to metadata
+  animationUrl: String # Arbitrary URL which is linked to metadata
+  animationMetadata: AnimationMetadata
+  licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
+  condition: String
+  schemaUrl: String! # JSON schema URL
+  "MetadataType.BUNDLE"
+  type: MetadataType!
+  image: String!
+  attributes: [MetadataAttribute!]
+  """
+  References to entities
+  """
+  offer: Offer!
+  seller: Seller!
+  exchangeToken: ExchangeToken!
+  """
+  Enriched fields from offer entity to allow nested query workaround
+  """
+  createdAt: BigInt!
+  voided: Boolean!
+  validFromDate: BigInt!
+  validUntilDate: BigInt!
+  quantityAvailable: BigInt!
+  numberOfCommits: BigInt!
+  numberOfRedemptions: BigInt!
+  """
+  BUNDLE specific fields
+  """
+  productV1Seller: ProductV1Seller!
+  items: [ItemMetadataInterface!]! @derivedFrom(field: "bundle")
+}
+
+type ProductV1ItemMetadataEntity implements ItemMetadataInterface @entity {
+  id: ID!
+  schemaUrl: String! # JSON schema URL
+  type: ItemMetadataType!
+  uuid: String! # Item unique ID
+  productUuid: String! # Product unique ID (unique for all variants of the same product)
+  productVersion: Int! # Product version
+  product: ProductV1Product!
+  variations: [ProductV1Variation!]
+  productV1Seller: ProductV1Seller!
+  shipping: ProductV1ShippingOption
+  exchangePolicy: ProductV1ExchangePolicy!
+  productOverrides: ProductV1ProductOverrides
+  bundle: BundleMetadataEntity!
+}
+
+type NftItemMetadataEntity implements ItemMetadataInterface @entity {
+  id: ID!
+  schemaUrl: String! # JSON schema URL
+  type: ItemMetadataType!
+  name: String!
+  description: String
+  image: String
+  externalUrl: String
+  animationUrl: String
+  chainId: Int
+  contract: String
+  tokenId: String
+  quantity: Int
+  attributes: [MetadataAttribute!]
+  bundle: BundleMetadataEntity!
 }
 
 type ProductV1Product @entity {

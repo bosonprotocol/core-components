@@ -1,13 +1,21 @@
-import { JSONValue, TypedMap, BigInt } from "@graphprotocol/graph-ts";
+import { JSONValue, TypedMap, BigInt, log } from "@graphprotocol/graph-ts";
 
-import { ProductV1MetadataEntity, Offer } from "../../../../generated/schema";
+import {
+  ProductV1MetadataEntity,
+  Offer,
+  ProductV1ItemMetadataEntity
+} from "../../../../generated/schema";
 import {
   convertToInt,
   convertToObject,
   convertToObjectArray,
   convertToString
 } from "../../../utils/json";
-import { getMetadataEntityId, saveMetadataAttributes } from "../utils";
+import {
+  getItemMetadataEntityId,
+  getMetadataEntityId,
+  saveMetadataAttributes
+} from "../utils";
 import { saveProductV1ProductOrOverrides } from "./product";
 import { saveProductV1Seller } from "./seller";
 import { saveProductV1Variations } from "./variation";
@@ -128,5 +136,90 @@ export function saveProductV1Metadata(
   productV1MetadataEntity.productOverrides = savedProductOverridesId;
 
   productV1MetadataEntity.save();
+  return metadataId;
+}
+
+// TODO: factorise saveProductV1ItemMetadata() with saveProductV1Metadata()
+export function saveProductV1ItemMetadata(
+  offer: Offer,
+  metadataObj: TypedMap<string, JSONValue>,
+  index: string,
+  bundleId: string,
+  productV1SellerId: string
+): string {
+  const offerId = offer.id.toString();
+  const metadataId = getItemMetadataEntityId(offerId, index);
+
+  const schemaUrl = convertToString(metadataObj.get("schemaUrl"));
+  const uuid = convertToString(metadataObj.get("uuid"));
+  const productObj = convertToObject(metadataObj.get("product"));
+  const savedVariationIds = saveProductV1Variations(
+    convertToObjectArray(metadataObj.get("variations"))
+  );
+  const variant = saveProductV1Variant(offerId, savedVariationIds);
+  const savedProductId = saveProductV1ProductOrOverrides(
+    productObj,
+    productV1SellerId,
+    false,
+    variant,
+    offer
+  );
+  let productUuid = "";
+  let productVersion = 0;
+  if (productObj !== null) {
+    productUuid = convertToString(productObj.get("uuid"));
+    productVersion = convertToInt(productObj.get("version"));
+  }
+  const savedShippingId = saveProductV1Shipping(
+    convertToObject(metadataObj.get("shipping")),
+    metadataId
+  );
+  const savedExchangePolicyId = saveProductV1ExchangePolicy(
+    convertToObject(metadataObj.get("exchangePolicy")),
+    metadataId
+  );
+  const savedProductOverridesId = saveProductV1ProductOrOverrides(
+    convertToObject(metadataObj.get("productOverrides")),
+    productV1SellerId,
+    true,
+    null,
+    offer
+  );
+
+  if (savedProductId === null) {
+    log.warning(
+      "Unable to pursue saveProductV1ItemMetadata() as savedProductId is NULL",
+      []
+    );
+    return metadataId;
+  }
+  if (savedExchangePolicyId === null) {
+    log.warning(
+      "Unable to pursue saveProductV1ItemMetadata() as savedExchangePolicyId is NULL",
+      []
+    );
+    return metadataId;
+  }
+
+  let productV1ItemMetadataEntity =
+    ProductV1ItemMetadataEntity.load(metadataId);
+  if (!productV1ItemMetadataEntity) {
+    productV1ItemMetadataEntity = new ProductV1ItemMetadataEntity(metadataId);
+  }
+
+  productV1ItemMetadataEntity.type = "ITEM_PRODUCT_V1";
+  productV1ItemMetadataEntity.schemaUrl = schemaUrl;
+  productV1ItemMetadataEntity.uuid = uuid;
+  productV1ItemMetadataEntity.productUuid = productUuid;
+  productV1ItemMetadataEntity.productVersion = productVersion;
+  productV1ItemMetadataEntity.product = savedProductId;
+  productV1ItemMetadataEntity.variations = savedVariationIds;
+  productV1ItemMetadataEntity.productV1Seller = productV1SellerId;
+  productV1ItemMetadataEntity.shipping = savedShippingId;
+  productV1ItemMetadataEntity.exchangePolicy = savedExchangePolicyId;
+  productV1ItemMetadataEntity.productOverrides = savedProductOverridesId;
+  productV1ItemMetadataEntity.bundle = bundleId;
+
+  productV1ItemMetadataEntity.save();
   return metadataId;
 }

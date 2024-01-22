@@ -7,6 +7,10 @@ export function getMetadataEntityId(id: string): string {
   return `${id}-metadata`;
 }
 
+export function getItemMetadataEntityId(id: string, index: string): string {
+  return `${id}-item-${index}-metadata`;
+}
+
 export function getMetadataAttributeId(
   traitType: string,
   value: string,

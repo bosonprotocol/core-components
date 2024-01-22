@@ -7,7 +7,6 @@ import {
 } from "../../../../generated/schema";
 
 import {
-  convertToBigInt,
   convertToInt,
   convertToObject,
   convertToObjectArray,
@@ -85,9 +84,6 @@ function saveSalesChannelDeployments(
           salesChannelId,
           productId
         ) as string;
-        log.info("debug salesChannelDeploymentId '{}'", [
-          salesChannelDeploymentId
-        ]);
         salesChannelDeployment = SalesChannelDeployment.load(
           salesChannelDeploymentId
         );
