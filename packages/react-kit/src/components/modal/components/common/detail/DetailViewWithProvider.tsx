@@ -38,7 +38,7 @@ export const DetailViewWithProvider: React.FC<
     () =>
       isFreeOffer
         ? false
-        : !!exchangeTokenBalance && exchangeTokenBalance.lte(offer.price),
+        : !!exchangeTokenBalance && exchangeTokenBalance.lt(offer.price),
     [exchangeTokenBalance, offer.price, isFreeOffer]
   );
   const nowDate = dayjs();
