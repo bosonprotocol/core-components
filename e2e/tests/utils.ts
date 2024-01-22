@@ -20,7 +20,12 @@ import {
   accounts,
   MetadataType
 } from "../../packages/core-sdk/src";
-import { base, seller } from "../../packages/metadata/src";
+import {
+  base,
+  buildUuid,
+  productV1Item,
+  seller
+} from "../../packages/metadata/src";
 import {
   BaseIpfsStorage,
   IpfsMetadataStorage
@@ -61,6 +66,13 @@ import {
 import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 import { sortObjKeys } from "../../packages/ipfs-storage/src/utils";
+import productV1ValidMinimalOffer from "../../scripts/assets/offer_1.metadata.json";
+
+export type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;
 
 const getFirstEnvConfig = (arg0: Parameters<typeof getEnvConfigs>[0]) =>
   getEnvConfigs(arg0)[0];
@@ -840,4 +852,35 @@ export async function getSubgraphBlockNumber(): Promise<number> {
     }
   `);
   return response?._meta?.block?.number || 0;
+}
+
+export function mockProductV1Item(
+  template?: string,
+  productUuid: string = buildUuid(),
+  overrides: DeepPartial<productV1Item.ProductV1Item> = {} as DeepPartial<productV1Item.ProductV1Item>
+): productV1Item.ProductV1Item {
+  return {
+    schemaUrl: "schemaUrl",
+    ...overrides,
+    type: MetadataType.ITEM_PRODUCT_V1,
+    uuid: buildUuid(),
+    product: {
+      ...productV1ValidMinimalOffer.product,
+      ...overrides.product,
+      uuid: productUuid
+    },
+    productOverrides: {
+      ...overrides.productOverrides
+    },
+    variations: overrides.variations,
+    shipping: {
+      ...productV1ValidMinimalOffer.shipping,
+      ...overrides.shipping
+    },
+    exchangePolicy: {
+      ...productV1ValidMinimalOffer.exchangePolicy,
+      ...overrides.exchangePolicy,
+      template: template ?? productV1ValidMinimalOffer.exchangePolicy.template
+    }
+  } as productV1Item.ProductV1Item;
 }

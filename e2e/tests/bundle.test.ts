@@ -2,10 +2,10 @@ import { parseEther } from "@ethersproject/units";
 import { BigNumber } from "@ethersproject/bignumber";
 import { Wallet } from "ethers";
 import { NftItem } from "@bosonprotocol/metadata/src/nftItem";
-import { mockProductV1Item } from "./productV1.test";
 import {
   ensureCreatedSeller,
   initCoreSDKWithFundedWallet,
+  mockProductV1Item,
   seedWallet22,
   waitForGraphNodeIndexing
 } from "./utils";

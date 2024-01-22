@@ -8,7 +8,6 @@ import { parseEther } from "@ethersproject/units";
 import {
   MetadataType,
   productV1,
-  productV1Item,
   validateMetadata
 } from "@bosonprotocol/metadata";
 import { CreateOfferArgs } from "@bosonprotocol/common";
@@ -16,9 +15,11 @@ import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
 import { Wallet } from "ethers";
 import { CoreSDK, subgraph } from "../../packages/core-sdk/src";
 import {
+  DeepPartial,
   ensureCreatedSeller,
   initCoreSDKWithFundedWallet,
   initCoreSDKWithWallet,
+  mockProductV1Item,
   seedWallet10,
   wait,
   waitForGraphNodeIndexing
@@ -36,43 +37,6 @@ const seedWallet = seedWallet10; // be sure the seedWallet is not used by anothe
 
 const MAX_INT32 = Math.pow(2, 31) - 1;
 
-type DeepPartial<T> = T extends object
-  ? {
-      [P in keyof T]?: DeepPartial<T[P]>;
-    }
-  : T;
-
-export function mockProductV1Item(
-  template?: string,
-  productUuid: string = buildUuid(),
-  overrides: DeepPartial<productV1Item.ProductV1Item> = {} as DeepPartial<productV1Item.ProductV1Item>
-): productV1Item.ProductV1Item {
-  return {
-    schemaUrl: "schemaUrl",
-    ...overrides,
-    type: MetadataType.ITEM_PRODUCT_V1,
-    uuid: buildUuid(),
-    product: {
-      ...productV1ValidMinimalOffer.product,
-      ...overrides.product,
-      uuid: productUuid
-    },
-    productOverrides: {
-      ...overrides.productOverrides
-    },
-    variations: overrides.variations,
-    shipping: {
-      ...productV1ValidMinimalOffer.shipping,
-      ...overrides.shipping
-    },
-    exchangePolicy: {
-      ...productV1ValidMinimalOffer.exchangePolicy,
-      ...overrides.exchangePolicy,
-      template: template ?? productV1ValidMinimalOffer.exchangePolicy.template
-    }
-  } as productV1Item.ProductV1Item;
-}
-
 function mockProductV1Metadata(
   template: string,
   productUuid: string = buildUuid(),
@@ -84,8 +48,8 @@ function mockProductV1Metadata(
   });
   return {
     ...productV1ValidMinimalOffer,
-    ...productItem,
     ...overrides,
+    ...productItem,
     uuid: buildUuid(),
     type: MetadataType.PRODUCT_V1
   } as productV1.ProductV1Metadata;
