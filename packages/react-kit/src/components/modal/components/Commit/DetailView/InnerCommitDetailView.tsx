@@ -130,7 +130,7 @@ export default function InnerCommitDetailView(
     showModal("WAITING_FOR_CONFIRMATION");
   };
   const isVoidedOffer = !!offer.voidedAt;
-  const isPreview = !!offer.id;
+  const isPreview = !offer.id;
   const isCommitDisabled =
     !address ||
     !hasSellerEnoughFunds ||
