@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from "react";
+import React, { HTMLAttributes, forwardRef } from "react";
 import styled, { CSSProperties } from "styled-components";
 import { getTransientCustomProps } from "./getTransientCustomProps";
 
@@ -73,11 +73,11 @@ const Wrapper = styled.div<InnerTypographyProps>`
   ${({ $letterSpacing }) =>
     $letterSpacing ? `letter-spacing:${$letterSpacing};` : ""}
     ${({ $textAlign }) => ($textAlign ? `text-align:${$textAlign};` : "")}
-    ${({ $opacity }) => ($opacity ? `$opacity:${$opacity};` : "")}
+    ${({ $opacity }) => ($opacity ? `opacity:${$opacity};` : "")}
     ${({ $width }) => ($width ? `width:${$width};` : "")}
 `;
 
-export type ITypography = WrapperProps &
+export type TypographyProps = WrapperProps &
   HTMLAttributes<unknown> & {
     children?: string | React.ReactNode;
     tag?: keyof JSX.IntrinsicElements;
@@ -86,28 +86,30 @@ export type ITypography = WrapperProps &
     className?: string;
   };
 
-export const Typography: React.FC<ITypography> = ({
-  tag = "div",
-  children,
-  style = {},
-  className,
-  onClick,
-  ...props
-}) => {
-  const { transientProps, otherProps } = getTransientCustomProps<
-    InnerTypographyProps,
-    WrapperProps
-  >(props, pickedProps);
-  return (
-    <Wrapper
-      style={style}
-      className={className}
-      {...transientProps}
-      {...otherProps}
-      onClick={onClick}
-      as={tag}
-    >
-      {children}
-    </Wrapper>
-  );
-};
+export const Typography: React.FC<TypographyProps> = forwardRef<
+  HTMLDivElement,
+  TypographyProps
+>(
+  (
+    { tag = "div", children, style = {}, className, onClick, ...props },
+    ref
+  ) => {
+    const { transientProps, otherProps } = getTransientCustomProps<
+      InnerTypographyProps,
+      WrapperProps
+    >(props, pickedProps);
+    return (
+      <Wrapper
+        style={style}
+        className={className}
+        {...transientProps}
+        {...otherProps}
+        onClick={onClick}
+        as={tag}
+        ref={ref}
+      >
+        {children}
+      </Wrapper>
+    );
+  }
+);

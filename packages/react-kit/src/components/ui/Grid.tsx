@@ -24,7 +24,7 @@ const pickedProps = {
   width: true,
   height: true
 } as const;
-export type IGrid = Pick<CSSProperties, keyof typeof pickedProps>;
+type IGrid = Pick<CSSProperties, keyof typeof pickedProps>;
 
 type InnerGridProps = Record<`$${keyof IGrid}`, IGrid[keyof IGrid]>;
 
@@ -55,7 +55,7 @@ const Container = styled.div<InnerGridProps>`
   ${({ $alignSelf }) => ($alignSelf ? `align-self:${$alignSelf};` : "")}
   ${({ $justifySelf }) => ($justifySelf ? `justify-self:${$justifySelf};` : "")}
 `;
-type Props = {
+export type GridProps = {
   children?: React.ReactNode;
   as?: React.ElementType;
   style?: CSSProperties | undefined;
@@ -63,7 +63,7 @@ type Props = {
 } & IGrid &
   HTMLAttributes<unknown>;
 
-export const Grid = forwardRef<HTMLDivElement, Props>(
+export const Grid = forwardRef<HTMLDivElement, GridProps>(
   ({ children, as, style, ...props }, ref) => {
     const { transientProps, otherProps } = getTransientCustomProps<
       InnerGridProps,

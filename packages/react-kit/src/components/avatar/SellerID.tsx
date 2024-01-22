@@ -1,7 +1,7 @@
 import React from "react";
 import { Image as AccountImage } from "@davatar/react";
 import styled, { css } from "styled-components";
-import { Grid, IGrid } from "../../components/ui/Grid";
+import { Grid, GridProps } from "../../components/ui/Grid";
 import { theme } from "../../theme";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../types/offer";
@@ -72,7 +72,7 @@ const SellerID: React.FC<
     withProfileText?: boolean;
     withBosonStyles?: boolean;
     onClick?: null | undefined | React.MouseEventHandler<HTMLDivElement>;
-  } & IGrid &
+  } & GridProps &
     Omit<React.HTMLAttributes<HTMLDivElement>, "onClick">
 > = ({
   children,
