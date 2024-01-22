@@ -138,7 +138,7 @@ export default function InnerExchangeDetailView(
                 </RedeemButton>
                 {!isRedeemDisabled && (
                   <Typography
-                    $fontSize="0.8rem"
+                    fontSize="0.8rem"
                     style={{
                       color: "initial",
                       display: "block",
@@ -192,7 +192,7 @@ export default function InnerExchangeDetailView(
             <Typography
               tag="p"
               style={{ color: colors.darkGrey, margin: 0 }}
-              $fontSize="0.75rem"
+              fontSize="0.75rem"
             >
               You can withdraw your funds here
             </Typography>

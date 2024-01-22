@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
 import { theme } from "../../theme";
 
-export const ImageWrapper = styled.div<{ hide?: boolean }>`
-  display: ${({ hide }) => (hide ? "none !important" : undefined)};
+export const ImageWrapper = styled.div<{ $hide?: boolean }>`
+  display: ${({ $hide }) => ($hide ? "none !important" : undefined)};
   overflow: hidden;
   position: relative;
   z-index: 2;

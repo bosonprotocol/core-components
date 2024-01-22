@@ -51,7 +51,7 @@ export default function TransactionSubmittedModal({ action, txHash }: Props) {
     >
       <StyledArrowCircleUp size={128} color={colors.green} />
 
-      <Typography fontWeight="600" $fontSize="1.5rem" lineHeight="150%">
+      <Typography fontWeight="600" fontSize="1.5rem" lineHeight="150%">
         {action} transaction submitted
       </Typography>
       <a
@@ -61,7 +61,7 @@ export default function TransactionSubmittedModal({ action, txHash }: Props) {
       >
         <Typography
           fontWeight="600"
-          $fontSize="1rem"
+          fontSize="1rem"
           lineHeight="150%"
           margin="0.5rem 0 1.5rem 0"
           color={colors.secondary}

@@ -35,7 +35,7 @@ export default function SimpleError({
       {children ? (
         children
       ) : (
-        <Typography fontWeight="600" $fontSize="1rem" lineHeight="1.5rem">
+        <Typography fontWeight="600" fontSize="1rem" lineHeight="1.5rem">
           {errorMessage || "There has been an error, please try again"}
         </Typography>
       )}

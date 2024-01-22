@@ -264,7 +264,10 @@ export default function DetailSlider({
             ref={glideSlidesRef}
           >
             {mediaFiles?.map(({ url, type }, index: number) => (
-              <GlideSlide className="glide__slide" key={`Slide_${index}`}>
+              <GlideSlide
+                className="glide__slide"
+                key={`Slide_${index}_${url}_${type}`}
+              >
                 <>
                   {type === "image" ? (
                     <IpfsImage

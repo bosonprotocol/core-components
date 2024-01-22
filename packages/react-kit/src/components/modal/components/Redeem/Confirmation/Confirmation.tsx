@@ -281,7 +281,7 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
     <>
       <Typography
         fontWeight="600"
-        $fontSize="1rem"
+        fontSize="1rem"
         lineHeight="1.5rem"
         margin="1rem 0"
       >
@@ -324,7 +324,7 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
             padding="1.5rem"
           >
             <Warning color={colors.darkOrange} size={16} />
-            <Typography fontWeight="600" $fontSize="1rem" lineHeight="1.5rem">
+            <Typography fontWeight="600" fontSize="1rem" lineHeight="1.5rem">
               rNFTs are burned upon redemption to prevent double spend
             </Typography>
           </StyledGrid>

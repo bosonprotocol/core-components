@@ -236,7 +236,7 @@ export default function RedeemWrapper({
       lookAndFeel="modal"
       hideModal={hideModal}
       headerComponent={
-        <Typography tag="h3" $width="100%">
+        <Typography tag="h3" width="100%">
           Redeem your item
         </Typography>
       }

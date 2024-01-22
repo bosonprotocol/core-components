@@ -107,7 +107,7 @@ export default function ExpireVoucher({
           textAlign="left"
           margin="0"
           color={colors.darkGrey}
-          $width="100%"
+          width="100%"
           style={{
             width: "100%"
           }}

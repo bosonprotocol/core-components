@@ -12,7 +12,7 @@ const loadingAnimation = keyframes`
 
 export const LoadingBubble = styled.div<{
   $height?: CSSProperties["height"];
-  $width?: CSSProperties["width"];
+  width?: CSSProperties["width"];
   $minWidth?: CSSProperties["minWidth"];
   $borderRadius?: CSSProperties["borderRadius"];
   $backgroundColor?: CSSProperties["backgroundColor"];
@@ -25,7 +25,7 @@ export const LoadingBubble = styled.div<{
   ${({ margin }) => margin && `margin: ${margin}`};
   height: ${({ $height }) => $height ?? "24px"};
   width: 50%;
-  width: ${({ $width }) => $width ?? "50%"};
+  width: ${({ width }) => width ?? "50%"};
   ${({ $minWidth }) => $minWidth && `minWidth: ${$minWidth};`};
   animation: ${loadingAnimation} 1.5s infinite;
   ${({ delay }) => delay && `animation-delay: ${delay};`}

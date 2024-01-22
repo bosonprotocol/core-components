@@ -32,34 +32,34 @@ export const CollectionsCardSkeleton = (props: SkeletonCardProps) => {
     <Container>
       <ImagesContainer>
         <LoadingBubble
-          $width="100%"
+          width="100%"
           $height="170px"
           $borderRadius="0px"
           $backgroundColor={theme.colors.light.darkGrey}
         />
         <LoadingBubble
-          $width="100%"
+          width="100%"
           $height="170px"
           $borderRadius="0px"
           $backgroundColor={theme.colors.light.darkGrey}
         />
         <LoadingBubble
-          $width="100%"
+          width="100%"
           $height="170px"
           $borderRadius="0px"
           $backgroundColor={theme.colors.light.darkGrey}
         />
         <LoadingBubble
-          $width="100%"
+          width="100%"
           $height="170px"
           $borderRadius="0px"
           $backgroundColor={theme.colors.light.darkGrey}
         />
       </ImagesContainer>
       <BottomCard>
-        <LoadingBubble $width="50%" $height="26px" margin="0 0 8.75px 0" />
-        <LoadingBubble $width="52px" $height="18px" margin="0 0 4.375px 0" />
-        <LoadingBubble $width="30px" $height="30px" />
+        <LoadingBubble width="50%" $height="26px" margin="0 0 8.75px 0" />
+        <LoadingBubble width="52px" $height="18px" margin="0 0 4.375px 0" />
+        <LoadingBubble width="30px" $height="30px" />
       </BottomCard>
     </Container>
   );

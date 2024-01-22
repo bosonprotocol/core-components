@@ -263,7 +263,7 @@ export const Transactions = styled.table`
 `;
 
 export const Table = styled.table<{
-  noBorder?: boolean;
+  $noBorder?: boolean;
   $inheritColor?: boolean;
 }>`
   ${tableStyles}
@@ -292,8 +292,8 @@ export const Table = styled.table<{
         font-weight: 400;
       }
     }
-    ${({ noBorder }) =>
-      noBorder
+    ${({ $noBorder }) =>
+      $noBorder
         ? css`
         td {
           > div {

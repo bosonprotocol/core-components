@@ -89,21 +89,21 @@ const background = {
 const Wrapper = styled.div<{
   $modalType: ModalType | string;
   $size: Props["size"];
-  themeVal: Props["theme"];
+  $themeVal: Props["theme"];
   $maxWidths: Props["maxWidths"];
 }>`
   position: relative;
   z-index: ${zIndex.Modal};
-  color: ${({ themeVal }) => {
-    switch (themeVal) {
+  color: ${({ $themeVal }) => {
+    switch ($themeVal) {
       case "dark":
         return colors.white;
       default:
         return colors.black;
     }
   }};
-  background-color: ${({ themeVal }) => {
-    return background[themeVal as keyof typeof background] || colors.white;
+  background-color: ${({ $themeVal }) => {
+    return background[$themeVal as keyof typeof background] || colors.white;
   }};
   border: var(--secondary);
   ${({ $maxWidths }) => {
@@ -250,7 +250,7 @@ export default function Modal({
       <Wrapper
         $size={size}
         $modalType={modalType}
-        themeVal={theme}
+        $themeVal={theme}
         $maxWidths={maxWidths}
       >
         {HeaderComponent ? (

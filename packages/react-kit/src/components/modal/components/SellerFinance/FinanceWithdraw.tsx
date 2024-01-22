@@ -111,11 +111,11 @@ export default function FinanceWithdraw({
 
   return (
     <Grid flexDirection="column" alignItems="flex-start" gap="1.5rem">
-      <Typography tag="p" margin="0" $fontSize="0.75rem">
+      <Typography tag="p" margin="0" fontSize="0.75rem">
         <ProtocolStrong>Withdrawable Balance:</ProtocolStrong> {protocolBalance}{" "}
         {symbol}
       </Typography>
-      <Typography tag="p" margin="0" $fontSize="0.75rem" fontWeight="600">
+      <Typography tag="p" margin="0" fontSize="0.75rem" fontWeight="600">
         Enter Amount To Withdraw:
       </Typography>
       <AmountWrapper>
@@ -133,20 +133,20 @@ export default function FinanceWithdraw({
             disabled={isBeingWithdrawn}
           />
           <div>
-            <Typography $fontSize="0.875rem" margin="0" fontWeight="600">
+            <Typography fontSize="0.875rem" margin="0" fontWeight="600">
               {symbol}
             </Typography>
           </div>
         </InputWrapper>
         <MaxLimitWrapper>
-          <Typography tag="p" $fontSize="0.75rem" margin="0">
+          <Typography tag="p" fontSize="0.75rem" margin="0">
             (Max Limit {protocolBalance} {symbol})
           </Typography>
         </MaxLimitWrapper>
       </AmountWrapper>
       <Grid>
         {dataBalance ? (
-          <Typography tag="p" margin="0" $fontSize="0.75rem" fontWeight="600">
+          <Typography tag="p" margin="0" fontSize="0.75rem" fontWeight="600">
             Wallet Balance: {formatted} {symbol}
           </Typography>
         ) : (
@@ -233,7 +233,7 @@ export default function FinanceWithdraw({
           {isBeingWithdrawn ? (
             <Spinner size={20} />
           ) : (
-            <Typography tag="p" margin="0" $fontSize="0.75rem" fontWeight="600">
+            <Typography tag="p" margin="0" fontSize="0.75rem" fontWeight="600">
               Withdraw {symbol}
             </Typography>
           )}

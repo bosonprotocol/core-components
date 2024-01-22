@@ -366,7 +366,7 @@ export default function InnerCommitDetailView(
                 )}
               </CommitButtonWrapper>
               <Typography
-                $fontSize="0.8rem"
+                fontSize="0.8rem"
                 marginTop="0.25rem"
                 style={{ display: "block" }}
               >

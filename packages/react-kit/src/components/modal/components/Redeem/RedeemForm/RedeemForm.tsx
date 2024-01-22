@@ -64,7 +64,7 @@ export default function RedeemForm({
     <>
       <Typography
         fontWeight="600"
-        $fontSize="1rem"
+        fontSize="1rem"
         lineHeight="1.5rem"
         margin="0 0 1rem 0"
       >

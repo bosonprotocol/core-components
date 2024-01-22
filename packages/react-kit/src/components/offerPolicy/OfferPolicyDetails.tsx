@@ -119,11 +119,11 @@ export default function OfferPolicyDetails({
 
   return (
     <>
-      <Typography tag="h3" data-title $fontSize="1.5rem" marginTop="0">
+      <Typography tag="h3" data-title fontSize="1.5rem" marginTop="0">
         Exchange Policy
       </Typography>
       <Typography
-        $fontSize="1.25rem"
+        fontSize="1.25rem"
         color={colors.darkGrey}
         margin="0 0 2rem 0"
       >

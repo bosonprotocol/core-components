@@ -1,4 +1,4 @@
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import uniqBy from "lodash.uniqby";
 import React, {
   Dispatch,
@@ -7,15 +7,15 @@ import React, {
   useMemo,
   useState
 } from "react";
+import styled from "styled-components";
 import { isNumeric } from "../../../../lib/numbers/numbers";
+import { theme } from "../../../../theme";
 import { isTruthy } from "../../../../types/helpers";
 import { VariantV1, Variation } from "../../../../types/variants";
 import SimpleError from "../../../error/SimpleError";
 import { Select } from "../../../form";
 import { SelectDataProps } from "../../../form/types";
 import Grid from "../../../ui/Grid";
-import { theme } from "../../../../theme";
-import styled from "styled-components";
 const colors = theme.colors.light;
 const selectWidth = "10rem";
 export const ResponsiveVariationSelects = styled(VariationSelects)`
@@ -337,7 +337,7 @@ export default function VariationSelects({
     >
       {({ submitForm }) => {
         return (
-          <Form {...rest}>
+          <div {...rest}>
             <Grid gap="1rem" data-grid>
               {numValidColorVariants > 0 && (
                 <>
@@ -383,7 +383,7 @@ export default function VariationSelects({
                 {errorMessage}
               </SimpleError>
             )}
-          </Form>
+          </div>
         );
       }}
     </Formik>

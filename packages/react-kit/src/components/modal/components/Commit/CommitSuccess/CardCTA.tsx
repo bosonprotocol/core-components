@@ -31,14 +31,12 @@ const IconContainer = styled(Grid)`
 export const CardCTA: React.FC<CardCTAProps> = ({ title, text, icon, cta }) => {
   return (
     <StyledGrid flexDirection="column" alignItems="flex-start" padding="1.5rem">
-      <>
-        <IconContainer>{icon}</IconContainer>
-        <Typography fontWeight="600" $fontSize="1.25rem">
-          {title}
-        </Typography>
-        <Typography tag="p">{text}</Typography>
-        {cta}
-      </>
+      <IconContainer>{icon}</IconContainer>
+      <Typography fontWeight="600" fontSize="1.25rem">
+        {title}
+      </Typography>
+      <Typography tag="p">{text}</Typography>
+      {cta}
     </StyledGrid>
   );
 };

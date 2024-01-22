@@ -123,7 +123,7 @@ export function RedeemSuccess({
             >
               <CheckCircle size="60" color={colors.green} />
               <Grid flexDirection="column" alignItems="flex-start">
-                <Typography fontWeight="600" $fontSize="1.25rem">
+                <Typography fontWeight="600" fontSize="1.25rem">
                   Congratulations!
                 </Typography>
 

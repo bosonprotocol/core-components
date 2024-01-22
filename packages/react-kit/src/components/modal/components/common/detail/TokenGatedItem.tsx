@@ -185,7 +185,7 @@ export const TokenGatedItem = ({
             gap="1rem"
             justifyContent="flex-start"
             flex={0}
-            $width="auto"
+            width="auto"
           >
             <div>{tokenInfo.symbol} Tokens</div>
           </Grid>
@@ -201,7 +201,7 @@ export const TokenGatedItem = ({
                 gap="1rem"
                 justifyContent="flex-start"
                 flex={0}
-                $width="auto"
+                width="auto"
               >
                 <div>NFTs</div>
               </Grid>
@@ -215,7 +215,7 @@ export const TokenGatedItem = ({
                 gap="1rem"
                 justifyContent="flex-start"
                 flex={0}
-                $width="auto"
+                width="auto"
               >
                 <Grid flexDirection="column">NFT {rangeText}</Grid>
               </Grid>
@@ -235,7 +235,7 @@ export const TokenGatedItem = ({
               gap="1rem"
               justifyContent="flex-start"
               flex={0}
-              $width="auto"
+              width="auto"
             >
               <Grid flexDirection="column">NFT {rangeText}</Grid>
             </Grid>

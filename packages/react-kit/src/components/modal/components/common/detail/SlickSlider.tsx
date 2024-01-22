@@ -190,38 +190,36 @@ export const SlickSlider: React.FC<SlickSliderProps> = ({
 }) => {
   const Slider = _Slider as unknown as (props: Settings) => ReactElement;
   return (
-    <>
-      <Container className={className} $alignLeft={alignLeft ?? false}>
-        <Slider {...settings}>
-          {mediaFiles?.map(({ url, type }, index: number) => (
-            <>
-              {type === "image" ? (
-                <IpfsImage
-                  src={url}
-                  style={{ cursor: "pointer" }}
-                  dataTestId="sliderImage"
-                  optimizationOpts={imageOptimizationOpts}
-                  onClick={() => {
-                    onMediaClick?.({ index });
-                  }}
-                  data-active={activeIndex === index ? "true" : "false"}
-                />
-              ) : (
-                <Video
-                  src={url}
-                  onClick={() => {
-                    onMediaClick?.({ index });
-                  }}
-                  style={{ cursor: "pointer" }}
-                  dataTestId="offerAnimationUrl"
-                  videoProps={{ muted: true, loop: true, autoPlay: true }}
-                  data-active={activeIndex === index ? "true" : "false"}
-                />
-              )}
-            </>
-          ))}
-        </Slider>
-      </Container>
-    </>
+    <Container className={className} $alignLeft={alignLeft ?? false}>
+      <Slider {...settings}>
+        {mediaFiles?.map(({ url, type }, index: number) =>
+          type === "image" ? (
+            <IpfsImage
+              key={`${index}_${url}_${type}`}
+              src={url}
+              style={{ cursor: "pointer" }}
+              dataTestId="sliderImage"
+              optimizationOpts={imageOptimizationOpts}
+              onClick={() => {
+                onMediaClick?.({ index });
+              }}
+              data-active={activeIndex === index ? "true" : "false"}
+            />
+          ) : (
+            <Video
+              key={`${index}_${url}_${type}`}
+              src={url}
+              onClick={() => {
+                onMediaClick?.({ index });
+              }}
+              style={{ cursor: "pointer" }}
+              dataTestId="offerAnimationUrl"
+              videoProps={{ muted: true, loop: true, autoPlay: true }}
+              data-active={activeIndex === index ? "true" : "false"}
+            />
+          )
+        )}
+      </Slider>
+    </Container>
   );
 };

@@ -150,7 +150,7 @@ export function OfferVariantView({
     <>
       {isCommitting ? (
         <Grid flexDirection="column">
-          <Typography $fontSize="1.7rem">
+          <Typography fontSize="1.7rem">
             <strong>Your transaction is being processed...</strong>
           </Typography>
           <WaveLoader />

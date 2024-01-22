@@ -28,7 +28,7 @@ export const ProductCardSkeleton = (props: SkeletonCardProps) => {
     <ProductCardWrapper {...props} $isHoverDisabled={true}>
       <ProductCardImageWrapper>
         <LoadingBubble
-          $width="100%"
+          width="100%"
           $height="340px"
           $borderRadius="0px"
           $backgroundColor={theme.colors.light.darkGrey}
@@ -40,34 +40,34 @@ export const ProductCardSkeleton = (props: SkeletonCardProps) => {
             <ProductCardData>
               <ProductCardCreator>
                 <ProductCardCreatorAvatar>
-                  <LoadingBubble $width="16px" $height="16px" />
+                  <LoadingBubble width="16px" $height="16px" />
                 </ProductCardCreatorAvatar>
                 <ProductCardCreatorName data-avatarname="product-card">
-                  <LoadingBubble $width="50px" $height="12.5px" />
+                  <LoadingBubble width="50px" $height="12.5px" />
                 </ProductCardCreatorName>
               </ProductCardCreator>
             </ProductCardData>
             <ProductCardPriceWrapper>
               <ProductCardPrice>
                 <Grid justifyContent="flex-end">
-                  <LoadingBubble $width="30px" $height="10px" />
+                  <LoadingBubble width="30px" $height="10px" />
                 </Grid>
               </ProductCardPrice>
               <Grid justifyContent="flex-end" gap="8px">
-                <LoadingBubble $width="24px" $height="24px" />
-                <LoadingBubble $width="calc(100% - 24px - 8px)" />
+                <LoadingBubble width="24px" $height="24px" />
+                <LoadingBubble width="calc(100% - 24px - 8px)" />
               </Grid>
             </ProductCardPriceWrapper>
           </ProductCardBottomContent>
           <ProductCardTitleWrapper>
             <ProductCardTitle>
-              <LoadingBubble $width="100%" $height="30px" />
+              <LoadingBubble width="100%" $height="30px" />
             </ProductCardTitle>
           </ProductCardTitleWrapper>
         </div>
         {withBottomText && (
           <BottomText>
-            <LoadingBubble $width="100%" $height="15.5px" />
+            <LoadingBubble width="100%" $height="15.5px" />
           </BottomText>
         )}
       </ProductCardBottom>

@@ -85,7 +85,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
               color={colors.green}
               style={{ marginBottom: "2rem" }}
             />
-            <Typography fontWeight="600" $fontSize="1.5rem" textAlign="center">
+            <Typography fontWeight="600" fontSize="1.5rem" textAlign="center">
               Commit success!
             </Typography>
           </Grid>

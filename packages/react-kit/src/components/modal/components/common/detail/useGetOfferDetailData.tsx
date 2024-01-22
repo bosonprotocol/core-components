@@ -211,7 +211,7 @@ export const useGetOfferDetailData = ({
           <Typography
             tag="p"
             color="purple"
-            $fontSize={fontSizeExchangePolicy}
+            fontSize={fontSizeExchangePolicy}
             alignItems="center"
           >
             {customisedExchangePolicy}

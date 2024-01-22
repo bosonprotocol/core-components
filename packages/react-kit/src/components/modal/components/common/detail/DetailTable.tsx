@@ -32,7 +32,7 @@ export default function DetailTable({
   const [displayIndex, setDisplayIndex] = useState<number | undefined>();
   const tipRef = useRef<Record<number, Instance<unknown>>>();
   return (
-    <Table noBorder={noBorder} $inheritColor={inheritColor}>
+    <Table $noBorder={noBorder} $inheritColor={inheritColor}>
       <tbody>
         {data?.map(
           ({ hide = false, ...d }: Data, index: number) =>
