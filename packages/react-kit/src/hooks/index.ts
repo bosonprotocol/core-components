@@ -4,3 +4,4 @@ export * from "./magic";
 export * from "../lib/signer/externalSigner";
 export * from "../lib/signer/useCallSignerFromIframe";
 export * from "../hooks/useEffectDebugger";
+export * from "../hooks/useHandleText";
