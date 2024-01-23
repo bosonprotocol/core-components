@@ -56,6 +56,7 @@ export function getSectionId(section: string): string {
 
 export function saveProductV1ProductOrOverrides(
   productOrOverrideObj: TypedMap<string, JSONValue> | null,
+  metadataObj: TypedMap<string, JSONValue>,
   productV1SellerId: string | null,
   isOverride: boolean,
   variant: string | null,
@@ -130,11 +131,14 @@ export function saveProductV1ProductOrOverrides(
   const visuals_images = convertToObjectArray(
     productOrOverrideObj.get("visuals_images")
   );
-  const savedImageIds = saveProductV1Medias(visuals_images, "IMAGE");
+  const metadataImage = convertToString(metadataObj.get("image"));
+  const savedImageIds = saveProductV1Medias(visuals_images, "IMAGE", metadataImage);
   const visuals_videos = convertToObjectArray(
     productOrOverrideObj.get("visuals_videos")
   );
-  const savedVideoIds = saveProductV1Medias(visuals_videos, "VIDEO");
+  const animationUrl = convertToString(metadataObj.get("animationUrl"));
+  const savedVideoIds = saveProductV1Medias(visuals_videos, "VIDEO", animationUrl);
+  
 
   const packaging_packageQuantity = convertToString(
     productOrOverrideObj.get("packaging_packageQuantity")
