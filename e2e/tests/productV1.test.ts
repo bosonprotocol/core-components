@@ -1138,6 +1138,25 @@ describe("additional tests", () => {
 
     // Do not create the offer with this invalid returnPeriod because the subgraph does not support it
   });
+  test("check animationUrl is added to product.visuals_videos", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+
+    const template = "Hello World!!";
+    const metadata = mockProductV1Metadata(template);
+    metadata.animationUrl = "https://animation.url";
+    const { offerArgs } = await createOfferArgs(coreSDK, metadata);
+    resolveDateValidity(offerArgs);
+
+    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    expect(offer).toBeTruthy();
+
+    expect(offer.metadata?.type).toEqual(MetadataType.PRODUCT_V1);
+    expect(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ((offer?.metadata as any)?.product as any)?.visuals_videos?.length
+    ).toEqual(1);
+  });
 });
 
 describe("core-sdk-check-exchange-policy", () => {
