@@ -44,18 +44,21 @@ function mockProductV1Metadata(
   productUuid: string = productV1.buildUuid(),
   overrides: DeepPartial<productV1.ProductV1Metadata> = {} as DeepPartial<productV1.ProductV1Metadata>
 ): productV1.ProductV1Metadata {
+  const productV1ValidMinimalOfferClone = JSON.parse(
+    JSON.stringify(productV1ValidMinimalOffer)
+  );
   return {
-    ...productV1ValidMinimalOffer,
+    ...productV1ValidMinimalOfferClone,
     ...overrides,
     product: {
-      ...productV1ValidMinimalOffer.product,
+      ...productV1ValidMinimalOfferClone.product,
       ...overrides.product,
       uuid: productUuid
     },
     uuid: productV1.buildUuid(),
     type: MetadataType.PRODUCT_V1,
     exchangePolicy: {
-      ...productV1ValidMinimalOffer.exchangePolicy,
+      ...productV1ValidMinimalOfferClone.exchangePolicy,
       ...overrides.exchangePolicy,
       template
     }
@@ -308,6 +311,7 @@ describe("ProductV1 e2e tests", () => {
       );
 
       metadata2 = mockProductV1Metadata("dummy", productUuid1, {
+        image: "ipfs://QmWJiZrvxs5Z8qXHZWqCvEbahQrfD7aca7x9iGPsa5iEBr",
         product: {
           visuals_images: [
             {
