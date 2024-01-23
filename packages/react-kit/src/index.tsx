@@ -56,3 +56,4 @@ export * from "./lib/magicLink/logout";
 export * from "./lib/magicLink/provider";
 export * from "./lib/const/networks";
 export * from "./lib/errors/transactions";
+export * from "./lib/offer/getIsOfferExpired";

@@ -4,6 +4,7 @@ import utc from "dayjs/plugin/utc";
 import { theme } from "../../theme";
 import { Offer } from "../../types/offer";
 import { getDateTimestamp } from "../dates/getDateTimestamp";
+import { getIsOfferExpired } from "./getIsOfferExpired";
 
 const colors = theme.colors.light;
 dayjs.extend(utc);
@@ -65,7 +66,7 @@ export const getOfferLabel = (offer: Offer) => {
   const optionRelease = release.isAfter(current);
   const optionExpiring =
     expiry.isAfter(current) && expiry.diff(current, "hours") <= 24;
-  const expired = expiry.isBefore(current);
+  const expired = getIsOfferExpired({ offer });
 
   if (optionQuantity) {
     return OFFER_LABEL_TYPES.HOT.name;

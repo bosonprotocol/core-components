@@ -5,3 +5,4 @@ export * from "../lib/signer/externalSigner";
 export * from "../lib/signer/useCallSignerFromIframe";
 export * from "../hooks/useEffectDebugger";
 export * from "../hooks/useHandleText";
+export * from "../components/widgets/finance/useOffersBacked";

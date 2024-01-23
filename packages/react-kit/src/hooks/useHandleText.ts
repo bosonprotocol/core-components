@@ -7,6 +7,7 @@ import { getDateTimestamp } from "../lib/dates/getDateTimestamp";
 
 import { Offer } from "../types/offer";
 import { checkIfTimestampIsToo } from "../lib/dates/checkIfTimestampIsToo";
+import { getIsOfferExpired } from "../lib/offer/getIsOfferExpired";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -53,7 +54,9 @@ export function useHandleText(offer: Offer, dateFormat = "YYYY/MM/DD") {
         diff: {
           days: expiry.diff(current, "days"),
           isToday: expiry.isSame(current, "day"),
-          isExpired: expiry.isBefore(current),
+          isExpired: getIsOfferExpired({
+            validUntilDate: latestValidUntilDate.toString()
+          }),
           hours: expiry.diff(current, "hours"),
           time: expiry.format("HH:mm"),
           withExpirationDate: !checkIfTimestampIsToo(

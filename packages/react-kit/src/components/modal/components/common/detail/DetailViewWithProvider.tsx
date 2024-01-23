@@ -15,6 +15,7 @@ import {
   DetailViewProvider,
   useDetailViewContext
 } from "./DetailViewProvider";
+import { getIsOfferExpired } from "../../../../../lib/offer/getIsOfferExpired";
 
 export type DetailViewWithProviderProps = ConsumerProps & {
   offer: Offer;
@@ -47,8 +48,8 @@ export const DetailViewWithProvider: React.FC<
     getDateTimestamp(offer?.validFromDate)
   ).isAfter(nowDate);
   const isExpiredOffer = useMemo<boolean>(
-    () => dayjs(getDateTimestamp(offer?.validUntilDate)).isBefore(dayjs()),
-    [offer?.validUntilDate]
+    () => getIsOfferExpired({ offer }),
+    [offer]
   );
   const config = useConfigContext();
 

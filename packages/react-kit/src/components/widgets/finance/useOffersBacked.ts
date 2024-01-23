@@ -8,12 +8,12 @@ import { Props } from "./Finance";
 import { saveItemInStorage } from "./storage/useLocalStorage";
 import { SellerExchangeProps } from "./useSellerDeposit";
 import { subgraph } from "@bosonprotocol/core-sdk";
-import { getDateTimestamp } from "../../../lib/dates/getDateTimestamp";
 import { Offer } from "../../../types/offer";
+import { getIsOfferExpired } from "../../../lib/offer/getIsOfferExpired";
 dayjs.extend(isBetween);
 
 const THRESHOLD = 15;
-export default function useOffersBacked({
+export function useOffersBacked({
   funds: fundsData,
   exchangesTokens: exchangesTokensData,
   sellerDeposit: sellerDepositData
@@ -31,9 +31,7 @@ export default function useOffersBacked({
       const key = exchangeToken?.symbol;
       const notExpiredAndNotVoidedOffers = exchangeToken?.offers?.filter(
         (offer: Offer) => {
-          const now = dayjs();
-          const validUntilDate = dayjs(getDateTimestamp(offer?.validUntilDate));
-          const isNotExpired = validUntilDate.isAfter(now);
+          const isNotExpired = !getIsOfferExpired({ offer });
           return isNotExpired && !offer.voided;
         }
       );
