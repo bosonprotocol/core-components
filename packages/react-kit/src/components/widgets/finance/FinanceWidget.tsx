@@ -30,7 +30,7 @@ import ConvertionRateProvider, {
 import { useConvertionRate } from "./convertion-rate/useConvertionRate";
 import { useExchangeTokens } from "./exchange-tokens/useExchangeTokens";
 import useFunds from "./useFunds";
-import useOffersBacked from "./useOffersBacked";
+import { useOffersBacked } from "./useOffersBacked";
 import { useSellerDeposit } from "./useSellerDeposit";
 import { useSellerRoles } from "./useSellerRoles";
 dayjs.extend(isBetween);
