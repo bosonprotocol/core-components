@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.11](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.10...@bosonprotocol/ipfs-storage@1.10.11) (2024-01-24)
+
+
+### Bug Fixes
+
+* avoid crashing when lens profile can't be fetched ([#637](https://github.com/bosonprotocol/core-components/issues/637)) ([dc9e501](https://github.com/bosonprotocol/core-components/commit/dc9e501da098f5b0e11adafa6466e0c450ea5310))
+
+
+
+
+
 ## [1.10.10](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.9...@bosonprotocol/ipfs-storage@1.10.10) (2023-10-03)
 
 **Note:** Version bump only for package @bosonprotocol/ipfs-storage
