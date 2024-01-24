@@ -12,7 +12,7 @@ import {
 } from "./utils";
 
 import { ExchangeState } from "../../packages/core-sdk/src/subgraph";
-import { Range } from "@bosonprotocol/common/src";
+import { Range } from "../../packages/common/src";
 
 jest.setTimeout(60_000);
 

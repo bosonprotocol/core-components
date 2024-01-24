@@ -9,9 +9,9 @@ import {
   MetadataType,
   productV1,
   validateMetadata
-} from "@bosonprotocol/metadata";
-import { CreateOfferArgs } from "@bosonprotocol/common";
-import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
+} from "../../packages/metadata";
+import { CreateOfferArgs } from "../../packages/common";
+import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import { Wallet } from "ethers";
 import { CoreSDK, subgraph } from "../../packages/core-sdk/src";
 import {
@@ -26,7 +26,7 @@ import {
 } from "./utils";
 // import productV1ValidMinimalOffer from "../../packages/metadata/tests/product-v1/valid/minimalOffer.json";
 import productV1ValidMinimalOffer from "../../scripts/assets/offer_1.metadata.json";
-import { SEC_PER_DAY } from "@bosonprotocol/common/src/utils/timestamp";
+import { SEC_PER_DAY } from "../../packages/common/src/utils/timestamp";
 import { ProductV1MetadataEntity } from "../../packages/core-sdk/src/subgraph";
 import exchangePolicyRules from "../../packages/core-sdk/tests/exchangePolicy/exchangePolicyRules.local.json";
 import { buildUuid } from "../../packages/metadata/src";

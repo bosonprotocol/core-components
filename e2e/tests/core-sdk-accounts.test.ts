@@ -1,4 +1,4 @@
-import { AuthTokenType } from "@bosonprotocol/common";
+import { AuthTokenType } from "../../packages/common";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import {
@@ -13,7 +13,7 @@ import {
   waitForGraphNodeIndexing
 } from "./utils";
 import { Wallet } from "ethers";
-import { ZERO_ADDRESS } from "@bosonprotocol/core-sdk/tests/mocks";
+import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 
 jest.setTimeout(60_000);
 

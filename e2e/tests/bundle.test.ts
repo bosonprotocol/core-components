@@ -1,7 +1,6 @@
-import { parseEther } from "@ethersproject/units";
 import { BigNumber } from "@ethersproject/bignumber";
 import { Wallet } from "ethers";
-import { NftItem } from "@bosonprotocol/metadata/src/nftItem";
+import { NftItem } from "../../packages/metadata/src/nftItem";
 import {
   ensureCreatedSeller,
   initCoreSDKWithFundedWallet,
@@ -9,16 +8,13 @@ import {
   seedWallet22,
   waitForGraphNodeIndexing
 } from "./utils";
-import { CoreSDK, MetadataType } from "../../packages/core-sdk/src";
-import { bundle } from "@bosonprotocol/metadata/src";
+import { CoreSDK, MetadataType, subgraph } from "../../packages/core-sdk/src";
 import bundleMetadataMinimal from "../../packages/metadata/tests/bundle/valid/minimal.json";
 import {
-  AdditionalOfferMetadata,
   CreateOfferArgs
 } from "../../packages/core-sdk/src/offers";
-import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
-import { productV1Item } from "@bosonprotocol/metadata";
-import { SEC_PER_DAY } from "@bosonprotocol/common/src/utils/timestamp";
+import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
+import { AnyMetadata, productV1Item, bundle } from "../../packages/metadata/src";
 
 jest.setTimeout(120_000);
 
@@ -47,15 +43,42 @@ function mockBundleMetadata(
   };
 }
 
+// async function createOfferArgs(
+//   coreSDK: CoreSDK,
+//   metadata: bundle.BundleMetadata,
+//   productV1Item: productV1Item.ProductV1Item,
+//   offerParams?: Partial<CreateOfferArgs>
+// ): Promise<{
+//   offerArgs: CreateOfferArgs;
+//   offerMetadata: AdditionalOfferMetadata;
+// }> {
+//   const metadataHash = await coreSDK.storeMetadata(metadata);
+//   const metadataUri = "ipfs://" + metadataHash;
+
+//   const offerArgs = mockCreateOfferArgs({
+//     metadataHash,
+//     metadataUri,
+//     ...offerParams
+//   });
+
+//   const offerMetadata = {
+//     sellerContactMethod: productV1Item.exchangePolicy.sellerContactMethod,
+//     disputeResolverContactMethod:
+//       productV1Item.exchangePolicy.disputeResolverContactMethod,
+//     escalationDeposit: parseEther("0.01"),
+//     escalationResponsePeriodInSec: 20 * SEC_PER_DAY,
+//     sellerTradingName: metadata.seller.name,
+//     returnPeriodInDays: parseInt(productV1Item.shipping.returnPeriod)
+//   };
+
+//   return { offerArgs, offerMetadata };
+// }
+
 async function createOfferArgs(
   coreSDK: CoreSDK,
   metadata: bundle.BundleMetadata,
-  productV1Item: productV1Item.ProductV1Item,
   offerParams?: Partial<CreateOfferArgs>
-): Promise<{
-  offerArgs: CreateOfferArgs;
-  offerMetadata: AdditionalOfferMetadata;
-}> {
+): Promise<CreateOfferArgs> {
   const metadataHash = await coreSDK.storeMetadata(metadata);
   const metadataUri = "ipfs://" + metadataHash;
 
@@ -65,17 +88,7 @@ async function createOfferArgs(
     ...offerParams
   });
 
-  const offerMetadata = {
-    sellerContactMethod: productV1Item.exchangePolicy.sellerContactMethod,
-    disputeResolverContactMethod:
-      productV1Item.exchangePolicy.disputeResolverContactMethod,
-    escalationDeposit: parseEther("0.01"),
-    escalationResponsePeriodInSec: 20 * SEC_PER_DAY,
-    sellerTradingName: metadata.seller.name,
-    returnPeriodInDays: parseInt(productV1Item.shipping.returnPeriod)
-  };
-
-  return { offerArgs, offerMetadata };
+  return offerArgs;
 }
 
 async function createOffer(
@@ -116,6 +129,22 @@ function resolveDateValidity(offerArgs: CreateOfferArgs) {
     .toNumber();
 }
 
+async function createBundleOffer(coreSDK: CoreSDK, sellerWallet: Wallet, items: AnyMetadata[]) {
+  const itemUrls = await Promise.all(items.map(async (itemMetadata) => {
+    const hash = await coreSDK.storeMetadata(itemMetadata);
+    return `ipfs://${hash}`;
+  }));
+  const bundleMetadata = mockBundleMetadata(itemUrls);
+
+  const offerArgs = await createOfferArgs(
+    coreSDK,
+    bundleMetadata
+  );
+  resolveDateValidity(offerArgs);
+
+  return createOffer(coreSDK, sellerWallet, offerArgs);
+}
+
 describe("Bundle e2e tests", () => {
   test("Create an Phygital offer with a single physical product", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
@@ -126,27 +155,170 @@ describe("Bundle e2e tests", () => {
     const productV1Item = mockProductV1Item();
     const digitalItem = mockNFTItem();
 
-    // Publish metadata of the product item, and get the resulting URL
-    const productV1ItemHash = await coreSDK.storeMetadata(productV1Item);
-    const productV1ItemUri = "ipfs://" + productV1ItemHash;
-
-    // Publish metadata of the digital item, and get the resulting URL
-    const digitalItemHash = await coreSDK.storeMetadata(digitalItem);
-    const digitalItemUri = "ipfs://" + digitalItemHash;
-
-    const bundleMetadata = mockBundleMetadata([
-      productV1ItemUri,
-      digitalItemUri
-    ]);
-
-    const { offerArgs } = await createOfferArgs(
-      coreSDK,
-      bundleMetadata,
-      productV1Item
-    );
-    resolveDateValidity(offerArgs);
-
-    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    const offer = await createBundleOffer(coreSDK, sellerWallet, [productV1Item, digitalItem])
     expect(offer).toBeTruthy();
+    expect(offer.metadata?.type).toEqual(MetadataType.BUNDLE);
+    expect((offer.metadata as any)?.items).toBeTruthy();
+    expect((offer.metadata as any)?.items?.length).toEqual(2);
+  });
+  test("Retrieve a Bundle offer from subgraph", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const productV1Item = mockProductV1Item();
+    const digitalItem = mockNFTItem();
+
+    const offer = await createBundleOffer(coreSDK, sellerWallet, [productV1Item, digitalItem])
+    expect(offer).toBeTruthy();
+
+    const bundles = await coreSDK.getBundleMetadataEntities({ metadataFilter: {
+      offer_in: [offer.id]
+    }});
+    expect(bundles.length).toEqual(1);
+    expect(bundles[0].offer.id).toEqual(offer.id);
+    expect(bundles[0].items.length).toEqual(2);
+
+    expect(bundles[0].items.some((item) => item.type === subgraph.ItemMetadataType.ItemProductV1)).toBe(true);
+    const productItemFromSubgraph = bundles[0].items.find((item) => item.type === subgraph.ItemMetadataType.ItemProductV1) as subgraph.ProductV1ItemMetadataEntity;
+    expect(productItemFromSubgraph.uuid).toEqual(productV1Item.uuid);
+    expect(productItemFromSubgraph.product.uuid).toEqual(productV1Item.product.uuid);
+
+    expect(bundles[0].items.some((item) => item.type === subgraph.ItemMetadataType.ItemNft)).toBe(true);
+    const nftItemFromSubgraph = bundles[0].items.find((item) => item.type === subgraph.ItemMetadataType.ItemNft) as subgraph.NftItemMetadataEntity;
+    expect(nftItemFromSubgraph.name).toEqual(digitalItem.name);
+  });
+  test("Retrieve the physical product from a bundle in the subgraph", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const productV1Item = mockProductV1Item();
+    const digitalItem = mockNFTItem();
+
+    const offer = await createBundleOffer(coreSDK, sellerWallet, [productV1Item, digitalItem])
+    expect(offer).toBeTruthy();
+
+    const products = await coreSDK.getProductV1Products({ productsFilter: { sellerId: seller.id, uuid: productV1Item.product.uuid }});
+    expect(products.length).toEqual(1);
+    expect(products[0].uuid).toEqual(productV1Item.product.uuid);
+  });
+  test("Retrieve the physical product with variants from a bundle in the subgraph (single product)", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const productV1Item = mockProductV1Item();
+    const digitalItem = mockNFTItem();
+
+    const offer = await createBundleOffer(coreSDK, sellerWallet, [productV1Item, digitalItem])
+    expect(offer).toBeTruthy();
+
+    const product = await coreSDK.getProductWithVariants(seller.id, productV1Item.product.uuid);
+    expect(product).toBeTruthy();
+    expect(product?.product).toBeTruthy();
+    expect(product?.product.uuid).toEqual(productV1Item.product.uuid);
+    expect(product?.variants.length).toEqual(1);
+    expect(product?.variants[0].offer.id).toEqual(offer.id);
+  });
+  test("Create a BUNDLE with twice the same single product", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const productV1Item1 = mockProductV1Item();
+    const productUuid = productV1Item1.product.uuid;
+    const productV1Item2 = JSON.parse(JSON.stringify(productV1Item1)) as productV1Item.ProductV1Item;
+    expect(productV1Item2.product.uuid).toEqual(productUuid);
+
+    const offer = await createBundleOffer(coreSDK, sellerWallet, [productV1Item1, productV1Item2])
+    expect(offer).toBeTruthy();
+
+    const bundles = await coreSDK.getBundleMetadataEntities({ metadataFilter: {
+      offer_in: [offer.id]
+    }});
+    expect(bundles.length).toEqual(1);
+    expect(bundles[0].offer.id).toEqual(offer.id);
+    expect(bundles[0].items.length).toEqual(2);
+
+    const products = await coreSDK.getProductV1Products({ productsFilter: { sellerId: seller.id, uuid: productUuid }});
+    expect(products.length).toEqual(1);
+    expect(products[0].uuid).toEqual(productUuid);
+
+    const product = await coreSDK.getProductWithVariants(seller.id, productUuid);
+    expect(product).toBeTruthy();
+    expect(product?.product).toBeTruthy();
+    expect(product?.product.uuid).toEqual(productUuid);
+    expect(product?.variants.length).toEqual(1);
+    expect(product?.variants[0].offer.id).toEqual(offer.id);
+    expect(product?.bundles.length).toEqual(1);
+  });
+  test("Create a multi-variant product in BUNDLEs", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const variations_S = [
+      {
+        type: "Size",
+        option: "S"
+      }
+    ];
+    const variations_M = [
+      {
+        type: "Size",
+        option: "M"
+      }
+    ];
+    const variations_L = [
+      {
+        type: "Size",
+        option: "L"
+      }
+    ];
+
+    const productV1Item_S = mockProductV1Item(undefined, undefined, { variations: variations_S });
+    const productUuid = productV1Item_S.product.uuid;
+    const productV1Item_M = mockProductV1Item(undefined, productUuid, { variations: variations_M });
+    const productV1Item_L = mockProductV1Item(undefined, productUuid, { variations: variations_L });
+    const digitalItem = mockNFTItem();
+
+    const [offer_S, offer_M, offer_L] = await Promise.all([
+      await createBundleOffer(coreSDK, sellerWallet, [productV1Item_S, digitalItem]),
+      await createBundleOffer(coreSDK, sellerWallet, [productV1Item_M, digitalItem]),
+      await createBundleOffer(coreSDK, sellerWallet, [productV1Item_L, digitalItem])  
+    ]);
+    expect(offer_S).toBeTruthy();
+    expect(offer_M).toBeTruthy();
+    expect(offer_L).toBeTruthy();
+
+    const bundles = await coreSDK.getBundleMetadataEntities({ metadataFilter: {
+      seller_in: [seller.id]
+    }});
+    expect(bundles.length).toEqual(3);
+    expect(bundles[0].items.length).toEqual(2);
+    expect(bundles[1].items.length).toEqual(2);
+    expect(bundles[2].items.length).toEqual(2);
+
+    const products = await coreSDK.getProductV1Products({ productsFilter: { sellerId: seller.id, uuid: productUuid }});
+    expect(products.length).toEqual(1);
+    expect(products[0].uuid).toEqual(productUuid);
+
+    const product = await coreSDK.getProductWithVariants(seller.id, productUuid);
+    expect(product).toBeTruthy();
+    expect(product?.product).toBeTruthy();
+    expect(product?.product.uuid).toEqual(productUuid);
+    expect(product?.variants.length).toEqual(3);
+    expect(product?.variants.some((variant) => variant.offer.id === offer_S.id)).toBe(true);
+    expect(product?.variants.some((variant) => variant.offer.id === offer_M.id)).toBe(true);
+    expect(product?.variants.some((variant) => variant.offer.id === offer_L.id)).toBe(true);
+    expect(product?.bundles.length).toEqual(3);
   });
 });
+
+// TODO: check methods getAllProductsWithNotVoidedVariants() / getAllProductsWithVariants() with BUNDLE offers

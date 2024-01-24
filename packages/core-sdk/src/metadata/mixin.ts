@@ -7,7 +7,8 @@ import {
   getProductV1Products,
   getProductWithVariants,
   getAllProductsWithVariants,
-  getAllProductsWithNotVoidedVariants
+  getAllProductsWithNotVoidedVariants,
+  getBundleMetadataEntities
 } from "./subgraph";
 
 export class MetadataMixin extends BaseCoreSDK {
@@ -67,6 +68,17 @@ export class MetadataMixin extends BaseCoreSDK {
     return getProductV1MetadataEntities(this._subgraphUrl, queryVars);
   }
 
+  /**
+   * Returns `BUNDLE` type offer metadata entities from subgraph.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns BundleMetadataEntities from subgraph.
+   */
+  public async getBundleMetadataEntities(
+    queryVars?: subgraph.GetBundleMetadataEntitiesQueryQueryVariables
+  ): Promise<subgraph.BundleMetadataEntityFieldsFragment[]> {
+    return getBundleMetadataEntities(this._subgraphUrl, queryVars);
+  }
+
   public async getProductV1Products(
     queryVars?: subgraph.GetProductV1ProductsQueryQueryVariables
   ): Promise<subgraph.BaseProductV1ProductFieldsFragment[]> {
@@ -78,6 +90,7 @@ export class MetadataMixin extends BaseCoreSDK {
     productUuid: string
   ): Promise<{
     product: subgraph.BaseProductV1ProductFieldsFragment;
+    bundles: subgraph.BundleMetadataEntityFieldsFragment[];
     variants: Array<{
       offer: subgraph.OfferFieldsFragment;
       variations: Array<subgraph.ProductV1Variation>;

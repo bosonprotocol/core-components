@@ -84,6 +84,33 @@ query getOffersMediaQuery(
           }
         }
       }
+      ... on BundleMetadataEntity {
+        productV1Seller {
+          images {
+            url
+          }
+        }
+        items {
+          ... on ProductV1ItemMetadataEntity {
+            productOverrides {
+              visuals_images {
+                url
+              }
+              visuals_videos {
+                url
+              }
+            }
+            product {
+              visuals_images {
+                url
+              }
+              visuals_videos {
+                url
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -187,6 +214,59 @@ fragment BaseOfferFields on Offer {
       }
       shipping {
         ...BaseProductV1ShippingOptionFields
+      }
+    }
+    ... on BundleMetadataEntity {
+      attributes {
+        traitType
+        value
+        displayType
+      }
+      createdAt
+      voided
+      validFromDate
+      validUntilDate
+      quantityAvailable
+      productV1Seller {
+        ...BaseProductV1SellerFields
+      }
+      items {
+        type
+        metadataUri
+        ... on ProductV1ItemMetadataEntity {
+          uuid
+          product {
+            ...BaseProductV1ProductFields
+          }
+          variations {
+            ...BaseProductV1VariationFields
+          }
+          exchangePolicy {
+            ...BaseProductV1ExchangePolicyFields
+          }
+          shipping {
+            ...BaseProductV1ShippingOptionFields
+          }
+          productOverrides {
+            ...BaseProductV1ProductOverridesFields
+          }
+        }
+        ... on NftItemMetadataEntity {
+          name
+          description
+          image
+          externalUrl
+          animationUrl
+          chainId
+          contract
+          tokenId
+          quantity
+          attributes {
+            traitType
+            value
+            displayType
+          }
+        }
       }
     }
   }

@@ -30,7 +30,7 @@ import {
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
 import TokenType from "../../contracts/protocol-contracts/scripts/domain/TokenType";
-import { AuthTokenType, GatingType } from "@bosonprotocol/common";
+import { AuthTokenType, GatingType } from "../../packages/common";
 
 const sellerWallet = seedWallet7; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerAddress = sellerWallet.address;

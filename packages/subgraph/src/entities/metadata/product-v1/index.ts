@@ -3,7 +3,8 @@ import { JSONValue, TypedMap, BigInt, log } from "@graphprotocol/graph-ts";
 import {
   ProductV1MetadataEntity,
   Offer,
-  ProductV1ItemMetadataEntity
+  ProductV1ItemMetadataEntity,
+  BundleMetadataEntity
 } from "../../../../generated/schema";
 import {
   convertToInt,
@@ -223,5 +224,23 @@ export function saveProductV1ItemMetadata(
   productV1ItemMetadataEntity.metadataUri = itemMetadataUri;
 
   productV1ItemMetadataEntity.save();
+
+  // Add productUUID in the bundle
+  const bundleMetadataEntity = BundleMetadataEntity.load(bundleId);
+  if (bundleMetadataEntity) {
+    let found = false;
+    let i = 0;
+    while(i < bundleMetadataEntity.productUuids.length && !found) {
+      found = bundleMetadataEntity.productUuids[i++] == productUuid;
+    }
+    if (!found) {
+      const productUuids = bundleMetadataEntity.productUuids;
+      productUuids.push(productUuid);
+      bundleMetadataEntity.productUuids = productUuids;
+      bundleMetadataEntity.save();
+    }
+  } else {
+    log.warning("Unable to add productUUID in the bundle {}", [bundleId])
+  }
   return metadataId;
 }

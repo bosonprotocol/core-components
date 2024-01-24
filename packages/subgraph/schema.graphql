@@ -247,6 +247,10 @@ type BundleMetadataEntity implements MetadataInterface @entity {
   """
   productV1Seller: ProductV1Seller!
   items: [ItemMetadataInterface!]! @derivedFrom(field: "bundle")
+  """
+  PRODUCT_V1 specific fields
+  """
+  productUuids: [String!]! # Products unique ID (unique for all variants of the same product)
 }
 
 type ProductV1ItemMetadataEntity implements ItemMetadataInterface @entity {

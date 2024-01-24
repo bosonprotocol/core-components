@@ -50,6 +50,7 @@ export function saveBundleMetadata(
 
   if (!bundleMetadataEntity) {
     bundleMetadataEntity = new BundleMetadataEntity(metadataId);
+    bundleMetadataEntity.productUuids = [];
   }
 
   bundleMetadataEntity.name = name;
