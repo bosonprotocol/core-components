@@ -5,6 +5,7 @@ packages/*/build
 packages/*/dist
 packages/*/coverage
 coverage
+coverage-ts
 .idea
 .vscode
 .turbo
