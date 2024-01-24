@@ -48,6 +48,7 @@ interface ItemMetadataInterface {
   schemaUrl: String! # JSON schema URL
   type: ItemMetadataType!
   bundle: BundleMetadataEntity!
+  metadataUri: String!
 }
 
 type SellerContactLink @entity {
@@ -262,6 +263,7 @@ type ProductV1ItemMetadataEntity implements ItemMetadataInterface @entity {
   exchangePolicy: ProductV1ExchangePolicy!
   productOverrides: ProductV1ProductOverrides
   bundle: BundleMetadataEntity!
+  metadataUri: String!
 }
 
 type NftItemMetadataEntity implements ItemMetadataInterface @entity {
@@ -279,6 +281,7 @@ type NftItemMetadataEntity implements ItemMetadataInterface @entity {
   quantity: Int
   attributes: [MetadataAttribute!]
   bundle: BundleMetadataEntity!
+  metadataUri: String!
 }
 
 type ProductV1Product @entity {

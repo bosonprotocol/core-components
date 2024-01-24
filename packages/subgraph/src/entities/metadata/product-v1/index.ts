@@ -143,6 +143,7 @@ export function saveProductV1Metadata(
 export function saveProductV1ItemMetadata(
   offer: Offer,
   metadataObj: TypedMap<string, JSONValue>,
+  itemMetadataUri: string,
   index: string,
   bundleId: string,
   productV1SellerId: string
@@ -219,6 +220,7 @@ export function saveProductV1ItemMetadata(
   productV1ItemMetadataEntity.exchangePolicy = savedExchangePolicyId;
   productV1ItemMetadataEntity.productOverrides = savedProductOverridesId;
   productV1ItemMetadataEntity.bundle = bundleId;
+  productV1ItemMetadataEntity.metadataUri = itemMetadataUri;
 
   productV1ItemMetadataEntity.save();
   return metadataId;

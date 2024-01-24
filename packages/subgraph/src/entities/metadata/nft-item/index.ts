@@ -10,6 +10,7 @@ import { NftItemMetadataEntity, Offer } from "../../../../generated/schema";
 export function saveNftItemMetadata(
   offer: Offer,
   metadataObj: TypedMap<string, JSONValue>,
+  itemMetadataUri: string,
   index: string,
   bundleId: string
 ): string {
@@ -48,6 +49,7 @@ export function saveNftItemMetadata(
   nftItemMetadataEntity.quantity = quantity;
   nftItemMetadataEntity.attributes = savedMetadataAttributeIds;
   nftItemMetadataEntity.bundle = bundleId;
+  nftItemMetadataEntity.metadataUri = itemMetadataUri;
 
   nftItemMetadataEntity.save();
   return metadataId;

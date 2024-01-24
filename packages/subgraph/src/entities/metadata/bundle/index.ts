@@ -122,6 +122,7 @@ function saveItemMetadata(
     return saveProductV1ItemMetadata(
       offer,
       metadataObj,
+      itemMetadataUri,
       index,
       bundleId,
       productV1SellerId
@@ -129,7 +130,13 @@ function saveItemMetadata(
   }
 
   if (metadataType == "ITEM_NFT") {
-    return saveNftItemMetadata(offer, metadataObj, index, bundleId);
+    return saveNftItemMetadata(
+      offer,
+      metadataObj,
+      itemMetadataUri,
+      index,
+      bundleId
+    );
   }
 
   return null;
