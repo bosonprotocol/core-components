@@ -15,6 +15,7 @@ const customStyles = (error: any) => ({
   singleValue: (provided: any, state: any) => {
     return {
       ...provided,
+      color: colors.darkGrey,
       fontSize: "13.33px"
     };
   },

@@ -1,9 +1,9 @@
 import React from "react";
 import { ChatDots, Warning } from "phosphor-react";
 import styled from "styled-components";
-import Grid from "../ui/Grid";
+import { Grid } from "../ui/Grid";
 import ThemedButton from "../ui/ThemedButton";
-import Typography from "../ui/Typography";
+import { Typography } from "../ui/Typography";
 import { Spinner } from "../ui/loading/Spinner";
 import ConnectButton from "../wallet/ConnectButton";
 import { theme } from "../../theme";
@@ -44,12 +44,12 @@ export default function InitializeChat({ isError = false }: Props) {
       <Grid justifyContent="flex-start" gap="1rem">
         {isError ? <IconError size={24} /> : <Icon size={24} />}
         <Typography
-          $fontSize="1rem"
+          fontSize="1rem"
           fontWeight="600"
           lineHeight="1.5rem"
           flex="1 1"
           letterSpacing="0"
-          text-align="left"
+          textAlign="left"
         >
           {isError
             ? `Chat initialization failed, please try again`
@@ -60,7 +60,7 @@ export default function InitializeChat({ isError = false }: Props) {
         {isInitializeButtonVisible ? (
           <ThemedButton
             type="button"
-            theme="accentFill"
+            themeVal="accentFill"
             style={{
               color: colors.white
             }}

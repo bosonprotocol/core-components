@@ -5,7 +5,7 @@ import { getImageMetadata } from "../../../lib/images/images";
 import { getVideoMetadata } from "../../../lib/videos/videos";
 import { theme } from "../../../theme";
 import ErrorToast from "../../toasts/common/ErrorToast";
-import Typography from "../../ui/Typography";
+import { Typography } from "../../ui/Typography";
 import { UploadProps } from "../types";
 import { useSaveImageToIpfs } from "../../../hooks/ipfs/useSaveImageToIpfs";
 import bytesToSize from "../../../lib/bytes/bytesToSize";

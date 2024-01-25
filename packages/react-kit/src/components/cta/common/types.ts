@@ -1,6 +1,6 @@
 import React, { RefObject } from "react";
 import { providers } from "ethers";
-import { CoreSdkConfig } from "../../../hooks/useCoreSdk";
+import { CoreSdkConfig } from "../../../hooks/core-sdk/useCoreSdk";
 import { ButtonProps } from "../../buttons/Button";
 import { Action } from "../../../hooks/useCtaClickHandler";
 

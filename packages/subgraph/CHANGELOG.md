@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.30.1...@bosonprotocol/subgraph@1.30.2) (2024-01-24)
+
+
+### Bug Fixes
+
+* ensure the metadata.animationUrl is added to metadata.product.vi… ([#647](https://github.com/bosonprotocol/core-components/issues/647)) ([4739d77](https://github.com/bosonprotocol/core-components/commit/4739d77d9fba955a2b9bb688ed697ba64c026681))
+
+
+
+
+
 ## [1.30.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.30.0...@bosonprotocol/subgraph@1.30.1) (2023-12-18)
 
 

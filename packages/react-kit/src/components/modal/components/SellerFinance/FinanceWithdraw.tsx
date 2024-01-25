@@ -1,20 +1,31 @@
-import React from "react";
 import * as Sentry from "@sentry/browser";
+import React from "react";
 
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
 import { Spinner } from "phosphor-react";
 import { useState } from "react";
 import styled from "styled-components";
-import { useBalance } from "wagmi";
 import {
   getNumberWithDecimals,
   getNumberWithoutDecimals
 } from "../../../../lib/numbers/numbers";
 import { poll } from "../../../../lib/promises/promises";
 
+import { subgraph } from "@bosonprotocol/core-sdk";
+import { Provider } from "@bosonprotocol/ethers-sdk";
+import { useSigner } from "../../../../hooks/connection/connection";
+import { useCoreSDKWithContext } from "../../../../hooks/core-sdk/useCoreSdkWithContext";
+import { useExchangeTokenBalance } from "../../../../hooks/offer/useExchangeTokenBalance";
+import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
+import {
+  extractUserFriendlyError,
+  getHasUserRejectedTx
+} from "../../../../lib/errors/transactions";
 import { theme } from "../../../../theme";
-import Grid from "../../../ui/Grid";
-import Typography from "../../../ui/Typography";
+import { WithdrawFundsButton } from "../../../cta/funds/WithdrawFundsButton";
+import { useEnvContext } from "../../../environment/EnvironmentContext";
+import { Grid } from "../../../ui/Grid";
+import { Typography } from "../../../ui/Typography";
 import { useModal } from "../../useModal";
 import {
   AmountWrapper,
@@ -22,17 +33,6 @@ import {
   InputWrapper,
   ProtocolStrong
 } from "./FinancesStyles";
-import { WithdrawFundsButton } from "../../../cta/funds/WithdrawFundsButton";
-import { Provider } from "@bosonprotocol/ethers-sdk";
-import { useCoreSDKWithContext } from "../../../../hooks/useCoreSdkWithContext";
-import { useEnvContext } from "../../../environment/EnvironmentContext";
-import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
-import { subgraph } from "@bosonprotocol/core-sdk";
-import { useAccount, useSigner } from "../../../../hooks/connection/connection";
-import {
-  extractUserFriendlyError,
-  getHasUserRejectedTx
-} from "../../../../lib/errors/transactions";
 const colors = theme.colors.light;
 
 const MaxLimitWrapper = styled.div`
@@ -69,16 +69,20 @@ export default function FinanceWithdraw({
   const [withdrawError, setWithdrawError] = useState<unknown>(null);
 
   const signer = useSigner();
-  const { address } = useAccount();
   const addPendingTransaction = useAddPendingTransactionWithContext();
 
-  const { data: dataBalance, refetch } = useBalance(
-    exchangeToken !== ethers.constants.AddressZero
-      ? {
-          address: address as `0x${string}`,
-          token: exchangeToken as `0x${string}`
-        }
-      : { address: address as `0x${string}` }
+  const {
+    balance: dataBalance,
+    refetch,
+    formatted
+  } = useExchangeTokenBalance(
+    {
+      address: exchangeToken,
+      decimals: tokenDecimals
+    },
+    {
+      enabled: true
+    }
   );
   const { showModal, hideModal } = useModal();
 
@@ -107,11 +111,11 @@ export default function FinanceWithdraw({
 
   return (
     <Grid flexDirection="column" alignItems="flex-start" gap="1.5rem">
-      <Typography tag="p" margin="0" $fontSize="0.75rem">
+      <Typography tag="p" margin="0" fontSize="0.75rem">
         <ProtocolStrong>Withdrawable Balance:</ProtocolStrong> {protocolBalance}{" "}
         {symbol}
       </Typography>
-      <Typography tag="p" margin="0" $fontSize="0.75rem" fontWeight="600">
+      <Typography tag="p" margin="0" fontSize="0.75rem" fontWeight="600">
         Enter Amount To Withdraw:
       </Typography>
       <AmountWrapper>
@@ -129,21 +133,21 @@ export default function FinanceWithdraw({
             disabled={isBeingWithdrawn}
           />
           <div>
-            <Typography $fontSize="0.875rem" margin="0" fontWeight="600">
+            <Typography fontSize="0.875rem" margin="0" fontWeight="600">
               {symbol}
             </Typography>
           </div>
         </InputWrapper>
         <MaxLimitWrapper>
-          <Typography tag="p" $fontSize="0.75rem" margin="0">
+          <Typography tag="p" fontSize="0.75rem" margin="0">
             (Max Limit {protocolBalance} {symbol})
           </Typography>
         </MaxLimitWrapper>
       </AmountWrapper>
       <Grid>
         {dataBalance ? (
-          <Typography tag="p" margin="0" $fontSize="0.75rem" fontWeight="600">
-            Wallet Balance: {dataBalance?.formatted} {dataBalance?.symbol}
+          <Typography tag="p" margin="0" fontSize="0.75rem" fontWeight="600">
+            Wallet Balance: {formatted} {symbol}
           </Typography>
         ) : (
           <div />
@@ -193,7 +197,7 @@ export default function FinanceWithdraw({
                 return balance;
               },
               (balance) => {
-                return dataBalance?.formatted === balance.data?.formatted;
+                return dataBalance?.toString() === balance?.toString();
               },
               500
             );
@@ -213,10 +217,10 @@ export default function FinanceWithdraw({
             error.message = errorMessage;
             const hasUserRejectedTx = getHasUserRejectedTx(error);
             if (hasUserRejectedTx) {
-              showModal("CONFIRMATION_FAILED");
+              showModal("TRANSACTION_FAILED");
             } else {
               Sentry.captureException(error);
-              showModal("CONFIRMATION_FAILED", {
+              showModal("TRANSACTION_FAILED", {
                 errorMessage: "Something went wrong",
                 detailedErrorMessage: errorMessage
               });
@@ -229,7 +233,7 @@ export default function FinanceWithdraw({
           {isBeingWithdrawn ? (
             <Spinner size={20} />
           ) : (
-            <Typography tag="p" margin="0" $fontSize="0.75rem" fontWeight="600">
+            <Typography tag="p" margin="0" fontSize="0.75rem" fontWeight="600">
               Withdraw {symbol}
             </Typography>
           )}

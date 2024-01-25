@@ -3,9 +3,9 @@ import { ChatDots, CheckCircle } from "phosphor-react";
 import styled from "styled-components";
 import { useChatContext } from "./ChatProvider/ChatContext";
 import { useChatStatus } from "./useChatStatus";
-import Grid from "../ui/Grid";
+import { Grid } from "../ui/Grid";
 import InitializeChat from "./InitializeChat";
-import Typography from "../ui/Typography";
+import { Typography } from "../ui/Typography";
 
 const CheckIcon = styled(CheckCircle)`
   color: var(--primary);

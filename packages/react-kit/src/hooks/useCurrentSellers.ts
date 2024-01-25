@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { AuthTokenType } from "..";
 import { getLensTokenIdDecimal } from "../lib/lens/profile";
 import { fetchSubgraph } from "../lib/subgraph/subgraph";
-import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
 import { SellerFieldsFragment } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { useAccount } from "./connection/connection";
 import { useErc721OwnerOf } from "./erc/erc721";

@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.25.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.24.1...@bosonprotocol/react-kit@0.25.0) (2024-01-24)
+
+
+### Bug Fixes
+
+* avoid crashing when lens profile can't be fetched ([#637](https://github.com/bosonprotocol/core-components/issues/637)) ([dc9e501](https://github.com/bosonprotocol/core-components/commit/dc9e501da098f5b0e11adafa6466e0c450ea5310))
+* change getSellerByAddress in case the seller owns a LENS token ([#642](https://github.com/bosonprotocol/core-components/issues/642)) ([a19f68e](https://github.com/bosonprotocol/core-components/commit/a19f68e713415da25e253ed4443f595f6ea30081))
+* redemption widget - verify seller signature with assistant wallet instead of admin on ([#640](https://github.com/bosonprotocol/core-components/issues/640)) ([5e51107](https://github.com/bosonprotocol/core-components/commit/5e5110741a72112564626040ffedb25d37ec7f49))
+* vulnerability issue ([#635](https://github.com/bosonprotocol/core-components/issues/635)) ([ac0940e](https://github.com/bosonprotocol/core-components/commit/ac0940eb8c2bb1682e7761b8d9a85730bf4d7f57))
+
+
+### Features
+
+* commit widget ([#612](https://github.com/bosonprotocol/core-components/issues/612)) ([5c80a06](https://github.com/bosonprotocol/core-components/commit/5c80a06b00b377f24acacfaef0f648cde09b4d74))
+* export useOffersBacked and create getIsOfferExpired ([#646](https://github.com/bosonprotocol/core-components/issues/646)) ([b2882d7](https://github.com/bosonprotocol/core-components/commit/b2882d7590a793aea9ae53887f573cd8e2e00a39))
+* make useHandleText support offers that do not expire ([#645](https://github.com/bosonprotocol/core-components/issues/645)) ([5751d34](https://github.com/bosonprotocol/core-components/commit/5751d34b2c3958c1a1b0b65ae4ee4c0eb5ed10b2))
+* support coinbase wallet ([#649](https://github.com/bosonprotocol/core-components/issues/649)) ([f887b2f](https://github.com/bosonprotocol/core-components/commit/f887b2f37dad549c2b947094792fbd6817723e9e))
+
+
+
+
+
 ## [0.24.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.24.0...@bosonprotocol/react-kit@0.24.1) (2023-12-18)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit

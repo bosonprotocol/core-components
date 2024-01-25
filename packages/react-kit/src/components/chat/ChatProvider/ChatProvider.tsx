@@ -1,6 +1,6 @@
 import { BosonXmtpClient } from "@bosonprotocol/chat-sdk";
 import React, { ReactNode, useEffect, useState } from "react";
-import { useCoreSDKWithContext } from "../../../hooks/useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../../../hooks/core-sdk/useCoreSdkWithContext";
 import { useEnvContext } from "../../environment/EnvironmentContext";
 
 import { Context } from "./ChatContext";

@@ -12,13 +12,13 @@ import { theme } from "../../theme";
 import { useIpfsContext } from "../ipfs/IpfsContext";
 import { Loading } from "../Loading";
 
-import Typography from "./Typography";
+import { Typography } from "./Typography";
 import { zIndex } from "./zIndex";
 const colors = theme.colors.light;
 type LoadingStatus = "loading" | "success" | "error";
 
-const ImageWrapper = styled.div<{ hide?: boolean }>`
-  display: ${({ hide }) => (hide ? "none !important" : undefined)};
+const ImageWrapper = styled.div<{ $hide?: boolean }>`
+  display: ${({ $hide }) => ($hide ? "none !important" : undefined)};
   overflow: hidden;
   position: relative;
   z-index: ${zIndex.OfferCard};
@@ -113,14 +113,14 @@ const IpfsImage: React.FC<IImage & React.HTMLAttributes<HTMLDivElement>> = ({
 
   return (
     <>
-      <ImageWrapper {...rest} hide={!isLoading}>
+      <ImageWrapper {...rest} $hide={!isLoading}>
         <ImagePlaceholder>
           <Typography tag="div">
             <Loading />
           </Typography>
         </ImagePlaceholder>
       </ImageWrapper>
-      <ImageWrapper {...rest} hide={!isError}>
+      <ImageWrapper {...rest} $hide={!isError}>
         <ImagePlaceholder data-image-placeholder>
           {showPlaceholderText ? (
             <ImageIcon size={50} color={colors.white} />
@@ -132,7 +132,7 @@ const IpfsImage: React.FC<IImage & React.HTMLAttributes<HTMLDivElement>> = ({
           )}
         </ImagePlaceholder>
       </ImageWrapper>
-      <ImageWrapper {...rest} hide={!isSuccess}>
+      <ImageWrapper {...rest} $hide={!isSuccess} className="image-container">
         {children || ""}
         <ImageContainer
           data-testid={dataTestId}

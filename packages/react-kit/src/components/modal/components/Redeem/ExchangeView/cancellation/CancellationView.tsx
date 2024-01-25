@@ -1,8 +1,8 @@
 import { ArrowLeft } from "phosphor-react";
 import React, { useEffect } from "react";
 import { Exchange } from "../../../../../../types/exchange";
-import Grid from "../../../../../ui/Grid";
-import Typography from "../../../../../ui/Typography";
+import { Grid } from "../../../../../ui/Grid";
+import { Typography } from "../../../../../ui/Typography";
 import { CancelExchange, CancelExchangeProps } from "./CancelExchange";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
 import { theme } from "../../../../../../theme";

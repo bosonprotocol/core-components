@@ -1,7 +1,8 @@
 import { Chain, connectorsForWallets } from "@rainbow-me/rainbowkit";
 import {
   metaMaskWallet,
-  walletConnectWallet
+  walletConnectWallet,
+  coinbaseWallet
 } from "@rainbow-me/rainbowkit/wallets";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { configureChains, createConfig } from "wagmi";
@@ -45,7 +46,11 @@ export function getConnectors(chainId: number, walletConnectProjectId: string) {
           // to really disconnect metamask if the connected wallet if not the expected one,
           // and let the user chose another account
         }),
-        walletConnectWallet({ chains, projectId })
+        walletConnectWallet({ chains, projectId }),
+        coinbaseWallet({
+          appName: "Boson Widgets",
+          chains
+        })
       ]
     }
   ]);

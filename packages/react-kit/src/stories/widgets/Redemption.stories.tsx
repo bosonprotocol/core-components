@@ -2,7 +2,6 @@ import React from "react";
 import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 
 import { RedemptionWidget } from "../../components/widgets/redemption/RedemptionWidget";
-import { CtaButtonWrapper } from "../helpers/CtaButtonWrapper";
 import {
   EnvironmentType,
   getEnvConfigs,
@@ -17,9 +16,7 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof RedemptionWidget> = (args) => (
-  <CtaButtonWrapper>
-    <RedemptionWidget {...args} />
-  </CtaButtonWrapper>
+  <RedemptionWidget {...args} />
 );
 
 const wrapper = (Story: Story) => (

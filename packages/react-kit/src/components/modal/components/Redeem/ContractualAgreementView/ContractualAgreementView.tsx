@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import ContractualAgreement from "../../../../contractualAgreement/ContractualAgreement";
@@ -20,7 +20,7 @@ export function ContractualAgreementView({ onBackClick, exchange }: Props) {
     dispatch({
       payload: {
         headerComponent: (
-          <Grid style={{ flex: "1" }}>
+          <Grid style={{ flex: "1" }} gap="1rem" justifyContent="flex-start">
             <ArrowLeft
               onClick={onBackClick}
               size={32}

@@ -57,8 +57,8 @@ export const CollectionsCardSkeleton = (props: SkeletonCardProps) => {
         />
       </ImagesContainer>
       <BottomCard>
-        <LoadingBubble $width="50%" $height="26px" margin="0 0 8.75px 0" />
-        <LoadingBubble $width="52px" $height="18px" margin="0 0 4.375px 0" />
+        <LoadingBubble $width="50%" $height="26px" $margin="0 0 8.75px 0" />
+        <LoadingBubble $width="52px" $height="18px" $margin="0 0 4.375px 0" />
         <LoadingBubble $width="30px" $height="30px" />
       </BottomCard>
     </Container>

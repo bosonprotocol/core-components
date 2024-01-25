@@ -2,8 +2,6 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { RedeemButton } from "../../../components/cta/exchange/RedeemButton";
-import { hooks } from "../../helpers/connect-wallet";
-import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Exchange/RedeemButton",
@@ -19,16 +17,7 @@ export default {
 } as ComponentMeta<typeof RedeemButton>;
 
 const Template: ComponentStory<typeof RedeemButton> = (args) => {
-  const provider = hooks.useProvider();
-
-  return (
-    <CtaButtonWrapper>
-      <RedeemButton
-        {...args}
-        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
-      />
-    </CtaButtonWrapper>
-  );
+  return <RedeemButton {...args} />;
 };
 
 export const Simple: ComponentStory<typeof RedeemButton> = Template.bind({});

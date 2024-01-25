@@ -12,7 +12,7 @@ import React, { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import { useAddPendingTransactionWithContext } from "../../../../../hooks/transactions/usePendingTransactionsWithContext";
-import { useCoreSDKWithContext } from "../../../../../hooks/useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { poll } from "../../../../../lib/promises/promises";
 
 import { theme } from "../../../../../theme";
@@ -26,10 +26,10 @@ import {
 import { useEnvContext } from "../../../../environment/EnvironmentContext";
 import SimpleError from "../../../../error/SimpleError";
 import SuccessTransactionToast from "../../../../toasts/SuccessTransactionToast";
-import Grid from "../../../../ui/Grid";
+import { Grid } from "../../../../ui/Grid";
 import { Spinner } from "../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../ui/ThemedButton";
-import Typography from "../../../../ui/Typography";
+import { Typography } from "../../../../ui/Typography";
 import { FormModel, FormType } from "../RedeemFormModel";
 import {
   useAccount,
@@ -281,7 +281,7 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
     <>
       <Typography
         fontWeight="600"
-        $fontSize="1rem"
+        fontSize="1rem"
         lineHeight="1.5rem"
         margin="1rem 0"
       >
@@ -304,7 +304,7 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
         </Grid>
         <Grid flexDirection="row" flexBasis="0">
           <ThemedButton
-            theme="blankSecondary"
+            themeVal="blankSecondary"
             onClick={handleOnBackClick}
             disabled={
               isLoading || (redemptionInfoAccepted && !resumeRedemption)
@@ -324,7 +324,7 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
             padding="1.5rem"
           >
             <Warning color={colors.darkOrange} size={16} />
-            <Typography fontWeight="600" $fontSize="1rem" lineHeight="1.5rem">
+            <Typography fontWeight="600" fontSize="1rem" lineHeight="1.5rem">
               rNFTs are burned upon redemption to prevent double spend
             </Typography>
           </StyledGrid>
@@ -545,7 +545,7 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
           </RedeemButton>
         </div>
         <ThemedButton
-          theme="outline"
+          themeVal="outline"
           onClick={handleOnBackClick}
           disabled={isLoading || (redemptionInfoAccepted && !resumeRedemption)}
         >

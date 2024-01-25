@@ -16,41 +16,41 @@ export type ButtonProps = IButton & {
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = "primaryFill", loading = false, ...props }, ref) => {
-    let theme: IButton["theme"] = props.theme;
+    let themeVal: IButton["themeVal"] = props.themeVal;
     switch (variant) {
       case "primaryFill": {
-        theme = "primary";
+        themeVal = "primary";
         break;
       }
       case "primaryInverted": {
-        theme = "secondary";
+        themeVal = "secondary";
         break;
       }
       case "secondaryFill": {
-        theme = "bosonSecondaryInverse";
+        themeVal = "bosonSecondaryInverse";
         break;
       }
       case "secondaryInverted": {
-        theme = "secondaryInverted";
+        themeVal = "secondaryInverted";
         break;
       }
       case "accentFill": {
-        theme = "accentFill";
+        themeVal = "accentFill";
         break;
       }
       case "accentInverted": {
-        theme = "accentInverted";
+        themeVal = "accentInverted";
         break;
       }
       case "accentInvertedNoBorder": {
-        theme = "accentInvertedNoBorder";
+        themeVal = "accentInvertedNoBorder";
         break;
       }
     }
     return (
       <ThemedButton
         {...props}
-        theme={theme}
+        themeVal={themeVal}
         isLoading={loading}
         ref={ref}
       ></ThemedButton>

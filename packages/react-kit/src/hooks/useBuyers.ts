@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 import { useQuery } from "react-query";
 import { fetchSubgraph } from "../lib/subgraph/subgraph";
-import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
 
 interface Props {
   wallet?: string;

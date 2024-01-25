@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import { transition } from "../../components/ui/styles";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
 import { theme } from "../../theme";
-import Grid from "../ui/Grid";
+import { Grid } from "../ui/Grid";
 
 const colors = theme.colors.light;
 
@@ -13,9 +13,7 @@ export const CopyButton = styled.button`
   border: none;
 `;
 
-export const FieldInput = styled.input.attrs((props: { error: any }) => ({
-  error: props.error
-}))`
+export const FieldInput = styled.input<{ error?: any }>`
   width: 100%;
   padding: 1rem;
   gap: 0.5rem;
@@ -28,14 +26,14 @@ export const FieldInput = styled.input.attrs((props: { error: any }) => ({
 
   ${transition}
 
-  :not(:disabled) {
-    :focus,
-    :hover {
+  &:not(:disabled) {
+    &:focus,
+    &:hover {
       border: 1px solid var(--secondary);
     }
   }
 
-  :disabled {
+  &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
   }
@@ -44,43 +42,38 @@ export const FieldInput = styled.input.attrs((props: { error: any }) => ({
     !checkIfValueIsEmpty(error)
       ? css`
           border: 1px solid ${colors.orange};
-          :not(:disabled) {
-            :hover {
+          &:not(:disabled) {
+            &:hover {
               border: 1px solid ${colors.orange};
             }
           }
-          :not(:disabled) {
-            :focus {
+          &:not(:disabled) {
+            &:focus {
               border: 1px solid var(--secondary);
             }
           }
-          ::placeholder {
+          &::placeholder {
             color: ${colors.orange};
             opacity: 1;
           }
-          :-ms-input-placeholder {
+          &:-ms-input-placeholder {
             color: ${colors.orange};
           }
-          ::-ms-input-placeholder {
+          &::-ms-input-placeholder {
             color: ${colors.orange};
           }
         `
       : css`
-          :not(:disabled) {
-            :focus,
-            :hover {
+          &:not(:disabled) {
+            &:focus,
+            &:hover {
               border: 1px solid var(--secondary);
             }
           }
         `}
 `;
 
-export const FileUploadWrapper = styled.div.attrs(
-  (props: { choosen: any; error: any }) => ({
-    choosen: props.choosen,
-    error: props.error
-  })
-)`
+export const FileUploadWrapper = styled.div<{ choosen: any; error: any }>`
   position: relative;
   overflow: hidden;
   display: flex;
@@ -124,8 +117,8 @@ export const FileUploadWrapper = styled.div.attrs(
 
   ${transition};
 
-  :focus,
-  :hover {
+  &:focus,
+  &:hover {
     border: 1px solid var(--secondary);
   }
 
@@ -154,7 +147,7 @@ export const FieldFileUploadWrapper = styled.div<{ $disabled: boolean }>`
 
   width: 8rem;
 
-  :hover {
+  &:hover {
     [data-remove] {
       display: flex;
     }
@@ -175,9 +168,7 @@ export const FieldFileUploadWrapper = styled.div<{ $disabled: boolean }>`
   }
 `;
 
-export const FieldTextArea = styled.textarea.attrs((props: { error: any }) => ({
-  error: props.error
-}))`
+export const FieldTextArea = styled.textarea<{ error: any }>`
   width: 100%;
   padding: 1rem;
   gap: 0.5rem;
@@ -190,14 +181,14 @@ export const FieldTextArea = styled.textarea.attrs((props: { error: any }) => ({
 
   ${transition}
 
-  :not(:disabled) {
-    :focus,
-    :hover {
+  &:not(:disabled) {
+    &:focus,
+    &:hover {
       border: 1px solid var(--secondary);
     }
   }
 
-  :disabled {
+  &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
   }
@@ -206,67 +197,62 @@ export const FieldTextArea = styled.textarea.attrs((props: { error: any }) => ({
     !checkIfValueIsEmpty(error)
       ? css`
           border: 1px solid ${colors.orange};
-          ::placeholder {
+          &::placeholder {
             color: ${colors.orange};
             opacity: 1;
           }
-          :-ms-input-placeholder {
+          &:-ms-input-placeholder {
             color: ${colors.orange};
           }
-          ::-ms-input-placeholder {
+          &::-ms-input-placeholder {
             color: ${colors.orange};
           }
-          :not(:disabled) {
-            :hover {
+          &:not(:disabled) {
+            &:hover {
               border: 1px solid ${colors.orange};
             }
           }
-          :not(:disabled) {
-            :focus {
+          &:not(:disabled) {
+            &:focus {
               border: 1px solid var(--secondary);
             }
           }
         `
       : css`
-          :not(:disabled) {
-            :focus,
-            :hover {
+          &:not(:disabled) {
+            &:focus,
+            &:hover {
               border: 1px solid var(--secondary);
             }
           }
         `}
 `;
 
-export const FormFieldWrapper = styled(Grid).attrs(
-  (props: { theme: string }) => ({
-    theme: props.theme
-  })
-)`
+export const FormFieldWrapper = styled(Grid)`
   margin-bottom: 3.5rem;
   p {
     line-height: 150%;
   }
 
-  ${({ theme }) =>
-    theme === "white" &&
-    `
-    margin-bottom: 0.5rem;
-    input, textarea {
-      background: ${colors.white};
-      :disabled {
-        opacity: 1;
-      }
+  // theme white
+  margin-bottom: 0.5rem;
+  input,
+  textarea {
+    background: ${colors.white};
+    &:disabled {
+      opacity: 1;
     }
-    input {
+  }
+  input {
+    border-width: 0;
+    &:hover {
       border-width: 0;
-      &:hover {
-        border-width: 0;
-      }
     }
-    input + div {
-      background: ${colors.white};
-    }
-  `}
+  }
+  input + div {
+    background: ${colors.white};
+  }
+  // end theme white
 
   [data-header] {
     margin: 0;
@@ -286,25 +272,23 @@ export const FormFieldWrapper = styled(Grid).attrs(
   }
 `;
 
-export const CheckboxWrapper = styled.label.attrs((props: { error: any }) => ({
-  error: props.error
-}))`
+export const CheckboxWrapper = styled.label<{ error: any }>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
 
   > input {
-    :disabled {
+    &:disabled {
       + div {
         opacity: 0.5;
         cursor: not-allowed;
       }
     }
-    :not(:disabled) {
+    &:not(:disabled) {
       + div {
         cursor: pointer;
-        :hover {
+        &:hover {
           border: 1px solid ${colors.secondary};
           svg {
             opacity: 0.25;
@@ -331,12 +315,12 @@ export const CheckboxWrapper = styled.label.attrs((props: { error: any }) => ({
   }
 
   > input {
-    :checked {
+    &:checked {
       + div svg {
         opacity: 1;
       }
     }
-    :not(:checked) {
+    &:not(:checked) {
       + div svg {
         opacity: 0;
       }

@@ -23,8 +23,8 @@ const GlobalStyle = createGlobalStyle`
   input,
   select,
   textarea {
-    :focus,
-    :hover {
+    &:focus,
+    &:hover {
       outline: none;
     }
     cursor: pointer;

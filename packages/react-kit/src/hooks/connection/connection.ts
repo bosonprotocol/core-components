@@ -13,6 +13,8 @@ import { useEthersSigner } from "../ethers/useEthersSigner";
 import { useConfigContext } from "../../components/config/ConfigContext";
 import { useExternalSigner } from "../../components/signer/useExternalSigner";
 import { useSignerAddress } from "../useSignerAddress";
+import { useEthersProvider } from "../ethers/useEthersProvider";
+import { useQuery } from "react-query";
 import { useExternalSignerChainId } from "../../lib/signer/externalSigner";
 import { Signer } from "ethers";
 
@@ -30,15 +32,25 @@ export function useAccount() {
 export function useChainId(): number | undefined {
   const externalSigner = useExternalSigner();
   const { data: externalSignerChainId } = useExternalSignerChainId();
-  const { chain } = useNetwork();
   const magicChainId = useMagicChainId();
   const isMagicLoggedIn = useIsMagicLoggedIn();
-  const chainIdToReturn = externalSigner
-    ? externalSignerChainId
-    : isMagicLoggedIn
-    ? magicChainId
-    : chain?.id;
-  return chainIdToReturn;
+  let networkChainId: number | undefined;
+  let error: unknown;
+  try {
+    networkChainId = useNetwork().chain?.id;
+  } catch (wagmiError) {
+    error = wagmiError; // error if the provider is not there
+  }
+  if (externalSigner) {
+    return externalSignerChainId;
+  }
+  if (isMagicLoggedIn) {
+    return magicChainId;
+  }
+  if (error) {
+    throw error;
+  }
+  return networkChainId;
 }
 
 export function useIsConnectedToWrongChain(): boolean {
@@ -46,6 +58,15 @@ export function useIsConnectedToWrongChain(): boolean {
   const chainId = useChainId();
   const connectedToWrongChain = config.chainId !== chainId;
   return connectedToWrongChain;
+}
+
+export function useProvider() {
+  const provider = useEthersProvider();
+  const magicProvider = useMagicProvider();
+  const isMagicLoggedIn = useIsMagicLoggedIn();
+  return isMagicLoggedIn
+    ? magicProvider ?? provider
+    : provider ?? magicProvider;
 }
 
 export function useSigner(): Signer | undefined {
@@ -62,4 +83,20 @@ export function useSigner(): Signer | undefined {
       : wagmiSigner;
   }, [externalSigner, wagmiSigner, magicProvider, isMagicLoggedIn]);
   return signer;
+}
+
+export function useBalance(
+  blockTag: Parameters<
+    NonNullable<ReturnType<typeof useSigner>>["getBalance"]
+  >[0],
+  options: { enabled: boolean } = { enabled: false }
+) {
+  const signer = useSigner();
+  return useQuery(
+    ["balance", blockTag, !!signer],
+    () => signer?.getBalance(blockTag),
+    {
+      enabled: options.enabled
+    }
+  );
 }

@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { IPrice } from "../../lib/price/convertPrice";
-import { useDisplayFloat } from "../../lib/price/prices";
+import { useDisplayFloatWithConfig } from "../../lib/price/prices";
 import { useConfigContext } from "../config/ConfigContext";
 
 interface Props {
@@ -14,7 +14,7 @@ export default function ConvertedPrice({
   withParethensis,
   isExchange
 }: Props) {
-  const displayFloat = useDisplayFloat();
+  const displayFloat = useDisplayFloatWithConfig();
   const { defaultCurrency } = useConfigContext();
   const ConvertedPriceComponent = useMemo(
     () =>

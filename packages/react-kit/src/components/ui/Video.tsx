@@ -14,7 +14,7 @@ import { theme } from "../../theme";
 import { Loading } from "../Loading";
 
 import { buttonText } from "./styles";
-import Typography from "./Typography";
+import { Typography } from "./Typography";
 import { zIndex } from "./zIndex";
 const colors = theme.colors.light;
 const VideoWrapper = styled.div<{ $hasOnClick?: boolean }>`
@@ -37,7 +37,11 @@ const VideoWrapper = styled.div<{ $hasOnClick?: boolean }>`
     left: 50%;
     transform: translate(-50%, -50%);
     transition: all 300ms ease-in-out; */
-    pointer-events: none;
+    ${({ $hasOnClick }) =>
+      !$hasOnClick &&
+      css`
+        pointer-events: none;
+      `}
   }
 
   [data-testid="statuses"] {
@@ -50,7 +54,7 @@ const VideoWrapper = styled.div<{ $hasOnClick?: boolean }>`
   }
 `;
 
-const VideoContainer = styled.video`
+const VideoHtml = styled.video`
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -187,13 +191,14 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
   }
 
   return (
-    <VideoWrapper {...rest} $hasOnClick={!!rest.onClick}>
+    <VideoWrapper
+      {...rest}
+      $hasOnClick={!!rest.onClick}
+      className="video-container"
+    >
       {children || ""}
       {videoSrc && (
-        // TODO: fix types
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        <VideoContainer
+        <VideoHtml
           data-testid={dataTestId}
           {...videoProps}
           src={mp4Src || ""}

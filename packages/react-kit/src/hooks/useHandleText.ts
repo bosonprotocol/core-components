@@ -6,6 +6,8 @@ import { useMemo } from "react";
 import { getDateTimestamp } from "../lib/dates/getDateTimestamp";
 
 import { Offer } from "../types/offer";
+import { checkIfTimestampIsToo } from "../lib/dates/checkIfTimestampIsToo";
+import { getIsOfferExpired } from "../lib/offer/getIsOfferExpired";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -52,9 +54,15 @@ export function useHandleText(offer: Offer, dateFormat = "YYYY/MM/DD") {
         diff: {
           days: expiry.diff(current, "days"),
           isToday: expiry.isSame(current, "day"),
-          isExpired: expiry.isBefore(current),
+          isExpired: getIsOfferExpired({
+            validUntilDate: latestValidUntilDate.toString()
+          }),
           hours: expiry.diff(current, "hours"),
-          time: expiry.format("HH:mm")
+          time: expiry.format("HH:mm"),
+          withExpirationDate: !checkIfTimestampIsToo(
+            "too_big",
+            latestValidUntilDate
+          )
         }
       }
     };
@@ -111,7 +119,9 @@ export function useHandleText(offer: Offer, dateFormat = "YYYY/MM/DD") {
             }`
         : `Releases on ${release.date}`;
     } else if (!optionVoided) {
-      return expiry.diff.isExpired
+      return !expiry.diff.withExpirationDate
+        ? "Does not expire"
+        : expiry.diff.isExpired
         ? `Expired`
         : expiry.diff.days <= 10
         ? expiry.diff.days <= 0
@@ -126,6 +136,7 @@ export function useHandleText(offer: Offer, dateFormat = "YYYY/MM/DD") {
       return "Voided";
     }
     return "";
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offer]);
 
   return handleText;

@@ -888,12 +888,15 @@ export function mockProductV1Metadata(
   productUuid: string = buildUuid(),
   overrides: DeepPartial<productV1.ProductV1Metadata> = {} as DeepPartial<productV1.ProductV1Metadata>
 ): productV1.ProductV1Metadata {
+  const productV1ValidMinimalOfferClone = JSON.parse(
+    JSON.stringify(productV1ValidMinimalOffer)
+  );
   const productItem = mockProductV1Item(template, productUuid, {
     ...overrides,
     type: MetadataType.ITEM_PRODUCT_V1
   });
   return {
-    ...productV1ValidMinimalOffer,
+    ...productV1ValidMinimalOfferClone,
     ...overrides,
     ...productItem,
     uuid: buildUuid(),
@@ -906,13 +909,16 @@ export function mockProductV1Item(
   productUuid: string = buildUuid(),
   overrides: DeepPartial<productV1Item.ProductV1Item> = {} as DeepPartial<productV1Item.ProductV1Item>
 ): productV1Item.ProductV1Item {
+  const productV1ValidMinimalOfferClone = JSON.parse(
+    JSON.stringify(productV1ValidMinimalOffer)
+  );
   return {
     schemaUrl: "schemaUrl",
     ...overrides,
     type: MetadataType.ITEM_PRODUCT_V1,
     uuid: buildUuid(),
     product: {
-      ...productV1ValidMinimalOffer.product,
+      ...productV1ValidMinimalOfferClone.product,
       ...overrides.product,
       uuid: productUuid
     },
@@ -921,13 +927,13 @@ export function mockProductV1Item(
     },
     variations: overrides.variations,
     shipping: {
-      ...productV1ValidMinimalOffer.shipping,
+      ...productV1ValidMinimalOfferClone.shipping,
       ...overrides.shipping
     },
     exchangePolicy: {
-      ...productV1ValidMinimalOffer.exchangePolicy,
+      ...productV1ValidMinimalOfferClone.exchangePolicy,
       ...overrides.exchangePolicy,
-      template: template ?? productV1ValidMinimalOffer.exchangePolicy.template
+      template: template ?? productV1ValidMinimalOfferClone.exchangePolicy.template
     }
   } as productV1Item.ProductV1Item;
 }

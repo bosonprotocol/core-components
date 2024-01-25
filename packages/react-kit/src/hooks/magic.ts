@@ -1,5 +1,4 @@
-import { ethers } from "ethers";
-import { useContext, useMemo } from "react";
+import { useContext } from "react";
 import { useQuery } from "react-query";
 import { MagicContext } from "../components/magicLink/MagicContext";
 import { useUser } from "../components/magicLink/UserContext";

@@ -5,7 +5,8 @@
     "rootDir": "./",
     "esModuleInterop": true,
     "outDir": "./build",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "skipLibCheck": true
   },
   "include": ["src", "index.ts"]
 }

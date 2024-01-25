@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.35.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.34.0...@bosonprotocol/core-sdk@1.35.0) (2024-01-24)
+
+
+### Bug Fixes
+
+* avoid crashing when lens profile can't be fetched ([#637](https://github.com/bosonprotocol/core-components/issues/637)) ([dc9e501](https://github.com/bosonprotocol/core-components/commit/dc9e501da098f5b0e11adafa6466e0c450ea5310))
+* change getSellerByAddress in case the seller owns a LENS token ([#642](https://github.com/bosonprotocol/core-components/issues/642)) ([a19f68e](https://github.com/bosonprotocol/core-components/commit/a19f68e713415da25e253ed4443f595f6ea30081))
+* vulnerability issue ([#635](https://github.com/bosonprotocol/core-components/issues/635)) ([ac0940e](https://github.com/bosonprotocol/core-components/commit/ac0940eb8c2bb1682e7761b8d9a85730bf4d7f57))
+
+
+### Features
+
+* commit widget ([#612](https://github.com/bosonprotocol/core-components/issues/612)) ([5c80a06](https://github.com/bosonprotocol/core-components/commit/5c80a06b00b377f24acacfaef0f648cde09b4d74))
+
+
+
+
+
 # [1.34.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.33.0...@bosonprotocol/core-sdk@1.34.0) (2023-12-18)
 
 

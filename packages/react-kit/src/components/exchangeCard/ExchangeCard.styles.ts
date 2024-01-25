@@ -221,10 +221,6 @@ export const ExchangeImageWrapper = styled.div`
   width: 100%;
   height: 100%;
   max-height: 75%;
-  :not([data-image]) {
-    align-self: stretch;
-    max-height: initial;
-  }
 `;
 
 export const ExchangeCTAWrapper = styled.div`

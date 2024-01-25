@@ -2,10 +2,12 @@ import { subgraph } from "@bosonprotocol/core-sdk";
 import { Provider } from "@bosonprotocol/ethers-sdk";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useSigner } from "../../../../../../hooks/connection/connection";
+import { useCoreSDKWithContext } from "../../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { useAddPendingTransactionWithContext } from "../../../../../../hooks/transactions/usePendingTransactionsWithContext";
-import { useCoreSDKWithContext } from "../../../../../../hooks/useCoreSdkWithContext";
 import useRefundData from "../../../../../../hooks/useRefundData";
-import { useDisplayFloat } from "../../../../../../lib/price/prices";
+import { extractUserFriendlyError } from "../../../../../../lib/errors/transactions";
+import { useDisplayFloatWithConfig } from "../../../../../../lib/price/prices";
 import { poll } from "../../../../../../lib/promises/promises";
 import { theme } from "../../../../../../theme";
 import { Exchange } from "../../../../../../types/exchange";
@@ -15,13 +17,11 @@ import {
 } from "../../../../../cta/exchange/ExpireButton";
 import { useEnvContext } from "../../../../../environment/EnvironmentContext";
 import SimpleError from "../../../../../error/SimpleError";
-import Grid from "../../../../../ui/Grid";
-import { Spinner } from "../../../../../ui/loading/Spinner";
+import { Grid } from "../../../../../ui/Grid";
 import ThemedButton from "../../../../../ui/ThemedButton";
-import Typography from "../../../../../ui/Typography";
-import DetailTable from "../detail/DetailTable";
-import { useSigner } from "../../../../../../hooks/connection/connection";
-import { extractUserFriendlyError } from "../../../../../../lib/errors/transactions";
+import { Typography } from "../../../../../ui/Typography";
+import { Spinner } from "../../../../../ui/loading/Spinner";
+import DetailTable from "../../../common/detail/DetailTable";
 
 const colors = theme.colors.light;
 
@@ -76,7 +76,7 @@ export default function ExpireVoucher({
   const coreSDK = useCoreSDKWithContext();
   const addPendingTransaction = useAddPendingTransactionWithContext();
   const signer = useSigner();
-  const displayFloat = useDisplayFloat();
+  const displayFloat = useDisplayFloatWithConfig();
 
   const { currency, price, penalty, refund } = useRefundData(
     exchange,
@@ -107,7 +107,7 @@ export default function ExpireVoucher({
           textAlign="left"
           margin="0"
           color={colors.darkGrey}
-          $width="100%"
+          width="100%"
           style={{
             width: "100%"
           }}
@@ -256,7 +256,7 @@ export default function ExpireVoucher({
               {isLoading && <Spinner size="20" />}
             </Grid>
           </ExpireButton>
-          <ThemedButton theme="blankOutline" onClick={onBackClick}>
+          <ThemedButton themeVal="blankOutline" onClick={onBackClick}>
             Back
           </ThemedButton>
         </Grid>
