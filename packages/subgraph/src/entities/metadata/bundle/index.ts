@@ -22,6 +22,7 @@ export function saveBundleMetadata(
   const metadataId = getMetadataEntityId(offerId);
 
   const name = convertToString(metadataObj.get("name"));
+  const bundleUuid = convertToString(metadataObj.get("bundleUuid"));
   const description = convertToString(metadataObj.get("description"));
   const externalUrl = convertToString(metadataObj.get("externalUrl"));
   const animationUrl = convertToString(metadataObj.get("animationUrl"));
@@ -53,6 +54,7 @@ export function saveBundleMetadata(
     bundleMetadataEntity.productUuids = [];
   }
 
+  bundleMetadataEntity.bundleUuid = bundleUuid;
   bundleMetadataEntity.name = name;
   bundleMetadataEntity.description = description;
   bundleMetadataEntity.externalUrl = externalUrl;

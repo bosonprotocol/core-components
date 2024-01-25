@@ -204,18 +204,21 @@ export async function getProductWithVariants(
   }[];
 } | null> {
   // Look for ProductV1MetadataEntities, filtered per productUuid
-  const productV1MetadataEntities = await getProductV1MetadataEntities(subgraphUrl, {
-    metadataFilter: {
-      productUuid,
-      offer_: {
-        sellerId
+  const productV1MetadataEntities = await getProductV1MetadataEntities(
+    subgraphUrl,
+    {
+      metadataFilter: {
+        productUuid,
+        offer_: {
+          sellerId
+        }
       }
     }
-  });
+  );
   // Look for BundleMetadataEntities, filtered per productUuid
   const bundleMetadataEntities = await getBundleMetadataEntities(subgraphUrl, {
     metadataFilter: {
-      productUuids_contains: [ productUuid ],
+      productUuids_contains: [productUuid],
       offer_: {
         sellerId
       }
@@ -224,13 +227,13 @@ export async function getProductWithVariants(
   if (productV1MetadataEntities.length + bundleMetadataEntities.length === 0) {
     return null;
   }
-  const itemsFromBundles = bundleMetadataEntities.reduce((prev, bundle) => { 
+  const itemsFromBundles = bundleMetadataEntities.reduce((prev, bundle) => {
     const itemsFromBundle = getProductV1ItemFromBundle(bundle, productUuid);
     return [...prev, ...itemsFromBundle];
-  }, [] as { productV1Item: ProductV1ItemMetadataEntity, offer: ProductV1MetadataEntityFieldsFragment["offer"] }[])
+  }, [] as { productV1Item: ProductV1ItemMetadataEntity; offer: ProductV1MetadataEntityFieldsFragment["offer"] }[]);
   const product = productV1MetadataEntities.length
-   ? productV1MetadataEntities[0].product
-   : itemsFromBundles[0]?.productV1Item.product;
+    ? productV1MetadataEntities[0].product
+    : itemsFromBundles[0]?.productV1Item.product;
   const variants = productV1MetadataEntities.map((m) => {
     return {
       offer: m.offer,
@@ -238,7 +241,8 @@ export async function getProductWithVariants(
     };
   });
   const variantsFromBundleMap = itemsFromBundles.reduce((map, item) => {
-    if (!map.has(item.offer.id)) { // ensure only add the same offer once
+    if (!map.has(item.offer.id)) {
+      // ensure only add the same offer once
       map.set(item.offer.id, {
         offer: item.offer,
         variations: item.productV1Item.variations
@@ -256,13 +260,24 @@ export async function getProductWithVariants(
 
 /** returns the productV1ItemMetadataEntities in a bundle for a given productUuid */
 // Note: it may returns several items, in case the BUNDLE contains different variants of
-// the same product (or even the same variant several times), 
-function getProductV1ItemFromBundle(bundle: BundleMetadataEntityFieldsFragment, productUuid: string):
- { productV1Item: ProductV1ItemMetadataEntity, offer: ProductV1MetadataEntityFieldsFragment["offer"] }[] {
+// the same product (or even the same variant several times),
+function getProductV1ItemFromBundle(
+  bundle: BundleMetadataEntityFieldsFragment,
+  productUuid: string
+): {
+  productV1Item: ProductV1ItemMetadataEntity;
+  offer: ProductV1MetadataEntityFieldsFragment["offer"];
+}[] {
   return bundle.items
-  .filter((item) => item.type === ItemMetadataType.ItemProductV1)
-  .filter((item) => (item as ProductV1ItemMetadataEntity).productUuid === productUuid)
-  .map((item) => {
-    return { productV1Item: (item as ProductV1ItemMetadataEntity), offer: bundle.offer as ProductV1MetadataEntityFieldsFragment["offer"] };
-  });
+    .filter((item) => item.type === ItemMetadataType.ItemProductV1)
+    .filter(
+      (item) =>
+        (item as ProductV1ItemMetadataEntity).productUuid === productUuid
+    )
+    .map((item) => {
+      return {
+        productV1Item: item as ProductV1ItemMetadataEntity,
+        offer: bundle.offer as ProductV1MetadataEntityFieldsFragment["offer"]
+      };
+    });
 }

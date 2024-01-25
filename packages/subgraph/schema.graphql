@@ -245,6 +245,7 @@ type BundleMetadataEntity implements MetadataInterface @entity {
   """
   BUNDLE specific fields
   """
+  bundleUuid: String!
   productV1Seller: ProductV1Seller!
   items: [ItemMetadataInterface!]! @derivedFrom(field: "bundle")
   """

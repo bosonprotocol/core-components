@@ -30,6 +30,7 @@ type SellerMetadata = {
 
 export type BundleMetadata = Omit<RNftMetadata, "type"> & {
   type: "BUNDLE";
+  bundleUuid: string; // same uuid in different bundles means a set of variants for a multi-variant bundle (typically containing a multi-variant physical product)
   seller: SellerMetadata;
   items: ItemMetadataLink[];
 };

@@ -230,7 +230,7 @@ export function saveProductV1ItemMetadata(
   if (bundleMetadataEntity) {
     let found = false;
     let i = 0;
-    while(i < bundleMetadataEntity.productUuids.length && !found) {
+    while (i < bundleMetadataEntity.productUuids.length && !found) {
       found = bundleMetadataEntity.productUuids[i++] == productUuid;
     }
     if (!found) {

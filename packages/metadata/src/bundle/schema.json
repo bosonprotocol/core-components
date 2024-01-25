@@ -22,6 +22,7 @@
         "required": ["trait_type", "value"]
       }
     },
+    "bundleUuid": { "type": "string"},
     "seller": {
       "type": "object",
       "properties": {
@@ -69,5 +70,5 @@
       "minItems": 1
     }
   },
-  "required": ["schemaUrl", "type", "name", "description", "externalUrl", "licenseUrl", "seller", "items"]
+  "required": ["schemaUrl", "type", "name", "description", "externalUrl", "licenseUrl", "bundleUuid", "seller", "items"]
 }

@@ -639,6 +639,11 @@ export type BundleMetadataEntity = MetadataInterface & {
   animationMetadata?: Maybe<AnimationMetadata>;
   animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
+  /**
+   * BUNDLE specific fields
+   *
+   */
+  bundleUuid: Scalars["String"];
   condition?: Maybe<Scalars["String"]>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
@@ -669,10 +674,6 @@ export type BundleMetadataEntity = MetadataInterface & {
    *
    */
   productUuids: Array<Scalars["String"]>;
-  /**
-   * BUNDLE specific fields
-   *
-   */
   productV1Seller: ProductV1Seller;
   quantityAvailable: Scalars["BigInt"];
   schemaUrl: Scalars["String"];
@@ -751,6 +752,26 @@ export type BundleMetadataEntity_Filter = {
   attributes_not?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  bundleUuid?: InputMaybe<Scalars["String"]>;
+  bundleUuid_contains?: InputMaybe<Scalars["String"]>;
+  bundleUuid_contains_nocase?: InputMaybe<Scalars["String"]>;
+  bundleUuid_ends_with?: InputMaybe<Scalars["String"]>;
+  bundleUuid_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  bundleUuid_gt?: InputMaybe<Scalars["String"]>;
+  bundleUuid_gte?: InputMaybe<Scalars["String"]>;
+  bundleUuid_in?: InputMaybe<Array<Scalars["String"]>>;
+  bundleUuid_lt?: InputMaybe<Scalars["String"]>;
+  bundleUuid_lte?: InputMaybe<Scalars["String"]>;
+  bundleUuid_not?: InputMaybe<Scalars["String"]>;
+  bundleUuid_not_contains?: InputMaybe<Scalars["String"]>;
+  bundleUuid_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  bundleUuid_not_ends_with?: InputMaybe<Scalars["String"]>;
+  bundleUuid_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  bundleUuid_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  bundleUuid_not_starts_with?: InputMaybe<Scalars["String"]>;
+  bundleUuid_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  bundleUuid_starts_with?: InputMaybe<Scalars["String"]>;
+  bundleUuid_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   condition?: InputMaybe<Scalars["String"]>;
   condition_contains?: InputMaybe<Scalars["String"]>;
   condition_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -1051,6 +1072,7 @@ export enum BundleMetadataEntity_OrderBy {
   AnimationMetadata = "animationMetadata",
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
+  BundleUuid = "bundleUuid",
   Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
@@ -11717,6 +11739,7 @@ export type GetSellerByIdQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -13093,6 +13116,7 @@ export type GetSellersQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -14873,6 +14897,7 @@ export type GetDisputeResolverByIdQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -16049,6 +16074,7 @@ export type GetDisputeResolversQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -17308,6 +17334,7 @@ export type GetOfferCollectionsQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -18466,6 +18493,7 @@ export type OfferCollectionFieldsFragment = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -19590,6 +19618,7 @@ export type SellerFieldsFragment = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -21225,6 +21254,7 @@ export type DisputeResolverFieldsFragment = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -23095,6 +23125,7 @@ export type GetExchangeTokenByIdQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -24182,6 +24213,7 @@ export type GetExchangeTokensQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -25247,6 +25279,7 @@ export type ExchangeTokenFieldsFragment = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -26483,6 +26516,7 @@ export type GetExchangeByIdQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -27652,6 +27686,7 @@ export type GetExchangesQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -28811,6 +28846,7 @@ export type ExchangeFieldsFragment = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -30168,6 +30204,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -31342,6 +31379,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -32506,6 +32544,7 @@ export type BaseMetadataEntityFieldsFragment = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -33657,6 +33696,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -34596,6 +34636,7 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
     __typename?: "BundleMetadataEntity";
     id: string;
     name: string;
+    bundleUuid: string;
     description: string;
     externalUrl: string;
     animationUrl?: string | null;
@@ -34928,6 +34969,7 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -36282,6 +36324,7 @@ export type GetBundleMetadataEntitiesQueryQuery = {
     __typename?: "BundleMetadataEntity";
     id: string;
     name: string;
+    bundleUuid: string;
     description: string;
     externalUrl: string;
     animationUrl?: string | null;
@@ -36614,6 +36657,7 @@ export type GetBundleMetadataEntitiesQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -37958,6 +38002,7 @@ export type BundleMetadataEntityFieldsFragment = {
   __typename?: "BundleMetadataEntity";
   id: string;
   name: string;
+  bundleUuid: string;
   description: string;
   externalUrl: string;
   animationUrl?: string | null;
@@ -38290,6 +38335,7 @@ export type BundleMetadataEntityFieldsFragment = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -39621,6 +39667,7 @@ export type BaseBundleMetadataEntityFieldsFragment = {
   __typename?: "BundleMetadataEntity";
   id: string;
   name: string;
+  bundleUuid: string;
   description: string;
   externalUrl: string;
   animationUrl?: string | null;
@@ -39953,6 +40000,7 @@ export type BaseBundleMetadataEntityFieldsFragment = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -41859,6 +41907,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             }
           | {
               __typename?: "BundleMetadataEntity";
+              bundleUuid: string;
               createdAt: string;
               voided: boolean;
               validFromDate: string;
@@ -43242,6 +43291,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             }
           | {
               __typename?: "BundleMetadataEntity";
+              bundleUuid: string;
               createdAt: string;
               voided: boolean;
               validFromDate: string;
@@ -44639,6 +44689,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -46236,6 +46287,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -47823,6 +47875,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -49397,6 +49450,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -51184,6 +51238,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -52556,6 +52611,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           }
         | {
             __typename?: "BundleMetadataEntity";
+            bundleUuid: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -54131,6 +54187,7 @@ export type GetOfferByIdQueryQuery = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -55294,6 +55351,7 @@ export type GetOffersQueryQuery = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -56166,6 +56224,7 @@ export type GetOffersMediaQueryQuery = {
         }
       | {
           __typename?: "BundleMetadataEntity";
+          bundleUuid: string;
           type: MetadataType;
           animationUrl?: string | null;
           image: string;
@@ -56547,6 +56606,7 @@ export type OfferFieldsFragment = {
       }
     | {
         __typename?: "BundleMetadataEntity";
+        bundleUuid: string;
         createdAt: string;
         voided: boolean;
         validFromDate: string;
@@ -57585,6 +57645,7 @@ export type BaseOfferFieldsFragment = {
       }
     | {
         __typename?: "BundleMetadataEntity";
+        bundleUuid: string;
         createdAt: string;
         voided: boolean;
         validFromDate: string;
@@ -58927,6 +58988,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
         }
       }
       ... on BundleMetadataEntity {
+        bundleUuid
         attributes {
           traitType
           value
@@ -59386,6 +59448,7 @@ export const BaseBundleMetadataEntityFieldsFragmentDoc = gql`
   fragment BaseBundleMetadataEntityFields on BundleMetadataEntity {
     id
     name
+    bundleUuid
     description
     externalUrl
     animationUrl
@@ -60355,6 +60418,7 @@ export const GetOffersMediaQueryDocument = gql`
           }
         }
         ... on BundleMetadataEntity {
+          bundleUuid
           productV1Seller {
             images {
               url

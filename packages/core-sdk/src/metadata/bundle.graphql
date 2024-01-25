@@ -36,6 +36,7 @@ fragment BundleMetadataEntityFields on BundleMetadataEntity {
 fragment BaseBundleMetadataEntityFields on BundleMetadataEntity {
   id
   name
+  bundleUuid
   description
   externalUrl
   animationUrl

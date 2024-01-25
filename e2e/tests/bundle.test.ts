@@ -16,7 +16,8 @@ import { CreateOfferArgs } from "../../packages/core-sdk/src/offers";
 import {
   AnyMetadata,
   productV1Item,
-  bundle
+  bundle,
+  buildUuid
 } from "../../packages/metadata/src";
 
 jest.setTimeout(120_000);
@@ -34,10 +35,12 @@ function mockNFTItem(overrides?: Partial<NftItem>): NftItem {
 
 function mockBundleMetadata(
   itemUrls: string[],
-  overrides?: Partial<Omit<bundle.BundleMetadata, "type">>
+  bundleUuid: string = buildUuid(),
+  overrides?: Partial<Omit<bundle.BundleMetadata, "type" | "bundleUuid">>
 ): bundle.BundleMetadata {
   return {
     ...bundleMetadataMinimal,
+    bundleUuid,
     type: MetadataType.BUNDLE,
     items: itemUrls.map((itemUrl) => {
       return { url: itemUrl };
@@ -391,6 +394,12 @@ describe("Bundle e2e tests", () => {
       seller.id,
       productUuid
     );
+    // TODO; potential changes:
+    // - product?.product only returns the physical product, if offered in single way (outside of any bundle)
+    // - product?.variant returns the variants of the physical product, if offered in single way (outside of any bundle)
+    // - product?.bundles return all bundles containing the given product.
+    // - product.bundles[i] should be mapped per bundleUUID (the same bundleUUID value can be shared across several bundles, meaning
+    //   each of them is a variant of a multi-variant bundle - should match multi different variants of the physical item(s) and, if any, of digital item(s))
     expect(product).toBeTruthy();
     expect(product?.product).toBeTruthy();
     expect(product?.product.uuid).toEqual(productUuid);

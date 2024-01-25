@@ -30,6 +30,11 @@ export const missingArguments = [
     error: /licenseUrl is a required field/
   },
   {
+    arg: "bundleUuid",
+    data: { bundleUuid: undefined },
+    error: /bundleUuid is a required field/
+  },
+  {
     arg: "items",
     data: { items: undefined },
     error: /items is a required field/
