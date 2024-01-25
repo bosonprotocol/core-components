@@ -21,8 +21,10 @@ import {
   MetadataType
 } from "../../packages/core-sdk/src";
 import {
+  AnyMetadata,
   base,
   buildUuid,
+  productV1,
   productV1Item,
   seller
 } from "../../packages/metadata/src";
@@ -445,6 +447,33 @@ export async function createOffer(
   return offer;
 }
 
+export async function createOffer2(
+  coreSDK: CoreSDK,
+  sellerWallet: Wallet,
+  offerArgs: CreateOfferArgs
+) {
+  const sellers = await ensureCreatedSeller(sellerWallet);
+  const [seller] = sellers;
+  // Check the disputeResolver exists and is active
+  const disputeResolverId = offerArgs.disputeResolverId;
+
+  const dr = await coreSDK.getDisputeResolverById(disputeResolverId);
+  expect(dr).toBeTruthy();
+  expect(dr.active).toBe(true);
+  expect(
+    dr.sellerAllowList.length == 0 || dr.sellerAllowList.indexOf(seller.id) >= 0
+  ).toBe(true);
+  const createOfferTxResponse = await coreSDK.createOffer(offerArgs);
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing(createOfferTxReceipt);
+
+  return await coreSDK.getOfferById(createdOfferId as string);
+}
+
 export async function createOfferWithCondition(
   coreSDK: CoreSDK,
   condition: ConditionStruct,
@@ -854,6 +883,24 @@ export async function getSubgraphBlockNumber(): Promise<number> {
   return response?._meta?.block?.number || 0;
 }
 
+export function mockProductV1Metadata(
+  template: string,
+  productUuid: string = buildUuid(),
+  overrides: DeepPartial<productV1.ProductV1Metadata> = {} as DeepPartial<productV1.ProductV1Metadata>
+): productV1.ProductV1Metadata {
+  const productItem = mockProductV1Item(template, productUuid, {
+    ...overrides,
+    type: MetadataType.ITEM_PRODUCT_V1
+  });
+  return {
+    ...productV1ValidMinimalOffer,
+    ...overrides,
+    ...productItem,
+    uuid: buildUuid(),
+    type: MetadataType.PRODUCT_V1
+  } as productV1.ProductV1Metadata;
+}
+
 export function mockProductV1Item(
   template?: string,
   productUuid: string = buildUuid(),
@@ -883,4 +930,21 @@ export function mockProductV1Item(
       template: template ?? productV1ValidMinimalOffer.exchangePolicy.template
     }
   } as productV1Item.ProductV1Item;
+}
+
+export async function createOfferArgs(
+  coreSDK: CoreSDK,
+  metadata: AnyMetadata,
+  offerParams?: Partial<CreateOfferArgs>
+): Promise<CreateOfferArgs> {
+  const metadataHash = await coreSDK.storeMetadata(metadata);
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const offerArgs = mockCreateOfferArgs({
+    metadataHash,
+    metadataUri,
+    ...offerParams
+  });
+
+  return offerArgs;
 }

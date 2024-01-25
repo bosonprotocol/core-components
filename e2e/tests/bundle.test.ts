@@ -2,16 +2,17 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { Wallet } from "ethers";
 import { NftItem } from "../../packages/metadata/src/nftItem";
 import {
+  createOffer2,
+  createOfferArgs,
   ensureCreatedSeller,
   initCoreSDKWithFundedWallet,
   mockProductV1Item,
-  seedWallet22,
-  waitForGraphNodeIndexing
+  mockProductV1Metadata,
+  seedWallet22
 } from "./utils";
 import { CoreSDK, MetadataType, subgraph } from "../../packages/core-sdk/src";
 import bundleMetadataMinimal from "../../packages/metadata/tests/bundle/valid/minimal.json";
 import { CreateOfferArgs } from "../../packages/core-sdk/src/offers";
-import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import {
   AnyMetadata,
   productV1Item,
@@ -45,50 +46,6 @@ function mockBundleMetadata(
   };
 }
 
-async function createOfferArgs(
-  coreSDK: CoreSDK,
-  metadata: bundle.BundleMetadata,
-  offerParams?: Partial<CreateOfferArgs>
-): Promise<CreateOfferArgs> {
-  const metadataHash = await coreSDK.storeMetadata(metadata);
-  const metadataUri = "ipfs://" + metadataHash;
-
-  const offerArgs = mockCreateOfferArgs({
-    metadataHash,
-    metadataUri,
-    ...offerParams
-  });
-
-  return offerArgs;
-}
-
-async function createOffer(
-  coreSDK: CoreSDK,
-  sellerWallet: Wallet,
-  offerArgs: CreateOfferArgs
-) {
-  const sellers = await ensureCreatedSeller(sellerWallet);
-  const [seller] = sellers;
-  // Check the disputeResolver exists and is active
-  const disputeResolverId = offerArgs.disputeResolverId;
-
-  const dr = await coreSDK.getDisputeResolverById(disputeResolverId);
-  expect(dr).toBeTruthy();
-  expect(dr.active).toBe(true);
-  expect(
-    dr.sellerAllowList.length == 0 || dr.sellerAllowList.indexOf(seller.id) >= 0
-  ).toBe(true);
-  const createOfferTxResponse = await coreSDK.createOffer(offerArgs);
-  const createOfferTxReceipt = await createOfferTxResponse.wait();
-  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
-    createOfferTxReceipt.logs
-  );
-
-  await waitForGraphNodeIndexing(createOfferTxReceipt);
-
-  return await coreSDK.getOfferById(createdOfferId as string);
-}
-
 function resolveDateValidity(offerArgs: CreateOfferArgs) {
   offerArgs.validFromDateInMS = BigNumber.from(offerArgs.validFromDateInMS)
     .add(10000) // to avoid offerData validation error
@@ -116,7 +73,7 @@ async function createBundleOffer(
   const offerArgs = await createOfferArgs(coreSDK, bundleMetadata);
   resolveDateValidity(offerArgs);
 
-  return createOffer(coreSDK, sellerWallet, offerArgs);
+  return createOffer2(coreSDK, sellerWallet, offerArgs);
 }
 
 describe("Bundle e2e tests", () => {
@@ -230,6 +187,31 @@ describe("Bundle e2e tests", () => {
     expect(product?.product.uuid).toEqual(productV1Item.product.uuid);
     expect(product?.variants.length).toEqual(1);
     expect(product?.variants[0].offer.id).toEqual(offer.id);
+  });
+  test("Create a BUNDLE with only one item", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const digitalItem = mockNFTItem();
+
+    const offer = await createBundleOffer(coreSDK, sellerWallet, [digitalItem]);
+    expect(offer).toBeTruthy();
+
+    const bundles = await coreSDK.getBundleMetadataEntities({
+      metadataFilter: {
+        offer_in: [offer.id]
+      }
+    });
+    expect(bundles.length).toEqual(1);
+    expect(bundles[0].offer.id).toEqual(offer.id);
+    expect(bundles[0].items.length).toEqual(1);
+
+    expect(bundles[0].items[0].type).toEqual(subgraph.ItemMetadataType.ItemNft);
+    expect(
+      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).name
+    ).toEqual(digitalItem.name);
   });
   test("Create a BUNDLE with twice the same single product", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
@@ -365,6 +347,65 @@ describe("Bundle e2e tests", () => {
       product?.variants.some((variant) => variant.offer.id === offer_L.id)
     ).toBe(true);
     expect(product?.bundles.length).toEqual(3);
+  });
+  test("Create a BUNDLE that contains a product already listed as single offer", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+    const productV1Metadata = mockProductV1Metadata("dummy");
+    const productUuid = productV1Metadata.product.uuid;
+    const productV1OfferArgs = await createOfferArgs(
+      coreSDK,
+      productV1Metadata
+    );
+    const productV1Offer = await createOffer2(
+      coreSDK,
+      sellerWallet,
+      productV1OfferArgs
+    );
+    expect(productV1Offer).toBeTruthy();
+    expect(productV1Offer.metadata).toBeTruthy();
+    expect(productV1Offer.metadata?.type).toEqual("PRODUCT_V1");
+
+    const productV1Item1 = mockProductV1Item(undefined, productUuid);
+    const digitalItem = mockNFTItem();
+
+    const bundleOffer = await createBundleOffer(coreSDK, sellerWallet, [
+      productV1Item1,
+      digitalItem
+    ]);
+    expect(bundleOffer).toBeTruthy();
+    expect(bundleOffer.id).not.toEqual(productV1Offer.id);
+    expect(bundleOffer.metadata).toBeTruthy();
+    expect(bundleOffer.metadata?.type).toEqual("BUNDLE");
+
+    const products = await coreSDK.getProductV1Products({
+      productsFilter: { sellerId: seller.id, uuid: productUuid }
+    });
+    // We expect to have only one product (as it's the same in both the productV1Offer and the bundleOffer)
+    expect(products.length).toEqual(1);
+    expect(products[0].uuid).toEqual(productUuid);
+
+    const product = await coreSDK.getProductWithVariants(
+      seller.id,
+      productUuid
+    );
+    expect(product).toBeTruthy();
+    expect(product?.product).toBeTruthy();
+    expect(product?.product.uuid).toEqual(productUuid);
+    // We expect to have 1 bundle referenced for this product
+    expect(product?.bundles.length).toEqual(1);
+    // We expect to find 2 variants (as there are 2 offers for the same product)
+    expect(product?.variants.length).toEqual(2);
+    expect(
+      product?.variants.some(
+        (variant) => variant.offer.id === productV1Offer.id
+      )
+    ).toBe(true);
+    expect(
+      product?.variants.some((variant) => variant.offer.id === bundleOffer.id)
+    ).toBe(true);
   });
 });
 

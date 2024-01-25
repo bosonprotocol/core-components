@@ -5,27 +5,21 @@ import {
 import { AdditionalOfferMetadata } from "./../../packages/core-sdk/src/offers/renderContractualAgreement";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { parseEther } from "@ethersproject/units";
-import {
-  MetadataType,
-  productV1,
-  validateMetadata
-} from "../../packages/metadata";
+import { productV1, validateMetadata } from "../../packages/metadata";
 import { CreateOfferArgs } from "../../packages/common";
-import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import { Wallet } from "ethers";
 import { CoreSDK, subgraph } from "../../packages/core-sdk/src";
 import {
-  DeepPartial,
+  createOffer2,
+  createOfferArgs,
   ensureCreatedSeller,
   initCoreSDKWithFundedWallet,
   initCoreSDKWithWallet,
-  mockProductV1Item,
+  mockProductV1Metadata,
   seedWallet10,
   wait,
   waitForGraphNodeIndexing
 } from "./utils";
-// import productV1ValidMinimalOffer from "../../packages/metadata/tests/product-v1/valid/minimalOffer.json";
-import productV1ValidMinimalOffer from "../../scripts/assets/offer_1.metadata.json";
 import { SEC_PER_DAY } from "../../packages/common/src/utils/timestamp";
 import { ProductV1MetadataEntity } from "../../packages/core-sdk/src/subgraph";
 import exchangePolicyRules from "../../packages/core-sdk/tests/exchangePolicy/exchangePolicyRules.local.json";
@@ -36,24 +30,6 @@ jest.setTimeout(120_000);
 const seedWallet = seedWallet10; // be sure the seedWallet is not used by another test (to allow concurrent run)
 
 const MAX_INT32 = Math.pow(2, 31) - 1;
-
-function mockProductV1Metadata(
-  template: string,
-  productUuid: string = buildUuid(),
-  overrides: DeepPartial<productV1.ProductV1Metadata> = {} as DeepPartial<productV1.ProductV1Metadata>
-): productV1.ProductV1Metadata {
-  const productItem = mockProductV1Item(template, productUuid, {
-    ...overrides,
-    type: MetadataType.ITEM_PRODUCT_V1
-  });
-  return {
-    ...productV1ValidMinimalOffer,
-    ...overrides,
-    ...productItem,
-    uuid: buildUuid(),
-    type: MetadataType.PRODUCT_V1
-  } as productV1.ProductV1Metadata;
-}
 
 function serializeVariant(variant: productV1.ProductV1Variant): string {
   // Be sure each variation structure has its keys ordered
@@ -72,24 +48,10 @@ function serializeVariant(variant: productV1.ProductV1Variant): string {
   return JSON.stringify(orderedTable);
 }
 
-async function createOfferArgs(
-  coreSDK: CoreSDK,
-  metadata: productV1.ProductV1Metadata,
-  offerParams?: Partial<CreateOfferArgs>
-): Promise<{
-  offerArgs: CreateOfferArgs;
-  offerMetadata: AdditionalOfferMetadata;
-}> {
-  const metadataHash = await coreSDK.storeMetadata(metadata);
-  const metadataUri = "ipfs://" + metadataHash;
-
-  const offerArgs = mockCreateOfferArgs({
-    metadataHash,
-    metadataUri,
-    ...offerParams
-  });
-
-  const offerMetadata = {
+function extractAdditionalMetadata(
+  metadata: productV1.ProductV1Metadata
+): AdditionalOfferMetadata {
+  return {
     sellerContactMethod: metadata.exchangePolicy.sellerContactMethod,
     disputeResolverContactMethod:
       metadata.exchangePolicy.disputeResolverContactMethod,
@@ -98,35 +60,6 @@ async function createOfferArgs(
     sellerTradingName: metadata.seller.name,
     returnPeriodInDays: parseInt(metadata.shipping.returnPeriod)
   };
-
-  return { offerArgs, offerMetadata };
-}
-
-async function createOffer(
-  coreSDK: CoreSDK,
-  sellerWallet: Wallet,
-  offerArgs: CreateOfferArgs
-) {
-  const sellers = await ensureCreatedSeller(sellerWallet);
-  const [seller] = sellers;
-  // Check the disputeResolver exists and is active
-  const disputeResolverId = offerArgs.disputeResolverId;
-
-  const dr = await coreSDK.getDisputeResolverById(disputeResolverId);
-  expect(dr).toBeTruthy();
-  expect(dr.active).toBe(true);
-  expect(
-    dr.sellerAllowList.length == 0 || dr.sellerAllowList.indexOf(seller.id) >= 0
-  ).toBe(true);
-  const createOfferTxResponse = await coreSDK.createOffer(offerArgs);
-  const createOfferTxReceipt = await createOfferTxResponse.wait();
-  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
-    createOfferTxReceipt.logs
-  );
-
-  await waitForGraphNodeIndexing(createOfferTxReceipt);
-
-  return await coreSDK.getOfferById(createdOfferId as string);
 }
 
 async function createOfferBatch(
@@ -187,10 +120,10 @@ describe("ProductV1 e2e tests", () => {
     const template =
       "Hello World!! {{sellerTradingName}} {{disputeResolverContactMethod}} {{sellerContactMethod}} {{returnPeriodInDays}}";
     const metadata = mockProductV1Metadata(template);
-    const { offerArgs } = await createOfferArgs(coreSDK, metadata);
+    const offerArgs = await createOfferArgs(coreSDK, metadata);
     resolveDateValidity(offerArgs);
 
-    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    const offer = await createOffer2(coreSDK, sellerWallet, offerArgs);
     expect(offer).toBeTruthy();
     const render = await coreSDK.renderContractualAgreementForOffer(
       (offer as subgraph.OfferFieldsFragment).id
@@ -206,10 +139,8 @@ describe("ProductV1 e2e tests", () => {
     const template =
       "Hello World!! {{sellerTradingName}} {{disputeResolverContactMethod}} {{sellerContactMethod}} {{returnPeriodInDays}}";
     const metadata = mockProductV1Metadata(template);
-    const { offerArgs, offerMetadata } = await createOfferArgs(
-      coreSDK,
-      metadata
-    );
+    const offerArgs = await createOfferArgs(coreSDK, metadata);
+    const offerMetadata = extractAdditionalMetadata(metadata);
 
     const render = await coreSDK.renderContractualAgreement(
       template,
@@ -248,10 +179,10 @@ describe("ProductV1 e2e tests", () => {
     const template =
       "Hello World!! {{sellerTradingName}} {{disputeResolverContactMethod}} {{sellerContactMethod}} {{returnPeriodInDays}}";
     const metadata = mockProductV1Metadata(template);
-    const { offerArgs } = await createOfferArgs(coreSDK, metadata);
+    const offerArgs = await createOfferArgs(coreSDK, metadata);
     resolveDateValidity(offerArgs);
 
-    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    const offer = await createOffer2(coreSDK, sellerWallet, offerArgs);
     expect(offer).toBeTruthy();
     expect(
       (offer?.metadata as ProductV1MetadataEntity)?.productV1Seller
@@ -276,13 +207,10 @@ describe("ProductV1 e2e tests", () => {
 
       metadata1 = mockProductV1Metadata("dummy");
       productUuid1 = metadata1.product.uuid;
-      const { offerArgs: offerArgs1 } = await createOfferArgs(
-        coreSDK1,
-        metadata1
-      );
+      const offerArgs1 = await createOfferArgs(coreSDK1, metadata1);
       resolveDateValidity(offerArgs1);
 
-      offer1 = (await createOffer(
+      offer1 = (await createOffer2(
         coreSDK1,
         sellerWallet1,
         offerArgs1
@@ -312,13 +240,10 @@ describe("ProductV1 e2e tests", () => {
           ]
         }
       });
-      const { offerArgs: offerArgs2 } = await createOfferArgs(
-        coreSDK2,
-        metadata2
-      );
+      const offerArgs2 = await createOfferArgs(coreSDK2, metadata2);
       resolveDateValidity(offerArgs2);
 
-      offer2 = (await createOffer(
+      offer2 = (await createOffer2(
         coreSDK2,
         sellerWallet2,
         offerArgs2
@@ -395,8 +320,8 @@ describe("Multi-variant offers tests", () => {
     const productsBefore = await coreSDK.getProductV1Products(productsFilter);
     expect(productsBefore).toBeTruthy();
 
-    const offer1 = await createOffer(coreSDK, sellerWallet, offerArgs1);
-    const offer2 = await createOffer(coreSDK, sellerWallet, offerArgs2);
+    const offer1 = await createOffer2(coreSDK, sellerWallet, offerArgs1);
+    const offer2 = await createOffer2(coreSDK, sellerWallet, offerArgs2);
     expect(offer1).toBeTruthy();
     expect(offer2).toBeTruthy();
 
@@ -602,10 +527,10 @@ describe("Multi-variant offers tests", () => {
     const productUuid = buildUuid();
     const template = "Hello World!!";
     const productMetadata = mockProductV1Metadata(template, productUuid);
-    const { offerArgs } = await createOfferArgs(coreSDK, productMetadata);
+    const offerArgs = await createOfferArgs(coreSDK, productMetadata);
     resolveDateValidity(offerArgs);
 
-    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    const offer = await createOffer2(coreSDK, sellerWallet, offerArgs);
     expect(offer).toBeTruthy();
 
     const productWithVariants = await coreSDK.getProductWithVariants(
@@ -643,14 +568,14 @@ describe("Multi-variant offers tests", () => {
     const template = "Hello World!!";
     const productMetadata = mockProductV1Metadata(template, productUuid);
     // Create an offer with 0 price 0 deposit to make it easier to commit
-    const { offerArgs } = await createOfferArgs(coreSDK, productMetadata, {
+    const offerArgs = await createOfferArgs(coreSDK, productMetadata, {
       price: "0",
       sellerDeposit: "0",
       buyerCancelPenalty: "0"
     });
     resolveDateValidity(offerArgs);
 
-    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    const offer = await createOffer2(coreSDK, sellerWallet, offerArgs);
     expect(offer).toBeTruthy();
 
     // Wait for the offer to be committable
@@ -1089,8 +1014,7 @@ async function prepareMultiVariantOffers(
   const [offer1Params, offer2Params] = offersParams || [];
   const p1 = createOfferArgs(coreSDK, metadata1, offer1Params);
   const p2 = createOfferArgs(coreSDK, metadata2, offer2Params);
-  const [{ offerArgs: offerArgs1 }, { offerArgs: offerArgs2 }] =
-    await Promise.all([p1, p2]);
+  const [offerArgs1, offerArgs2] = await Promise.all([p1, p2]);
 
   resolveDateValidity(offerArgs1);
   resolveDateValidity(offerArgs2);
@@ -1111,10 +1035,10 @@ describe("additional tests", () => {
     const template = "Hello World!!";
     const metadata = mockProductV1Metadata(template);
     metadata.shipping.returnPeriod = "1" + MAX_INT32.toString(); // Set a value greater than MAX_INT32
-    const { offerArgs } = await createOfferArgs(coreSDK, metadata);
+    const offerArgs = await createOfferArgs(coreSDK, metadata);
     resolveDateValidity(offerArgs);
 
-    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    const offer = await createOffer2(coreSDK, sellerWallet, offerArgs);
     expect(offer).toBeTruthy();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -1141,10 +1065,10 @@ describe("core-sdk-check-exchange-policy", () => {
     const template = "fairExchangePolicy";
     const metadata = mockProductV1Metadata(template);
     metadata.shipping.returnPeriod = "15";
-    const { offerArgs } = await createOfferArgs(coreSDK, metadata);
+    const offerArgs = await createOfferArgs(coreSDK, metadata);
     resolveDateValidity(offerArgs);
 
-    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    const offer = await createOffer2(coreSDK, sellerWallet, offerArgs);
     expect(offer?.id).toBeTruthy();
     const result = await coreSDK.checkExchangePolicy(
       offer?.id as string,
@@ -1160,10 +1084,10 @@ describe("core-sdk-check-exchange-policy", () => {
     const template = "unfairExchangePolicy";
     const metadata = mockProductV1Metadata(template);
     metadata.shipping.returnPeriod = "15";
-    const { offerArgs } = await createOfferArgs(coreSDK, metadata);
+    const offerArgs = await createOfferArgs(coreSDK, metadata);
     resolveDateValidity(offerArgs);
 
-    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    const offer = await createOffer2(coreSDK, sellerWallet, offerArgs);
     expect(offer?.id).toBeTruthy();
     const result = await coreSDK.checkExchangePolicy(
       offer?.id as string,
