@@ -163,6 +163,7 @@ export function saveProductV1ItemMetadata(
   const variant = saveProductV1Variant(offerId, savedVariationIds);
   const savedProductId = saveProductV1ProductOrOverrides(
     productObj,
+    metadataObj,
     productV1SellerId,
     false,
     variant,
@@ -184,6 +185,7 @@ export function saveProductV1ItemMetadata(
   );
   const savedProductOverridesId = saveProductV1ProductOrOverrides(
     convertToObject(metadataObj.get("productOverrides")),
+    metadataObj,
     productV1SellerId,
     true,
     null,
