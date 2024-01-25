@@ -10,16 +10,16 @@
   "image": "https://bsn-portal-production-image-upload-storage.s3.amazonaws.com/fc11acc4-e27b-4ede-b7d3-f16735fab406",
   "attributes": [
     {
-      "trait_type": "Creator",
+      "traitType": "Creator",
       "value": "MetaFactory"
     },
     {
-      "trait_type": "Redeemable Until",
-      "display_type": "date",
+      "traitType": "Redeemable Until",
+      "displayType": "date",
       "value": "1658492054"
     },
     {
-      "trait_type": "Offer Category",
+      "traitType": "Offer Category",
       "value": "PHYGITAL"
     }
   ],

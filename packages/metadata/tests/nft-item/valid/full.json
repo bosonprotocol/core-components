@@ -12,8 +12,8 @@
       "value": "MetaFactory"
     },
     {
-      "trait_type": "Redeemable Until",
-      "display_type": "date",
+      "traitType": "Redeemable Until",
+      "displayType": "date",
       "value": "1658492054"
     },
     {

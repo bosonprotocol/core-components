@@ -68,7 +68,7 @@ export function createVariantProductMetadata(
     // add some attributes depending on variation
     const variantAttributes = metadata.variations?.map((variation) => {
       return {
-        trait_type: variation.type,
+        traitType: variation.type,
         value: variation.option
       };
     });

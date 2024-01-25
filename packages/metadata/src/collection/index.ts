@@ -13,6 +13,7 @@ export type CollectionMetadata = Omit<IMetadata, "type"> & {
   name: string;
   description?: string;
   image?: string;
-  external_link?: string;
+  externalLink?: string;
+  external_link?: string; // Stay compliant with https://docs.opensea.io/docs/contract-level-metadata
   collaborators?: string[];
 };

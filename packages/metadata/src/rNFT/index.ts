@@ -13,13 +13,15 @@ export type RNftMetadata = Omit<IMetadata, "type"> & {
   name: string;
   description: string;
   image?: string;
+  imageData?: string;
   externalUrl: string;
   licenseUrl: string;
   condition?: string;
   animationUrl?: string;
+  youtubeUrl?: string;
   attributes?: {
-    trait_type: string;
+    traitType: string;
     value: string;
-    display_type?: string;
+    displayType?: string;
   }[];
 };

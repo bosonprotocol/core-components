@@ -148,7 +148,7 @@ describe("#productV1Item tests", () => {
       );
     });
 
-    test("should fail if variants are not consistent to each other - disordered variants table", async () => {
+    test("should fail if variants are not consistent to each other - unordered variants table", async () => {
       const productItem = productV1ItemValidMinimal as unknown as ProductV1Item;
       let variants = cloneVariants(variantsOK);
       variants[0].productVariant.push({
@@ -171,7 +171,7 @@ describe("#productV1Item tests", () => {
       );
     });
 
-    test("should fail if variants are not consistent to each other - disordered variants structure", async () => {
+    test("should fail if variants are not consistent to each other - unordered variants structure", async () => {
       const productItem = productV1ItemValidMinimal as unknown as ProductV1Item;
       let variants = cloneVariants(variantsOK);
       variants[0].productVariant.push({
@@ -226,7 +226,7 @@ describe("#productV1Item tests", () => {
       );
     });
 
-    test("should fail if some variants have the same option - disordered variants table", async () => {
+    test("should fail if some variants have the same option - unordered variants table", async () => {
       const productItem = productV1ItemValidMinimal as unknown as ProductV1Item;
       const variants = cloneVariants(variantsOK);
       // Set the last variant equal to the first variant
@@ -241,7 +241,7 @@ describe("#productV1Item tests", () => {
       );
     });
 
-    test("should fail if some variants have the same option - disordered variants structure", async () => {
+    test("should fail if some variants have the same option - unordered variants structure", async () => {
       const productItem = productV1ItemValidMinimal as unknown as ProductV1Item;
       const variants = cloneVariants(variantsOK);
       // Set the last variant equal to the first variant
@@ -272,7 +272,7 @@ describe("#productV1Item tests", () => {
       );
     });
 
-    test("should NOT fail if the variants table is disordered ", async () => {
+    test("should NOT fail if the variants table is unordered ", async () => {
       const productItem = productV1ItemValidMinimal as unknown as ProductV1Item;
       const variants = cloneVariants(variantsOK);
       variants[0].productVariant = disorderVariantTable(
@@ -283,7 +283,7 @@ describe("#productV1Item tests", () => {
       ).not.toThrow();
     });
 
-    test("should NOT fail if the variants structure is disordered ", async () => {
+    test("should NOT fail if the variants structure is unordered ", async () => {
       const productItem = productV1ItemValidMinimal as unknown as ProductV1Item;
       const variants = cloneVariants(variantsOK);
       variants[0].productVariant = disorderVariantStruct(

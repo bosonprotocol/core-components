@@ -87,7 +87,7 @@ export const productMissingArguments = [
   //   data: {
   //     attributes: [
   //       {
-  //         trait_type: "Offer Category",
+  //         traitType: "Offer Category",
   //         value: "PHYSICAL"
   //       }
   //     ]

@@ -143,10 +143,10 @@ describe("#validateMetadata()", () => {
 
     xtest("throw if missing 'Redeemable Until' attribute", () => {
       const attributes = productV1ValidFullOffer.attributes.map((attr) => {
-        if (attr.trait_type === "Redeemable Until") {
+        if (attr.traitType === "Redeemable Until") {
           return {
             ...attr,
-            trait_type: "XXXXXX"
+            traitType: "XXXXXX"
           };
         }
         return attr;
@@ -161,10 +161,10 @@ describe("#validateMetadata()", () => {
 
     xtest("throw if missing 'Offer Category' attribute", () => {
       const attributes = productV1ValidFullOffer.attributes.map((attr) => {
-        if (attr.trait_type === "Offer Category") {
+        if (attr.traitType === "Offer Category") {
           return {
             ...attr,
-            trait_type: "XXXXXX"
+            traitType: "XXXXXX"
           };
         }
         return attr;

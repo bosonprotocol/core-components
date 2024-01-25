@@ -15,11 +15,11 @@
       "items": {
         "type": "object",
         "properties": {
-          "trait_type": { "type": "string"},
+          "traitType": { "type": "string"},
           "value": { "type": "string"},
-          "display_type": { "type": "string"}
+          "displayType": { "type": "string"}
         },
-        "required": ["trait_type", "value"]
+        "required": ["traitType", "value"]
       }
     }
   },

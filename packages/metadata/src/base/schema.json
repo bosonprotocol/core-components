@@ -6,20 +6,22 @@
     "name": { "type": "string" },
     "description": { "type": "string" },
     "image": { "type": "string" },
+    "imageData": { "type": "string" },
     "externalUrl": { "type": "string" },
     "licenseUrl": { "type": "string" },
     "condition": { "type": "string" },
     "animationUrl": { "type": "string" },
+    "youtubeUrl": { "type": "string" },
     "attributes": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "trait_type": { "type": "string"},
+          "traitType": { "type": "string"},
           "value": { "type": "string"},
-          "display_type": { "type": "string"}
+          "displayType": { "type": "string"}
         },
-        "required": ["trait_type", "value"]
+        "required": ["traitType", "value"]
       }
     }
   },

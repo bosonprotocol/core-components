@@ -151,7 +151,7 @@ describe("#productV1 tests", () => {
       ).toThrow(/variants are not consistent to each other/);
     });
 
-    test("should fail if variants are not consistent to each other - disordered variants table", async () => {
+    test("should fail if variants are not consistent to each other - unordered variants table", async () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
       let variants = cloneVariants(variantsOK);
@@ -175,7 +175,7 @@ describe("#productV1 tests", () => {
       ).toThrow(/variants are not consistent to each other/);
     });
 
-    test("should fail if variants are not consistent to each other - disordered variants structure", async () => {
+    test("should fail if variants are not consistent to each other - unordered variants structure", async () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
       let variants = cloneVariants(variantsOK);
@@ -239,7 +239,7 @@ describe("#productV1 tests", () => {
       );
     });
 
-    test("should fail if some variants have the same option - disordered variants table", async () => {
+    test("should fail if some variants have the same option - unordered variants table", async () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
       const variants = cloneVariants(variantsOK);
@@ -257,7 +257,7 @@ describe("#productV1 tests", () => {
       );
     });
 
-    test("should fail if some variants have the same option - disordered variants structure", async () => {
+    test("should fail if some variants have the same option - unordered variants structure", async () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
       const variants = cloneVariants(variantsOK);
@@ -294,7 +294,7 @@ describe("#productV1 tests", () => {
       );
     });
 
-    test("should NOT fail if the variants table is disordered ", async () => {
+    test("should NOT fail if the variants table is unordered ", async () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
       const variants = cloneVariants(variantsOK);
@@ -306,7 +306,7 @@ describe("#productV1 tests", () => {
       ).not.toThrow();
     });
 
-    test("should NOT fail if the variants structure is disordered ", async () => {
+    test("should NOT fail if the variants structure is unordered ", async () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
       const variants = cloneVariants(variantsOK);
@@ -376,9 +376,9 @@ describe("#productV1 tests", () => {
           externalUrl: metadatas[i].externalUrl,
           licenseUrl: metadatas[i].licenseUrl,
           attributes: [
-            ...productMetadata.attributes,
+            ...(productMetadata.attributes || []),
             ...variantsOK[i].productVariant.map((variant) => ({
-              trait_type: variant.type,
+              traitType: variant.type,
               value: variant.option
             }))
           ]
@@ -419,9 +419,9 @@ describe("#productV1 tests", () => {
           licenseUrl: metadatas[index].licenseUrl,
           productOverrides: productOverrides[index],
           attributes: [
-            ...productMetadata.attributes,
+            ...(productMetadata.attributes || []),
             ...variantsOK[index].productVariant.map((variant) => ({
-              trait_type: variant.type,
+              traitType: variant.type,
               value: variant.option
             }))
           ]
@@ -456,9 +456,9 @@ describe("#productV1 tests", () => {
           licenseUrl: metadatas[i].licenseUrl,
           productOverrides: productOverrides[i],
           attributes: [
-            ...productMetadata.attributes,
+            ...(productMetadata.attributes || []),
             ...variantsOK[i].productVariant.map((variant) => ({
-              trait_type: variant.type,
+              traitType: variant.type,
               value: variant.option
             }))
           ]

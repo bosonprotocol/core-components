@@ -416,6 +416,7 @@ describe("Bundle e2e tests", () => {
       product?.variants.some((variant) => variant.offer.id === bundleOffer.id)
     ).toBe(true);
   });
+  xtest("Create a BUNDLE that contains a multi-variant product already listed as single offer", async () => {});
 });
 
 // TODO: check methods getAllProductsWithNotVoidedVariants() / getAllProductsWithVariants() with BUNDLE offers
