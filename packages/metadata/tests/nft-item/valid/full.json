@@ -6,6 +6,7 @@
   "image": "https://bsn-portal-production-image-upload-storage.s3.amazonaws.com/fc11acc4-e27b-4ede-b7d3-f16735fab406",
   "externalUrl": "https://app.bosonportal.io/#/offer-uuid/ecf2a6dc-555b-41b5-aca8-b7e29eebbb30",
   "animationUrl": "https://app.bosonportal.io/animationUrl",
+  "youtubeUrl": "https://youtu.be/t0Q2otsqC4I?si=GC0yWnytksqdWcX8",
   "attributes": [
     {
       "trait_type": "Creator",
@@ -20,5 +21,15 @@
       "trait_type": "Offer Category",
       "value": "PHYGITAL"
     }
-  ]
+  ],
+  "chainId": 80001,
+  "contract": "0x83e73D9CF22dFc3A767EA1cE0611F7f50306622e",
+  "tokenId": "82008050427946169694673280391056138964085",
+  "tokenIdRange": {
+    "min": "1",
+    "max": "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+  },
+  "quantity": 18,
+  "transferMethod": "safeTransferFrom(address,address,uint256)",
+  "transferDelay": "15 days"
 }

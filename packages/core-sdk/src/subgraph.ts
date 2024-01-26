@@ -3673,7 +3673,11 @@ export type NftItemMetadataEntity = ItemMetadataInterface & {
   quantity?: Maybe<Scalars["Int"]>;
   schemaUrl: Scalars["String"];
   tokenId?: Maybe<Scalars["String"]>;
+  tokenIdRange?: Maybe<TokenIdRange>;
+  transferDelay?: Maybe<Scalars["String"]>;
+  transferMethod?: Maybe<Scalars["String"]>;
   type: ItemMetadataType;
+  youtubeUrl?: Maybe<Scalars["String"]>;
 };
 
 export type NftItemMetadataEntityAttributesArgs = {
@@ -3900,6 +3904,27 @@ export type NftItemMetadataEntity_Filter = {
   schemaUrl_starts_with?: InputMaybe<Scalars["String"]>;
   schemaUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   tokenId?: InputMaybe<Scalars["String"]>;
+  tokenIdRange?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_?: InputMaybe<TokenIdRange_Filter>;
+  tokenIdRange_contains?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_ends_with?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_gt?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_gte?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_in?: InputMaybe<Array<Scalars["String"]>>;
+  tokenIdRange_lt?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_lte?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_not?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_not_contains?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_not_ends_with?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  tokenIdRange_not_starts_with?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_starts_with?: InputMaybe<Scalars["String"]>;
+  tokenIdRange_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   tokenId_contains?: InputMaybe<Scalars["String"]>;
   tokenId_contains_nocase?: InputMaybe<Scalars["String"]>;
   tokenId_ends_with?: InputMaybe<Scalars["String"]>;
@@ -3919,10 +3944,70 @@ export type NftItemMetadataEntity_Filter = {
   tokenId_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   tokenId_starts_with?: InputMaybe<Scalars["String"]>;
   tokenId_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  transferDelay?: InputMaybe<Scalars["String"]>;
+  transferDelay_contains?: InputMaybe<Scalars["String"]>;
+  transferDelay_contains_nocase?: InputMaybe<Scalars["String"]>;
+  transferDelay_ends_with?: InputMaybe<Scalars["String"]>;
+  transferDelay_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  transferDelay_gt?: InputMaybe<Scalars["String"]>;
+  transferDelay_gte?: InputMaybe<Scalars["String"]>;
+  transferDelay_in?: InputMaybe<Array<Scalars["String"]>>;
+  transferDelay_lt?: InputMaybe<Scalars["String"]>;
+  transferDelay_lte?: InputMaybe<Scalars["String"]>;
+  transferDelay_not?: InputMaybe<Scalars["String"]>;
+  transferDelay_not_contains?: InputMaybe<Scalars["String"]>;
+  transferDelay_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  transferDelay_not_ends_with?: InputMaybe<Scalars["String"]>;
+  transferDelay_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  transferDelay_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  transferDelay_not_starts_with?: InputMaybe<Scalars["String"]>;
+  transferDelay_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  transferDelay_starts_with?: InputMaybe<Scalars["String"]>;
+  transferDelay_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  transferMethod?: InputMaybe<Scalars["String"]>;
+  transferMethod_contains?: InputMaybe<Scalars["String"]>;
+  transferMethod_contains_nocase?: InputMaybe<Scalars["String"]>;
+  transferMethod_ends_with?: InputMaybe<Scalars["String"]>;
+  transferMethod_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  transferMethod_gt?: InputMaybe<Scalars["String"]>;
+  transferMethod_gte?: InputMaybe<Scalars["String"]>;
+  transferMethod_in?: InputMaybe<Array<Scalars["String"]>>;
+  transferMethod_lt?: InputMaybe<Scalars["String"]>;
+  transferMethod_lte?: InputMaybe<Scalars["String"]>;
+  transferMethod_not?: InputMaybe<Scalars["String"]>;
+  transferMethod_not_contains?: InputMaybe<Scalars["String"]>;
+  transferMethod_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  transferMethod_not_ends_with?: InputMaybe<Scalars["String"]>;
+  transferMethod_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  transferMethod_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  transferMethod_not_starts_with?: InputMaybe<Scalars["String"]>;
+  transferMethod_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  transferMethod_starts_with?: InputMaybe<Scalars["String"]>;
+  transferMethod_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   type?: InputMaybe<ItemMetadataType>;
   type_in?: InputMaybe<Array<ItemMetadataType>>;
   type_not?: InputMaybe<ItemMetadataType>;
   type_not_in?: InputMaybe<Array<ItemMetadataType>>;
+  youtubeUrl?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_contains?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_ends_with?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_gt?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_gte?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_in?: InputMaybe<Array<Scalars["String"]>>;
+  youtubeUrl_lt?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_lte?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_not?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_not_contains?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_not_ends_with?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  youtubeUrl_not_starts_with?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_starts_with?: InputMaybe<Scalars["String"]>;
+  youtubeUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
 };
 
 export enum NftItemMetadataEntity_OrderBy {
@@ -3940,7 +4025,11 @@ export enum NftItemMetadataEntity_OrderBy {
   Quantity = "quantity",
   SchemaUrl = "schemaUrl",
   TokenId = "tokenId",
-  Type = "type"
+  TokenIdRange = "tokenIdRange",
+  TransferDelay = "transferDelay",
+  TransferMethod = "transferMethod",
+  Type = "type",
+  YoutubeUrl = "youtubeUrl"
 }
 
 /**
@@ -8544,6 +8633,8 @@ export type Query = {
   sellerSocialLink?: Maybe<SellerSocialLink>;
   sellerSocialLinks: Array<SellerSocialLink>;
   sellers: Array<Seller>;
+  tokenIdRange?: Maybe<TokenIdRange>;
+  tokenIdRanges: Array<TokenIdRange>;
 };
 
 export type Query_MetaArgs = {
@@ -9388,6 +9479,22 @@ export type QuerySellersArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Seller_Filter>;
+};
+
+export type QueryTokenIdRangeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryTokenIdRangesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<TokenIdRange_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<TokenIdRange_Filter>;
 };
 
 /**
@@ -10581,6 +10688,8 @@ export type Subscription = {
   sellerSocialLink?: Maybe<SellerSocialLink>;
   sellerSocialLinks: Array<SellerSocialLink>;
   sellers: Array<Seller>;
+  tokenIdRange?: Maybe<TokenIdRange>;
+  tokenIdRanges: Array<TokenIdRange>;
 };
 
 export type Subscription_MetaArgs = {
@@ -11427,6 +11536,88 @@ export type SubscriptionSellersArgs = {
   where?: InputMaybe<Seller_Filter>;
 };
 
+export type SubscriptionTokenIdRangeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionTokenIdRangesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<TokenIdRange_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<TokenIdRange_Filter>;
+};
+
+export type TokenIdRange = {
+  __typename?: "TokenIdRange";
+  id: Scalars["ID"];
+  max: Scalars["String"];
+  min: Scalars["String"];
+};
+
+export type TokenIdRange_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  max?: InputMaybe<Scalars["String"]>;
+  max_contains?: InputMaybe<Scalars["String"]>;
+  max_contains_nocase?: InputMaybe<Scalars["String"]>;
+  max_ends_with?: InputMaybe<Scalars["String"]>;
+  max_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  max_gt?: InputMaybe<Scalars["String"]>;
+  max_gte?: InputMaybe<Scalars["String"]>;
+  max_in?: InputMaybe<Array<Scalars["String"]>>;
+  max_lt?: InputMaybe<Scalars["String"]>;
+  max_lte?: InputMaybe<Scalars["String"]>;
+  max_not?: InputMaybe<Scalars["String"]>;
+  max_not_contains?: InputMaybe<Scalars["String"]>;
+  max_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  max_not_ends_with?: InputMaybe<Scalars["String"]>;
+  max_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  max_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  max_not_starts_with?: InputMaybe<Scalars["String"]>;
+  max_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  max_starts_with?: InputMaybe<Scalars["String"]>;
+  max_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  min?: InputMaybe<Scalars["String"]>;
+  min_contains?: InputMaybe<Scalars["String"]>;
+  min_contains_nocase?: InputMaybe<Scalars["String"]>;
+  min_ends_with?: InputMaybe<Scalars["String"]>;
+  min_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  min_gt?: InputMaybe<Scalars["String"]>;
+  min_gte?: InputMaybe<Scalars["String"]>;
+  min_in?: InputMaybe<Array<Scalars["String"]>>;
+  min_lt?: InputMaybe<Scalars["String"]>;
+  min_lte?: InputMaybe<Scalars["String"]>;
+  min_not?: InputMaybe<Scalars["String"]>;
+  min_not_contains?: InputMaybe<Scalars["String"]>;
+  min_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  min_not_ends_with?: InputMaybe<Scalars["String"]>;
+  min_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  min_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  min_not_starts_with?: InputMaybe<Scalars["String"]>;
+  min_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  min_starts_with?: InputMaybe<Scalars["String"]>;
+  min_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum TokenIdRange_OrderBy {
+  Id = "id",
+  Max = "max",
+  Min = "min"
+}
+
 export type _Block_ = {
   __typename?: "_Block_";
   /** The hash of the block */
@@ -11866,12 +12057,20 @@ export type GetSellerByIdQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -13243,12 +13442,20 @@ export type GetSellersQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -15024,12 +15231,20 @@ export type GetDisputeResolverByIdQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -16201,12 +16416,20 @@ export type GetDisputeResolversQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -17461,12 +17684,20 @@ export type GetOfferCollectionsQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -18620,12 +18851,20 @@ export type OfferCollectionFieldsFragment = {
                 image?: string | null;
                 externalUrl?: string | null;
                 animationUrl?: string | null;
+                youtubeUrl?: string | null;
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
+                transferMethod?: string | null;
+                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
+                tokenIdRange?: {
+                  __typename?: "TokenIdRange";
+                  min: string;
+                  max: string;
+                } | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -19745,12 +19984,20 @@ export type SellerFieldsFragment = {
                 image?: string | null;
                 externalUrl?: string | null;
                 animationUrl?: string | null;
+                youtubeUrl?: string | null;
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
+                transferMethod?: string | null;
+                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
+                tokenIdRange?: {
+                  __typename?: "TokenIdRange";
+                  min: string;
+                  max: string;
+                } | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -21381,12 +21628,20 @@ export type DisputeResolverFieldsFragment = {
                 image?: string | null;
                 externalUrl?: string | null;
                 animationUrl?: string | null;
+                youtubeUrl?: string | null;
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
+                transferMethod?: string | null;
+                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
+                tokenIdRange?: {
+                  __typename?: "TokenIdRange";
+                  min: string;
+                  max: string;
+                } | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -23252,12 +23507,20 @@ export type GetExchangeTokenByIdQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -24340,12 +24603,20 @@ export type GetExchangeTokensQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -25406,12 +25677,20 @@ export type ExchangeTokenFieldsFragment = {
                 image?: string | null;
                 externalUrl?: string | null;
                 animationUrl?: string | null;
+                youtubeUrl?: string | null;
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
+                transferMethod?: string | null;
+                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
+                tokenIdRange?: {
+                  __typename?: "TokenIdRange";
+                  min: string;
+                  max: string;
+                } | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -26643,12 +26922,20 @@ export type GetExchangeByIdQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -27813,12 +28100,20 @@ export type GetExchangesQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -28973,12 +29268,20 @@ export type ExchangeFieldsFragment = {
                 image?: string | null;
                 externalUrl?: string | null;
                 animationUrl?: string | null;
+                youtubeUrl?: string | null;
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
+                transferMethod?: string | null;
+                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
+                tokenIdRange?: {
+                  __typename?: "TokenIdRange";
+                  min: string;
+                  max: string;
+                } | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -30331,12 +30634,20 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -31506,12 +31817,20 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -32671,12 +32990,20 @@ export type BaseMetadataEntityFieldsFragment = {
                 image?: string | null;
                 externalUrl?: string | null;
                 animationUrl?: string | null;
+                youtubeUrl?: string | null;
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
+                transferMethod?: string | null;
+                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
+                tokenIdRange?: {
+                  __typename?: "TokenIdRange";
+                  min: string;
+                  max: string;
+                } | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -33823,12 +34150,20 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 image?: string | null;
                 externalUrl?: string | null;
                 animationUrl?: string | null;
+                youtubeUrl?: string | null;
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
+                transferMethod?: string | null;
+                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
+                tokenIdRange?: {
+                  __typename?: "TokenIdRange";
+                  min: string;
+                  max: string;
+                } | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -35096,12 +35431,20 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -36010,14 +36353,22 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
           image?: string | null;
           externalUrl?: string | null;
           animationUrl?: string | null;
+          youtubeUrl?: string | null;
           chainId?: number | null;
           contract?: string | null;
           tokenId?: string | null;
+          transferMethod?: string | null;
+          transferDelay?: string | null;
           quantity?: number | null;
           id: string;
           schemaUrl: string;
           type: ItemMetadataType;
           metadataUri: string;
+          tokenIdRange?: {
+            __typename?: "TokenIdRange";
+            min: string;
+            max: string;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -36784,12 +37135,20 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -37698,14 +38057,22 @@ export type GetBundleMetadataEntitiesQueryQuery = {
           image?: string | null;
           externalUrl?: string | null;
           animationUrl?: string | null;
+          youtubeUrl?: string | null;
           chainId?: number | null;
           contract?: string | null;
           tokenId?: string | null;
+          transferMethod?: string | null;
+          transferDelay?: string | null;
           quantity?: number | null;
           id: string;
           schemaUrl: string;
           type: ItemMetadataType;
           metadataUri: string;
+          tokenIdRange?: {
+            __typename?: "TokenIdRange";
+            min: string;
+            max: string;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -38462,12 +38829,20 @@ export type BundleMetadataEntityFieldsFragment = {
                 image?: string | null;
                 externalUrl?: string | null;
                 animationUrl?: string | null;
+                youtubeUrl?: string | null;
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
+                transferMethod?: string | null;
+                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
+                tokenIdRange?: {
+                  __typename?: "TokenIdRange";
+                  min: string;
+                  max: string;
+                } | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -39364,14 +39739,22 @@ export type BundleMetadataEntityFieldsFragment = {
         image?: string | null;
         externalUrl?: string | null;
         animationUrl?: string | null;
+        youtubeUrl?: string | null;
         chainId?: number | null;
         contract?: string | null;
         tokenId?: string | null;
+        transferMethod?: string | null;
+        transferDelay?: string | null;
         quantity?: number | null;
         id: string;
         schemaUrl: string;
         type: ItemMetadataType;
         metadataUri: string;
+        tokenIdRange?: {
+          __typename?: "TokenIdRange";
+          min: string;
+          max: string;
+        } | null;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -40127,12 +40510,20 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                 image?: string | null;
                 externalUrl?: string | null;
                 animationUrl?: string | null;
+                youtubeUrl?: string | null;
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
+                transferMethod?: string | null;
+                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
+                tokenIdRange?: {
+                  __typename?: "TokenIdRange";
+                  min: string;
+                  max: string;
+                } | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -41029,14 +41420,22 @@ export type BaseBundleMetadataEntityFieldsFragment = {
         image?: string | null;
         externalUrl?: string | null;
         animationUrl?: string | null;
+        youtubeUrl?: string | null;
         chainId?: number | null;
         contract?: string | null;
         tokenId?: string | null;
+        transferMethod?: string | null;
+        transferDelay?: string | null;
         quantity?: number | null;
         id: string;
         schemaUrl: string;
         type: ItemMetadataType;
         metadataUri: string;
+        tokenIdRange?: {
+          __typename?: "TokenIdRange";
+          min: string;
+          max: string;
+        } | null;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -42034,12 +42433,20 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     image?: string | null;
                     externalUrl?: string | null;
                     animationUrl?: string | null;
+                    youtubeUrl?: string | null;
                     chainId?: number | null;
                     contract?: string | null;
                     tokenId?: string | null;
+                    transferMethod?: string | null;
+                    transferDelay?: string | null;
                     quantity?: number | null;
                     type: ItemMetadataType;
                     metadataUri: string;
+                    tokenIdRange?: {
+                      __typename?: "TokenIdRange";
+                      min: string;
+                      max: string;
+                    } | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
                       traitType: string;
@@ -43418,12 +43825,20 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     image?: string | null;
                     externalUrl?: string | null;
                     animationUrl?: string | null;
+                    youtubeUrl?: string | null;
                     chainId?: number | null;
                     contract?: string | null;
                     tokenId?: string | null;
+                    transferMethod?: string | null;
+                    transferDelay?: string | null;
                     quantity?: number | null;
                     type: ItemMetadataType;
                     metadataUri: string;
+                    tokenIdRange?: {
+                      __typename?: "TokenIdRange";
+                      min: string;
+                      max: string;
+                    } | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
                       traitType: string;
@@ -44816,12 +45231,20 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -46414,12 +46837,20 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -48002,12 +48433,20 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 image?: string | null;
                 externalUrl?: string | null;
                 animationUrl?: string | null;
+                youtubeUrl?: string | null;
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
+                transferMethod?: string | null;
+                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
+                tokenIdRange?: {
+                  __typename?: "TokenIdRange";
+                  min: string;
+                  max: string;
+                } | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -49577,12 +50016,20 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 image?: string | null;
                 externalUrl?: string | null;
                 animationUrl?: string | null;
+                youtubeUrl?: string | null;
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
+                transferMethod?: string | null;
+                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
+                tokenIdRange?: {
+                  __typename?: "TokenIdRange";
+                  min: string;
+                  max: string;
+                } | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -51365,12 +51812,20 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -52738,12 +53193,20 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   image?: string | null;
                   externalUrl?: string | null;
                   animationUrl?: string | null;
+                  youtubeUrl?: string | null;
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
+                  transferMethod?: string | null;
+                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
+                  tokenIdRange?: {
+                    __typename?: "TokenIdRange";
+                    min: string;
+                    max: string;
+                  } | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -54314,12 +54777,20 @@ export type GetOfferByIdQueryQuery = {
                 image?: string | null;
                 externalUrl?: string | null;
                 animationUrl?: string | null;
+                youtubeUrl?: string | null;
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
+                transferMethod?: string | null;
+                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
+                tokenIdRange?: {
+                  __typename?: "TokenIdRange";
+                  min: string;
+                  max: string;
+                } | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -55478,12 +55949,20 @@ export type GetOffersQueryQuery = {
                 image?: string | null;
                 externalUrl?: string | null;
                 animationUrl?: string | null;
+                youtubeUrl?: string | null;
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
+                transferMethod?: string | null;
+                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
+                tokenIdRange?: {
+                  __typename?: "TokenIdRange";
+                  min: string;
+                  max: string;
+                } | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -56733,12 +57212,20 @@ export type OfferFieldsFragment = {
               image?: string | null;
               externalUrl?: string | null;
               animationUrl?: string | null;
+              youtubeUrl?: string | null;
               chainId?: number | null;
               contract?: string | null;
               tokenId?: string | null;
+              transferMethod?: string | null;
+              transferDelay?: string | null;
               quantity?: number | null;
               type: ItemMetadataType;
               metadataUri: string;
+              tokenIdRange?: {
+                __typename?: "TokenIdRange";
+                min: string;
+                max: string;
+              } | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -57772,12 +58259,20 @@ export type BaseOfferFieldsFragment = {
               image?: string | null;
               externalUrl?: string | null;
               animationUrl?: string | null;
+              youtubeUrl?: string | null;
               chainId?: number | null;
               contract?: string | null;
               tokenId?: string | null;
+              transferMethod?: string | null;
+              transferDelay?: string | null;
               quantity?: number | null;
               type: ItemMetadataType;
               metadataUri: string;
+              tokenIdRange?: {
+                __typename?: "TokenIdRange";
+                min: string;
+                max: string;
+              } | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -59029,9 +59524,16 @@ export const BaseOfferFieldsFragmentDoc = gql`
             image
             externalUrl
             animationUrl
+            youtubeUrl
             chainId
             contract
             tokenId
+            tokenIdRange {
+              min
+              max
+            }
+            transferMethod
+            transferDelay
             quantity
             attributes {
               traitType
@@ -59519,9 +60021,16 @@ export const BaseBundleMetadataEntityFieldsFragmentDoc = gql`
         image
         externalUrl
         animationUrl
+        youtubeUrl
         chainId
         contract
         tokenId
+        tokenIdRange {
+          min
+          max
+        }
+        transferMethod
+        transferDelay
         quantity
         attributes {
           traitType

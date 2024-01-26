@@ -19,6 +19,7 @@ import {
   buildUuid,
   productV1
 } from "../../packages/metadata/src";
+import nftItemValidFull from "../../packages/metadata/tests/nft-item/valid/full.json";
 
 jest.setTimeout(120_000);
 
@@ -157,16 +158,57 @@ describe("Bundle e2e tests", () => {
     expect(product?.variants.length).toEqual(1);
     expect(product?.variants[0].offer.id).toEqual(offer.id);
   });
-  test("Create a BUNDLE with only one item", async () => {
+  test("Create a BUNDLE with only one physical item", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
       await initCoreSDKWithFundedWallet(seedWallet);
     const sellers = await ensureCreatedSeller(sellerWallet);
     const [seller] = sellers;
 
-    const digitalItem = mockNFTItem();
+    const productV1Item = mockProductV1Item();
+
+    const offer = await createBundleOffer(coreSDK, sellerWallet, [
+      productV1Item
+    ]);
+    expect(offer).toBeTruthy();
+    console.log("created offer", offer.id);
+
+    const bundles = await coreSDK.getBundleMetadataEntities({
+      metadataFilter: {
+        offer_in: [offer.id]
+      }
+    });
+    expect(bundles.length).toEqual(1);
+    expect(bundles[0].offer.id).toEqual(offer.id);
+    expect(bundles[0].items.length).toEqual(1);
+
+    expect(bundles[0].items[0].type).toEqual(
+      subgraph.ItemMetadataType.ItemProductV1
+    );
+    expect(
+      (bundles[0].items[0] as subgraph.ProductV1ItemMetadataEntity).productUuid
+    ).toEqual(productV1Item.product.uuid);
+  });
+  test("Create a BUNDLE with only one digital item", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const digitalItem = mockNFTItem({
+      ...nftItemValidFull,
+      attributes: nftItemValidFull.attributes.map((attr) => {
+        return {
+          value: attr.value,
+          traitType: (attr["traitType"] || attr["trait_type"]) as string,
+          displayType: attr["displayType"] || attr["display_type"]
+        }
+      }),
+      type: MetadataType.ITEM_NFT
+    });
 
     const offer = await createBundleOffer(coreSDK, sellerWallet, [digitalItem]);
     expect(offer).toBeTruthy();
+    console.log("created offer", offer.id);
 
     const bundles = await coreSDK.getBundleMetadataEntities({
       metadataFilter: {
@@ -181,6 +223,39 @@ describe("Bundle e2e tests", () => {
     expect(
       (bundles[0].items[0] as subgraph.NftItemMetadataEntity).name
     ).toEqual(digitalItem.name);
+    expect(
+      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).animationUrl
+    ).toEqual(digitalItem.animationUrl);
+    expect(
+      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).youtubeUrl
+    ).toEqual(digitalItem.youtubeUrl);
+    expect(
+      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).chainId
+    ).toEqual(digitalItem.chainId);
+    expect(
+      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).contract
+    ).toEqual(digitalItem.contract);
+    expect(
+      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).quantity
+    ).toEqual(digitalItem.quantity);
+    expect(
+      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).tokenId
+    ).toEqual(digitalItem.tokenId);
+    expect(
+      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).transferMethod
+    ).toEqual(digitalItem.transferMethod);
+    expect(
+      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).transferDelay
+    ).toEqual(digitalItem.transferDelay);
+    expect(
+      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).tokenIdRange
+    ).toBeTruthy();
+    expect(
+      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).tokenIdRange?.min
+    ).toEqual(digitalItem.tokenIdRange?.min);
+    expect(
+      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).tokenIdRange?.max
+    ).toEqual(digitalItem.tokenIdRange?.max);
   });
   test("Create a BUNDLE with twice the same single product", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =

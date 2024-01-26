@@ -271,6 +271,12 @@ type ProductV1ItemMetadataEntity implements ItemMetadataInterface @entity {
   metadataUri: String!
 }
 
+type TokenIdRange @entity {
+  id: ID!
+  min: String!
+  max: String!
+}
+
 type NftItemMetadataEntity implements ItemMetadataInterface @entity {
   id: ID!
   schemaUrl: String! # JSON schema URL
@@ -280,9 +286,13 @@ type NftItemMetadataEntity implements ItemMetadataInterface @entity {
   image: String
   externalUrl: String
   animationUrl: String
+  youtubeUrl: String
   chainId: Int
   contract: String
   tokenId: String
+  tokenIdRange: TokenIdRange
+  transferMethod: String
+  transferDelay: String
   quantity: Int
   attributes: [MetadataAttribute!]
   bundle: BundleMetadataEntity!

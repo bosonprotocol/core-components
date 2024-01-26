@@ -259,9 +259,16 @@ fragment BaseOfferFields on Offer {
           image
           externalUrl
           animationUrl
+          youtubeUrl
           chainId
           contract
           tokenId
+          tokenIdRange {
+            min
+            max
+          }
+          transferMethod
+          transferDelay
           quantity
           attributes {
             traitType

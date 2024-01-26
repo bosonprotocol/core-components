@@ -107,9 +107,16 @@ fragment BaseBundleMetadataEntityFields on BundleMetadataEntity {
       image
       externalUrl
       animationUrl
+      youtubeUrl
       chainId
       contract
       tokenId
+      tokenIdRange {
+        min
+        max
+      }
+      transferMethod
+      transferDelay
       quantity
       attributes {
         traitType

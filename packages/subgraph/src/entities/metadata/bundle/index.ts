@@ -142,5 +142,6 @@ function saveItemMetadata(
     );
   }
 
+  log.warning("Unable to deal with bundle item of type '{}'", [metadataType]);
   return null;
 }

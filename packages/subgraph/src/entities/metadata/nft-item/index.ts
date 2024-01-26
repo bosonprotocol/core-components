@@ -2,10 +2,31 @@ import { JSONValue, TypedMap } from "@graphprotocol/graph-ts";
 import { getItemMetadataEntityId, saveMetadataAttributes } from "../utils";
 import {
   convertToInt,
+  convertToObject,
   convertToObjectArray,
   convertToString
 } from "../../../utils/json";
-import { NftItemMetadataEntity, Offer } from "../../../../generated/schema";
+import {
+  NftItemMetadataEntity,
+  Offer,
+  TokenIdRange
+} from "../../../../generated/schema";
+
+function saveTokenIdRange(
+  tokenIdRangeObj: TypedMap<string, JSONValue>
+): string {
+  const min = convertToString(tokenIdRangeObj.get("min"));
+  const max = convertToString(tokenIdRangeObj.get("max"));
+  const tokenIdRangeId = `range-${min}-${max}`;
+  let tokenIdRange = TokenIdRange.load(tokenIdRangeId);
+  if (!tokenIdRange) {
+    tokenIdRange = new TokenIdRange(tokenIdRangeId);
+    tokenIdRange.min = min;
+    tokenIdRange.max = max;
+    tokenIdRange.save();
+  }
+  return tokenIdRangeId;
+}
 
 export function saveNftItemMetadata(
   offer: Offer,
@@ -23,9 +44,13 @@ export function saveNftItemMetadata(
   const image = convertToString(metadataObj.get("image"));
   const externalUrl = convertToString(metadataObj.get("externalUrl"));
   const animationUrl = convertToString(metadataObj.get("animationUrl"));
+  const youtubeUrl = convertToString(metadataObj.get("youtubeUrl"));
   const chainId = convertToInt(metadataObj.get("chainId"));
   const contract = convertToString(metadataObj.get("contract"));
   const tokenId = convertToString(metadataObj.get("tokenId"));
+  const tokenIdRangeObj = convertToObject(metadataObj.get("tokenIdRange"));
+  const transferMethod = convertToString(metadataObj.get("transferMethod"));
+  const transferDelay = convertToString(metadataObj.get("transferDelay"));
   const quantity = convertToInt(metadataObj.get("quantity"));
 
   const attributes = convertToObjectArray(metadataObj.get("attributes"));
@@ -43,9 +68,15 @@ export function saveNftItemMetadata(
   nftItemMetadataEntity.image = image;
   nftItemMetadataEntity.externalUrl = externalUrl;
   nftItemMetadataEntity.animationUrl = animationUrl;
+  nftItemMetadataEntity.youtubeUrl = youtubeUrl;
   nftItemMetadataEntity.chainId = chainId;
   nftItemMetadataEntity.contract = contract;
   nftItemMetadataEntity.tokenId = tokenId;
+  if (tokenIdRangeObj) {
+    nftItemMetadataEntity.tokenIdRange = saveTokenIdRange(tokenIdRangeObj);
+  }
+  nftItemMetadataEntity.transferMethod = transferMethod;
+  nftItemMetadataEntity.transferDelay = transferDelay;
   nftItemMetadataEntity.quantity = quantity;
   nftItemMetadataEntity.attributes = savedMetadataAttributeIds;
   nftItemMetadataEntity.bundle = bundleId;
