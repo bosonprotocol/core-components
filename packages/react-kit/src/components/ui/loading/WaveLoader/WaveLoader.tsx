@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
-import line1 from "./line1.png";
-import line2 from "./line2.png";
-import line3 from "./line3.png";
-import line4 from "./line4.png";
+import line1 from "../../../../assets/line1.png";
+import line2 from "../../../../assets/line2.png";
+import line3 from "../../../../assets/line3.png";
+import line4 from "../../../../assets/line4.png";
 
 const WaveContainer = styled.div`
   position: relative;

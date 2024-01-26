@@ -46,6 +46,7 @@ export type CommitNonModalProps = Pick<
   offerViewOnViewFullDescription?: OfferVariantViewProps["onViewFullDescription"];
   forcedAccount?: string;
   withExternalSigner: boolean | undefined | null;
+  lookAndFeel: "regular" | "modal";
 };
 
 export default function CommitWrapper({
@@ -59,7 +60,7 @@ export default function CommitWrapper({
       contentStyle={{
         background: colors.white
       }}
-      lookAndFeel="regular"
+      lookAndFeel={props.lookAndFeel}
       showConnectButton={!props.withExternalSigner}
     >
       <CommitNonModal {...props} />
