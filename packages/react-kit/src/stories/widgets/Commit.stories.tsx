@@ -157,7 +157,7 @@ CommitTokenGated_ERC721.args = {
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
-  productUuid: "57f5ba8-7276-d12f-6d45-6dff2afc3d", // token gated 1155
+  productUuid: "ce7faab-00c-26-a351-c71f615c07c2",
   sellerId: "138",
   metaTx: {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,

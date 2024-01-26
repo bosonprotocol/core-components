@@ -268,7 +268,7 @@ export const TokenGatedItem = ({
                 flex={0}
                 width="auto"
               >
-                <Grid flexDirection="column">
+                <Grid flexDirection="column" alignItems="flex-start">
                   {erc721Info} {rangeText}
                 </Grid>
               </Grid>
