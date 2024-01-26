@@ -7,6 +7,7 @@ import {
   RedemptionWidgetProviders,
   RedemptionWidgetProvidersProps
 } from "./RedemptionWidgetProviders";
+import { CSSProperties } from "styled-components";
 
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
@@ -14,7 +15,7 @@ type RedemptionProps = {
 } & Omit<RedeemNonModalProps, "exchange" | "hideModal" | "parentOrigin"> & {
     exchangeId?: string;
     closeWidgetClick?: () => void;
-    modalMargin?: string;
+    modalMargin?: CSSProperties["margin"];
   };
 
 export type RedemptionWidgetProps = RedemptionProps &
