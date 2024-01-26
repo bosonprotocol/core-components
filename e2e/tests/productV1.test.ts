@@ -12,16 +12,22 @@ import { CoreSDK, subgraph } from "../../packages/core-sdk/src";
 import {
   createOffer2,
   createOfferArgs,
+  createOfferBatch,
   ensureCreatedSeller,
   initCoreSDKWithFundedWallet,
   initCoreSDKWithWallet,
   mockProductV1Metadata,
+  prepareMultiVariantOffers,
+  resolveDateValidity,
   seedWallet10,
   wait,
   waitForGraphNodeIndexing
 } from "./utils";
 import { SEC_PER_DAY } from "../../packages/common/src/utils/timestamp";
-import { ProductV1MetadataEntity } from "../../packages/core-sdk/src/subgraph";
+import {
+  MetadataType,
+  ProductV1MetadataEntity
+} from "../../packages/core-sdk/src/subgraph";
 import exchangePolicyRules from "../../packages/core-sdk/tests/exchangePolicy/exchangePolicyRules.local.json";
 import { buildUuid } from "../../packages/metadata/src";
 
@@ -45,7 +51,7 @@ function serializeVariant(variant: productV1.ProductV1Variant): string {
   const orderedTable = orderedStruct.sort((a, b) =>
     a.type.localeCompare(b.type)
   );
-  return JSON.stringify(orderedTable);
+  return JSON.stringify(orderedTable).toLowerCase();
 }
 
 function extractAdditionalMetadata(
@@ -60,56 +66,6 @@ function extractAdditionalMetadata(
     sellerTradingName: metadata.seller.name,
     returnPeriodInDays: parseInt(metadata.shipping.returnPeriod)
   };
-}
-
-async function createOfferBatch(
-  coreSDK: CoreSDK,
-  sellerWallet: Wallet,
-  offersArgs: Array<CreateOfferArgs>
-) {
-  const sellers = await ensureCreatedSeller(sellerWallet);
-  const [seller] = sellers;
-  for (const offerArgs of offersArgs) {
-    // Check the disputeResolver exists and is active
-    const disputeResolverId = offerArgs.disputeResolverId;
-
-    const dr = await coreSDK.getDisputeResolverById(disputeResolverId);
-    expect(dr).toBeTruthy();
-    expect(dr.active).toBe(true);
-    expect(
-      dr.sellerAllowList.length == 0 ||
-        dr.sellerAllowList.indexOf(seller.id) >= 0
-    ).toBe(true);
-  }
-  const createOfferTxResponse = await coreSDK.createOfferBatch(offersArgs);
-  const createOfferTxReceipt = await createOfferTxResponse.wait();
-  const createdOfferIds = coreSDK.getCreatedOfferIdsFromLogs(
-    createOfferTxReceipt.logs
-  );
-
-  expect(createdOfferIds.length).toEqual(offersArgs.length);
-
-  await waitForGraphNodeIndexing(createOfferTxReceipt);
-  const offerPromises = createdOfferIds.map((createdOfferId) =>
-    coreSDK.getOfferById(createdOfferId as string)
-  );
-  const offers = await Promise.all(offerPromises);
-
-  // Be sure the returned offers are in the same order as the offersArgs
-  // (here we know that the metadataHash is unique for every offer)
-  const retOffers: subgraph.OfferFieldsFragment[] = [];
-  const offersMap = new Map<string, subgraph.OfferFieldsFragment>();
-  for (const offer of offers) {
-    offersMap.set(offer.metadataHash, offer);
-  }
-  for (const offersArg of offersArgs) {
-    const offer = offersMap.get(offersArg.metadataHash);
-    if (offer) {
-      retOffers.push(offer);
-    }
-  }
-
-  return retOffers;
 }
 
 describe("ProductV1 e2e tests", () => {
@@ -300,8 +256,9 @@ describe("Multi-variant offers tests", () => {
     const sellers = await ensureCreatedSeller(sellerWallet);
     const [seller] = sellers;
 
-    const [offerArgs1, offerArgs2] = (await prepareMultiVariantOffers(coreSDK))
-      .offerArgs;
+    const [offerArgs1, offerArgs2] = (
+      await prepareMultiVariantOffers(coreSDK, productVariations)
+    ).offerArgs;
 
     // Get the number of offers of this seller before
     const offersFilter = {
@@ -342,8 +299,9 @@ describe("Multi-variant offers tests", () => {
     const sellers = await ensureCreatedSeller(sellerWallet);
     const [seller] = sellers;
 
-    const [offerArgs1, offerArgs2] = (await prepareMultiVariantOffers(coreSDK))
-      .offerArgs;
+    const [offerArgs1, offerArgs2] = (
+      await prepareMultiVariantOffers(coreSDK, productVariations)
+    ).offerArgs;
 
     // Get the number of offers of this seller before
     const offersFilter = {
@@ -399,7 +357,7 @@ describe("Multi-variant offers tests", () => {
       offerArgs: [offerArgs1, offerArgs2],
       productUuid,
       productMetadata
-    } = await prepareMultiVariantOffers(coreSDK);
+    } = await prepareMultiVariantOffers(coreSDK, productVariations);
 
     await createOfferBatch(coreSDK, sellerWallet, [offerArgs1, offerArgs2]);
 
@@ -429,7 +387,7 @@ describe("Multi-variant offers tests", () => {
       offerArgs: [offerArgs1, offerArgs2],
       productUuid,
       variations: expectedVariations
-    } = await prepareMultiVariantOffers(coreSDK);
+    } = await prepareMultiVariantOffers(coreSDK, productVariations);
 
     const createdOffers = await createOfferBatch(coreSDK, sellerWallet, [
       offerArgs1,
@@ -478,7 +436,7 @@ describe("Multi-variant offers tests", () => {
       productMetadata,
       productUuid,
       variations: expectedVariations
-    } = await prepareMultiVariantOffers(coreSDK);
+    } = await prepareMultiVariantOffers(coreSDK, productVariations);
 
     const createdOffers = await createOfferBatch(coreSDK, sellerWallet, [
       offerArgs1,
@@ -515,8 +473,11 @@ describe("Multi-variant offers tests", () => {
           });
         })
         .map((v) => (v ? serializeVariant(v) : undefined));
+      console.log("variationsStr", variationsStr);
+      console.log("expectedVariations", expectedVariations);
       for (const expectedVariation of expectedVariations) {
         const expStr = serializeVariant(expectedVariation);
+        console.log("expStr", expStr);
         expect(variationsStr.includes(expStr)).toBe(true);
       }
     }
@@ -657,11 +618,19 @@ describe("Multi-variant offers tests", () => {
       ({
         offerArgs: [offerArgs1, offerArgs2],
         productUuid: productUuid1
-      } = await prepareMultiVariantOffers(coreSDK, offersParams1));
+      } = await prepareMultiVariantOffers(
+        coreSDK,
+        productVariations,
+        offersParams1
+      ));
       ({
         offerArgs: [offerArgs3, offerArgs4],
         productUuid: productUuid2
-      } = await prepareMultiVariantOffers(coreSDK, offersParams2));
+      } = await prepareMultiVariantOffers(
+        coreSDK,
+        productVariations,
+        offersParams2
+      ));
 
       // Get the number of offers of this seller before
       const offersFilter = {
@@ -969,25 +938,8 @@ function checkProductMetadata(
   );
 }
 
-function resolveDateValidity(offerArgs: CreateOfferArgs) {
-  offerArgs.validFromDateInMS = BigNumber.from(offerArgs.validFromDateInMS)
-    .add(10000) // to avoid offerData validation error
-    .toNumber();
-  offerArgs.voucherRedeemableFromDateInMS = BigNumber.from(
-    offerArgs.voucherRedeemableFromDateInMS
-  )
-    .add(10000) // to avoid offerData validation error
-    .toNumber();
-}
-
-async function prepareMultiVariantOffers(
-  coreSDK: CoreSDK,
-  offersParams?: Array<Partial<CreateOfferArgs>>
-) {
-  const productUuid = buildUuid();
-  const productMetadata = mockProductV1Metadata("a template", productUuid);
-
-  const variations1 = [
+const productVariations: productV1.ProductV1Variant[] = [
+  [
     {
       type: "color",
       option: "red"
@@ -996,8 +948,8 @@ async function prepareMultiVariantOffers(
       type: "size",
       option: "XS"
     }
-  ];
-  const variations2 = [
+  ],
+  [
     {
       type: "color",
       option: "blue"
@@ -1006,27 +958,8 @@ async function prepareMultiVariantOffers(
       type: "size",
       option: "S"
     }
-  ];
-  const [metadata1, metadata2] = productV1.createVariantProductMetadata(
-    productMetadata,
-    [{ productVariant: variations1 }, { productVariant: variations2 }]
-  );
-
-  const [offer1Params, offer2Params] = offersParams || [];
-  const p1 = createOfferArgs(coreSDK, metadata1, offer1Params);
-  const p2 = createOfferArgs(coreSDK, metadata2, offer2Params);
-  const [offerArgs1, offerArgs2] = await Promise.all([p1, p2]);
-
-  resolveDateValidity(offerArgs1);
-  resolveDateValidity(offerArgs2);
-
-  return {
-    offerArgs: [offerArgs1, offerArgs2],
-    productMetadata,
-    productUuid,
-    variations: [variations1, variations2]
-  };
-}
+  ]
+];
 
 describe("additional tests", () => {
   test("overflowed returnPeriod", async () => {
@@ -1063,13 +996,13 @@ describe("additional tests", () => {
     const template = "Hello World!!";
     const metadata = mockProductV1Metadata(template);
     metadata.animationUrl = "https://animation.url";
-    const { offerArgs } = await createOfferArgs(coreSDK, metadata);
+    const offerArgs = await createOfferArgs(coreSDK, metadata);
     resolveDateValidity(offerArgs);
 
-    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    const offer = await createOffer2(coreSDK, sellerWallet, offerArgs);
     expect(offer).toBeTruthy();
 
-    expect(offer.metadata?.type).toEqual(MetadataType.PRODUCT_V1);
+    expect(offer.metadata?.type).toEqual(MetadataType.ProductV1);
     expect(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ((offer?.metadata as any)?.product as any)?.visuals_videos?.length

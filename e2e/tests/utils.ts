@@ -18,14 +18,17 @@ import {
   CoreSDK,
   getEnvConfigs,
   accounts,
-  MetadataType
+  MetadataType,
+  subgraph
 } from "../../packages/core-sdk/src";
 import {
   AnyMetadata,
   base,
   buildUuid,
+  bundle,
   productV1,
   productV1Item,
+  nftItem,
   seller
 } from "../../packages/metadata/src";
 import {
@@ -69,6 +72,7 @@ import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 import { sortObjKeys } from "../../packages/ipfs-storage/src/utils";
 import productV1ValidMinimalOffer from "../../scripts/assets/offer_1.metadata.json";
+import bundleMetadataMinimal from "../../packages/metadata/tests/bundle/valid/minimal.json";
 
 export type DeepPartial<T> = T extends object
   ? {
@@ -472,6 +476,11 @@ export async function createOffer2(
   await waitForGraphNodeIndexing(createOfferTxReceipt);
 
   return await coreSDK.getOfferById(createdOfferId as string);
+}
+
+export async function voidOfferBatch(coreSDK: CoreSDK, offerIds: string[]) {
+  const tx = await coreSDK.voidOfferBatch(offerIds);
+  await waitForGraphNodeIndexing(tx);
 }
 
 export async function createOfferWithCondition(
@@ -933,7 +942,8 @@ export function mockProductV1Item(
     exchangePolicy: {
       ...productV1ValidMinimalOfferClone.exchangePolicy,
       ...overrides.exchangePolicy,
-      template: template ?? productV1ValidMinimalOfferClone.exchangePolicy.template
+      template:
+        template ?? productV1ValidMinimalOfferClone.exchangePolicy.template
     }
   } as productV1Item.ProductV1Item;
 }
@@ -953,4 +963,176 @@ export async function createOfferArgs(
   });
 
   return offerArgs;
+}
+
+export function resolveDateValidity(offerArgs: CreateOfferArgs) {
+  offerArgs.validFromDateInMS = BigNumber.from(offerArgs.validFromDateInMS)
+    .add(10000) // to avoid offerData validation error
+    .toNumber();
+  offerArgs.voucherRedeemableFromDateInMS = BigNumber.from(
+    offerArgs.voucherRedeemableFromDateInMS
+  )
+    .add(10000) // to avoid offerData validation error
+    .toNumber();
+}
+
+export async function prepareMultiVariantOffers(
+  coreSDK: CoreSDK,
+  variations: productV1.ProductV1Variant[],
+  offersParams?: Array<Partial<CreateOfferArgs>>
+) {
+  const productUuid = buildUuid();
+  const productMetadata = mockProductV1Metadata("a template", productUuid);
+
+  const metadatas = productV1.createVariantProductMetadata(
+    productMetadata,
+    variations.map((variation) => {
+      return { productVariant: variation };
+    })
+  );
+
+  const offersArgs = await Promise.all(
+    metadatas.map((metadata, index) =>
+      createOfferArgs(coreSDK, metadata, offersParams?.[index])
+    )
+  );
+  offersArgs.map((offerArgs) => resolveDateValidity(offerArgs));
+
+  return {
+    offerArgs: offersArgs,
+    productMetadata,
+    productUuid,
+    variations
+  };
+}
+
+export async function createOfferBatch(
+  coreSDK: CoreSDK,
+  sellerWallet: Wallet,
+  offersArgs: Array<CreateOfferArgs>
+) {
+  const sellers = await ensureCreatedSeller(sellerWallet);
+  const [seller] = sellers;
+  for (const offerArgs of offersArgs) {
+    // Check the disputeResolver exists and is active
+    const disputeResolverId = offerArgs.disputeResolverId;
+
+    const dr = await coreSDK.getDisputeResolverById(disputeResolverId);
+    expect(dr).toBeTruthy();
+    expect(dr.active).toBe(true);
+    expect(
+      dr.sellerAllowList.length == 0 ||
+        dr.sellerAllowList.indexOf(seller.id) >= 0
+    ).toBe(true);
+  }
+  const createOfferTxResponse = await coreSDK.createOfferBatch(offersArgs);
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferIds = coreSDK.getCreatedOfferIdsFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  expect(createdOfferIds.length).toEqual(offersArgs.length);
+
+  await waitForGraphNodeIndexing(createOfferTxReceipt);
+  const offerPromises = createdOfferIds.map((createdOfferId) =>
+    coreSDK.getOfferById(createdOfferId as string)
+  );
+  const offers = await Promise.all(offerPromises);
+
+  // Be sure the returned offers are in the same order as the offersArgs
+  // (here we know that the metadataHash is unique for every offer)
+  const retOffers: subgraph.OfferFieldsFragment[] = [];
+  const offersMap = new Map<string, subgraph.OfferFieldsFragment>();
+  for (const offer of offers) {
+    offersMap.set(offer.metadataHash, offer);
+  }
+  for (const offersArg of offersArgs) {
+    const offer = offersMap.get(offersArg.metadataHash);
+    if (offer) {
+      retOffers.push(offer);
+    }
+  }
+
+  return retOffers;
+}
+
+export function mockNFTItem(
+  overrides?: Partial<nftItem.NftItem>
+): nftItem.NftItem {
+  return {
+    schemaUrl: "https://json-schema.org",
+    type: MetadataType.ITEM_NFT,
+    name: "Boson NFT Wearable",
+    ...overrides
+  };
+}
+
+export function mockBundleMetadata(
+  itemUrls: string[],
+  bundleUuid: string = buildUuid(),
+  overrides?: Partial<Omit<bundle.BundleMetadata, "type" | "bundleUuid">>
+): bundle.BundleMetadata {
+  return {
+    ...bundleMetadataMinimal,
+    bundleUuid,
+    type: MetadataType.BUNDLE,
+    items: itemUrls.map((itemUrl) => {
+      return { url: itemUrl };
+    }),
+    ...overrides
+  };
+}
+
+export async function createBundleOffer(
+  coreSDK: CoreSDK,
+  sellerWallet: Wallet,
+  items: AnyMetadata[]
+): Promise<subgraph.OfferFieldsFragment> {
+  const [offer] = await createBundleOffers(coreSDK, sellerWallet, [items]);
+  return offer;
+}
+
+export async function createBundleOffers(
+  coreSDK: CoreSDK,
+  sellerWallet: Wallet,
+  itemsSets: AnyMetadata[][]
+): Promise<subgraph.OfferFieldsFragment[]> {
+  const offerArgsSets = await Promise.all(
+    itemsSets.map(async (items) => {
+      const itemUrls = await Promise.all(
+        items.map(async (itemMetadata) => {
+          const hash = await coreSDK.storeMetadata(itemMetadata);
+          return `ipfs://${hash}`;
+        })
+      );
+      const bundleMetadata = mockBundleMetadata(itemUrls);
+      const offerArgs = await createOfferArgs(coreSDK, bundleMetadata);
+      resolveDateValidity(offerArgs);
+      return offerArgs;
+    })
+  );
+
+  if (offerArgsSets.length === 1) {
+    return [await createOffer2(coreSDK, sellerWallet, offerArgsSets[0])];
+  }
+  return createOfferBatch(coreSDK, sellerWallet, offerArgsSets);
+}
+
+export async function createBundleMultiVariantOffers(
+  coreSDK: CoreSDK,
+  sellerWallet: Wallet,
+  productUuid: string,
+  variations: productV1.ProductV1Variant[]
+): Promise<subgraph.OfferFieldsFragment[]> {
+  const productV1Items = variations.map((variation) =>
+    mockProductV1Item(undefined, productUuid, {
+      variations: variation
+    })
+  );
+  const digitalItem = mockNFTItem();
+  return createBundleOffers(
+    coreSDK,
+    sellerWallet,
+    productV1Items.map((productV1Item) => [productV1Item, digitalItem])
+  );
 }

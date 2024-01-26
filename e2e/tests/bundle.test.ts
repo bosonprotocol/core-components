@@ -1,83 +1,49 @@
-import { BigNumber } from "@ethersproject/bignumber";
-import { Wallet } from "ethers";
-import { NftItem } from "../../packages/metadata/src/nftItem";
 import {
+  createBundleMultiVariantOffers,
+  createBundleOffer,
   createOffer2,
   createOfferArgs,
+  createOfferBatch,
   ensureCreatedSeller,
   initCoreSDKWithFundedWallet,
+  mockNFTItem,
   mockProductV1Item,
   mockProductV1Metadata,
-  seedWallet22
+  prepareMultiVariantOffers,
+  seedWallet22,
+  voidOfferBatch
 } from "./utils";
-import { CoreSDK, MetadataType, subgraph } from "../../packages/core-sdk/src";
-import bundleMetadataMinimal from "../../packages/metadata/tests/bundle/valid/minimal.json";
-import { CreateOfferArgs } from "../../packages/core-sdk/src/offers";
+import { MetadataType, subgraph } from "../../packages/core-sdk/src";
 import {
-  AnyMetadata,
   productV1Item,
-  bundle,
-  buildUuid
+  buildUuid,
+  productV1
 } from "../../packages/metadata/src";
 
 jest.setTimeout(120_000);
 
 const seedWallet = seedWallet22; // be sure the seedWallet is not used by another test (to allow concurrent run)
 
-function mockNFTItem(overrides?: Partial<NftItem>): NftItem {
-  return {
-    schemaUrl: "https://json-schema.org",
-    type: MetadataType.ITEM_NFT,
-    name: "Boson NFT Wearable",
-    ...overrides
-  };
-}
-
-function mockBundleMetadata(
-  itemUrls: string[],
-  bundleUuid: string = buildUuid(),
-  overrides?: Partial<Omit<bundle.BundleMetadata, "type" | "bundleUuid">>
-): bundle.BundleMetadata {
-  return {
-    ...bundleMetadataMinimal,
-    bundleUuid,
-    type: MetadataType.BUNDLE,
-    items: itemUrls.map((itemUrl) => {
-      return { url: itemUrl };
-    }),
-    ...overrides
-  };
-}
-
-function resolveDateValidity(offerArgs: CreateOfferArgs) {
-  offerArgs.validFromDateInMS = BigNumber.from(offerArgs.validFromDateInMS)
-    .add(10000) // to avoid offerData validation error
-    .toNumber();
-  offerArgs.voucherRedeemableFromDateInMS = BigNumber.from(
-    offerArgs.voucherRedeemableFromDateInMS
-  )
-    .add(10000) // to avoid offerData validation error
-    .toNumber();
-}
-
-async function createBundleOffer(
-  coreSDK: CoreSDK,
-  sellerWallet: Wallet,
-  items: AnyMetadata[]
-) {
-  const itemUrls = await Promise.all(
-    items.map(async (itemMetadata) => {
-      const hash = await coreSDK.storeMetadata(itemMetadata);
-      return `ipfs://${hash}`;
-    })
-  );
-  const bundleMetadata = mockBundleMetadata(itemUrls);
-
-  const offerArgs = await createOfferArgs(coreSDK, bundleMetadata);
-  resolveDateValidity(offerArgs);
-
-  return createOffer2(coreSDK, sellerWallet, offerArgs);
-}
+const productVariations: productV1.ProductV1Variant[] = [
+  [
+    {
+      type: "Size",
+      option: "S"
+    }
+  ],
+  [
+    {
+      type: "Size",
+      option: "M"
+    }
+  ],
+  [
+    {
+      type: "Size",
+      option: "L"
+    }
+  ]
+];
 
 describe("Bundle e2e tests", () => {
   test("Create an Phygital offer with a single physical product", async () => {
@@ -267,51 +233,13 @@ describe("Bundle e2e tests", () => {
     const sellers = await ensureCreatedSeller(sellerWallet);
     const [seller] = sellers;
 
-    const variations_S = [
-      {
-        type: "Size",
-        option: "S"
-      }
-    ];
-    const variations_M = [
-      {
-        type: "Size",
-        option: "M"
-      }
-    ];
-    const variations_L = [
-      {
-        type: "Size",
-        option: "L"
-      }
-    ];
-
-    const productV1Item_S = mockProductV1Item(undefined, undefined, {
-      variations: variations_S
-    });
-    const productUuid = productV1Item_S.product.uuid;
-    const productV1Item_M = mockProductV1Item(undefined, productUuid, {
-      variations: variations_M
-    });
-    const productV1Item_L = mockProductV1Item(undefined, productUuid, {
-      variations: variations_L
-    });
-    const digitalItem = mockNFTItem();
-
-    const [offer_S, offer_M, offer_L] = await Promise.all([
-      await createBundleOffer(coreSDK, sellerWallet, [
-        productV1Item_S,
-        digitalItem
-      ]),
-      await createBundleOffer(coreSDK, sellerWallet, [
-        productV1Item_M,
-        digitalItem
-      ]),
-      await createBundleOffer(coreSDK, sellerWallet, [
-        productV1Item_L,
-        digitalItem
-      ])
-    ]);
+    const productUuid = buildUuid();
+    const [offer_S, offer_M, offer_L] = await createBundleMultiVariantOffers(
+      coreSDK,
+      sellerWallet,
+      productUuid,
+      productVariations
+    );
     expect(offer_S).toBeTruthy();
     expect(offer_M).toBeTruthy();
     expect(offer_L).toBeTruthy();
@@ -416,7 +344,279 @@ describe("Bundle e2e tests", () => {
       product?.variants.some((variant) => variant.offer.id === bundleOffer.id)
     ).toBe(true);
   });
-  xtest("Create a BUNDLE that contains a multi-variant product already listed as single offer", async () => {});
-});
+  test("Create a BUNDLE that contains a multi-variant product already listed as single offer", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
 
-// TODO: check methods getAllProductsWithNotVoidedVariants() / getAllProductsWithVariants() with BUNDLE offers
+    // Create a multi-variant product (without bundle)
+    const { offerArgs, productUuid, variations } =
+      await prepareMultiVariantOffers(coreSDK, productVariations);
+
+    const createdOffers = await createOfferBatch(
+      coreSDK,
+      sellerWallet,
+      offerArgs
+    );
+    expect(createdOffers.length).toEqual(productVariations.length);
+
+    // Create a multi-variant bundle with the same productUuid
+    const bundleOffers = await createBundleMultiVariantOffers(
+      coreSDK,
+      sellerWallet,
+      productUuid,
+      productVariations
+    );
+    expect(bundleOffers.length).toEqual(productVariations.length);
+
+    const product = await coreSDK.getProductWithVariants(
+      seller.id,
+      productUuid
+    );
+    expect(product).toBeTruthy();
+    expect(product?.product).toBeTruthy();
+    expect(product?.product.uuid).toEqual(productUuid);
+    // We expect to have 3 bundles referenced for this product
+    expect(product?.bundles.length).toEqual(productVariations.length);
+    // We expect to find 6 variants (as there are 6 offers for the same product)
+    expect(product?.variants.length).toEqual(2 * productVariations.length);
+    for (const offer of [...createdOffers, ...bundleOffers]) {
+      expect(
+        product?.variants.some((variant) => variant.offer.id === offer.id)
+      ).toBe(true);
+    }
+  });
+  test("Create different multi-variant BUNDLES - check getAllProductsWithVariants()", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const productUuid1 = buildUuid();
+    const [offer1_S, offer1_M, offer1_L] = await createBundleMultiVariantOffers(
+      coreSDK,
+      sellerWallet,
+      productUuid1,
+      productVariations
+    );
+    const productUuid2 = buildUuid();
+    const [offer2_S, offer2_M, offer2_L] = await createBundleMultiVariantOffers(
+      coreSDK,
+      sellerWallet,
+      productUuid2,
+      productVariations
+    );
+    for (const offer of [
+      offer1_S,
+      offer1_M,
+      offer1_L,
+      offer2_S,
+      offer2_M,
+      offer2_L
+    ]) {
+      expect(offer).toBeTruthy();
+    }
+
+    // Get all products from current seller
+    const allProductsWithVariants = await coreSDK.getAllProductsWithVariants({
+      productsFilter: {
+        sellerId: seller.id
+      }
+    });
+    expect(allProductsWithVariants.length).toEqual(2);
+    expect(
+      allProductsWithVariants.some((product) => product.uuid === productUuid1)
+    ).toBe(true);
+    expect(
+      allProductsWithVariants.some((product) => product.uuid === productUuid2)
+    ).toBe(true);
+    for (let i = 0; i < allProductsWithVariants.length; i++) {
+      expect(allProductsWithVariants[i].variants).toBeTruthy();
+      expect(allProductsWithVariants[i].variants?.length).toEqual(3);
+      expect(allProductsWithVariants[i].allVariantsVoided).toBe(false);
+    }
+  });
+  test("Create different multi-variant BUNDLES - check getAllProductsWithNotVoidedVariants() - no voided offer", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const productUuid1 = buildUuid();
+    const [offer1_S, offer1_M, offer1_L] = await createBundleMultiVariantOffers(
+      coreSDK,
+      sellerWallet,
+      productUuid1,
+      productVariations
+    );
+    const productUuid2 = buildUuid();
+    const [offer2_S, offer2_M, offer2_L] = await createBundleMultiVariantOffers(
+      coreSDK,
+      sellerWallet,
+      productUuid2,
+      productVariations
+    );
+    for (const offer of [
+      offer1_S,
+      offer1_M,
+      offer1_L,
+      offer2_S,
+      offer2_M,
+      offer2_L
+    ]) {
+      expect(offer).toBeTruthy();
+    }
+
+    // Get all products from current seller
+    const allProductsWithNotVoidedVariants =
+      await coreSDK.getAllProductsWithNotVoidedVariants({
+        productsFilter: {
+          sellerId: seller.id
+        }
+      });
+    expect(allProductsWithNotVoidedVariants.length).toEqual(2);
+    expect(
+      allProductsWithNotVoidedVariants.some(
+        (product) => product.uuid === productUuid1
+      )
+    ).toBe(true);
+    expect(
+      allProductsWithNotVoidedVariants.some(
+        (product) => product.uuid === productUuid2
+      )
+    ).toBe(true);
+    for (let i = 0; i < allProductsWithNotVoidedVariants.length; i++) {
+      expect(
+        allProductsWithNotVoidedVariants[i].notVoidedVariants
+      ).toBeTruthy();
+      expect(
+        allProductsWithNotVoidedVariants[i].notVoidedVariants?.length
+      ).toEqual(3);
+      expect(allProductsWithNotVoidedVariants[i].allVariantsVoided).toBe(false);
+    }
+  });
+  test("Create different multi-variant BUNDLES - check getAllProductsWithNotVoidedVariants() - some voided offer", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const productUuid1 = buildUuid();
+    const [offer1_S, offer1_M, offer1_L] = await createBundleMultiVariantOffers(
+      coreSDK,
+      sellerWallet,
+      productUuid1,
+      productVariations
+    );
+    const productUuid2 = buildUuid();
+    const [offer2_S, offer2_M, offer2_L] = await createBundleMultiVariantOffers(
+      coreSDK,
+      sellerWallet,
+      productUuid2,
+      productVariations
+    );
+    for (const offer of [
+      offer1_S,
+      offer1_M,
+      offer1_L,
+      offer2_S,
+      offer2_M,
+      offer2_L
+    ]) {
+      expect(offer).toBeTruthy();
+    }
+    // Void offer1_S and offer2_L
+    await voidOfferBatch(coreSDK, [offer1_S.id, offer2_L.id]);
+
+    // Get all products from current seller
+    const allProductsWithNotVoidedVariants =
+      await coreSDK.getAllProductsWithNotVoidedVariants({
+        productsFilter: {
+          sellerId: seller.id
+        }
+      });
+    expect(allProductsWithNotVoidedVariants.length).toEqual(2);
+    expect(
+      allProductsWithNotVoidedVariants.some(
+        (product) => product.uuid === productUuid1
+      )
+    ).toBe(true);
+    expect(
+      allProductsWithNotVoidedVariants.some(
+        (product) => product.uuid === productUuid2
+      )
+    ).toBe(true);
+    for (let i = 0; i < allProductsWithNotVoidedVariants.length; i++) {
+      expect(
+        allProductsWithNotVoidedVariants[i].notVoidedVariants
+      ).toBeTruthy();
+      expect(
+        allProductsWithNotVoidedVariants[i].notVoidedVariants?.length
+      ).toEqual(2);
+      expect(allProductsWithNotVoidedVariants[i].allVariantsVoided).toBe(false);
+    }
+  });
+  test("Create different multi-variant BUNDLES - check getAllProductsWithNotVoidedVariants() - all offers voided", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const productUuid1 = buildUuid();
+    const [offer1_S, offer1_M, offer1_L] = await createBundleMultiVariantOffers(
+      coreSDK,
+      sellerWallet,
+      productUuid1,
+      productVariations
+    );
+    const productUuid2 = buildUuid();
+    const [offer2_S, offer2_M, offer2_L] = await createBundleMultiVariantOffers(
+      coreSDK,
+      sellerWallet,
+      productUuid2,
+      productVariations
+    );
+    for (const offer of [
+      offer1_S,
+      offer1_M,
+      offer1_L,
+      offer2_S,
+      offer2_M,
+      offer2_L
+    ]) {
+      expect(offer).toBeTruthy();
+    }
+    // Void all variant offer2_*
+    await voidOfferBatch(coreSDK, [offer2_S.id, offer2_M.id, offer2_L.id]);
+
+    // Get all products from current seller
+    const allProductsWithNotVoidedVariants =
+      await coreSDK.getAllProductsWithNotVoidedVariants({
+        productsFilter: {
+          sellerId: seller.id
+        }
+      });
+    expect(allProductsWithNotVoidedVariants.length).toEqual(2);
+    expect(
+      allProductsWithNotVoidedVariants.find(
+        (product) => product.uuid === productUuid1
+      )?.allVariantsVoided
+    ).toBe(false);
+    expect(
+      allProductsWithNotVoidedVariants.find(
+        (product) => product.uuid === productUuid1
+      )?.notVoidedVariants?.length
+    ).toEqual(3);
+    expect(
+      allProductsWithNotVoidedVariants.find(
+        (product) => product.uuid === productUuid2
+      )?.allVariantsVoided
+    ).toBe(true);
+    expect(
+      allProductsWithNotVoidedVariants.find(
+        (product) => product.uuid === productUuid2
+      )?.notVoidedVariants?.length
+    ).toEqual(0);
+  });
+});
