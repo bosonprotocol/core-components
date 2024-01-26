@@ -90,16 +90,24 @@ export const TokenGatedItem = ({
           condition?.tokenType === TokenType.NonFungibleToken)
       ) {
         if (condition?.tokenType === TokenType.NonFungibleToken) {
-          const name = await coreSDK.erc721Name({
-            contractAddress: condition.tokenAddress
-          });
+          try {
+            const name = await coreSDK.erc721Name({
+              contractAddress: condition.tokenAddress
+            });
 
-          setErc721Info(name);
+            setErc721Info(name);
+          } catch (error) {
+            setErc721Info("NFT");
+          }
         } else if (condition?.tokenType === TokenType.MultiToken) {
-          const name = await coreSDK.erc1155Name({
-            contractAddress: condition.tokenAddress
-          });
-          setErc1155Info(name);
+          try {
+            const name = await coreSDK.erc1155Name({
+              contractAddress: condition.tokenAddress
+            });
+            setErc1155Info(name);
+          } catch (error) {
+            setErc1155Info("NFT");
+          }
         }
       }
     })();
