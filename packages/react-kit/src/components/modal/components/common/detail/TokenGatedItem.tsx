@@ -25,6 +25,17 @@ type Props = OnClickBuyOrSwapHandler & {
   isConditionMet: boolean;
 };
 
+const Wrapper = styled(Grid)`
+  && {
+    > * {
+      flex: 1 0;
+    }
+  }
+`;
+
+const ActionText = ({ children }: { children: ReactNode }) => {
+  return <span style={{ fontSize: "0.75rem" }}>{children}</span>;
+};
 /**
  * tokenType 0 - 20
  * tokenType 1 - 721
@@ -42,11 +53,13 @@ export const TokenGatedItem = ({
   const coreSDK = useCoreSDKWithContext();
   const { swapParams } = useDetailViewContext();
 
-  const [tokenInfo, setTokenInfo] = useState({
+  const [erc20Info, setErc20Info] = useState({
     name: "",
     decimals: "18",
     symbol: ""
   });
+  const [erc721Info, setErc721Info] = useState("NFT");
+  const [erc1155Info, setErc1155Info] = useState("NFT");
 
   const sellerAvatar: string | undefined = useMemo(
     () =>
@@ -58,20 +71,49 @@ export const TokenGatedItem = ({
 
   useEffect(() => {
     (async () => {
-      if (condition?.tokenAddress && condition?.tokenType === 0) {
+      if (
+        condition?.tokenAddress &&
+        condition?.tokenType === TokenType.FungibleToken
+      ) {
         try {
           const result = await coreSDK.getExchangeTokenInfo(
             condition.tokenAddress
           );
           const { name = "", decimals, symbol = "" } = result ?? {};
-          setTokenInfo({ name, decimals: decimals?.toString() ?? "", symbol });
+          setErc20Info({ name, decimals: decimals?.toString() ?? "", symbol });
         } catch (error) {
-          setTokenInfo({ name: "", decimals: "", symbol: "" });
+          setErc20Info({ name: "", decimals: "", symbol: "" });
+        }
+      } else if (
+        condition?.tokenAddress &&
+        (condition?.tokenType === TokenType.MultiToken ||
+          condition?.tokenType === TokenType.NonFungibleToken)
+      ) {
+        if (condition?.tokenType === TokenType.NonFungibleToken) {
+          try {
+            const name = await coreSDK.erc721Name({
+              contractAddress: condition.tokenAddress
+            });
+
+            setErc721Info(name);
+          } catch (error) {
+            setErc721Info("NFT");
+          }
+        } else if (condition?.tokenType === TokenType.MultiToken) {
+          try {
+            const name = await coreSDK.erc1155Name({
+              contractAddress: condition.tokenAddress
+            });
+            setErc1155Info(name);
+          } catch (error) {
+            setErc1155Info("NFT");
+          }
         }
       }
     })();
   }, [condition, coreSDK]);
   const { tokenAddress } = condition ?? {};
+
   const ContractButton = (
     <a
       href={coreSDK.getTxExplorerUrl?.(tokenAddress, true)}
@@ -80,7 +122,7 @@ export const TokenGatedItem = ({
       style={{ flex: 0 }}
     >
       <ThemedButton size="regular" themeVal="blankSecondary">
-        Contract <ArrowSquareUpRight size="16" />
+        <ActionText>Contract</ActionText> <ArrowSquareUpRight size="16" />
       </ThemedButton>
     </a>
   );
@@ -96,7 +138,7 @@ export const TokenGatedItem = ({
           })
         }
       >
-        Buy <ArrowSquareUpRight size="16" />
+        <ActionText>Buy</ActionText> <ArrowSquareUpRight size="16" />
       </ThemedButton>
     </BuyOrSwapContainer>
   ) : (
@@ -107,7 +149,7 @@ export const TokenGatedItem = ({
       style={{ flex: 0 }}
     >
       <ThemedButton size="regular" themeVal="blankSecondary">
-        Buy <ArrowSquareUpRight size="16" />
+        <ActionText>Buy</ActionText> <ArrowSquareUpRight size="16" />
       </ThemedButton>
     </a>
   );
@@ -160,24 +202,33 @@ export const TokenGatedItem = ({
     return null;
   }
 
-  const rangeText =
-    condition.minTokenId === condition.maxTokenId
-      ? `ID: ${condition.minTokenId}`
-      : `IDs: ${condition.minTokenId}-${condition.maxTokenId}`;
+  const rangeText = (
+    <span
+      style={{
+        color: colors.darkGrey,
+        fontSize: "12px",
+        fontWeight: 600,
+        lineHeight: "18px"
+      }}
+    >
+      {condition.minTokenId === condition.maxTokenId
+        ? `ID: ${condition.minTokenId}`
+        : `IDs: ${condition.minTokenId}-${condition.maxTokenId}`}
+    </span>
+  );
 
   return (
-    <Grid
+    <Wrapper
       padding="0 0"
       justifyContent="space-between"
       alignItems="center"
       flexWrap="wrap"
       gap="1rem"
-      flex="1 0"
     >
       {condition.tokenType === TokenType.FungibleToken ? (
         <Condition>
           <div>
-            {ethers.utils.formatUnits(condition.threshold, tokenInfo.decimals)}x
+            {ethers.utils.formatUnits(condition.threshold, erc20Info.decimals)}x
           </div>
           <Grid
             flexGrow={0}
@@ -187,7 +238,7 @@ export const TokenGatedItem = ({
             flex={0}
             width="auto"
           >
-            <div>{tokenInfo.symbol} Tokens</div>
+            <div>{erc20Info.symbol}</div>
           </Grid>
         </Condition>
       ) : condition.tokenType === TokenType.NonFungibleToken ? (
@@ -203,7 +254,7 @@ export const TokenGatedItem = ({
                 flex={0}
                 width="auto"
               >
-                <div>NFTs</div>
+                <div>{erc721Info}</div>
               </Grid>
             </Condition>
           ) : condition.method === EvaluationMethod.TokenRange ? (
@@ -217,7 +268,9 @@ export const TokenGatedItem = ({
                 flex={0}
                 width="auto"
               >
-                <Grid flexDirection="column">NFT {rangeText}</Grid>
+                <Grid flexDirection="column" alignItems="flex-start">
+                  {erc721Info} {rangeText}
+                </Grid>
               </Grid>
             </Condition>
           ) : (
@@ -237,7 +290,9 @@ export const TokenGatedItem = ({
               flex={0}
               width="auto"
             >
-              <Grid flexDirection="column">NFT {rangeText}</Grid>
+              <Grid flexDirection="column" alignItems="flex-start">
+                {erc1155Info} {rangeText}
+              </Grid>
             </Grid>
           </Grid>
           {ActionButton}
@@ -245,7 +300,7 @@ export const TokenGatedItem = ({
       ) : (
         <></>
       )}
-    </Grid>
+    </Wrapper>
   );
 };
 

@@ -78,7 +78,7 @@ export default function OfferPolicyDetails({
         </>
       ),
       version: isExchangePolicyValid ? "v1" : "(Non-standard)",
-      color: isExchangePolicyValid ? undefined : "purple"
+      color: isExchangePolicyValid ? undefined : colors.accent
     },
     rNFTLicense: {
       title: "License Agreement",
@@ -111,7 +111,7 @@ export default function OfferPolicyDetails({
         </Typography>
       )
     ) : (
-      <Typography tag="p" color="purple" style={{ textAlign: "right" }}>
+      <Typography tag="p" color={colors.accent} style={{ textAlign: "right" }}>
         <CircleWavyQuestion size={20}></CircleWavyQuestion> Unknown
       </Typography>
     );

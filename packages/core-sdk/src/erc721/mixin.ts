@@ -1,10 +1,35 @@
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
-import { balanceOf, ownerOf, tokenOfOwnerByIndex } from "./handler";
+import {
+  balanceOf,
+  ownerOf,
+  tokenOfOwnerByIndex,
+  name,
+  symbol,
+  tokenUri
+} from "./handler";
 
 export class ERC721Mixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
   /*                           ERC721 related methods                          */
   /* -------------------------------------------------------------------------- */
+  public async erc721Name(
+    args: Omit<Parameters<typeof name>[0], "web3Lib">
+  ): Promise<ReturnType<typeof name>> {
+    return name({ web3Lib: this._web3Lib, ...args });
+  }
+
+  public async erc721Symbol(
+    args: Omit<Parameters<typeof symbol>[0], "web3Lib">
+  ): Promise<ReturnType<typeof symbol>> {
+    return symbol({ web3Lib: this._web3Lib, ...args });
+  }
+
+  public async erc721TokenUri(
+    args: Omit<Parameters<typeof tokenUri>[0], "web3Lib">
+  ): Promise<ReturnType<typeof tokenUri>> {
+    return tokenUri({ web3Lib: this._web3Lib, ...args });
+  }
+
   public async erc721BalanceOf(
     args: Omit<Parameters<typeof balanceOf>[0], "web3Lib">
   ): Promise<ReturnType<typeof balanceOf>> {

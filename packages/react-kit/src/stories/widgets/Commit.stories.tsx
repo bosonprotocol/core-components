@@ -60,11 +60,11 @@ Commit.args = {
 
 Commit.decorators = [(Story) => wrapper(Story)];
 
-export const CommitTokenGated: ComponentStory<typeof CommitWidget> =
+export const CommitTokenGated_ERC20: ComponentStory<typeof CommitWidget> =
   Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-CommitTokenGated.args = {
+CommitTokenGated_ERC20.args = {
   envName,
   configId: envConfig[0].configId,
   walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
@@ -96,7 +96,7 @@ CommitTokenGated.args = {
   showBosonLogo: false
 };
 
-CommitTokenGated.decorators = [(Story) => wrapper(Story)];
+CommitTokenGated_ERC20.decorators = [(Story) => wrapper(Story)];
 
 export const CommitWithColorAndSizeVariations: ComponentStory<
   typeof CommitWidget
@@ -137,11 +137,11 @@ CommitWithColorAndSizeVariations.args = {
 
 CommitWithColorAndSizeVariations.decorators = [(Story) => wrapper(Story)];
 
-export const CommitTokenGated1155: ComponentStory<typeof CommitWidget> =
+export const CommitTokenGated_ERC721: ComponentStory<typeof CommitWidget> =
   Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-CommitTokenGated1155.args = {
+CommitTokenGated_ERC721.args = {
   envName,
   configId: envConfig[0].configId,
   walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
@@ -157,7 +157,7 @@ CommitTokenGated1155.args = {
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
-  productUuid: "57f5ba8-7276-d12f-6d45-6dff2afc3d", // token gated 1155
+  productUuid: "ce7faab-00c-26-a351-c71f615c07c2",
   sellerId: "138",
   metaTx: {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
@@ -173,4 +173,80 @@ CommitTokenGated1155.args = {
   showBosonLogo: false
 };
 
-CommitTokenGated1155.decorators = [(Story) => wrapper(Story)];
+CommitTokenGated_ERC721.decorators = [(Story) => wrapper(Story)];
+
+export const CommitTokenGated_ERC721_2: ComponentStory<typeof CommitWidget> =
+  Template.bind({});
+
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+CommitTokenGated_ERC721_2.args = {
+  envName,
+  configId: envConfig[0].configId,
+  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  dateFormat: "YYYY/MM/DD",
+  defaultCurrencySymbol: "$",
+  defaultCurrencyTicker: "USD",
+  contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
+  fairExchangePolicyRules:
+    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+  ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
+  ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
+  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  offerId: "",
+  defaultSelectedOfferId: "",
+  disableVariationsSelects: false,
+  productUuid: "5d14af-ee3b-8ea2-c4bc-4ab732c4b05c",
+  sellerId: "26",
+  metaTx: {
+    apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
+    apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
+  },
+  closeWidgetClick: () => {
+    console.log("closeWidgetClick()");
+  },
+  onAlreadyOwnOfferClick: () => {
+    console.log("onAlreadyOwnOfferClick");
+  },
+  forcedAccount: "",
+  showBosonLogo: false
+};
+
+CommitTokenGated_ERC721_2.decorators = [(Story) => wrapper(Story)];
+
+export const CommitTokenGated_ERC1155: ComponentStory<typeof CommitWidget> =
+  Template.bind({});
+
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+CommitTokenGated_ERC1155.args = {
+  envName,
+  configId: envConfig[0].configId,
+  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  dateFormat: "YYYY/MM/DD",
+  defaultCurrencySymbol: "$",
+  defaultCurrencyTicker: "USD",
+  contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
+  fairExchangePolicyRules:
+    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+  ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
+  ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
+  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  offerId: "",
+  defaultSelectedOfferId: "",
+  disableVariationsSelects: false,
+  productUuid: "d75860e-da32-224-870e-2a884c51a2ee", // token gated 1155
+  sellerId: "138",
+  metaTx: {
+    apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
+    apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
+  },
+  closeWidgetClick: () => {
+    console.log("closeWidgetClick()");
+  },
+  onAlreadyOwnOfferClick: () => {
+    console.log("onAlreadyOwnOfferClick");
+  },
+  forcedAccount: "",
+  showBosonLogo: false
+};
+
+CommitTokenGated_ERC1155.decorators = [(Story) => wrapper(Story)];

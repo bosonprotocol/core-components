@@ -16,8 +16,10 @@ import { Offer } from "../../../../../types/offer";
 import { Typography } from "../../../../ui/Typography";
 import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { DetailViewProps } from "./types";
+import { theme } from "../../../../../theme";
 
 const fontSizeExchangePolicy = "0.625rem";
+const colors = theme.colors.light;
 export type UseGetOfferDetailDataProps = {
   dateFormat: string;
   defaultCurrencySymbol: string;
@@ -210,14 +212,14 @@ export const useGetOfferDetailData = ({
         ) : (
           <Typography
             tag="p"
-            color="purple"
+            color={colors.accent}
             fontSize={fontSizeExchangePolicy}
             alignItems="center"
           >
             {customisedExchangePolicy}
             <ArrowSquareOut
               size={20}
-              color="purple"
+              color={colors.accent}
               onClick={() => handleShowExchangePolicy()}
               style={{ cursor: "pointer", minWidth: "20px" }}
             />
@@ -225,11 +227,14 @@ export const useGetOfferDetailData = ({
         )
       ) : (
         <>
-          <CircleWavyQuestion size={20} color="purple"></CircleWavyQuestion>{" "}
-          <span style={{ color: "purple" }}>Unknown </span>
+          <CircleWavyQuestion
+            size={20}
+            color={colors.accent}
+          ></CircleWavyQuestion>{" "}
+          <span style={{ color: colors.accent }}>Unknown </span>
           <ArrowSquareOut
             size={20}
-            color="purple"
+            color={colors.accent}
             onClick={() => handleShowExchangePolicy()}
             style={{ cursor: "pointer" }}
           />
