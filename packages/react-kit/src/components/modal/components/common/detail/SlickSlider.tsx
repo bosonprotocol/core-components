@@ -11,7 +11,7 @@ import { ImageOptimizationOpts } from "../../../../../lib/images/images";
 export { Settings } from "react-slick";
 
 const colors = theme.colors.light;
-const Container = styled.div<{ $alignLeft: boolean }>`
+const Container = styled.div<{ $alignLeft: boolean; $hasSomeActive: boolean }>`
   .slick-slider {
     position: relative;
     overflow: hidden;
@@ -41,18 +41,27 @@ const Container = styled.div<{ $alignLeft: boolean }>`
             height: 100%;
             img,
             video {
-              padding: 0.25rem;
+              ${({ $hasSomeActive }) =>
+                $hasSomeActive &&
+                css`
+                  padding: 0.25rem;
+                `}
+
               position: unset;
               transform: none;
               object-fit: contain;
             }
           }
-          [data-active="true"] {
-            border: 4px solid ${colors.blue};
-          }
-          [data-active="false"] {
-            border: 4px solid transparent;
-          }
+          ${({ $hasSomeActive }) =>
+            $hasSomeActive &&
+            css`
+              [data-active="true"] {
+                border: 4px solid ${colors.blue};
+              }
+              [data-active="false"] {
+                border: 4px solid transparent;
+              }
+            `}
         }
       }
     }
@@ -190,7 +199,11 @@ export const SlickSlider: React.FC<SlickSliderProps> = ({
 }) => {
   const Slider = _Slider as unknown as (props: Settings) => ReactElement;
   return (
-    <Container className={className} $alignLeft={alignLeft ?? false}>
+    <Container
+      className={className}
+      $alignLeft={alignLeft ?? false}
+      $hasSomeActive={activeIndex !== undefined}
+    >
       <Slider {...settings}>
         {mediaFiles?.map(({ url, type }, index: number) =>
           type === "image" ? (

@@ -13,6 +13,9 @@ export const useErc20Balance = (
   return useQuery(
     ["erc-20-balance", coreSDK.uuid, args],
     async () => {
+      if (!contractAddress || !owner) {
+        return;
+      }
       return coreSDK.erc20BalanceOf({
         contractAddress,
         owner
