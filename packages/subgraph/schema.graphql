@@ -5,6 +5,7 @@ enum MetadataType {
 }
 
 enum ItemMetadataType {
+  ITEM_UNKNOWN
   ITEM_PRODUCT_V1
   ITEM_NFT
 }
@@ -252,6 +253,15 @@ type BundleMetadataEntity implements MetadataInterface @entity {
   PRODUCT_V1 specific fields
   """
   productUuids: [String!]! # Products unique ID (unique for all variants of the same product)
+}
+
+type UnknownItemMetadataEntity implements ItemMetadataInterface @entity {
+  id: ID!
+  schemaUrl: String! # JSON schema URL
+  type: ItemMetadataType!
+  productV1Seller: ProductV1Seller!
+  bundle: BundleMetadataEntity!
+  metadataUri: String!
 }
 
 type ProductV1ItemMetadataEntity implements ItemMetadataInterface @entity {

@@ -1,5 +1,5 @@
 import { JSONValue, TypedMap, BigInt, log } from "@graphprotocol/graph-ts";
-import { BundleMetadataEntity, Offer } from "../../../../generated/schema";
+import { BundleMetadataEntity, Offer, UnknownItemMetadataEntity } from "../../../../generated/schema";
 import {
   convertToString,
   convertToObject,
@@ -7,7 +7,7 @@ import {
 } from "../../../utils/json";
 import { saveAnimationMetadata } from "../animationMetadata";
 import { saveProductV1Seller } from "../product-v1/seller";
-import { getMetadataEntityId, saveMetadataAttributes } from "../utils";
+import { getMetadataEntityId, getItemMetadataEntityId, saveMetadataAttributes } from "../utils";
 import { getIpfsMetadataObject, parseIpfsHash } from "../../../utils/ipfs";
 import { saveNftItemMetadata } from "../nft-item";
 import { saveProductV1ItemMetadata } from "../product-v1";
@@ -142,6 +142,35 @@ function saveItemMetadata(
     );
   }
 
-  log.warning("Unable to deal with bundle item of type '{}'", [metadataType]);
+  saveUnknownItemMetadata(
+    offer,
+    metadataObj,
+    itemMetadataUri,
+    index,
+    bundleId
+  )
   return null;
+}
+
+export function saveUnknownItemMetadata(
+  offer: Offer,
+  metadataObj: TypedMap<string, JSONValue>,
+  itemMetadataUri: string,
+  index: string,
+  bundleId: string
+): string {
+  const offerId = offer.id.toString();
+  const metadataId = getItemMetadataEntityId(offerId, index);
+
+  let unknownItemMetadataEntity = UnknownItemMetadataEntity.load(metadataId);
+  if (!unknownItemMetadataEntity) {
+    unknownItemMetadataEntity = new UnknownItemMetadataEntity(metadataId);
+  }
+
+  unknownItemMetadataEntity.type = "ITEM_UNKNOWN";
+  unknownItemMetadataEntity.bundle = bundleId;
+  unknownItemMetadataEntity.metadataUri = itemMetadataUri;
+
+  unknownItemMetadataEntity.save();
+  return metadataId;
 }

@@ -170,7 +170,6 @@ describe("Bundle e2e tests", () => {
       productV1Item
     ]);
     expect(offer).toBeTruthy();
-    console.log("created offer", offer.id);
 
     const bundles = await coreSDK.getBundleMetadataEntities({
       metadataFilter: {
@@ -208,7 +207,6 @@ describe("Bundle e2e tests", () => {
 
     const offer = await createBundleOffer(coreSDK, sellerWallet, [digitalItem]);
     expect(offer).toBeTruthy();
-    console.log("created offer", offer.id);
 
     const bundles = await coreSDK.getBundleMetadataEntities({
       metadataFilter: {
@@ -256,6 +254,30 @@ describe("Bundle e2e tests", () => {
     expect(
       (bundles[0].items[0] as subgraph.NftItemMetadataEntity).tokenIdRange?.max
     ).toEqual(digitalItem.tokenIdRange?.max);
+  });
+  test("Create a BUNDLE with only one item of unknown type", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const digitalItem = mockNFTItem();
+    delete (digitalItem as any).type;
+
+    const offer = await createBundleOffer(coreSDK, sellerWallet, [digitalItem]);
+    expect(offer).toBeTruthy();
+
+    const bundles = await coreSDK.getBundleMetadataEntities({
+      metadataFilter: {
+        offer_in: [offer.id]
+      }
+    });
+    expect(bundles.length).toEqual(1);
+    expect(bundles[0].offer.id).toEqual(offer.id);
+    expect(bundles[0].items.length).toEqual(1);
+
+    expect(bundles[0].items[0].type).toEqual(subgraph.ItemMetadataType.ItemUnknown);
+    expect(bundles[0].items[0].metadataUri).toBeTruthy();
   });
   test("Create a BUNDLE with twice the same single product", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =

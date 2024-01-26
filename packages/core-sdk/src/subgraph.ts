@@ -3038,7 +3038,8 @@ export enum ItemMetadataInterface_OrderBy {
 
 export enum ItemMetadataType {
   ItemNft = "ITEM_NFT",
-  ItemProductV1 = "ITEM_PRODUCT_V1"
+  ItemProductV1 = "ITEM_PRODUCT_V1",
+  ItemUnknown = "ITEM_UNKNOWN"
 }
 
 export type MetadataAttribute = {
@@ -8635,6 +8636,8 @@ export type Query = {
   sellers: Array<Seller>;
   tokenIdRange?: Maybe<TokenIdRange>;
   tokenIdRanges: Array<TokenIdRange>;
+  unknownItemMetadataEntities: Array<UnknownItemMetadataEntity>;
+  unknownItemMetadataEntity?: Maybe<UnknownItemMetadataEntity>;
 };
 
 export type Query_MetaArgs = {
@@ -9495,6 +9498,22 @@ export type QueryTokenIdRangesArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<TokenIdRange_Filter>;
+};
+
+export type QueryUnknownItemMetadataEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<UnknownItemMetadataEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<UnknownItemMetadataEntity_Filter>;
+};
+
+export type QueryUnknownItemMetadataEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
 };
 
 /**
@@ -10690,6 +10709,8 @@ export type Subscription = {
   sellers: Array<Seller>;
   tokenIdRange?: Maybe<TokenIdRange>;
   tokenIdRanges: Array<TokenIdRange>;
+  unknownItemMetadataEntities: Array<UnknownItemMetadataEntity>;
+  unknownItemMetadataEntity?: Maybe<UnknownItemMetadataEntity>;
 };
 
 export type Subscription_MetaArgs = {
@@ -11552,6 +11573,22 @@ export type SubscriptionTokenIdRangesArgs = {
   where?: InputMaybe<TokenIdRange_Filter>;
 };
 
+export type SubscriptionUnknownItemMetadataEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<UnknownItemMetadataEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<UnknownItemMetadataEntity_Filter>;
+};
+
+export type SubscriptionUnknownItemMetadataEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
 export type TokenIdRange = {
   __typename?: "TokenIdRange";
   id: Scalars["ID"];
@@ -11616,6 +11653,124 @@ export enum TokenIdRange_OrderBy {
   Id = "id",
   Max = "max",
   Min = "min"
+}
+
+export type UnknownItemMetadataEntity = ItemMetadataInterface & {
+  __typename?: "UnknownItemMetadataEntity";
+  bundle: BundleMetadataEntity;
+  id: Scalars["ID"];
+  metadataUri: Scalars["String"];
+  productV1Seller: ProductV1Seller;
+  schemaUrl: Scalars["String"];
+  type: ItemMetadataType;
+};
+
+export type UnknownItemMetadataEntity_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  bundle?: InputMaybe<Scalars["String"]>;
+  bundle_?: InputMaybe<BundleMetadataEntity_Filter>;
+  bundle_contains?: InputMaybe<Scalars["String"]>;
+  bundle_contains_nocase?: InputMaybe<Scalars["String"]>;
+  bundle_ends_with?: InputMaybe<Scalars["String"]>;
+  bundle_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  bundle_gt?: InputMaybe<Scalars["String"]>;
+  bundle_gte?: InputMaybe<Scalars["String"]>;
+  bundle_in?: InputMaybe<Array<Scalars["String"]>>;
+  bundle_lt?: InputMaybe<Scalars["String"]>;
+  bundle_lte?: InputMaybe<Scalars["String"]>;
+  bundle_not?: InputMaybe<Scalars["String"]>;
+  bundle_not_contains?: InputMaybe<Scalars["String"]>;
+  bundle_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  bundle_not_ends_with?: InputMaybe<Scalars["String"]>;
+  bundle_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  bundle_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  bundle_not_starts_with?: InputMaybe<Scalars["String"]>;
+  bundle_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  bundle_starts_with?: InputMaybe<Scalars["String"]>;
+  bundle_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  metadataUri?: InputMaybe<Scalars["String"]>;
+  metadataUri_contains?: InputMaybe<Scalars["String"]>;
+  metadataUri_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_gt?: InputMaybe<Scalars["String"]>;
+  metadataUri_gte?: InputMaybe<Scalars["String"]>;
+  metadataUri_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataUri_lt?: InputMaybe<Scalars["String"]>;
+  metadataUri_lte?: InputMaybe<Scalars["String"]>;
+  metadataUri_not?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_contains?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataUri_not_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  productV1Seller?: InputMaybe<Scalars["String"]>;
+  productV1Seller_?: InputMaybe<ProductV1Seller_Filter>;
+  productV1Seller_contains?: InputMaybe<Scalars["String"]>;
+  productV1Seller_contains_nocase?: InputMaybe<Scalars["String"]>;
+  productV1Seller_ends_with?: InputMaybe<Scalars["String"]>;
+  productV1Seller_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  productV1Seller_gt?: InputMaybe<Scalars["String"]>;
+  productV1Seller_gte?: InputMaybe<Scalars["String"]>;
+  productV1Seller_in?: InputMaybe<Array<Scalars["String"]>>;
+  productV1Seller_lt?: InputMaybe<Scalars["String"]>;
+  productV1Seller_lte?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not_contains?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not_ends_with?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  productV1Seller_not_starts_with?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  productV1Seller_starts_with?: InputMaybe<Scalars["String"]>;
+  productV1Seller_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  schemaUrl?: InputMaybe<Scalars["String"]>;
+  schemaUrl_contains?: InputMaybe<Scalars["String"]>;
+  schemaUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
+  schemaUrl_ends_with?: InputMaybe<Scalars["String"]>;
+  schemaUrl_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  schemaUrl_gt?: InputMaybe<Scalars["String"]>;
+  schemaUrl_gte?: InputMaybe<Scalars["String"]>;
+  schemaUrl_in?: InputMaybe<Array<Scalars["String"]>>;
+  schemaUrl_lt?: InputMaybe<Scalars["String"]>;
+  schemaUrl_lte?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not_contains?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not_ends_with?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  schemaUrl_not_starts_with?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  schemaUrl_starts_with?: InputMaybe<Scalars["String"]>;
+  schemaUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  type?: InputMaybe<ItemMetadataType>;
+  type_in?: InputMaybe<Array<ItemMetadataType>>;
+  type_not?: InputMaybe<ItemMetadataType>;
+  type_not_in?: InputMaybe<Array<ItemMetadataType>>;
+};
+
+export enum UnknownItemMetadataEntity_OrderBy {
+  Bundle = "bundle",
+  Id = "id",
+  MetadataUri = "metadataUri",
+  ProductV1Seller = "productV1Seller",
+  SchemaUrl = "schemaUrl",
+  Type = "type"
 }
 
 export type _Block_ = {
@@ -12366,6 +12521,11 @@ export type GetSellerByIdQueryQuery = {
                       height?: number | null;
                     }> | null;
                   } | null;
+                }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
                 }
             >;
             animationMetadata?: {
@@ -13751,6 +13911,11 @@ export type GetSellersQueryQuery = {
                       height?: number | null;
                     }> | null;
                   } | null;
+                }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
                 }
             >;
             animationMetadata?: {
@@ -15541,6 +15706,11 @@ export type GetDisputeResolverByIdQueryQuery = {
                     }> | null;
                   } | null;
                 }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
+                }
             >;
             animationMetadata?: {
               __typename?: "AnimationMetadata";
@@ -16725,6 +16895,11 @@ export type GetDisputeResolversQueryQuery = {
                       height?: number | null;
                     }> | null;
                   } | null;
+                }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
                 }
             >;
             animationMetadata?: {
@@ -17994,6 +18169,11 @@ export type GetOfferCollectionsQueryQuery = {
                     }> | null;
                   } | null;
                 }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
+                }
             >;
             animationMetadata?: {
               __typename?: "AnimationMetadata";
@@ -19157,6 +19337,11 @@ export type OfferCollectionFieldsFragment = {
                   }> | null;
                 } | null;
               }
+            | {
+                __typename?: "UnknownItemMetadataEntity";
+                type: ItemMetadataType;
+                metadataUri: string;
+              }
           >;
           animationMetadata?: {
             __typename?: "AnimationMetadata";
@@ -20289,6 +20474,11 @@ export type SellerFieldsFragment = {
                     height?: number | null;
                   }> | null;
                 } | null;
+              }
+            | {
+                __typename?: "UnknownItemMetadataEntity";
+                type: ItemMetadataType;
+                metadataUri: string;
               }
           >;
           animationMetadata?: {
@@ -21933,6 +22123,11 @@ export type DisputeResolverFieldsFragment = {
                     height?: number | null;
                   }> | null;
                 } | null;
+              }
+            | {
+                __typename?: "UnknownItemMetadataEntity";
+                type: ItemMetadataType;
+                metadataUri: string;
               }
           >;
           animationMetadata?: {
@@ -23817,6 +24012,11 @@ export type GetExchangeTokenByIdQueryQuery = {
                     }> | null;
                   } | null;
                 }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
+                }
             >;
             animationMetadata?: {
               __typename?: "AnimationMetadata";
@@ -24913,6 +25113,11 @@ export type GetExchangeTokensQueryQuery = {
                     }> | null;
                   } | null;
                 }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
+                }
             >;
             animationMetadata?: {
               __typename?: "AnimationMetadata";
@@ -25982,6 +26187,11 @@ export type ExchangeTokenFieldsFragment = {
                     height?: number | null;
                   }> | null;
                 } | null;
+              }
+            | {
+                __typename?: "UnknownItemMetadataEntity";
+                type: ItemMetadataType;
+                metadataUri: string;
               }
           >;
           animationMetadata?: {
@@ -27232,6 +27442,11 @@ export type GetExchangeByIdQueryQuery = {
                     }> | null;
                   } | null;
                 }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
+                }
             >;
             animationMetadata?: {
               __typename?: "AnimationMetadata";
@@ -28410,6 +28625,11 @@ export type GetExchangesQueryQuery = {
                     }> | null;
                   } | null;
                 }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
+                }
             >;
             animationMetadata?: {
               __typename?: "AnimationMetadata";
@@ -29573,6 +29793,11 @@ export type ExchangeFieldsFragment = {
                     height?: number | null;
                   }> | null;
                 } | null;
+              }
+            | {
+                __typename?: "UnknownItemMetadataEntity";
+                type: ItemMetadataType;
+                metadataUri: string;
               }
           >;
           animationMetadata?: {
@@ -30944,6 +31169,11 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                     }> | null;
                   } | null;
                 }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
+                }
             >;
             animationMetadata?: {
               __typename?: "AnimationMetadata";
@@ -32127,6 +32357,11 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                     }> | null;
                   } | null;
                 }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
+                }
             >;
             animationMetadata?: {
               __typename?: "AnimationMetadata";
@@ -33296,6 +33531,11 @@ export type BaseMetadataEntityFieldsFragment = {
                   }> | null;
                 } | null;
               }
+            | {
+                __typename?: "UnknownItemMetadataEntity";
+                type: ItemMetadataType;
+                metadataUri: string;
+              }
           >;
           animationMetadata?: {
             __typename?: "AnimationMetadata";
@@ -34455,6 +34695,11 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                     height?: number | null;
                   }> | null;
                 } | null;
+              }
+            | {
+                __typename?: "UnknownItemMetadataEntity";
+                type: ItemMetadataType;
+                metadataUri: string;
               }
           >;
           animationMetadata?: {
@@ -35741,6 +35986,11 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                     }> | null;
                   } | null;
                 }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
+                }
             >;
             animationMetadata?: {
               __typename?: "AnimationMetadata";
@@ -36656,6 +36906,13 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
               height?: number | null;
             }> | null;
           } | null;
+        }
+      | {
+          __typename?: "UnknownItemMetadataEntity";
+          id: string;
+          schemaUrl: string;
+          type: ItemMetadataType;
+          metadataUri: string;
         }
     >;
   } | null;
@@ -37445,6 +37702,11 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                     }> | null;
                   } | null;
                 }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
+                }
             >;
             animationMetadata?: {
               __typename?: "AnimationMetadata";
@@ -38361,6 +38623,13 @@ export type GetBundleMetadataEntitiesQueryQuery = {
             }> | null;
           } | null;
         }
+      | {
+          __typename?: "UnknownItemMetadataEntity";
+          id: string;
+          schemaUrl: string;
+          type: ItemMetadataType;
+          metadataUri: string;
+        }
     >;
   }>;
 };
@@ -39135,6 +39404,11 @@ export type BundleMetadataEntityFieldsFragment = {
                   }> | null;
                 } | null;
               }
+            | {
+                __typename?: "UnknownItemMetadataEntity";
+                type: ItemMetadataType;
+                metadataUri: string;
+              }
           >;
           animationMetadata?: {
             __typename?: "AnimationMetadata";
@@ -40042,6 +40316,13 @@ export type BundleMetadataEntityFieldsFragment = {
             height?: number | null;
           }> | null;
         } | null;
+      }
+    | {
+        __typename?: "UnknownItemMetadataEntity";
+        id: string;
+        schemaUrl: string;
+        type: ItemMetadataType;
+        metadataUri: string;
       }
   >;
 };
@@ -40816,6 +41097,11 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                   }> | null;
                 } | null;
               }
+            | {
+                __typename?: "UnknownItemMetadataEntity";
+                type: ItemMetadataType;
+                metadataUri: string;
+              }
           >;
           animationMetadata?: {
             __typename?: "AnimationMetadata";
@@ -41723,6 +42009,13 @@ export type BaseBundleMetadataEntityFieldsFragment = {
             height?: number | null;
           }> | null;
         } | null;
+      }
+    | {
+        __typename?: "UnknownItemMetadataEntity";
+        id: string;
+        schemaUrl: string;
+        type: ItemMetadataType;
+        metadataUri: string;
       }
   >;
 };
@@ -42742,6 +43035,11 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                         height?: number | null;
                       }> | null;
                     } | null;
+                  }
+                | {
+                    __typename?: "UnknownItemMetadataEntity";
+                    type: ItemMetadataType;
+                    metadataUri: string;
                   }
               >;
               animationMetadata?: {
@@ -44134,6 +44432,11 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                         height?: number | null;
                       }> | null;
                     } | null;
+                  }
+                | {
+                    __typename?: "UnknownItemMetadataEntity";
+                    type: ItemMetadataType;
+                    metadataUri: string;
                   }
               >;
               animationMetadata?: {
@@ -45540,6 +45843,11 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                       height?: number | null;
                     }> | null;
                   } | null;
+                }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
                 }
             >;
             animationMetadata?: {
@@ -47147,6 +47455,11 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                     }> | null;
                   } | null;
                 }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
+                }
             >;
             animationMetadata?: {
               __typename?: "AnimationMetadata";
@@ -48739,6 +49052,11 @@ export type ProductV1MetadataEntityFieldsFragment = {
                   }> | null;
                 } | null;
               }
+            | {
+                __typename?: "UnknownItemMetadataEntity";
+                type: ItemMetadataType;
+                metadataUri: string;
+              }
           >;
           animationMetadata?: {
             __typename?: "AnimationMetadata";
@@ -50321,6 +50639,11 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                     height?: number | null;
                   }> | null;
                 } | null;
+              }
+            | {
+                __typename?: "UnknownItemMetadataEntity";
+                type: ItemMetadataType;
+                metadataUri: string;
               }
           >;
           animationMetadata?: {
@@ -52122,6 +52445,11 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     }> | null;
                   } | null;
                 }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
+                }
             >;
             animationMetadata?: {
               __typename?: "AnimationMetadata";
@@ -53502,6 +53830,11 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                       height?: number | null;
                     }> | null;
                   } | null;
+                }
+              | {
+                  __typename?: "UnknownItemMetadataEntity";
+                  type: ItemMetadataType;
+                  metadataUri: string;
                 }
             >;
             animationMetadata?: {
@@ -55083,6 +55416,11 @@ export type GetOfferByIdQueryQuery = {
                   }> | null;
                 } | null;
               }
+            | {
+                __typename?: "UnknownItemMetadataEntity";
+                type: ItemMetadataType;
+                metadataUri: string;
+              }
           >;
           animationMetadata?: {
             __typename?: "AnimationMetadata";
@@ -56255,6 +56593,11 @@ export type GetOffersQueryQuery = {
                   }> | null;
                 } | null;
               }
+            | {
+                __typename?: "UnknownItemMetadataEntity";
+                type: ItemMetadataType;
+                metadataUri: string;
+              }
           >;
           animationMetadata?: {
             __typename?: "AnimationMetadata";
@@ -56741,6 +57084,7 @@ export type GetOffersMediaQueryQuery = {
                   }> | null;
                 };
               }
+            | { __typename?: "UnknownItemMetadataEntity" }
           >;
         }
       | {
@@ -57517,6 +57861,11 @@ export type OfferFieldsFragment = {
                   height?: number | null;
                 }> | null;
               } | null;
+            }
+          | {
+              __typename?: "UnknownItemMetadataEntity";
+              type: ItemMetadataType;
+              metadataUri: string;
             }
         >;
         animationMetadata?: {
@@ -58564,6 +58913,11 @@ export type BaseOfferFieldsFragment = {
                   height?: number | null;
                 }> | null;
               } | null;
+            }
+          | {
+              __typename?: "UnknownItemMetadataEntity";
+              type: ItemMetadataType;
+              metadataUri: string;
             }
         >;
         animationMetadata?: {
