@@ -269,14 +269,14 @@ function getProductV1ItemFromBundle(
   offer: ProductV1MetadataEntityFieldsFragment["offer"];
 }[] {
   return bundle.items
-    .filter((item) => item.type === ItemMetadataType.ItemProductV1)
     .filter(
-      (item) =>
-        (item as ProductV1ItemMetadataEntity).productUuid === productUuid
+      (item): item is ProductV1ItemMetadataEntity =>
+        item.type === ItemMetadataType.ItemProductV1
     )
+    .filter((item) => item.productUuid === productUuid)
     .map((item) => {
       return {
-        productV1Item: item as ProductV1ItemMetadataEntity,
+        productV1Item: item,
         offer: bundle.offer as ProductV1MetadataEntityFieldsFragment["offer"]
       };
     });
