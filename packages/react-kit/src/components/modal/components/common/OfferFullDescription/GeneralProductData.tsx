@@ -29,6 +29,9 @@ const StyledPrice = styled(Price)`
   small {
     font-size: 1rem;
   }
+  [data-testid="price-grid"] {
+    justify-content: flex-end;
+  }
 `;
 const TokenGatedGrid = styled.div`
   width: 100%;
@@ -78,28 +81,30 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
     >
       <GridContainer
         itemsPerRow={{
-          xs: 3,
-          s: 3,
-          m: 3,
-          l: 3,
-          xl: 3
+          xs: 2,
+          s: 2,
+          m: 2,
+          l: 2,
+          xl: 2
         }}
         style={{ alignItems: "center", width: "100%" }}
       >
         <Typography tag="h3">Price</Typography>
-        <StyledPrice
-          isExchange={false}
-          currencySymbol={offer.exchangeToken.symbol}
-          value={offer.price}
-          decimals={offer.exchangeToken.decimals}
-          tag="h3"
-          convert
-          withBosonStyles
-          withAsterisk={false}
-        />
-        <span style={{ color: colors.orange, textAlign: "right" }}>
-          {notCommittableOfferStatus}
-        </span>
+        <Grid alignItems="flex-end" flexDirection="column">
+          <span style={{ color: colors.orange, textAlign: "right" }}>
+            {notCommittableOfferStatus}
+          </span>
+          <StyledPrice
+            isExchange={false}
+            currencySymbol={offer.exchangeToken.symbol}
+            value={offer.price}
+            decimals={offer.exchangeToken.decimals}
+            tag="h3"
+            convert
+            withBosonStyles
+            withAsterisk={false}
+          />
+        </Grid>
       </GridContainer>
       <Break />
       {offer.condition && (
