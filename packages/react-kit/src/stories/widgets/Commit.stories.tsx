@@ -175,6 +175,44 @@ CommitTokenGated_ERC721.args = {
 
 CommitTokenGated_ERC721.decorators = [(Story) => wrapper(Story)];
 
+export const CommitTokenGated_ERC721_2: ComponentStory<typeof CommitWidget> =
+  Template.bind({});
+
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+CommitTokenGated_ERC721_2.args = {
+  envName,
+  configId: envConfig[0].configId,
+  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  dateFormat: "YYYY/MM/DD",
+  defaultCurrencySymbol: "$",
+  defaultCurrencyTicker: "USD",
+  contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
+  fairExchangePolicyRules:
+    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+  ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
+  ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
+  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  offerId: "",
+  defaultSelectedOfferId: "",
+  disableVariationsSelects: false,
+  productUuid: "5d14af-ee3b-8ea2-c4bc-4ab732c4b05c",
+  sellerId: "26",
+  metaTx: {
+    apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
+    apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
+  },
+  closeWidgetClick: () => {
+    console.log("closeWidgetClick()");
+  },
+  onAlreadyOwnOfferClick: () => {
+    console.log("onAlreadyOwnOfferClick");
+  },
+  forcedAccount: "",
+  showBosonLogo: false
+};
+
+CommitTokenGated_ERC721_2.decorators = [(Story) => wrapper(Story)];
+
 export const CommitTokenGated_ERC1155: ComponentStory<typeof CommitWidget> =
   Template.bind({});
 
