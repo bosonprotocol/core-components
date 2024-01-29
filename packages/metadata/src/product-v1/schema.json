@@ -8,19 +8,21 @@
     "description": { "type": "string" },
     "externalUrl": { "type": "string" },
     "licenseUrl": { "type": "string" },
+    "youtubeUrl": { "type": "string" },
     "condition": { "type": "string" },
     "image": { "type": "string" },
+    "imageData": { "type": "string" },
     "animationUrl": { "type": "string" },
     "attributes": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "trait_type": { "type": "string"},
+          "traitType": { "type": "string"},
           "value": { "type": "string"},
-          "display_type": { "type": "string"}
+          "displayType": { "type": "string"}
         },
-        "required": ["trait_type", "value"]
+        "required": ["traitType", "value"]
       },
       "minItems": 2
     },

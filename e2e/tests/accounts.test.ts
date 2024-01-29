@@ -20,7 +20,7 @@ import {
   sellerMetadata,
   getSellerMetadataUri
 } from "./utils";
-import { AuthTokenType } from "@bosonprotocol/common";
+import { AuthTokenType } from "../../packages/common";
 
 jest.setTimeout(60_000);
 

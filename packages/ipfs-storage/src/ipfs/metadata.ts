@@ -17,7 +17,7 @@ export class IpfsMetadataStorage
 
   /**
    * Validates and stores supported offer metadata on IPFS.
-   * @param metadata - Offer metadata of type `BASE` or `PRODUCT_V1`.
+   * @param metadata - Offer metadata of any type.
    * @returns Metadata CID.
    */
   public async storeMetadata(metadata: AnyMetadata): Promise<string> {

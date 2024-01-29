@@ -6,6 +6,7 @@ import { getIpfsMetadataObject, parseIpfsHash } from "../../utils/ipfs";
 import { convertToString } from "../../utils/json";
 import { saveInnerSellerMetadata } from "./seller";
 import { saveInnerNftContractMetadata } from "./nft-contract";
+import { saveBundleMetadata } from "./bundle";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function saveMetadata(offer: Offer, timestamp: BigInt): string | null {
@@ -36,6 +37,10 @@ export function saveMetadata(offer: Offer, timestamp: BigInt): string | null {
 
   if (metadataType == "PRODUCT_V1") {
     return saveProductV1Metadata(offer, metadataObj, timestamp);
+  }
+
+  if (metadataType == "BUNDLE") {
+    return saveBundleMetadata(offer, metadataObj, timestamp);
   }
 
   return null;

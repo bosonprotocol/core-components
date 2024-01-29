@@ -89,7 +89,10 @@ export class CoreSDK extends BaseCoreSDK {
   }
 
   public get getTxExplorerUrl() {
-    return this._getTxExplorerUrl;
+    return this._getTxExplorerUrl as (
+      txHash?: string,
+      isAddress?: boolean
+    ) => string;
   }
 
   public get web3Lib() {

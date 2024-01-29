@@ -5,16 +5,19 @@
   "name": "",
   "description": "",
   "externalUrl": "",
+  "animationUrl": "",
+  "youtubeUrl": "",
   "image": "",
+  "imageData": "",
   "attributes": [
     {
-      "trait_type": "",
+      "traitType": "",
       "value": "",
-      "display_type": ""
+      "displayType": ""
     },{
-      "trait_type": "",
+      "traitType": "",
       "value": "",
-      "display_type": ""
+      "displayType": ""
     }
   ],
   "product": {

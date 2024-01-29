@@ -1,0 +1,39 @@
+{
+  "schemaUrl": "https://json-schema.org",
+  "type": "BUNDLE",
+  "name": "Boson X MetaFactory Hoodie + Wearable NFT",
+  "description": "The future is here and it starts with a limited edition MetaFactory X Boson Protocol Hoodie... This unisex hoodie, in a metablack coloureway with reflective stripes, is made from a heavyweight French terry cotton. It has an adjustable hood and full colour interior, elasticated trims, reflective lining, and reflective back panels... Nothing says open metaverse more than this collab between MetaFactory and Boson Protocol. Limited Edition: Only 75 ever made.",
+  "externalUrl": "https://app.bosonportal.io/#/offer-uuid/ecf2a6dc-555b-41b5-aca8-b7e29eebbb30",
+  "licenseUrl": "https://app.bosonportal.io/#/license/ecf2a6dc-555b-41b5-aca8-b7e29eebbb30",
+  "bundleUuid": "c4919709-de10-4bb7-9d4a-efea1b6f75e2",
+  "seller": {
+    "name": "Best Brand Ever",
+    "defaultVersion": 1,
+    "contactLinks": [
+      {
+        "url": "support@bosonportal.io",
+        "tag": "email"
+      }
+    ],
+    "images": [
+      {
+        "url": "ipfs://QmXNgvLcTRHdxf9NAsgU1TqR2nPVth2Cb6EEGMLYGnktoz",
+        "tag": "profile",
+        "height": 256,
+        "width": 256
+      },
+      {
+        "url": "ipfs://QmSLT6LrjTGiwQdPNRwfcPqba2kTQkXiU1e65c2yo6SDYa",
+        "tag": "cover",
+        "height": 1024,
+        "width": 1024
+      }
+    ],
+    "contactPreference": "xmtp"
+  },
+  "items": [
+    {
+      "url": "ipfs://QmNRpZ2GzDfRyLwC2TDf2msoRngcLkYLC2f4SoJLS7Mqpu"
+    }
+  ]
+}

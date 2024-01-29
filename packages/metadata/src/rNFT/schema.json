@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaUrl": { "type": "string" },
+    "type": { "type": "string", "enum": ["rNFT"] },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "image": { "type": "string" },
+    "externalUrl": { "type": "string" },
+    "licenseUrl": { "type": "string" },
+    "condition": { "type": "string" },
+    "animationUrl": { "type": "string" },
+    "attributes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "traitType": { "type": "string"},
+          "value": { "type": "string"},
+          "displayType": { "type": "string"}
+        },
+        "required": ["traitType", "value"]
+      }
+    }
+  },
+  "required": ["schemaUrl", "type", "name", "description", "externalUrl", "licenseUrl"]
+}

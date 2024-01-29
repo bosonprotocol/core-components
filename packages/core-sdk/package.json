@@ -8,12 +8,14 @@
   "scripts": {
     "dev": "tsc --watch --preserveWatchOutput ",
     "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
+    "lint:subgraph:fix": "eslint src/subgraph.ts --fix --no-eslintrc --config .eslintrc.subgraph",
+    "prettier:subgraph": "prettier -w src/subgraph.ts",
     "lint:fix": "npm run lint -- --fix",
     "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
     "test": "jest",
     "test:watch": "jest --watch",
     "clean": "rimraf dist coverage .turbo node_modules",
-    "codegen": "graphql-codegen --config ./codegen.yml && npm run lint:fix"
+    "codegen": "graphql-codegen --config ./codegen.yml && npm run lint:subgraph:fix && npm run prettier:subgraph"
   },
   "repository": {
     "type": "git",

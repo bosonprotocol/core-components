@@ -7,6 +7,10 @@ export function getMetadataEntityId(id: string): string {
   return `${id}-metadata`;
 }
 
+export function getItemMetadataEntityId(id: string, index: string): string {
+  return `${id}-item-${index}-metadata`;
+}
+
 export function getMetadataAttributeId(
   traitType: string,
   value: string,
@@ -22,9 +26,15 @@ export function saveMetadataAttributes(
 
   for (let i = 0; i < attributesArray.length; i++) {
     const attributeObj = attributesArray[i];
-    const traitType = convertToString(attributeObj.get("trait_type"));
+    let traitType = convertToString(attributeObj.get("traitType"));
+    if (!traitType) {
+      traitType = convertToString(attributeObj.get("trait_type"));
+    }
     const value = convertToString(attributeObj.get("value"));
-    const displayType = convertToString(attributeObj.get("display_type"));
+    let displayType = convertToString(attributeObj.get("displayType"));
+    if (!displayType) {
+      displayType = convertToString(attributeObj.get("display_type"));
+    }
     const attributeId = getMetadataAttributeId(traitType, value, displayType);
 
     let metadataAttribute = MetadataAttribute.load(attributeId);

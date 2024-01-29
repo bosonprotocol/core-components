@@ -2,20 +2,24 @@ import * as base from "./base";
 import * as productV1 from "./product-v1";
 import * as seller from "./seller";
 import * as collection from "./collection";
+import * as rNFT from "./rNFT";
+import * as bundle from "./bundle";
+import * as productV1Item from "./productV1Item";
+import * as nftItem from "./nftItem";
+import { MetadataType } from "./iMetadata";
+import { buildUuid } from "./common";
 
-export type AnyMetadata = base.BaseMetadata | productV1.ProductV1Metadata;
-
-export type OfferOrSellerMetadata =
-  | AnyMetadata
+export type AnyMetadata =
+  | base.BaseMetadata
+  | productV1.ProductV1Metadata
   | seller.SellerMetadata
-  | collection.CollectionMetadata;
+  | collection.CollectionMetadata
+  | rNFT.RNftMetadata
+  | bundle.BundleMetadata
+  | productV1Item.ProductV1Item
+  | nftItem.NftItem;
 
-export enum MetadataType {
-  BASE = "BASE",
-  PRODUCT_V1 = "PRODUCT_V1",
-  SELLER = "SELLER",
-  COLLECTION = "COLLECTION"
-}
+export type OfferOrSellerMetadata = AnyMetadata;
 
 export interface MetadataStorage {
   getMetadata(metadataUri: string): Promise<OfferOrSellerMetadata>;
@@ -49,7 +53,7 @@ function validateIpfsLimits(
   return undefined;
 }
 
-function validateMetadata(metadata: OfferOrSellerMetadata) {
+function validateMetadata(metadata: AnyMetadata) {
   try {
     const firstKeyThatExceedsIpfsLimit = validateIpfsLimits(metadata);
     if (firstKeyThatExceedsIpfsLimit) {
@@ -78,6 +82,26 @@ function validateMetadata(metadata: OfferOrSellerMetadata) {
           abortEarly: false
         });
         return true;
+      case MetadataType.BUNDLE:
+        bundle.bundleMetadataSchema.validateSync(metadata, {
+          abortEarly: false
+        });
+        return true;
+      case MetadataType.rNFT:
+        rNFT.rNFTMetadataSchema.validateSync(metadata, {
+          abortEarly: false
+        });
+        return true;
+      case MetadataType.ITEM_NFT:
+        nftItem.nftItemSchema.validateSync(metadata, {
+          abortEarly: false
+        });
+        return true;
+      case MetadataType.ITEM_PRODUCT_V1:
+        productV1Item.productV1ItemSchema.validateSync(metadata, {
+          abortEarly: false
+        });
+        return true;
       default:
         throw new Error(
           `Metadata validation failed for unknown type: ${metadata.type}`
@@ -91,4 +115,17 @@ function validateMetadata(metadata: OfferOrSellerMetadata) {
   }
 }
 
-export { validateMetadata, base, productV1, seller, METADATA_LENGTH_LIMIT };
+export {
+  MetadataType,
+  validateMetadata,
+  base,
+  productV1,
+  seller,
+  collection,
+  rNFT,
+  bundle,
+  nftItem,
+  productV1Item,
+  METADATA_LENGTH_LIMIT,
+  buildUuid
+};

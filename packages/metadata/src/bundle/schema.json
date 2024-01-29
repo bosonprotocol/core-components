@@ -1,0 +1,76 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaUrl": { "type": "string" },
+    "type": { "type": "string", "enum": ["BUNDLE"] },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "image": { "type": "string" },
+    "imageData": { "type": "string" },
+    "externalUrl": { "type": "string" },
+    "licenseUrl": { "type": "string" },
+    "youtubeUrl": { "type": "string" },
+    "condition": { "type": "string" },
+    "animationUrl": { "type": "string" },
+    "attributes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "traitType": { "type": "string"},
+          "value": { "type": "string"},
+          "displayType": { "type": "string"}
+        },
+        "required": ["traitType", "value"]
+      }
+    },
+    "bundleUuid": { "type": "string"},
+    "seller": {
+      "type": "object",
+      "properties": {
+        "defaultVersion": { "type": "number" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "externalUrl": { "type": "string" },
+        "tokenId": { "type": "string" },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": { "type": "string" },
+              "tag": { "type": "string" }
+            },
+            "required": ["url"]
+          },
+          "minItems": 0
+        },
+        "contactLinks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": { "type": "string" },
+              "tag": { "type": "string" }
+            },
+            "required": ["url", "tag"]
+          },
+          "minItems": 1
+        }
+      },
+      "required": ["defaultVersion", "contactLinks", "name"]
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": { "type": "string" }
+        },
+        "required": ["url"]
+      },
+      "minItems": 1
+    }
+  },
+  "required": ["schemaUrl", "type", "name", "description", "externalUrl", "licenseUrl", "bundleUuid", "seller", "items"]
+}

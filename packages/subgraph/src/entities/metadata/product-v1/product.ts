@@ -132,13 +132,20 @@ export function saveProductV1ProductOrOverrides(
     productOrOverrideObj.get("visuals_images")
   );
   const metadataImage = convertToString(metadataObj.get("image"));
-  const savedImageIds = saveProductV1Medias(visuals_images, "IMAGE", metadataImage);
+  const savedImageIds = saveProductV1Medias(
+    visuals_images,
+    "IMAGE",
+    metadataImage
+  );
   const visuals_videos = convertToObjectArray(
     productOrOverrideObj.get("visuals_videos")
   );
   const animationUrl = convertToString(metadataObj.get("animationUrl"));
-  const savedVideoIds = saveProductV1Medias(visuals_videos, "VIDEO", animationUrl);
-  
+  const savedVideoIds = saveProductV1Medias(
+    visuals_videos,
+    "VIDEO",
+    animationUrl
+  );
 
   const packaging_packageQuantity = convertToString(
     productOrOverrideObj.get("packaging_packageQuantity")

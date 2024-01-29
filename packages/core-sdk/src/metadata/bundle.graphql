@@ -1,0 +1,128 @@
+query getBundleMetadataEntityByIdQuery(
+  $metadataId: ID!
+  $metadataSkip: Int
+  $metadataFirst: Int
+  $metadataOrderBy: BundleMetadataEntity_orderBy
+  $metadataOrderDirection: OrderDirection
+  $metadataFilter: BundleMetadataEntity_filter
+) {
+  bundleMetadataEntity(id: $metadataId) {
+    ...BundleMetadataEntityFields
+  }
+}
+
+query getBundleMetadataEntitiesQuery(
+  $metadataSkip: Int
+  $metadataFirst: Int
+  $metadataOrderBy: BundleMetadataEntity_orderBy
+  $metadataOrderDirection: OrderDirection
+  $metadataFilter: BundleMetadataEntity_filter
+) {
+  bundleMetadataEntities(
+    skip: $metadataSkip
+    first: $metadataFirst
+    orderBy: $metadataOrderBy
+    orderDirection: $metadataOrderDirection
+    where: $metadataFilter
+  ) {
+    ...BundleMetadataEntityFields
+  }
+}
+
+fragment BundleMetadataEntityFields on BundleMetadataEntity {
+  ...BaseBundleMetadataEntityFields
+}
+
+fragment BaseBundleMetadataEntityFields on BundleMetadataEntity {
+  id
+  name
+  bundleUuid
+  description
+  externalUrl
+  animationUrl
+  animationMetadata {
+    ...BaseAnimationMetadataFields
+  }
+  licenseUrl
+  condition
+  schemaUrl
+  type
+  image
+  attributes {
+    traitType
+    value
+    displayType
+  }
+  offer {
+    ...BaseOfferFields
+    exchanges {
+    ...BaseExchangeFields
+    }
+  }
+  seller {
+    ...BaseSellerFields
+  }
+  exchangeToken {
+    ...BaseExchangeTokenFields
+  }
+  createdAt
+  voided
+  validFromDate
+  validUntilDate
+  quantityAvailable
+  numberOfCommits
+  numberOfRedemptions
+  productV1Seller {
+    ...BaseProductV1SellerFields
+  }
+  productUuids
+  items {
+    id
+    schemaUrl
+    type
+    metadataUri
+    ... on ProductV1ItemMetadataEntity {
+      uuid
+      productUuid
+      productVersion
+      product {
+        ...BaseProductV1ProductFields
+      }
+      variations {
+        ...BaseProductV1VariationFields
+      }
+      exchangePolicy {
+        ...BaseProductV1ExchangePolicyFields
+      }
+      shipping {
+        ...BaseProductV1ShippingOptionFields
+      }
+      productOverrides {
+        ...BaseProductV1ProductOverridesFields
+      }
+    }
+    ... on NftItemMetadataEntity {
+      name
+      description
+      image
+      externalUrl
+      animationUrl
+      youtubeUrl
+      chainId
+      contract
+      tokenId
+      tokenIdRange {
+        min
+        max
+      }
+      transferMethod
+      transferDelay
+      quantity
+      attributes {
+        traitType
+        value
+        displayType
+      }
+    }
+  }
+}

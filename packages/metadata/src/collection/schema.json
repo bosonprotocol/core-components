@@ -1,15 +1,17 @@
 {
   "type": "object",
   "properties": {
+    "schemaUrl": { "type": "string" },
     "type": { "type": "string", "enum": ["COLLECTION"] },
     "name": { "type": "string" },
     "description": { "type": "string" },
     "image": { "type": "string" },
+    "externalLink": { "type": "string" },
     "external_link": { "type": "string" },
     "collaborators": {
       "type": "array",
       "items": { "type": "string" }
     }
   },
-  "required": ["name", "type"]
+  "required": ["schemaUrl", "type", "name"]
 }

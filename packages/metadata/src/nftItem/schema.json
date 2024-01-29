@@ -1,0 +1,46 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaUrl": { "type": "string" },
+    "type": { "type": "string", "enum": ["ITEM_NFT"] },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "image": { "type": "string" },
+    "imageData": { "type": "string" },
+    "externalUrl": { "type": "string" },
+    "animationUrl": { "type": "string" },
+    "youtubeUrl": { "type": "string" },
+    "image_data": { "type": "string" },
+    "external_url": { "type": "string" },
+    "animation_url": { "type": "string" },
+    "youtube_url": { "type": "string" },
+    "attributes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "traitType": { "type": "string"},
+          "trait_type": { "type": "string"},
+          "value": { "type": "string"},
+          "displayType": { "type": "string"},
+          "display_type": { "type": "string"}
+        },
+        "required": ["value"]
+      }
+    },
+    "chainId": { "type": "number" },
+    "contract": { "type": "string" },
+    "tokenId": { "type": "string" },
+    "tokenIdRange": {
+      "type": "object",
+      "properties": {
+        "min": { "type": "string" },
+        "max": { "type": "string" }
+      }
+    },
+    "transferMethod": { "type": "string" },
+    "transferDelay": { "type": "string" },
+    "quantity": { "type": "number", "moreThan": 0 }
+  },
+  "required": ["schemaUrl", "type", "name"]
+}

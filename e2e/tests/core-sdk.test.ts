@@ -37,7 +37,7 @@ import {
   commitToOffer,
   wait
 } from "./utils";
-import { EvaluationMethod, GatingType, TokenType } from "@bosonprotocol/common";
+import { EvaluationMethod, GatingType, TokenType } from "../../packages/common";
 
 const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)

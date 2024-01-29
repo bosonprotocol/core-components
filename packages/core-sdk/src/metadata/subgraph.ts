@@ -18,8 +18,15 @@ import {
   GetProductV1ProductsWithVariantsQueryQueryVariables,
   BaseProductV1ProductWithNotVoidedVariantsFieldsFragment,
   BaseProductV1ProductWithVariantsFieldsFragment,
-  GetAllProductsWithNotVoidedVariantsQueryQueryVariables
+  GetAllProductsWithNotVoidedVariantsQueryQueryVariables,
+  GetBundleMetadataEntityByIdQueryQueryVariables,
+  GetBundleMetadataEntitiesQueryQueryVariables,
+  BundleMetadataEntityFieldsFragment,
+  ItemMetadataType,
+  ProductV1ItemMetadataEntity
 } from "../subgraph";
+import { productV1 } from "..";
+import { productV1Item } from "@bosonprotocol/metadata";
 
 export type SingleBaseMetadataEntityQueryVariables = Omit<
   GetBaseMetadataEntityByIdQueryQueryVariables,
@@ -28,6 +35,11 @@ export type SingleBaseMetadataEntityQueryVariables = Omit<
 
 export type SingleProductV1MetadataEntityQueryVariables = Omit<
   GetProductV1MetadataEntityByIdQueryQueryVariables,
+  "metadataId"
+>;
+
+export type SingleBundleMetadataEntityQueryVariables = Omit<
+  GetBundleMetadataEntityByIdQueryQueryVariables,
   "metadataId"
 >;
 
@@ -85,6 +97,34 @@ export async function getProductV1MetadataEntities(
     });
 
   return productV1MetadataEntities;
+}
+
+export async function getBundleMetadataEntityByOfferId(
+  subgraphUrl: string,
+  offerId: BigNumberish,
+  queryVars: SingleBundleMetadataEntityQueryVariables = {}
+): Promise<BundleMetadataEntityFieldsFragment> {
+  const subgraphSdk = getSubgraphSdk(subgraphUrl);
+  const { bundleMetadataEntity } =
+    await subgraphSdk.getBundleMetadataEntityByIdQuery({
+      metadataId: `${offerId}-metadata`,
+      ...queryVars
+    });
+
+  return bundleMetadataEntity;
+}
+
+export async function getBundleMetadataEntities(
+  subgraphUrl: string,
+  queryVars: GetBundleMetadataEntitiesQueryQueryVariables = {}
+): Promise<BundleMetadataEntityFieldsFragment[]> {
+  const subgraphSdk = getSubgraphSdk(subgraphUrl);
+  const { bundleMetadataEntities = [] } =
+    await subgraphSdk.getBundleMetadataEntitiesQuery({
+      ...queryVars
+    });
+
+  return bundleMetadataEntities;
 }
 
 export async function getProductV1Brands(
@@ -157,32 +197,89 @@ export async function getProductWithVariants(
   productUuid: string
 ): Promise<{
   product: BaseProductV1ProductFieldsFragment;
+  bundles: BundleMetadataEntityFieldsFragment[];
   variants: {
     offer: OfferFieldsFragment;
     variations: ProductV1Variation[];
   }[];
 } | null> {
   // Look for ProductV1MetadataEntities, filtered per productUuid
-  const metadataEntities = await getProductV1MetadataEntities(subgraphUrl, {
+  const productV1MetadataEntities = await getProductV1MetadataEntities(
+    subgraphUrl,
+    {
+      metadataFilter: {
+        productUuid,
+        offer_: {
+          sellerId
+        }
+      }
+    }
+  );
+  // Look for BundleMetadataEntities, filtered per productUuid
+  const bundleMetadataEntities = await getBundleMetadataEntities(subgraphUrl, {
     metadataFilter: {
-      productUuid,
+      productUuids_contains: [productUuid],
       offer_: {
         sellerId
       }
     }
   });
-  if (metadataEntities.length === 0) {
+  if (productV1MetadataEntities.length + bundleMetadataEntities.length === 0) {
     return null;
   }
+  const itemsFromBundles = bundleMetadataEntities.reduce((prev, bundle) => {
+    const itemsFromBundle = getProductV1ItemFromBundle(bundle, productUuid);
+    return [...prev, ...itemsFromBundle];
+  }, [] as { productV1Item: ProductV1ItemMetadataEntity; offer: ProductV1MetadataEntityFieldsFragment["offer"] }[]);
+  const product = productV1MetadataEntities.length
+    ? productV1MetadataEntities[0].product
+    : itemsFromBundles[0]?.productV1Item.product;
+  const variants = productV1MetadataEntities.map((m) => {
+    return {
+      offer: m.offer,
+      variations: m.variations
+    };
+  });
+  const variantsFromBundleMap = itemsFromBundles.reduce((map, item) => {
+    if (!map.has(item.offer.id)) {
+      // ensure only add the same offer once
+      map.set(item.offer.id, {
+        offer: item.offer,
+        variations: item.productV1Item.variations
+      });
+    }
+    return map;
+  }, new Map());
+  variants.push(...Array.from(variantsFromBundleMap.values()));
   return {
-    product: metadataEntities[0].product,
-    variants: metadataEntities.map((m) => {
-      return {
-        offer: m.offer,
-        variations: m.variations
-      };
-    })
+    product, // return the product
+    bundles: bundleMetadataEntities, // return all bundles that contain this product
+    variants // return all variants for this product
   };
+}
+
+/** returns the productV1ItemMetadataEntities in a bundle for a given productUuid */
+// Note: it may returns several items, in case the BUNDLE contains different variants of
+// the same product (or even the same variant several times),
+function getProductV1ItemFromBundle(
+  bundle: BundleMetadataEntityFieldsFragment,
+  productUuid: string
+): {
+  productV1Item: ProductV1ItemMetadataEntity;
+  offer: ProductV1MetadataEntityFieldsFragment["offer"];
+}[] {
+  return bundle.items
+    .filter(
+      (item): item is ProductV1ItemMetadataEntity =>
+        item.type === ItemMetadataType.ItemProductV1
+    )
+    .filter((item) => item.productUuid === productUuid)
+    .map((item) => {
+      return {
+        productV1Item: item,
+        offer: bundle.offer as ProductV1MetadataEntityFieldsFragment["offer"]
+      };
+    });
 }
 
 export async function getProductWithVariantsFromOfferId(

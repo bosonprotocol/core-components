@@ -9,12 +9,12 @@
   "image": "ipfs://Qmeoh9wqZGPKv6SPRxgWQfyJcoyDv62j1yYV4nk9chqxFW",
   "attributes": [
     {
-      "trait_type": "Redeemable Until",
-      "display_type": "date",
+      "traitType": "Redeemable Until",
+      "displayType": "date",
       "value": "1735689599"
     },
     {
-      "trait_type": "Offer Category",
+      "traitType": "Offer Category",
       "value": "PHYSICAL"
     }
   ],
