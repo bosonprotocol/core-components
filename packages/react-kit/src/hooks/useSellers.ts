@@ -67,23 +67,32 @@ export function useSellers(
     ...(props.id_in && { id_in: props.id_in })
   };
   return useQuery(
-    ["sellers", props],
+    [
+      "sellers",
+      filter,
+      coreSDK.subgraphUrl,
+      props.includeFunds,
+      curationLists.sellerCurationList
+    ],
     async () => {
-      return accounts.subgraph.getSellers(coreSDK.subgraphUrl, {
-        sellersFilter: {
-          ...filter,
-          id_in:
-            enableCurationList && curationLists.enableCurationLists
-              ? [
-                  ...(curationLists.sellerCurationList ?? []),
-                  ...(props.id_in ?? [])
-                ]
-              : props.id_in
-        },
-        sellersOrderBy: subgraph.Seller_OrderBy.SellerId,
-        sellersOrderDirection: subgraph.OrderDirection.Asc,
-        includeFunds: props.includeFunds
-      });
+      return !curationLists.sellerCurationList ||
+        curationLists.sellerCurationList?.length > 0
+        ? accounts.subgraph.getSellers(coreSDK.subgraphUrl, {
+            sellersFilter: {
+              ...filter,
+              id_in:
+                enableCurationList && curationLists.enableCurationLists
+                  ? [
+                      ...(curationLists.sellerCurationList ?? []),
+                      ...(props.id_in ?? [])
+                    ]
+                  : props.id_in
+            },
+            sellersOrderBy: subgraph.Seller_OrderBy.SellerId,
+            sellersOrderDirection: subgraph.OrderDirection.Asc,
+            includeFunds: props.includeFunds
+          })
+        : [];
     },
     {
       ...options
