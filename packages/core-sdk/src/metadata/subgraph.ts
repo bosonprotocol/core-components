@@ -195,8 +195,13 @@ export async function getProductWithVariants(
   productUuid: string
 ): Promise<{
   product: BaseProductV1ProductFieldsFragment;
-  bundleSets: 
-    Map<string, { bundle: BundleMetadataEntityFieldsFragment; variations: ProductV1Variation[]; }[]>;
+  bundleSets: Map<
+    string,
+    {
+      bundle: BundleMetadataEntityFieldsFragment;
+      variations: ProductV1Variation[];
+    }[]
+  >;
   variants: {
     offer: OfferFieldsFragment;
     variations: ProductV1Variation[];
@@ -226,28 +231,33 @@ export async function getProductWithVariants(
   if (productV1MetadataEntities.length + bundleMetadataEntities.length === 0) {
     return null;
   }
-  const { itemsFromBundles, bundleSets } = bundleMetadataEntities.reduce((prev, bundle) => {
+  const { itemsFromBundles, bundleSets } = bundleMetadataEntities.reduce(
+    (prev, bundle) => {
       const itemsFromBundle = getProductV1ItemFromBundle(bundle, productUuid);
       if (!prev.bundleSets.has(bundle.bundleUuid)) {
         prev.bundleSets.set(bundle.bundleUuid, []);
       }
-      prev.bundleSets
-      .get(bundle.bundleUuid)
-      .push({
+      prev.bundleSets.get(bundle.bundleUuid).push({
         bundle,
         variations: itemsFromBundle[0].variations // LIMITATION: in case the same bundle contains several times the same product (same variation or different), only the first variation is returned here
       });
       return {
-        itemsFromBundles: [
-          ...prev.itemsFromBundles,
-          ...itemsFromBundle
-        ],
+        itemsFromBundles: [...prev.itemsFromBundles, ...itemsFromBundle],
         bundleSets: prev.bundleSets
-      }
+      };
     },
     {
-      itemsFromBundles: [] as { productV1Item: ProductV1ItemMetadataEntity; offer: ProductV1MetadataEntityFieldsFragment["offer"] }[],
-      bundleSets: new Map<string, { bundle: BundleMetadataEntityFieldsFragment; variations: ProductV1Variation[]; }[]>()
+      itemsFromBundles: [] as {
+        productV1Item: ProductV1ItemMetadataEntity;
+        offer: ProductV1MetadataEntityFieldsFragment["offer"];
+      }[],
+      bundleSets: new Map<
+        string,
+        {
+          bundle: BundleMetadataEntityFieldsFragment;
+          variations: ProductV1Variation[];
+        }[]
+      >()
     }
   );
   const product = productV1MetadataEntities.length

@@ -91,7 +91,13 @@ export class MetadataMixin extends BaseCoreSDK {
     productUuid: string
   ): Promise<{
     product: subgraph.BaseProductV1ProductFieldsFragment;
-    bundleSets: Map<string, { bundle: subgraph.BundleMetadataEntityFieldsFragment; variations: subgraph.ProductV1Variation[]; }[]>;
+    bundleSets: Map<
+      string,
+      {
+        bundle: subgraph.BundleMetadataEntityFieldsFragment;
+        variations: subgraph.ProductV1Variation[];
+      }[]
+    >;
     variants: Array<{
       offer: subgraph.OfferFieldsFragment;
       variations: Array<subgraph.ProductV1Variation>;
