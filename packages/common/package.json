@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/common",
-  "version": "1.25.2-alpha.2",
+  "version": "1.25.2-alpha.3",
   "description": "Common configs, types, interfaces and utilities shared by the core components of the Boson Protocol.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -37,7 +37,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@bosonprotocol/metadata": "^1.14.0-alpha.0",
+    "@bosonprotocol/metadata": "^1.14.0-alpha.1",
     "@ethersproject/abi": "^5.5.0",
     "@ethersproject/address": "^5.5.0",
     "@ethersproject/bignumber": "^5.5.0",
