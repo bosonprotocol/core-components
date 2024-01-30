@@ -58,7 +58,7 @@ export function saveProductV1Metadata(
   const savedVariationIds = saveProductV1Variations(
     convertToObjectArray(metadataObj.get("variations"))
   );
-  const variant = saveProductV1Variant(offerId, savedVariationIds);
+  const variant = saveProductV1Variant(offerId, savedVariationIds, null);
   const savedProductId = saveProductV1ProductOrOverrides(
     productObj,
     metadataObj,
@@ -160,7 +160,7 @@ export function saveProductV1ItemMetadata(
   const savedVariationIds = saveProductV1Variations(
     convertToObjectArray(metadataObj.get("variations"))
   );
-  const variant = saveProductV1Variant(offerId, savedVariationIds);
+  const variant = saveProductV1Variant(offerId, savedVariationIds, bundleId);
   const savedProductId = saveProductV1ProductOrOverrides(
     productObj,
     metadataObj,

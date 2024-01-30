@@ -259,6 +259,9 @@ fragment BaseProductV1ProductWithVariantsFields on ProductV1Product {
     variations {
       ...BaseProductV1VariationFields
     }
+    bundle {
+      ...BaseBundleMetadataEntityFields
+    }
   }
   allVariantsVoided
   minValidFromDate
@@ -278,6 +281,9 @@ fragment BaseProductV1ProductWithNotVoidedVariantsFields on ProductV1Product {
     }
     variations {
       ...BaseProductV1VariationFields
+    }
+    bundle {
+      ...BaseBundleMetadataEntityFields
     }
   }
   allVariantsVoided

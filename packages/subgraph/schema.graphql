@@ -426,6 +426,7 @@ type ProductV1Variant @entity {
   id: ID!
   variations: [ProductV1Variation!]
   offer: Offer!
+  bundle: BundleMetadataEntity
 }
 
 type ProductV1Seller @entity {

@@ -11,6 +11,7 @@ import {
   mockProductV1Metadata,
   prepareMultiVariantOffers,
   seedWallet22,
+  serializeVariant,
   voidOfferBatch
 } from "./utils";
 import { MetadataType, subgraph } from "../../packages/core-sdk/src";
@@ -148,15 +149,38 @@ describe("Bundle e2e tests", () => {
     ]);
     expect(offer).toBeTruthy();
 
-    const product = await coreSDK.getProductWithVariants(
-      seller.id,
-      productV1Item.product.uuid
-    );
+    const { product, variants, bundleSets } =
+      (await coreSDK.getProductWithVariants(
+        seller.id,
+        productV1Item.product.uuid
+      )) as {
+        product: subgraph.BaseProductV1ProductFieldsFragment;
+        bundleSets: Map<
+          string,
+          {
+            bundle: subgraph.BundleMetadataEntityFieldsFragment;
+            variations: subgraph.ProductV1Variation[];
+          }[]
+        >;
+        variants: Array<{
+          offer: subgraph.OfferFieldsFragment;
+          variations: Array<subgraph.ProductV1Variation>;
+        }>;
+      };
     expect(product).toBeTruthy();
-    expect(product?.product).toBeTruthy();
-    expect(product?.product.uuid).toEqual(productV1Item.product.uuid);
-    expect(product?.variants.length).toEqual(1);
-    expect(product?.variants[0].offer.id).toEqual(offer.id);
+    expect(product.uuid).toEqual(productV1Item.product.uuid);
+    // No variant expected at root level, as the product is only available in bundles
+    expect(variants.length).toEqual(0);
+    // Expect 1 bundleSet listed for this product
+    expect(bundleSets.size).toEqual(1);
+    const bundleUuid = bundleSets.keys().next().value as string;
+    const bundleSet = bundleSets.get(bundleUuid) as {
+      bundle: subgraph.BundleMetadataEntityFieldsFragment;
+      variations: subgraph.ProductV1Variation[];
+    }[];
+    // Expect 1 bundle in the bundleSet
+    expect(bundleSet.length).toEqual(1);
+    expect(bundleSet[0].bundle.offer.id).toEqual(offer.id);
   });
   test("Create a BUNDLE with only one physical item", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
@@ -200,7 +224,7 @@ describe("Bundle e2e tests", () => {
           value: attr.value,
           traitType: (attr["traitType"] || attr["trait_type"]) as string,
           displayType: attr["displayType"] || attr["display_type"]
-        }
+        };
       }),
       type: MetadataType.ITEM_NFT
     });
@@ -276,7 +300,9 @@ describe("Bundle e2e tests", () => {
     expect(bundles[0].offer.id).toEqual(offer.id);
     expect(bundles[0].items.length).toEqual(1);
 
-    expect(bundles[0].items[0].type).toEqual(subgraph.ItemMetadataType.ItemUnknown);
+    expect(bundles[0].items[0].type).toEqual(
+      subgraph.ItemMetadataType.ItemUnknown
+    );
     expect(bundles[0].items[0].metadataUri).toBeTruthy();
   });
   test("Create a BUNDLE with twice the same single product", async () => {
@@ -313,16 +339,35 @@ describe("Bundle e2e tests", () => {
     expect(products.length).toEqual(1);
     expect(products[0].uuid).toEqual(productUuid);
 
-    const product = await coreSDK.getProductWithVariants(
-      seller.id,
-      productUuid
-    );
+    const { product, variants, bundleSets } =
+      (await coreSDK.getProductWithVariants(seller.id, productUuid)) as {
+        product: subgraph.BaseProductV1ProductFieldsFragment;
+        bundleSets: Map<
+          string,
+          {
+            bundle: subgraph.BundleMetadataEntityFieldsFragment;
+            variations: subgraph.ProductV1Variation[];
+          }[]
+        >;
+        variants: Array<{
+          offer: subgraph.OfferFieldsFragment;
+          variations: Array<subgraph.ProductV1Variation>;
+        }>;
+      };
     expect(product).toBeTruthy();
-    expect(product?.product).toBeTruthy();
-    expect(product?.product.uuid).toEqual(productUuid);
-    expect(product?.variants.length).toEqual(1);
-    expect(product?.variants[0].offer.id).toEqual(offer.id);
-    expect(product?.bundles.length).toEqual(1);
+    expect(product.uuid).toEqual(productUuid);
+    // No variant expected at root level, as the product is only available in bundles
+    expect(variants.length).toEqual(0);
+    // Expect 1 bundleSet listed for this product
+    expect(bundleSets.size).toEqual(1);
+    const bundleUuid = bundleSets.keys().next().value as string;
+    const bundleSet = bundleSets.get(bundleUuid) as {
+      bundle: subgraph.BundleMetadataEntityFieldsFragment;
+      variations: subgraph.ProductV1Variation[];
+    }[];
+    // Expect 1 bundle in the bundleSet
+    expect(bundleSet.length).toEqual(1);
+    expect(bundleSet[0].bundle.offer.id).toEqual(offer.id);
   });
   test("Create a multi-variant product in BUNDLEs", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
@@ -331,11 +376,13 @@ describe("Bundle e2e tests", () => {
     const [seller] = sellers;
 
     const productUuid = buildUuid();
+    const bundleUuid = buildUuid();
     const [offer_S, offer_M, offer_L] = await createBundleMultiVariantOffers(
       coreSDK,
       sellerWallet,
       productUuid,
-      productVariations
+      productVariations,
+      bundleUuid
     );
     expect(offer_S).toBeTruthy();
     expect(offer_M).toBeTruthy();
@@ -357,24 +404,57 @@ describe("Bundle e2e tests", () => {
     expect(products.length).toEqual(1);
     expect(products[0].uuid).toEqual(productUuid);
 
-    const product = await coreSDK.getProductWithVariants(
-      seller.id,
-      productUuid
-    );
+    const { product, variants, bundleSets } =
+      (await coreSDK.getProductWithVariants(seller.id, productUuid)) as {
+        product: subgraph.BaseProductV1ProductFieldsFragment;
+        bundleSets: Map<
+          string,
+          {
+            bundle: subgraph.BundleMetadataEntityFieldsFragment;
+            variations: subgraph.ProductV1Variation[];
+          }[]
+        >;
+        variants: Array<{
+          offer: subgraph.OfferFieldsFragment;
+          variations: Array<subgraph.ProductV1Variation>;
+        }>;
+      };
     expect(product).toBeTruthy();
-    expect(product?.product).toBeTruthy();
-    expect(product?.product.uuid).toEqual(productUuid);
-    expect(product?.variants.length).toEqual(3);
+    expect(product.uuid).toEqual(productUuid);
+    // We expect no variant, as the product is only referenced in bundle offer
+    expect(variants.length).toEqual(0);
+    // We expect 1 bundleSet, as every bundle refer to the same multi-variant product
+    expect(bundleSets.size).toEqual(1);
+    expect(bundleSets.has(bundleUuid)).toBe(true);
+    // We expect the bundleSet to list 3 bundles
+    const bundleSet = bundleSets.get(bundleUuid);
     expect(
-      product?.variants.some((variant) => variant.offer.id === offer_S.id)
+      bundleSet?.some(({ bundle }) => bundle.offer.id === offer_S.id)
     ).toBe(true);
     expect(
-      product?.variants.some((variant) => variant.offer.id === offer_M.id)
+      bundleSet?.some(({ bundle }) => bundle.offer.id === offer_M.id)
     ).toBe(true);
     expect(
-      product?.variants.some((variant) => variant.offer.id === offer_L.id)
+      bundleSet?.some(({ bundle }) => bundle.offer.id === offer_L.id)
     ).toBe(true);
-    expect(product?.bundles.length).toEqual(3);
+    // Check each variation referenced in the bundleSet
+    for (let i = 0; i < productVariations.length; i++) {
+      const offer = [offer_S, offer_M, offer_L][i];
+      const productVariation = productVariations[i];
+      const productVariationStr = serializeVariant(productVariation);
+      expect(
+        bundleSet?.some(({ bundle }) => bundle.offer.id === offer.id)
+      ).toBe(true);
+      const variation = bundleSet?.find(
+        ({ bundle }) => bundle.offer.id === offer.id
+      )?.variations as any;
+      const variationStr = serializeVariant(
+        variation.map((v) => {
+          return { option: v.option, type: v.type };
+        })
+      );
+      expect(variationStr).toEqual(productVariationStr);
+    }
   });
   test("Create a BUNDLE that contains a product already listed as single offer", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
@@ -399,10 +479,13 @@ describe("Bundle e2e tests", () => {
     const productV1Item1 = mockProductV1Item(undefined, productUuid);
     const digitalItem = mockNFTItem();
 
-    const bundleOffer = await createBundleOffer(coreSDK, sellerWallet, [
-      productV1Item1,
-      digitalItem
-    ]);
+    const bundleUuid = buildUuid();
+    const bundleOffer = await createBundleOffer(
+      coreSDK,
+      sellerWallet,
+      [productV1Item1, digitalItem],
+      bundleUuid
+    );
     expect(bundleOffer).toBeTruthy();
     expect(bundleOffer.id).not.toEqual(productV1Offer.id);
     expect(bundleOffer.metadata).toBeTruthy();
@@ -415,31 +498,35 @@ describe("Bundle e2e tests", () => {
     expect(products.length).toEqual(1);
     expect(products[0].uuid).toEqual(productUuid);
 
-    const product = await coreSDK.getProductWithVariants(
-      seller.id,
-      productUuid
-    );
-    // TODO; potential changes:
-    // - product?.product only returns the physical product, if offered in single way (outside of any bundle)
-    // - product?.variant returns the variants of the physical product, if offered in single way (outside of any bundle)
-    // - product?.bundles return all bundles containing the given product.
-    // - product.bundles[i] should be mapped per bundleUUID (the same bundleUUID value can be shared across several bundles, meaning
-    //   each of them is a variant of a multi-variant bundle - should match multi different variants of the physical item(s) and, if any, of digital item(s))
+    const { product, variants, bundleSets } =
+      (await coreSDK.getProductWithVariants(seller.id, productUuid)) as {
+        product: subgraph.BaseProductV1ProductFieldsFragment;
+        bundleSets: Map<
+          string,
+          {
+            bundle: subgraph.BundleMetadataEntityFieldsFragment;
+            variations: subgraph.ProductV1Variation[];
+          }[]
+        >;
+        variants: Array<{
+          offer: subgraph.OfferFieldsFragment;
+          variations: Array<subgraph.ProductV1Variation>;
+        }>;
+      };
     expect(product).toBeTruthy();
-    expect(product?.product).toBeTruthy();
-    expect(product?.product.uuid).toEqual(productUuid);
-    // We expect to have 1 bundle referenced for this product
-    expect(product?.bundles.length).toEqual(1);
-    // We expect to find 2 variants (as there are 2 offers for the same product)
-    expect(product?.variants.length).toEqual(2);
-    expect(
-      product?.variants.some(
-        (variant) => variant.offer.id === productV1Offer.id
-      )
-    ).toBe(true);
-    expect(
-      product?.variants.some((variant) => variant.offer.id === bundleOffer.id)
-    ).toBe(true);
+    expect(product.uuid).toEqual(productUuid);
+    // We expect to find just 1 variant (the one of the single physical product)
+    expect(variants.length).toEqual(1);
+    expect(variants[0].offer.id).toEqual(productV1Offer.id);
+    // We expect to have 1 bundleUuid listed for this product
+    expect(bundleSets.size).toEqual(1);
+    expect(bundleSets.has(bundleUuid)).toBe(true);
+    // This bundleUuid has one bundle (variant)
+    expect(bundleSets.get(bundleUuid)?.length).toEqual(1);
+    const bundle = bundleSets.get(bundleUuid)?.[0].bundle;
+    expect(bundle?.offer.id).toEqual(bundleOffer.id);
+    expect(bundle?.productUuids.length).toEqual(1);
+    expect(bundle?.productUuids[0]).toEqual(productUuid);
   });
   test("Create a BUNDLE that contains a multi-variant product already listed as single offer", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
@@ -459,29 +546,63 @@ describe("Bundle e2e tests", () => {
     expect(createdOffers.length).toEqual(productVariations.length);
 
     // Create a multi-variant bundle with the same productUuid
+    const bundleUuid = buildUuid();
     const bundleOffers = await createBundleMultiVariantOffers(
       coreSDK,
       sellerWallet,
       productUuid,
-      productVariations
+      productVariations,
+      bundleUuid
     );
     expect(bundleOffers.length).toEqual(productVariations.length);
 
-    const product = await coreSDK.getProductWithVariants(
-      seller.id,
-      productUuid
-    );
+    const { product, variants, bundleSets } =
+      (await coreSDK.getProductWithVariants(seller.id, productUuid)) as {
+        product: subgraph.BaseProductV1ProductFieldsFragment;
+        bundleSets: Map<
+          string,
+          {
+            bundle: subgraph.BundleMetadataEntityFieldsFragment;
+            variations: subgraph.ProductV1Variation[];
+          }[]
+        >;
+        variants: Array<{
+          offer: subgraph.OfferFieldsFragment;
+          variations: Array<subgraph.ProductV1Variation>;
+        }>;
+      };
     expect(product).toBeTruthy();
-    expect(product?.product).toBeTruthy();
-    expect(product?.product.uuid).toEqual(productUuid);
-    // We expect to have 3 bundles referenced for this product
-    expect(product?.bundles.length).toEqual(productVariations.length);
-    // We expect to find 6 variants (as there are 6 offers for the same product)
-    expect(product?.variants.length).toEqual(2 * productVariations.length);
-    for (const offer of [...createdOffers, ...bundleOffers]) {
+    expect(product.uuid).toEqual(productUuid);
+    // We expect to find 3 variants for the physical product outside of bundles
+    expect(variants.length).toEqual(productVariations.length);
+    for (const offer of [...createdOffers]) {
+      expect(variants.some((variant) => variant.offer.id === offer.id)).toBe(
+        true
+      );
+    }
+    // We expect to have 1 bundleUuid listed for this product
+    expect(bundleSets.size).toEqual(1);
+    expect(bundleSets.has(bundleUuid)).toBe(true);
+    // This bundleUuid has 3 bundles (variants)
+    const bundleSet = bundleSets.get(bundleUuid);
+    expect(bundleSet?.length).toEqual(productVariations.length);
+    // Check each variation
+    for (let i = 0; i < productVariations.length; i++) {
+      const offer = bundleOffers[i];
+      const productVariation = productVariations[i];
+      const productVariationStr = serializeVariant(productVariation);
       expect(
-        product?.variants.some((variant) => variant.offer.id === offer.id)
+        bundleSet?.some(({ bundle }) => bundle.offer.id === offer.id)
       ).toBe(true);
+      const variation = bundleSet?.find(
+        ({ bundle }) => bundle.offer.id === offer.id
+      )?.variations as any;
+      const variationStr = serializeVariant(
+        variation.map((v) => {
+          return { option: v.option, type: v.type };
+        })
+      );
+      expect(variationStr).toEqual(productVariationStr);
     }
   });
   test("Create different multi-variant BUNDLES - check getAllProductsWithVariants()", async () => {

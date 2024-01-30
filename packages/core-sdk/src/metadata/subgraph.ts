@@ -25,8 +25,6 @@ import {
   ItemMetadataType,
   ProductV1ItemMetadataEntity
 } from "../subgraph";
-import { productV1 } from "..";
-import { productV1Item } from "@bosonprotocol/metadata";
 
 export type SingleBaseMetadataEntityQueryVariables = Omit<
   GetBaseMetadataEntityByIdQueryQueryVariables,
@@ -197,7 +195,8 @@ export async function getProductWithVariants(
   productUuid: string
 ): Promise<{
   product: BaseProductV1ProductFieldsFragment;
-  bundles: BundleMetadataEntityFieldsFragment[];
+  bundleSets: 
+    Map<string, { bundle: BundleMetadataEntityFieldsFragment; variations: ProductV1Variation[]; }[]>;
   variants: {
     offer: OfferFieldsFragment;
     variations: ProductV1Variation[];
@@ -227,10 +226,30 @@ export async function getProductWithVariants(
   if (productV1MetadataEntities.length + bundleMetadataEntities.length === 0) {
     return null;
   }
-  const itemsFromBundles = bundleMetadataEntities.reduce((prev, bundle) => {
-    const itemsFromBundle = getProductV1ItemFromBundle(bundle, productUuid);
-    return [...prev, ...itemsFromBundle];
-  }, [] as { productV1Item: ProductV1ItemMetadataEntity; offer: ProductV1MetadataEntityFieldsFragment["offer"] }[]);
+  const { itemsFromBundles, bundleSets } = bundleMetadataEntities.reduce((prev, bundle) => {
+      const itemsFromBundle = getProductV1ItemFromBundle(bundle, productUuid);
+      if (!prev.bundleSets.has(bundle.bundleUuid)) {
+        prev.bundleSets.set(bundle.bundleUuid, []);
+      }
+      prev.bundleSets
+      .get(bundle.bundleUuid)
+      .push({
+        bundle,
+        variations: itemsFromBundle[0].variations // LIMITATION: in case the same bundle contains several times the same product (same variation or different), only the first variation is returned here
+      });
+      return {
+        itemsFromBundles: [
+          ...prev.itemsFromBundles,
+          ...itemsFromBundle
+        ],
+        bundleSets: prev.bundleSets
+      }
+    },
+    {
+      itemsFromBundles: [] as { productV1Item: ProductV1ItemMetadataEntity; offer: ProductV1MetadataEntityFieldsFragment["offer"] }[],
+      bundleSets: new Map<string, { bundle: BundleMetadataEntityFieldsFragment; variations: ProductV1Variation[]; }[]>()
+    }
+  );
   const product = productV1MetadataEntities.length
     ? productV1MetadataEntities[0].product
     : itemsFromBundles[0]?.productV1Item.product;
@@ -240,20 +259,9 @@ export async function getProductWithVariants(
       variations: m.variations
     };
   });
-  const variantsFromBundleMap = itemsFromBundles.reduce((map, item) => {
-    if (!map.has(item.offer.id)) {
-      // ensure only add the same offer once
-      map.set(item.offer.id, {
-        offer: item.offer,
-        variations: item.productV1Item.variations
-      });
-    }
-    return map;
-  }, new Map());
-  variants.push(...Array.from(variantsFromBundleMap.values()));
   return {
     product, // return the product
-    bundles: bundleMetadataEntities, // return all bundles that contain this product
+    bundleSets, // return all bundles that contain this product, mapped by bundleUuid
     variants // return all variants for this product
   };
 }
@@ -267,6 +275,7 @@ function getProductV1ItemFromBundle(
 ): {
   productV1Item: ProductV1ItemMetadataEntity;
   offer: ProductV1MetadataEntityFieldsFragment["offer"];
+  variations: ProductV1MetadataEntityFieldsFragment["variations"];
 }[] {
   return bundle.items
     .filter(
@@ -277,7 +286,8 @@ function getProductV1ItemFromBundle(
     .map((item) => {
       return {
         productV1Item: item,
-        offer: bundle.offer as ProductV1MetadataEntityFieldsFragment["offer"]
+        offer: bundle.offer as ProductV1MetadataEntityFieldsFragment["offer"],
+        variations: item.variations
       };
     });
 }

@@ -1086,16 +1086,23 @@ export function mockBundleMetadata(
 export async function createBundleOffer(
   coreSDK: CoreSDK,
   sellerWallet: Wallet,
-  items: AnyMetadata[]
+  items: AnyMetadata[],
+  bundleUuid?: string
 ): Promise<subgraph.OfferFieldsFragment> {
-  const [offer] = await createBundleOffers(coreSDK, sellerWallet, [items]);
+  const [offer] = await createBundleOffers(
+    coreSDK,
+    sellerWallet,
+    [items],
+    bundleUuid
+  );
   return offer;
 }
 
 export async function createBundleOffers(
   coreSDK: CoreSDK,
   sellerWallet: Wallet,
-  itemsSets: AnyMetadata[][]
+  itemsSets: AnyMetadata[][],
+  bundleUuid?: string // When set, the same bundleUuid will be assigned to every bundle (used for a multi-variant product)
 ): Promise<subgraph.OfferFieldsFragment[]> {
   const offerArgsSets = await Promise.all(
     itemsSets.map(async (items) => {
@@ -1105,7 +1112,7 @@ export async function createBundleOffers(
           return `ipfs://${hash}`;
         })
       );
-      const bundleMetadata = mockBundleMetadata(itemUrls);
+      const bundleMetadata = mockBundleMetadata(itemUrls, bundleUuid);
       const offerArgs = await createOfferArgs(coreSDK, bundleMetadata);
       resolveDateValidity(offerArgs);
       return offerArgs;
@@ -1122,7 +1129,8 @@ export async function createBundleMultiVariantOffers(
   coreSDK: CoreSDK,
   sellerWallet: Wallet,
   productUuid: string,
-  variations: productV1.ProductV1Variant[]
+  variations: productV1.ProductV1Variant[],
+  bundleUuid: string = buildUuid()
 ): Promise<subgraph.OfferFieldsFragment[]> {
   const productV1Items = variations.map((variation) =>
     mockProductV1Item(undefined, productUuid, {
@@ -1133,6 +1141,24 @@ export async function createBundleMultiVariantOffers(
   return createBundleOffers(
     coreSDK,
     sellerWallet,
-    productV1Items.map((productV1Item) => [productV1Item, digitalItem])
+    productV1Items.map((productV1Item) => [productV1Item, digitalItem]),
+    bundleUuid // set the same bundleUuid means all bundle refer to the same multi-variant product
   );
+}
+
+export function serializeVariant(variant: productV1.ProductV1Variant): string {
+  // Be sure each variation structure has its keys ordered
+  const orderedStruct = variant.map((variation) =>
+    Object.keys(variation)
+      .sort()
+      .reduce((obj, key) => {
+        obj[key] = variation[key];
+        return obj;
+      }, {})
+  ) as productV1.ProductV1Variant;
+  // Be sure each variation in the table is ordered per type
+  const orderedTable = orderedStruct.sort((a, b) =>
+    a.type.localeCompare(b.type)
+  );
+  return JSON.stringify(orderedTable).toLowerCase();
 }

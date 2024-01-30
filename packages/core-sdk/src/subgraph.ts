@@ -8400,6 +8400,7 @@ export enum ProductV1Tag_OrderBy {
 
 export type ProductV1Variant = {
   __typename?: "ProductV1Variant";
+  bundle?: Maybe<BundleMetadataEntity>;
   id: Scalars["ID"];
   offer: Offer;
   variations?: Maybe<Array<ProductV1Variation>>;
@@ -8416,6 +8417,27 @@ export type ProductV1VariantVariationsArgs = {
 export type ProductV1Variant_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  bundle?: InputMaybe<Scalars["String"]>;
+  bundle_?: InputMaybe<BundleMetadataEntity_Filter>;
+  bundle_contains?: InputMaybe<Scalars["String"]>;
+  bundle_contains_nocase?: InputMaybe<Scalars["String"]>;
+  bundle_ends_with?: InputMaybe<Scalars["String"]>;
+  bundle_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  bundle_gt?: InputMaybe<Scalars["String"]>;
+  bundle_gte?: InputMaybe<Scalars["String"]>;
+  bundle_in?: InputMaybe<Array<Scalars["String"]>>;
+  bundle_lt?: InputMaybe<Scalars["String"]>;
+  bundle_lte?: InputMaybe<Scalars["String"]>;
+  bundle_not?: InputMaybe<Scalars["String"]>;
+  bundle_not_contains?: InputMaybe<Scalars["String"]>;
+  bundle_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  bundle_not_ends_with?: InputMaybe<Scalars["String"]>;
+  bundle_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  bundle_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  bundle_not_starts_with?: InputMaybe<Scalars["String"]>;
+  bundle_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  bundle_starts_with?: InputMaybe<Scalars["String"]>;
+  bundle_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -8455,6 +8477,7 @@ export type ProductV1Variant_Filter = {
 };
 
 export enum ProductV1Variant_OrderBy {
+  Bundle = "bundle",
   Id = "id",
   Offer = "offer",
   Variations = "variations"
@@ -43473,6 +43496,1718 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         type: string;
         option: string;
       }> | null;
+      bundle?: {
+        __typename?: "BundleMetadataEntity";
+        id: string;
+        name: string;
+        bundleUuid: string;
+        description: string;
+        externalUrl: string;
+        animationUrl?: string | null;
+        licenseUrl: string;
+        condition?: string | null;
+        schemaUrl: string;
+        type: MetadataType;
+        image: string;
+        createdAt: string;
+        voided: boolean;
+        validFromDate: string;
+        validUntilDate: string;
+        quantityAvailable: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+        productUuids: Array<string>;
+        animationMetadata?: {
+          __typename?: "AnimationMetadata";
+          id: string;
+          width?: number | null;
+          height?: number | null;
+          type?: string | null;
+        } | null;
+        attributes?: Array<{
+          __typename?: "MetadataAttribute";
+          traitType: string;
+          value: string;
+          displayType: string;
+        }> | null;
+        offer: {
+          __typename?: "Offer";
+          id: string;
+          createdAt: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+          exchanges: Array<{
+            __typename?: "Exchange";
+            id: string;
+            disputed: boolean;
+            state: ExchangeState;
+            committedDate: string;
+            finalizedDate?: string | null;
+            validUntilDate: string;
+            redeemedDate?: string | null;
+            revokedDate?: string | null;
+            cancelledDate?: string | null;
+            completedDate?: string | null;
+            disputedDate?: string | null;
+            expired: boolean;
+            dispute?: {
+              __typename?: "Dispute";
+              id: string;
+              exchangeId: string;
+              state: DisputeState;
+              buyerPercent: string;
+              disputedDate: string;
+              escalatedDate?: string | null;
+              finalizedDate?: string | null;
+              retractedDate?: string | null;
+              resolvedDate?: string | null;
+              decidedDate?: string | null;
+              refusedDate?: string | null;
+              timeout: string;
+            } | null;
+            buyer: {
+              __typename?: "Buyer";
+              id: string;
+              wallet: string;
+              active: boolean;
+            };
+            seller: {
+              __typename?: "Seller";
+              id: string;
+              assistant: string;
+              admin: string;
+              clerk: string;
+              treasury: string;
+              authTokenId: string;
+              authTokenType: number;
+              voucherCloneAddress: string;
+              active: boolean;
+              contractURI: string;
+              royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
+            };
+          }>;
+          condition?: {
+            __typename?: "ConditionEntity";
+            id: string;
+            method: number;
+            tokenType: number;
+            tokenAddress: string;
+            gatingType: number;
+            minTokenId: string;
+            maxTokenId: string;
+            threshold: string;
+            maxCommits: string;
+          } | null;
+          seller: {
+            __typename?: "Seller";
+            id: string;
+            assistant: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            authTokenId: string;
+            authTokenType: number;
+            voucherCloneAddress: string;
+            active: boolean;
+            contractURI: string;
+            royaltyPercentage: string;
+            metadataUri: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              createdAt: string;
+              name?: string | null;
+              description?: string | null;
+              legalTradingName?: string | null;
+              type: SellerMetadataType;
+              kind: string;
+              website?: string | null;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: string;
+                width?: number | null;
+                height?: number | null;
+                fit?: string | null;
+                position?: string | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
+            } | null;
+          };
+          collection: {
+            __typename?: "OfferCollection";
+            id: string;
+            sellerId: string;
+            collectionIndex: string;
+            collectionAddress: string;
+            externalIdHash: string;
+            externalId: string;
+            metadata?: {
+              __typename?: "NftContractMetadata";
+              id: string;
+              name?: string | null;
+              description?: string | null;
+              image?: string | null;
+              externalLink?: string | null;
+              createdAt: string;
+              collaborators?: Array<string> | null;
+            } | null;
+          };
+          exchangeToken: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+          disputeResolver: {
+            __typename?: "DisputeResolver";
+            id: string;
+            escalationResponsePeriod: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            assistant: string;
+            metadataUri: string;
+            active: boolean;
+            sellerAllowList: Array<string>;
+            fees: Array<{
+              __typename?: "DisputeResolverFee";
+              id: string;
+              tokenAddress: string;
+              tokenName: string;
+              feeAmount: string;
+              token: {
+                __typename?: "ExchangeToken";
+                id: string;
+                address: string;
+                decimals: string;
+                symbol: string;
+                name: string;
+              };
+            }>;
+          };
+          disputeResolutionTerms: {
+            __typename?: "DisputeResolutionTermsEntity";
+            id: string;
+            disputeResolverId: string;
+            escalationResponsePeriod: string;
+            feeAmount: string;
+            buyerEscalationDeposit: string;
+          };
+          metadata?:
+            | {
+                __typename?: "BaseMetadataEntity";
+                name: string;
+                description: string;
+                externalUrl: string;
+                animationUrl?: string | null;
+                licenseUrl: string;
+                condition?: string | null;
+                schemaUrl: string;
+                type: MetadataType;
+                image: string;
+                animationMetadata?: {
+                  __typename?: "AnimationMetadata";
+                  id: string;
+                  width?: number | null;
+                  height?: number | null;
+                  type?: string | null;
+                } | null;
+              }
+            | {
+                __typename?: "BundleMetadataEntity";
+                bundleUuid: string;
+                createdAt: string;
+                voided: boolean;
+                validFromDate: string;
+                validUntilDate: string;
+                quantityAvailable: string;
+                name: string;
+                description: string;
+                externalUrl: string;
+                animationUrl?: string | null;
+                licenseUrl: string;
+                condition?: string | null;
+                schemaUrl: string;
+                type: MetadataType;
+                image: string;
+                attributes?: Array<{
+                  __typename?: "MetadataAttribute";
+                  traitType: string;
+                  value: string;
+                  displayType: string;
+                }> | null;
+                productV1Seller: {
+                  __typename?: "ProductV1Seller";
+                  id: string;
+                  defaultVersion: number;
+                  name?: string | null;
+                  description?: string | null;
+                  externalUrl?: string | null;
+                  tokenId?: string | null;
+                  sellerId?: string | null;
+                  contactPreference?: string | null;
+                  images?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "ProductV1SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  seller: {
+                    __typename?: "Seller";
+                    id: string;
+                    assistant: string;
+                    admin: string;
+                    clerk: string;
+                    treasury: string;
+                    authTokenId: string;
+                    authTokenType: number;
+                    voucherCloneAddress: string;
+                    active: boolean;
+                    contractURI: string;
+                    royaltyPercentage: string;
+                    metadataUri: string;
+                    metadata?: {
+                      __typename?: "SellerMetadata";
+                      id: string;
+                      createdAt: string;
+                      name?: string | null;
+                      description?: string | null;
+                      legalTradingName?: string | null;
+                      type: SellerMetadataType;
+                      kind: string;
+                      website?: string | null;
+                      contactPreference: string;
+                      images?: Array<{
+                        __typename?: "SellerMetadataMedia";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: string;
+                        width?: number | null;
+                        height?: number | null;
+                        fit?: string | null;
+                        position?: string | null;
+                      }> | null;
+                      contactLinks?: Array<{
+                        __typename?: "SellerContactLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      socialLinks?: Array<{
+                        __typename?: "SellerSocialLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
+                        id: string;
+                        tag: string;
+                        name?: string | null;
+                        settingsUri?: string | null;
+                        settingsEditor?: string | null;
+                        link?: string | null;
+                        deployments?: Array<{
+                          __typename?: "SalesChannelDeployment";
+                          id: string;
+                          status?: string | null;
+                          link?: string | null;
+                          lastUpdated?: string | null;
+                          product?: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          } | null;
+                        }> | null;
+                      }> | null;
+                    } | null;
+                  };
+                };
+                items: Array<
+                  | {
+                      __typename?: "NftItemMetadataEntity";
+                      name: string;
+                      description?: string | null;
+                      image?: string | null;
+                      externalUrl?: string | null;
+                      animationUrl?: string | null;
+                      youtubeUrl?: string | null;
+                      chainId?: number | null;
+                      contract?: string | null;
+                      tokenId?: string | null;
+                      transferMethod?: string | null;
+                      transferDelay?: string | null;
+                      quantity?: number | null;
+                      type: ItemMetadataType;
+                      metadataUri: string;
+                      tokenIdRange?: {
+                        __typename?: "TokenIdRange";
+                        min: string;
+                        max: string;
+                      } | null;
+                      attributes?: Array<{
+                        __typename?: "MetadataAttribute";
+                        traitType: string;
+                        value: string;
+                        displayType: string;
+                      }> | null;
+                    }
+                  | {
+                      __typename?: "ProductV1ItemMetadataEntity";
+                      uuid: string;
+                      type: ItemMetadataType;
+                      metadataUri: string;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                        title: string;
+                        description: string;
+                        identification_sKU?: string | null;
+                        identification_productId?: string | null;
+                        identification_productIdType?: string | null;
+                        productionInformation_brandName: string;
+                        productionInformation_manufacturer?: string | null;
+                        productionInformation_manufacturerPartNumber?:
+                          | string
+                          | null;
+                        productionInformation_modelNumber?: string | null;
+                        productionInformation_materials?: Array<string> | null;
+                        details_category?: string | null;
+                        details_subCategory?: string | null;
+                        details_subCategory2?: string | null;
+                        details_offerCategory: string;
+                        offerCategory: ProductV1OfferCategory;
+                        details_tags?: Array<string> | null;
+                        details_sections?: Array<string> | null;
+                        details_personalisation?: Array<string> | null;
+                        packaging_packageQuantity?: string | null;
+                        packaging_dimensions_length?: string | null;
+                        packaging_dimensions_width?: string | null;
+                        packaging_dimensions_height?: string | null;
+                        packaging_dimensions_unit?: string | null;
+                        packaging_weight_value?: string | null;
+                        packaging_weight_unit?: string | null;
+                        brand: {
+                          __typename?: "ProductV1Brand";
+                          id: string;
+                          name: string;
+                        };
+                        category?: {
+                          __typename?: "ProductV1Category";
+                          id: string;
+                          name: string;
+                        } | null;
+                        subCategory?: {
+                          __typename?: "ProductV1Category";
+                          id: string;
+                          name: string;
+                        } | null;
+                        subCategory2?: {
+                          __typename?: "ProductV1Category";
+                          id: string;
+                          name: string;
+                        } | null;
+                        tags?: Array<{
+                          __typename?: "ProductV1Tag";
+                          id: string;
+                          name: string;
+                        }> | null;
+                        sections?: Array<{
+                          __typename?: "ProductV1Section";
+                          id: string;
+                          name: string;
+                        }> | null;
+                        personalisation?: Array<{
+                          __typename?: "ProductV1Personalisation";
+                          id: string;
+                          name: string;
+                        }> | null;
+                        visuals_images: Array<{
+                          __typename?: "ProductV1Media";
+                          id: string;
+                          url: string;
+                          tag?: string | null;
+                          type: ProductV1MediaType;
+                          width?: number | null;
+                          height?: number | null;
+                        }>;
+                        visuals_videos?: Array<{
+                          __typename?: "ProductV1Media";
+                          id: string;
+                          url: string;
+                          tag?: string | null;
+                          type: ProductV1MediaType;
+                          width?: number | null;
+                          height?: number | null;
+                        }> | null;
+                        productV1Seller?: {
+                          __typename?: "ProductV1Seller";
+                          id: string;
+                          defaultVersion: number;
+                          name?: string | null;
+                          description?: string | null;
+                          externalUrl?: string | null;
+                          tokenId?: string | null;
+                          sellerId?: string | null;
+                          contactPreference?: string | null;
+                          images?: Array<{
+                            __typename?: "ProductV1Media";
+                            id: string;
+                            url: string;
+                            tag?: string | null;
+                            type: ProductV1MediaType;
+                            width?: number | null;
+                            height?: number | null;
+                          }> | null;
+                          contactLinks?: Array<{
+                            __typename?: "ProductV1SellerContactLink";
+                            id: string;
+                            url: string;
+                            tag: string;
+                          }> | null;
+                          seller: {
+                            __typename?: "Seller";
+                            id: string;
+                            assistant: string;
+                            admin: string;
+                            clerk: string;
+                            treasury: string;
+                            authTokenId: string;
+                            authTokenType: number;
+                            voucherCloneAddress: string;
+                            active: boolean;
+                            contractURI: string;
+                            royaltyPercentage: string;
+                            metadataUri: string;
+                            metadata?: {
+                              __typename?: "SellerMetadata";
+                              id: string;
+                              createdAt: string;
+                              name?: string | null;
+                              description?: string | null;
+                              legalTradingName?: string | null;
+                              type: SellerMetadataType;
+                              kind: string;
+                              website?: string | null;
+                              contactPreference: string;
+                              images?: Array<{
+                                __typename?: "SellerMetadataMedia";
+                                id: string;
+                                url: string;
+                                tag?: string | null;
+                                type: string;
+                                width?: number | null;
+                                height?: number | null;
+                                fit?: string | null;
+                                position?: string | null;
+                              }> | null;
+                              contactLinks?: Array<{
+                                __typename?: "SellerContactLink";
+                                id: string;
+                                url: string;
+                                tag: string;
+                              }> | null;
+                              socialLinks?: Array<{
+                                __typename?: "SellerSocialLink";
+                                id: string;
+                                url: string;
+                                tag: string;
+                              }> | null;
+                              salesChannels?: Array<{
+                                __typename?: "SalesChannel";
+                                id: string;
+                                tag: string;
+                                name?: string | null;
+                                settingsUri?: string | null;
+                                settingsEditor?: string | null;
+                                link?: string | null;
+                                deployments?: Array<{
+                                  __typename?: "SalesChannelDeployment";
+                                  id: string;
+                                  status?: string | null;
+                                  link?: string | null;
+                                  lastUpdated?: string | null;
+                                  product?: {
+                                    __typename?: "ProductV1Product";
+                                    id: string;
+                                    uuid: string;
+                                    version: number;
+                                  } | null;
+                                }> | null;
+                              }> | null;
+                            } | null;
+                          };
+                        } | null;
+                        salesChannels?: Array<{
+                          __typename?: "SalesChannel";
+                          id: string;
+                          tag: string;
+                          name?: string | null;
+                          settingsUri?: string | null;
+                          settingsEditor?: string | null;
+                          link?: string | null;
+                          deployments?: Array<{
+                            __typename?: "SalesChannelDeployment";
+                            id: string;
+                            status?: string | null;
+                            link?: string | null;
+                            lastUpdated?: string | null;
+                            product?: {
+                              __typename?: "ProductV1Product";
+                              id: string;
+                              uuid: string;
+                              version: number;
+                            } | null;
+                          }> | null;
+                        }> | null;
+                      };
+                      variations?: Array<{
+                        __typename?: "ProductV1Variation";
+                        id: string;
+                        type: string;
+                        option: string;
+                      }> | null;
+                      exchangePolicy: {
+                        __typename?: "ProductV1ExchangePolicy";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                        label?: string | null;
+                        template: string;
+                        sellerContactMethod: string;
+                        disputeResolverContactMethod: string;
+                      };
+                      shipping?: {
+                        __typename?: "ProductV1ShippingOption";
+                        id: string;
+                        defaultVersion?: number | null;
+                        countryOfOrigin?: string | null;
+                        redemptionPoint?: string | null;
+                        returnPeriodInDays: number;
+                        supportedJurisdictions?: Array<{
+                          __typename?: "ProductV1ShippingJurisdiction";
+                          id: string;
+                          label: string;
+                          deliveryTime: string;
+                        }> | null;
+                      } | null;
+                      productOverrides?: {
+                        __typename?: "ProductV1ProductOverrides";
+                        id: string;
+                        version: number;
+                        title: string;
+                        description: string;
+                        identification_sKU?: string | null;
+                        identification_productId?: string | null;
+                        identification_productIdType?: string | null;
+                        productionInformation_brandName: string;
+                        productionInformation_manufacturer?: string | null;
+                        productionInformation_manufacturerPartNumber?:
+                          | string
+                          | null;
+                        productionInformation_modelNumber?: string | null;
+                        productionInformation_materials?: Array<string> | null;
+                        packaging_packageQuantity?: string | null;
+                        packaging_dimensions_length?: string | null;
+                        packaging_dimensions_width?: string | null;
+                        packaging_dimensions_height?: string | null;
+                        packaging_dimensions_unit?: string | null;
+                        packaging_weight_value?: string | null;
+                        packaging_weight_unit?: string | null;
+                        brand: {
+                          __typename?: "ProductV1Brand";
+                          id: string;
+                          name: string;
+                        };
+                        visuals_images: Array<{
+                          __typename?: "ProductV1Media";
+                          id: string;
+                          url: string;
+                          tag?: string | null;
+                          type: ProductV1MediaType;
+                          width?: number | null;
+                          height?: number | null;
+                        }>;
+                        visuals_videos?: Array<{
+                          __typename?: "ProductV1Media";
+                          id: string;
+                          url: string;
+                          tag?: string | null;
+                          type: ProductV1MediaType;
+                          width?: number | null;
+                          height?: number | null;
+                        }> | null;
+                      } | null;
+                    }
+                  | {
+                      __typename?: "UnknownItemMetadataEntity";
+                      type: ItemMetadataType;
+                      metadataUri: string;
+                    }
+                >;
+                animationMetadata?: {
+                  __typename?: "AnimationMetadata";
+                  id: string;
+                  width?: number | null;
+                  height?: number | null;
+                  type?: string | null;
+                } | null;
+              }
+            | {
+                __typename?: "ProductV1MetadataEntity";
+                createdAt: string;
+                voided: boolean;
+                validFromDate: string;
+                validUntilDate: string;
+                quantityAvailable: string;
+                uuid: string;
+                name: string;
+                description: string;
+                externalUrl: string;
+                animationUrl?: string | null;
+                licenseUrl: string;
+                condition?: string | null;
+                schemaUrl: string;
+                type: MetadataType;
+                image: string;
+                productOverrides?: {
+                  __typename?: "ProductV1ProductOverrides";
+                  id: string;
+                  version: number;
+                  title: string;
+                  description: string;
+                  identification_sKU?: string | null;
+                  identification_productId?: string | null;
+                  identification_productIdType?: string | null;
+                  productionInformation_brandName: string;
+                  productionInformation_manufacturer?: string | null;
+                  productionInformation_manufacturerPartNumber?: string | null;
+                  productionInformation_modelNumber?: string | null;
+                  productionInformation_materials?: Array<string> | null;
+                  packaging_packageQuantity?: string | null;
+                  packaging_dimensions_length?: string | null;
+                  packaging_dimensions_width?: string | null;
+                  packaging_dimensions_height?: string | null;
+                  packaging_dimensions_unit?: string | null;
+                  packaging_weight_value?: string | null;
+                  packaging_weight_unit?: string | null;
+                  brand: {
+                    __typename?: "ProductV1Brand";
+                    id: string;
+                    name: string;
+                  };
+                  visuals_images: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }>;
+                  visuals_videos?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                } | null;
+                attributes?: Array<{
+                  __typename?: "MetadataAttribute";
+                  traitType: string;
+                  value: string;
+                  displayType: string;
+                }> | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                  title: string;
+                  description: string;
+                  identification_sKU?: string | null;
+                  identification_productId?: string | null;
+                  identification_productIdType?: string | null;
+                  productionInformation_brandName: string;
+                  productionInformation_manufacturer?: string | null;
+                  productionInformation_manufacturerPartNumber?: string | null;
+                  productionInformation_modelNumber?: string | null;
+                  productionInformation_materials?: Array<string> | null;
+                  details_category?: string | null;
+                  details_subCategory?: string | null;
+                  details_subCategory2?: string | null;
+                  details_offerCategory: string;
+                  offerCategory: ProductV1OfferCategory;
+                  details_tags?: Array<string> | null;
+                  details_sections?: Array<string> | null;
+                  details_personalisation?: Array<string> | null;
+                  packaging_packageQuantity?: string | null;
+                  packaging_dimensions_length?: string | null;
+                  packaging_dimensions_width?: string | null;
+                  packaging_dimensions_height?: string | null;
+                  packaging_dimensions_unit?: string | null;
+                  packaging_weight_value?: string | null;
+                  packaging_weight_unit?: string | null;
+                  brand: {
+                    __typename?: "ProductV1Brand";
+                    id: string;
+                    name: string;
+                  };
+                  category?: {
+                    __typename?: "ProductV1Category";
+                    id: string;
+                    name: string;
+                  } | null;
+                  subCategory?: {
+                    __typename?: "ProductV1Category";
+                    id: string;
+                    name: string;
+                  } | null;
+                  subCategory2?: {
+                    __typename?: "ProductV1Category";
+                    id: string;
+                    name: string;
+                  } | null;
+                  tags?: Array<{
+                    __typename?: "ProductV1Tag";
+                    id: string;
+                    name: string;
+                  }> | null;
+                  sections?: Array<{
+                    __typename?: "ProductV1Section";
+                    id: string;
+                    name: string;
+                  }> | null;
+                  personalisation?: Array<{
+                    __typename?: "ProductV1Personalisation";
+                    id: string;
+                    name: string;
+                  }> | null;
+                  visuals_images: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }>;
+                  visuals_videos?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  productV1Seller?: {
+                    __typename?: "ProductV1Seller";
+                    id: string;
+                    defaultVersion: number;
+                    name?: string | null;
+                    description?: string | null;
+                    externalUrl?: string | null;
+                    tokenId?: string | null;
+                    sellerId?: string | null;
+                    contactPreference?: string | null;
+                    images?: Array<{
+                      __typename?: "ProductV1Media";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: ProductV1MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "ProductV1SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    seller: {
+                      __typename?: "Seller";
+                      id: string;
+                      assistant: string;
+                      admin: string;
+                      clerk: string;
+                      treasury: string;
+                      authTokenId: string;
+                      authTokenType: number;
+                      voucherCloneAddress: string;
+                      active: boolean;
+                      contractURI: string;
+                      royaltyPercentage: string;
+                      metadataUri: string;
+                      metadata?: {
+                        __typename?: "SellerMetadata";
+                        id: string;
+                        createdAt: string;
+                        name?: string | null;
+                        description?: string | null;
+                        legalTradingName?: string | null;
+                        type: SellerMetadataType;
+                        kind: string;
+                        website?: string | null;
+                        contactPreference: string;
+                        images?: Array<{
+                          __typename?: "SellerMetadataMedia";
+                          id: string;
+                          url: string;
+                          tag?: string | null;
+                          type: string;
+                          width?: number | null;
+                          height?: number | null;
+                          fit?: string | null;
+                          position?: string | null;
+                        }> | null;
+                        contactLinks?: Array<{
+                          __typename?: "SellerContactLink";
+                          id: string;
+                          url: string;
+                          tag: string;
+                        }> | null;
+                        socialLinks?: Array<{
+                          __typename?: "SellerSocialLink";
+                          id: string;
+                          url: string;
+                          tag: string;
+                        }> | null;
+                        salesChannels?: Array<{
+                          __typename?: "SalesChannel";
+                          id: string;
+                          tag: string;
+                          name?: string | null;
+                          settingsUri?: string | null;
+                          settingsEditor?: string | null;
+                          link?: string | null;
+                          deployments?: Array<{
+                            __typename?: "SalesChannelDeployment";
+                            id: string;
+                            status?: string | null;
+                            link?: string | null;
+                            lastUpdated?: string | null;
+                            product?: {
+                              __typename?: "ProductV1Product";
+                              id: string;
+                              uuid: string;
+                              version: number;
+                            } | null;
+                          }> | null;
+                        }> | null;
+                      } | null;
+                    };
+                  } | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                };
+                variations?: Array<{
+                  __typename?: "ProductV1Variation";
+                  id: string;
+                  type: string;
+                  option: string;
+                }> | null;
+                productV1Seller: {
+                  __typename?: "ProductV1Seller";
+                  id: string;
+                  defaultVersion: number;
+                  name?: string | null;
+                  description?: string | null;
+                  externalUrl?: string | null;
+                  tokenId?: string | null;
+                  sellerId?: string | null;
+                  contactPreference?: string | null;
+                  images?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "ProductV1SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  seller: {
+                    __typename?: "Seller";
+                    id: string;
+                    assistant: string;
+                    admin: string;
+                    clerk: string;
+                    treasury: string;
+                    authTokenId: string;
+                    authTokenType: number;
+                    voucherCloneAddress: string;
+                    active: boolean;
+                    contractURI: string;
+                    royaltyPercentage: string;
+                    metadataUri: string;
+                    metadata?: {
+                      __typename?: "SellerMetadata";
+                      id: string;
+                      createdAt: string;
+                      name?: string | null;
+                      description?: string | null;
+                      legalTradingName?: string | null;
+                      type: SellerMetadataType;
+                      kind: string;
+                      website?: string | null;
+                      contactPreference: string;
+                      images?: Array<{
+                        __typename?: "SellerMetadataMedia";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: string;
+                        width?: number | null;
+                        height?: number | null;
+                        fit?: string | null;
+                        position?: string | null;
+                      }> | null;
+                      contactLinks?: Array<{
+                        __typename?: "SellerContactLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      socialLinks?: Array<{
+                        __typename?: "SellerSocialLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
+                        id: string;
+                        tag: string;
+                        name?: string | null;
+                        settingsUri?: string | null;
+                        settingsEditor?: string | null;
+                        link?: string | null;
+                        deployments?: Array<{
+                          __typename?: "SalesChannelDeployment";
+                          id: string;
+                          status?: string | null;
+                          link?: string | null;
+                          lastUpdated?: string | null;
+                          product?: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          } | null;
+                        }> | null;
+                      }> | null;
+                    } | null;
+                  };
+                };
+                exchangePolicy: {
+                  __typename?: "ProductV1ExchangePolicy";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                  label?: string | null;
+                  template: string;
+                  sellerContactMethod: string;
+                  disputeResolverContactMethod: string;
+                };
+                shipping?: {
+                  __typename?: "ProductV1ShippingOption";
+                  id: string;
+                  defaultVersion?: number | null;
+                  countryOfOrigin?: string | null;
+                  redemptionPoint?: string | null;
+                  returnPeriodInDays: number;
+                  supportedJurisdictions?: Array<{
+                    __typename?: "ProductV1ShippingJurisdiction";
+                    id: string;
+                    label: string;
+                    deliveryTime: string;
+                  }> | null;
+                } | null;
+                animationMetadata?: {
+                  __typename?: "AnimationMetadata";
+                  id: string;
+                  width?: number | null;
+                  height?: number | null;
+                  type?: string | null;
+                } | null;
+              }
+            | null;
+          range?: {
+            __typename?: "RangeEntity";
+            id: string;
+            start: string;
+            end: string;
+            owner: string;
+          } | null;
+        };
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          assistant: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
+        };
+        exchangeToken: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+        productV1Seller: {
+          __typename?: "ProductV1Seller";
+          id: string;
+          defaultVersion: number;
+          name?: string | null;
+          description?: string | null;
+          externalUrl?: string | null;
+          tokenId?: string | null;
+          sellerId?: string | null;
+          contactPreference?: string | null;
+          images?: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "ProductV1SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          seller: {
+            __typename?: "Seller";
+            id: string;
+            assistant: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            authTokenId: string;
+            authTokenType: number;
+            voucherCloneAddress: string;
+            active: boolean;
+            contractURI: string;
+            royaltyPercentage: string;
+            metadataUri: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              createdAt: string;
+              name?: string | null;
+              description?: string | null;
+              legalTradingName?: string | null;
+              type: SellerMetadataType;
+              kind: string;
+              website?: string | null;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: string;
+                width?: number | null;
+                height?: number | null;
+                fit?: string | null;
+                position?: string | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
+            } | null;
+          };
+        };
+        items: Array<
+          | {
+              __typename?: "NftItemMetadataEntity";
+              name: string;
+              description?: string | null;
+              image?: string | null;
+              externalUrl?: string | null;
+              animationUrl?: string | null;
+              youtubeUrl?: string | null;
+              chainId?: number | null;
+              contract?: string | null;
+              tokenId?: string | null;
+              transferMethod?: string | null;
+              transferDelay?: string | null;
+              quantity?: number | null;
+              id: string;
+              schemaUrl: string;
+              type: ItemMetadataType;
+              metadataUri: string;
+              tokenIdRange?: {
+                __typename?: "TokenIdRange";
+                min: string;
+                max: string;
+              } | null;
+              attributes?: Array<{
+                __typename?: "MetadataAttribute";
+                traitType: string;
+                value: string;
+                displayType: string;
+              }> | null;
+            }
+          | {
+              __typename?: "ProductV1ItemMetadataEntity";
+              uuid: string;
+              productUuid: string;
+              productVersion: number;
+              id: string;
+              schemaUrl: string;
+              type: ItemMetadataType;
+              metadataUri: string;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                details_category?: string | null;
+                details_subCategory?: string | null;
+                details_subCategory2?: string | null;
+                details_offerCategory: string;
+                offerCategory: ProductV1OfferCategory;
+                details_tags?: Array<string> | null;
+                details_sections?: Array<string> | null;
+                details_personalisation?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                category?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory2?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                tags?: Array<{
+                  __typename?: "ProductV1Tag";
+                  id: string;
+                  name: string;
+                }> | null;
+                sections?: Array<{
+                  __typename?: "ProductV1Section";
+                  id: string;
+                  name: string;
+                }> | null;
+                personalisation?: Array<{
+                  __typename?: "ProductV1Personalisation";
+                  id: string;
+                  name: string;
+                }> | null;
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                productV1Seller?: {
+                  __typename?: "ProductV1Seller";
+                  id: string;
+                  defaultVersion: number;
+                  name?: string | null;
+                  description?: string | null;
+                  externalUrl?: string | null;
+                  tokenId?: string | null;
+                  sellerId?: string | null;
+                  contactPreference?: string | null;
+                  images?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "ProductV1SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  seller: {
+                    __typename?: "Seller";
+                    id: string;
+                    assistant: string;
+                    admin: string;
+                    clerk: string;
+                    treasury: string;
+                    authTokenId: string;
+                    authTokenType: number;
+                    voucherCloneAddress: string;
+                    active: boolean;
+                    contractURI: string;
+                    royaltyPercentage: string;
+                    metadataUri: string;
+                    metadata?: {
+                      __typename?: "SellerMetadata";
+                      id: string;
+                      createdAt: string;
+                      name?: string | null;
+                      description?: string | null;
+                      legalTradingName?: string | null;
+                      type: SellerMetadataType;
+                      kind: string;
+                      website?: string | null;
+                      contactPreference: string;
+                      images?: Array<{
+                        __typename?: "SellerMetadataMedia";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: string;
+                        width?: number | null;
+                        height?: number | null;
+                        fit?: string | null;
+                        position?: string | null;
+                      }> | null;
+                      contactLinks?: Array<{
+                        __typename?: "SellerContactLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      socialLinks?: Array<{
+                        __typename?: "SellerSocialLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
+                        id: string;
+                        tag: string;
+                        name?: string | null;
+                        settingsUri?: string | null;
+                        settingsEditor?: string | null;
+                        link?: string | null;
+                        deployments?: Array<{
+                          __typename?: "SalesChannelDeployment";
+                          id: string;
+                          status?: string | null;
+                          link?: string | null;
+                          lastUpdated?: string | null;
+                          product?: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          } | null;
+                        }> | null;
+                      }> | null;
+                    } | null;
+                  };
+                } | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              };
+              variations?: Array<{
+                __typename?: "ProductV1Variation";
+                id: string;
+                type: string;
+                option: string;
+              }> | null;
+              exchangePolicy: {
+                __typename?: "ProductV1ExchangePolicy";
+                id: string;
+                uuid: string;
+                version: number;
+                label?: string | null;
+                template: string;
+                sellerContactMethod: string;
+                disputeResolverContactMethod: string;
+              };
+              shipping?: {
+                __typename?: "ProductV1ShippingOption";
+                id: string;
+                defaultVersion?: number | null;
+                countryOfOrigin?: string | null;
+                redemptionPoint?: string | null;
+                returnPeriodInDays: number;
+                supportedJurisdictions?: Array<{
+                  __typename?: "ProductV1ShippingJurisdiction";
+                  id: string;
+                  label: string;
+                  deliveryTime: string;
+                }> | null;
+              } | null;
+              productOverrides?: {
+                __typename?: "ProductV1ProductOverrides";
+                id: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+              } | null;
+            }
+          | {
+              __typename?: "UnknownItemMetadataEntity";
+              id: string;
+              schemaUrl: string;
+              type: ItemMetadataType;
+              metadataUri: string;
+            }
+        >;
+      } | null;
     }> | null;
     brand: { __typename?: "ProductV1Brand"; id: string; name: string };
     category?: {
@@ -44870,6 +46605,1718 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         type: string;
         option: string;
       }> | null;
+      bundle?: {
+        __typename?: "BundleMetadataEntity";
+        id: string;
+        name: string;
+        bundleUuid: string;
+        description: string;
+        externalUrl: string;
+        animationUrl?: string | null;
+        licenseUrl: string;
+        condition?: string | null;
+        schemaUrl: string;
+        type: MetadataType;
+        image: string;
+        createdAt: string;
+        voided: boolean;
+        validFromDate: string;
+        validUntilDate: string;
+        quantityAvailable: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+        productUuids: Array<string>;
+        animationMetadata?: {
+          __typename?: "AnimationMetadata";
+          id: string;
+          width?: number | null;
+          height?: number | null;
+          type?: string | null;
+        } | null;
+        attributes?: Array<{
+          __typename?: "MetadataAttribute";
+          traitType: string;
+          value: string;
+          displayType: string;
+        }> | null;
+        offer: {
+          __typename?: "Offer";
+          id: string;
+          createdAt: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+          exchanges: Array<{
+            __typename?: "Exchange";
+            id: string;
+            disputed: boolean;
+            state: ExchangeState;
+            committedDate: string;
+            finalizedDate?: string | null;
+            validUntilDate: string;
+            redeemedDate?: string | null;
+            revokedDate?: string | null;
+            cancelledDate?: string | null;
+            completedDate?: string | null;
+            disputedDate?: string | null;
+            expired: boolean;
+            dispute?: {
+              __typename?: "Dispute";
+              id: string;
+              exchangeId: string;
+              state: DisputeState;
+              buyerPercent: string;
+              disputedDate: string;
+              escalatedDate?: string | null;
+              finalizedDate?: string | null;
+              retractedDate?: string | null;
+              resolvedDate?: string | null;
+              decidedDate?: string | null;
+              refusedDate?: string | null;
+              timeout: string;
+            } | null;
+            buyer: {
+              __typename?: "Buyer";
+              id: string;
+              wallet: string;
+              active: boolean;
+            };
+            seller: {
+              __typename?: "Seller";
+              id: string;
+              assistant: string;
+              admin: string;
+              clerk: string;
+              treasury: string;
+              authTokenId: string;
+              authTokenType: number;
+              voucherCloneAddress: string;
+              active: boolean;
+              contractURI: string;
+              royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
+            };
+          }>;
+          condition?: {
+            __typename?: "ConditionEntity";
+            id: string;
+            method: number;
+            tokenType: number;
+            tokenAddress: string;
+            gatingType: number;
+            minTokenId: string;
+            maxTokenId: string;
+            threshold: string;
+            maxCommits: string;
+          } | null;
+          seller: {
+            __typename?: "Seller";
+            id: string;
+            assistant: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            authTokenId: string;
+            authTokenType: number;
+            voucherCloneAddress: string;
+            active: boolean;
+            contractURI: string;
+            royaltyPercentage: string;
+            metadataUri: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              createdAt: string;
+              name?: string | null;
+              description?: string | null;
+              legalTradingName?: string | null;
+              type: SellerMetadataType;
+              kind: string;
+              website?: string | null;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: string;
+                width?: number | null;
+                height?: number | null;
+                fit?: string | null;
+                position?: string | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
+            } | null;
+          };
+          collection: {
+            __typename?: "OfferCollection";
+            id: string;
+            sellerId: string;
+            collectionIndex: string;
+            collectionAddress: string;
+            externalIdHash: string;
+            externalId: string;
+            metadata?: {
+              __typename?: "NftContractMetadata";
+              id: string;
+              name?: string | null;
+              description?: string | null;
+              image?: string | null;
+              externalLink?: string | null;
+              createdAt: string;
+              collaborators?: Array<string> | null;
+            } | null;
+          };
+          exchangeToken: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+          disputeResolver: {
+            __typename?: "DisputeResolver";
+            id: string;
+            escalationResponsePeriod: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            assistant: string;
+            metadataUri: string;
+            active: boolean;
+            sellerAllowList: Array<string>;
+            fees: Array<{
+              __typename?: "DisputeResolverFee";
+              id: string;
+              tokenAddress: string;
+              tokenName: string;
+              feeAmount: string;
+              token: {
+                __typename?: "ExchangeToken";
+                id: string;
+                address: string;
+                decimals: string;
+                symbol: string;
+                name: string;
+              };
+            }>;
+          };
+          disputeResolutionTerms: {
+            __typename?: "DisputeResolutionTermsEntity";
+            id: string;
+            disputeResolverId: string;
+            escalationResponsePeriod: string;
+            feeAmount: string;
+            buyerEscalationDeposit: string;
+          };
+          metadata?:
+            | {
+                __typename?: "BaseMetadataEntity";
+                name: string;
+                description: string;
+                externalUrl: string;
+                animationUrl?: string | null;
+                licenseUrl: string;
+                condition?: string | null;
+                schemaUrl: string;
+                type: MetadataType;
+                image: string;
+                animationMetadata?: {
+                  __typename?: "AnimationMetadata";
+                  id: string;
+                  width?: number | null;
+                  height?: number | null;
+                  type?: string | null;
+                } | null;
+              }
+            | {
+                __typename?: "BundleMetadataEntity";
+                bundleUuid: string;
+                createdAt: string;
+                voided: boolean;
+                validFromDate: string;
+                validUntilDate: string;
+                quantityAvailable: string;
+                name: string;
+                description: string;
+                externalUrl: string;
+                animationUrl?: string | null;
+                licenseUrl: string;
+                condition?: string | null;
+                schemaUrl: string;
+                type: MetadataType;
+                image: string;
+                attributes?: Array<{
+                  __typename?: "MetadataAttribute";
+                  traitType: string;
+                  value: string;
+                  displayType: string;
+                }> | null;
+                productV1Seller: {
+                  __typename?: "ProductV1Seller";
+                  id: string;
+                  defaultVersion: number;
+                  name?: string | null;
+                  description?: string | null;
+                  externalUrl?: string | null;
+                  tokenId?: string | null;
+                  sellerId?: string | null;
+                  contactPreference?: string | null;
+                  images?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "ProductV1SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  seller: {
+                    __typename?: "Seller";
+                    id: string;
+                    assistant: string;
+                    admin: string;
+                    clerk: string;
+                    treasury: string;
+                    authTokenId: string;
+                    authTokenType: number;
+                    voucherCloneAddress: string;
+                    active: boolean;
+                    contractURI: string;
+                    royaltyPercentage: string;
+                    metadataUri: string;
+                    metadata?: {
+                      __typename?: "SellerMetadata";
+                      id: string;
+                      createdAt: string;
+                      name?: string | null;
+                      description?: string | null;
+                      legalTradingName?: string | null;
+                      type: SellerMetadataType;
+                      kind: string;
+                      website?: string | null;
+                      contactPreference: string;
+                      images?: Array<{
+                        __typename?: "SellerMetadataMedia";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: string;
+                        width?: number | null;
+                        height?: number | null;
+                        fit?: string | null;
+                        position?: string | null;
+                      }> | null;
+                      contactLinks?: Array<{
+                        __typename?: "SellerContactLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      socialLinks?: Array<{
+                        __typename?: "SellerSocialLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
+                        id: string;
+                        tag: string;
+                        name?: string | null;
+                        settingsUri?: string | null;
+                        settingsEditor?: string | null;
+                        link?: string | null;
+                        deployments?: Array<{
+                          __typename?: "SalesChannelDeployment";
+                          id: string;
+                          status?: string | null;
+                          link?: string | null;
+                          lastUpdated?: string | null;
+                          product?: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          } | null;
+                        }> | null;
+                      }> | null;
+                    } | null;
+                  };
+                };
+                items: Array<
+                  | {
+                      __typename?: "NftItemMetadataEntity";
+                      name: string;
+                      description?: string | null;
+                      image?: string | null;
+                      externalUrl?: string | null;
+                      animationUrl?: string | null;
+                      youtubeUrl?: string | null;
+                      chainId?: number | null;
+                      contract?: string | null;
+                      tokenId?: string | null;
+                      transferMethod?: string | null;
+                      transferDelay?: string | null;
+                      quantity?: number | null;
+                      type: ItemMetadataType;
+                      metadataUri: string;
+                      tokenIdRange?: {
+                        __typename?: "TokenIdRange";
+                        min: string;
+                        max: string;
+                      } | null;
+                      attributes?: Array<{
+                        __typename?: "MetadataAttribute";
+                        traitType: string;
+                        value: string;
+                        displayType: string;
+                      }> | null;
+                    }
+                  | {
+                      __typename?: "ProductV1ItemMetadataEntity";
+                      uuid: string;
+                      type: ItemMetadataType;
+                      metadataUri: string;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                        title: string;
+                        description: string;
+                        identification_sKU?: string | null;
+                        identification_productId?: string | null;
+                        identification_productIdType?: string | null;
+                        productionInformation_brandName: string;
+                        productionInformation_manufacturer?: string | null;
+                        productionInformation_manufacturerPartNumber?:
+                          | string
+                          | null;
+                        productionInformation_modelNumber?: string | null;
+                        productionInformation_materials?: Array<string> | null;
+                        details_category?: string | null;
+                        details_subCategory?: string | null;
+                        details_subCategory2?: string | null;
+                        details_offerCategory: string;
+                        offerCategory: ProductV1OfferCategory;
+                        details_tags?: Array<string> | null;
+                        details_sections?: Array<string> | null;
+                        details_personalisation?: Array<string> | null;
+                        packaging_packageQuantity?: string | null;
+                        packaging_dimensions_length?: string | null;
+                        packaging_dimensions_width?: string | null;
+                        packaging_dimensions_height?: string | null;
+                        packaging_dimensions_unit?: string | null;
+                        packaging_weight_value?: string | null;
+                        packaging_weight_unit?: string | null;
+                        brand: {
+                          __typename?: "ProductV1Brand";
+                          id: string;
+                          name: string;
+                        };
+                        category?: {
+                          __typename?: "ProductV1Category";
+                          id: string;
+                          name: string;
+                        } | null;
+                        subCategory?: {
+                          __typename?: "ProductV1Category";
+                          id: string;
+                          name: string;
+                        } | null;
+                        subCategory2?: {
+                          __typename?: "ProductV1Category";
+                          id: string;
+                          name: string;
+                        } | null;
+                        tags?: Array<{
+                          __typename?: "ProductV1Tag";
+                          id: string;
+                          name: string;
+                        }> | null;
+                        sections?: Array<{
+                          __typename?: "ProductV1Section";
+                          id: string;
+                          name: string;
+                        }> | null;
+                        personalisation?: Array<{
+                          __typename?: "ProductV1Personalisation";
+                          id: string;
+                          name: string;
+                        }> | null;
+                        visuals_images: Array<{
+                          __typename?: "ProductV1Media";
+                          id: string;
+                          url: string;
+                          tag?: string | null;
+                          type: ProductV1MediaType;
+                          width?: number | null;
+                          height?: number | null;
+                        }>;
+                        visuals_videos?: Array<{
+                          __typename?: "ProductV1Media";
+                          id: string;
+                          url: string;
+                          tag?: string | null;
+                          type: ProductV1MediaType;
+                          width?: number | null;
+                          height?: number | null;
+                        }> | null;
+                        productV1Seller?: {
+                          __typename?: "ProductV1Seller";
+                          id: string;
+                          defaultVersion: number;
+                          name?: string | null;
+                          description?: string | null;
+                          externalUrl?: string | null;
+                          tokenId?: string | null;
+                          sellerId?: string | null;
+                          contactPreference?: string | null;
+                          images?: Array<{
+                            __typename?: "ProductV1Media";
+                            id: string;
+                            url: string;
+                            tag?: string | null;
+                            type: ProductV1MediaType;
+                            width?: number | null;
+                            height?: number | null;
+                          }> | null;
+                          contactLinks?: Array<{
+                            __typename?: "ProductV1SellerContactLink";
+                            id: string;
+                            url: string;
+                            tag: string;
+                          }> | null;
+                          seller: {
+                            __typename?: "Seller";
+                            id: string;
+                            assistant: string;
+                            admin: string;
+                            clerk: string;
+                            treasury: string;
+                            authTokenId: string;
+                            authTokenType: number;
+                            voucherCloneAddress: string;
+                            active: boolean;
+                            contractURI: string;
+                            royaltyPercentage: string;
+                            metadataUri: string;
+                            metadata?: {
+                              __typename?: "SellerMetadata";
+                              id: string;
+                              createdAt: string;
+                              name?: string | null;
+                              description?: string | null;
+                              legalTradingName?: string | null;
+                              type: SellerMetadataType;
+                              kind: string;
+                              website?: string | null;
+                              contactPreference: string;
+                              images?: Array<{
+                                __typename?: "SellerMetadataMedia";
+                                id: string;
+                                url: string;
+                                tag?: string | null;
+                                type: string;
+                                width?: number | null;
+                                height?: number | null;
+                                fit?: string | null;
+                                position?: string | null;
+                              }> | null;
+                              contactLinks?: Array<{
+                                __typename?: "SellerContactLink";
+                                id: string;
+                                url: string;
+                                tag: string;
+                              }> | null;
+                              socialLinks?: Array<{
+                                __typename?: "SellerSocialLink";
+                                id: string;
+                                url: string;
+                                tag: string;
+                              }> | null;
+                              salesChannels?: Array<{
+                                __typename?: "SalesChannel";
+                                id: string;
+                                tag: string;
+                                name?: string | null;
+                                settingsUri?: string | null;
+                                settingsEditor?: string | null;
+                                link?: string | null;
+                                deployments?: Array<{
+                                  __typename?: "SalesChannelDeployment";
+                                  id: string;
+                                  status?: string | null;
+                                  link?: string | null;
+                                  lastUpdated?: string | null;
+                                  product?: {
+                                    __typename?: "ProductV1Product";
+                                    id: string;
+                                    uuid: string;
+                                    version: number;
+                                  } | null;
+                                }> | null;
+                              }> | null;
+                            } | null;
+                          };
+                        } | null;
+                        salesChannels?: Array<{
+                          __typename?: "SalesChannel";
+                          id: string;
+                          tag: string;
+                          name?: string | null;
+                          settingsUri?: string | null;
+                          settingsEditor?: string | null;
+                          link?: string | null;
+                          deployments?: Array<{
+                            __typename?: "SalesChannelDeployment";
+                            id: string;
+                            status?: string | null;
+                            link?: string | null;
+                            lastUpdated?: string | null;
+                            product?: {
+                              __typename?: "ProductV1Product";
+                              id: string;
+                              uuid: string;
+                              version: number;
+                            } | null;
+                          }> | null;
+                        }> | null;
+                      };
+                      variations?: Array<{
+                        __typename?: "ProductV1Variation";
+                        id: string;
+                        type: string;
+                        option: string;
+                      }> | null;
+                      exchangePolicy: {
+                        __typename?: "ProductV1ExchangePolicy";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                        label?: string | null;
+                        template: string;
+                        sellerContactMethod: string;
+                        disputeResolverContactMethod: string;
+                      };
+                      shipping?: {
+                        __typename?: "ProductV1ShippingOption";
+                        id: string;
+                        defaultVersion?: number | null;
+                        countryOfOrigin?: string | null;
+                        redemptionPoint?: string | null;
+                        returnPeriodInDays: number;
+                        supportedJurisdictions?: Array<{
+                          __typename?: "ProductV1ShippingJurisdiction";
+                          id: string;
+                          label: string;
+                          deliveryTime: string;
+                        }> | null;
+                      } | null;
+                      productOverrides?: {
+                        __typename?: "ProductV1ProductOverrides";
+                        id: string;
+                        version: number;
+                        title: string;
+                        description: string;
+                        identification_sKU?: string | null;
+                        identification_productId?: string | null;
+                        identification_productIdType?: string | null;
+                        productionInformation_brandName: string;
+                        productionInformation_manufacturer?: string | null;
+                        productionInformation_manufacturerPartNumber?:
+                          | string
+                          | null;
+                        productionInformation_modelNumber?: string | null;
+                        productionInformation_materials?: Array<string> | null;
+                        packaging_packageQuantity?: string | null;
+                        packaging_dimensions_length?: string | null;
+                        packaging_dimensions_width?: string | null;
+                        packaging_dimensions_height?: string | null;
+                        packaging_dimensions_unit?: string | null;
+                        packaging_weight_value?: string | null;
+                        packaging_weight_unit?: string | null;
+                        brand: {
+                          __typename?: "ProductV1Brand";
+                          id: string;
+                          name: string;
+                        };
+                        visuals_images: Array<{
+                          __typename?: "ProductV1Media";
+                          id: string;
+                          url: string;
+                          tag?: string | null;
+                          type: ProductV1MediaType;
+                          width?: number | null;
+                          height?: number | null;
+                        }>;
+                        visuals_videos?: Array<{
+                          __typename?: "ProductV1Media";
+                          id: string;
+                          url: string;
+                          tag?: string | null;
+                          type: ProductV1MediaType;
+                          width?: number | null;
+                          height?: number | null;
+                        }> | null;
+                      } | null;
+                    }
+                  | {
+                      __typename?: "UnknownItemMetadataEntity";
+                      type: ItemMetadataType;
+                      metadataUri: string;
+                    }
+                >;
+                animationMetadata?: {
+                  __typename?: "AnimationMetadata";
+                  id: string;
+                  width?: number | null;
+                  height?: number | null;
+                  type?: string | null;
+                } | null;
+              }
+            | {
+                __typename?: "ProductV1MetadataEntity";
+                createdAt: string;
+                voided: boolean;
+                validFromDate: string;
+                validUntilDate: string;
+                quantityAvailable: string;
+                uuid: string;
+                name: string;
+                description: string;
+                externalUrl: string;
+                animationUrl?: string | null;
+                licenseUrl: string;
+                condition?: string | null;
+                schemaUrl: string;
+                type: MetadataType;
+                image: string;
+                productOverrides?: {
+                  __typename?: "ProductV1ProductOverrides";
+                  id: string;
+                  version: number;
+                  title: string;
+                  description: string;
+                  identification_sKU?: string | null;
+                  identification_productId?: string | null;
+                  identification_productIdType?: string | null;
+                  productionInformation_brandName: string;
+                  productionInformation_manufacturer?: string | null;
+                  productionInformation_manufacturerPartNumber?: string | null;
+                  productionInformation_modelNumber?: string | null;
+                  productionInformation_materials?: Array<string> | null;
+                  packaging_packageQuantity?: string | null;
+                  packaging_dimensions_length?: string | null;
+                  packaging_dimensions_width?: string | null;
+                  packaging_dimensions_height?: string | null;
+                  packaging_dimensions_unit?: string | null;
+                  packaging_weight_value?: string | null;
+                  packaging_weight_unit?: string | null;
+                  brand: {
+                    __typename?: "ProductV1Brand";
+                    id: string;
+                    name: string;
+                  };
+                  visuals_images: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }>;
+                  visuals_videos?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                } | null;
+                attributes?: Array<{
+                  __typename?: "MetadataAttribute";
+                  traitType: string;
+                  value: string;
+                  displayType: string;
+                }> | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                  title: string;
+                  description: string;
+                  identification_sKU?: string | null;
+                  identification_productId?: string | null;
+                  identification_productIdType?: string | null;
+                  productionInformation_brandName: string;
+                  productionInformation_manufacturer?: string | null;
+                  productionInformation_manufacturerPartNumber?: string | null;
+                  productionInformation_modelNumber?: string | null;
+                  productionInformation_materials?: Array<string> | null;
+                  details_category?: string | null;
+                  details_subCategory?: string | null;
+                  details_subCategory2?: string | null;
+                  details_offerCategory: string;
+                  offerCategory: ProductV1OfferCategory;
+                  details_tags?: Array<string> | null;
+                  details_sections?: Array<string> | null;
+                  details_personalisation?: Array<string> | null;
+                  packaging_packageQuantity?: string | null;
+                  packaging_dimensions_length?: string | null;
+                  packaging_dimensions_width?: string | null;
+                  packaging_dimensions_height?: string | null;
+                  packaging_dimensions_unit?: string | null;
+                  packaging_weight_value?: string | null;
+                  packaging_weight_unit?: string | null;
+                  brand: {
+                    __typename?: "ProductV1Brand";
+                    id: string;
+                    name: string;
+                  };
+                  category?: {
+                    __typename?: "ProductV1Category";
+                    id: string;
+                    name: string;
+                  } | null;
+                  subCategory?: {
+                    __typename?: "ProductV1Category";
+                    id: string;
+                    name: string;
+                  } | null;
+                  subCategory2?: {
+                    __typename?: "ProductV1Category";
+                    id: string;
+                    name: string;
+                  } | null;
+                  tags?: Array<{
+                    __typename?: "ProductV1Tag";
+                    id: string;
+                    name: string;
+                  }> | null;
+                  sections?: Array<{
+                    __typename?: "ProductV1Section";
+                    id: string;
+                    name: string;
+                  }> | null;
+                  personalisation?: Array<{
+                    __typename?: "ProductV1Personalisation";
+                    id: string;
+                    name: string;
+                  }> | null;
+                  visuals_images: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }>;
+                  visuals_videos?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  productV1Seller?: {
+                    __typename?: "ProductV1Seller";
+                    id: string;
+                    defaultVersion: number;
+                    name?: string | null;
+                    description?: string | null;
+                    externalUrl?: string | null;
+                    tokenId?: string | null;
+                    sellerId?: string | null;
+                    contactPreference?: string | null;
+                    images?: Array<{
+                      __typename?: "ProductV1Media";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: ProductV1MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "ProductV1SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    seller: {
+                      __typename?: "Seller";
+                      id: string;
+                      assistant: string;
+                      admin: string;
+                      clerk: string;
+                      treasury: string;
+                      authTokenId: string;
+                      authTokenType: number;
+                      voucherCloneAddress: string;
+                      active: boolean;
+                      contractURI: string;
+                      royaltyPercentage: string;
+                      metadataUri: string;
+                      metadata?: {
+                        __typename?: "SellerMetadata";
+                        id: string;
+                        createdAt: string;
+                        name?: string | null;
+                        description?: string | null;
+                        legalTradingName?: string | null;
+                        type: SellerMetadataType;
+                        kind: string;
+                        website?: string | null;
+                        contactPreference: string;
+                        images?: Array<{
+                          __typename?: "SellerMetadataMedia";
+                          id: string;
+                          url: string;
+                          tag?: string | null;
+                          type: string;
+                          width?: number | null;
+                          height?: number | null;
+                          fit?: string | null;
+                          position?: string | null;
+                        }> | null;
+                        contactLinks?: Array<{
+                          __typename?: "SellerContactLink";
+                          id: string;
+                          url: string;
+                          tag: string;
+                        }> | null;
+                        socialLinks?: Array<{
+                          __typename?: "SellerSocialLink";
+                          id: string;
+                          url: string;
+                          tag: string;
+                        }> | null;
+                        salesChannels?: Array<{
+                          __typename?: "SalesChannel";
+                          id: string;
+                          tag: string;
+                          name?: string | null;
+                          settingsUri?: string | null;
+                          settingsEditor?: string | null;
+                          link?: string | null;
+                          deployments?: Array<{
+                            __typename?: "SalesChannelDeployment";
+                            id: string;
+                            status?: string | null;
+                            link?: string | null;
+                            lastUpdated?: string | null;
+                            product?: {
+                              __typename?: "ProductV1Product";
+                              id: string;
+                              uuid: string;
+                              version: number;
+                            } | null;
+                          }> | null;
+                        }> | null;
+                      } | null;
+                    };
+                  } | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                };
+                variations?: Array<{
+                  __typename?: "ProductV1Variation";
+                  id: string;
+                  type: string;
+                  option: string;
+                }> | null;
+                productV1Seller: {
+                  __typename?: "ProductV1Seller";
+                  id: string;
+                  defaultVersion: number;
+                  name?: string | null;
+                  description?: string | null;
+                  externalUrl?: string | null;
+                  tokenId?: string | null;
+                  sellerId?: string | null;
+                  contactPreference?: string | null;
+                  images?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "ProductV1SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  seller: {
+                    __typename?: "Seller";
+                    id: string;
+                    assistant: string;
+                    admin: string;
+                    clerk: string;
+                    treasury: string;
+                    authTokenId: string;
+                    authTokenType: number;
+                    voucherCloneAddress: string;
+                    active: boolean;
+                    contractURI: string;
+                    royaltyPercentage: string;
+                    metadataUri: string;
+                    metadata?: {
+                      __typename?: "SellerMetadata";
+                      id: string;
+                      createdAt: string;
+                      name?: string | null;
+                      description?: string | null;
+                      legalTradingName?: string | null;
+                      type: SellerMetadataType;
+                      kind: string;
+                      website?: string | null;
+                      contactPreference: string;
+                      images?: Array<{
+                        __typename?: "SellerMetadataMedia";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: string;
+                        width?: number | null;
+                        height?: number | null;
+                        fit?: string | null;
+                        position?: string | null;
+                      }> | null;
+                      contactLinks?: Array<{
+                        __typename?: "SellerContactLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      socialLinks?: Array<{
+                        __typename?: "SellerSocialLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
+                        id: string;
+                        tag: string;
+                        name?: string | null;
+                        settingsUri?: string | null;
+                        settingsEditor?: string | null;
+                        link?: string | null;
+                        deployments?: Array<{
+                          __typename?: "SalesChannelDeployment";
+                          id: string;
+                          status?: string | null;
+                          link?: string | null;
+                          lastUpdated?: string | null;
+                          product?: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          } | null;
+                        }> | null;
+                      }> | null;
+                    } | null;
+                  };
+                };
+                exchangePolicy: {
+                  __typename?: "ProductV1ExchangePolicy";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                  label?: string | null;
+                  template: string;
+                  sellerContactMethod: string;
+                  disputeResolverContactMethod: string;
+                };
+                shipping?: {
+                  __typename?: "ProductV1ShippingOption";
+                  id: string;
+                  defaultVersion?: number | null;
+                  countryOfOrigin?: string | null;
+                  redemptionPoint?: string | null;
+                  returnPeriodInDays: number;
+                  supportedJurisdictions?: Array<{
+                    __typename?: "ProductV1ShippingJurisdiction";
+                    id: string;
+                    label: string;
+                    deliveryTime: string;
+                  }> | null;
+                } | null;
+                animationMetadata?: {
+                  __typename?: "AnimationMetadata";
+                  id: string;
+                  width?: number | null;
+                  height?: number | null;
+                  type?: string | null;
+                } | null;
+              }
+            | null;
+          range?: {
+            __typename?: "RangeEntity";
+            id: string;
+            start: string;
+            end: string;
+            owner: string;
+          } | null;
+        };
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          assistant: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
+        };
+        exchangeToken: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+        productV1Seller: {
+          __typename?: "ProductV1Seller";
+          id: string;
+          defaultVersion: number;
+          name?: string | null;
+          description?: string | null;
+          externalUrl?: string | null;
+          tokenId?: string | null;
+          sellerId?: string | null;
+          contactPreference?: string | null;
+          images?: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "ProductV1SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          seller: {
+            __typename?: "Seller";
+            id: string;
+            assistant: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            authTokenId: string;
+            authTokenType: number;
+            voucherCloneAddress: string;
+            active: boolean;
+            contractURI: string;
+            royaltyPercentage: string;
+            metadataUri: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              createdAt: string;
+              name?: string | null;
+              description?: string | null;
+              legalTradingName?: string | null;
+              type: SellerMetadataType;
+              kind: string;
+              website?: string | null;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: string;
+                width?: number | null;
+                height?: number | null;
+                fit?: string | null;
+                position?: string | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
+            } | null;
+          };
+        };
+        items: Array<
+          | {
+              __typename?: "NftItemMetadataEntity";
+              name: string;
+              description?: string | null;
+              image?: string | null;
+              externalUrl?: string | null;
+              animationUrl?: string | null;
+              youtubeUrl?: string | null;
+              chainId?: number | null;
+              contract?: string | null;
+              tokenId?: string | null;
+              transferMethod?: string | null;
+              transferDelay?: string | null;
+              quantity?: number | null;
+              id: string;
+              schemaUrl: string;
+              type: ItemMetadataType;
+              metadataUri: string;
+              tokenIdRange?: {
+                __typename?: "TokenIdRange";
+                min: string;
+                max: string;
+              } | null;
+              attributes?: Array<{
+                __typename?: "MetadataAttribute";
+                traitType: string;
+                value: string;
+                displayType: string;
+              }> | null;
+            }
+          | {
+              __typename?: "ProductV1ItemMetadataEntity";
+              uuid: string;
+              productUuid: string;
+              productVersion: number;
+              id: string;
+              schemaUrl: string;
+              type: ItemMetadataType;
+              metadataUri: string;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                details_category?: string | null;
+                details_subCategory?: string | null;
+                details_subCategory2?: string | null;
+                details_offerCategory: string;
+                offerCategory: ProductV1OfferCategory;
+                details_tags?: Array<string> | null;
+                details_sections?: Array<string> | null;
+                details_personalisation?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                category?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory2?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                tags?: Array<{
+                  __typename?: "ProductV1Tag";
+                  id: string;
+                  name: string;
+                }> | null;
+                sections?: Array<{
+                  __typename?: "ProductV1Section";
+                  id: string;
+                  name: string;
+                }> | null;
+                personalisation?: Array<{
+                  __typename?: "ProductV1Personalisation";
+                  id: string;
+                  name: string;
+                }> | null;
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                productV1Seller?: {
+                  __typename?: "ProductV1Seller";
+                  id: string;
+                  defaultVersion: number;
+                  name?: string | null;
+                  description?: string | null;
+                  externalUrl?: string | null;
+                  tokenId?: string | null;
+                  sellerId?: string | null;
+                  contactPreference?: string | null;
+                  images?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "ProductV1SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  seller: {
+                    __typename?: "Seller";
+                    id: string;
+                    assistant: string;
+                    admin: string;
+                    clerk: string;
+                    treasury: string;
+                    authTokenId: string;
+                    authTokenType: number;
+                    voucherCloneAddress: string;
+                    active: boolean;
+                    contractURI: string;
+                    royaltyPercentage: string;
+                    metadataUri: string;
+                    metadata?: {
+                      __typename?: "SellerMetadata";
+                      id: string;
+                      createdAt: string;
+                      name?: string | null;
+                      description?: string | null;
+                      legalTradingName?: string | null;
+                      type: SellerMetadataType;
+                      kind: string;
+                      website?: string | null;
+                      contactPreference: string;
+                      images?: Array<{
+                        __typename?: "SellerMetadataMedia";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: string;
+                        width?: number | null;
+                        height?: number | null;
+                        fit?: string | null;
+                        position?: string | null;
+                      }> | null;
+                      contactLinks?: Array<{
+                        __typename?: "SellerContactLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      socialLinks?: Array<{
+                        __typename?: "SellerSocialLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
+                        id: string;
+                        tag: string;
+                        name?: string | null;
+                        settingsUri?: string | null;
+                        settingsEditor?: string | null;
+                        link?: string | null;
+                        deployments?: Array<{
+                          __typename?: "SalesChannelDeployment";
+                          id: string;
+                          status?: string | null;
+                          link?: string | null;
+                          lastUpdated?: string | null;
+                          product?: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          } | null;
+                        }> | null;
+                      }> | null;
+                    } | null;
+                  };
+                } | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              };
+              variations?: Array<{
+                __typename?: "ProductV1Variation";
+                id: string;
+                type: string;
+                option: string;
+              }> | null;
+              exchangePolicy: {
+                __typename?: "ProductV1ExchangePolicy";
+                id: string;
+                uuid: string;
+                version: number;
+                label?: string | null;
+                template: string;
+                sellerContactMethod: string;
+                disputeResolverContactMethod: string;
+              };
+              shipping?: {
+                __typename?: "ProductV1ShippingOption";
+                id: string;
+                defaultVersion?: number | null;
+                countryOfOrigin?: string | null;
+                redemptionPoint?: string | null;
+                returnPeriodInDays: number;
+                supportedJurisdictions?: Array<{
+                  __typename?: "ProductV1ShippingJurisdiction";
+                  id: string;
+                  label: string;
+                  deliveryTime: string;
+                }> | null;
+              } | null;
+              productOverrides?: {
+                __typename?: "ProductV1ProductOverrides";
+                id: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+              } | null;
+            }
+          | {
+              __typename?: "UnknownItemMetadataEntity";
+              id: string;
+              schemaUrl: string;
+              type: ItemMetadataType;
+              metadataUri: string;
+            }
+        >;
+      } | null;
     }> | null;
     brand: { __typename?: "ProductV1Brand"; id: string; name: string };
     category?: {
@@ -52882,6 +56329,1718 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       type: string;
       option: string;
     }> | null;
+    bundle?: {
+      __typename?: "BundleMetadataEntity";
+      id: string;
+      name: string;
+      bundleUuid: string;
+      description: string;
+      externalUrl: string;
+      animationUrl?: string | null;
+      licenseUrl: string;
+      condition?: string | null;
+      schemaUrl: string;
+      type: MetadataType;
+      image: string;
+      createdAt: string;
+      voided: boolean;
+      validFromDate: string;
+      validUntilDate: string;
+      quantityAvailable: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
+      productUuids: Array<string>;
+      animationMetadata?: {
+        __typename?: "AnimationMetadata";
+        id: string;
+        width?: number | null;
+        height?: number | null;
+        type?: string | null;
+      } | null;
+      attributes?: Array<{
+        __typename?: "MetadataAttribute";
+        traitType: string;
+        value: string;
+        displayType: string;
+      }> | null;
+      offer: {
+        __typename?: "Offer";
+        id: string;
+        createdAt: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+        exchanges: Array<{
+          __typename?: "Exchange";
+          id: string;
+          disputed: boolean;
+          state: ExchangeState;
+          committedDate: string;
+          finalizedDate?: string | null;
+          validUntilDate: string;
+          redeemedDate?: string | null;
+          revokedDate?: string | null;
+          cancelledDate?: string | null;
+          completedDate?: string | null;
+          disputedDate?: string | null;
+          expired: boolean;
+          dispute?: {
+            __typename?: "Dispute";
+            id: string;
+            exchangeId: string;
+            state: DisputeState;
+            buyerPercent: string;
+            disputedDate: string;
+            escalatedDate?: string | null;
+            finalizedDate?: string | null;
+            retractedDate?: string | null;
+            resolvedDate?: string | null;
+            decidedDate?: string | null;
+            refusedDate?: string | null;
+            timeout: string;
+          } | null;
+          buyer: {
+            __typename?: "Buyer";
+            id: string;
+            wallet: string;
+            active: boolean;
+          };
+          seller: {
+            __typename?: "Seller";
+            id: string;
+            assistant: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            authTokenId: string;
+            authTokenType: number;
+            voucherCloneAddress: string;
+            active: boolean;
+            contractURI: string;
+            royaltyPercentage: string;
+            metadataUri: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              createdAt: string;
+              name?: string | null;
+              description?: string | null;
+              legalTradingName?: string | null;
+              type: SellerMetadataType;
+              kind: string;
+              website?: string | null;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: string;
+                width?: number | null;
+                height?: number | null;
+                fit?: string | null;
+                position?: string | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
+            } | null;
+          };
+        }>;
+        condition?: {
+          __typename?: "ConditionEntity";
+          id: string;
+          method: number;
+          tokenType: number;
+          tokenAddress: string;
+          gatingType: number;
+          minTokenId: string;
+          maxTokenId: string;
+          threshold: string;
+          maxCommits: string;
+        } | null;
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          assistant: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
+        };
+        collection: {
+          __typename?: "OfferCollection";
+          id: string;
+          sellerId: string;
+          collectionIndex: string;
+          collectionAddress: string;
+          externalIdHash: string;
+          externalId: string;
+          metadata?: {
+            __typename?: "NftContractMetadata";
+            id: string;
+            name?: string | null;
+            description?: string | null;
+            image?: string | null;
+            externalLink?: string | null;
+            createdAt: string;
+            collaborators?: Array<string> | null;
+          } | null;
+        };
+        exchangeToken: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+        disputeResolver: {
+          __typename?: "DisputeResolver";
+          id: string;
+          escalationResponsePeriod: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          assistant: string;
+          metadataUri: string;
+          active: boolean;
+          sellerAllowList: Array<string>;
+          fees: Array<{
+            __typename?: "DisputeResolverFee";
+            id: string;
+            tokenAddress: string;
+            tokenName: string;
+            feeAmount: string;
+            token: {
+              __typename?: "ExchangeToken";
+              id: string;
+              address: string;
+              decimals: string;
+              symbol: string;
+              name: string;
+            };
+          }>;
+        };
+        disputeResolutionTerms: {
+          __typename?: "DisputeResolutionTermsEntity";
+          id: string;
+          disputeResolverId: string;
+          escalationResponsePeriod: string;
+          feeAmount: string;
+          buyerEscalationDeposit: string;
+        };
+        metadata?:
+          | {
+              __typename?: "BaseMetadataEntity";
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
+            }
+          | {
+              __typename?: "BundleMetadataEntity";
+              bundleUuid: string;
+              createdAt: string;
+              voided: boolean;
+              validFromDate: string;
+              validUntilDate: string;
+              quantityAvailable: string;
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+              attributes?: Array<{
+                __typename?: "MetadataAttribute";
+                traitType: string;
+                value: string;
+                displayType: string;
+              }> | null;
+              productV1Seller: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                contactPreference?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  assistant: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
+                };
+              };
+              items: Array<
+                | {
+                    __typename?: "NftItemMetadataEntity";
+                    name: string;
+                    description?: string | null;
+                    image?: string | null;
+                    externalUrl?: string | null;
+                    animationUrl?: string | null;
+                    youtubeUrl?: string | null;
+                    chainId?: number | null;
+                    contract?: string | null;
+                    tokenId?: string | null;
+                    transferMethod?: string | null;
+                    transferDelay?: string | null;
+                    quantity?: number | null;
+                    type: ItemMetadataType;
+                    metadataUri: string;
+                    tokenIdRange?: {
+                      __typename?: "TokenIdRange";
+                      min: string;
+                      max: string;
+                    } | null;
+                    attributes?: Array<{
+                      __typename?: "MetadataAttribute";
+                      traitType: string;
+                      value: string;
+                      displayType: string;
+                    }> | null;
+                  }
+                | {
+                    __typename?: "ProductV1ItemMetadataEntity";
+                    uuid: string;
+                    type: ItemMetadataType;
+                    metadataUri: string;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                      title: string;
+                      description: string;
+                      identification_sKU?: string | null;
+                      identification_productId?: string | null;
+                      identification_productIdType?: string | null;
+                      productionInformation_brandName: string;
+                      productionInformation_manufacturer?: string | null;
+                      productionInformation_manufacturerPartNumber?:
+                        | string
+                        | null;
+                      productionInformation_modelNumber?: string | null;
+                      productionInformation_materials?: Array<string> | null;
+                      details_category?: string | null;
+                      details_subCategory?: string | null;
+                      details_subCategory2?: string | null;
+                      details_offerCategory: string;
+                      offerCategory: ProductV1OfferCategory;
+                      details_tags?: Array<string> | null;
+                      details_sections?: Array<string> | null;
+                      details_personalisation?: Array<string> | null;
+                      packaging_packageQuantity?: string | null;
+                      packaging_dimensions_length?: string | null;
+                      packaging_dimensions_width?: string | null;
+                      packaging_dimensions_height?: string | null;
+                      packaging_dimensions_unit?: string | null;
+                      packaging_weight_value?: string | null;
+                      packaging_weight_unit?: string | null;
+                      brand: {
+                        __typename?: "ProductV1Brand";
+                        id: string;
+                        name: string;
+                      };
+                      category?: {
+                        __typename?: "ProductV1Category";
+                        id: string;
+                        name: string;
+                      } | null;
+                      subCategory?: {
+                        __typename?: "ProductV1Category";
+                        id: string;
+                        name: string;
+                      } | null;
+                      subCategory2?: {
+                        __typename?: "ProductV1Category";
+                        id: string;
+                        name: string;
+                      } | null;
+                      tags?: Array<{
+                        __typename?: "ProductV1Tag";
+                        id: string;
+                        name: string;
+                      }> | null;
+                      sections?: Array<{
+                        __typename?: "ProductV1Section";
+                        id: string;
+                        name: string;
+                      }> | null;
+                      personalisation?: Array<{
+                        __typename?: "ProductV1Personalisation";
+                        id: string;
+                        name: string;
+                      }> | null;
+                      visuals_images: Array<{
+                        __typename?: "ProductV1Media";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: ProductV1MediaType;
+                        width?: number | null;
+                        height?: number | null;
+                      }>;
+                      visuals_videos?: Array<{
+                        __typename?: "ProductV1Media";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: ProductV1MediaType;
+                        width?: number | null;
+                        height?: number | null;
+                      }> | null;
+                      productV1Seller?: {
+                        __typename?: "ProductV1Seller";
+                        id: string;
+                        defaultVersion: number;
+                        name?: string | null;
+                        description?: string | null;
+                        externalUrl?: string | null;
+                        tokenId?: string | null;
+                        sellerId?: string | null;
+                        contactPreference?: string | null;
+                        images?: Array<{
+                          __typename?: "ProductV1Media";
+                          id: string;
+                          url: string;
+                          tag?: string | null;
+                          type: ProductV1MediaType;
+                          width?: number | null;
+                          height?: number | null;
+                        }> | null;
+                        contactLinks?: Array<{
+                          __typename?: "ProductV1SellerContactLink";
+                          id: string;
+                          url: string;
+                          tag: string;
+                        }> | null;
+                        seller: {
+                          __typename?: "Seller";
+                          id: string;
+                          assistant: string;
+                          admin: string;
+                          clerk: string;
+                          treasury: string;
+                          authTokenId: string;
+                          authTokenType: number;
+                          voucherCloneAddress: string;
+                          active: boolean;
+                          contractURI: string;
+                          royaltyPercentage: string;
+                          metadataUri: string;
+                          metadata?: {
+                            __typename?: "SellerMetadata";
+                            id: string;
+                            createdAt: string;
+                            name?: string | null;
+                            description?: string | null;
+                            legalTradingName?: string | null;
+                            type: SellerMetadataType;
+                            kind: string;
+                            website?: string | null;
+                            contactPreference: string;
+                            images?: Array<{
+                              __typename?: "SellerMetadataMedia";
+                              id: string;
+                              url: string;
+                              tag?: string | null;
+                              type: string;
+                              width?: number | null;
+                              height?: number | null;
+                              fit?: string | null;
+                              position?: string | null;
+                            }> | null;
+                            contactLinks?: Array<{
+                              __typename?: "SellerContactLink";
+                              id: string;
+                              url: string;
+                              tag: string;
+                            }> | null;
+                            socialLinks?: Array<{
+                              __typename?: "SellerSocialLink";
+                              id: string;
+                              url: string;
+                              tag: string;
+                            }> | null;
+                            salesChannels?: Array<{
+                              __typename?: "SalesChannel";
+                              id: string;
+                              tag: string;
+                              name?: string | null;
+                              settingsUri?: string | null;
+                              settingsEditor?: string | null;
+                              link?: string | null;
+                              deployments?: Array<{
+                                __typename?: "SalesChannelDeployment";
+                                id: string;
+                                status?: string | null;
+                                link?: string | null;
+                                lastUpdated?: string | null;
+                                product?: {
+                                  __typename?: "ProductV1Product";
+                                  id: string;
+                                  uuid: string;
+                                  version: number;
+                                } | null;
+                              }> | null;
+                            }> | null;
+                          } | null;
+                        };
+                      } | null;
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
+                        id: string;
+                        tag: string;
+                        name?: string | null;
+                        settingsUri?: string | null;
+                        settingsEditor?: string | null;
+                        link?: string | null;
+                        deployments?: Array<{
+                          __typename?: "SalesChannelDeployment";
+                          id: string;
+                          status?: string | null;
+                          link?: string | null;
+                          lastUpdated?: string | null;
+                          product?: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          } | null;
+                        }> | null;
+                      }> | null;
+                    };
+                    variations?: Array<{
+                      __typename?: "ProductV1Variation";
+                      id: string;
+                      type: string;
+                      option: string;
+                    }> | null;
+                    exchangePolicy: {
+                      __typename?: "ProductV1ExchangePolicy";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                      label?: string | null;
+                      template: string;
+                      sellerContactMethod: string;
+                      disputeResolverContactMethod: string;
+                    };
+                    shipping?: {
+                      __typename?: "ProductV1ShippingOption";
+                      id: string;
+                      defaultVersion?: number | null;
+                      countryOfOrigin?: string | null;
+                      redemptionPoint?: string | null;
+                      returnPeriodInDays: number;
+                      supportedJurisdictions?: Array<{
+                        __typename?: "ProductV1ShippingJurisdiction";
+                        id: string;
+                        label: string;
+                        deliveryTime: string;
+                      }> | null;
+                    } | null;
+                    productOverrides?: {
+                      __typename?: "ProductV1ProductOverrides";
+                      id: string;
+                      version: number;
+                      title: string;
+                      description: string;
+                      identification_sKU?: string | null;
+                      identification_productId?: string | null;
+                      identification_productIdType?: string | null;
+                      productionInformation_brandName: string;
+                      productionInformation_manufacturer?: string | null;
+                      productionInformation_manufacturerPartNumber?:
+                        | string
+                        | null;
+                      productionInformation_modelNumber?: string | null;
+                      productionInformation_materials?: Array<string> | null;
+                      packaging_packageQuantity?: string | null;
+                      packaging_dimensions_length?: string | null;
+                      packaging_dimensions_width?: string | null;
+                      packaging_dimensions_height?: string | null;
+                      packaging_dimensions_unit?: string | null;
+                      packaging_weight_value?: string | null;
+                      packaging_weight_unit?: string | null;
+                      brand: {
+                        __typename?: "ProductV1Brand";
+                        id: string;
+                        name: string;
+                      };
+                      visuals_images: Array<{
+                        __typename?: "ProductV1Media";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: ProductV1MediaType;
+                        width?: number | null;
+                        height?: number | null;
+                      }>;
+                      visuals_videos?: Array<{
+                        __typename?: "ProductV1Media";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: ProductV1MediaType;
+                        width?: number | null;
+                        height?: number | null;
+                      }> | null;
+                    } | null;
+                  }
+                | {
+                    __typename?: "UnknownItemMetadataEntity";
+                    type: ItemMetadataType;
+                    metadataUri: string;
+                  }
+              >;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
+            }
+          | {
+              __typename?: "ProductV1MetadataEntity";
+              createdAt: string;
+              voided: boolean;
+              validFromDate: string;
+              validUntilDate: string;
+              quantityAvailable: string;
+              uuid: string;
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+              productOverrides?: {
+                __typename?: "ProductV1ProductOverrides";
+                id: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+              } | null;
+              attributes?: Array<{
+                __typename?: "MetadataAttribute";
+                traitType: string;
+                value: string;
+                displayType: string;
+              }> | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                details_category?: string | null;
+                details_subCategory?: string | null;
+                details_subCategory2?: string | null;
+                details_offerCategory: string;
+                offerCategory: ProductV1OfferCategory;
+                details_tags?: Array<string> | null;
+                details_sections?: Array<string> | null;
+                details_personalisation?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                category?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory2?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                tags?: Array<{
+                  __typename?: "ProductV1Tag";
+                  id: string;
+                  name: string;
+                }> | null;
+                sections?: Array<{
+                  __typename?: "ProductV1Section";
+                  id: string;
+                  name: string;
+                }> | null;
+                personalisation?: Array<{
+                  __typename?: "ProductV1Personalisation";
+                  id: string;
+                  name: string;
+                }> | null;
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                productV1Seller?: {
+                  __typename?: "ProductV1Seller";
+                  id: string;
+                  defaultVersion: number;
+                  name?: string | null;
+                  description?: string | null;
+                  externalUrl?: string | null;
+                  tokenId?: string | null;
+                  sellerId?: string | null;
+                  contactPreference?: string | null;
+                  images?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "ProductV1SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  seller: {
+                    __typename?: "Seller";
+                    id: string;
+                    assistant: string;
+                    admin: string;
+                    clerk: string;
+                    treasury: string;
+                    authTokenId: string;
+                    authTokenType: number;
+                    voucherCloneAddress: string;
+                    active: boolean;
+                    contractURI: string;
+                    royaltyPercentage: string;
+                    metadataUri: string;
+                    metadata?: {
+                      __typename?: "SellerMetadata";
+                      id: string;
+                      createdAt: string;
+                      name?: string | null;
+                      description?: string | null;
+                      legalTradingName?: string | null;
+                      type: SellerMetadataType;
+                      kind: string;
+                      website?: string | null;
+                      contactPreference: string;
+                      images?: Array<{
+                        __typename?: "SellerMetadataMedia";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: string;
+                        width?: number | null;
+                        height?: number | null;
+                        fit?: string | null;
+                        position?: string | null;
+                      }> | null;
+                      contactLinks?: Array<{
+                        __typename?: "SellerContactLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      socialLinks?: Array<{
+                        __typename?: "SellerSocialLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
+                        id: string;
+                        tag: string;
+                        name?: string | null;
+                        settingsUri?: string | null;
+                        settingsEditor?: string | null;
+                        link?: string | null;
+                        deployments?: Array<{
+                          __typename?: "SalesChannelDeployment";
+                          id: string;
+                          status?: string | null;
+                          link?: string | null;
+                          lastUpdated?: string | null;
+                          product?: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          } | null;
+                        }> | null;
+                      }> | null;
+                    } | null;
+                  };
+                } | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              };
+              variations?: Array<{
+                __typename?: "ProductV1Variation";
+                id: string;
+                type: string;
+                option: string;
+              }> | null;
+              productV1Seller: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                contactPreference?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  assistant: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
+                };
+              };
+              exchangePolicy: {
+                __typename?: "ProductV1ExchangePolicy";
+                id: string;
+                uuid: string;
+                version: number;
+                label?: string | null;
+                template: string;
+                sellerContactMethod: string;
+                disputeResolverContactMethod: string;
+              };
+              shipping?: {
+                __typename?: "ProductV1ShippingOption";
+                id: string;
+                defaultVersion?: number | null;
+                countryOfOrigin?: string | null;
+                redemptionPoint?: string | null;
+                returnPeriodInDays: number;
+                supportedJurisdictions?: Array<{
+                  __typename?: "ProductV1ShippingJurisdiction";
+                  id: string;
+                  label: string;
+                  deliveryTime: string;
+                }> | null;
+              } | null;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
+            }
+          | null;
+        range?: {
+          __typename?: "RangeEntity";
+          id: string;
+          start: string;
+          end: string;
+          owner: string;
+        } | null;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        assistant: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
+      };
+      exchangeToken: {
+        __typename?: "ExchangeToken";
+        id: string;
+        address: string;
+        decimals: string;
+        symbol: string;
+        name: string;
+      };
+      productV1Seller: {
+        __typename?: "ProductV1Seller";
+        id: string;
+        defaultVersion: number;
+        name?: string | null;
+        description?: string | null;
+        externalUrl?: string | null;
+        tokenId?: string | null;
+        sellerId?: string | null;
+        contactPreference?: string | null;
+        images?: Array<{
+          __typename?: "ProductV1Media";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: ProductV1MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "ProductV1SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          assistant: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
+        };
+      };
+      items: Array<
+        | {
+            __typename?: "NftItemMetadataEntity";
+            name: string;
+            description?: string | null;
+            image?: string | null;
+            externalUrl?: string | null;
+            animationUrl?: string | null;
+            youtubeUrl?: string | null;
+            chainId?: number | null;
+            contract?: string | null;
+            tokenId?: string | null;
+            transferMethod?: string | null;
+            transferDelay?: string | null;
+            quantity?: number | null;
+            id: string;
+            schemaUrl: string;
+            type: ItemMetadataType;
+            metadataUri: string;
+            tokenIdRange?: {
+              __typename?: "TokenIdRange";
+              min: string;
+              max: string;
+            } | null;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+          }
+        | {
+            __typename?: "ProductV1ItemMetadataEntity";
+            uuid: string;
+            productUuid: string;
+            productVersion: number;
+            id: string;
+            schemaUrl: string;
+            type: ItemMetadataType;
+            metadataUri: string;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+              productV1Seller?: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                contactPreference?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  assistant: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
+                };
+              } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              returnPeriodInDays: number;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
+          }
+        | {
+            __typename?: "UnknownItemMetadataEntity";
+            id: string;
+            schemaUrl: string;
+            type: ItemMetadataType;
+            metadataUri: string;
+          }
+      >;
+    } | null;
   }> | null;
   brand: { __typename?: "ProductV1Brand"; id: string; name: string };
   category?: {
@@ -54268,6 +59427,1718 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       type: string;
       option: string;
     }> | null;
+    bundle?: {
+      __typename?: "BundleMetadataEntity";
+      id: string;
+      name: string;
+      bundleUuid: string;
+      description: string;
+      externalUrl: string;
+      animationUrl?: string | null;
+      licenseUrl: string;
+      condition?: string | null;
+      schemaUrl: string;
+      type: MetadataType;
+      image: string;
+      createdAt: string;
+      voided: boolean;
+      validFromDate: string;
+      validUntilDate: string;
+      quantityAvailable: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
+      productUuids: Array<string>;
+      animationMetadata?: {
+        __typename?: "AnimationMetadata";
+        id: string;
+        width?: number | null;
+        height?: number | null;
+        type?: string | null;
+      } | null;
+      attributes?: Array<{
+        __typename?: "MetadataAttribute";
+        traitType: string;
+        value: string;
+        displayType: string;
+      }> | null;
+      offer: {
+        __typename?: "Offer";
+        id: string;
+        createdAt: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+        exchanges: Array<{
+          __typename?: "Exchange";
+          id: string;
+          disputed: boolean;
+          state: ExchangeState;
+          committedDate: string;
+          finalizedDate?: string | null;
+          validUntilDate: string;
+          redeemedDate?: string | null;
+          revokedDate?: string | null;
+          cancelledDate?: string | null;
+          completedDate?: string | null;
+          disputedDate?: string | null;
+          expired: boolean;
+          dispute?: {
+            __typename?: "Dispute";
+            id: string;
+            exchangeId: string;
+            state: DisputeState;
+            buyerPercent: string;
+            disputedDate: string;
+            escalatedDate?: string | null;
+            finalizedDate?: string | null;
+            retractedDate?: string | null;
+            resolvedDate?: string | null;
+            decidedDate?: string | null;
+            refusedDate?: string | null;
+            timeout: string;
+          } | null;
+          buyer: {
+            __typename?: "Buyer";
+            id: string;
+            wallet: string;
+            active: boolean;
+          };
+          seller: {
+            __typename?: "Seller";
+            id: string;
+            assistant: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            authTokenId: string;
+            authTokenType: number;
+            voucherCloneAddress: string;
+            active: boolean;
+            contractURI: string;
+            royaltyPercentage: string;
+            metadataUri: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              createdAt: string;
+              name?: string | null;
+              description?: string | null;
+              legalTradingName?: string | null;
+              type: SellerMetadataType;
+              kind: string;
+              website?: string | null;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: string;
+                width?: number | null;
+                height?: number | null;
+                fit?: string | null;
+                position?: string | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
+            } | null;
+          };
+        }>;
+        condition?: {
+          __typename?: "ConditionEntity";
+          id: string;
+          method: number;
+          tokenType: number;
+          tokenAddress: string;
+          gatingType: number;
+          minTokenId: string;
+          maxTokenId: string;
+          threshold: string;
+          maxCommits: string;
+        } | null;
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          assistant: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
+        };
+        collection: {
+          __typename?: "OfferCollection";
+          id: string;
+          sellerId: string;
+          collectionIndex: string;
+          collectionAddress: string;
+          externalIdHash: string;
+          externalId: string;
+          metadata?: {
+            __typename?: "NftContractMetadata";
+            id: string;
+            name?: string | null;
+            description?: string | null;
+            image?: string | null;
+            externalLink?: string | null;
+            createdAt: string;
+            collaborators?: Array<string> | null;
+          } | null;
+        };
+        exchangeToken: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+        disputeResolver: {
+          __typename?: "DisputeResolver";
+          id: string;
+          escalationResponsePeriod: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          assistant: string;
+          metadataUri: string;
+          active: boolean;
+          sellerAllowList: Array<string>;
+          fees: Array<{
+            __typename?: "DisputeResolverFee";
+            id: string;
+            tokenAddress: string;
+            tokenName: string;
+            feeAmount: string;
+            token: {
+              __typename?: "ExchangeToken";
+              id: string;
+              address: string;
+              decimals: string;
+              symbol: string;
+              name: string;
+            };
+          }>;
+        };
+        disputeResolutionTerms: {
+          __typename?: "DisputeResolutionTermsEntity";
+          id: string;
+          disputeResolverId: string;
+          escalationResponsePeriod: string;
+          feeAmount: string;
+          buyerEscalationDeposit: string;
+        };
+        metadata?:
+          | {
+              __typename?: "BaseMetadataEntity";
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
+            }
+          | {
+              __typename?: "BundleMetadataEntity";
+              bundleUuid: string;
+              createdAt: string;
+              voided: boolean;
+              validFromDate: string;
+              validUntilDate: string;
+              quantityAvailable: string;
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+              attributes?: Array<{
+                __typename?: "MetadataAttribute";
+                traitType: string;
+                value: string;
+                displayType: string;
+              }> | null;
+              productV1Seller: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                contactPreference?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  assistant: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
+                };
+              };
+              items: Array<
+                | {
+                    __typename?: "NftItemMetadataEntity";
+                    name: string;
+                    description?: string | null;
+                    image?: string | null;
+                    externalUrl?: string | null;
+                    animationUrl?: string | null;
+                    youtubeUrl?: string | null;
+                    chainId?: number | null;
+                    contract?: string | null;
+                    tokenId?: string | null;
+                    transferMethod?: string | null;
+                    transferDelay?: string | null;
+                    quantity?: number | null;
+                    type: ItemMetadataType;
+                    metadataUri: string;
+                    tokenIdRange?: {
+                      __typename?: "TokenIdRange";
+                      min: string;
+                      max: string;
+                    } | null;
+                    attributes?: Array<{
+                      __typename?: "MetadataAttribute";
+                      traitType: string;
+                      value: string;
+                      displayType: string;
+                    }> | null;
+                  }
+                | {
+                    __typename?: "ProductV1ItemMetadataEntity";
+                    uuid: string;
+                    type: ItemMetadataType;
+                    metadataUri: string;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                      title: string;
+                      description: string;
+                      identification_sKU?: string | null;
+                      identification_productId?: string | null;
+                      identification_productIdType?: string | null;
+                      productionInformation_brandName: string;
+                      productionInformation_manufacturer?: string | null;
+                      productionInformation_manufacturerPartNumber?:
+                        | string
+                        | null;
+                      productionInformation_modelNumber?: string | null;
+                      productionInformation_materials?: Array<string> | null;
+                      details_category?: string | null;
+                      details_subCategory?: string | null;
+                      details_subCategory2?: string | null;
+                      details_offerCategory: string;
+                      offerCategory: ProductV1OfferCategory;
+                      details_tags?: Array<string> | null;
+                      details_sections?: Array<string> | null;
+                      details_personalisation?: Array<string> | null;
+                      packaging_packageQuantity?: string | null;
+                      packaging_dimensions_length?: string | null;
+                      packaging_dimensions_width?: string | null;
+                      packaging_dimensions_height?: string | null;
+                      packaging_dimensions_unit?: string | null;
+                      packaging_weight_value?: string | null;
+                      packaging_weight_unit?: string | null;
+                      brand: {
+                        __typename?: "ProductV1Brand";
+                        id: string;
+                        name: string;
+                      };
+                      category?: {
+                        __typename?: "ProductV1Category";
+                        id: string;
+                        name: string;
+                      } | null;
+                      subCategory?: {
+                        __typename?: "ProductV1Category";
+                        id: string;
+                        name: string;
+                      } | null;
+                      subCategory2?: {
+                        __typename?: "ProductV1Category";
+                        id: string;
+                        name: string;
+                      } | null;
+                      tags?: Array<{
+                        __typename?: "ProductV1Tag";
+                        id: string;
+                        name: string;
+                      }> | null;
+                      sections?: Array<{
+                        __typename?: "ProductV1Section";
+                        id: string;
+                        name: string;
+                      }> | null;
+                      personalisation?: Array<{
+                        __typename?: "ProductV1Personalisation";
+                        id: string;
+                        name: string;
+                      }> | null;
+                      visuals_images: Array<{
+                        __typename?: "ProductV1Media";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: ProductV1MediaType;
+                        width?: number | null;
+                        height?: number | null;
+                      }>;
+                      visuals_videos?: Array<{
+                        __typename?: "ProductV1Media";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: ProductV1MediaType;
+                        width?: number | null;
+                        height?: number | null;
+                      }> | null;
+                      productV1Seller?: {
+                        __typename?: "ProductV1Seller";
+                        id: string;
+                        defaultVersion: number;
+                        name?: string | null;
+                        description?: string | null;
+                        externalUrl?: string | null;
+                        tokenId?: string | null;
+                        sellerId?: string | null;
+                        contactPreference?: string | null;
+                        images?: Array<{
+                          __typename?: "ProductV1Media";
+                          id: string;
+                          url: string;
+                          tag?: string | null;
+                          type: ProductV1MediaType;
+                          width?: number | null;
+                          height?: number | null;
+                        }> | null;
+                        contactLinks?: Array<{
+                          __typename?: "ProductV1SellerContactLink";
+                          id: string;
+                          url: string;
+                          tag: string;
+                        }> | null;
+                        seller: {
+                          __typename?: "Seller";
+                          id: string;
+                          assistant: string;
+                          admin: string;
+                          clerk: string;
+                          treasury: string;
+                          authTokenId: string;
+                          authTokenType: number;
+                          voucherCloneAddress: string;
+                          active: boolean;
+                          contractURI: string;
+                          royaltyPercentage: string;
+                          metadataUri: string;
+                          metadata?: {
+                            __typename?: "SellerMetadata";
+                            id: string;
+                            createdAt: string;
+                            name?: string | null;
+                            description?: string | null;
+                            legalTradingName?: string | null;
+                            type: SellerMetadataType;
+                            kind: string;
+                            website?: string | null;
+                            contactPreference: string;
+                            images?: Array<{
+                              __typename?: "SellerMetadataMedia";
+                              id: string;
+                              url: string;
+                              tag?: string | null;
+                              type: string;
+                              width?: number | null;
+                              height?: number | null;
+                              fit?: string | null;
+                              position?: string | null;
+                            }> | null;
+                            contactLinks?: Array<{
+                              __typename?: "SellerContactLink";
+                              id: string;
+                              url: string;
+                              tag: string;
+                            }> | null;
+                            socialLinks?: Array<{
+                              __typename?: "SellerSocialLink";
+                              id: string;
+                              url: string;
+                              tag: string;
+                            }> | null;
+                            salesChannels?: Array<{
+                              __typename?: "SalesChannel";
+                              id: string;
+                              tag: string;
+                              name?: string | null;
+                              settingsUri?: string | null;
+                              settingsEditor?: string | null;
+                              link?: string | null;
+                              deployments?: Array<{
+                                __typename?: "SalesChannelDeployment";
+                                id: string;
+                                status?: string | null;
+                                link?: string | null;
+                                lastUpdated?: string | null;
+                                product?: {
+                                  __typename?: "ProductV1Product";
+                                  id: string;
+                                  uuid: string;
+                                  version: number;
+                                } | null;
+                              }> | null;
+                            }> | null;
+                          } | null;
+                        };
+                      } | null;
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
+                        id: string;
+                        tag: string;
+                        name?: string | null;
+                        settingsUri?: string | null;
+                        settingsEditor?: string | null;
+                        link?: string | null;
+                        deployments?: Array<{
+                          __typename?: "SalesChannelDeployment";
+                          id: string;
+                          status?: string | null;
+                          link?: string | null;
+                          lastUpdated?: string | null;
+                          product?: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          } | null;
+                        }> | null;
+                      }> | null;
+                    };
+                    variations?: Array<{
+                      __typename?: "ProductV1Variation";
+                      id: string;
+                      type: string;
+                      option: string;
+                    }> | null;
+                    exchangePolicy: {
+                      __typename?: "ProductV1ExchangePolicy";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                      label?: string | null;
+                      template: string;
+                      sellerContactMethod: string;
+                      disputeResolverContactMethod: string;
+                    };
+                    shipping?: {
+                      __typename?: "ProductV1ShippingOption";
+                      id: string;
+                      defaultVersion?: number | null;
+                      countryOfOrigin?: string | null;
+                      redemptionPoint?: string | null;
+                      returnPeriodInDays: number;
+                      supportedJurisdictions?: Array<{
+                        __typename?: "ProductV1ShippingJurisdiction";
+                        id: string;
+                        label: string;
+                        deliveryTime: string;
+                      }> | null;
+                    } | null;
+                    productOverrides?: {
+                      __typename?: "ProductV1ProductOverrides";
+                      id: string;
+                      version: number;
+                      title: string;
+                      description: string;
+                      identification_sKU?: string | null;
+                      identification_productId?: string | null;
+                      identification_productIdType?: string | null;
+                      productionInformation_brandName: string;
+                      productionInformation_manufacturer?: string | null;
+                      productionInformation_manufacturerPartNumber?:
+                        | string
+                        | null;
+                      productionInformation_modelNumber?: string | null;
+                      productionInformation_materials?: Array<string> | null;
+                      packaging_packageQuantity?: string | null;
+                      packaging_dimensions_length?: string | null;
+                      packaging_dimensions_width?: string | null;
+                      packaging_dimensions_height?: string | null;
+                      packaging_dimensions_unit?: string | null;
+                      packaging_weight_value?: string | null;
+                      packaging_weight_unit?: string | null;
+                      brand: {
+                        __typename?: "ProductV1Brand";
+                        id: string;
+                        name: string;
+                      };
+                      visuals_images: Array<{
+                        __typename?: "ProductV1Media";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: ProductV1MediaType;
+                        width?: number | null;
+                        height?: number | null;
+                      }>;
+                      visuals_videos?: Array<{
+                        __typename?: "ProductV1Media";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: ProductV1MediaType;
+                        width?: number | null;
+                        height?: number | null;
+                      }> | null;
+                    } | null;
+                  }
+                | {
+                    __typename?: "UnknownItemMetadataEntity";
+                    type: ItemMetadataType;
+                    metadataUri: string;
+                  }
+              >;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
+            }
+          | {
+              __typename?: "ProductV1MetadataEntity";
+              createdAt: string;
+              voided: boolean;
+              validFromDate: string;
+              validUntilDate: string;
+              quantityAvailable: string;
+              uuid: string;
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+              productOverrides?: {
+                __typename?: "ProductV1ProductOverrides";
+                id: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+              } | null;
+              attributes?: Array<{
+                __typename?: "MetadataAttribute";
+                traitType: string;
+                value: string;
+                displayType: string;
+              }> | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                details_category?: string | null;
+                details_subCategory?: string | null;
+                details_subCategory2?: string | null;
+                details_offerCategory: string;
+                offerCategory: ProductV1OfferCategory;
+                details_tags?: Array<string> | null;
+                details_sections?: Array<string> | null;
+                details_personalisation?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                category?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory2?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                tags?: Array<{
+                  __typename?: "ProductV1Tag";
+                  id: string;
+                  name: string;
+                }> | null;
+                sections?: Array<{
+                  __typename?: "ProductV1Section";
+                  id: string;
+                  name: string;
+                }> | null;
+                personalisation?: Array<{
+                  __typename?: "ProductV1Personalisation";
+                  id: string;
+                  name: string;
+                }> | null;
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                productV1Seller?: {
+                  __typename?: "ProductV1Seller";
+                  id: string;
+                  defaultVersion: number;
+                  name?: string | null;
+                  description?: string | null;
+                  externalUrl?: string | null;
+                  tokenId?: string | null;
+                  sellerId?: string | null;
+                  contactPreference?: string | null;
+                  images?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "ProductV1SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  seller: {
+                    __typename?: "Seller";
+                    id: string;
+                    assistant: string;
+                    admin: string;
+                    clerk: string;
+                    treasury: string;
+                    authTokenId: string;
+                    authTokenType: number;
+                    voucherCloneAddress: string;
+                    active: boolean;
+                    contractURI: string;
+                    royaltyPercentage: string;
+                    metadataUri: string;
+                    metadata?: {
+                      __typename?: "SellerMetadata";
+                      id: string;
+                      createdAt: string;
+                      name?: string | null;
+                      description?: string | null;
+                      legalTradingName?: string | null;
+                      type: SellerMetadataType;
+                      kind: string;
+                      website?: string | null;
+                      contactPreference: string;
+                      images?: Array<{
+                        __typename?: "SellerMetadataMedia";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: string;
+                        width?: number | null;
+                        height?: number | null;
+                        fit?: string | null;
+                        position?: string | null;
+                      }> | null;
+                      contactLinks?: Array<{
+                        __typename?: "SellerContactLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      socialLinks?: Array<{
+                        __typename?: "SellerSocialLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
+                        id: string;
+                        tag: string;
+                        name?: string | null;
+                        settingsUri?: string | null;
+                        settingsEditor?: string | null;
+                        link?: string | null;
+                        deployments?: Array<{
+                          __typename?: "SalesChannelDeployment";
+                          id: string;
+                          status?: string | null;
+                          link?: string | null;
+                          lastUpdated?: string | null;
+                          product?: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          } | null;
+                        }> | null;
+                      }> | null;
+                    } | null;
+                  };
+                } | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              };
+              variations?: Array<{
+                __typename?: "ProductV1Variation";
+                id: string;
+                type: string;
+                option: string;
+              }> | null;
+              productV1Seller: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                contactPreference?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  assistant: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
+                };
+              };
+              exchangePolicy: {
+                __typename?: "ProductV1ExchangePolicy";
+                id: string;
+                uuid: string;
+                version: number;
+                label?: string | null;
+                template: string;
+                sellerContactMethod: string;
+                disputeResolverContactMethod: string;
+              };
+              shipping?: {
+                __typename?: "ProductV1ShippingOption";
+                id: string;
+                defaultVersion?: number | null;
+                countryOfOrigin?: string | null;
+                redemptionPoint?: string | null;
+                returnPeriodInDays: number;
+                supportedJurisdictions?: Array<{
+                  __typename?: "ProductV1ShippingJurisdiction";
+                  id: string;
+                  label: string;
+                  deliveryTime: string;
+                }> | null;
+              } | null;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
+            }
+          | null;
+        range?: {
+          __typename?: "RangeEntity";
+          id: string;
+          start: string;
+          end: string;
+          owner: string;
+        } | null;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        assistant: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
+      };
+      exchangeToken: {
+        __typename?: "ExchangeToken";
+        id: string;
+        address: string;
+        decimals: string;
+        symbol: string;
+        name: string;
+      };
+      productV1Seller: {
+        __typename?: "ProductV1Seller";
+        id: string;
+        defaultVersion: number;
+        name?: string | null;
+        description?: string | null;
+        externalUrl?: string | null;
+        tokenId?: string | null;
+        sellerId?: string | null;
+        contactPreference?: string | null;
+        images?: Array<{
+          __typename?: "ProductV1Media";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: ProductV1MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "ProductV1SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          assistant: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
+        };
+      };
+      items: Array<
+        | {
+            __typename?: "NftItemMetadataEntity";
+            name: string;
+            description?: string | null;
+            image?: string | null;
+            externalUrl?: string | null;
+            animationUrl?: string | null;
+            youtubeUrl?: string | null;
+            chainId?: number | null;
+            contract?: string | null;
+            tokenId?: string | null;
+            transferMethod?: string | null;
+            transferDelay?: string | null;
+            quantity?: number | null;
+            id: string;
+            schemaUrl: string;
+            type: ItemMetadataType;
+            metadataUri: string;
+            tokenIdRange?: {
+              __typename?: "TokenIdRange";
+              min: string;
+              max: string;
+            } | null;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+          }
+        | {
+            __typename?: "ProductV1ItemMetadataEntity";
+            uuid: string;
+            productUuid: string;
+            productVersion: number;
+            id: string;
+            schemaUrl: string;
+            type: ItemMetadataType;
+            metadataUri: string;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+              productV1Seller?: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                contactPreference?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  assistant: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
+                };
+              } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              returnPeriodInDays: number;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
+          }
+        | {
+            __typename?: "UnknownItemMetadataEntity";
+            id: string;
+            schemaUrl: string;
+            type: ItemMetadataType;
+            metadataUri: string;
+          }
+      >;
+    } | null;
   }> | null;
   brand: { __typename?: "ProductV1Brand"; id: string; name: string };
   category?: {
@@ -60494,6 +67365,9 @@ export const BaseProductV1ProductWithVariantsFieldsFragmentDoc = gql`
       variations {
         ...BaseProductV1VariationFields
       }
+      bundle {
+        ...BaseBundleMetadataEntityFields
+      }
     }
     allVariantsVoided
     minValidFromDate
@@ -60505,6 +67379,7 @@ export const BaseProductV1ProductWithVariantsFieldsFragmentDoc = gql`
   ${BaseOfferFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
   ${BaseProductV1VariationFieldsFragmentDoc}
+  ${BaseBundleMetadataEntityFieldsFragmentDoc}
 `;
 export const BaseProductV1ProductWithNotVoidedVariantsFieldsFragmentDoc = gql`
   fragment BaseProductV1ProductWithNotVoidedVariantsFields on ProductV1Product {
@@ -60519,6 +67394,9 @@ export const BaseProductV1ProductWithNotVoidedVariantsFieldsFragmentDoc = gql`
       variations {
         ...BaseProductV1VariationFields
       }
+      bundle {
+        ...BaseBundleMetadataEntityFields
+      }
     }
     allVariantsVoided
     minValidFromDate
@@ -60530,6 +67408,7 @@ export const BaseProductV1ProductWithNotVoidedVariantsFieldsFragmentDoc = gql`
   ${BaseOfferFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
   ${BaseProductV1VariationFieldsFragmentDoc}
+  ${BaseBundleMetadataEntityFieldsFragmentDoc}
 `;
 export const OfferFieldsFragmentDoc = gql`
   fragment OfferFields on Offer {
