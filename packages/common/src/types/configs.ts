@@ -28,7 +28,6 @@ export type LensContracts = {
 
 export type Lens = LensContracts & {
   apiLink?: string;
-  ipfsGateway?: string | undefined;
 };
 
 export type ChainId = typeof chains[keyof typeof chains];
