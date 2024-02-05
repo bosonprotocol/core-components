@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.11...@bosonprotocol/ipfs-storage@1.11.0) (2024-02-05)
+
+
+### Features
+
+* add BUNDLE metadata to allow Phygitals offers ([#644](https://github.com/bosonprotocol/core-components/issues/644)) ([3a77f41](https://github.com/bosonprotocol/core-components/commit/3a77f4182c7b52394a86c8e62e9c495db2bd8318))
+
+
+
+
+
 ## [1.10.11](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.10...@bosonprotocol/ipfs-storage@1.10.11) (2024-01-24)
 
 

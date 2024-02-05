@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.26.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.25.0...@bosonprotocol/react-kit@0.26.0) (2024-02-05)
+
+
+### Bug Fixes
+
+* colors custom store ([#655](https://github.com/bosonprotocol/core-components/issues/655)) ([4c095f8](https://github.com/bosonprotocol/core-components/commit/4c095f821e826ced9c8747799c0034180a77e5d4))
+* ensure useSellers refresh when seller curation list is fetched ([#656](https://github.com/bosonprotocol/core-components/issues/656)) ([196735a](https://github.com/bosonprotocol/core-components/commit/196735af36c498bffa08b344ca7702041e63ea3d))
+* some commit widget issues ([#654](https://github.com/bosonprotocol/core-components/issues/654)) ([d1452c4](https://github.com/bosonprotocol/core-components/commit/d1452c497dfd2700062d85ccb664e5bd4d9ea2c2))
+
+
+### Features
+
+* add option to commit widget to make it a modal ([#652](https://github.com/bosonprotocol/core-components/issues/652)) ([bd144af](https://github.com/bosonprotocol/core-components/commit/bd144afb46e3716290b3f888af25ca581d5ce1dd))
+* export commit widget ([#651](https://github.com/bosonprotocol/core-components/issues/651)) ([72a92a4](https://github.com/bosonprotocol/core-components/commit/72a92a46891e78899a529353e1171e9b7b4ab4ab))
+
+
+
+
+
 # [0.25.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.24.1...@bosonprotocol/react-kit@0.25.0) (2024-01-24)
 
 

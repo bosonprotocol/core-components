@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.13.1...@bosonprotocol/metadata@1.14.0) (2024-02-05)
+
+
+### Features
+
+* add BUNDLE metadata to allow Phygitals offers ([#644](https://github.com/bosonprotocol/core-components/issues/644)) ([3a77f41](https://github.com/bosonprotocol/core-components/commit/3a77f4182c7b52394a86c8e62e9c495db2bd8318))
+
+
+
+
+
 ## [1.13.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.13.0...@bosonprotocol/metadata@1.13.1) (2024-01-24)
 
 

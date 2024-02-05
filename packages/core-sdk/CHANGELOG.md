@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.36.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.35.0...@bosonprotocol/core-sdk@1.36.0) (2024-02-05)
+
+
+### Bug Fixes
+
+* some commit widget issues ([#654](https://github.com/bosonprotocol/core-components/issues/654)) ([d1452c4](https://github.com/bosonprotocol/core-components/commit/d1452c497dfd2700062d85ccb664e5bd4d9ea2c2))
+
+
+### Features
+
+* add BUNDLE metadata to allow Phygitals offers ([#644](https://github.com/bosonprotocol/core-components/issues/644)) ([3a77f41](https://github.com/bosonprotocol/core-components/commit/3a77f4182c7b52394a86c8e62e9c495db2bd8318))
+
+
+
+
+
 # [1.35.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.34.0...@bosonprotocol/core-sdk@1.35.0) (2024-01-24)
 
 

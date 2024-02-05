@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.25.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.25.1...@bosonprotocol/common@1.25.2) (2024-02-05)
+
+
+### Bug Fixes
+
+* some commit widget issues ([#654](https://github.com/bosonprotocol/core-components/issues/654)) ([d1452c4](https://github.com/bosonprotocol/core-components/commit/d1452c497dfd2700062d85ccb664e5bd4d9ea2c2))
+
+
+
+
+
 ## [1.25.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.25.0...@bosonprotocol/common@1.25.1) (2024-01-24)
 
 **Note:** Version bump only for package @bosonprotocol/common
