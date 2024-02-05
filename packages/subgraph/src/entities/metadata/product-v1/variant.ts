@@ -6,7 +6,8 @@ export function getVariantId(offerId: string): string {
 
 export function saveProductV1Variant(
   offerId: string,
-  variations: string[] | null
+  variations: string[] | null,
+  bundleId: string | null
 ): string {
   const variantId = getVariantId(offerId);
   let variant = ProductV1Variant.load(variantId);
@@ -15,6 +16,7 @@ export function saveProductV1Variant(
   }
   variant.offer = offerId;
   variant.variations = variations;
+  variant.bundle = bundleId;
   variant.save();
   return variantId;
 }

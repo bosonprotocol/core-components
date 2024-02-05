@@ -21,7 +21,8 @@ import {
   resolveDateValidity,
   seedWallet10,
   wait,
-  waitForGraphNodeIndexing
+  waitForGraphNodeIndexing,
+  serializeVariant
 } from "./utils";
 import { SEC_PER_DAY } from "../../packages/common/src/utils/timestamp";
 import {
@@ -36,23 +37,6 @@ jest.setTimeout(120_000);
 const seedWallet = seedWallet10; // be sure the seedWallet is not used by another test (to allow concurrent run)
 
 const MAX_INT32 = Math.pow(2, 31) - 1;
-
-function serializeVariant(variant: productV1.ProductV1Variant): string {
-  // Be sure each variation structure has its keys ordered
-  const orderedStruct = variant.map((variation) =>
-    Object.keys(variation)
-      .sort()
-      .reduce((obj, key) => {
-        obj[key] = variation[key];
-        return obj;
-      }, {})
-  ) as productV1.ProductV1Variant;
-  // Be sure each variation in the table is ordered per type
-  const orderedTable = orderedStruct.sort((a, b) =>
-    a.type.localeCompare(b.type)
-  );
-  return JSON.stringify(orderedTable).toLowerCase();
-}
 
 function extractAdditionalMetadata(
   metadata: productV1.ProductV1Metadata
@@ -473,11 +457,8 @@ describe("Multi-variant offers tests", () => {
           });
         })
         .map((v) => (v ? serializeVariant(v) : undefined));
-      console.log("variationsStr", variationsStr);
-      console.log("expectedVariations", expectedVariations);
       for (const expectedVariation of expectedVariations) {
         const expStr = serializeVariant(expectedVariation);
-        console.log("expStr", expStr);
         expect(variationsStr.includes(expStr)).toBe(true);
       }
     }

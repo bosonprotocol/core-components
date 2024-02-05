@@ -1,5 +1,9 @@
 import { JSONValue, TypedMap, BigInt, log } from "@graphprotocol/graph-ts";
-import { BundleMetadataEntity, Offer, UnknownItemMetadataEntity } from "../../../../generated/schema";
+import {
+  BundleMetadataEntity,
+  Offer,
+  UnknownItemMetadataEntity
+} from "../../../../generated/schema";
 import {
   convertToString,
   convertToObject,
@@ -7,7 +11,11 @@ import {
 } from "../../../utils/json";
 import { saveAnimationMetadata } from "../animationMetadata";
 import { saveProductV1Seller } from "../product-v1/seller";
-import { getMetadataEntityId, getItemMetadataEntityId, saveMetadataAttributes } from "../utils";
+import {
+  getMetadataEntityId,
+  getItemMetadataEntityId,
+  saveMetadataAttributes
+} from "../utils";
 import { getIpfsMetadataObject, parseIpfsHash } from "../../../utils/ipfs";
 import { saveNftItemMetadata } from "../nft-item";
 import { saveProductV1ItemMetadata } from "../product-v1";
@@ -142,13 +150,7 @@ function saveItemMetadata(
     );
   }
 
-  saveUnknownItemMetadata(
-    offer,
-    metadataObj,
-    itemMetadataUri,
-    index,
-    bundleId
-  )
+  saveUnknownItemMetadata(offer, metadataObj, itemMetadataUri, index, bundleId);
   return null;
 }
 
