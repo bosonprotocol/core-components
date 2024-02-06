@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.26.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.26.0...@bosonprotocol/react-kit@0.26.1) (2024-02-06)
+
+
+### Bug Fixes
+
+* connect wallet issue ([#660](https://github.com/bosonprotocol/core-components/issues/660)) ([ace6010](https://github.com/bosonprotocol/core-components/commit/ace6010ccd80883d882ac640bae9d02d2c41d46f))
+
+
+
+
+
 # [0.26.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.25.0...@bosonprotocol/react-kit@0.26.0) (2024-02-05)
 
 
