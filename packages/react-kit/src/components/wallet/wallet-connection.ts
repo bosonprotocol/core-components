@@ -10,7 +10,9 @@ import * as wagmiChains from "wagmi/chains";
 import { useMemo } from "react";
 import { useConfigContext } from "../config/ConfigContext";
 
-function getChain(chainId: number): Array<Chain> {
+function getChain(
+  chainId: number
+): [typeof wagmiChains[keyof typeof wagmiChains]] {
   const chain = Object.values(wagmiChains).find(
     (chain) => chain.id === chainId
   );
