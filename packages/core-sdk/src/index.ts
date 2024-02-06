@@ -27,11 +27,18 @@ export {
 } from "@bosonprotocol/common";
 
 export {
-  MetadataType,
   AnyMetadata,
   OfferOrSellerMetadata,
+  MetadataType,
   validateMetadata,
-  METADATA_LENGTH_LIMIT,
   base,
-  productV1
+  productV1,
+  seller,
+  collection,
+  rNFT,
+  bundle,
+  nftItem,
+  productV1Item,
+  METADATA_LENGTH_LIMIT,
+  buildUuid
 } from "@bosonprotocol/metadata";
