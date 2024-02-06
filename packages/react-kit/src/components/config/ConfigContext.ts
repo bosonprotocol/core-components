@@ -1,5 +1,6 @@
 import { ProtocolConfig } from "@bosonprotocol/core-sdk";
 import { createContext, useContext } from "react";
+import { Signer } from "ethers";
 
 export type ConfigContextProps = {
   config: ProtocolConfig;
@@ -25,6 +26,10 @@ export type ConfigContextProps = {
   magicLinkKey: string;
   infuraKey: string;
   supportedChains: number[];
+  externalConnectedChainId?: number;
+  externalConnectedAccount?: string;
+  externalConnectedSigner?: Signer;
+  withExternalConnectionProps?: boolean;
 };
 
 export const Context = createContext<ConfigContextProps | null>(null);

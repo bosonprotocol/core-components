@@ -19,17 +19,38 @@ import { useExternalSignerChainId } from "../../lib/signer/externalSigner";
 import { Signer } from "ethers";
 
 export function useAccount() {
-  const { address: account } = useWagmiAccount();
+  let wagmiAccount: `0x${string}` | undefined, error: unknown;
+  const { withExternalConnectionProps, externalConnectedAccount } =
+    useConfigContext();
+  try {
+    const { address: account } = useWagmiAccount();
+    wagmiAccount = account;
+  } catch (err) {
+    error = err;
+  }
+
   const { user } = useUser();
   const { externalWeb3LibAdapter } = useExternalSigner() ?? {};
   const externalSignerAddress = useSignerAddress(externalWeb3LibAdapter);
-  return useMemo(
-    () => ({ address: externalSignerAddress ?? account ?? user }),
-    [account, user, externalSignerAddress]
+  const account = useMemo(
+    () => ({
+      address:
+        externalConnectedAccount ??
+        externalSignerAddress ??
+        wagmiAccount ??
+        user
+    }),
+    [wagmiAccount, user, externalSignerAddress, externalConnectedAccount]
   );
+  if (!withExternalConnectionProps && error) {
+    throw error;
+  }
+  return account;
 }
 
 export function useChainId(): number | undefined {
+  const { withExternalConnectionProps, externalConnectedChainId } =
+    useConfigContext();
   const externalSigner = useExternalSigner();
   const { data: externalSignerChainId } = useExternalSignerChainId();
   const magicChainId = useMagicChainId();
@@ -41,13 +62,16 @@ export function useChainId(): number | undefined {
   } catch (wagmiError) {
     error = wagmiError; // error if the provider is not there
   }
+  if (externalConnectedChainId) {
+    return externalConnectedChainId;
+  }
   if (externalSigner) {
     return externalSignerChainId;
   }
   if (isMagicLoggedIn) {
     return magicChainId;
   }
-  if (error) {
+  if (!withExternalConnectionProps && error) {
     throw error;
   }
   return networkChainId;
@@ -70,18 +94,37 @@ export function useProvider() {
 }
 
 export function useSigner(): Signer | undefined {
-  const wagmiSigner = useEthersSigner();
+  const { withExternalConnectionProps, externalConnectedSigner } =
+    useConfigContext();
+  let wagmiSigner: ReturnType<typeof useEthersSigner>, error: unknown;
+  try {
+    const ethersSigner = useEthersSigner();
+    wagmiSigner = ethersSigner;
+  } catch (wagmiError) {
+    error = wagmiError; // error if the provider is not there
+  }
   const { externalSigner } = useExternalSigner() ?? {};
   const magicProvider = useMagicProvider();
   const isMagicLoggedIn = useIsMagicLoggedIn();
 
   const signer = useMemo(() => {
-    return externalSigner
+    return externalConnectedSigner
+      ? externalConnectedSigner
+      : externalSigner
       ? externalSigner
       : isMagicLoggedIn
       ? magicProvider?.getSigner()
       : wagmiSigner;
-  }, [externalSigner, wagmiSigner, magicProvider, isMagicLoggedIn]);
+  }, [
+    externalConnectedSigner,
+    externalSigner,
+    wagmiSigner,
+    magicProvider,
+    isMagicLoggedIn
+  ]);
+  if (!withExternalConnectionProps && error) {
+    throw error;
+  }
   return signer;
 }
 
