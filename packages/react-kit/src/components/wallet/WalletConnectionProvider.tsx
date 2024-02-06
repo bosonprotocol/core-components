@@ -6,13 +6,14 @@ import {
   RainbowKitProvider,
   Theme
 } from "@rainbow-me/rainbowkit";
+import merge from "lodash.merge";
 import React, { ReactNode } from "react";
 import { WagmiConfig } from "wagmi";
 import { theme } from "../../theme";
-import merge from "lodash.merge";
-import { useWagmiConfig } from "./wallet-connection";
-import { useCSSVariable } from "../styles/useCSSVariable";
 import FallbackAvatar from "../avatar/fallback-avatar";
+import { useCSSVariable } from "../styles/useCSSVariable";
+import { useWagmiConfig } from "./wallet-connection";
+import { useConfigContext } from "../config/ConfigContext";
 
 export type WalletConnectionProviderProps = {
   children: ReactNode;
@@ -23,9 +24,38 @@ export default function WalletConnectionProvider({
   children,
   walletConnectProjectId
 }: WalletConnectionProviderProps) {
+  const { withExternalConnectionProps } = useConfigContext();
+
+  return withExternalConnectionProps ? (
+    <>{children}</>
+  ) : (
+    <WagmiProvider walletConnectProjectId={walletConnectProjectId}>
+      {children}
+    </WagmiProvider>
+  );
+}
+
+function WagmiProvider({
+  children,
+  walletConnectProjectId
+}: WalletConnectionProviderProps) {
+  const { wagmiConfig, chains } = useWagmiConfig(walletConnectProjectId);
+
+  return (
+    <WagmiConfig config={wagmiConfig}>
+      <RainbowKit chains={chains}>{children}</RainbowKit>
+    </WagmiConfig>
+  );
+}
+
+type RainbowKitProps = {
+  children: ReactNode;
+  chains: Parameters<typeof RainbowKitProvider>[0]["chains"];
+};
+
+function RainbowKit({ children, chains }: RainbowKitProps) {
   const secondaryColor = useCSSVariable("--secondary");
   const accentDarkColor = useCSSVariable("--accentDark");
-  const { wagmiConfig, chains } = useWagmiConfig(walletConnectProjectId);
   const walletConnectionTheme = merge(darkTheme({ borderRadius: "medium" }), {
     colors: {
       accentColor: secondaryColor,
@@ -46,16 +76,14 @@ export default function WalletConnectionProvider({
     }
   } as Theme);
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider
-        chains={chains}
-        theme={walletConnectionTheme}
-        avatar={CustomAvatar}
-        appInfo={{ appName: "Boson Widgets" }}
-      >
-        {children}
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <RainbowKitProvider
+      chains={chains}
+      theme={walletConnectionTheme}
+      avatar={CustomAvatar}
+      appInfo={{ appName: "Boson Widgets" }}
+    >
+      {children}
+    </RainbowKitProvider>
   );
 }
 

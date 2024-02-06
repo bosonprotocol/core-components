@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useCallback } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { CONFIG } from "../../../lib/config/config";
 import ChatProvider from "../../chat/ChatProvider/ChatProvider";
