@@ -76,15 +76,38 @@ module.exports = {
   solidity: {
     compilers: [
       {
-        version: "0.8.21",
+        version: "0.5.17" // Mock weth contract
+      },
+      {
+        version: "0.8.9",
         settings: {
+          optimizer: {
+            enabled: true,
+            runs: 50, // temporary until we upgrade compiler version
+            details: {
+              yul: true
+            }
+          },
+          outputSelection: {
+            "*": {
+              "*": ["evm.bytecode.object", "evm.deployedBytecode*"],
+            }
+          }
+        },
+        viaIR: true
+      },
+      {
+        version: "0.8.22",
+        settings: {
+          viaIR: false,
           optimizer: {
             enabled: true,
             runs: 200,
             details: {
               yul: true
             }
-          }
+          },
+          evmVersion: "london" // for ethereum mainnet, use shanghai, for polygon, use london
         }
       },
       {

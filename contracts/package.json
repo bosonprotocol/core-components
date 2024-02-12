@@ -1,26 +1,31 @@
 {
   "name": "hardhat-project",
   "scripts": {
-    "postinstall": "node ./scripts/postinstall.js",
+    "postinstall": "patch-package && node ./scripts/postinstall.js",
     "deploy": "hardhat run ./scripts/deploy.js --network localhost",
     "deploy:ropsten": "hardhat run ./scripts/deploy.js --network ropsten",
     "deploy:kovan": "hardhat run ./scripts/deploy.js --network kovan",
     "node": "hardhat node --hostname 0.0.0.0"
   },
   "devDependencies": {
-    "@bosonprotocol/boson-protocol-contracts": "github:bosonprotocol/boson-protocol-contracts#v2.3.0-rc.3",
-    "@nomicfoundation/hardhat-ethers": "^3.0.3",
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.6",
+    "@bosonprotocol/boson-protocol-contracts": "github:bosonprotocol/boson-protocol-contracts#9ed49d780f04b2f168001f72d6c09f5fc94818b7",
+    "@manifoldxyz/royalty-registry-solidity": "github:manifoldxyz/royalty-registry-solidity#e5369fc79279ce2e4c6ea2eb5914df51e89e8bd8",
+    "@nomicfoundation/hardhat-ethers": "^3.0.5",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "@openzeppelin/contracts": "^4.9.0",
-    "@openzeppelin/contracts-upgradeable": "^4.9.3",
     "chai": "^4.3.6",
     "dotenv": "^16.0.1",
     "ethereum-waffle": "^3.4.4",
-    "ethers": "^6.6.0",
+    "ethers": "^6.9.0",
+    "ethersv5": "npm:ethers@^5.7.2",
     "glob": "^9.1.0",
-    "hardhat": "^2.14.1",
+    "hardhat": "^2.19.2",
     "hardhat-abi-exporter": "^2.9.0",
+    "patch-package": "^8.0.0",
     "seaport": "github:ProjectOpenSea/seaport#a27eff9fa299a14c432666c8dc963aa072437dde"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.0",
+    "@openzeppelin/contracts-upgradeable": "4.9.3"
   }
 }
