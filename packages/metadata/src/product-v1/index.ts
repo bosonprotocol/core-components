@@ -10,7 +10,7 @@ import {
 } from "../productV1Item";
 import { Media } from "../common";
 
-export { ProductV1Variant };
+export { ProductV1Variant, ProductV1Item, Media, ProductBase };
 
 export const productV1MetadataSchema: SchemaOf<ProductV1Metadata> = buildYup(
   schema,
