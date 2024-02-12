@@ -77,7 +77,7 @@ export function handleSellerCreatedEventWithoutMetadataUri(
   seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = true;
   seller.contractURI = collectionMetadataUri;
-  seller.royaltyPercentage = bosonVoucherContract.getRoyaltyPercentage();
+  // TODO: replace royaltyPercentage with royaltyRecipients
   seller.save();
 
   const externalId = "initial";
@@ -134,7 +134,7 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = true;
   seller.contractURI = collectionMetadataUri;
-  seller.royaltyPercentage = bosonVoucherContract.getRoyaltyPercentage();
+  // TODO: replace royaltyPercentage with royaltyRecipients
   seller.metadataUri = sellerFromEvent.metadataUri || "";
   seller.metadata = getSellerMetadataEntityId(seller.id.toString());
   seller.save();
