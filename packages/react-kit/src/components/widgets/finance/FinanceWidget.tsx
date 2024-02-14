@@ -13,9 +13,9 @@ import {
   ConfigProvider,
   ConfigProviderProps
 } from "../../config/ConfigProvider";
-import { MagicProvider } from "../../magicLink/MagicContext";
+import { MagicProvider } from "../../magicLink/MagicProvider";
 import ModalProvider from "../../modal/ModalProvider";
-import { SignerProvider } from "../../signer/SignerContext";
+import { SignerProvider } from "../../signer/SignerProvider";
 import GlobalStyle from "../../styles/GlobalStyle";
 import { Grid } from "../../ui/Grid";
 import Loading from "../../ui/loading/Loading";

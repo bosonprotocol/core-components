@@ -1,22 +1,10 @@
 import { TransactionResponse, TransactionReceipt } from "@bosonprotocol/common";
-import { CoreSDK, metaTx } from "@bosonprotocol/core-sdk";
+import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { errors, providers } from "ethers";
 import { useState } from "react";
 
-import { CtaButtonProps } from "../components/cta/common/types";
-
-type WriteContractFn = () => Promise<TransactionResponse>;
-type SignMetaTxFn = () => Promise<metaTx.handler.SignedMetaTx>;
-type MetaTxCondition = boolean;
-export type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
-export type Action = {
-  name?: ActionName;
-  signMetaTxFn?: SignMetaTxFn;
-  writeContractFn: WriteContractFn;
-  additionalMetaTxCondition?: MetaTxCondition;
-  nativeMetaTxContract?: string;
-  shouldActionRun?: () => Promise<boolean>;
-};
+import { CtaButtonProps, Action } from "../components/cta/common/types";
+export { Action, ActionName } from "../components/cta/common/types";
 
 export function useCtaClickHandler<T>({
   waitBlocks,

@@ -2,7 +2,8 @@
 /* eslint @typescript-eslint/no-explicit-any: "off" */
 import React, { createContext, CSSProperties, ReactNode } from "react";
 
-import { MODAL_COMPONENTS, MODAL_TYPES } from "./ModalComponents";
+import type { MODAL_COMPONENTS } from "./ModalComponents";
+import type { MODAL_TYPES } from "./ModalTypes";
 
 export type ModalProps = {
   title?: string;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { theme } from "../../theme";
-import { ExchangeCardStatus } from "./ExchangeCard";
+import { ExchangeCardStatus } from "./types";
 
 export const ExchangeCreator = styled.div`
   display: flex;

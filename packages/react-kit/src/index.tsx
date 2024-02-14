@@ -52,7 +52,7 @@ export * from "./components/modal/components/Redeem/DetailView/ExternalExchangeD
 export * from "./components/ui/Grid";
 export * from "./components/ui/GridContainer";
 export * from "./components/ui/Typography";
-export * from "./lib/magicLink/logout";
+export { getMagicLogout } from "./components/magicLink/UserProvider";
 export * from "./lib/magicLink/provider";
 export * from "./lib/const/networks";
 export * from "./lib/errors/transactions";

@@ -27,8 +27,7 @@ import {
   ExchangeCTAWrapper
 } from "./ExchangeCard.styles";
 import { IButton } from "../ui/ThemedButton";
-
-export type ExchangeCardStatus = "REDEEMED" | "CANCELLED" | "COMMITTED";
+import { ExchangeCardStatus } from "./types";
 
 interface Base {
   id: string;
