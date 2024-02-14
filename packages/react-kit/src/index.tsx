@@ -44,6 +44,7 @@ export * as hooks from "./hooks";
 export * from "./theme";
 export * from "./components/magicLink/Login";
 export * from "./components/magicLink/MagicContext";
+export * from "./components/magicLink/MagicProvider";
 export * from "./components/magicLink/UserContext";
 export * from "./components/modal/components/common/OfferFullDescription/ExternalOfferFullDescription";
 export * from "./components/modal/components/common/detail/useGetOfferDetailData";
