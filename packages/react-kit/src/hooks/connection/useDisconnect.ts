@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useDisconnect as useDisconnectWagmi } from "wagmi";
 import { useUser } from "../../components/magicLink/UserContext";
 import { useIsMagicLoggedIn, useMagic, useWalletInfo } from "../magic";
-import { getMagicLogout } from "../../components/magicLink/UserProvider";
+import { getMagicLogout } from "../../lib/magicLink/logout";
 
 export const useDisconnect = () => {
   const { setUser } = useUser();

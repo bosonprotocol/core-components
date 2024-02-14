@@ -1,8 +1,8 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { Magic } from "magic-sdk";
 import { useMagic } from "../../hooks";
 import { getProvider } from "../../lib/magicLink/provider";
 import { UserContext } from "./UserContext";
+import { getMagicLogout } from "../../lib/magicLink/logout";
 
 export type SetUser = React.Dispatch<React.SetStateAction<string | undefined>>;
 
@@ -46,13 +46,3 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     <UserContext.Provider value={{ ...value }}>{children}</UserContext.Provider>
   );
 };
-
-export const getMagicLogout =
-  (magic: Magic | undefined | null) => async (setUser: SetUser) => {
-    if (!magic) {
-      return;
-    }
-    localStorage.removeItem("user");
-    setUser(undefined);
-    await magic.wallet.disconnect();
-  };
