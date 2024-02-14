@@ -1,5 +1,15 @@
 import { BigNumberish } from "@ethersproject/bignumber";
 
+export enum PriceType {
+  Static = 0,
+  Discovery = 1
+}
+
+export type RoyaltyInfo = {
+  recipients: string[];
+  bps: BigNumberish[];
+}
+
 export type CreateOfferArgs = {
   price: BigNumberish;
   sellerDeposit: BigNumberish;
@@ -18,6 +28,9 @@ export type CreateOfferArgs = {
   metadataUri: string;
   metadataHash: string;
   collectionIndex: BigNumberish;
+  feeLimit: BigNumberish;
+  priceType: PriceType;
+  royaltyInfo: RoyaltyInfo[];
 };
 
 export type OfferStruct = {
@@ -28,10 +41,12 @@ export type OfferStruct = {
   buyerCancelPenalty: BigNumberish;
   quantityAvailable: BigNumberish;
   exchangeToken: string;
+  priceType: number;
   metadataUri: string;
   metadataHash: string;
   voided: boolean;
   collectionIndex: BigNumberish;
+  royaltyInfo: RoyaltyInfo[];
 };
 
 export type OfferDatesStruct = {

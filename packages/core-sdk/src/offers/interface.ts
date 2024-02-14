@@ -70,6 +70,7 @@ export function createOfferArgsToStructs(
   Partial<OfferDatesStruct>,
   Partial<OfferDurationsStruct>,
   BigNumberish,
+  BigNumberish,
   BigNumberish
 ] {
   return [
@@ -77,18 +78,27 @@ export function createOfferArgsToStructs(
     argsToOfferDatesStruct(args),
     argsToOfferDurationsStruct(args),
     args.disputeResolverId,
-    args.agentId
+    args.agentId,
+    args.feeLimit
   ];
 }
 
 export function argsToOfferStruct(args: CreateOfferArgs): Partial<OfferStruct> {
-  const { exchangeToken, ...restArgs } = args;
+  const { exchangeToken, royaltyInfo, ...restArgs } = args;
 
   return {
     id: "0",
     sellerId: "0",
     ...restArgs,
-    exchangeToken: getAddress(exchangeToken)
+    exchangeToken: getAddress(exchangeToken),
+    royaltyInfo: royaltyInfo.map((royaltyInfoItem) => {
+      return {
+        ...royaltyInfoItem,
+        recipients: royaltyInfoItem.recipients.map((recipient) =>
+          getAddress(recipient)
+        )
+      };
+    })
   };
 }
 

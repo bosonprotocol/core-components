@@ -1,1 +1,1 @@
-export { CreateOfferArgs } from "@bosonprotocol/common";
+export { CreateOfferArgs, PriceType } from "@bosonprotocol/common";

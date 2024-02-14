@@ -1,6 +1,6 @@
-import { CreateOfferArgs } from "@bosonprotocol/common";
+import { ethers } from "ethers";
+import { CreateOfferArgs, PriceType } from "@bosonprotocol/common";
 import { offers, subgraph } from "@bosonprotocol/core-sdk";
-import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
 import { ProgressStatus } from "../lib/progress/progressStatus";
 import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
@@ -87,28 +87,28 @@ function buildOfferData(offerFields: OfferFieldsFragment): {
       agentId: offerFields.agentId as string,
       buyerCancelPenalty: offerFields.buyerCancelPenalty as string,
       quantityAvailable: offerFields.quantityAvailable as string,
-      validFromDateInMS: BigNumber.from(offerFields.validFromDate)
+      validFromDateInMS: ethers.BigNumber.from(offerFields.validFromDate)
         .mul(1000)
         .toString(),
-      validUntilDateInMS: BigNumber.from(offerFields.validUntilDate)
+      validUntilDateInMS: ethers.BigNumber.from(offerFields.validUntilDate)
         .mul(1000)
         .toString(),
-      voucherRedeemableFromDateInMS: BigNumber.from(
+      voucherRedeemableFromDateInMS: ethers.BigNumber.from(
         offerFields.voucherRedeemableFromDate
       )
         .mul(1000)
         .toString(),
-      voucherRedeemableUntilDateInMS: BigNumber.from(
+      voucherRedeemableUntilDateInMS: ethers.BigNumber.from(
         offerFields.voucherRedeemableUntilDate
       )
         .mul(1000)
         .toString(),
-      disputePeriodDurationInMS: BigNumber.from(
+      disputePeriodDurationInMS: ethers.BigNumber.from(
         offerFields.disputePeriodDuration
       )
         .mul(1000)
         .toString(),
-      resolutionPeriodDurationInMS: BigNumber.from(
+      resolutionPeriodDurationInMS: ethers.BigNumber.from(
         offerFields.resolutionPeriodDuration
       )
         .mul(1000)
@@ -117,7 +117,15 @@ function buildOfferData(offerFields: OfferFieldsFragment): {
       disputeResolverId: offerFields.disputeResolverId as string,
       metadataHash: offerFields.metadataHash as string,
       metadataUri: offerFields.metadataUri as string,
-      collectionIndex: offerFields.collectionIndex
+      collectionIndex: offerFields.collectionIndex,
+      feeLimit: offerFields.price, // feeLimit is never stored on-chain. By default, set it to offer price
+      priceType: PriceType.Static,
+      royaltyInfo: [
+        {
+          recipients: [ethers.constants.AddressZero], // AddressZero means Seller's treasury account
+          bps: ["0"] // Values should be greater or equal than Seller's minimum royalty amount
+        }
+      ]
     },
     offerMetadata: {
       sellerContactMethod:
