@@ -87,7 +87,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
             ? [
                 {
                   id: ids[0],
-                  title: "General Product data",
+                  title: "General product data",
                   content: (
                     <Content>
                       <GeneralProductData
@@ -103,10 +103,10 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
             : []),
           {
             id: ids[1],
-            title: "Physical Product data",
+            title: "Physical product data",
             content: (
               <Content>
-                <Typography tag="h3">Physical Product data</Typography>
+                <Typography tag="h3">Physical product data</Typography>
                 <Typography
                   tag="p"
                   data-testid="description"
@@ -114,7 +114,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
                 >
                   {description}
                 </Typography>
-                <Typography tag="h3">Physical Product images</Typography>
+                <Typography tag="h3">Physical product images</Typography>
 
                 <SlickSlider
                   settings={{ ...initialSettings, slidesToShow: 4 }}
@@ -129,10 +129,10 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
             ? ([
                 {
                   id: ids[2],
-                  title: "Digital Product data",
+                  title: "Digital product data",
                   content: (
                     <Content>
-                      <Typography tag="h3">Digital Product data</Typography>
+                      <Typography tag="h3">Digital product data</Typography>
                     </Content>
                   )
                 } as const
@@ -152,7 +152,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
           } as const,
           {
             id: ids[4],
-            title: "Shipping & Inventory",
+            title: "Shipping & inventory",
             content: (
               <Content>
                 <Grid flexDirection="column" alignItems="flex-start">
@@ -173,7 +173,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
                   <InventoryGraph offer={offer} title="Inventory graph" />
                   {exchange && buyerAddress && (
                     <DetailTransactions
-                      title="Transaction History (this item)"
+                      title="Transaction history (this item)"
                       exchange={exchange}
                       offer={offer}
                       buyerAddress={buyerAddress}

@@ -47,7 +47,7 @@ const Widget = styled(BaseWidget)`
 type Props = {
   isBosonExclusive: boolean;
 } & DetailViewProps;
-
+const iconSize = 20;
 export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
   (
     {
@@ -76,7 +76,6 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
     const config = useConfigContext();
 
     const offerDetailData = useGetOfferDetailData({
-      dateFormat: config.dateFormat,
       defaultCurrencySymbol: config.defaultCurrency.symbol,
       offer,
       exchange,
@@ -119,8 +118,14 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
         {children}
         {offer.condition && (
           <DetailsSummary
-            summaryText="Token Gated Offer"
-            icon={isConditionMet ? <LockOpen size={16} /> : <Lock size={16} />}
+            summaryText="Token gated offer"
+            icon={
+              isConditionMet ? (
+                <LockOpen size={iconSize} />
+              ) : (
+                <Lock size={iconSize} />
+              )
+            }
             onSetOpen={(open) => {
               if (open && closeDetailsRef.current) {
                 setDetailsOpen(false);
@@ -137,8 +142,8 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
         )}
         {isPhygital && (
           <DetailsSummary
-            summaryText="Phygital Product"
-            icon={<Cube size={16} />}
+            summaryText="Phygital product"
+            icon={<Cube size={iconSize} />}
             onSetOpen={(open) => {
               if (open && closeDetailsRef.current) {
                 setDetailsOpen(false);
