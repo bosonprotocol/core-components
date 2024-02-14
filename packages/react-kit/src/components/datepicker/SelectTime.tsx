@@ -10,7 +10,7 @@ import timezones from "../../lib/const/timezones.json";
 import BaseSelect from "../form/BaseSelect";
 import { Grid } from "../ui/Grid";
 import { Typography } from "../ui/Typography";
-import { ChoosenTime } from "./DatePicker";
+import { ChoosenTime } from "./types";
 import { Selector } from "./DatePicker.style";
 dayjs.extend(utc);
 dayjs.extend(timezone);

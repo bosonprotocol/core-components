@@ -16,16 +16,10 @@ import {
   ImagePreview,
   VideoPreview
 } from "../Field.styles";
-import type { UploadProps } from "../types";
+import type { UploadFileType, UploadProps, FileProps } from "../types";
 import UploadedFiles from "./UploadedFiles";
-import {
-  FileProps,
-  WithUploadToIpfs,
-  WithUploadToIpfsProps
-} from "./WithUploadToIpfs";
+import { WithUploadToIpfs, WithUploadToIpfsProps } from "./WithUploadToIpfs";
 const colors = theme.colors.light;
-
-export type UploadFileType = File | FileProps;
 
 function Upload({
   name,

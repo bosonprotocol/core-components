@@ -6,7 +6,7 @@ import { getVideoMetadata } from "../../../lib/videos/videos";
 import { theme } from "../../../theme";
 import ErrorToast from "../../toasts/common/ErrorToast";
 import { Typography } from "../../ui/Typography";
-import { UploadProps } from "../types";
+import { FileProps, UploadProps } from "../types";
 import { useSaveImageToIpfs } from "../../../hooks/ipfs/useSaveImageToIpfs";
 import bytesToSize from "../../../lib/bytes/bytesToSize";
 
@@ -20,14 +20,6 @@ export const SUPPORTED_FORMATS = [
   "image/png"
 ];
 
-export interface FileProps {
-  src: string;
-  name?: string; // for example: "redeemeum.png"
-  size?: number;
-  type?: string; // for example: "image/png"
-  width?: number;
-  height?: number;
-}
 export interface WithUploadToIpfsProps {
   saveToIpfs: (e: React.ChangeEvent<HTMLInputElement>) => FileProps[];
   loadMedia: (src: string) => string;

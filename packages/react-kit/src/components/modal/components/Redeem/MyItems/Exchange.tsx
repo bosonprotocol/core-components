@@ -4,10 +4,7 @@ import { useMemo } from "react";
 import styled from "styled-components";
 import mockedAvatar from "../../../../../assets/frame.png";
 
-import {
-  ExchangeCard,
-  ExchangeCardStatus
-} from "../../../../exchangeCard/ExchangeCard";
+import { ExchangeCard } from "../../../../exchangeCard/ExchangeCard";
 import { Currencies } from "../../../../currencyDisplay/CurrencyDisplay";
 import { exchanges } from "@bosonprotocol/core-sdk";
 import { theme } from "../../../../../theme";
@@ -26,6 +23,7 @@ import {
   useAccount,
   useIsConnectedToWrongChain
 } from "../../../../../hooks/connection/connection";
+import { ExchangeCardStatus } from "../../../../exchangeCard/types";
 
 const colors = theme.colors.light;
 

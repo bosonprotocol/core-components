@@ -1,9 +1,22 @@
-import React, { RefObject } from "react";
+import { TransactionResponse } from "@bosonprotocol/common";
+import { metaTx } from "@bosonprotocol/core-sdk";
 import { providers } from "ethers";
+import React, { RefObject } from "react";
 import { CoreSdkConfig } from "../../../hooks/core-sdk/useCoreSdk";
 import { ButtonProps } from "../../buttons/Button";
-import { Action } from "../../../hooks/useCtaClickHandler";
 
+type WriteContractFn = () => Promise<TransactionResponse>;
+type SignMetaTxFn = () => Promise<metaTx.handler.SignedMetaTx>;
+type MetaTxCondition = boolean;
+export type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
+export type Action = {
+  name?: ActionName;
+  signMetaTxFn?: SignMetaTxFn;
+  writeContractFn: WriteContractFn;
+  additionalMetaTxCondition?: MetaTxCondition;
+  nativeMetaTxContract?: string;
+  shouldActionRun?: () => Promise<boolean>;
+};
 export type CtaButtonProps<T> = Omit<ButtonProps, "onError"> & {
   coreSdkConfig: CoreSdkConfig;
   showLoading?: boolean;

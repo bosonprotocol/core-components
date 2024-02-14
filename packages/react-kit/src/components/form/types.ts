@@ -1,7 +1,5 @@
 import { SingleValue } from "react-select";
 
-import { UploadFileType } from "./Upload/Upload";
-
 export interface BaseProps {
   name: string;
   placeholder?: string;
@@ -100,3 +98,12 @@ export interface UploadProps extends BaseProps {
   withUpload?: boolean;
   onLoading?: (loading: boolean) => void;
 }
+export interface FileProps {
+  src: string;
+  name?: string; // for example: "redeemeum.png"
+  size?: number;
+  type?: string; // for example: "image/png"
+  width?: number;
+  height?: number;
+}
+export type UploadFileType = File | FileProps;
