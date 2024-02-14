@@ -36,11 +36,11 @@ import {
   useIsConnectedToWrongChain,
   useSigner
 } from "../../../../../hooks/connection/connection";
+import { useRedemptionCallbacks } from "../../../../../hooks/callbacks/useRedemptionCallbacks";
 import {
   DeliveryInfoCallbackResponse,
-  DeliveryInfoMessage,
-  useRedemptionCallbacks
-} from "../../../../../hooks/callbacks/useRedemptionCallbacks";
+  DeliveryInfoMessage
+} from "../../../../../hooks/callbacks/types";
 import { NonModalProps } from "../../../nonModal/NonModal";
 import {
   RedemptionWidgetAction,
