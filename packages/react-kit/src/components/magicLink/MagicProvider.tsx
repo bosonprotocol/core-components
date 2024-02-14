@@ -21,13 +21,13 @@ export const MagicProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-type InnerMagicProviderProps = {
+export type InnerMagicProviderProps = {
   children: ReactNode;
   chainId: number;
   magicLinkKey: string;
   rpcUrls: ReturnType<typeof getRpcUrls>;
 };
-const InnerMagicProvider = ({
+export const InnerMagicProvider = ({
   children,
   chainId,
   magicLinkKey,
