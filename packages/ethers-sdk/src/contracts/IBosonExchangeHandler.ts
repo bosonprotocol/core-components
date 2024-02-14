@@ -225,17 +225,19 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     "cancelVoucher(uint256)": FunctionFragment;
     "commitToConditionalOffer(address,uint256,uint256)": FunctionFragment;
     "commitToOffer(address,uint256)": FunctionFragment;
-    "commitToPreMintedOffer(address,uint256,uint256)": FunctionFragment;
     "completeExchange(uint256)": FunctionFragment;
     "completeExchangeBatch(uint256[])": FunctionFragment;
     "expireVoucher(uint256)": FunctionFragment;
     "extendVoucher(uint256,uint256)": FunctionFragment;
+    "getEIP2981Royalties(uint256,bool)": FunctionFragment;
     "getExchange(uint256)": FunctionFragment;
     "getExchangeState(uint256)": FunctionFragment;
     "getNextExchangeId()": FunctionFragment;
     "getReceipt(uint256)": FunctionFragment;
+    "getRoyalties(uint256)": FunctionFragment;
     "isEligibleToCommit(address,uint256,uint256)": FunctionFragment;
     "isExchangeFinalized(uint256)": FunctionFragment;
+    "onPremintedVoucherTransferred(uint256,address,address,address)": FunctionFragment;
     "onVoucherTransferred(uint256,address)": FunctionFragment;
     "redeemVoucher(uint256)": FunctionFragment;
     "revokeVoucher(uint256)": FunctionFragment;
@@ -254,10 +256,6 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "commitToPreMintedOffer",
-    values: [string, BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "completeExchange",
     values: [BigNumberish]
   ): string;
@@ -272,6 +270,10 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "extendVoucher",
     values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getEIP2981Royalties",
+    values: [BigNumberish, boolean]
   ): string;
   encodeFunctionData(
     functionFragment: "getExchange",
@@ -290,12 +292,20 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "getRoyalties",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "isEligibleToCommit",
     values: [string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "isExchangeFinalized",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "onPremintedVoucherTransferred",
+    values: [BigNumberish, string, string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "onVoucherTransferred",
@@ -323,10 +333,6 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "commitToPreMintedOffer",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "completeExchange",
     data: BytesLike
   ): Result;
@@ -343,6 +349,10 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getEIP2981Royalties",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getExchange",
     data: BytesLike
   ): Result;
@@ -356,11 +366,19 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getReceipt", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "getRoyalties",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "isEligibleToCommit",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "isExchangeFinalized",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "onPremintedVoucherTransferred",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -387,6 +405,7 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     "TwinCreated(uint256,uint256,tuple,address)": EventFragment;
     "TwinDeleted(uint256,uint256,address)": EventFragment;
     "TwinTransferFailed(uint256,address,uint256,uint256,uint256,address)": EventFragment;
+    "TwinTransferSkipped(uint256,uint256,address)": EventFragment;
     "TwinTransferred(uint256,address,uint256,uint256,uint256,address)": EventFragment;
     "VoucherCanceled(uint256,uint256,address)": EventFragment;
     "VoucherExpired(uint256,uint256,address)": EventFragment;
@@ -408,6 +427,7 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "TwinCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TwinDeleted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TwinTransferFailed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TwinTransferSkipped"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TwinTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoucherCanceled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoucherExpired"): EventFragment;
@@ -551,6 +571,14 @@ export type TwinTransferFailedEvent = TypedEvent<
 export type TwinTransferFailedEventFilter =
   TypedEventFilter<TwinTransferFailedEvent>;
 
+export type TwinTransferSkippedEvent = TypedEvent<
+  [BigNumber, BigNumber, string],
+  { exchangeId: BigNumber; twinCount: BigNumber; executedBy: string }
+>;
+
+export type TwinTransferSkippedEventFilter =
+  TypedEventFilter<TwinTransferSkippedEvent>;
+
 export type TwinTransferredEvent = TypedEvent<
   [BigNumber, string, BigNumber, BigNumber, BigNumber, string],
   {
@@ -664,13 +692,6 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    commitToPreMintedOffer(
-      _buyer: string,
-      _offerId: BigNumberish,
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     completeExchange(
       _exchangeId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -691,6 +712,14 @@ export interface IBosonExchangeHandler extends BaseContract {
       _validUntilDate: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    getEIP2981Royalties(
+      _queryId: BigNumberish,
+      _isExchangeId: boolean,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, BigNumber] & { receiver: string; royaltyPercentage: BigNumber }
+    >;
 
     getExchange(
       _exchangeId: BigNumberish,
@@ -725,6 +754,13 @@ export interface IBosonExchangeHandler extends BaseContract {
       }
     >;
 
+    getRoyalties(
+      _tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string[], BigNumber[]] & { recipients: string[]; bps: BigNumber[] }
+    >;
+
     isEligibleToCommit(
       _buyer: string,
       _offerId: BigNumberish,
@@ -743,8 +779,16 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean, boolean] & { exists: boolean; isFinalized: boolean }>;
 
+    onPremintedVoucherTransferred(
+      _tokenId: BigNumberish,
+      _to: string,
+      _from: string,
+      _rangeOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     onVoucherTransferred(
-      _exchangeId: BigNumberish,
+      _tokenId: BigNumberish,
       _newBuyer: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -778,13 +822,6 @@ export interface IBosonExchangeHandler extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  commitToPreMintedOffer(
-    _buyer: string,
-    _offerId: BigNumberish,
-    _exchangeId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   completeExchange(
     _exchangeId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -805,6 +842,14 @@ export interface IBosonExchangeHandler extends BaseContract {
     _validUntilDate: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  getEIP2981Royalties(
+    _queryId: BigNumberish,
+    _isExchangeId: boolean,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, BigNumber] & { receiver: string; royaltyPercentage: BigNumber }
+  >;
 
   getExchange(
     _exchangeId: BigNumberish,
@@ -833,6 +878,13 @@ export interface IBosonExchangeHandler extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BosonTypes.ReceiptStructOutput>;
 
+  getRoyalties(
+    _tokenId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [string[], BigNumber[]] & { recipients: string[]; bps: BigNumber[] }
+  >;
+
   isEligibleToCommit(
     _buyer: string,
     _offerId: BigNumberish,
@@ -851,8 +903,16 @@ export interface IBosonExchangeHandler extends BaseContract {
     overrides?: CallOverrides
   ): Promise<[boolean, boolean] & { exists: boolean; isFinalized: boolean }>;
 
+  onPremintedVoucherTransferred(
+    _tokenId: BigNumberish,
+    _to: string,
+    _from: string,
+    _rangeOwner: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   onVoucherTransferred(
-    _exchangeId: BigNumberish,
+    _tokenId: BigNumberish,
     _newBuyer: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -886,13 +946,6 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    commitToPreMintedOffer(
-      _buyer: string,
-      _offerId: BigNumberish,
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     completeExchange(
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
@@ -913,6 +966,14 @@ export interface IBosonExchangeHandler extends BaseContract {
       _validUntilDate: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    getEIP2981Royalties(
+      _queryId: BigNumberish,
+      _isExchangeId: boolean,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, BigNumber] & { receiver: string; royaltyPercentage: BigNumber }
+    >;
 
     getExchange(
       _exchangeId: BigNumberish,
@@ -941,6 +1002,13 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BosonTypes.ReceiptStructOutput>;
 
+    getRoyalties(
+      _tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string[], BigNumber[]] & { recipients: string[]; bps: BigNumber[] }
+    >;
+
     isEligibleToCommit(
       _buyer: string,
       _offerId: BigNumberish,
@@ -959,8 +1027,16 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean, boolean] & { exists: boolean; isFinalized: boolean }>;
 
+    onPremintedVoucherTransferred(
+      _tokenId: BigNumberish,
+      _to: string,
+      _from: string,
+      _rangeOwner: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     onVoucherTransferred(
-      _exchangeId: BigNumberish,
+      _tokenId: BigNumberish,
       _newBuyer: string,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -1121,6 +1197,17 @@ export interface IBosonExchangeHandler extends BaseContract {
       executedBy?: null
     ): TwinTransferFailedEventFilter;
 
+    "TwinTransferSkipped(uint256,uint256,address)"(
+      exchangeId?: BigNumberish | null,
+      twinCount?: null,
+      executedBy?: string | null
+    ): TwinTransferSkippedEventFilter;
+    TwinTransferSkipped(
+      exchangeId?: BigNumberish | null,
+      twinCount?: null,
+      executedBy?: string | null
+    ): TwinTransferSkippedEventFilter;
+
     "TwinTransferred(uint256,address,uint256,uint256,uint256,address)"(
       twinId?: BigNumberish | null,
       tokenAddress?: string | null,
@@ -1228,13 +1315,6 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    commitToPreMintedOffer(
-      _buyer: string,
-      _offerId: BigNumberish,
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     completeExchange(
       _exchangeId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1256,6 +1336,12 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    getEIP2981Royalties(
+      _queryId: BigNumberish,
+      _isExchangeId: boolean,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getExchange(
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
@@ -1273,6 +1359,11 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getRoyalties(
+      _tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isEligibleToCommit(
       _buyer: string,
       _offerId: BigNumberish,
@@ -1285,8 +1376,16 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    onPremintedVoucherTransferred(
+      _tokenId: BigNumberish,
+      _to: string,
+      _from: string,
+      _rangeOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     onVoucherTransferred(
-      _exchangeId: BigNumberish,
+      _tokenId: BigNumberish,
       _newBuyer: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1321,13 +1420,6 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    commitToPreMintedOffer(
-      _buyer: string,
-      _offerId: BigNumberish,
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     completeExchange(
       _exchangeId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1349,6 +1441,12 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    getEIP2981Royalties(
+      _queryId: BigNumberish,
+      _isExchangeId: boolean,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getExchange(
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
@@ -1366,6 +1464,11 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getRoyalties(
+      _tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     isEligibleToCommit(
       _buyer: string,
       _offerId: BigNumberish,
@@ -1378,8 +1481,16 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    onPremintedVoucherTransferred(
+      _tokenId: BigNumberish,
+      _to: string,
+      _from: string,
+      _rangeOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     onVoucherTransferred(
-      _exchangeId: BigNumberish,
+      _tokenId: BigNumberish,
       _newBuyer: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;

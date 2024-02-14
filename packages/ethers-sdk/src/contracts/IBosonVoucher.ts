@@ -54,7 +54,6 @@ export interface IBosonVoucherInterface extends utils.Interface {
     "getApproved(uint256)": FunctionFragment;
     "getAvailablePreMints(uint256)": FunctionFragment;
     "getRangeByOfferId(uint256)": FunctionFragment;
-    "getRoyaltyPercentage()": FunctionFragment;
     "getSellerId()": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "issueVoucher(uint256,address)": FunctionFragment;
@@ -68,7 +67,6 @@ export interface IBosonVoucherInterface extends utils.Interface {
     "setApprovalForAll(address,bool)": FunctionFragment;
     "setApprovalForAllToContract(address,bool)": FunctionFragment;
     "setContractURI(string)": FunctionFragment;
-    "setRoyaltyPercentage(uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "symbol()": FunctionFragment;
     "tokenURI(uint256)": FunctionFragment;
@@ -109,10 +107,6 @@ export interface IBosonVoucherInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getRangeByOfferId",
     values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getRoyaltyPercentage",
-    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getSellerId",
@@ -162,10 +156,6 @@ export interface IBosonVoucherInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "setContractURI",
     values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setRoyaltyPercentage",
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
@@ -220,10 +210,6 @@ export interface IBosonVoucherInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getRoyaltyPercentage",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getSellerId",
     data: BytesLike
   ): Result;
@@ -267,10 +253,6 @@ export interface IBosonVoucherInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setRoyaltyPercentage",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
@@ -294,9 +276,8 @@ export interface IBosonVoucherInterface extends utils.Interface {
     "ApprovalForAll(address,address,bool)": EventFragment;
     "ContractURIChanged(string)": EventFragment;
     "RangeReserved(uint256,tuple)": EventFragment;
-    "RoyaltyPercentageChanged(uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
-    "VoucherInitialized(uint256,uint256,string)": EventFragment;
+    "VoucherInitialized(uint256,string)": EventFragment;
     "VouchersPreMinted(uint256,uint256,uint256)": EventFragment;
   };
 
@@ -304,7 +285,6 @@ export interface IBosonVoucherInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "ApprovalForAll"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ContractURIChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RangeReserved"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RoyaltyPercentageChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoucherInitialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VouchersPreMinted"): EventFragment;
@@ -339,14 +319,6 @@ export type RangeReservedEvent = TypedEvent<
 
 export type RangeReservedEventFilter = TypedEventFilter<RangeReservedEvent>;
 
-export type RoyaltyPercentageChangedEvent = TypedEvent<
-  [BigNumber],
-  { royaltyPercentage: BigNumber }
->;
-
-export type RoyaltyPercentageChangedEventFilter =
-  TypedEventFilter<RoyaltyPercentageChangedEvent>;
-
 export type TransferEvent = TypedEvent<
   [string, string, BigNumber],
   { from: string; to: string; tokenId: BigNumber }
@@ -355,8 +327,8 @@ export type TransferEvent = TypedEvent<
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
 export type VoucherInitializedEvent = TypedEvent<
-  [BigNumber, BigNumber, string],
-  { sellerId: BigNumber; royaltyPercentage: BigNumber; contractURI: string }
+  [BigNumber, string],
+  { sellerId: BigNumber; contractURI: string }
 >;
 
 export type VoucherInitializedEventFilter =
@@ -447,8 +419,6 @@ export interface IBosonVoucher extends BaseContract {
       }
     >;
 
-    getRoyaltyPercentage(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     getSellerId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     isApprovedForAll(
@@ -532,11 +502,6 @@ export interface IBosonVoucher extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    setRoyaltyPercentage(
-      _newRoyaltyPercentage: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
@@ -608,8 +573,6 @@ export interface IBosonVoucher extends BaseContract {
     _offerId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<IBosonVoucher.RangeStructOutput>;
-
-  getRoyaltyPercentage(overrides?: CallOverrides): Promise<BigNumber>;
 
   getSellerId(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -691,11 +654,6 @@ export interface IBosonVoucher extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  setRoyaltyPercentage(
-    _newRoyaltyPercentage: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   supportsInterface(
     interfaceId: BytesLike,
     overrides?: CallOverrides
@@ -764,8 +722,6 @@ export interface IBosonVoucher extends BaseContract {
       _offerId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<IBosonVoucher.RangeStructOutput>;
-
-    getRoyaltyPercentage(overrides?: CallOverrides): Promise<BigNumber>;
 
     getSellerId(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -847,11 +803,6 @@ export interface IBosonVoucher extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setRoyaltyPercentage(
-      _newRoyaltyPercentage: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
@@ -916,13 +867,6 @@ export interface IBosonVoucher extends BaseContract {
       range?: null
     ): RangeReservedEventFilter;
 
-    "RoyaltyPercentageChanged(uint256)"(
-      royaltyPercentage?: null
-    ): RoyaltyPercentageChangedEventFilter;
-    RoyaltyPercentageChanged(
-      royaltyPercentage?: null
-    ): RoyaltyPercentageChangedEventFilter;
-
     "Transfer(address,address,uint256)"(
       from?: string | null,
       to?: string | null,
@@ -934,14 +878,12 @@ export interface IBosonVoucher extends BaseContract {
       tokenId?: BigNumberish | null
     ): TransferEventFilter;
 
-    "VoucherInitialized(uint256,uint256,string)"(
+    "VoucherInitialized(uint256,string)"(
       sellerId?: BigNumberish | null,
-      royaltyPercentage?: BigNumberish | null,
       contractURI?: string | null
     ): VoucherInitializedEventFilter;
     VoucherInitialized(
       sellerId?: BigNumberish | null,
-      royaltyPercentage?: BigNumberish | null,
       contractURI?: string | null
     ): VoucherInitializedEventFilter;
 
@@ -999,8 +941,6 @@ export interface IBosonVoucher extends BaseContract {
       _offerId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    getRoyaltyPercentage(overrides?: CallOverrides): Promise<BigNumber>;
 
     getSellerId(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1083,11 +1023,6 @@ export interface IBosonVoucher extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    setRoyaltyPercentage(
-      _newRoyaltyPercentage: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
@@ -1161,10 +1096,6 @@ export interface IBosonVoucher extends BaseContract {
 
     getRangeByOfferId(
       _offerId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getRoyaltyPercentage(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1246,11 +1177,6 @@ export interface IBosonVoucher extends BaseContract {
 
     setContractURI(
       _newContractURI: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setRoyaltyPercentage(
-      _newRoyaltyPercentage: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
