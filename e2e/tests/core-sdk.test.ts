@@ -649,6 +649,8 @@ describe("core-sdk", () => {
       "ERC721-peraddress-threshold",
       "ERC721-peraddress-tokenrange",
       "ERC721-pertokenid-tokenrange",
+      "ERC721-pertokenid-tokenrange-high-tokenid",
+      "ERC721-pertokenid-tokenrange-wide-range",
       "ERC1155-peraddress",
       "ERC1155-pertokenid",
       "ERC20"
@@ -712,6 +714,32 @@ describe("core-sdk", () => {
             gatingType: GatingType.PerTokenId,
             minTokenId: tokenId,
             maxTokenId: tokenId2,
+            threshold: "0",
+            maxCommits: "3"
+          };
+        } else if (token === "ERC721-pertokenid-tokenrange-high-tokenid") {
+          const tokenId3 = (Number.MAX_SAFE_INTEGER + 1).toString();
+          await ensureMintedERC721(buyerWallet, tokenId3);
+          conditionToCreate = {
+            method: EvaluationMethod.TokenRange,
+            tokenType: TokenType.NonFungibleToken,
+            tokenAddress: MOCK_ERC721_ADDRESS,
+            gatingType: GatingType.PerTokenId,
+            minTokenId: tokenId3,
+            maxTokenId: tokenId3,
+            threshold: "0",
+            maxCommits: "3"
+          };
+        } else if (token === "ERC721-pertokenid-tokenrange-wide-range") {
+          await ensureMintedERC721(buyerWallet, "100");
+          await ensureMintedERC721(buyerWallet, "10000000000");
+          conditionToCreate = {
+            method: EvaluationMethod.TokenRange,
+            tokenType: TokenType.NonFungibleToken,
+            tokenAddress: MOCK_ERC721_ADDRESS,
+            gatingType: GatingType.PerTokenId,
+            minTokenId: "100",
+            maxTokenId: "10000000000",
             threshold: "0",
             maxCommits: "3"
           };
