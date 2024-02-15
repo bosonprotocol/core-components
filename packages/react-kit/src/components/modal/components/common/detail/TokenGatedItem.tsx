@@ -172,8 +172,6 @@ export const TokenGatedItem = ({
   );
   const ActionButton = isConditionMet ? ContractButton : BuyButton;
   const chainId = useChainId();
-  if (condition)
-    condition.tokenAddress = "0x9b3b0703d392321ad24338ff1f846650437a43c9";
 
   const { data: tokenInfo } = useErc20ExchangeTokenInfo(
     { contractAddress: condition?.tokenAddress },

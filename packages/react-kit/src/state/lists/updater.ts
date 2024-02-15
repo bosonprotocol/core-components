@@ -2,18 +2,18 @@ import { getVersionUpgrade, VersionUpgrade } from "@uniswap/token-lists";
 import {
   DEFAULT_LIST_OF_LISTS,
   UNSUPPORTED_LIST_URLS
-} from "lib/constants/lists";
-import { useProvider } from "lib/utils/hooks/connection/connection";
-import { useFetchListCallback } from "lib/utils/hooks/useFetchListCallback";
-import useInterval from "lib/utils/hooks/useInterval";
-import useIsWindowVisible from "lib/utils/hooks/useIsWindowVisible";
+} from "../../lib/const/lists";
 import ms from "ms";
 import { useCallback, useEffect } from "react";
-import { useAppDispatch } from "state/hooks";
-import { useAllLists } from "state/lists/hooks";
+import { useAppDispatch } from "../../state/hooks";
+import { useAllLists } from "../../state/lists/hooks";
 
 import { acceptListUpdate } from "./actions";
 import { shouldAcceptVersionUpdate } from "./utils";
+import { useProvider } from "../../hooks/connection/connection";
+import useIsWindowVisible from "../../hooks/uniswap/useIsWindowVisible";
+import { useInterval } from "../../hooks/uniswap/useInterval";
+import { useFetchListCallback } from "../../hooks/uniswap/useFetchListCallback";
 
 export function ListsUpdater(): null {
   const provider = useProvider();

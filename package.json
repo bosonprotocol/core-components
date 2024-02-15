@@ -87,6 +87,7 @@
     "npm": "8.11.0"
   },
   "dependencies": {
+    "@ethersproject/abstract-provider": "^5.7.0",
     "@uniswap/smart-order-router": "^3.24.0",
     "clone-deep": "^4.0.1"
   }

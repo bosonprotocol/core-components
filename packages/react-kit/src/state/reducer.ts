@@ -1,10 +1,10 @@
 import { combineReducers } from "@reduxjs/toolkit";
 // import { envName } from "lib/config";
-// import multicall from "lib/state/multicall";
+import multicall from "../lib/uniswap/state/multicall";
 import localForage from "localforage";
 import { PersistConfig, persistReducer } from "redux-persist";
 
-// import application from "./application/reducer";
+import application from "./application/reducer";
 // import burn from "./burn/reducer";
 // import burnV3 from "./burn/v3/reducer";
 import lists from "./lists/reducer";
@@ -13,26 +13,26 @@ import { customCreateMigrate, migrations } from "./migrations";
 // import mint from "./mint/reducer";
 // import mintV3 from "./mint/v3/reducer";
 import { routingApi } from "./routing/slice";
-// import signatures from "./signatures/reducer";
-// import transactions from "./transactions/reducer";
-// import user from "./user/reducer";
+import signatures from "./signatures/reducer";
+import transactions from "./transactions/reducer";
+import user from "./user/reducer";
 // import wallets from "./wallets/reducer";
 
 const persistedReducers = {
-  // user,
-  // transactions,
-  // signatures,
+  user,
+  transactions,
+  signatures,
   lists
 };
 
 const appReducer = combineReducers({
-  // application,
+  application,
   // wallets,
   // mint,
   // mintV3,
   // burn,
   // burnV3,
-  // multicall: multicall.reducer,
+  multicall: multicall.reducer,
   // logs,
   [routingApi.reducerPath]: routingApi.reducer,
   ...persistedReducers

@@ -1,6 +1,6 @@
 import { Currency, Token } from "@uniswap/sdk-core";
 import { Tags, TokenInfo, TokenList } from "@uniswap/token-lists";
-import { isAddress } from "lib/utils/address";
+import { isAddress } from "../../lib/address/address";
 
 type TagDetails = Tags[keyof Tags];
 interface TagInfo extends TagDetails {
