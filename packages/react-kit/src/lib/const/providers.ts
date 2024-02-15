@@ -25,7 +25,11 @@ class AppJsonRpcProvider extends StaticJsonRpcProvider {
   constructor(chainId: SupportedChainsType) {
     // Including networkish allows ethers to skip the initial detectNetwork call.
     super(
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       RPC_URLS[chainId][0],
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       /* networkish= */ { chainId, name: CHAIN_IDS_TO_NAMES[chainId] }
     );
 
@@ -63,6 +67,8 @@ class AppJsonRpcProvider extends StaticJsonRpcProvider {
 /**
  * These are the only JsonRpcProviders used directly by the interface.
  */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const RPC_PROVIDERS: {
   [key in SupportedChainsType]: StaticJsonRpcProvider;
 } = {

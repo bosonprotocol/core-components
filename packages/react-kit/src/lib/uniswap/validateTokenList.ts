@@ -1,6 +1,8 @@
 import type { TokenList } from "@uniswap/token-lists";
 import type { ValidateFunction } from "ajv";
+// @ts-expect-error TODO: this should be imported async but it doesnt work in storybook
 import validatorImportList from "./__generated__/validateTokenList";
+// @ts-expect-error TODO: this should be imported async but it doesnt work in storybook
 import validateTokens from "./__generated__/validateTokens";
 
 enum ValidationSchema {

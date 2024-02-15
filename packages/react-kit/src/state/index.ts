@@ -4,7 +4,6 @@ import { persistStore } from "redux-persist";
 
 import { updateVersion } from "./global/actions";
 import reducer from "./reducer";
-import { routingApi } from "./routing/slice";
 
 export function createDefaultStore() {
   return configureStore({
@@ -21,7 +20,7 @@ export function createDefaultStore() {
             "meta.baseQueryMeta",
             "payload.trade"
           ],
-          ignoredPaths: [routingApi.reducerPath],
+          ignoredPaths: [],
           ignoredActions: [
             // ignore the redux-persist actions
             "persist/PERSIST",
@@ -30,7 +29,7 @@ export function createDefaultStore() {
             "persist/FLUSH"
           ]
         }
-      }).concat(routingApi.middleware)
+      })
   });
 }
 

@@ -32,6 +32,8 @@ export default function useGetLensProfiles(
 
 async function getLensProfiles(url: string, request: ProfileQueryRequest) {
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     (await fetchLens<ProfilesQuery>(url, ProfilesDocument, { request }))
       ?.profiles || { items: [], pageInfo: { totalCount: 0 } }
   );
