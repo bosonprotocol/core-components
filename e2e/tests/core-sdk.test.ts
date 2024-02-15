@@ -651,6 +651,7 @@ describe("core-sdk", () => {
       "ERC721-pertokenid-tokenrange",
       "ERC721-pertokenid-tokenrange-high-tokenid",
       "ERC721-pertokenid-tokenrange-wide-range",
+      "ERC721-pertokenid-tokenrange-wrong-min-maxtokenid",
       "ERC1155-peraddress",
       "ERC1155-pertokenid",
       "ERC20"
@@ -734,8 +735,21 @@ describe("core-sdk", () => {
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
             gatingType: GatingType.PerTokenId,
-            minTokenId: 0,
-            maxTokenId: 10000000,
+            minTokenId: "0",
+            maxTokenId: "10000000",
+            threshold: "0",
+            maxCommits: "3"
+          };
+        } else if (
+          token === "ERC721-pertokenid-tokenrange-wrong-min-maxtokenid"
+        ) {
+          conditionToCreate = {
+            method: EvaluationMethod.TokenRange,
+            tokenType: TokenType.NonFungibleToken,
+            tokenAddress: MOCK_ERC721_ADDRESS,
+            gatingType: GatingType.PerTokenId,
+            minTokenId: "1000",
+            maxTokenId: "0",
             threshold: "0",
             maxCommits: "3"
           };
