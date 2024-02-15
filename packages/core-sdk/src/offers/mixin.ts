@@ -497,6 +497,16 @@ export class OfferMixin extends BaseCoreSDK {
       gatingType,
       maxCommits: _maxCommits
     } = offer.condition;
+    const returnTrueBecauseItCannotBeChecked = () => {
+      const maxRequestsThreshold = 10;
+      if (
+        Math.abs(maxTokenId - minTokenId) > maxRequestsThreshold ||
+        minTokenId > Number.MAX_SAFE_INTEGER ||
+        maxTokenId > Number.MAX_SAFE_INTEGER
+      ) {
+        return true;
+      }
+    };
     const maxCommits = Number(_maxCommits);
 
     if (tokenType === TokenType.FungibleToken) {
@@ -530,7 +540,11 @@ export class OfferMixin extends BaseCoreSDK {
           return currentCommits < maxCommits;
         }
         if (method === EvaluationMethod.TokenRange) {
+          if (returnTrueBecauseItCannotBeChecked()) {
+            return true;
+          }
           const promises: (() => Promise<string>)[] = [];
+
           for (let i = minTokenId; i <= maxTokenId; i++) {
             const tokenId = i;
             promises.push(() =>
@@ -555,6 +569,9 @@ export class OfferMixin extends BaseCoreSDK {
       }
       if (gatingType === GatingType.PerTokenId) {
         if (method === EvaluationMethod.TokenRange) {
+          if (returnTrueBecauseItCannotBeChecked()) {
+            return true;
+          }
           const canTokenIdBeUsedToCommit = await getCanTokenIdBeUsedToCommit();
           const promises: (() => Promise<string>)[] = [];
           for (let i = minTokenId; i <= maxTokenId; i++) {
@@ -589,6 +606,9 @@ export class OfferMixin extends BaseCoreSDK {
     }
     if (tokenType === TokenType.MultiToken) {
       if (gatingType === GatingType.PerAddress) {
+        if (returnTrueBecauseItCannotBeChecked()) {
+          return true;
+        }
         const promises: (() => Promise<string>)[] = [];
         for (let i = minTokenId; i <= maxTokenId; i++) {
           const tokenId = i;
@@ -611,6 +631,9 @@ export class OfferMixin extends BaseCoreSDK {
         return false;
       }
       if (gatingType === GatingType.PerTokenId) {
+        if (returnTrueBecauseItCannotBeChecked()) {
+          return true;
+        }
         const canTokenIdBeUsedToCommit = await getCanTokenIdBeUsedToCommit();
         const promises: (() => Promise<string>)[] = [];
         for (let i = minTokenId; i <= maxTokenId; i++) {
