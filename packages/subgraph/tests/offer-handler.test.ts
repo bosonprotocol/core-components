@@ -10,6 +10,7 @@ import {
   handleOfferVoidedEvent
 } from "../src/mappings/offer-handler";
 import {
+  RoyaltyInfo,
   createOfferCreatedEvent,
   createOfferVoidedEvent,
   createSeller,
@@ -29,6 +30,7 @@ const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
 const sellerMetadataHash = "QmZffs1Uv6pmf4649UpMqinDord9QBerJaWcwRgdenAto1";
 const price = 1;
+const priceType = i8(0);
 const sellerDeposit = 1;
 const protocolFee = 1;
 const agentFee = 1;
@@ -48,6 +50,10 @@ const disputeBuyerEscalationDeposit = 1;
 const collectionIndex = 0;
 const agentId = 1;
 const executedBy = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
+const royaltyInfo: RoyaltyInfo = new RoyaltyInfo(
+  ["0x0000000000000000000000000000000000000000"],
+  [0]
+);
 
 const offerCreatedEvent = createOfferCreatedEvent(
   offerId,
@@ -70,12 +76,14 @@ const offerCreatedEvent = createOfferCreatedEvent(
   disputeEscalationResponsePeriod,
   disputeFeeAmount,
   disputeBuyerEscalationDeposit,
+  priceType,
   "ipfs://" + metadataHash,
   metadataHash,
   false,
   collectionIndex,
   agentId,
-  executedBy
+  executedBy,
+  royaltyInfo
 );
 
 beforeEach(() => {
