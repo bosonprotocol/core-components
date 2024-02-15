@@ -172,6 +172,9 @@ export const TokenGatedItem = ({
   );
   const ActionButton = isConditionMet ? ContractButton : BuyButton;
   const chainId = useChainId();
+  if (condition)
+    condition.tokenAddress = "0x9b3b0703d392321ad24338ff1f846650437a43c9";
+
   const { data: tokenInfo } = useErc20ExchangeTokenInfo(
     { contractAddress: condition?.tokenAddress },
     { enabled: !!condition?.tokenAddress }
@@ -191,6 +194,7 @@ export const TokenGatedItem = ({
           ),
     [chainId, condition, tokenInfo]
   );
+  console.log({ chainId, condition, tokenInfo, currency });
   const Icon = useMemo(
     () => (
       <>
@@ -255,9 +259,15 @@ export const TokenGatedItem = ({
     >
       {condition.tokenType === TokenType.FungibleToken ? (
         <Condition>
-          <div>
-            {ethers.utils.formatUnits(condition.threshold, erc20Info.decimals)}x
-          </div>
+          {condition.threshold && erc20Info?.decimals && (
+            <div>
+              {ethers.utils.formatUnits(
+                condition.threshold,
+                erc20Info.decimals
+              )}
+              x
+            </div>
+          )}
           <Grid
             flexGrow={0}
             flexShrink={0}
