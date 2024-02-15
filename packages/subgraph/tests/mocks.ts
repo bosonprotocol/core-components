@@ -1,6 +1,9 @@
 import { VoucherExtended } from "./../generated/BosonExchangeHandler/IBosonExchangeHandler";
 import { SellerCreatedAuthTokenStruct } from "./../generated/BosonAccountHandler/IBosonAccountHandler";
-import { OfferCreatedOfferFeesStruct } from "./../generated/BosonOfferHandler/IBosonOfferHandler";
+import {
+  OfferCreatedOfferFeesStruct,
+  OfferCreatedOfferRoyaltyInfoStruct
+} from "./../generated/BosonOfferHandler/IBosonOfferHandler";
 import {
   OfferCreated,
   OfferCreatedOfferDatesStruct,
@@ -42,6 +45,15 @@ import { getProductId } from "../src/entities/metadata/product-v1/product";
 import { ProductV1Media, ProductV1Product } from "../generated/schema";
 import { handleSellerCreatedEvent } from "../src/mappings/account-handler";
 
+export class RoyaltyInfo {
+  recipients: string[];
+  bps: i32[];
+  constructor(recipients: string[], bps: i32[]) {
+    this.recipients = recipients;
+    this.bps = bps;
+  }
+}
+
 export function createOfferCreatedEvent(
   offerId: i32,
   sellerId: i32,
@@ -63,12 +75,14 @@ export function createOfferCreatedEvent(
   disputeEscalationResponsePeriod: i32,
   disputeFeeAmount: i32,
   disputeBuyerEscalationDeposit: i32,
+  priceType: i8,
   metadataUri: string,
   metadataHash: string,
   voided: boolean,
   collectionIndex: i32,
   agentId: i32,
-  executedBy: string
+  executedBy: string,
+  royaltyInfo: RoyaltyInfo
 ): OfferCreated {
   const offerCreatedEvent = changetype<OfferCreated>(newMockEvent());
   offerCreatedEvent.parameters = [];
@@ -92,10 +106,12 @@ export function createOfferCreatedEvent(
         buyerCancelPenalty,
         quantityAvailable,
         exchangeToken,
+        priceType,
         metadataUri,
         metadataHash,
         voided,
-        collectionIndex
+        collectionIndex,
+        royaltyInfo
       )
     )
   );
@@ -731,10 +747,12 @@ export function createOfferStruct(
   buyerCancelPenalty: i32,
   quantityAvailable: i32,
   exchangeToken: string,
+  priceType: i8,
   metadataUri: string,
   metadataHash: string,
   voided: boolean,
-  collectionIndex: i32
+  collectionIndex: i32,
+  royaltyInfo: RoyaltyInfo
 ): OfferCreatedOfferStruct {
   const tuple = new OfferCreatedOfferStruct();
   tuple.push(ethereum.Value.fromI32(offerId));
@@ -744,10 +762,14 @@ export function createOfferStruct(
   tuple.push(ethereum.Value.fromI32(buyerCancelPenalty));
   tuple.push(ethereum.Value.fromI32(quantityAvailable));
   tuple.push(ethereum.Value.fromAddress(Address.fromString(exchangeToken)));
+  tuple.push(ethereum.Value.fromI32(priceType));
   tuple.push(ethereum.Value.fromString(metadataUri));
   tuple.push(ethereum.Value.fromString(metadataHash));
   tuple.push(ethereum.Value.fromBoolean(voided));
   tuple.push(ethereum.Value.fromI32(collectionIndex));
+  tuple.push(
+    ethereum.Value.fromTupleArray([createRoyaltyInfoStruct(royaltyInfo)])
+  );
   return tuple;
 }
 
@@ -784,6 +806,15 @@ export function createOfferFeesStruct(
   const tuple = new OfferCreatedOfferFeesStruct();
   tuple.push(ethereum.Value.fromI32(protocolFee));
   tuple.push(ethereum.Value.fromI32(agentFee));
+  return tuple;
+}
+
+export function createRoyaltyInfoStruct(
+  royaltyInfo: RoyaltyInfo
+): OfferCreatedOfferRoyaltyInfoStruct {
+  const tuple = new OfferCreatedOfferRoyaltyInfoStruct();
+  tuple.push(ethereum.Value.fromStringArray(royaltyInfo.recipients));
+  tuple.push(ethereum.Value.fromI32Array(royaltyInfo.bps));
   return tuple;
 }
 
