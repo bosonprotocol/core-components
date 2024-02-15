@@ -25,33 +25,50 @@ export function encodeCreateOfferBatch(argsBatch: CreateOfferArgs[]) {
     Partial<OfferDatesStruct>,
     Partial<OfferDurationsStruct>,
     BigNumberish,
+    BigNumberish,
     BigNumberish
   ][] = argsBatch.map((args) => [
     argsToOfferStruct(args),
     argsToOfferDatesStruct(args),
     argsToOfferDurationsStruct(args),
     args.disputeResolverId,
-    args.agentId
+    args.agentId,
+    args.feeLimit
   ]);
-  const [offers, offerDates, offerDurations, disputeResolverIds, agentIds]: [
+  const [
+    offers,
+    offerDates,
+    offerDurations,
+    disputeResolverIds,
+    agentIds,
+    feeLimits
+  ]: [
     Partial<OfferStruct>[],
     Partial<OfferDatesStruct>[],
     Partial<OfferDurationsStruct>[],
     BigNumberish[],
+    BigNumberish[],
     BigNumberish[]
   ] = argsTuples.reduce(
     (acc, tuple) => {
-      const [offer, offerDates, offerDurations, disputeResolverId, agentId] =
-        tuple;
+      const [
+        offer,
+        offerDates,
+        offerDurations,
+        disputeResolverId,
+        agentId,
+        feeLimit
+      ] = tuple;
       return [
         [...acc[0], offer],
         [...acc[1], offerDates],
         [...acc[2], offerDurations],
         [...acc[3], disputeResolverId],
-        [...acc[4], agentId]
+        [...acc[4], agentId],
+        [...acc[5], feeLimit]
       ];
     },
-    [[], [], [], [], []]
+    [[], [], [], [], [], []]
   );
 
   return bosonOfferHandlerIface.encodeFunctionData("createOfferBatch", [
@@ -59,7 +76,8 @@ export function encodeCreateOfferBatch(argsBatch: CreateOfferArgs[]) {
     offerDates,
     offerDurations,
     disputeResolverIds,
-    agentIds
+    agentIds,
+    feeLimits
   ]);
 }
 

@@ -29,7 +29,8 @@ export function encodeCreateSellerAndOffer(
       offerArgs[3], // disputeResolverId
       sellerArgs.authTokenStruct,
       sellerArgs.voucherInitValues,
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }
@@ -47,7 +48,8 @@ export function encodeCreateOfferWithCondition(
       offerArgs[2], // offerDurations
       offerArgs[3], // disputeResolverId
       conditionArgsToStructs(condition),
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }
@@ -71,7 +73,8 @@ export function encodeCreateSellerAndOfferWithCondition(
       conditionArgsToStructs(condition),
       sellerArgs.authTokenStruct,
       sellerArgs.voucherInitValues,
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }
@@ -92,7 +95,8 @@ export function encodeCreatePremintedOfferAddToGroup(
       offerArgs[3], // disputeResolverId
       reservedRangeLength,
       groupId,
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }
@@ -112,7 +116,8 @@ export function encodeCreatePremintedOfferWithCondition(
       offerArgs[3], // disputeResolverId
       reservedRangeLength,
       conditionArgsToStructs(condition),
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }
@@ -136,7 +141,8 @@ export function encodeCreateSellerAndPremintedOffer(
       reservedRangeLength,
       sellerArgs.authTokenStruct,
       sellerArgs.voucherInitValues,
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }
@@ -162,7 +168,8 @@ export function encodeCreateSellerAndPremintedOfferWithCondition(
       conditionArgsToStructs(condition),
       sellerArgs.authTokenStruct,
       sellerArgs.voucherInitValues,
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }
