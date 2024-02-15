@@ -1,4 +1,6 @@
 import { EvaluationMethod, TokenType } from "@bosonprotocol/common";
+import { Token } from "@uniswap/sdk-core";
+import { ethers } from "ethers";
 import { ArrowSquareUpRight, Check, X } from "phosphor-react";
 import React, {
   ReactNode,
@@ -8,21 +10,18 @@ import React, {
   useState
 } from "react";
 import styled from "styled-components";
+import { useChainId } from "../../../../../hooks/connection/connection";
+import { useErc20ExchangeTokenInfo } from "../../../../../hooks/contracts/erc20/useErc20ExchangeTokenInfo";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
+import { nativeOnChain } from "../../../../../lib/const/tokens";
 import { theme } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
-import { Image } from "../../../../image/Image";
+import { PortfolioLogo } from "../../../../logo/PortfolioLogo";
 import { Grid } from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
 import { BuyOrSwapContainer } from "./BuyOrSwapContainer";
 import { useDetailViewContext } from "./DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "./types";
-import { ethers } from "ethers";
-import { PortfolioLogo } from "../../../../logo/PortfolioLogo";
-import { nativeOnChain } from "../../../../../lib/const/tokens";
-import { Token } from "@uniswap/sdk-core";
-import { useChainId } from "../../../../../hooks/connection/connection";
-import { useErc20ExchangeTokenInfo } from "../../../../../hooks/contracts/erc20/useErc20ExchangeTokenInfo";
 const colors = theme.colors.light;
 
 type Props = OnClickBuyOrSwapHandler & {
