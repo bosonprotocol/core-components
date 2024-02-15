@@ -28,7 +28,6 @@
     "@uniswap/redux-multicall": "^1.1.8",
     "@uniswap/sdk-core": "^4.0.7",
     "@uniswap/token-lists": "^1.0.0-beta.33",
-    "@uniswap/uniswapx-sdk": "^1.5.0-alpha.3",
     "ajv": "^8.12.0",
     "chart.js": "^4.4.1",
     "cids": "^1.1.9",
