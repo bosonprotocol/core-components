@@ -723,8 +723,8 @@ describe("core-sdk", () => {
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
             gatingType: GatingType.PerTokenId,
-            minTokenId: Number.MAX_SAFE_INTEGER + 1,
-            maxTokenId: Number.MAX_SAFE_INTEGER + 1,
+            minTokenId: (Number.MAX_SAFE_INTEGER + 1).toString(),
+            maxTokenId: (Number.MAX_SAFE_INTEGER + 1).toString(),
             threshold: "0",
             maxCommits: "3"
           };
