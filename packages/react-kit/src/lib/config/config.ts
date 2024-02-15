@@ -12,5 +12,6 @@ if (!infuraKey) {
 export const CONFIG = {
   magicLinkKey,
   infuraKey,
-  rpcUrls: getRpcUrls(infuraKey)
+  rpcUrls: getRpcUrls(infuraKey),
+  uniswapApiUrl: "https://api.uniswap.org/v2"
 } as const;

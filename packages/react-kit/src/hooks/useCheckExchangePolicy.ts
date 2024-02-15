@@ -6,6 +6,7 @@ import { fetchTextFile } from "../lib/utils/textFile";
 import { getIpfsGatewayUrl } from "../lib/ipfs/ipfs";
 import { useIpfsContext } from "../components/ipfs/IpfsContext";
 import { Token } from "../components/widgets/finance/convertion-rate/ConvertionRateContext";
+import { useQuery } from "react-query";
 
 interface Props {
   offerId: string | undefined;
@@ -67,24 +68,25 @@ export default function useCheckExchangePolicy({
   const [result, setResult] = useState<
     offers.CheckExchangePolicyResult | undefined
   >(undefined);
-  const [rulesTemplate, setRulesTemplate] = useState<
-    offers.CheckExchangePolicyRules | undefined
-  >(undefined);
   const core = useCoreSDKWithContext();
   const { ipfsGateway } = useIpfsContext();
-
-  useEffect(() => {
-    (async () =>
-      setRulesTemplate(
-        await getRulesTemplate(
-          fairExchangePolicyRules,
-          ipfsGateway,
-          defaultDisputeResolverId,
-          defaultTokens
-        )
-      ))();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fairExchangePolicyRules]);
+  const { data: rulesTemplate } = useQuery(
+    [
+      "getRulesTemplate",
+      fairExchangePolicyRules,
+      ipfsGateway,
+      defaultDisputeResolverId,
+      defaultTokens
+    ],
+    () => {
+      return getRulesTemplate(
+        fairExchangePolicyRules,
+        ipfsGateway,
+        defaultDisputeResolverId,
+        defaultTokens
+      );
+    }
+  );
   useEffect(() => {
     if (!core || !offerId || !fairExchangePolicyRules || !rulesTemplate) {
       return undefined;

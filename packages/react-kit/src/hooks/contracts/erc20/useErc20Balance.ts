@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../../core-sdk/useCoreSdkWithContext";
 
 export const useErc20Balance = (
   args: {

@@ -18,6 +18,11 @@ import { BuyOrSwapContainer } from "./BuyOrSwapContainer";
 import { useDetailViewContext } from "./DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "./types";
 import { ethers } from "ethers";
+import { PortfolioLogo } from "../../../../logo/PortfolioLogo";
+import { nativeOnChain } from "../../../../../lib/const/tokens";
+import { Token } from "@uniswap/sdk-core";
+import { useChainId } from "../../../../../hooks/connection/connection";
+import { useErc20ExchangeTokenInfo } from "../../../../../hooks/contracts/erc20/useErc20ExchangeTokenInfo";
 const colors = theme.colors.light;
 
 type Props = OnClickBuyOrSwapHandler & {
@@ -166,17 +171,39 @@ export const TokenGatedItem = ({
     [isConditionMet]
   );
   const ActionButton = isConditionMet ? ContractButton : BuyButton;
+  const chainId = useChainId();
+  const { data: tokenInfo } = useErc20ExchangeTokenInfo(
+    { contractAddress: condition?.tokenAddress },
+    { enabled: !!condition?.tokenAddress }
+  );
+  const currency = useMemo(
+    () =>
+      !chainId || !condition || !tokenInfo
+        ? null
+        : condition.tokenAddress === ethers.constants.AddressZero
+        ? nativeOnChain(chainId)
+        : new Token(
+            chainId,
+            condition.tokenAddress,
+            Number(tokenInfo.decimals),
+            tokenInfo.symbol,
+            tokenInfo.name
+          ),
+    [chainId, condition, tokenInfo]
+  );
   const Icon = useMemo(
     () => (
       <>
-        {sellerAvatar && (
-          <TokenIcon>
-            <Image src={sellerAvatar} />
-          </TokenIcon>
+        {chainId && currency && (
+          <PortfolioLogo
+            chainId={chainId}
+            size="40px"
+            currencies={[currency]}
+          />
         )}
       </>
     ),
-    [sellerAvatar]
+    [chainId, currency]
   );
   const Condition = useCallback(
     ({ children }: { children: ReactNode }) => {
@@ -208,7 +235,8 @@ export const TokenGatedItem = ({
         color: colors.darkGrey,
         fontSize: "12px",
         fontWeight: 600,
-        lineHeight: "18px"
+        lineHeight: "18px",
+        wordBreak: "break-all"
       }}
     >
       {condition.minTokenId === condition.maxTokenId
