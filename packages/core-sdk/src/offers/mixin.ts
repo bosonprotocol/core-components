@@ -497,13 +497,15 @@ export class OfferMixin extends BaseCoreSDK {
       gatingType,
       maxCommits: _maxCommits
     } = offer.condition;
+    const minTokenId = BigInt(_minTokenId);
+    const maxTokenId = BigInt(_maxTokenId);
     const returnTrueBecauseItCannotBeChecked = () => {
-      if (
-        Math.abs(maxTokenId - minTokenId) > 10 ||
-        minTokenId > Number.MAX_SAFE_INTEGER ||
-        maxTokenId > Number.MAX_SAFE_INTEGER
-      ) {
-        return true;
+      const maxRequestsThreshold = 10;
+      if (minTokenId > maxTokenId) {
+        return true; // leave the smart contract check this
+      }
+      if (maxTokenId - minTokenId > maxRequestsThreshold) {
+        return true; // leave the smart contract check this
       }
     };
     const maxCommits = Number(_maxCommits);
@@ -520,9 +522,6 @@ export class OfferMixin extends BaseCoreSDK {
       const currentCommits = await getCurrentCommits();
       return currentCommits < maxCommits;
     }
-
-    const minTokenId = Number(_minTokenId);
-    const maxTokenId = Number(_maxTokenId);
 
     if (tokenType === TokenType.NonFungibleToken) {
       if (gatingType === GatingType.PerAddress) {
@@ -630,11 +629,7 @@ export class OfferMixin extends BaseCoreSDK {
         return false;
       }
       if (gatingType === GatingType.PerTokenId) {
-        if (
-          Math.abs(maxTokenId - minTokenId) > 10 ||
-          minTokenId > Number.MAX_SAFE_INTEGER ||
-          maxTokenId > Number.MAX_SAFE_INTEGER
-        ) {
+        if (returnTrueBecauseItCannotBeChecked()) {
           return true;
         }
         const canTokenIdBeUsedToCommit = await getCanTokenIdBeUsedToCommit();
