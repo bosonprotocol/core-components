@@ -13,6 +13,5 @@ export const CONFIG = {
   magicLinkKey,
   infuraKey,
   rpcUrls: getRpcUrls(infuraKey),
-  uniswapApiUrl: "https://api.uniswap.org/v2",
-  awsApiEndpoint: "https://api.uniswap.org/v1/graphql"
+  uniswapApiUrl: "https://api.uniswap.org/v2"
 } as const;
