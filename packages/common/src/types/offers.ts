@@ -8,7 +8,7 @@ export enum PriceType {
 export type RoyaltyInfo = {
   recipients: string[];
   bps: BigNumberish[];
-}
+};
 
 export type CreateOfferArgs = {
   price: BigNumberish;
