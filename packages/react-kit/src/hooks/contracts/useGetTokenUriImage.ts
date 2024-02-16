@@ -101,13 +101,3 @@ export const useGetTokenUriImage = (
     }
   );
 };
-
-/*
-
-JSON.parse(
-            window.atob(
-              erc721TokenUri[0].substring(erc721TokenUri[0].indexOf(",") + 1)
-            )
-          ).image
-
-*/
