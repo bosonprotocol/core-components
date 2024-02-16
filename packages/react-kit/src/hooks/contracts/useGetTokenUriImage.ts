@@ -1,15 +1,5 @@
-import parseDataURL from "data-urls";
-import { labelToName, decode } from "whatwg-encoding";
 import { getImageUrl } from "../../lib/images/images";
 import { useQuery } from "react-query";
-
-const decodeDataURIContent = (result: parseDataURL.DataURL) => {
-  const encodingName =
-    labelToName(result.mimeType.parameters.get("charset") || "utf-8") ||
-    "utf-8";
-  const bodyDecoded = decode(result.body, encodingName);
-  return bodyDecoded;
-};
 
 const replaceUrlWithId = ({
   tokenId,
@@ -81,13 +71,9 @@ export const useGetTokenUriImage = (
           });
           return urlWithIdReplaced;
         }
-        const result = parseDataURL(tokenUri);
-        if (!result) {
-          return "";
-        }
-        const { essence } = result.mimeType;
-        if (essence.startsWith("image")) {
-          return decodeDataURIContent(result);
+
+        if (tokenUri.startsWith("data:image")) {
+          return tokenUri;
         }
 
         return "";

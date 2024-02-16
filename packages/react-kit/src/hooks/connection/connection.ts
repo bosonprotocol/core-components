@@ -85,9 +85,19 @@ export function useIsConnectedToWrongChain(): boolean {
 }
 
 export function useProvider() {
-  const provider = useEthersProvider();
+  const { withExternalConnectionProps } = useConfigContext();
+  let provider;
+  let error: unknown;
+  try {
+    provider = useEthersProvider();
+  } catch (wagmiError) {
+    error = wagmiError; // error if the provider is not there
+  }
   const magicProvider = useMagicProvider();
   const isMagicLoggedIn = useIsMagicLoggedIn();
+  if (!withExternalConnectionProps && error) {
+    throw error;
+  }
   return isMagicLoggedIn
     ? magicProvider ?? provider
     : provider ?? magicProvider;
