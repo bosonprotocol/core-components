@@ -53,28 +53,23 @@ function getInitialUrl(
     return backupImg ?? undefined;
   }
 }
-const hideLogo = false;
 export function useAssetLogoSource(
   address?: string | null,
   chainId?: number | null,
   isNative?: boolean,
   backupImg?: string | null
 ): [string | undefined, () => void] {
-  // const hideLogo = Boolean(
-  //   address && checkWarning(address, chainId)?.level === WARNING_LEVEL.BLOCKED
-  // );
   const [current, setCurrent] = useState<string | undefined>(
-    hideLogo ? undefined : getInitialUrl(address, chainId, isNative, backupImg)
+    getInitialUrl(address, chainId, isNative, backupImg)
   );
   const [fallbackSrcs, setFallbackSrcs] = useState<string[] | undefined>(
     undefined
   );
 
   useEffect(() => {
-    if (hideLogo) return;
     setCurrent(getInitialUrl(address, chainId, isNative));
     setFallbackSrcs(undefined);
-  }, [address, chainId /*, hideLogo*/, isNative]);
+  }, [address, chainId, isNative]);
 
   const nextSrc = useCallback(() => {
     if (current) {
