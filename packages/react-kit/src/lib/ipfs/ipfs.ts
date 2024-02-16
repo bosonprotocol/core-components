@@ -11,10 +11,10 @@ export function getIpfsGatewayUrl(
     return uri;
   }
   const { gateway } = opts;
-  const cidAndRest = uri.replaceAll("ipfs://", "");
+  const cidAndRest = uri.replaceAll("ipfs://", ""); // it may be ipfs://CID/123
 
   try {
-    const [cid] = cidAndRest.split("/", 1);
+    const [cid] = cidAndRest.split("/", 1); // it may be CID/123
     CID.parse(cid);
     return `${gateway}/${cidAndRest}`.replace(/([^:]\/)\/+/g, "$1"); // remove double slash
   } catch (error) {
