@@ -78,7 +78,7 @@
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
-    "copy-assets": "copyfiles -f src/assets/** dist/esm/assets && copyfiles -f src/assets/** dist/cjs/assets",
+    "copy-assets": "copyfiles -u 2 src/assets/** dist/esm/assets/ && copyfiles -u 2 src/assets/** dist/cjs/assets/ && copyfiles -u 2 src/assets/**/*  dist/esm/assets/ && copyfiles -u 2 src/assets/**/* dist/cjs/assets/",
     "postbuild": "npm run copy-assets"
   },
   "eslintConfig": {
