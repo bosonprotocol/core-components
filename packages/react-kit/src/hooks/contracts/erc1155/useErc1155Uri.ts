@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
-import { useCoreSDKWithContext } from "../core-sdk/useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../../core-sdk/useCoreSdkWithContext";
 
-export const useErc721OwnerOf = (
+export const useErc1155Uri = (
   props: {
     contractAddress: string | undefined;
     tokenIds: (string | null | undefined)[] | undefined;
@@ -9,7 +9,7 @@ export const useErc721OwnerOf = (
   { enabled }: { enabled: boolean | undefined }
 ) => {
   const coreSDK = useCoreSDKWithContext();
-  return useQuery(["erc721-owner-of", coreSDK.uuid, props], async () => {
+  return useQuery(["useErc1155Uri", coreSDK.uuid, props], async () => {
     const { contractAddress, tokenIds } = props;
     if (!contractAddress || !tokenIds) {
       return;
@@ -17,7 +17,7 @@ export const useErc721OwnerOf = (
     return Promise.all(
       tokenIds.map((tokenId) =>
         tokenId
-          ? coreSDK.erc721OwnerOf({
+          ? coreSDK.erc1155Uri({
               contractAddress,
               tokenId
             })
