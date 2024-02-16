@@ -24,6 +24,7 @@ const InventoryGraph = styled(DetailChart)`
   }
 `;
 export type OfferFullDescriptionProps = OnClickBuyOrSwapHandler & {
+  imagesToShow?: number;
   offer: Offer;
   includeGeneralProductDataTab: boolean;
   exchange: Exchange | null;
@@ -41,6 +42,7 @@ const ids = [
 ] as const;
 
 export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
+  imagesToShow = 4,
   offer,
   exchange,
   className,
@@ -117,7 +119,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
                 <Typography tag="h3">Physical product images</Typography>
 
                 <SlickSlider
-                  settings={{ ...initialSettings, slidesToShow: 4 }}
+                  settings={{ ...initialSettings, slidesToShow: imagesToShow }}
                   mediaFiles={mediaFiles}
                   alignLeft
                   imageOptimizationOpts={{ height: 500 }}
