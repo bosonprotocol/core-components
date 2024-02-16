@@ -210,17 +210,19 @@ export const TokenGatedItem = ({
   );
   const currency = useMemo(
     () =>
-      !chainId || !condition || !erc20TokenInfo
+      !chainId || !condition
         ? null
         : condition.tokenAddress === ethers.constants.AddressZero
         ? nativeOnChain(chainId)
-        : new Token(
+        : erc20TokenInfo
+        ? new Token(
             chainId,
             condition.tokenAddress,
             Number(erc20TokenInfo.decimals),
             erc20TokenInfo.symbol,
             erc20TokenInfo.name
-          ),
+          )
+        : null,
     [chainId, condition, erc20TokenInfo]
   );
 
