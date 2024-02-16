@@ -15,7 +15,7 @@ import { useErc20ExchangeTokenInfo } from "../../../../../hooks/contracts/erc20/
 import { useErc721TokenUri } from "../../../../../hooks/contracts/erc721/useErc721TokenUri";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { nativeOnChain } from "../../../../../lib/const/tokens";
-import { useGetTokenUriImage } from "../../../../../lib/images/getTokenUriImage";
+import { useGetTokenUriImage } from "../../../../../hooks/contracts/useGetTokenUriImage";
 import { theme } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useConfigContext } from "../../../../config/ConfigContext";

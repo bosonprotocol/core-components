@@ -1,6 +1,6 @@
 import parseDataURL from "data-urls";
 import { labelToName, decode } from "whatwg-encoding";
-import { getImageUrl } from "./images";
+import { getImageUrl } from "../../lib/images/images";
 import { useQuery } from "react-query";
 
 const decodeDataURIContent = (result: parseDataURL.DataURL) => {
@@ -22,6 +22,11 @@ const replaceUrlWithId = ({
   return urlWithIdReplaced;
 };
 
+export type UseGetTokenUriImageArg0 = {
+  tokenUri: string | undefined | null;
+  ipfsGateway?: string;
+  tokenId: string | undefined | null;
+};
 export const useGetTokenUriImage = (
   props: {
     tokenUri: string | undefined | null;
