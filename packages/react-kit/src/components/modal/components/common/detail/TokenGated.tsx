@@ -193,7 +193,7 @@ const TokenGated = ({
           </IconWrapper>
         </TokenIconWrapper>
         <LockInfo>
-          <LockInfoTitle>Token Gated Offer</LockInfoTitle>
+          <LockInfoTitle>Token gated offer</LockInfoTitle>
           {commitProxyAddress && openseaLinkToOriginalMainnetCollection ? (
             <>
               <LockInfoDesc>

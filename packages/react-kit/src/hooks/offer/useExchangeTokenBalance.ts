@@ -3,7 +3,7 @@ import { BigNumber, ethers } from "ethers";
 
 import { useAccount, useBalance, useChainId } from "../connection/connection";
 import { useConfigContext } from "../../components/config/ConfigContext";
-import { useErc20Balance } from "../contracts";
+import { useErc20Balance } from "../contracts/erc20/useErc20Balance";
 
 export function useExchangeTokenBalance(
   exchangeToken: Pick<

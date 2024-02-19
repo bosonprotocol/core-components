@@ -7,3 +7,4 @@ export * from "./useEffectDebugger";
 export * from "./useHandleText";
 export * from "./useExchanges";
 export * from "../components/widgets/finance/useOffersBacked";
+export * from "./contracts/useGetTokenUriImage";

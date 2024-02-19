@@ -23,5 +23,6 @@
       }
     ],
     "tsdoc/syntax": "warn"
-  }
+  },
+  "ignorePatterns": ["packages/react-kit/src/lib/uniswap/__generated__"]
 }
