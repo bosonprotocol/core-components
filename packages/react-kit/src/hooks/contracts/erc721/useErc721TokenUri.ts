@@ -9,20 +9,24 @@ export const useErc721TokenUri = (
   { enabled }: { enabled: boolean | undefined }
 ) => {
   const coreSDK = useCoreSDKWithContext();
-  return useQuery(["useErc721TokenUri", coreSDK.uuid, props], async () => {
-    const { contractAddress, tokenIds } = props;
-    if (!contractAddress || !tokenIds) {
-      return;
-    }
-    return Promise.all(
-      tokenIds.map((tokenId) =>
-        tokenId
-          ? coreSDK.erc721TokenUri({
-              contractAddress,
-              tokenId
-            })
-          : null
-      )
-    );
-  });
+  return useQuery(
+    ["useErc721TokenUri", coreSDK.uuid, props],
+    async () => {
+      const { contractAddress, tokenIds } = props;
+      if (!contractAddress || !tokenIds) {
+        return;
+      }
+      return Promise.all(
+        tokenIds.map((tokenId) =>
+          tokenId
+            ? coreSDK.erc721TokenUri({
+                contractAddress,
+                tokenId
+              })
+            : null
+        )
+      );
+    },
+    { enabled }
+  );
 };
