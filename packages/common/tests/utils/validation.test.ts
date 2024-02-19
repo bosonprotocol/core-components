@@ -40,7 +40,7 @@ describe("#createOfferArgsSchema()", () => {
         })
       );
     }).toThrow(
-      /Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMShas must be non zero/
+      /Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMS must be non zero/
     );
   });
 
@@ -53,7 +53,7 @@ describe("#createOfferArgsSchema()", () => {
         })
       );
     }).toThrow(
-      /Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMShas must be non zero/
+      /Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMS must be non zero/
     );
   });
 
