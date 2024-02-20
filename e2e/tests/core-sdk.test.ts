@@ -372,7 +372,7 @@ describe("core-sdk", () => {
             offerId: createdOffer.id,
             tokenId: tokenToCommitWith
           })
-        ).rejects.toThrow(/Caller cannot commit/);
+        ).rejects.toThrow(/CannotCommit()/);
       }
     );
 
@@ -641,7 +641,7 @@ describe("core-sdk", () => {
             offerId: offerId || "1",
             tokenId: tokenToCommitWith
           })
-        ).rejects.toThrow(/Caller cannot commit/);
+        ).rejects.toThrow(/CannotCommit()/);
       }
     );
 
@@ -949,7 +949,8 @@ describe("core-sdk", () => {
         {
           exchangeToken: MOCK_ERC20_ADDRESS,
           price: parseEther(offerPrice),
-          sellerDeposit: parseEther(sellerFundsDeposit)
+          sellerDeposit: parseEther(sellerFundsDeposit),
+          feeLimit: parseEther(offerPrice)
         }
       );
       await ensureMintedAndAllowedTokens([sellerWallet], sellerFundsDeposit);
