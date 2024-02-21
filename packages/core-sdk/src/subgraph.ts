@@ -66664,6 +66664,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
       ...BaseDisputeResolutionTermsEntityFields
     }
     metadata {
+      __typename
       name
       description
       externalUrl
