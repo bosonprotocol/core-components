@@ -68,3 +68,8 @@ export type DisputeResolutionTermsStruct = {
   feeAmount: BigNumberish;
   buyerEscalationDeposit: BigNumberish;
 };
+
+export type PremintParametersStruct = {
+  reservedRangeLength: BigNumberish;
+  to: string;
+};

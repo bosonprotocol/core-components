@@ -2,9 +2,14 @@ import { BigNumber, Wallet } from "ethers";
 import { parseEther } from "@ethersproject/units";
 
 import {
+  createPremintedOfferWithCondition,
   createSeaportOrder,
+  createSeller,
   createSellerAndOffer,
+  ensureMintedERC1155,
   initCoreSDKWithFundedWallet,
+  metadata,
+  MOCK_ERC1155_ADDRESS,
   MOCK_SEAPORT_ADDRESS,
   seedWallet14,
   seedWallet15,
@@ -12,12 +17,20 @@ import {
 } from "./utils";
 
 import { ExchangeState } from "../../packages/core-sdk/src/subgraph";
-import { Range } from "../../packages/common/src";
+import {
+  EvaluationMethod,
+  GatingType,
+  Range,
+  TokenType
+} from "../../packages/common/src";
+import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
 
 jest.setTimeout(60_000);
 
 const seedWallet = seedWallet14; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const buyerWallet = seedWallet15;
+
+// TODO: add tests with createPremintedOfferAddToGroup(), createPremintedOfferWithCondition(), createSellerAndPremintedOffer(), createSellerAndPremintedOfferWithCondition()
 
 describe("core-sdk-premint", () => {
   test("can reserveRange and then preMint some vouchers and there are still some left to preMint", async () => {
@@ -37,7 +50,9 @@ describe("core-sdk-premint", () => {
 
     const offerId = createdOffer.id;
     const range = 8;
-    const receipt = await (await coreSDK.reserveRange(offerId, range, "seller")).wait();
+    const receipt = await (
+      await coreSDK.reserveRange(offerId, range, "seller")
+    ).wait();
     await waitForGraphNodeIndexing(receipt);
 
     const offerReserveRange = await coreSDK.getOfferById(offerId);
@@ -75,7 +90,9 @@ describe("core-sdk-premint", () => {
     await (await sellerCoreSDK.reserveRange(offerId, range, "seller")).wait();
 
     const preMinted = 2;
-    const receipt = await (await sellerCoreSDK.preMint(offerId, preMinted)).wait();
+    const receipt = await (
+      await sellerCoreSDK.preMint(offerId, preMinted)
+    ).wait();
 
     const resultRange = await sellerCoreSDK.getRangeByOfferId(offerId);
     expect(Number(resultRange.length.toString())).toBe(range);
@@ -118,7 +135,9 @@ describe("core-sdk-premint", () => {
     await (await sellerCoreSDK.reserveRange(offerId, range, "seller")).wait();
 
     const preMinted = 2;
-    const receipt = await (await sellerCoreSDK.preMint(offerId, preMinted)).wait();
+    const receipt = await (
+      await sellerCoreSDK.preMint(offerId, preMinted)
+    ).wait();
 
     const resultRange = await sellerCoreSDK.getRangeByOfferId(offerId);
     expect(Number(resultRange.length.toString())).toBe(range);
@@ -144,7 +163,9 @@ describe("core-sdk-premint", () => {
 
     await (await buyerCoreSDK.redeemVoucher(exchangeId)).wait();
 
-    const receipt3 = await (await buyerCoreSDK.raiseAndEscalateDispute(exchangeId)).wait();
+    const receipt3 = await (
+      await buyerCoreSDK.raiseAndEscalateDispute(exchangeId)
+    ).wait();
     await waitForGraphNodeIndexing(receipt3);
 
     const escalatedExchange = await sellerCoreSDK.getExchangeById(exchangeId);
@@ -172,7 +193,9 @@ describe("core-sdk-premint", () => {
 
       const offerId = createdOffer.id;
       const range = 10;
-      const receipt = await (await coreSDK.reserveRange(offerId, range, "seller")).wait();
+      const receipt = await (
+        await coreSDK.reserveRange(offerId, range, "seller")
+      ).wait();
 
       const resultRange = await coreSDK.getRangeByOfferId(offerId);
       expect(Number(resultRange.length.toString())).toBe(range);
@@ -296,6 +319,47 @@ describe("core-sdk-premint", () => {
       { owner: createdOffer.seller.voucherCloneAddress }
     );
     expect(isApprovedForAllAfter).toEqual(true);
+  });
+});
+
+describe("orchestration", () => {
+  test("#createPremintedOfferWithCondition()", async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+    await createSeller(coreSDK, fundedWallet.address);
+
+    // Ensure the condition token is minted
+    const tokenID = Date.now().toString();
+    await ensureMintedERC1155(fundedWallet, tokenID, "5");
+    const condition = {
+      method: EvaluationMethod.Threshold,
+      tokenType: TokenType.MultiToken,
+      tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+      gatingType: GatingType.PerAddress,
+      minTokenId: tokenID,
+      maxTokenId: tokenID,
+      threshold: "1",
+      maxCommits: "3"
+    };
+    const premintParameters = {
+      reservedRangeLength: "5",
+      to: fundedWallet.address
+    };
+
+    const offer = await createPremintedOfferWithCondition(
+      coreSDK,
+      condition,
+      premintParameters
+    );
+    expect(offer).toBeTruthy();
+    expect(offer.range).toBeTruthy();
+    expect(offer.range?.owner?.toLowerCase()).toEqual(
+      premintParameters.to.toLowerCase()
+    );
+    expect(Number(offer.range?.end) - Number(offer.range?.start) + 1).toEqual(
+      Number(premintParameters.reservedRangeLength)
+    );
   });
 });
 function getExchangeIdFromRange(range: Range): number {

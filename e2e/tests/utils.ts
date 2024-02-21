@@ -36,7 +36,7 @@ import {
   IpfsMetadataStorage
 } from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
-import { CreateOfferArgs } from "./../../packages/common/src/types/offers";
+import { CreateOfferArgs, PremintParametersStruct } from "./../../packages/common/src/types/offers";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import {
   ACCOUNT_1,
@@ -518,6 +518,45 @@ export async function createOfferWithCondition(
 
   return offer;
 }
+
+export async function createPremintedOfferWithCondition(
+  coreSDK: CoreSDK,
+  condition: ConditionStruct,
+  premintParameters: PremintParametersStruct,
+  overrides: {
+    offerParams?: Partial<CreateOfferArgs>;
+    metadata?: Partial<base.BaseMetadata>;
+  } = {}
+) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE",
+    ...overrides.metadata
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const offerArgs = mockCreateOfferArgs({
+    metadataHash,
+    metadataUri,
+    ...overrides.offerParams
+  });
+
+  const createOfferTxResponse = await coreSDK.createPremintedOfferWithCondition(
+    offerArgs,
+    premintParameters,
+    condition
+  );
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing(createOfferTxReceipt);
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return offer;
+}
+
 
 export async function createSellerAndOfferWithCondition(
   coreSDK: CoreSDK,
