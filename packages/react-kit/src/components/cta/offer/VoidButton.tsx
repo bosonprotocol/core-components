@@ -38,7 +38,7 @@ export const VoidButton = ({
   const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const signerAddress = useSignerAddress(coreSdk.web3Lib);
+  const { signerAddress, signerContract } = useSignerAddress(coreSdk.web3Lib);
 
   return (
     <Button
@@ -53,7 +53,7 @@ export const VoidButton = ({
             onPendingSignature?.();
 
             const isMetaTx = Boolean(
-              coreSdk.isMetaTxConfigSet && signerAddress
+              coreSdk.isMetaTxConfigSet && signerAddress && !signerContract
             );
 
             if (isMetaTx) {

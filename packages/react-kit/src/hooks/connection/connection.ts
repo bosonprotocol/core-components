@@ -31,7 +31,9 @@ export function useAccount() {
 
   const { user } = useUser();
   const { externalWeb3LibAdapter } = useExternalSigner() ?? {};
-  const externalSignerAddress = useSignerAddress(externalWeb3LibAdapter);
+  const { signerAddress: externalSignerAddress } = useSignerAddress(
+    externalWeb3LibAdapter
+  );
   const account = useMemo(
     () => ({
       address:

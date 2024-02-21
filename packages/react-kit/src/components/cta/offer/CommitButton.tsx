@@ -39,7 +39,7 @@ export const CommitButton = ({
   const coreSdk = useCoreSdkOverrides({
     coreSdkConfig: restProps.coreSdkConfig
   });
-  const signerAddress = useSignerAddress(coreSdk.web3Lib);
+  const { signerAddress } = useSignerAddress(coreSdk.web3Lib);
 
   useEffect(() => {
     if (onGetSignerAddress) {

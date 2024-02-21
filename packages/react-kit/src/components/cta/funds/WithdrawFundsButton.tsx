@@ -29,7 +29,7 @@ export const WithdrawFundsButton = ({
   const coreSdk = useCoreSdkOverrides({
     coreSdkConfig: restProps.coreSdkConfig
   });
-  const signerAddress = useSignerAddress(coreSdk.web3Lib);
+  const { signerAddress, signerContract } = useSignerAddress(coreSdk.web3Lib);
   const tokenList = useMemo(
     () => tokensToWithdraw.map((t) => t.address),
     [tokensToWithdraw]
@@ -52,7 +52,7 @@ export const WithdrawFundsButton = ({
           nonce: Date.now()
         }),
       additionalMetaTxCondition: Boolean(
-        coreSdk.isMetaTxConfigSet && signerAddress
+        coreSdk.isMetaTxConfigSet && signerAddress && !signerContract
       )
     }
   ];

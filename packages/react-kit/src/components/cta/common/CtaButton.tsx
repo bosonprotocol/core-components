@@ -36,12 +36,13 @@ export function CtaButton<T>({
   ...rest
 }: Props<T>) {
   const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
-  const signerAddress = useSignerAddress(coreSdk.web3Lib);
+  const { signerAddress, signerContract } = useSignerAddress(coreSdk.web3Lib);
 
   const { clickHandler, isLoading } = useCtaClickHandler<T>({
     waitBlocks,
     coreSdk,
     signerAddress,
+    signerContract,
     actions,
     onSuccess,
     successPayload,

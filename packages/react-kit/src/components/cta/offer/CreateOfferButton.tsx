@@ -40,7 +40,7 @@ export const CreateOfferButton = ({
   ...rest
 }: Props) => {
   const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
-  const signerAddress = useSignerAddress(coreSdk.web3Lib);
+  const { signerAddress, signerContract } = useSignerAddress(coreSdk.web3Lib);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -50,7 +50,9 @@ export const CreateOfferButton = ({
       try {
         setIsLoading(true);
         onPendingSignature?.();
-        const isMetaTx = Boolean(coreSdk.isMetaTxConfigSet && signerAddress);
+        const isMetaTx = Boolean(
+          coreSdk.isMetaTxConfigSet && signerAddress && !signerContract
+        );
         const seller = signerAddress && sellerInfo ? sellerInfo : null;
         if (isMultiVariant) {
           if (!hasSellerAccount && seller) {

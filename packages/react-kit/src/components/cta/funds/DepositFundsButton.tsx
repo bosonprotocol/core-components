@@ -28,7 +28,7 @@ export const DepositFundsButton = ({
   const coreSdk = useCoreSdkOverrides({
     coreSdkConfig: restProps.coreSdkConfig
   });
-  const signerAddress = useSignerAddress(coreSdk.web3Lib);
+  const { signerAddress, signerContract } = useSignerAddress(coreSdk.web3Lib);
 
   const actions = [
     // Approve exchange token
@@ -70,6 +70,7 @@ export const DepositFundsButton = ({
       additionalMetaTxCondition: Boolean(
         coreSdk?.isMetaTxConfigSet &&
           signerAddress &&
+          !signerContract &&
           exchangeToken !== ethers.constants.AddressZero
       )
     }
