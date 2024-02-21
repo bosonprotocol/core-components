@@ -220,7 +220,7 @@ describe("Offer collections", () => {
     await tx.wait();
     const collectionIndex = 2;
     await expect(createOffer(coreSDK, { collectionIndex })).rejects.toThrow(
-      `No such collection`
+      `NoSuchCollection()`
     );
   });
   test("Create a collection with max length ID (31 char)", async () => {
