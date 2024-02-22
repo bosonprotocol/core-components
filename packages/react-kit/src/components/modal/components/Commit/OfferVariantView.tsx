@@ -208,7 +208,7 @@ export function OfferVariantView({
             alignItems="flex-start"
           >
             <Typography tag="h3" marginTop="0" marginBottom="1rem">
-              {offer.metadata.name || ""}
+              {offer.metadata?.name || ""}
             </Typography>
             {hasVariations && (
               <ResponsiveVariationSelects

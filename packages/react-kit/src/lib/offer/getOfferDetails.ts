@@ -1,6 +1,6 @@
-/* eslint @typescript-eslint/no-explicit-any: "off" */
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../types/offer";
+import { getOfferAnimationUrl } from "./getOfferAnimationUrl";
 
 interface ITable {
   name: string;
@@ -10,37 +10,70 @@ interface IShippingInfo {
   returnPeriodInDays: number | undefined;
   shippingTable: Array<ITable>;
 }
+
+type ProductV1OrProductV1ItemSubProductV1Seller =
+  | Pick<
+      subgraph.ProductV1ItemMetadataEntity["productV1Seller"],
+      "images" | "description"
+    >
+  | Pick<
+      subgraph.ProductV1MetadataEntity["productV1Seller"],
+      "images" | "description"
+    >;
 interface IGetOfferDetails {
   display: boolean;
   name: string;
-  offerImg: string;
+  offerImg: string | undefined;
   animationUrl: string;
   shippingInfo: IShippingInfo;
   description: string;
-  productData: Array<ITable>;
-  artist: subgraph.ProductV1Seller;
+  artist: ProductV1OrProductV1ItemSubProductV1Seller | null;
   artistDescription: string;
   images: Array<string>;
 }
 
-export const getOfferAnimationUrl = (
-  offer: Offer | undefined | null
-): string => {
-  return offer?.metadata?.animationUrl === "about:blank"
-    ? ""
-    : offer?.metadata?.animationUrl || "";
-};
-
 export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
+  const productV1ItemMetadataEntity:
+    | (Pick<subgraph.ProductV1MetadataEntity, "shipping"> & {
+        product: Pick<
+          subgraph.ProductV1MetadataEntity["product"],
+          "title" | "description" | "visuals_images"
+        >;
+        productV1Seller: Pick<
+          subgraph.ProductV1MetadataEntity["productV1Seller"],
+          "images" | "description"
+        >;
+      })
+    | (Pick<subgraph.ProductV1ItemMetadataEntity, "shipping"> & {
+        product: Pick<
+          subgraph.ProductV1ItemMetadataEntity["product"],
+          "title" | "description" | "visuals_images"
+        >;
+        productV1Seller: Pick<
+          subgraph.ProductV1ItemMetadataEntity["productV1Seller"],
+          "images" | "description"
+        >;
+      })
+    | undefined =
+    offer.metadata?.__typename === "ProductV1MetadataEntity"
+      ? offer.metadata
+      : offer.metadata?.__typename === "BundleMetadataEntity"
+      ? (offer.metadata?.items.find(
+          (item) => item.__typename === "ProductV1ItemMetadataEntity"
+        ) as subgraph.ProductV1ItemMetadataEntity | undefined)
+      : undefined;
   const name =
-    offer.metadata?.product?.title || offer.metadata?.name || "Untitled";
+    productV1ItemMetadataEntity?.product?.title ||
+    offer.metadata?.name ||
+    "Untitled";
   const offerImg = offer.metadata?.image;
 
   const animationUrl = getOfferAnimationUrl(offer);
   const shippingInfo = {
-    returnPeriodInDays: offer.metadata?.shipping?.returnPeriodInDays,
+    returnPeriodInDays:
+      productV1ItemMetadataEntity?.shipping?.returnPeriodInDays,
     shippingTable:
-      offer.metadata?.shipping?.supportedJurisdictions?.map(
+      productV1ItemMetadataEntity?.shipping?.supportedJurisdictions?.map(
         (jurisdiction: any) => ({
           name: jurisdiction.label,
           value: jurisdiction.deliveryTime
@@ -48,19 +81,14 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
       ) || []
   };
   const description =
-    offer.metadata?.product?.description || offer.metadata?.description || "";
-  const productData =
-    offer.metadata?.attributes?.map((attr: any) => ({
-      name: attr.traitType,
-      value:
-        attr.displayType === "date"
-          ? new Date(parseInt(attr.value)).toUTCString()
-          : attr.value
-    })) || [];
-  const artist = offer.metadata?.productV1Seller || null;
-  const artistDescription = offer.metadata?.productV1Seller?.description || "";
+    productV1ItemMetadataEntity?.product?.description ||
+    offer.metadata?.description ||
+    "";
+  const artist = productV1ItemMetadataEntity?.productV1Seller || null;
+  const artistDescription =
+    productV1ItemMetadataEntity?.productV1Seller?.description || "";
   const images =
-    offer.metadata?.product?.visuals_images?.map(
+    productV1ItemMetadataEntity?.product?.visuals_images?.map(
       ({ url }: { url: string }) => url
     ) || [];
 
@@ -71,7 +99,6 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
     animationUrl,
     shippingInfo,
     description,
-    productData,
     artist,
     artistDescription,
     images

@@ -160,7 +160,7 @@ export default function Exchange({
         onCardClick={handleOnCardClick}
         dataCard="exchange-card"
         id={offer.id}
-        title={offer.metadata.name}
+        title={offer.metadata?.name ?? ""}
         avatarName={lens?.name ? lens?.name : `Seller ID: ${offer.seller.id}`}
         avatar={avatar || mockedAvatar}
         imageProps={{
