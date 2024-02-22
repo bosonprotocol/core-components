@@ -134,7 +134,7 @@ export function mockRawOfferFromSubgraph(
       type: MetadataType.Base,
       image: "imageUrl",
       ...metadata
-    },
+    } as OfferFieldsFragment["metadata"],
     exchanges: [],
     disputeResolutionTerms: {
       id: "1-1-terms",
@@ -228,5 +228,5 @@ export function buildProductV1Metadata(template: string) {
     shipping: {
       returnPeriodInDays: 15
     }
-  };
+  } as OfferFieldsFragment["metadata"];
 }
