@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
-import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { CreateSellerArgs, TransactionResponse } from "@bosonprotocol/common";
 import { ButtonSize } from "../../ui/buttonSize";
 import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
+import { useMetaTx } from "../../../hooks/useMetaTx";
 export type ICreateSellerButton = {
   exchangeId: BigNumberish;
   createSellerArgs: CreateSellerArgs;
@@ -36,7 +36,7 @@ export const CreateSellerButton = ({
   const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const signerAddress = useSignerAddress(coreSdk.web3Lib);
+  const { isMetaTx } = useMetaTx(coreSdk);
 
   return (
     <Button
@@ -51,7 +51,7 @@ export const CreateSellerButton = ({
             setIsLoading(true);
             onPendingSignature?.();
 
-            if (coreSdk.isMetaTxConfigSet && signerAddress) {
+            if (isMetaTx) {
               const nonce = Date.now();
 
               const { r, s, v, functionName, functionSignature } =

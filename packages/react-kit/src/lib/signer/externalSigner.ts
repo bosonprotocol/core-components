@@ -60,6 +60,13 @@ const getExternalWeb3LibAdapterListener = ({
         args: undefined
       });
     },
+    isSignerContract: (): Promise<boolean> => {
+      return getDefaultHandleSignerFunction<boolean>({
+        parentOrigin,
+        functionName: "isSignerContract",
+        args: undefined
+      });
+    },
     getChainId: async (): Promise<number> => {
       return getDefaultHandleSignerFunction<number>({
         parentOrigin,
