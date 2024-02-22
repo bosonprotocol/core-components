@@ -3,12 +3,12 @@ import { BigNumberish, providers } from "ethers";
 import { TransactionResponse } from "@bosonprotocol/common";
 
 import { Button } from "../../buttons/Button";
-import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { ButtonSize } from "../../ui/buttonSize";
 import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
+import { useMetaTx } from "../../../hooks/useMetaTx";
 
 type Props = {
   /**
@@ -38,7 +38,7 @@ export const VoidButton = ({
   const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { signerAddress, signerContract } = useSignerAddress(coreSdk.web3Lib);
+  const { isMetaTx } = useMetaTx(coreSdk);
 
   return (
     <Button
@@ -51,10 +51,6 @@ export const VoidButton = ({
           try {
             setIsLoading(true);
             onPendingSignature?.();
-
-            const isMetaTx = Boolean(
-              coreSdk.isMetaTxConfigSet && signerAddress && !signerContract
-            );
 
             if (isMetaTx) {
               const nonce = Date.now();

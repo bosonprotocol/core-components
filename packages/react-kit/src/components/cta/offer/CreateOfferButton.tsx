@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
-import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
@@ -10,6 +9,7 @@ import { offers, accounts } from "@bosonprotocol/core-sdk";
 import { TransactionResponse } from "@bosonprotocol/common";
 import { ButtonSize } from "../../ui/buttonSize";
 import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
+import { useMetaTx } from "../../../hooks/useMetaTx";
 
 type Props = {
   hasSellerAccount: boolean;
@@ -40,7 +40,7 @@ export const CreateOfferButton = ({
   ...rest
 }: Props) => {
   const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
-  const { signerAddress, signerContract } = useSignerAddress(coreSdk.web3Lib);
+  const { isMetaTx, signerAddress } = useMetaTx(coreSdk);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -50,9 +50,6 @@ export const CreateOfferButton = ({
       try {
         setIsLoading(true);
         onPendingSignature?.();
-        const isMetaTx = Boolean(
-          coreSdk.isMetaTxConfigSet && signerAddress && !signerContract
-        );
         const seller = signerAddress && sellerInfo ? sellerInfo : null;
         if (isMultiVariant) {
           if (!hasSellerAccount && seller) {

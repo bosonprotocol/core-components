@@ -3,9 +3,9 @@ import { BigNumber, BigNumberish, constants, ethers } from "ethers";
 
 import { CtaButtonProps } from "../common/types";
 import { CtaButton } from "../common/CtaButton";
-import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { TransactionReceipt } from "@bosonprotocol/common";
 import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
+import { useMetaTx } from "../../../hooks/useMetaTx";
 
 type AdditionalProps = {
   exchangeToken: string;
@@ -28,7 +28,7 @@ export const DepositFundsButton = ({
   const coreSdk = useCoreSdkOverrides({
     coreSdkConfig: restProps.coreSdkConfig
   });
-  const { signerAddress, signerContract } = useSignerAddress(coreSdk.web3Lib);
+  const { isMetaTx, signerAddress } = useMetaTx(coreSdk);
 
   const actions = [
     // Approve exchange token
@@ -68,10 +68,7 @@ export const DepositFundsButton = ({
           nonce: Date.now()
         }),
       additionalMetaTxCondition: Boolean(
-        coreSdk?.isMetaTxConfigSet &&
-          signerAddress &&
-          !signerContract &&
-          exchangeToken !== ethers.constants.AddressZero
+        isMetaTx && exchangeToken !== ethers.constants.AddressZero
       )
     }
   ];

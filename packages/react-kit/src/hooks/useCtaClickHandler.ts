@@ -9,8 +9,7 @@ export { Action, ActionName } from "../components/cta/common/types";
 export function useCtaClickHandler<T>({
   waitBlocks,
   coreSdk,
-  signerAddress,
-  signerContract,
+  useMetaTx,
   actions,
   onPendingSignature,
   onPendingTransaction,
@@ -22,8 +21,7 @@ export function useCtaClickHandler<T>({
 }: {
   waitBlocks: number;
   coreSdk: CoreSDK;
-  signerAddress?: string;
-  signerContract: boolean;
+  useMetaTx: boolean;
   actions: Action[];
   successPayload: T | ((receipt: providers.TransactionReceipt) => T);
 } & Pick<
@@ -62,17 +60,11 @@ export function useCtaClickHandler<T>({
           continue;
         }
 
-        const isMetaTx =
-          Boolean(
-            coreSdk.isMetaTxConfigSet &&
-              signerAddress &&
-              !signerContract &&
-              signMetaTxFn
-          ) && additionalMetaTxCondition;
+        const isMetaTx = useMetaTx && signMetaTxFn && additionalMetaTxCondition;
 
         onPendingSignature?.(name);
 
-        if (isMetaTx && signMetaTxFn) {
+        if (isMetaTx) {
           const nonce = Date.now();
 
           const { r, s, v, functionName, functionSignature } =

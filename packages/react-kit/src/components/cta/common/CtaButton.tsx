@@ -2,13 +2,13 @@ import React from "react";
 import { providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
-import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { useCtaClickHandler, Action } from "../../../hooks/useCtaClickHandler";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { ButtonSize } from "../../ui/buttonSize";
 import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
+import { useMetaTx } from "../../../hooks/useMetaTx";
 
 type Props<T> = CtaButtonProps<T> & {
   defaultLabel?: string;
@@ -36,13 +36,12 @@ export function CtaButton<T>({
   ...rest
 }: Props<T>) {
   const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
-  const { signerAddress, signerContract } = useSignerAddress(coreSdk.web3Lib);
+  const { isMetaTx } = useMetaTx(coreSdk);
 
   const { clickHandler, isLoading } = useCtaClickHandler<T>({
     waitBlocks,
     coreSdk,
-    signerAddress,
-    signerContract,
+    useMetaTx: isMetaTx,
     actions,
     onSuccess,
     successPayload,
