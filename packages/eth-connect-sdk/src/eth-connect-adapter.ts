@@ -44,6 +44,12 @@ export class EthConnectAdapter implements Web3LibAdapter {
     return address;
   }
 
+  public async isSignerContract(): Promise<boolean> {
+    // TODO: to be implemented
+    // (not urgent I guess, as I think there is no way to connect to Decentraland using a contract wallet)
+    return false;
+  }
+
   public async getChainId(): Promise<number> {
     // Use standard requestManager to get the chainId (allow the signer to be connected to another chain)
     const chainId = await this._requestManager.net_version();

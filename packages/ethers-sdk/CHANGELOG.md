@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.12.13...@bosonprotocol/ethers-sdk@1.13.0) (2024-02-23)
+
+
+### Features
+
+* deactivate use of meta-transaction when the connected wallet is… ([#671](https://github.com/bosonprotocol/core-components/issues/671)) ([20cadab](https://github.com/bosonprotocol/core-components/commit/20cadaba47310d905d626b12f374fbfe92baeb10))
+
+
+
+
+
 ## [1.12.13](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.12.12...@bosonprotocol/ethers-sdk@1.12.13) (2024-02-05)
 
 **Note:** Version bump only for package @bosonprotocol/ethers-sdk

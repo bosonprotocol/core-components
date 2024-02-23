@@ -6,5 +6,6 @@ export * from "../lib/signer/useCallSignerFromIframe";
 export * from "./useEffectDebugger";
 export * from "./useHandleText";
 export * from "./useExchanges";
+export * from "./useMetaTx";
 export * from "../components/widgets/finance/useOffersBacked";
 export * from "./contracts/useGetTokenUriImage";
