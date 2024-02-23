@@ -31,13 +31,13 @@ interface IGetOfferDetails {
   artist: ProductV1OrProductV1ItemSubProductV1Seller | null;
   artistDescription: string;
   images: Array<string>;
-  digitalImages:
+  nftMediaItems:
     | {
         url: string;
         type: "video" | "image";
       }[]
-    | undefined
     | undefined;
+  nftItems: subgraph.NftItemMetadataEntity[] | undefined;
 }
 
 export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
@@ -109,7 +109,7 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
             item.type === subgraph.ItemMetadataType.ItemNft
         )
       : undefined;
-  const digitalImages:
+  const nftMediaItems:
     | {
         url: string;
         type: "video" | "image";
@@ -138,6 +138,7 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
     artist,
     artistDescription,
     images,
-    digitalImages
+    nftMediaItems,
+    nftItems
   };
 };

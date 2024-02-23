@@ -1,29 +1,10 @@
 import React, { useMemo } from "react";
-import styled from "styled-components";
-import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
-import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import { theme } from "../../../../../theme";
-import { Offer } from "../../../../../types/offer";
-import { useConfigContext } from "../../../../config/ConfigContext";
-import Price from "../../../../price/Price";
-import { Grid } from "../../../../ui/Grid";
-import { GridContainer } from "../../../../ui/GridContainer";
-import { Typography } from "../../../../ui/Typography";
-import { useNotCommittableOfferStatus } from "../../Commit/useNotCommittableOfferStatus";
-import { Break } from "../detail/Detail.style";
-import DetailTable from "../detail/DetailTable";
-import { useDetailViewContext } from "../detail/DetailViewProvider";
-import { TokenGatedItem } from "../detail/TokenGatedItem";
-import { OnClickBuyOrSwapHandler } from "../detail/types";
-import {
-  UseGetOfferDetailDataProps,
-  useGetOfferDetailData
-} from "../detail/useGetOfferDetailData";
-import { Exchange } from "../../../../../types/exchange";
-import { SlickSlider, initialSettings } from "../detail/SlickSlider";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
 import { isTruthy } from "../../../../../types/helpers";
-const colors = theme.colors.light;
+import { Offer } from "../../../../../types/offer";
+import { Grid } from "../../../../ui/Grid";
+import { Typography } from "../../../../ui/Typography";
+import { SlickSlider, initialSettings } from "../detail/SlickSlider";
 type PhysicalProductDataProps = {
   offer: Offer;
   imagesToShow: number;

@@ -109,7 +109,7 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
       {offer.condition && (
         <>
           <TokenGatedGrid>
-            <Typography tag="h3">Token gated Offer</Typography>
+            <Typography tag="h3">Token gated offer</Typography>
             <TokenGatedItem
               offer={offer}
               isConditionMet={isConditionMet}
