@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.14.0...@bosonprotocol/metadata@1.15.0) (2024-02-23)
+
+
+### Features
+
+* export Media type ([#661](https://github.com/bosonprotocol/core-components/issues/661)) ([2436378](https://github.com/bosonprotocol/core-components/commit/2436378b685a83fcbe919c9510d1e9d496f80821))
+
+
+
+
+
 # [1.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.13.1...@bosonprotocol/metadata@1.14.0) (2024-02-05)
 
 

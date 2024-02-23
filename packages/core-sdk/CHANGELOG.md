@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.37.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.36.1...@bosonprotocol/core-sdk@1.37.0) (2024-02-23)
+
+
+### Bug Fixes
+
+* check token gated condition function for large ranges or high token ids ([#665](https://github.com/bosonprotocol/core-components/issues/665)) ([979654e](https://github.com/bosonprotocol/core-components/commit/979654e08dbdbe4bb82efb9bff302afe643e5702))
+* testing issues ([#666](https://github.com/bosonprotocol/core-components/issues/666)) ([453de61](https://github.com/bosonprotocol/core-components/commit/453de61c9e5299a1c8381b4b568d06ba29de3d7d))
+* validation error and access to property in wait biconomy ([#669](https://github.com/bosonprotocol/core-components/issues/669)) ([a97e98a](https://github.com/bosonprotocol/core-components/commit/a97e98adbc2ab608e54ccb0add39672239d8db81))
+
+
+### Features
+
+* export Media type ([#662](https://github.com/bosonprotocol/core-components/issues/662)) ([f1244ad](https://github.com/bosonprotocol/core-components/commit/f1244ad09692e74692022e7d7dae1fc31d1e90a8))
+* request typename in offer metadata ([#672](https://github.com/bosonprotocol/core-components/issues/672)) ([afd95ef](https://github.com/bosonprotocol/core-components/commit/afd95ef27e6fbcc7c32c8085c45d59d32672332d))
+
+
+
+
+
 ## [1.36.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.36.0...@bosonprotocol/core-sdk@1.36.1) (2024-02-06)
 
 **Note:** Version bump only for package @bosonprotocol/core-sdk
