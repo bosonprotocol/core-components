@@ -1,6 +1,7 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../types/offer";
 import { getOfferAnimationUrl } from "./getOfferAnimationUrl";
+import { isTruthy } from "../../types/helpers";
 
 interface ITable {
   name: string;
@@ -30,6 +31,13 @@ interface IGetOfferDetails {
   artist: ProductV1OrProductV1ItemSubProductV1Seller | null;
   artistDescription: string;
   images: Array<string>;
+  digitalImages:
+    | {
+        url: string;
+        type: "video" | "image";
+      }[]
+    | undefined
+    | undefined;
 }
 
 export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
@@ -59,7 +67,9 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
       ? offer.metadata
       : offer.metadata?.__typename === "BundleMetadataEntity"
       ? (offer.metadata?.items.find(
-          (item) => item.__typename === "ProductV1ItemMetadataEntity"
+          (item) =>
+            item.__typename === "ProductV1ItemMetadataEntity" ||
+            item.type === subgraph.ItemMetadataType.ItemProductV1
         ) as subgraph.ProductV1ItemMetadataEntity | undefined)
       : undefined;
   const name =
@@ -91,7 +101,33 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
     productV1ItemMetadataEntity?.product?.visuals_images?.map(
       ({ url }: { url: string }) => url
     ) || [];
-
+  const nftItems =
+    offer.metadata?.__typename === "BundleMetadataEntity"
+      ? offer.metadata.items.filter(
+          (item): item is subgraph.NftItemMetadataEntity =>
+            item.__typename === "NftItemMetadataEntity" ||
+            item.type === subgraph.ItemMetadataType.ItemNft
+        )
+      : undefined;
+  const digitalImages:
+    | {
+        url: string;
+        type: "video" | "image";
+      }[]
+    | undefined = nftItems
+    ?.flatMap((nftItem) =>
+      nftItem.image || nftItem.animationUrl
+        ? [
+            ...(nftItem.image
+              ? [{ url: nftItem.image, type: "image" } as const]
+              : []),
+            ...(nftItem.animationUrl
+              ? [{ url: nftItem.animationUrl, type: "video" } as const]
+              : [])
+          ]
+        : null
+    )
+    .filter(isTruthy);
   return {
     display: false,
     name,
@@ -101,6 +137,7 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
     description,
     artist,
     artistDescription,
-    images
+    images,
+    digitalImages
   };
 };

@@ -1,4 +1,4 @@
-import { CID } from "multiformats/cid";
+import { CID } from "multiformats";
 import { sanitizeUrl } from "../url/url";
 
 export function getIpfsGatewayUrl(
