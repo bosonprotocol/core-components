@@ -78,7 +78,7 @@ export class OfferMixin extends BaseCoreSDK {
    * @returns Created offer id.
    */
   public getCreatedOfferIdFromLogs(logs: Log[]): string | null {
-    const offerId = getValueFromLogs<string>({
+    const offerId = getValueFromLogs<BigNumber>({
       iface: offers.iface.bosonOfferHandlerIface,
       logs,
       eventArgsKey: "offerId",
@@ -87,13 +87,13 @@ export class OfferMixin extends BaseCoreSDK {
 
     return (
       offerId ||
-      getValueFromLogs({
+      getValueFromLogs<BigNumber>({
         iface: orchestration.iface.bosonOrchestrationHandlerIface,
         logs,
         eventArgsKey: "offerId",
         eventName: "OfferCreated"
       })
-    );
+    )?.toString();
   }
 
   /**
@@ -102,12 +102,12 @@ export class OfferMixin extends BaseCoreSDK {
    * @returns Array of created offerIds.
    */
   public getCreatedOfferIdsFromLogs(logs: Log[]): string[] {
-    return getValuesFromLogs({
+    return getValuesFromLogs<BigNumber>({
       iface: offers.iface.bosonOfferHandlerIface,
       logs,
       eventArgsKey: "offerId",
       eventName: "OfferCreated"
-    });
+    }).map((o) => o.toString());
   }
 
   /**
@@ -116,12 +116,12 @@ export class OfferMixin extends BaseCoreSDK {
    * @returns Array of group Ids.
    */
   public getCreatedGroupIdsFromLogs(logs: Log[]): string[] {
-    return getValuesFromLogs({
+    return getValuesFromLogs<BigNumber>({
       iface: groups.iface.bosonGroupHandlerIface,
       logs,
       eventArgsKey: "groupId",
       eventName: "GroupCreated"
-    });
+    }).map((g) => g.toString());
   }
 
   /**
@@ -131,7 +131,7 @@ export class OfferMixin extends BaseCoreSDK {
    * @returns Created offer id.
    */
   public getCreatedSellerIdFromLogs(logs: Log[]): string | null {
-    const sellerId = getValueFromLogs<string>({
+    const sellerId = getValueFromLogs<BigNumber>({
       iface: accounts.iface.bosonAccountHandlerIface,
       logs,
       eventArgsKey: "sellerId",
@@ -140,13 +140,13 @@ export class OfferMixin extends BaseCoreSDK {
 
     return (
       sellerId ||
-      getValueFromLogs({
+      getValueFromLogs<BigNumber>({
         iface: orchestration.iface.bosonOrchestrationHandlerIface,
         logs,
         eventArgsKey: "sellerId",
         eventName: "SellerCreated"
       })
-    );
+    )?.toString();
   }
 
   /**

@@ -2,13 +2,15 @@ import { BigNumber, Wallet } from "ethers";
 import { parseEther } from "@ethersproject/units";
 
 import {
+  createPremintedOfferAddToGroup,
   createPremintedOfferWithCondition,
   createSeaportOrder,
   createSeller,
   createSellerAndOffer,
+  createSellerAndPremintedOffer,
+  createSellerAndPremintedOfferWithCondition,
   ensureMintedERC1155,
   initCoreSDKWithFundedWallet,
-  metadata,
   MOCK_ERC1155_ADDRESS,
   MOCK_SEAPORT_ADDRESS,
   seedWallet14,
@@ -23,14 +25,11 @@ import {
   Range,
   TokenType
 } from "../../packages/common/src";
-import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
 
 jest.setTimeout(60_000);
 
 const seedWallet = seedWallet14; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const buyerWallet = seedWallet15;
-
-// TODO: add tests with createPremintedOfferAddToGroup(), createPremintedOfferWithCondition(), createSellerAndPremintedOffer(), createSellerAndPremintedOfferWithCondition()
 
 describe("core-sdk-premint", () => {
   test("can reserveRange and then preMint some vouchers and there are still some left to preMint", async () => {
@@ -359,6 +358,114 @@ describe("orchestration", () => {
     );
     expect(Number(offer.range?.end) - Number(offer.range?.start) + 1).toEqual(
       Number(premintParameters.reservedRangeLength)
+    );
+    expect(offer.condition).toBeTruthy();
+    expect(offer.condition?.tokenAddress.toLowerCase()).toEqual(
+      condition.tokenAddress
+    );
+  });
+  test("#createPremintedOfferAddToGroup()", async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+    await createSeller(coreSDK, fundedWallet.address);
+
+    // Ensure the condition token is minted
+    const tokenID = Date.now().toString();
+    await ensureMintedERC1155(fundedWallet, tokenID, "5");
+    const condition = {
+      method: EvaluationMethod.Threshold,
+      tokenType: TokenType.MultiToken,
+      tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+      gatingType: GatingType.PerAddress,
+      minTokenId: tokenID,
+      maxTokenId: tokenID,
+      threshold: "1",
+      maxCommits: "3"
+    };
+    const premintParameters = {
+      reservedRangeLength: "5",
+      to: fundedWallet.address
+    };
+
+    const { offer, groupId } = await createPremintedOfferAddToGroup(
+      coreSDK,
+      condition,
+      premintParameters
+    );
+    expect(offer).toBeTruthy();
+    expect(offer.range).toBeTruthy();
+    expect(offer.range?.owner?.toLowerCase()).toEqual(
+      premintParameters.to.toLowerCase()
+    );
+    expect(Number(offer.range?.end) - Number(offer.range?.start) + 1).toEqual(
+      Number(premintParameters.reservedRangeLength)
+    );
+    expect(offer.condition).toBeTruthy();
+    expect(offer.condition?.id).toEqual(groupId);
+  });
+  test("#createSellerAndPremintedOffer()", async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+    const premintParameters = {
+      reservedRangeLength: "5",
+      to: fundedWallet.address
+    };
+
+    const offer = await createSellerAndPremintedOffer(
+      coreSDK,
+      fundedWallet.address,
+      premintParameters
+    );
+    expect(offer).toBeTruthy();
+    expect(offer.range).toBeTruthy();
+    expect(offer.range?.owner?.toLowerCase()).toEqual(
+      premintParameters.to.toLowerCase()
+    );
+    expect(Number(offer.range?.end) - Number(offer.range?.start) + 1).toEqual(
+      Number(premintParameters.reservedRangeLength)
+    );
+  });
+  test("#createSellerAndPremintedOfferWithCondition()", async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+    // Ensure the condition token is minted
+    const tokenID = Date.now().toString();
+    await ensureMintedERC1155(fundedWallet, tokenID, "5");
+    const condition = {
+      method: EvaluationMethod.Threshold,
+      tokenType: TokenType.MultiToken,
+      tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+      gatingType: GatingType.PerAddress,
+      minTokenId: tokenID,
+      maxTokenId: tokenID,
+      threshold: "1",
+      maxCommits: "3"
+    };
+    const premintParameters = {
+      reservedRangeLength: "5",
+      to: fundedWallet.address
+    };
+
+    const offer = await createSellerAndPremintedOfferWithCondition(
+      coreSDK,
+      fundedWallet.address,
+      condition,
+      premintParameters
+    );
+    expect(offer).toBeTruthy();
+    expect(offer.range).toBeTruthy();
+    expect(offer.range?.owner?.toLowerCase()).toEqual(
+      premintParameters.to.toLowerCase()
+    );
+    expect(Number(offer.range?.end) - Number(offer.range?.start) + 1).toEqual(
+      Number(premintParameters.reservedRangeLength)
+    );
+    expect(offer.condition).toBeTruthy();
+    expect(offer.condition?.tokenAddress.toLowerCase()).toEqual(
+      condition.tokenAddress
     );
   });
 });

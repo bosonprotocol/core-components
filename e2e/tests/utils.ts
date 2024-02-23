@@ -36,7 +36,10 @@ import {
   IpfsMetadataStorage
 } from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
-import { CreateOfferArgs, PremintParametersStruct } from "./../../packages/common/src/types/offers";
+import {
+  CreateOfferArgs,
+  PremintParametersStruct
+} from "./../../packages/common/src/types/offers";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import {
   ACCOUNT_1,
@@ -557,6 +560,176 @@ export async function createPremintedOfferWithCondition(
   return offer;
 }
 
+export async function createPremintedOfferAddToGroup(
+  coreSDK: CoreSDK,
+  condition: ConditionStruct,
+  premintParameters: PremintParametersStruct,
+  overrides: {
+    offerParams?: Partial<CreateOfferArgs>;
+    metadata?: Partial<base.BaseMetadata>;
+  } = {}
+) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE",
+    ...overrides.metadata
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const offerArgs = mockCreateOfferArgs({
+    metadataHash,
+    metadataUri,
+    ...overrides.offerParams
+  });
+  const groupToCreate = {
+    offerIds: [],
+    ...condition
+  };
+  const createdGroupTx = await coreSDK.createGroup(groupToCreate);
+  const txReceipt = await createdGroupTx.wait();
+  const createdGroupIds = await coreSDK.getCreatedGroupIdsFromLogs(
+    txReceipt.logs
+  );
+  expect(createdGroupIds.length).toEqual(1);
+  const [groupId] = createdGroupIds;
+
+  const createOfferTxResponse = await coreSDK.createPremintedOfferAddToGroup(
+    offerArgs,
+    premintParameters,
+    groupId
+  );
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing(createOfferTxReceipt);
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return { offer, groupId };
+}
+
+export async function createSellerAndPremintedOffer(
+  coreSDK: CoreSDK,
+  sellerAddress: string,
+  premintParameters: PremintParametersStruct,
+  overrides: {
+    offerParams?: Partial<CreateOfferArgs>;
+    metadata?: Partial<base.BaseMetadata>;
+    sellerMetadata?: Partial<seller.SellerMetadata>;
+  } = {}
+) {
+  const sellerContractHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE",
+    ...overrides.metadata
+  });
+  const sellerContractUri = "ipfs://" + sellerContractHash;
+  const sellerMetadataHash = await coreSDK.storeMetadata({
+    ...sellerMetadata,
+    ...overrides.sellerMetadata
+  });
+  const sellerMetadataUri = "ipfs://" + sellerMetadataHash;
+
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE",
+    ...overrides.metadata
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const offerArgs = mockCreateOfferArgs({
+    metadataHash,
+    metadataUri,
+    ...overrides.offerParams
+  });
+
+  const txResponse = await coreSDK.createSellerAndPremintedOffer(
+    {
+      assistant: sellerAddress,
+      admin: sellerAddress,
+      treasury: sellerAddress,
+      contractUri: sellerContractUri,
+      royaltyPercentage: "0",
+      authTokenId: "0",
+      authTokenType: 0,
+      metadataUri: sellerMetadataUri
+    },
+    offerArgs,
+    premintParameters
+  );
+  const txReceipt = await txResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(txReceipt.logs);
+  if (createdOfferId === null) {
+    throw new Error("Failed to create seller adn preminted offer");
+  }
+  await waitForGraphNodeIndexing(txReceipt);
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return offer;
+}
+
+export async function createSellerAndPremintedOfferWithCondition(
+  coreSDK: CoreSDK,
+  sellerAddress: string,
+  condition: ConditionStruct,
+  premintParameters: PremintParametersStruct,
+  overrides: {
+    offerParams?: Partial<CreateOfferArgs>;
+    metadata?: Partial<base.BaseMetadata>;
+    sellerMetadata?: Partial<seller.SellerMetadata>;
+  } = {}
+) {
+  const sellerContractHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE",
+    ...overrides.metadata
+  });
+  const sellerContractUri = "ipfs://" + sellerContractHash;
+  const sellerMetadataHash = await coreSDK.storeMetadata({
+    ...sellerMetadata,
+    ...overrides.sellerMetadata
+  });
+  const sellerMetadataUri = "ipfs://" + sellerMetadataHash;
+
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE",
+    ...overrides.metadata
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const offerArgs = mockCreateOfferArgs({
+    metadataHash,
+    metadataUri,
+    ...overrides.offerParams
+  });
+
+  const txResponse = await coreSDK.createSellerAndPremintedOfferWithCondition(
+    {
+      assistant: sellerAddress,
+      admin: sellerAddress,
+      treasury: sellerAddress,
+      contractUri: sellerContractUri,
+      royaltyPercentage: "0",
+      authTokenId: "0",
+      authTokenType: 0,
+      metadataUri: sellerMetadataUri
+    },
+    offerArgs,
+    premintParameters,
+    condition
+  );
+  const txReceipt = await txResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(txReceipt.logs);
+  if (createdOfferId === null) {
+    throw new Error("Failed to create seller adn preminted offer");
+  }
+  await waitForGraphNodeIndexing(txReceipt);
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return offer;
+}
 
 export async function createSellerAndOfferWithCondition(
   coreSDK: CoreSDK,
