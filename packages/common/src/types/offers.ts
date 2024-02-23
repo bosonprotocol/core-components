@@ -28,9 +28,9 @@ export type CreateOfferArgs = {
   metadataUri: string;
   metadataHash: string;
   collectionIndex: BigNumberish;
-  feeLimit: BigNumberish;
-  priceType: PriceType;
-  royaltyInfo: RoyaltyInfo[];
+  feeLimit?: BigNumberish;
+  priceType?: PriceType;
+  royaltyInfo?: RoyaltyInfo[];
 };
 
 export type OfferStruct = {

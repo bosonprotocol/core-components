@@ -3,12 +3,14 @@ import {
   utils,
   abis,
   OfferDatesStruct,
-  OfferDurationsStruct
+  OfferDurationsStruct,
+  PriceType
 } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { getAddress } from "@ethersproject/address";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { CreateOfferArgs } from "./types";
+import { AddressZero } from "@ethersproject/constants";
 
 export const bosonOfferHandlerIface = new Interface(abis.IBosonOfferHandlerABI);
 
@@ -27,14 +29,7 @@ export function encodeCreateOfferBatch(argsBatch: CreateOfferArgs[]) {
     BigNumberish,
     BigNumberish,
     BigNumberish
-  ][] = argsBatch.map((args) => [
-    argsToOfferStruct(args),
-    argsToOfferDatesStruct(args),
-    argsToOfferDurationsStruct(args),
-    args.disputeResolverId,
-    args.agentId,
-    args.feeLimit
-  ]);
+  ][] = argsBatch.map((args) => createOfferArgsToStructs(args));
   const [
     offers,
     offerDates,
@@ -91,24 +86,38 @@ export function createOfferArgsToStructs(
   BigNumberish,
   BigNumberish
 ] {
+  const feeLimit = args.feeLimit !== undefined ? args.feeLimit : args.price;
   return [
     argsToOfferStruct(args),
     argsToOfferDatesStruct(args),
     argsToOfferDurationsStruct(args),
     args.disputeResolverId,
     args.agentId,
-    args.feeLimit
+    feeLimit
   ];
 }
 
 export function argsToOfferStruct(args: CreateOfferArgs): Partial<OfferStruct> {
-  const { exchangeToken, royaltyInfo, ...restArgs } = args;
+  const { exchangeToken, ...restArgs } = args;
+
+  const priceType =
+    args.priceType !== undefined ? args.priceType : PriceType.Static;
+  const royaltyInfo =
+    args.royaltyInfo !== undefined
+      ? args.royaltyInfo
+      : [
+          {
+            recipients: [AddressZero],
+            bps: [0]
+          }
+        ];
 
   return {
     id: "0",
     sellerId: "0",
     ...restArgs,
     exchangeToken: getAddress(exchangeToken),
+    priceType,
     royaltyInfo: royaltyInfo.map((royaltyInfoItem) => {
       return {
         ...royaltyInfoItem,

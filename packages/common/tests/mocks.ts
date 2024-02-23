@@ -90,14 +90,6 @@ export function mockCreateOfferArgs(
     disputeResolverId: "1",
     metadataUri: IPFS_URI,
     metadataHash: IPFS_HASH,
-    feeLimit: parseEther("0.01"),
-    priceType: PriceType.Static,
-    royaltyInfo: [
-      {
-        recipients: [AddressZero],
-        bps: [0]
-      }
-    ],
     ...overrides
   };
 }
