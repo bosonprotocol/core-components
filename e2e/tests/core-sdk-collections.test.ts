@@ -101,7 +101,6 @@ describe("Offer collections", () => {
     expect(seller).toBeTruthy();
     const tx = await coreSDK.createNewCollection({
       contractUri: "",
-      royaltyPercentage: 0,
       collectionId: customCollectionId
     });
     await tx.wait();
@@ -123,7 +122,6 @@ describe("Offer collections", () => {
     expect(seller.collections.length).toEqual(1);
     const tx = await coreSDK.createNewCollection({
       contractUri: "",
-      royaltyPercentage: 0,
       collectionId: customCollectionId
     });
     await tx.wait();
@@ -157,7 +155,6 @@ describe("Offer collections", () => {
     await expect(
       coreSDK.createNewCollection({
         contractUri: "",
-        royaltyPercentage: 0,
         collectionId: exisitingCollectionId
       })
     ).rejects.toThrow(
@@ -190,7 +187,6 @@ describe("Offer collections", () => {
     expect(seller).toBeTruthy();
     const tx = await coreSDK.createNewCollection({
       contractUri: "",
-      royaltyPercentage: 0,
       collectionId: customCollectionId
     });
     await tx.wait();
@@ -214,7 +210,6 @@ describe("Offer collections", () => {
     expect(seller).toBeTruthy();
     const tx = await coreSDK.createNewCollection({
       contractUri: "",
-      royaltyPercentage: 0,
       collectionId: customCollectionId
     });
     await tx.wait();
@@ -231,7 +226,6 @@ describe("Offer collections", () => {
     expect(seller).toBeTruthy();
     const tx = await coreSDK.createNewCollection({
       contractUri: "",
-      royaltyPercentage: 0,
       collectionId: maxLengthId
     });
     await tx.wait();
@@ -252,7 +246,6 @@ describe("Offer collections", () => {
     await expect(
       coreSDK.createNewCollection({
         contractUri: "",
-        royaltyPercentage: 0,
         collectionId: "x".repeat(32)
       })
     ).rejects.toThrow(`collectionId length should not exceed 31 characters`);
@@ -291,7 +284,6 @@ describe("Offer collections", () => {
     expect(seller).toBeTruthy();
     const tx = await coreSDK.createNewCollection({
       contractUri: collectionMetadata2Uri,
-      royaltyPercentage: 0,
       collectionId: collectionMetadata2.name
     });
     await tx.wait();

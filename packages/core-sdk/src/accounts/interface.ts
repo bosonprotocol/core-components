@@ -175,7 +175,7 @@ export function createCollectionArgsToStruct(args: CreateCollectionArgs): {
   externalId: string;
   voucherInitValues: VoucherInitValuesStruct;
 } {
-  const { collectionId, contractUri, royaltyPercentage } = args;
+  const { collectionId, contractUri } = args;
   const collectionSalt =
     args.collectionSalt ||
     formatBytes32String(collectionId || INITIAL_COLLECTION_ID);
@@ -183,7 +183,7 @@ export function createCollectionArgsToStruct(args: CreateCollectionArgs): {
     externalId: collectionId,
     voucherInitValues: {
       contractURI: contractUri,
-      royaltyPercentage,
+      royaltyPercentage: "0", // useless after protocol v2.4.0
       collectionSalt
     }
   };
