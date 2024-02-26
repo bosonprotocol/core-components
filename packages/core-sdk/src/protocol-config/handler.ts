@@ -1,7 +1,8 @@
+import { Web3LibAdapter } from "@bosonprotocol/common";
 import {
-  Web3LibAdapter,
-} from "@bosonprotocol/common";
-import { encodeGetMaxRoyaltyPercentage, decodeGetMaxRoyaltyPercentage } from "./interface";
+  encodeGetMaxRoyaltyPercentage,
+  decodeGetMaxRoyaltyPercentage
+} from "./interface";
 
 export async function getMaxRoyaltyPercentage(args: {
   contractAddress: string;
@@ -12,5 +13,4 @@ export async function getMaxRoyaltyPercentage(args: {
     data: encodeGetMaxRoyaltyPercentage()
   });
   return decodeGetMaxRoyaltyPercentage(result);
-
 }

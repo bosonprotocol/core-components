@@ -10,6 +10,9 @@ export function encodeGetMaxRoyaltyPercentage(): string {
 }
 
 export function decodeGetMaxRoyaltyPercentage(result: string): number {
-  const [maxRoyaltyPercentage] = bosonConfigHandlerIface.decodeFunctionResult("getMaxRoyaltyPercentage", result);
+  const [maxRoyaltyPercentage] = bosonConfigHandlerIface.decodeFunctionResult(
+    "getMaxRoyaltyPercentage",
+    result
+  );
   return Number(maxRoyaltyPercentage);
 }

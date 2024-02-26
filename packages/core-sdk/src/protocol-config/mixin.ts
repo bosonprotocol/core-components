@@ -9,7 +9,7 @@ export class ProtocolConfigMixin extends BaseCoreSDK {
   ): Promise<number> {
     return handler.getMaxRoyaltyPercentage({
       contractAddress: overrides.contractAddress || this._protocolDiamond,
-      web3Lib: this._web3Lib,
+      web3Lib: this._web3Lib
     });
   }
 }
