@@ -124,6 +124,8 @@ export function handleGroupUpdatedEventLegacy(event: GroupUpdatedLegacy): void {
   addOffersCondition(groupId.toString(), groupFromEvent.offerIds);
 }
 
+// TODO: upgrade to graph-ts >= v0.31.0 and use loadRelated to access the virtual field 'offers' for a condition
+// see https://thegraph.com/blog/improve-subgraph-performance-avoiding-large-arrays/
 // function clearPreviousOffersCondition(previousOffers: string[]): void {
 //   for (let i = 0; i < previousOffers.length; i++) {
 //     const offerId = previousOffers[i];
