@@ -296,6 +296,16 @@ export function encodeUpdateRoyaltyRecipients(args: {
   );
 }
 
+export function encodeRemoveRoyaltyRecipients(args: {
+  sellerId: BigNumberish;
+  royaltyRecipientIds: BigNumberish[];
+}) {
+  return bosonAccountHandlerIface.encodeFunctionData(
+    "removeRoyaltyRecipients",
+    [args.sellerId, args.royaltyRecipientIds]
+  );
+}
+
 export function encodeGetRoyaltyRecipients(args: { sellerId: BigNumberish }) {
   return bosonAccountHandlerIface.encodeFunctionData("getRoyaltyRecipients", [
     args.sellerId

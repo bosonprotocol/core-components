@@ -26,7 +26,8 @@ import {
   encodeAddRoyaltyRecipients,
   encodeUpdateRoyaltyRecipients,
   encodeGetRoyaltyRecipients,
-  decodeGetRoyaltyRecipients
+  decodeGetRoyaltyRecipients,
+  encodeRemoveRoyaltyRecipients
 } from "./interface";
 import { getDisputeResolverById } from "./subgraph";
 import {
@@ -321,6 +322,19 @@ export async function updateRoyaltyRecipients(args: {
     data: encodeUpdateRoyaltyRecipients(args)
   });
 }
+
+export async function removeRoyaltyRecipients(args: {
+  sellerId: BigNumberish;
+  royaltyRecipientIds: BigNumberish[];
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeRemoveRoyaltyRecipients(args)
+  });
+}
+
 export async function getRoyaltyRecipients(args: {
   sellerId: BigNumberish;
   contractAddress: string;

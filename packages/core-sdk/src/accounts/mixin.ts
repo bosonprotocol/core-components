@@ -653,6 +653,21 @@ export class AccountsMixin extends BaseCoreSDK {
     });
   }
 
+  public async removeRoyaltyRecipients(
+    sellerId: BigNumberish,
+    royaltyRecipientIds: BigNumberish[],
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ) {
+    return accounts.handler.removeRoyaltyRecipients({
+      sellerId,
+      royaltyRecipientIds,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
   public async getRoyaltyRecipients(
     sellerId: BigNumberish,
     overrides: Partial<{

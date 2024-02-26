@@ -14,6 +14,9 @@ jest.setTimeout(60_000);
 
 describe("Seller royalties recipients", () => {
   let maxRoyaltyPercentage;
+  const walletIs = (expectedWallet: string) => {
+    return (recipient) => recipient.wallet.toLowerCase() === expectedWallet
+  };
   beforeAll(async () => {
     const coreSDK = initCoreSDKWithWallet(Wallet.createRandom());
     maxRoyaltyPercentage = await coreSDK.getMaxRoyaltyPercentage();
@@ -74,12 +77,12 @@ describe("Seller royalties recipients", () => {
     expect(seller).toBeTruthy();
     expect(seller.royaltyRecipients).toBeTruthy();
     expect(seller.royaltyRecipients.length).toEqual(1 + recipients.length);
-    expect(seller.royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === ZERO_ADDRESS)).toBe(true);
-    expect(seller.royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === recipients[0])).toBe(true);
-    expect(seller.royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === recipients[1])).toBe(true);
-    expect(seller.royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === ZERO_ADDRESS)?.minRoyaltyPercentage).toEqual(treasuryPercentage);
-    expect(seller.royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === recipients[0])?.minRoyaltyPercentage).toEqual(recipientsPercentage[0]);
-    expect(seller.royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === recipients[1])?.minRoyaltyPercentage).toEqual(recipientsPercentage[1]);
+    expect(seller.royaltyRecipients.some(walletIs(ZERO_ADDRESS))).toBe(true);
+    expect(seller.royaltyRecipients.some(walletIs(recipients[0]))).toBe(true);
+    expect(seller.royaltyRecipients.some(walletIs(recipients[1]))).toBe(true);
+    expect(seller.royaltyRecipients.find(walletIs(ZERO_ADDRESS))?.minRoyaltyPercentage).toEqual(treasuryPercentage);
+    expect(seller.royaltyRecipients.find(walletIs(recipients[0]))?.minRoyaltyPercentage).toEqual(recipientsPercentage[0]);
+    expect(seller.royaltyRecipients.find(walletIs(recipients[1]))?.minRoyaltyPercentage).toEqual(recipientsPercentage[1]);
 
     const recipients_2 = [Wallet.createRandom().address.toLowerCase(), Wallet.createRandom().address.toLowerCase()];
     const recipientsPercentage_2= ["400", "500"];
@@ -94,10 +97,10 @@ describe("Seller royalties recipients", () => {
     expect(seller).toBeTruthy();
     expect(seller.royaltyRecipients).toBeTruthy();
     expect(seller.royaltyRecipients.length).toEqual(1 + recipients.length + recipients_2.length);
-    expect(seller.royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === recipients_2[0])).toBe(true);
-    expect(seller.royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === recipients_2[1])).toBe(true);
-    expect(seller.royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === recipients_2[0])?.minRoyaltyPercentage).toEqual(recipientsPercentage_2[0]);
-    expect(seller.royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === recipients_2[1])?.minRoyaltyPercentage).toEqual(recipientsPercentage_2[1]);
+    expect(seller.royaltyRecipients.some(walletIs(recipients_2[0]))).toBe(true);
+    expect(seller.royaltyRecipients.some(walletIs(recipients_2[1]))).toBe(true);
+    expect(seller.royaltyRecipients.find(walletIs(recipients_2[0]))?.minRoyaltyPercentage).toEqual(recipientsPercentage_2[0]);
+    expect(seller.royaltyRecipients.find(walletIs(recipients_2[1]))?.minRoyaltyPercentage).toEqual(recipientsPercentage_2[1]);
   });
   test("custom royalties for a seller - update other recipients - check onchain", async () => {
     const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
@@ -120,15 +123,14 @@ describe("Seller royalties recipients", () => {
     }));
     await tx.wait();
     let royaltyRecipients = await coreSDK.getRoyaltyRecipients(seller.id);
-    console.log("royaltyRecipients", royaltyRecipients);
     expect(royaltyRecipients).toBeTruthy();
     expect(royaltyRecipients.length).toEqual(1 + recipients.length);
-    expect(royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === ZERO_ADDRESS)).toBe(true);
-    expect(royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === recipients[0])).toBe(true);
-    expect(royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === recipients[1])).toBe(true);
-    expect(royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === ZERO_ADDRESS)?.minRoyaltyPercentage).toEqual(treasuryPercentage);
-    expect(royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === recipients[0])?.minRoyaltyPercentage).toEqual(recipientsPercentage[0]);
-    expect(royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === recipients[1])?.minRoyaltyPercentage).toEqual(recipientsPercentage[1]);
+    expect(royaltyRecipients.some(walletIs(ZERO_ADDRESS))).toBe(true);
+    expect(royaltyRecipients.some(walletIs(recipients[0]))).toBe(true);
+    expect(royaltyRecipients.some(walletIs(recipients[1]))).toBe(true);
+    expect(royaltyRecipients.find(walletIs(ZERO_ADDRESS))?.minRoyaltyPercentage).toEqual(treasuryPercentage);
+    expect(royaltyRecipients.find(walletIs(recipients[0]))?.minRoyaltyPercentage).toEqual(recipientsPercentage[0]);
+    expect(royaltyRecipients.find(walletIs(recipients[1]))?.minRoyaltyPercentage).toEqual(recipientsPercentage[1]);
 
     const recipients_2 = [Wallet.createRandom().address.toLowerCase(), Wallet.createRandom().address.toLowerCase()];
     const recipientsPercentage_2= ["400", "500"];
@@ -140,13 +142,12 @@ describe("Seller royalties recipients", () => {
     }));
     await tx_2.wait();
     royaltyRecipients = await coreSDK.getRoyaltyRecipients(seller.id);
-    console.log("royaltyRecipients", royaltyRecipients);
     expect(royaltyRecipients).toBeTruthy();
     expect(royaltyRecipients.length).toEqual(1 + recipients_2.length);
-    expect(royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === recipients_2[0])).toBe(true);
-    expect(royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === recipients_2[1])).toBe(true);
-    expect(royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === recipients_2[0])?.minRoyaltyPercentage).toEqual(recipientsPercentage_2[0]);
-    expect(royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === recipients_2[1])?.minRoyaltyPercentage).toEqual(recipientsPercentage_2[1]);
+    expect(royaltyRecipients.some(walletIs(recipients_2[0]))).toBe(true);
+    expect(royaltyRecipients.some(walletIs(recipients_2[1]))).toBe(true);
+    expect(royaltyRecipients.find(walletIs(recipients_2[0]))?.minRoyaltyPercentage).toEqual(recipientsPercentage_2[0]);
+    expect(royaltyRecipients.find(walletIs(recipients_2[1]))?.minRoyaltyPercentage).toEqual(recipientsPercentage_2[1]);
   });
   xtest("custom royalties for a seller - update other recipients - check subgraph", async () => {
     // TODO: This test doesn't pass until we properly manage update/removeRoyaltyRecipients in the subgraph handler
@@ -171,14 +172,15 @@ describe("Seller royalties recipients", () => {
     await waitForGraphNodeIndexing(tx);
     seller = await coreSDK.getSellerById(seller.id);
     expect(seller).toBeTruthy();
-    expect(seller.royaltyRecipients).toBeTruthy();
-    expect(seller.royaltyRecipients.length).toEqual(1 + recipients.length);
-    expect(seller.royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === ZERO_ADDRESS)).toBe(true);
-    expect(seller.royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === recipients[0])).toBe(true);
-    expect(seller.royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === recipients[1])).toBe(true);
-    expect(seller.royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === ZERO_ADDRESS)?.minRoyaltyPercentage).toEqual(treasuryPercentage);
-    expect(seller.royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === recipients[0])?.minRoyaltyPercentage).toEqual(recipientsPercentage[0]);
-    expect(seller.royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === recipients[1])?.minRoyaltyPercentage).toEqual(recipientsPercentage[1]);
+    let royaltyRecipients = seller.royaltyRecipients;
+    expect(royaltyRecipients).toBeTruthy();
+    expect(royaltyRecipients.length).toEqual(1 + recipients.length);
+    expect(royaltyRecipients.some(walletIs(ZERO_ADDRESS))).toBe(true);
+    expect(royaltyRecipients.some(walletIs(recipients[0]))).toBe(true);
+    expect(royaltyRecipients.some(walletIs(recipients[1]))).toBe(true);
+    expect(royaltyRecipients.find(walletIs(ZERO_ADDRESS))?.minRoyaltyPercentage).toEqual(treasuryPercentage);
+    expect(royaltyRecipients.find(walletIs(recipients[0]))?.minRoyaltyPercentage).toEqual(recipientsPercentage[0]);
+    expect(royaltyRecipients.find(walletIs(recipients[1]))?.minRoyaltyPercentage).toEqual(recipientsPercentage[1]);
 
     const recipients_2 = [Wallet.createRandom().address.toLowerCase(), Wallet.createRandom().address.toLowerCase()];
     const recipientsPercentage_2= ["400", "500"];
@@ -191,17 +193,94 @@ describe("Seller royalties recipients", () => {
     await waitForGraphNodeIndexing(tx_2);
     seller = await coreSDK.getSellerById(seller.id);
     expect(seller).toBeTruthy();
-    expect(seller.royaltyRecipients).toBeTruthy();
-    expect(seller.royaltyRecipients.length).toEqual(1 + recipients_2.length);
-    expect(seller.royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === recipients_2[0])).toBe(true);
-    expect(seller.royaltyRecipients.some((recipient) => recipient.wallet.toLowerCase() === recipients_2[1])).toBe(true);
-    expect(seller.royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === recipients_2[0])?.minRoyaltyPercentage).toEqual(recipientsPercentage_2[0]);
-    expect(seller.royaltyRecipients.find((recipient) => recipient.wallet.toLowerCase() === recipients_2[1])?.minRoyaltyPercentage).toEqual(recipientsPercentage_2[1]);
+    royaltyRecipients = seller.royaltyRecipients;
+    expect(royaltyRecipients).toBeTruthy();
+    expect(royaltyRecipients.length).toEqual(1 + recipients_2.length);
+    expect(royaltyRecipients.some(walletIs(recipients_2[0]))).toBe(true);
+    expect(royaltyRecipients.some(walletIs(recipients_2[1]))).toBe(true);
+    expect(royaltyRecipients.find(walletIs(recipients_2[0]))?.minRoyaltyPercentage).toEqual(recipientsPercentage_2[0]);
+    expect(royaltyRecipients.find(walletIs(recipients_2[1]))?.minRoyaltyPercentage).toEqual(recipientsPercentage_2[1]);
   });
-  test("royalties #3", async () => {
-    // create a seller with some royalties
-    // change seller's royalties
-    // TODO: create SDK methods for removeRoyaltyRecipients/updateRoyaltyRecipients
+  test("custom royalties for a seller - remove other recipients - check onchain", async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+    const treasuryPercentage = "100"; // 1%
+    expect(Number(treasuryPercentage)).toBeLessThan(maxRoyaltyPercentage)
+    let seller = await createSeller(coreSDK, fundedWallet.address, {
+      sellerParams: {
+        royaltyPercentage: treasuryPercentage
+      }
+    });
+    const recipients = [Wallet.createRandom().address.toLowerCase(), Wallet.createRandom().address.toLowerCase()];
+    const recipientsPercentage= ["200", "300"];
+    const tx = await coreSDK.addRoyaltyRecipients(seller.id, recipients.map((wallet, index) => {
+      return {
+        wallet,
+        minRoyaltyPercentage: recipientsPercentage[index]
+      }
+    }));
+    await tx.wait();
+    let royaltyRecipients = await coreSDK.getRoyaltyRecipients(seller.id);
+    expect(royaltyRecipients).toBeTruthy();
+    expect(royaltyRecipients.length).toEqual(1 + recipients.length);
+    expect(royaltyRecipients.some(walletIs(ZERO_ADDRESS))).toBe(true);
+    expect(royaltyRecipients.some(walletIs(recipients[0]))).toBe(true);
+    expect(royaltyRecipients.some(walletIs(recipients[1]))).toBe(true);
+
+    const recipient2Index = royaltyRecipients.findIndex(walletIs(recipients[1]));
+    expect(recipient2Index).not.toBe(-1);
+
+    const tx_2 = await coreSDK.removeRoyaltyRecipients(seller.id, [recipient2Index]);
+    await tx_2.wait();
+    royaltyRecipients = await coreSDK.getRoyaltyRecipients(seller.id);
+    expect(royaltyRecipients).toBeTruthy();
+    expect(royaltyRecipients.length).toEqual(1 + recipients.length - 1);
+    expect(royaltyRecipients.some(walletIs(recipients[0]))).toBe(true);
+    expect(royaltyRecipients.some(walletIs(recipients[1]))).toBe(false);
+  });
+  xtest("custom royalties for a seller - remove other recipients - check subgraph", async () => {
+    // TODO: This test doesn't pass until we properly manage update/removeRoyaltyRecipients in the subgraph handler
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+    const treasuryPercentage = "100"; // 1%
+    expect(Number(treasuryPercentage)).toBeLessThan(maxRoyaltyPercentage)
+    let seller = await createSeller(coreSDK, fundedWallet.address, {
+      sellerParams: {
+        royaltyPercentage: treasuryPercentage
+      }
+    });
+    const recipients = [Wallet.createRandom().address.toLowerCase(), Wallet.createRandom().address.toLowerCase()];
+    const recipientsPercentage= ["200", "300"];
+    const tx = await coreSDK.addRoyaltyRecipients(seller.id, recipients.map((wallet, index) => {
+      return {
+        wallet,
+        minRoyaltyPercentage: recipientsPercentage[index]
+      }
+    }));
+    await waitForGraphNodeIndexing(tx);
+    seller = await coreSDK.getSellerById(seller.id);
+    expect(seller).toBeTruthy();
+    let royaltyRecipients = seller.royaltyRecipients;
+    expect(royaltyRecipients).toBeTruthy();
+    expect(royaltyRecipients.length).toEqual(1 + recipients.length);
+    expect(royaltyRecipients.some(walletIs(ZERO_ADDRESS))).toBe(true);
+    expect(royaltyRecipients.some(walletIs(recipients[0]))).toBe(true);
+    expect(royaltyRecipients.some(walletIs(recipients[1]))).toBe(true);
+
+    const recipient2Index = royaltyRecipients.findIndex(walletIs(recipients[1]));
+    expect(recipient2Index).not.toBe(-1);
+
+    const tx_2 = await coreSDK.removeRoyaltyRecipients(seller.id, [recipient2Index]);
+    await waitForGraphNodeIndexing(tx_2);
+    seller = await coreSDK.getSellerById(seller.id);
+    expect(seller).toBeTruthy();
+    royaltyRecipients = seller.royaltyRecipients;
+    expect(royaltyRecipients).toBeTruthy();
+    expect(royaltyRecipients.length).toEqual(1 + recipients.length - 1);
+    expect(royaltyRecipients.some(walletIs(recipients[0]))).toBe(true);
+    expect(royaltyRecipients.some(walletIs(recipients[1]))).toBe(false);
   });
 });
 
