@@ -1,15 +1,33 @@
-import uniqBy from "lodash.uniqby";
 import React from "react";
 
+import styled from "styled-components";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
-import { isTruthy } from "../../../../../types/helpers";
 import { Offer } from "../../../../../types/offer";
+import { NftItemIcon } from "../../../../nftItem/NftItemIcon";
+import { DetailsSummary } from "../../../../ui/DetailsSummary";
 import { Grid } from "../../../../ui/Grid";
 import { Typography } from "../../../../ui/Typography";
-import { Break } from "../detail/Detail.style";
 import DetailTable from "../detail/DetailTable";
 import { SlickSlider, initialSettings } from "../detail/SlickSlider";
 
+const StyledDetailTable = styled(DetailTable)`
+  && {
+    padding-bottom: 0;
+  }
+`;
+const StyledDetailsSummary = styled(DetailsSummary)`
+  .icon-wrapper {
+    padding: 0;
+    width: 3.125rem;
+    height: 3.125rem;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+`;
+const MediaWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 type DigitalProductDataProps = {
   offer: Offer;
   imagesToShow: number;
@@ -19,7 +37,7 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
   offer,
   imagesToShow
 }) => {
-  const { nftMediaItems, nftItems } = getOfferDetails(offer);
+  const { nftItems } = getOfferDetails(offer);
   return (
     <Grid
       flexDirection="column"
@@ -28,88 +46,124 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
       justifyContent="space-between"
     >
       <Typography tag="h3">Digital product data</Typography>
-      <Grid
-        flexDirection="column"
-        gap="0.5rem"
-        alignItems="flex-start"
-        justifyContent="space-between"
-      >
-        <Typography tag="h4">Traits</Typography>
-        <DetailTable
-          align={false}
-          noBorder
-          data={
-            uniqBy(
-              nftItems
-                ?.flatMap((nftItem) => nftItem.attributes)
-                .filter(isTruthy),
-              (attribute) => `${attribute.traitType}-${attribute.value}`
-            ).map((attribute) => {
-              return {
-                name: attribute.traitType,
-                value: <Typography tag="p">{attribute.value}</Typography>
-              };
-            }) ?? []
-          }
-          inheritColor={false}
-        />
-        <Grid
-          flexDirection="column"
-          gap="0.5rem"
-          alignItems="flex-start"
-          justifyContent="space-between"
-        >
-          {nftItems?.map((nftItem) => {
-            return (
-              <Grid
-                flexDirection="column"
-                gap="0.5rem"
-                alignItems="flex-start"
-                justifyContent="space-between"
-              >
-                <Typography tag="h5">Name: {nftItem.name}</Typography>
-                <Typography>Description: {nftItem.description}</Typography>
-                <DetailTable
-                  align={false}
-                  noBorder
-                  data={[
-                    {
-                      name: "How will it be sent to the buyer?",
-                      value: (
-                        <Typography tag="p">
-                          {nftItem.transferMethod}
-                        </Typography>
-                      )
-                    },
-                    {
-                      name: "When will it be sent to the buyer?",
-                      value: (
-                        <Typography tag="p">{nftItem.transferDelay}</Typography>
-                      )
-                    },
-                    {
-                      name: "Shipping in days",
-                      value: <Typography tag="p">-</Typography>
-                    }
-                  ]}
-                  inheritColor={false}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Grid>
+      {nftItems?.map((nftItem, index) => {
+        const nftMedia = [
+          ...(nftItem.image
+            ? [{ url: nftItem.image, type: "image" } as const]
+            : []),
+          ...(nftItem.animationUrl
+            ? [
+                {
+                  url: nftItem.animationUrl,
+                  type: "video"
+                } as const
+              ]
+            : [])
+        ];
+        const icon = <NftItemIcon nftItem={nftItem} />;
+        return (
+          <StyledDetailsSummary
+            key={nftItem.id}
+            icon={icon ? <MediaWrapper>{icon}</MediaWrapper> : null}
+            summaryText={nftItem.name || nftItem.contract || ""}
+            initiallyOpen={index === 0}
+          >
+            <StyledDetailTable
+              align={false}
+              noBorder
+              data={[
+                ...(nftItem.contract
+                  ? [
+                      {
+                        name: "Contract address",
+                        value: (
+                          <Typography tag="p">{nftItem.contract}</Typography>
+                        )
+                      }
+                    ]
+                  : []),
+                ...(nftItem.description
+                  ? [
+                      {
+                        name: "Description",
+                        value: (
+                          <Typography tag="p">{nftItem.description}</Typography>
+                        )
+                      }
+                    ]
+                  : []),
+                ...(nftItem.attributes || []).map((attribute) => ({
+                  name: attribute.traitType,
+                  value: <Typography tag="p">{attribute.value}</Typography>
+                })),
+                ...(nftItem.transferMethod
+                  ? [
+                      {
+                        name: "How will it be sent to the buyer?",
+                        value: (
+                          <Typography tag="p">
+                            {nftItem.transferMethod}
+                          </Typography>
+                        )
+                      }
+                    ]
+                  : []),
+                ...(nftItem.transferDelay
+                  ? [
+                      {
+                        name: "When will it be sent to the buyer?",
+                        value: (
+                          <Typography tag="p">
+                            {nftItem.transferDelay}
+                          </Typography>
+                        )
+                      }
+                    ]
+                  : []),
+                {
+                  name: "Shipping in days",
+                  value: <Typography tag="p">-</Typography>
+                },
+                ...(nftItem.tokenIdRange?.min && nftItem.tokenIdRange.max
+                  ? [
+                      {
+                        name: "Token IDs",
+                        value: (
+                          <Typography tag="p">
+                            {nftItem.tokenIdRange?.max}-
+                            {nftItem.tokenIdRange?.max}
+                          </Typography>
+                        )
+                      }
+                    ]
+                  : []),
 
-      <Typography tag="h3">Digital product images</Typography>
-      <div style={{ width: "100%" }}>
-        <SlickSlider
-          settings={{ ...initialSettings, slidesToShow: imagesToShow }}
-          mediaFiles={nftMediaItems ?? []}
-          alignLeft
-          imageOptimizationOpts={{ height: 500 }}
-        />
-      </div>
-      <Break />
+                ...(nftItem.externalUrl
+                  ? [
+                      {
+                        name: "External URL",
+                        value: (
+                          <Typography tag="p">{nftItem.externalUrl}</Typography>
+                        )
+                      }
+                    ]
+                  : [])
+              ]}
+              inheritColor={false}
+            />
+            {!!nftMedia.length && (
+              <div style={{ width: "100%", padding: "0 2rem 1.5rem 2rem" }}>
+                <SlickSlider
+                  settings={{ ...initialSettings, slidesToShow: imagesToShow }}
+                  mediaFiles={nftMedia}
+                  alignLeft
+                  imageOptimizationOpts={{ height: 500 }}
+                />
+              </div>
+            )}
+          </StyledDetailsSummary>
+        );
+      })}
     </Grid>
   );
 };

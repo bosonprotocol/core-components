@@ -20,6 +20,7 @@ import {
   useGetOfferDetailData
 } from "../detail/useGetOfferDetailData";
 import { Exchange } from "../../../../../types/exchange";
+import { PhygitalProduct } from "../detail/PhygitalProduct";
 const colors = theme.colors.light;
 
 const StyledPrice = styled(Price)`
@@ -123,25 +124,7 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
         <>
           <Typography tag="h3">Phygital product</Typography>
           <Break />
-          <GridContainer
-            itemsPerRow={{
-              xs: 3,
-              s: 3,
-              m: 3,
-              l: 3,
-              xl: 3
-            }}
-            style={{ alignItems: "center" }}
-          >
-            <Typography>
-              This is what you'll get when you purchase this product.
-            </Typography>
-            <Grid flexDirection="column" alignItems="flex-start">
-              <Typography>
-                <b>This product includes:</b>
-              </Typography>
-            </Grid>
-          </GridContainer>
+          <PhygitalProduct offer={offer} />
         </>
       )}
       <Typography tag="h3">Details</Typography>

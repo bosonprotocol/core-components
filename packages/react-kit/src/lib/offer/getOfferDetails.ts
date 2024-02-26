@@ -1,7 +1,7 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../types/offer";
 import { getOfferAnimationUrl } from "./getOfferAnimationUrl";
-import { isTruthy } from "../../types/helpers";
+import { isNftItem } from "../bundle/filter";
 
 interface ITable {
   name: string;
@@ -31,13 +31,13 @@ interface IGetOfferDetails {
   artist: ProductV1OrProductV1ItemSubProductV1Seller | null;
   artistDescription: string;
   images: Array<string>;
-  nftMediaItems:
-    | {
-        url: string;
-        type: "video" | "image";
-      }[]
-    | undefined;
   nftItems: subgraph.NftItemMetadataEntity[] | undefined;
+  bundleItems:
+    | Extract<
+        subgraph.OfferFieldsFragment["metadata"],
+        { __typename: "BundleMetadataEntity" }
+      >["items"]
+    | undefined;
 }
 
 export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
@@ -101,33 +101,15 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
     productV1ItemMetadataEntity?.product?.visuals_images?.map(
       ({ url }: { url: string }) => url
     ) || [];
-  const nftItems =
+  const bundleItems =
     offer.metadata?.__typename === "BundleMetadataEntity"
-      ? offer.metadata.items.filter(
-          (item): item is subgraph.NftItemMetadataEntity =>
-            item.__typename === "NftItemMetadataEntity" ||
-            item.type === subgraph.ItemMetadataType.ItemNft
-        )
+      ? offer.metadata.items
       : undefined;
-  const nftMediaItems:
-    | {
-        url: string;
-        type: "video" | "image";
-      }[]
-    | undefined = nftItems
-    ?.flatMap((nftItem) =>
-      nftItem.image || nftItem.animationUrl
-        ? [
-            ...(nftItem.image
-              ? [{ url: nftItem.image, type: "image" } as const]
-              : []),
-            ...(nftItem.animationUrl
-              ? [{ url: nftItem.animationUrl, type: "video" } as const]
-              : [])
-          ]
-        : null
-    )
-    .filter(isTruthy);
+  const nftItems = bundleItems
+    ? bundleItems.filter((item): item is subgraph.NftItemMetadataEntity =>
+        isNftItem(item)
+      )
+    : undefined;
   return {
     display: false,
     name,
@@ -138,7 +120,7 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
     artist,
     artistDescription,
     images,
-    nftMediaItems,
+    bundleItems,
     nftItems
   };
 };
