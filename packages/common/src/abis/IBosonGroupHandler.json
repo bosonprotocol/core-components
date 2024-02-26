@@ -316,6 +316,11 @@
   },
   {
     "inputs": [],
+    "name": "InvalidPriceDiscoveryPrice",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "InvalidPriceType",
     "type": "error"
   },
@@ -646,6 +651,11 @@
   },
   {
     "inputs": [],
+    "name": "PriceDoesNotCoverPenalty",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "PriceMismatch",
     "type": "error"
   },
@@ -665,7 +675,13 @@
     "type": "error"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "enum BosonTypes.PausableRegion",
+        "name": "region",
+        "type": "uint8"
+      }
+    ],
     "name": "RegionPaused",
     "type": "error"
   },

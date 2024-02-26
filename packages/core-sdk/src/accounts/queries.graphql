@@ -380,7 +380,11 @@ fragment BaseSellerFields on Seller {
   voucherCloneAddress
   active
   contractURI
-  royaltyPercentage
+  royaltyRecipients {
+    id
+    wallet
+    minRoyaltyPercentage
+  }
   metadataUri
   metadata {
     id

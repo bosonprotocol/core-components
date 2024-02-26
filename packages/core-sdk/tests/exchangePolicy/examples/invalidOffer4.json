@@ -35,7 +35,6 @@
     "voucherCloneAddress": "0x87ef301c97c72648bab63c0ea77eddf145d4317b",
     "active": true,
     "contractURI": "ipfs://QmXV5eGPvsLevPPaSyYwV97yHbY1vPfRKK3Y7mpRKKtQ4d",
-    "royaltyPercentage": "200",
     "metadataUri": "ipfs://QmeebkVhK1jgwwX4mKnBSfNv47vqDeeAZ6MZ5SjLUv7c31",
     "metadata": {
       "id": "30-seller-metadata",

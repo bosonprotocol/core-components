@@ -186,7 +186,8 @@ module.exports = {
       "IBosonVoucher",
       "MockNativeMetaTransaction",
       "IBosonGroupHandler",
-      "MockForwarder"
+      "MockForwarder",
+      "IBosonConfigHandler"
     ]
   }
 };

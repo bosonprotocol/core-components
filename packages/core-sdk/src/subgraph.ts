@@ -1177,9 +1177,22 @@ export type ConditionEntity = {
   maxTokenId: Scalars["BigInt"];
   method: Scalars["Int"];
   minTokenId: Scalars["BigInt"];
+  offers: Array<Offer>;
   threshold: Scalars["BigInt"];
   tokenAddress: Scalars["Bytes"];
   tokenType: Scalars["Int"];
+};
+
+/**
+ * Groups
+ *
+ */
+export type ConditionEntityOffersArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Offer_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<Offer_Filter>;
 };
 
 export type ConditionEntity_Filter = {
@@ -1233,6 +1246,7 @@ export type ConditionEntity_Filter = {
   minTokenId_lte?: InputMaybe<Scalars["BigInt"]>;
   minTokenId_not?: InputMaybe<Scalars["BigInt"]>;
   minTokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  offers_?: InputMaybe<Offer_Filter>;
   threshold?: InputMaybe<Scalars["BigInt"]>;
   threshold_gt?: InputMaybe<Scalars["BigInt"]>;
   threshold_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -1264,6 +1278,7 @@ export enum ConditionEntity_OrderBy {
   MaxTokenId = "maxTokenId",
   Method = "method",
   MinTokenId = "minTokenId",
+  Offers = "offers",
   Threshold = "threshold",
   TokenAddress = "tokenAddress",
   TokenType = "tokenType"
@@ -8644,6 +8659,8 @@ export type Query = {
   productV1Variations: Array<ProductV1Variation>;
   rangeEntities: Array<RangeEntity>;
   rangeEntity?: Maybe<RangeEntity>;
+  royaltyRecipientEntities: Array<RoyaltyRecipientEntity>;
+  royaltyRecipientEntity?: Maybe<RoyaltyRecipientEntity>;
   salesChannel?: Maybe<SalesChannel>;
   salesChannelDeployment?: Maybe<SalesChannelDeployment>;
   salesChannelDeployments: Array<SalesChannelDeployment>;
@@ -9401,6 +9418,22 @@ export type QueryRangeEntityArgs = {
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
+export type QueryRoyaltyRecipientEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<RoyaltyRecipientEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RoyaltyRecipientEntity_Filter>;
+};
+
+export type QueryRoyaltyRecipientEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
 export type QuerySalesChannelArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -9601,6 +9634,69 @@ export enum RangeEntity_OrderBy {
   Minted = "minted",
   Owner = "owner",
   Start = "start"
+}
+
+export type RoyaltyRecipientEntity = {
+  __typename?: "RoyaltyRecipientEntity";
+  id: Scalars["ID"];
+  minRoyaltyPercentage: Scalars["BigInt"];
+  seller: Seller;
+  wallet: Scalars["Bytes"];
+};
+
+export type RoyaltyRecipientEntity_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  minRoyaltyPercentage?: InputMaybe<Scalars["BigInt"]>;
+  minRoyaltyPercentage_gt?: InputMaybe<Scalars["BigInt"]>;
+  minRoyaltyPercentage_gte?: InputMaybe<Scalars["BigInt"]>;
+  minRoyaltyPercentage_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  minRoyaltyPercentage_lt?: InputMaybe<Scalars["BigInt"]>;
+  minRoyaltyPercentage_lte?: InputMaybe<Scalars["BigInt"]>;
+  minRoyaltyPercentage_not?: InputMaybe<Scalars["BigInt"]>;
+  minRoyaltyPercentage_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  seller?: InputMaybe<Scalars["String"]>;
+  seller_?: InputMaybe<Seller_Filter>;
+  seller_contains?: InputMaybe<Scalars["String"]>;
+  seller_contains_nocase?: InputMaybe<Scalars["String"]>;
+  seller_ends_with?: InputMaybe<Scalars["String"]>;
+  seller_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_gt?: InputMaybe<Scalars["String"]>;
+  seller_gte?: InputMaybe<Scalars["String"]>;
+  seller_in?: InputMaybe<Array<Scalars["String"]>>;
+  seller_lt?: InputMaybe<Scalars["String"]>;
+  seller_lte?: InputMaybe<Scalars["String"]>;
+  seller_not?: InputMaybe<Scalars["String"]>;
+  seller_not_contains?: InputMaybe<Scalars["String"]>;
+  seller_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  seller_not_ends_with?: InputMaybe<Scalars["String"]>;
+  seller_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  seller_not_starts_with?: InputMaybe<Scalars["String"]>;
+  seller_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_starts_with?: InputMaybe<Scalars["String"]>;
+  seller_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  wallet?: InputMaybe<Scalars["Bytes"]>;
+  wallet_contains?: InputMaybe<Scalars["Bytes"]>;
+  wallet_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  wallet_not?: InputMaybe<Scalars["Bytes"]>;
+  wallet_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  wallet_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+};
+
+export enum RoyaltyRecipientEntity_OrderBy {
+  Id = "id",
+  MinRoyaltyPercentage = "minRoyaltyPercentage",
+  Seller = "seller",
+  Wallet = "wallet"
 }
 
 export type SalesChannel = {
@@ -9882,7 +9978,7 @@ export type Seller = Account & {
   offers: Array<Offer>;
   pendingSeller?: Maybe<PendingSeller>;
   /** Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100% */
-  royaltyPercentage: Scalars["BigInt"];
+  royaltyRecipients: Array<RoyaltyRecipientEntity>;
   sellerId: Scalars["BigInt"];
   treasury: Scalars["Bytes"];
   voucherCloneAddress: Scalars["Bytes"];
@@ -9926,6 +10022,14 @@ export type SellerOffersArgs = {
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   where?: InputMaybe<Offer_Filter>;
+};
+
+export type SellerRoyaltyRecipientsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<RoyaltyRecipientEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<RoyaltyRecipientEntity_Filter>;
 };
 
 export type SellerContactLink = {
@@ -10569,14 +10673,7 @@ export type Seller_Filter = {
   metadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offers_?: InputMaybe<Offer_Filter>;
   pendingSeller_?: InputMaybe<PendingSeller_Filter>;
-  royaltyPercentage?: InputMaybe<Scalars["BigInt"]>;
-  royaltyPercentage_gt?: InputMaybe<Scalars["BigInt"]>;
-  royaltyPercentage_gte?: InputMaybe<Scalars["BigInt"]>;
-  royaltyPercentage_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  royaltyPercentage_lt?: InputMaybe<Scalars["BigInt"]>;
-  royaltyPercentage_lte?: InputMaybe<Scalars["BigInt"]>;
-  royaltyPercentage_not?: InputMaybe<Scalars["BigInt"]>;
-  royaltyPercentage_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  royaltyRecipients_?: InputMaybe<RoyaltyRecipientEntity_Filter>;
   sellerId?: InputMaybe<Scalars["BigInt"]>;
   sellerId_gt?: InputMaybe<Scalars["BigInt"]>;
   sellerId_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -10616,7 +10713,7 @@ export enum Seller_OrderBy {
   MetadataUri = "metadataUri",
   Offers = "offers",
   PendingSeller = "pendingSeller",
-  RoyaltyPercentage = "royaltyPercentage",
+  RoyaltyRecipients = "royaltyRecipients",
   SellerId = "sellerId",
   Treasury = "treasury",
   VoucherCloneAddress = "voucherCloneAddress"
@@ -10717,6 +10814,8 @@ export type Subscription = {
   productV1Variations: Array<ProductV1Variation>;
   rangeEntities: Array<RangeEntity>;
   rangeEntity?: Maybe<RangeEntity>;
+  royaltyRecipientEntities: Array<RoyaltyRecipientEntity>;
+  royaltyRecipientEntity?: Maybe<RoyaltyRecipientEntity>;
   salesChannel?: Maybe<SalesChannel>;
   salesChannelDeployment?: Maybe<SalesChannelDeployment>;
   salesChannelDeployments: Array<SalesChannelDeployment>;
@@ -11474,6 +11573,22 @@ export type SubscriptionRangeEntityArgs = {
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
+export type SubscriptionRoyaltyRecipientEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<RoyaltyRecipientEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RoyaltyRecipientEntity_Filter>;
+};
+
+export type SubscriptionRoyaltyRecipientEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
 export type SubscriptionSalesChannelArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -11870,7 +11985,6 @@ export type GetSellerByIdQueryQuery = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
     collections: Array<{
       __typename?: "OfferCollection";
@@ -11964,8 +12078,13 @@ export type GetSellerByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -12166,8 +12285,13 @@ export type GetSellerByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -12383,8 +12507,13 @@ export type GetSellerByIdQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -12747,8 +12876,13 @@ export type GetSellerByIdQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -12874,8 +13008,13 @@ export type GetSellerByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -13023,8 +13162,13 @@ export type GetSellerByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -13154,6 +13298,12 @@ export type GetSellerByIdQueryQuery = {
             | { __typename?: "Seller"; id: string };
         }
     >;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -13260,7 +13410,6 @@ export type GetSellersQueryQuery = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
     collections: Array<{
       __typename?: "OfferCollection";
@@ -13354,8 +13503,13 @@ export type GetSellersQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -13556,8 +13710,13 @@ export type GetSellersQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -13773,8 +13932,13 @@ export type GetSellersQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -14137,8 +14301,13 @@ export type GetSellersQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -14264,8 +14433,13 @@ export type GetSellersQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -14413,8 +14587,13 @@ export type GetSellersQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -14544,6 +14723,12 @@ export type GetSellersQueryQuery = {
             | { __typename?: "Seller"; id: string };
         }
     >;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -14694,8 +14879,13 @@ export type GetBuyerByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -14928,8 +15118,13 @@ export type GetBuyersQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -15148,8 +15343,13 @@ export type GetDisputeResolverByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -15350,8 +15550,13 @@ export type GetDisputeResolverByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -15567,8 +15772,13 @@ export type GetDisputeResolverByIdQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -15931,8 +16141,13 @@ export type GetDisputeResolverByIdQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -16058,8 +16273,13 @@ export type GetDisputeResolverByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -16338,8 +16558,13 @@ export type GetDisputeResolversQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -16540,8 +16765,13 @@ export type GetDisputeResolversQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -16757,8 +16987,13 @@ export type GetDisputeResolversQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -17121,8 +17356,13 @@ export type GetDisputeResolversQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -17248,8 +17488,13 @@ export type GetDisputeResolversQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -17500,8 +17745,13 @@ export type GetOfferCollectionsQueryQuery = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -17611,8 +17861,13 @@ export type GetOfferCollectionsQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -17813,8 +18068,13 @@ export type GetOfferCollectionsQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -18030,8 +18290,13 @@ export type GetOfferCollectionsQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -18394,8 +18659,13 @@ export type GetOfferCollectionsQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -18521,8 +18791,13 @@ export type GetOfferCollectionsQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -18672,8 +18947,13 @@ export type OfferCollectionFieldsFragment = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -18783,8 +19063,13 @@ export type OfferCollectionFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -18985,8 +19270,13 @@ export type OfferCollectionFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -19200,8 +19490,13 @@ export type OfferCollectionFieldsFragment = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -19554,8 +19849,13 @@ export type OfferCollectionFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -19681,8 +19981,13 @@ export type OfferCollectionFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -19827,7 +20132,6 @@ export type SellerFieldsFragment = {
   voucherCloneAddress: string;
   active: boolean;
   contractURI: string;
-  royaltyPercentage: string;
   metadataUri: string;
   collections: Array<{
     __typename?: "OfferCollection";
@@ -19921,8 +20225,13 @@ export type SellerFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -20123,8 +20432,13 @@ export type SellerFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -20338,8 +20652,13 @@ export type SellerFieldsFragment = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -20692,8 +21011,13 @@ export type SellerFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -20819,8 +21143,13 @@ export type SellerFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -20968,8 +21297,13 @@ export type SellerFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -21099,6 +21433,12 @@ export type SellerFieldsFragment = {
           | { __typename?: "Seller"; id: string };
       }
   >;
+  royaltyRecipients: Array<{
+    __typename?: "RoyaltyRecipientEntity";
+    id: string;
+    wallet: string;
+    minRoyaltyPercentage: string;
+  }>;
   metadata?: {
     __typename?: "SellerMetadata";
     id: string;
@@ -21219,8 +21559,13 @@ export type BaseSellerFieldsFragment = {
   voucherCloneAddress: string;
   active: boolean;
   contractURI: string;
-  royaltyPercentage: string;
   metadataUri: string;
+  royaltyRecipients: Array<{
+    __typename?: "RoyaltyRecipientEntity";
+    id: string;
+    wallet: string;
+    minRoyaltyPercentage: string;
+  }>;
   metadata?: {
     __typename?: "SellerMetadata";
     id: string;
@@ -21362,8 +21707,13 @@ export type BuyerFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -21570,8 +21920,13 @@ export type DisputeResolverFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -21772,8 +22127,13 @@ export type DisputeResolverFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -21987,8 +22347,13 @@ export type DisputeResolverFieldsFragment = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -22341,8 +22706,13 @@ export type DisputeResolverFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -22468,8 +22838,13 @@ export type DisputeResolverFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -22805,8 +23180,13 @@ export type GetDisputeByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -22878,8 +23258,13 @@ export type GetDisputeByIdQueryQuery = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -23018,8 +23403,13 @@ export type GetDisputesQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -23091,8 +23481,13 @@ export type GetDisputesQueryQuery = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -23221,8 +23616,13 @@ export type DisputeFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -23294,8 +23694,13 @@ export type DisputeFieldsFragment = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -23454,8 +23859,13 @@ export type GetExchangeTokenByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -23656,8 +24066,13 @@ export type GetExchangeTokenByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -23873,8 +24288,13 @@ export type GetExchangeTokenByIdQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -24237,8 +24657,13 @@ export type GetExchangeTokenByIdQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -24364,8 +24789,13 @@ export type GetExchangeTokenByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -24555,8 +24985,13 @@ export type GetExchangeTokensQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -24757,8 +25192,13 @@ export type GetExchangeTokensQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -24974,8 +25414,13 @@ export type GetExchangeTokensQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -25338,8 +25783,13 @@ export type GetExchangeTokensQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -25465,8 +25915,13 @@ export type GetExchangeTokensQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -25634,8 +26089,13 @@ export type ExchangeTokenFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -25836,8 +26296,13 @@ export type ExchangeTokenFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -26051,8 +26516,13 @@ export type ExchangeTokenFieldsFragment = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -26405,8 +26875,13 @@ export type ExchangeTokenFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -26532,8 +27007,13 @@ export type ExchangeTokenFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -26884,8 +27364,13 @@ export type GetExchangeByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -27086,8 +27571,13 @@ export type GetExchangeByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -27303,8 +27793,13 @@ export type GetExchangeByIdQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -27667,8 +28162,13 @@ export type GetExchangeByIdQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -27794,8 +28294,13 @@ export type GetExchangeByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -27929,8 +28434,13 @@ export type GetExchangeByIdQueryQuery = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -28067,8 +28577,13 @@ export type GetExchangesQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -28269,8 +28784,13 @@ export type GetExchangesQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -28486,8 +29006,13 @@ export type GetExchangesQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -28850,8 +29375,13 @@ export type GetExchangesQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -28977,8 +29507,13 @@ export type GetExchangesQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -29112,8 +29647,13 @@ export type GetExchangesQueryQuery = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -29240,8 +29780,13 @@ export type ExchangeFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -29442,8 +29987,13 @@ export type ExchangeFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -29657,8 +30207,13 @@ export type ExchangeFieldsFragment = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -30011,8 +30566,13 @@ export type ExchangeFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -30138,8 +30698,13 @@ export type ExchangeFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -30268,8 +30833,13 @@ export type ExchangeFieldsFragment = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -30372,8 +30942,13 @@ export type BaseExchangeFieldsFragment = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -30611,8 +31186,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -30813,8 +31393,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -31030,8 +31615,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -31394,8 +31984,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -31521,8 +32116,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -31635,8 +32235,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -31799,8 +32404,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -32001,8 +32611,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -32218,8 +32833,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -32582,8 +33202,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -32709,8 +33334,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -32823,8 +33453,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -32977,8 +33612,13 @@ export type BaseMetadataEntityFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -33179,8 +33819,13 @@ export type BaseMetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -33394,8 +34039,13 @@ export type BaseMetadataEntityFieldsFragment = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -33748,8 +34398,13 @@ export type BaseMetadataEntityFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -33875,8 +34530,13 @@ export type BaseMetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -33989,8 +34649,13 @@ export type BaseMetadataEntityFieldsFragment = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -34142,8 +34807,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -34344,8 +35014,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -34559,8 +35234,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -34913,8 +35593,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -35040,8 +35725,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -35154,8 +35844,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -35343,8 +36038,13 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -35428,8 +36128,13 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -35630,8 +36335,13 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -35847,8 +36557,13 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -36211,8 +36926,13 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -36338,8 +37058,13 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -36452,8 +37177,13 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -36557,8 +37287,13 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -36774,8 +37509,13 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -37059,8 +37799,13 @@ export type GetBundleMetadataEntitiesQueryQuery = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -37144,8 +37889,13 @@ export type GetBundleMetadataEntitiesQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -37346,8 +38096,13 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -37563,8 +38318,13 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -37927,8 +38687,13 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -38054,8 +38819,13 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -38168,8 +38938,13 @@ export type GetBundleMetadataEntitiesQueryQuery = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -38273,8 +39048,13 @@ export type GetBundleMetadataEntitiesQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -38490,8 +39270,13 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -38765,8 +39550,13 @@ export type BundleMetadataEntityFieldsFragment = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -38850,8 +39640,13 @@ export type BundleMetadataEntityFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -39052,8 +39847,13 @@ export type BundleMetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -39267,8 +40067,13 @@ export type BundleMetadataEntityFieldsFragment = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -39621,8 +40426,13 @@ export type BundleMetadataEntityFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -39748,8 +40558,13 @@ export type BundleMetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -39862,8 +40677,13 @@ export type BundleMetadataEntityFieldsFragment = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -39967,8 +40787,13 @@ export type BundleMetadataEntityFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -40184,8 +41009,13 @@ export type BundleMetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -40458,8 +41288,13 @@ export type BaseBundleMetadataEntityFieldsFragment = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -40543,8 +41378,13 @@ export type BaseBundleMetadataEntityFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -40745,8 +41585,13 @@ export type BaseBundleMetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -40960,8 +41805,13 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -41314,8 +42164,13 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -41441,8 +42296,13 @@ export type BaseBundleMetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -41555,8 +42415,13 @@ export type BaseBundleMetadataEntityFieldsFragment = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -41660,8 +42525,13 @@ export type BaseBundleMetadataEntityFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -41877,8 +42747,13 @@ export type BaseBundleMetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -42186,8 +43061,13 @@ export type GetProductV1ProductsQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -42393,8 +43273,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             voucherCloneAddress: string;
             active: boolean;
             contractURI: string;
-            royaltyPercentage: string;
             metadataUri: string;
+            royaltyRecipients: Array<{
+              __typename?: "RoyaltyRecipientEntity";
+              id: string;
+              wallet: string;
+              minRoyaltyPercentage: string;
+            }>;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
@@ -42478,8 +43363,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -42680,8 +43570,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -42897,8 +43792,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                           voucherCloneAddress: string;
                           active: boolean;
                           contractURI: string;
-                          royaltyPercentage: string;
                           metadataUri: string;
+                          royaltyRecipients: Array<{
+                            __typename?: "RoyaltyRecipientEntity";
+                            id: string;
+                            wallet: string;
+                            minRoyaltyPercentage: string;
+                          }>;
                           metadata?: {
                             __typename?: "SellerMetadata";
                             id: string;
@@ -43261,8 +44161,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     voucherCloneAddress: string;
                     active: boolean;
                     contractURI: string;
-                    royaltyPercentage: string;
                     metadataUri: string;
+                    royaltyRecipients: Array<{
+                      __typename?: "RoyaltyRecipientEntity";
+                      id: string;
+                      wallet: string;
+                      minRoyaltyPercentage: string;
+                    }>;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
@@ -43388,8 +44293,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -43604,8 +44514,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -43689,8 +44604,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             voucherCloneAddress: string;
             active: boolean;
             contractURI: string;
-            royaltyPercentage: string;
             metadataUri: string;
+            royaltyRecipients: Array<{
+              __typename?: "RoyaltyRecipientEntity";
+              id: string;
+              wallet: string;
+              minRoyaltyPercentage: string;
+            }>;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
@@ -43891,8 +44811,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     voucherCloneAddress: string;
                     active: boolean;
                     contractURI: string;
-                    royaltyPercentage: string;
                     metadataUri: string;
+                    royaltyRecipients: Array<{
+                      __typename?: "RoyaltyRecipientEntity";
+                      id: string;
+                      wallet: string;
+                      minRoyaltyPercentage: string;
+                    }>;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
@@ -44108,8 +45033,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                             voucherCloneAddress: string;
                             active: boolean;
                             contractURI: string;
-                            royaltyPercentage: string;
                             metadataUri: string;
+                            royaltyRecipients: Array<{
+                              __typename?: "RoyaltyRecipientEntity";
+                              id: string;
+                              wallet: string;
+                              minRoyaltyPercentage: string;
+                            }>;
                             metadata?: {
                               __typename?: "SellerMetadata";
                               id: string;
@@ -44472,8 +45402,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -44599,8 +45534,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     voucherCloneAddress: string;
                     active: boolean;
                     contractURI: string;
-                    royaltyPercentage: string;
                     metadataUri: string;
+                    royaltyRecipients: Array<{
+                      __typename?: "RoyaltyRecipientEntity";
+                      id: string;
+                      wallet: string;
+                      minRoyaltyPercentage: string;
+                    }>;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
@@ -44713,8 +45653,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -44818,8 +45763,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             voucherCloneAddress: string;
             active: boolean;
             contractURI: string;
-            royaltyPercentage: string;
             metadataUri: string;
+            royaltyRecipients: Array<{
+              __typename?: "RoyaltyRecipientEntity";
+              id: string;
+              wallet: string;
+              minRoyaltyPercentage: string;
+            }>;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
@@ -45039,8 +45989,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     voucherCloneAddress: string;
                     active: boolean;
                     contractURI: string;
-                    royaltyPercentage: string;
                     metadataUri: string;
+                    royaltyRecipients: Array<{
+                      __typename?: "RoyaltyRecipientEntity";
+                      id: string;
+                      wallet: string;
+                      minRoyaltyPercentage: string;
+                    }>;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
@@ -45295,8 +46250,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -45502,8 +46462,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             voucherCloneAddress: string;
             active: boolean;
             contractURI: string;
-            royaltyPercentage: string;
             metadataUri: string;
+            royaltyRecipients: Array<{
+              __typename?: "RoyaltyRecipientEntity";
+              id: string;
+              wallet: string;
+              minRoyaltyPercentage: string;
+            }>;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
@@ -45587,8 +46552,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -45789,8 +46759,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -46006,8 +46981,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                           voucherCloneAddress: string;
                           active: boolean;
                           contractURI: string;
-                          royaltyPercentage: string;
                           metadataUri: string;
+                          royaltyRecipients: Array<{
+                            __typename?: "RoyaltyRecipientEntity";
+                            id: string;
+                            wallet: string;
+                            minRoyaltyPercentage: string;
+                          }>;
                           metadata?: {
                             __typename?: "SellerMetadata";
                             id: string;
@@ -46370,8 +47350,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     voucherCloneAddress: string;
                     active: boolean;
                     contractURI: string;
-                    royaltyPercentage: string;
                     metadataUri: string;
+                    royaltyRecipients: Array<{
+                      __typename?: "RoyaltyRecipientEntity";
+                      id: string;
+                      wallet: string;
+                      minRoyaltyPercentage: string;
+                    }>;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
@@ -46497,8 +47482,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -46713,8 +47703,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -46798,8 +47793,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             voucherCloneAddress: string;
             active: boolean;
             contractURI: string;
-            royaltyPercentage: string;
             metadataUri: string;
+            royaltyRecipients: Array<{
+              __typename?: "RoyaltyRecipientEntity";
+              id: string;
+              wallet: string;
+              minRoyaltyPercentage: string;
+            }>;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
@@ -47000,8 +48000,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     voucherCloneAddress: string;
                     active: boolean;
                     contractURI: string;
-                    royaltyPercentage: string;
                     metadataUri: string;
+                    royaltyRecipients: Array<{
+                      __typename?: "RoyaltyRecipientEntity";
+                      id: string;
+                      wallet: string;
+                      minRoyaltyPercentage: string;
+                    }>;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
@@ -47217,8 +48222,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                             voucherCloneAddress: string;
                             active: boolean;
                             contractURI: string;
-                            royaltyPercentage: string;
                             metadataUri: string;
+                            royaltyRecipients: Array<{
+                              __typename?: "RoyaltyRecipientEntity";
+                              id: string;
+                              wallet: string;
+                              minRoyaltyPercentage: string;
+                            }>;
                             metadata?: {
                               __typename?: "SellerMetadata";
                               id: string;
@@ -47581,8 +48591,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -47708,8 +48723,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     voucherCloneAddress: string;
                     active: boolean;
                     contractURI: string;
-                    royaltyPercentage: string;
                     metadataUri: string;
+                    royaltyRecipients: Array<{
+                      __typename?: "RoyaltyRecipientEntity";
+                      id: string;
+                      wallet: string;
+                      minRoyaltyPercentage: string;
+                    }>;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
@@ -47822,8 +48842,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -47927,8 +48952,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             voucherCloneAddress: string;
             active: boolean;
             contractURI: string;
-            royaltyPercentage: string;
             metadataUri: string;
+            royaltyRecipients: Array<{
+              __typename?: "RoyaltyRecipientEntity";
+              id: string;
+              wallet: string;
+              minRoyaltyPercentage: string;
+            }>;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
@@ -48148,8 +49178,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     voucherCloneAddress: string;
                     active: boolean;
                     contractURI: string;
-                    royaltyPercentage: string;
                     metadataUri: string;
+                    royaltyRecipients: Array<{
+                      __typename?: "RoyaltyRecipientEntity";
+                      id: string;
+                      wallet: string;
+                      minRoyaltyPercentage: string;
+                    }>;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
@@ -48404,8 +49439,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -48625,8 +49665,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -48710,8 +49755,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -48912,8 +49962,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -49129,8 +50184,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -49493,8 +50553,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -49620,8 +50685,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -49734,8 +50804,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -49918,8 +50993,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -50045,8 +51125,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -50236,8 +51321,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -50321,8 +51411,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -50523,8 +51618,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -50740,8 +51840,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -51104,8 +52209,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -51231,8 +52341,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -51345,8 +52460,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -51529,8 +52649,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -51656,8 +52781,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -51837,8 +52967,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -51922,8 +53057,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -52124,8 +53264,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -52339,8 +53484,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -52693,8 +53843,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -52820,8 +53975,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -52934,8 +54094,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -53118,8 +54283,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -53245,8 +54415,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -53425,8 +54600,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -53510,8 +54690,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -53712,8 +54897,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -53927,8 +55117,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -54281,8 +55476,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -54408,8 +55608,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -54522,8 +55727,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -54706,8 +55916,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -54833,8 +56048,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -55030,8 +56250,13 @@ export type BaseProductV1ProductFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -55226,8 +56451,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -55311,8 +56541,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -55513,8 +56748,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -55730,8 +56970,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -56094,8 +57339,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -56221,8 +57471,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -56437,8 +57692,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             voucherCloneAddress: string;
             active: boolean;
             contractURI: string;
-            royaltyPercentage: string;
             metadataUri: string;
+            royaltyRecipients: Array<{
+              __typename?: "RoyaltyRecipientEntity";
+              id: string;
+              wallet: string;
+              minRoyaltyPercentage: string;
+            }>;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
@@ -56522,8 +57782,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -56724,8 +57989,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -56941,8 +58211,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                           voucherCloneAddress: string;
                           active: boolean;
                           contractURI: string;
-                          royaltyPercentage: string;
                           metadataUri: string;
+                          royaltyRecipients: Array<{
+                            __typename?: "RoyaltyRecipientEntity";
+                            id: string;
+                            wallet: string;
+                            minRoyaltyPercentage: string;
+                          }>;
                           metadata?: {
                             __typename?: "SellerMetadata";
                             id: string;
@@ -57305,8 +58580,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     voucherCloneAddress: string;
                     active: boolean;
                     contractURI: string;
-                    royaltyPercentage: string;
                     metadataUri: string;
+                    royaltyRecipients: Array<{
+                      __typename?: "RoyaltyRecipientEntity";
+                      id: string;
+                      wallet: string;
+                      minRoyaltyPercentage: string;
+                    }>;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
@@ -57432,8 +58712,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -57546,8 +58831,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -57651,8 +58941,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -57872,8 +59167,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -58128,8 +59428,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -58324,8 +59629,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -58409,8 +59719,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -58611,8 +59926,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -58828,8 +60148,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                         voucherCloneAddress: string;
                         active: boolean;
                         contractURI: string;
-                        royaltyPercentage: string;
                         metadataUri: string;
+                        royaltyRecipients: Array<{
+                          __typename?: "RoyaltyRecipientEntity";
+                          id: string;
+                          wallet: string;
+                          minRoyaltyPercentage: string;
+                        }>;
                         metadata?: {
                           __typename?: "SellerMetadata";
                           id: string;
@@ -59192,8 +60517,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -59319,8 +60649,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -59535,8 +60870,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             voucherCloneAddress: string;
             active: boolean;
             contractURI: string;
-            royaltyPercentage: string;
             metadataUri: string;
+            royaltyRecipients: Array<{
+              __typename?: "RoyaltyRecipientEntity";
+              id: string;
+              wallet: string;
+              minRoyaltyPercentage: string;
+            }>;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
@@ -59620,8 +60960,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -59822,8 +61167,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -60039,8 +61389,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                           voucherCloneAddress: string;
                           active: boolean;
                           contractURI: string;
-                          royaltyPercentage: string;
                           metadataUri: string;
+                          royaltyRecipients: Array<{
+                            __typename?: "RoyaltyRecipientEntity";
+                            id: string;
+                            wallet: string;
+                            minRoyaltyPercentage: string;
+                          }>;
                           metadata?: {
                             __typename?: "SellerMetadata";
                             id: string;
@@ -60403,8 +61758,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     voucherCloneAddress: string;
                     active: boolean;
                     contractURI: string;
-                    royaltyPercentage: string;
                     metadataUri: string;
+                    royaltyRecipients: Array<{
+                      __typename?: "RoyaltyRecipientEntity";
+                      id: string;
+                      wallet: string;
+                      minRoyaltyPercentage: string;
+                    }>;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
@@ -60530,8 +61890,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -60644,8 +62009,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -60749,8 +62119,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           voucherCloneAddress: string;
           active: boolean;
           contractURI: string;
-          royaltyPercentage: string;
           metadataUri: string;
+          royaltyRecipients: Array<{
+            __typename?: "RoyaltyRecipientEntity";
+            id: string;
+            wallet: string;
+            minRoyaltyPercentage: string;
+          }>;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
@@ -60970,8 +62345,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   voucherCloneAddress: string;
                   active: boolean;
                   contractURI: string;
-                  royaltyPercentage: string;
                   metadataUri: string;
+                  royaltyRecipients: Array<{
+                    __typename?: "RoyaltyRecipientEntity";
+                    id: string;
+                    wallet: string;
+                    minRoyaltyPercentage: string;
+                  }>;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
@@ -61226,8 +62606,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -61395,8 +62780,13 @@ export type BaseProductV1SellerFieldsFragment = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -61625,8 +63015,13 @@ export type GetOfferByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -61710,8 +63105,13 @@ export type GetOfferByIdQueryQuery = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -61912,8 +63312,13 @@ export type GetOfferByIdQueryQuery = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -62127,8 +63532,13 @@ export type GetOfferByIdQueryQuery = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -62481,8 +63891,13 @@ export type GetOfferByIdQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -62608,8 +64023,13 @@ export type GetOfferByIdQueryQuery = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -62802,8 +64222,13 @@ export type GetOffersQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
         contractURI: string;
-        royaltyPercentage: string;
         metadataUri: string;
+        royaltyRecipients: Array<{
+          __typename?: "RoyaltyRecipientEntity";
+          id: string;
+          wallet: string;
+          minRoyaltyPercentage: string;
+        }>;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
@@ -62887,8 +64312,13 @@ export type GetOffersQueryQuery = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -63089,8 +64519,13 @@ export type GetOffersQueryQuery = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -63304,8 +64739,13 @@ export type GetOffersQueryQuery = {
                       voucherCloneAddress: string;
                       active: boolean;
                       contractURI: string;
-                      royaltyPercentage: string;
                       metadataUri: string;
+                      royaltyRecipients: Array<{
+                        __typename?: "RoyaltyRecipientEntity";
+                        id: string;
+                        wallet: string;
+                        minRoyaltyPercentage: string;
+                      }>;
                       metadata?: {
                         __typename?: "SellerMetadata";
                         id: string;
@@ -63658,8 +65098,13 @@ export type GetOffersQueryQuery = {
                 voucherCloneAddress: string;
                 active: boolean;
                 contractURI: string;
-                royaltyPercentage: string;
                 metadataUri: string;
+                royaltyRecipients: Array<{
+                  __typename?: "RoyaltyRecipientEntity";
+                  id: string;
+                  wallet: string;
+                  minRoyaltyPercentage: string;
+                }>;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
@@ -63785,8 +65230,13 @@ export type GetOffersQueryQuery = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -64071,8 +65521,13 @@ export type OfferFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
       contractURI: string;
-      royaltyPercentage: string;
       metadataUri: string;
+      royaltyRecipients: Array<{
+        __typename?: "RoyaltyRecipientEntity";
+        id: string;
+        wallet: string;
+        minRoyaltyPercentage: string;
+      }>;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
@@ -64156,8 +65611,13 @@ export type OfferFieldsFragment = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -64358,8 +65818,13 @@ export type OfferFieldsFragment = {
             voucherCloneAddress: string;
             active: boolean;
             contractURI: string;
-            royaltyPercentage: string;
             metadataUri: string;
+            royaltyRecipients: Array<{
+              __typename?: "RoyaltyRecipientEntity";
+              id: string;
+              wallet: string;
+              minRoyaltyPercentage: string;
+            }>;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
@@ -64573,8 +66038,13 @@ export type OfferFieldsFragment = {
                     voucherCloneAddress: string;
                     active: boolean;
                     contractURI: string;
-                    royaltyPercentage: string;
                     metadataUri: string;
+                    royaltyRecipients: Array<{
+                      __typename?: "RoyaltyRecipientEntity";
+                      id: string;
+                      wallet: string;
+                      minRoyaltyPercentage: string;
+                    }>;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
@@ -64927,8 +66397,13 @@ export type OfferFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -65054,8 +66529,13 @@ export type OfferFieldsFragment = {
             voucherCloneAddress: string;
             active: boolean;
             contractURI: string;
-            royaltyPercentage: string;
             metadataUri: string;
+            royaltyRecipients: Array<{
+              __typename?: "RoyaltyRecipientEntity";
+              id: string;
+              wallet: string;
+              minRoyaltyPercentage: string;
+            }>;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
@@ -65208,8 +66688,13 @@ export type BaseOfferFieldsFragment = {
     voucherCloneAddress: string;
     active: boolean;
     contractURI: string;
-    royaltyPercentage: string;
     metadataUri: string;
+    royaltyRecipients: Array<{
+      __typename?: "RoyaltyRecipientEntity";
+      id: string;
+      wallet: string;
+      minRoyaltyPercentage: string;
+    }>;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
@@ -65410,8 +66895,13 @@ export type BaseOfferFieldsFragment = {
             voucherCloneAddress: string;
             active: boolean;
             contractURI: string;
-            royaltyPercentage: string;
             metadataUri: string;
+            royaltyRecipients: Array<{
+              __typename?: "RoyaltyRecipientEntity";
+              id: string;
+              wallet: string;
+              minRoyaltyPercentage: string;
+            }>;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
@@ -65625,8 +67115,13 @@ export type BaseOfferFieldsFragment = {
                     voucherCloneAddress: string;
                     active: boolean;
                     contractURI: string;
-                    royaltyPercentage: string;
                     metadataUri: string;
+                    royaltyRecipients: Array<{
+                      __typename?: "RoyaltyRecipientEntity";
+                      id: string;
+                      wallet: string;
+                      minRoyaltyPercentage: string;
+                    }>;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
@@ -65979,8 +67474,13 @@ export type BaseOfferFieldsFragment = {
               voucherCloneAddress: string;
               active: boolean;
               contractURI: string;
-              royaltyPercentage: string;
               metadataUri: string;
+              royaltyRecipients: Array<{
+                __typename?: "RoyaltyRecipientEntity";
+                id: string;
+                wallet: string;
+                minRoyaltyPercentage: string;
+              }>;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
@@ -66106,8 +67606,13 @@ export type BaseOfferFieldsFragment = {
             voucherCloneAddress: string;
             active: boolean;
             contractURI: string;
-            royaltyPercentage: string;
             metadataUri: string;
+            royaltyRecipients: Array<{
+              __typename?: "RoyaltyRecipientEntity";
+              id: string;
+              wallet: string;
+              minRoyaltyPercentage: string;
+            }>;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
@@ -66295,7 +67800,11 @@ export const BaseSellerFieldsFragmentDoc = gql`
     voucherCloneAddress
     active
     contractURI
-    royaltyPercentage
+    royaltyRecipients {
+      id
+      wallet
+      minRoyaltyPercentage
+    }
     metadataUri
     metadata {
       id

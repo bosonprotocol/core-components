@@ -13,7 +13,8 @@ import {
   DisputeResolverUpdateApplied,
   DisputeResolverUpdatePending,
   CollectionCreated,
-  IBosonAccountHandler
+  IBosonAccountHandler,
+  RoyaltyRecipientsChanged
 } from "../../generated/BosonAccountHandler/IBosonAccountHandler";
 import {
   SellerCreated as SellerCreatedLegacy,
@@ -30,7 +31,8 @@ import {
   PendingSeller,
   DisputeResolver,
   PendingDisputeResolver,
-  OfferCollection
+  OfferCollection,
+  RoyaltyRecipientEntity
 } from "../../generated/schema";
 import { BosonVoucher } from "../../generated/templates";
 import {
@@ -597,9 +599,9 @@ function saveOfferCollection(
   let offerCollection = OfferCollection.load(offerCollectionId);
 
   if (offerCollection) {
-     log.warning("Offer collection with ID '{}' already exists!", [
-        offerCollectionId
-      ]);
+    log.warning("Offer collection with ID '{}' already exists!", [
+      offerCollectionId
+    ]);
   } else {
     offerCollection = new OfferCollection(offerCollectionId);
     offerCollection.sellerId = sellerId;
@@ -656,4 +658,29 @@ export function handleCollectionCreatedEvent(event: CollectionCreated): void {
     event.params.externalId,
     externalId
   );
+}
+
+export function handleRoyaltyRecipientsChangedEvent(
+  event: RoyaltyRecipientsChanged
+): void {
+  const sellerId = event.params.sellerId.toString();
+  const royaltyRecipients = event.params.royaltyRecipients;
+  for (let i = 0; i < royaltyRecipients.length; i++) {
+    const wallet = royaltyRecipients[i].wallet;
+    const minRoyaltyPercentage = royaltyRecipients[i].minRoyaltyPercentage;
+    const royaltyRecipientId = getRoyaltyRecipientId(sellerId, wallet);
+    let royaltyRecipient = RoyaltyRecipientEntity.load(royaltyRecipientId);
+    if (!royaltyRecipient) {
+      royaltyRecipient = new RoyaltyRecipientEntity(royaltyRecipientId);
+      royaltyRecipient.seller = sellerId;
+      royaltyRecipient.wallet = wallet;
+    }
+    royaltyRecipient.minRoyaltyPercentage = minRoyaltyPercentage;
+    royaltyRecipient.save();
+    // TODO: retrieve (and delete) all royaltyRecipient of the same seller that are no longer in the list
+  }
+}
+
+function getRoyaltyRecipientId(sellerId: string, wallet: Bytes): string {
+  return `${sellerId}-royalty-${wallet.toHexString()}`;
 }

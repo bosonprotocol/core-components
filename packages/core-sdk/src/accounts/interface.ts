@@ -1,6 +1,6 @@
 import { Interface } from "@ethersproject/abi";
 import { formatBytes32String } from "@ethersproject/strings";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import {
   CreateSellerArgs,
   CreateDisputeResolverArgs,
@@ -16,7 +16,8 @@ import {
   SellerUpdateFields,
   OptInToDisputeResolverUpdateArgs,
   DisputeResolverUpdateFields,
-  CreateCollectionArgs
+  CreateCollectionArgs,
+  RoyaltyRecipientInfo
 } from "./types";
 import { AddressZero } from "@ethersproject/constants";
 import { INITIAL_COLLECTION_ID } from "./handler";
@@ -272,4 +273,51 @@ export function decodeCalculateCollectionAddress(result: string): {
       result
     );
   return { collectionAddress, isAvailable };
+}
+
+export function encodeAddRoyaltyRecipients(args: {
+  sellerId: BigNumberish;
+  royaltyRecipients: RoyaltyRecipientInfo[];
+}) {
+  return bosonAccountHandlerIface.encodeFunctionData("addRoyaltyRecipients", [
+    args.sellerId,
+    args.royaltyRecipients
+  ]);
+}
+
+export function encodeUpdateRoyaltyRecipients(args: {
+  sellerId: BigNumberish;
+  royaltyRecipientIds: BigNumberish[];
+  royaltyRecipients: RoyaltyRecipientInfo[];
+}) {
+  return bosonAccountHandlerIface.encodeFunctionData(
+    "updateRoyaltyRecipients",
+    [args.sellerId, args.royaltyRecipientIds, args.royaltyRecipients]
+  );
+}
+
+export function encodeGetRoyaltyRecipients(args: { sellerId: BigNumberish }) {
+  return bosonAccountHandlerIface.encodeFunctionData("getRoyaltyRecipients", [
+    args.sellerId
+  ]);
+}
+
+export function decodeGetRoyaltyRecipients(
+  result: string
+): RoyaltyRecipientInfo[] {
+  const [royaltyRecipients] = bosonAccountHandlerIface.decodeFunctionResult(
+    "getRoyaltyRecipients",
+    result
+  );
+  // Temporary patch (until the protocol ABI for getRoyaltyRecipients() is fixed)
+  const trim = (s: string) => {
+    const s1 = s.replace("0x", "");
+    return `0x${s1.length <= 40 ? "0".repeat(40 - s1.length) : ""}${s1}`;
+  };
+  return royaltyRecipients.map((rr) => {
+    return {
+      wallet: trim(BigNumber.from(rr.id).toHexString()),
+      minRoyaltyPercentage: BigNumber.from(rr.wallet).toString()
+    };
+  });
 }

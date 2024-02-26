@@ -45,3 +45,8 @@ export type DisputeResolverUpdates = Partial<
     escalationResponsePeriodInMS: BigNumberish;
   }
 >;
+
+export type RoyaltyRecipientInfo = {
+  wallet: string;
+  minRoyaltyPercentage: BigNumberish;
+};

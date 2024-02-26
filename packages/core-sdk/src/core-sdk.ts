@@ -24,6 +24,7 @@ import { ERC20Mixin } from "./erc20/mixin";
 import { ERC721Mixin } from "./erc721/mixin";
 import { ERC1155Mixin } from "./erc1155/mixin";
 import { ERC165Mixin } from "./erc165/mixin";
+import { ProtocolConfigMixin } from "./protocol-config/mixin";
 
 export class CoreSDK extends BaseCoreSDK {
   /**
@@ -143,7 +144,8 @@ export interface CoreSDK
     ERC20Mixin,
     ERC721Mixin,
     ERC1155Mixin,
-    ERC165Mixin {}
+    ERC165Mixin,
+    ProtocolConfigMixin {}
 applyMixins(CoreSDK, [
   MetadataMixin,
   AccountsMixin,
@@ -160,5 +162,6 @@ applyMixins(CoreSDK, [
   ERC20Mixin,
   ERC721Mixin,
   ERC1155Mixin,
-  ERC165Mixin
+  ERC165Mixin,
+  ProtocolConfigMixin
 ]);

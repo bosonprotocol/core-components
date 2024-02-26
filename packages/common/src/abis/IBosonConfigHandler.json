@@ -849,16 +849,10 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "bytes32[]",
-        "name": "functionNameHashes",
-        "type": "bytes32[]"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "isAllowlisted",
-        "type": "bool"
+        "indexed": true,
+        "internalType": "address",
+        "name": "accessControllerAddress",
+        "type": "address"
       },
       {
         "indexed": true,
@@ -867,7 +861,32 @@
         "type": "address"
       }
     ],
-    "name": "FunctionsAllowlisted",
+    "name": "AccessControllerAddressChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "enum BosonTypes.AuthTokenType",
+        "name": "authTokenType",
+        "type": "uint8"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "authTokenContract",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "AuthTokenContractChanged",
     "type": "event"
   },
   {
@@ -876,113 +895,494 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "userAddress",
+        "name": "beaconProxyAddress",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "relayerAddress",
+        "name": "executedBy",
         "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "string",
-        "name": "functionName",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "nonce",
-        "type": "uint256"
       }
     ],
-    "name": "MetaTransactionExecuted",
+    "name": "BeaconProxyAddressChanged",
     "type": "event"
   },
   {
+    "anonymous": false,
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_userAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_functionName",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes",
-        "name": "_functionSignature",
-        "type": "bytes"
-      },
-      {
+        "indexed": false,
         "internalType": "uint256",
-        "name": "_nonce",
+        "name": "buyerEscalationFeePercentage",
         "type": "uint256"
       },
       {
-        "internalType": "bytes32",
-        "name": "_sigR",
-        "type": "bytes32"
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "BuyerEscalationFeePercentageChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maxEscalationResponsePeriod",
+        "type": "uint256"
       },
       {
-        "internalType": "bytes32",
-        "name": "_sigS",
-        "type": "bytes32"
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "MaxEscalationResponsePeriodChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maxPremintedVouchers",
+        "type": "uint256"
       },
       {
-        "internalType": "uint8",
-        "name": "_sigV",
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "MaxPremintedVouchersChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maxResolutionPeriod",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "MaxResolutionPeriodChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "maxRoyaltyPercentage",
+        "type": "uint16"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "MaxRoyaltyPercentageChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "maxTotalOfferFeePercentage",
+        "type": "uint16"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "MaxTotalOfferFeePercentageChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "minDisputePeriod",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "MinDisputePeriodChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "minResolutionPeriod",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "MinResolutionPeriodChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "priceDiscoveryAddress",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "PriceDiscoveryAddressChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "feeFlatBoson",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "ProtocolFeeFlatBosonChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "feePercentage",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "ProtocolFeePercentageChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "TokenAddressChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "treasuryAddress",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "TreasuryAddressChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "voucherBeaconAddress",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "VoucherBeaconAddressChanged",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "getAccessControllerAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "enum BosonTypes.AuthTokenType",
+        "name": "_authTokenType",
         "type": "uint8"
       }
     ],
-    "name": "executeMetaTransaction",
+    "name": "getAuthTokenContract",
     "outputs": [
       {
-        "internalType": "bytes",
+        "internalType": "address",
         "name": "",
-        "type": "bytes"
-      }
-    ],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_functionName",
-        "type": "string"
-      }
-    ],
-    "name": "isFunctionAllowlisted",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "isAllowlisted",
-        "type": "bool"
+        "type": "address"
       }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "_functionNameHash",
-        "type": "bytes32"
-      }
-    ],
-    "name": "isFunctionAllowlisted",
+    "inputs": [],
+    "name": "getBeaconProxyAddress",
     "outputs": [
       {
-        "internalType": "bool",
-        "name": "isAllowlisted",
-        "type": "bool"
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getBuyerEscalationDepositPercentage",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMaxEscalationResponsePeriod",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMaxResolutionPeriod",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMaxRoyaltyPercentage",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMaxTotalOfferFeePercentage",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMinDisputePeriod",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMinResolutionPeriod",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getPriceDiscoveryAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getProtocolFeeFlatBoson",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getProtocolFeePercentage",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getTokenAddress",
+    "outputs": [
+      {
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getTreasuryAddress",
+    "outputs": [
+      {
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getVoucherBeaconAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -992,40 +1392,211 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_associatedAddress",
+        "name": "_accessControllerAddress",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_nonce",
-        "type": "uint256"
       }
     ],
-    "name": "isUsedNonce",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
+    "name": "setAccessControllerAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
-        "internalType": "bytes32[]",
-        "name": "_functionNameHashes",
-        "type": "bytes32[]"
+        "internalType": "enum BosonTypes.AuthTokenType",
+        "name": "_authTokenType",
+        "type": "uint8"
       },
       {
-        "internalType": "bool",
-        "name": "_isAllowlisted",
-        "type": "bool"
+        "internalType": "address",
+        "name": "_authTokenContract",
+        "type": "address"
       }
     ],
-    "name": "setAllowlistedFunctions",
+    "name": "setAuthTokenContract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_beaconProxyAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setBeaconProxyAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_buyerEscalationDepositPercentage",
+        "type": "uint256"
+      }
+    ],
+    "name": "setBuyerEscalationDepositPercentage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_maxEscalationResponsePeriod",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMaxEscalationResponsePeriod",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_maxResolutionPeriod",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMaxResolutionPeriod",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_maxRoyaltyPercentage",
+        "type": "uint16"
+      }
+    ],
+    "name": "setMaxRoyaltyPercentage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_maxTotalOfferFeePercentage",
+        "type": "uint16"
+      }
+    ],
+    "name": "setMaxTotalOfferFeePercentage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_minDisputePeriod",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMinDisputePeriod",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_minResolutionPeriod",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMinResolutionPeriod",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_priceDiscovery",
+        "type": "address"
+      }
+    ],
+    "name": "setPriceDiscoveryAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_protocolFeeFlatBoson",
+        "type": "uint256"
+      }
+    ],
+    "name": "setProtocolFeeFlatBoson",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_protocolFeePercentage",
+        "type": "uint256"
+      }
+    ],
+    "name": "setProtocolFeePercentage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "_tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setTokenAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "_treasuryAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setTreasuryAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_voucherBeaconAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setVoucherBeaconAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
