@@ -1,7 +1,8 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../types/offer";
 import { getOfferAnimationUrl } from "./getOfferAnimationUrl";
-import { isNftItem } from "../bundle/filter";
+import { isBundle, isProductV1 } from "./filter";
+import { isNftItem, isProductV1Item } from "../bundle/filter";
 
 interface ITable {
   name: string;
@@ -62,16 +63,13 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
           "images" | "description"
         >;
       })
-    | undefined =
-    offer.metadata?.__typename === "ProductV1MetadataEntity"
-      ? offer.metadata
-      : offer.metadata?.__typename === "BundleMetadataEntity"
-      ? (offer.metadata?.items.find(
-          (item) =>
-            item.__typename === "ProductV1ItemMetadataEntity" ||
-            item.type === subgraph.ItemMetadataType.ItemProductV1
-        ) as subgraph.ProductV1ItemMetadataEntity | undefined)
-      : undefined;
+    | undefined = isProductV1(offer)
+    ? offer.metadata
+    : isBundle(offer)
+    ? (offer.metadata?.items.find((item) => isProductV1Item(item)) as
+        | subgraph.ProductV1ItemMetadataEntity
+        | undefined)
+    : undefined;
   const name =
     productV1ItemMetadataEntity?.product?.title ||
     offer.metadata?.name ||
@@ -101,10 +99,7 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
     productV1ItemMetadataEntity?.product?.visuals_images?.map(
       ({ url }: { url: string }) => url
     ) || [];
-  const bundleItems =
-    offer.metadata?.__typename === "BundleMetadataEntity"
-      ? offer.metadata.items
-      : undefined;
+  const bundleItems = isBundle(offer) ? offer.metadata.items : undefined;
   const nftItems = bundleItems
     ? bundleItems.filter((item): item is subgraph.NftItemMetadataEntity =>
         isNftItem(item)

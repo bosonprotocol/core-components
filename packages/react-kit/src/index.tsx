@@ -59,3 +59,4 @@ export * from "./lib/const/networks";
 export * from "./lib/errors/transactions";
 export * from "./lib/offer/getIsOfferExpired";
 export * from "./lib/bundle/filter";
+export * from "./lib/offer/filter";

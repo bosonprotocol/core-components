@@ -32,7 +32,6 @@ type PhygitalProductProps = {
 };
 
 export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
-  //   console.log("PhygitalProduct offer", offer);
   const coreSDK = useCoreSDKWithContext();
 
   const { bundleItems } = getOfferDetails(offer);

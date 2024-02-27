@@ -9,3 +9,5 @@ export * from "./useExchanges";
 export * from "./useMetaTx";
 export * from "../components/widgets/finance/useOffersBacked";
 export * from "./contracts/useGetTokenUriImage";
+export * from "./products/useProductByUuid";
+export * from "./bundles/useBundleByUuid";

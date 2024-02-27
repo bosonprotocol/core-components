@@ -28,7 +28,7 @@ import {
 } from "./ExchangeCard.styles";
 import { IButton } from "../ui/ThemedButton";
 import { ExchangeCardStatus } from "./types";
-
+export type { ExchangeCardStatus } from "./types";
 interface Base {
   id: string;
   title: string;

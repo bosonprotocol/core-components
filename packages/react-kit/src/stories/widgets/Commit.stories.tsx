@@ -250,3 +250,43 @@ CommitTokenGated_ERC1155.args = {
 };
 
 CommitTokenGated_ERC1155.decorators = [(Story) => wrapper(Story)];
+
+export const CommitBundle: ComponentStory<typeof CommitWidget> = Template.bind(
+  {}
+);
+
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+CommitBundle.args = {
+  envName,
+  configId: envConfig[0].configId,
+  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  dateFormat: "YYYY/MM/DD",
+  defaultCurrencySymbol: "$",
+  defaultCurrencyTicker: "USD",
+  contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
+  fairExchangePolicyRules:
+    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+  ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
+  ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
+  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  offerId: "",
+  defaultSelectedOfferId: "",
+  disableVariationsSelects: false,
+  bundleUuid: "efc1ca63-c816-4636-bb09-0202ed5e75c3",
+  productUuid: undefined,
+  sellerId: "138",
+  metaTx: {
+    apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
+    apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
+  },
+  closeWidgetClick: () => {
+    console.log("closeWidgetClick()");
+  },
+  onAlreadyOwnOfferClick: () => {
+    console.log("onAlreadyOwnOfferClick");
+  },
+  forcedAccount: "",
+  showBosonLogo: false
+};
+
+CommitBundle.decorators = [(Story) => wrapper(Story)];
