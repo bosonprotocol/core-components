@@ -2505,17 +2505,17 @@
       {
         "components": [
           {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
             "internalType": "address payable",
             "name": "wallet",
             "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minRoyaltyPercentage",
+            "type": "uint256"
           }
         ],
-        "internalType": "struct BosonTypes.RoyaltyRecipient[]",
+        "internalType": "struct BosonTypes.RoyaltyRecipientInfo[]",
         "name": "royaltyRecipients",
         "type": "tuple[]"
       }
