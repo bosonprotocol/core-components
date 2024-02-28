@@ -1,5 +1,9 @@
 import { VoucherExtended } from "./../generated/BosonExchangeHandler/IBosonExchangeHandler";
-import { SellerCreatedAuthTokenStruct } from "./../generated/BosonAccountHandler/IBosonAccountHandler";
+import {
+  RoyaltyRecipientsChanged,
+  RoyaltyRecipientsChangedRoyaltyRecipientsStruct,
+  SellerCreatedAuthTokenStruct
+} from "./../generated/BosonAccountHandler/IBosonAccountHandler";
 import {
   OfferCreatedOfferFeesStruct,
   OfferCreatedOfferRoyaltyInfoStruct
@@ -42,9 +46,19 @@ import {
 } from "../generated/BosonAccountHandlerLegacy/IBosonAccountHandlerLegacy";
 import { SellerUpdateApplied } from "../generated/BosonAccountHandler/IBosonAccountHandler";
 import { getProductId } from "../src/entities/metadata/product-v1/product";
-import { Offer, ProductV1Media, ProductV1Product } from "../generated/schema";
+import {
+  Offer,
+  ProductV1Media,
+  ProductV1Product,
+  Seller
+} from "../generated/schema";
 import { handleSellerCreatedEvent } from "../src/mappings/account-handler";
-import { GroupCreated, GroupCreatedConditionStruct, GroupCreatedGroupStruct, GroupUpdated } from "../generated/BosonGroupHandler/IBosonGroupHandler";
+import {
+  GroupCreated,
+  GroupCreatedConditionStruct,
+  GroupCreatedGroupStruct,
+  GroupUpdated
+} from "../generated/BosonGroupHandler/IBosonGroupHandler";
 
 export class RoyaltyInfo {
   recipients: string[];
@@ -819,6 +833,16 @@ export function createRoyaltyInfoStruct(
   return tuple;
 }
 
+export function createRoyaltyRecipientInfoStruct(
+  wallet: string,
+  minRoyaltyPercentage: i32
+): RoyaltyRecipientsChangedRoyaltyRecipientsStruct {
+  const tuple = new RoyaltyRecipientsChangedRoyaltyRecipientsStruct();
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(wallet)));
+  tuple.push(ethereum.Value.fromI32(minRoyaltyPercentage));
+  return tuple;
+}
+
 export function createDisputeResolutionTermsStruct(
   disputeResolverId: i32,
   escalationResponsePeriod: i32,
@@ -1023,7 +1047,8 @@ export function createGroupCreatedEvent(
         threshold,
         maxCommits,
         maxTokenId
-    ))
+      )
+    )
   );
   const executedByParam = new ethereum.EventParam(
     "executedBy",
@@ -1078,7 +1103,8 @@ export function createGroupUpdatedEvent(
         threshold,
         maxCommits,
         maxTokenId
-    ))
+      )
+    )
   );
   const executedByParam = new ethereum.EventParam(
     "executedBy",
@@ -1103,4 +1129,49 @@ export function mockOffer(offerId: string, sellerId: string): Offer {
   offer.metadataHash = metadataHash;
   offer.save();
   return offer;
+}
+
+export function mockSeller(sellerId: string): Seller {
+  const seller = new Seller(sellerId);
+  seller.sellerId = BigInt.fromString(sellerId);
+  seller.royaltyRecipients = [];
+  seller.save();
+  return seller;
+}
+
+export function createRoyaltyRecipientsChanged(
+  sellerId: i32,
+  recipients: string[],
+  minRoyaltyPercentages: i32[],
+  executedBy: string
+): RoyaltyRecipientsChanged {
+  const royaltyRecipientsChangedEvent = changetype<RoyaltyRecipientsChanged>(
+    newMockEvent()
+  );
+  royaltyRecipientsChangedEvent.parameters = [];
+  const sellerIdParam = new ethereum.EventParam(
+    "sellerId",
+    ethereum.Value.fromI32(sellerId)
+  );
+  const royaltyRecipientStructs: ethereum.Tuple[] = [];
+  for (let i = 0; i < recipients.length; i++) {
+    const wallet = recipients[i];
+    const minRoyaltyPercentage = minRoyaltyPercentages[i];
+    royaltyRecipientStructs.push(
+      createRoyaltyRecipientInfoStruct(wallet, minRoyaltyPercentage)
+    );
+  }
+  const royaltyRecipientsParam = new ethereum.EventParam(
+    "royaltyRecipients",
+    ethereum.Value.fromTupleArray(royaltyRecipientStructs)
+  );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
+  royaltyRecipientsChangedEvent.parameters.push(sellerIdParam);
+  royaltyRecipientsChangedEvent.parameters.push(royaltyRecipientsParam);
+  royaltyRecipientsChangedEvent.parameters.push(executedByParam);
+
+  return royaltyRecipientsChangedEvent;
 }

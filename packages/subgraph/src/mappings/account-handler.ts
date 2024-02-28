@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Address, BigInt, Bytes, crypto, log } from "@graphprotocol/graph-ts";
+import {
+  Address,
+  BigInt,
+  Bytes,
+  crypto,
+  log,
+  store
+} from "@graphprotocol/graph-ts";
 import {
   SellerCreated,
   SellerUpdatePending,
@@ -79,7 +86,6 @@ export function handleSellerCreatedEventWithoutMetadataUri(
   seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = true;
   seller.contractURI = collectionMetadataUri;
-  // TODO: replace royaltyPercentage with royaltyRecipients
   seller.save();
 
   const externalId = "initial";
@@ -136,7 +142,6 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = true;
   seller.contractURI = collectionMetadataUri;
-  // TODO: replace royaltyPercentage with royaltyRecipients
   seller.metadataUri = sellerFromEvent.metadataUri || "";
   seller.metadata = getSellerMetadataEntityId(seller.id.toString());
   seller.save();
@@ -665,6 +670,17 @@ export function handleRoyaltyRecipientsChangedEvent(
 ): void {
   const sellerId = event.params.sellerId.toString();
   const royaltyRecipients = event.params.royaltyRecipients;
+  const seller = Seller.load(sellerId);
+  if (seller) {
+    const oldRecipients = seller.royaltyRecipients;
+    if (oldRecipients) {
+      for (let i = 0; i < oldRecipients.length; i++) {
+        store.remove("RoyaltyRecipientEntity", oldRecipients[i]);
+      }
+    }
+  } else {
+    log.warning("Unable to find Seller with ID '{}'", [sellerId]);
+  }
   for (let i = 0; i < royaltyRecipients.length; i++) {
     const wallet = royaltyRecipients[i].wallet;
     const minRoyaltyPercentage = royaltyRecipients[i].minRoyaltyPercentage;
@@ -672,12 +688,11 @@ export function handleRoyaltyRecipientsChangedEvent(
     let royaltyRecipient = RoyaltyRecipientEntity.load(royaltyRecipientId);
     if (!royaltyRecipient) {
       royaltyRecipient = new RoyaltyRecipientEntity(royaltyRecipientId);
-      royaltyRecipient.seller = sellerId;
       royaltyRecipient.wallet = wallet;
     }
+    royaltyRecipient.seller = sellerId;
     royaltyRecipient.minRoyaltyPercentage = minRoyaltyPercentage;
     royaltyRecipient.save();
-    // TODO: retrieve (and delete) all royaltyRecipient of the same seller that are no longer in the list
   }
 }
 
