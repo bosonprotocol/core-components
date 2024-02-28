@@ -42,8 +42,9 @@ import {
 } from "../generated/BosonAccountHandlerLegacy/IBosonAccountHandlerLegacy";
 import { SellerUpdateApplied } from "../generated/BosonAccountHandler/IBosonAccountHandler";
 import { getProductId } from "../src/entities/metadata/product-v1/product";
-import { ProductV1Media, ProductV1Product } from "../generated/schema";
+import { Offer, ProductV1Media, ProductV1Product } from "../generated/schema";
 import { handleSellerCreatedEvent } from "../src/mappings/account-handler";
+import { GroupCreated, GroupCreatedConditionStruct, GroupCreatedGroupStruct, GroupUpdated } from "../generated/BosonGroupHandler/IBosonGroupHandler";
 
 export class RoyaltyInfo {
   recipients: string[];
@@ -945,4 +946,161 @@ export function createSeller(
 
   handleSellerCreatedEvent(sellerCreatedEvent);
   return sellerId.toString();
+}
+
+export function createGroupStruct(
+  groupId: i32,
+  sellerId: i32,
+  offerIds: i32[]
+): GroupCreatedGroupStruct {
+  const tuple = new GroupCreatedGroupStruct();
+  tuple.push(ethereum.Value.fromI32(groupId));
+  tuple.push(ethereum.Value.fromI32(sellerId));
+  tuple.push(ethereum.Value.fromI32Array(offerIds));
+  return tuple;
+}
+
+export function createConditionStruct(
+  method: i8,
+  tokenType: i8,
+  tokenAddress: string,
+  gating: i8,
+  minTokenId: i32,
+  threshold: i32,
+  maxCommits: i32,
+  maxTokenId: i32
+): GroupCreatedConditionStruct {
+  const tuple = new GroupCreatedConditionStruct();
+  tuple.push(ethereum.Value.fromI32(method));
+  tuple.push(ethereum.Value.fromI32(tokenType));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(tokenAddress)));
+  tuple.push(ethereum.Value.fromI32(gating));
+  tuple.push(ethereum.Value.fromI32(minTokenId));
+  tuple.push(ethereum.Value.fromI32(threshold));
+  tuple.push(ethereum.Value.fromI32(maxCommits));
+  tuple.push(ethereum.Value.fromI32(maxTokenId));
+  return tuple;
+}
+
+export function createGroupCreatedEvent(
+  groupId: i32,
+  sellerId: i32,
+  offerIds: i32[],
+  method: i8,
+  tokenType: i8,
+  tokenAddress: string,
+  gating: i8,
+  minTokenId: i32,
+  threshold: i32,
+  maxCommits: i32,
+  maxTokenId: i32,
+  executedBy: string
+): GroupCreated {
+  const groupCreatedEvent = changetype<GroupCreated>(newMockEvent());
+  groupCreatedEvent.parameters = [];
+
+  const groupIdParam = new ethereum.EventParam(
+    "groupId",
+    ethereum.Value.fromI32(groupId)
+  );
+  const sellerIdParam = new ethereum.EventParam(
+    "sellerId",
+    ethereum.Value.fromI32(sellerId)
+  );
+  const groupParam = new ethereum.EventParam(
+    "group",
+    ethereum.Value.fromTuple(createGroupStruct(groupId, sellerId, offerIds))
+  );
+  const conditionParam = new ethereum.EventParam(
+    "condition",
+    ethereum.Value.fromTuple(
+      createConditionStruct(
+        method,
+        tokenType,
+        tokenAddress,
+        gating,
+        minTokenId,
+        threshold,
+        maxCommits,
+        maxTokenId
+    ))
+  );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
+  groupCreatedEvent.parameters.push(groupIdParam);
+  groupCreatedEvent.parameters.push(sellerIdParam);
+  groupCreatedEvent.parameters.push(groupParam);
+  groupCreatedEvent.parameters.push(conditionParam);
+  groupCreatedEvent.parameters.push(executedByParam);
+  return groupCreatedEvent;
+}
+
+export function createGroupUpdatedEvent(
+  groupId: i32,
+  sellerId: i32,
+  offerIds: i32[],
+  method: i8,
+  tokenType: i8,
+  tokenAddress: string,
+  gating: i8,
+  minTokenId: i32,
+  threshold: i32,
+  maxCommits: i32,
+  maxTokenId: i32,
+  executedBy: string
+): GroupUpdated {
+  const groupUpdatedEvent = changetype<GroupUpdated>(newMockEvent());
+  groupUpdatedEvent.parameters = [];
+
+  const groupIdParam = new ethereum.EventParam(
+    "groupId",
+    ethereum.Value.fromI32(groupId)
+  );
+  const sellerIdParam = new ethereum.EventParam(
+    "sellerId",
+    ethereum.Value.fromI32(sellerId)
+  );
+  const groupParam = new ethereum.EventParam(
+    "group",
+    ethereum.Value.fromTuple(createGroupStruct(groupId, sellerId, offerIds))
+  );
+  const conditionParam = new ethereum.EventParam(
+    "condition",
+    ethereum.Value.fromTuple(
+      createConditionStruct(
+        method,
+        tokenType,
+        tokenAddress,
+        gating,
+        minTokenId,
+        threshold,
+        maxCommits,
+        maxTokenId
+    ))
+  );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
+  groupUpdatedEvent.parameters.push(groupIdParam);
+  groupUpdatedEvent.parameters.push(sellerIdParam);
+  groupUpdatedEvent.parameters.push(groupParam);
+  groupUpdatedEvent.parameters.push(conditionParam);
+  groupUpdatedEvent.parameters.push(executedByParam);
+  return groupUpdatedEvent;
+}
+
+export function mockOffer(offerId: string, sellerId: string): Offer {
+  const metadataHash = "QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB";
+  mockIpfsFile(metadataHash, "tests/metadata/product-v1-full.json");
+  const offer = new Offer(offerId);
+  offer.sellerId = BigInt.fromString(sellerId);
+  offer.quantityAvailable = BigInt.fromI32(1);
+  offer.numberOfCommits = BigInt.fromI32(0);
+  offer.metadataUri = `ipfs://${metadataHash}`;
+  offer.metadataHash = metadataHash;
+  offer.save();
+  return offer;
 }

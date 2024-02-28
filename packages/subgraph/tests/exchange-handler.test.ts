@@ -1,4 +1,4 @@
-import { Exchange } from "./../generated/schema";
+import { Exchange, Offer } from "./../generated/schema";
 import {
   beforeEach,
   test,
@@ -7,7 +7,7 @@ import {
   mockIpfsFile
 } from "matchstick-as/assembly/index";
 import { BigInt } from "@graphprotocol/graph-ts";
-import { Offer, BaseMetadataEntity } from "../generated/schema";
+import { BaseMetadataEntity } from "../generated/schema";
 import {
   handleBuyerCommittedEvent,
   handleVoucherExtendedEvent
@@ -21,28 +21,37 @@ beforeEach(() => {
 test("handle BuyerCommittedEvent", () => {
   const metadataHash = "QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB";
   mockIpfsFile(metadataHash, "tests/metadata/base.json");
-
   const offerId = 1;
+  const buyerId = 2;
+  const exchangeId = 3;
   const sellerId = "1";
   const offer = new Offer(offerId.toString());
+  // note: mockOffer() does not work in this test, no idea why
   offer.sellerId = BigInt.fromString(sellerId);
   offer.quantityAvailable = BigInt.fromI32(1);
   offer.numberOfCommits = BigInt.fromI32(0);
-  offer.metadataUri = metadataHash;
+  offer.metadataUri = `ipfs://${metadataHash}`;
   offer.metadataHash = metadataHash;
   offer.save();
 
+  assert.fieldEquals("Offer", offerId.toString(), "quantityAvailable", "1");
+  assert.fieldEquals("Offer", offerId.toString(), "numberOfCommits", "0");
+
   const metadata = new BaseMetadataEntity(offerId.toString() + "-metadata");
-  metadata.quantityAvailable = offer.quantityAvailable;
+  metadata.quantityAvailable = (offer as Offer).quantityAvailable;
   metadata.numberOfCommits = BigInt.fromI32(0);
   metadata.save();
 
-  const buyerCommittedEvent = createBuyerCommittedEvent(offerId, 2, 3);
+  const buyerCommittedEvent = createBuyerCommittedEvent(
+    offerId,
+    buyerId,
+    exchangeId
+  );
 
   handleBuyerCommittedEvent(buyerCommittedEvent);
 
-  assert.fieldEquals("Offer", "1", "quantityAvailable", "0");
-  assert.fieldEquals("Offer", "1", "numberOfCommits", "1");
+  assert.fieldEquals("Offer", offerId.toString(), "quantityAvailable", "0");
+  assert.fieldEquals("Offer", offerId.toString(), "numberOfCommits", "1");
   assert.fieldEquals(
     "BaseMetadataEntity",
     "1-metadata",
@@ -55,8 +64,13 @@ test("handle BuyerCommittedEvent", () => {
     "numberOfCommits",
     "1"
   );
-  assert.fieldEquals("Exchange", "3", "id", "3");
-  assert.fieldEquals("Exchange", "3", "state", "COMMITTED");
+  assert.fieldEquals(
+    "Exchange",
+    exchangeId.toString(),
+    "id",
+    exchangeId.toString()
+  );
+  assert.fieldEquals("Exchange", exchangeId.toString(), "state", "COMMITTED");
 });
 
 test("handle VoucherExtendedEvent", () => {
@@ -77,6 +91,16 @@ test("handle VoucherExtendedEvent", () => {
 
   handleVoucherExtendedEvent(voucherExtendedEvent);
 
-  assert.fieldEquals("Exchange", "3", "id", exchangeId.toString());
-  assert.fieldEquals("Exchange", "3", "validUntilDate", validUntil.toString());
+  assert.fieldEquals(
+    "Exchange",
+    exchangeId.toString(),
+    "id",
+    exchangeId.toString()
+  );
+  assert.fieldEquals(
+    "Exchange",
+    exchangeId.toString(),
+    "validUntilDate",
+    validUntil.toString()
+  );
 });
