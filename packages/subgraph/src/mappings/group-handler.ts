@@ -56,9 +56,7 @@ export function handleGroupUpdatedEvent(event: GroupUpdated): void {
     condition.threshold = conditionFromEvent.threshold;
     condition.maxCommits = conditionFromEvent.maxCommits;
     condition.save();
-    // TODO: upgrade to graph-ts >= v0.31.0 and use loadRelated to access the virtual field 'offers' for a condition
-    // see https://thegraph.com/blog/improve-subgraph-performance-avoiding-large-arrays/
-    // clearPreviousOffersCondition(condition.offers);
+    clearPreviousOffersCondition(condition.offers);
   } else {
     log.warning("Not found ConditionEntity with ID '{}'", [groupId.toString()]);
   }
@@ -113,9 +111,7 @@ export function handleGroupUpdatedEventLegacy(event: GroupUpdatedLegacy): void {
     condition.threshold = conditionFromEvent.threshold;
     condition.maxCommits = conditionFromEvent.maxCommits;
     condition.save();
-    // TODO: upgrade to graph-ts >= v0.31.0 and use loadRelated to access the virtual field 'offers' for a condition
-    // see https://thegraph.com/blog/improve-subgraph-performance-avoiding-large-arrays/
-    // clearPreviousOffersCondition(condition.offers);
+    clearPreviousOffersCondition(condition.offers);
   } else {
     log.warning("Not found ConditionEntity with ID '{}'", [groupId.toString()]);
   }
@@ -124,18 +120,18 @@ export function handleGroupUpdatedEventLegacy(event: GroupUpdatedLegacy): void {
   addOffersCondition(groupId.toString(), groupFromEvent.offerIds);
 }
 
-// TODO: upgrade to graph-ts >= v0.31.0 and use loadRelated to access the virtual field 'offers' for a condition
-// see https://thegraph.com/blog/improve-subgraph-performance-avoiding-large-arrays/
-// function clearPreviousOffersCondition(previousOffers: string[]): void {
-//   for (let i = 0; i < previousOffers.length; i++) {
-//     const offerId = previousOffers[i];
-//     const offer = Offer.load(offerId.toString());
-//     if (offer) {
-//       offer.condition = null;
-//       offer.save();
-//     }
-//   }
-// }
+function clearPreviousOffersCondition(previousOffers: string[]): void {
+  for (let i = 0; i < previousOffers.length; i++) {
+    const offerId = previousOffers[i];
+    const offer = Offer.load(offerId.toString());
+    if (offer) {
+      offer.condition = null;
+      offer.save();
+    } else {
+      log.warning("Unable to load Offer with ID '{}'", [offerId.toString()]);
+    }
+  }
+}
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function addOffersCondition(conditionId: string, offerIds: BigInt[]): void {

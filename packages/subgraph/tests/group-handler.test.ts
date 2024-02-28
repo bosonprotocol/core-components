@@ -1,6 +1,13 @@
 import { test, assert } from "matchstick-as/assembly/index";
-import { handleGroupCreatedEvent, handleGroupUpdatedEvent } from "../src/mappings/group-handler";
-import { createGroupCreatedEvent, createGroupUpdatedEvent, mockOffer } from "./mocks";
+import {
+  handleGroupCreatedEvent,
+  handleGroupUpdatedEvent
+} from "../src/mappings/group-handler";
+import {
+  createGroupCreatedEvent,
+  createGroupUpdatedEvent,
+  mockOffer
+} from "./mocks";
 import { Offer } from "../generated/schema";
 
 const groupId = 1;
@@ -130,6 +137,10 @@ test("handle GroupUpdated event", () => {
     "tokenAddress",
     tokenAddress_2
   );
+  for (let i = 0; i < offerIds.length; i++) {
+    const offerId = offerIds[i];
+    checkOfferHasNoCondition(offerId.toString());
+  }
   for (let i = 0; i < offerIds_2.length; i++) {
     const offerId = offerIds_2[i];
     assert.fieldEquals(
