@@ -661,7 +661,7 @@ type Seller implements Account @entity {
   logs: [EventLog!]! @derivedFrom(field: "account")
   contractURI: String!
   "Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100%"
-  royaltyRecipients: [RoyaltyRecipientEntity!]! @derivedFrom(field: "seller")
+  royaltyRecipients: [RoyaltyRecipientEntity!] @derivedFrom(field: "seller")
   pendingSeller: PendingSeller @derivedFrom(field: "seller")
   metadataUri: String!
   metadata: SellerMetadata
@@ -921,7 +921,7 @@ type ConditionEntity @entity {
   maxTokenId: BigInt!
   threshold: BigInt!
   maxCommits: BigInt!
-  offers: [Offer!]! @derivedFrom(field: "condition")
+  offers: [Offer!] @derivedFrom(field: "condition")
 }
 
 """

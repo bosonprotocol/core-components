@@ -56,7 +56,10 @@ export function handleGroupUpdatedEvent(event: GroupUpdated): void {
     condition.threshold = conditionFromEvent.threshold;
     condition.maxCommits = conditionFromEvent.maxCommits;
     condition.save();
-    clearPreviousOffersCondition(condition.offers);
+    const previousOffers = condition.offers;
+    if (previousOffers) {
+      clearPreviousOffersCondition(previousOffers);
+    }
   } else {
     log.warning("Not found ConditionEntity with ID '{}'", [groupId.toString()]);
   }
@@ -111,7 +114,10 @@ export function handleGroupUpdatedEventLegacy(event: GroupUpdatedLegacy): void {
     condition.threshold = conditionFromEvent.threshold;
     condition.maxCommits = conditionFromEvent.maxCommits;
     condition.save();
-    clearPreviousOffersCondition(condition.offers);
+    const previousOffers = condition.offers;
+    if (previousOffers) {
+      clearPreviousOffersCondition(previousOffers);
+    }
   } else {
     log.warning("Not found ConditionEntity with ID '{}'", [groupId.toString()]);
   }
