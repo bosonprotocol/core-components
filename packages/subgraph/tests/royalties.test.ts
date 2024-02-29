@@ -1,4 +1,4 @@
-import { test, assert } from "matchstick-as/assembly/index";
+import { test, assert, log } from "matchstick-as/assembly/index";
 import { handleRoyaltyRecipientsChangedEvent } from "../src/mappings/account-handler";
 import { createRoyaltyRecipientsChanged, mockSeller } from "./mocks";
 import { RoyaltyRecipientEntity, Seller } from "../generated/schema";
@@ -44,30 +44,46 @@ function checkSellerRoyaltyRecipients(
   minRoyaltyPercentages: i32[]
 ): void {
   const seller = Seller.load(sellerId.toString());
+  log.debug("check seller {} exists", [sellerId.toString()]);
   assert.assertNotNull(seller);
-  const sellerRoyaltyRecipients = (seller as Seller).royaltyRecipients;
+  const sellerRoyaltyRecipients = (seller as Seller)
+    .royaltyRecipients as string[];
+  log.debug("check sellerRoyaltyRecipients {} exists", [
+    (sellerRoyaltyRecipients != null).toString()
+  ]);
+  assert.assertNotNull(sellerRoyaltyRecipients);
+  log.debug("check sellerRoyaltyRecipients.length {} == {}", [
+    sellerRoyaltyRecipients.length.toString(),
+    recipients.length.toString()
+  ]);
   assert.assertTrue(recipients.length === sellerRoyaltyRecipients.length);
   for (let i = 0; i < sellerRoyaltyRecipients.length; i++) {
     const sellerRoyaltyRecipient = RoyaltyRecipientEntity.load(
       sellerRoyaltyRecipients[i]
-    );
+    ) as RoyaltyRecipientEntity;
+    log.debug("check sellerRoyaltyRecipient {} exists", [
+      sellerRoyaltyRecipients[i]
+    ]);
     assert.assertNotNull(sellerRoyaltyRecipient);
     let found = false;
     for (let j = 0; j < recipients.length && !found; j++) {
       found =
-        (sellerRoyaltyRecipient as RoyaltyRecipientEntity).wallet
-          .toHexString()
-          .toLowerCase() == recipients[j].toLowerCase();
+        sellerRoyaltyRecipient.wallet.toHexString().toLowerCase() ==
+        recipients[j].toLowerCase();
     }
+    log.debug("check wallet {} is found", [
+      sellerRoyaltyRecipient.wallet.toHexString()
+    ]);
     assert.assertTrue(found);
     found = false;
     for (let j = 0; j < minRoyaltyPercentages.length && !found; j++) {
       found =
-        (
-          sellerRoyaltyRecipient as RoyaltyRecipientEntity
-        ).minRoyaltyPercentage.toString() ==
+        sellerRoyaltyRecipient.minRoyaltyPercentage.toString() ==
         minRoyaltyPercentages[j].toString();
     }
+    log.debug("check minRoyaltyPercentage {} is found", [
+      sellerRoyaltyRecipient.minRoyaltyPercentage.toHexString()
+    ]);
     assert.assertTrue(found);
   }
 }

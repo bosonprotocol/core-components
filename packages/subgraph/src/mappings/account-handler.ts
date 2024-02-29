@@ -675,6 +675,9 @@ export function handleRoyaltyRecipientsChangedEvent(
     const oldRecipients = seller.royaltyRecipients;
     if (oldRecipients) {
       for (let i = 0; i < oldRecipients.length; i++) {
+        log.debug("remove RoyaltyRecipientEntity with ID {}", [
+          oldRecipients[i]
+        ]);
         store.remove("RoyaltyRecipientEntity", oldRecipients[i]);
       }
     }

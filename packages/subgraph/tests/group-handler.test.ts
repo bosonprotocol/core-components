@@ -1,4 +1,4 @@
-import { test, assert } from "matchstick-as/assembly/index";
+import { test, assert, log } from "matchstick-as/assembly/index";
 import {
   handleGroupCreatedEvent,
   handleGroupUpdatedEvent
@@ -154,7 +154,9 @@ test("handle GroupUpdated event", () => {
 
 function checkOfferHasNoCondition(offerId: string): void {
   const offer = Offer.load(offerId);
+  log.debug("check offer {} exists", [offerId]);
   assert.assertNotNull(offer);
   const condition = (offer as Offer).condition;
+  log.debug("check condition is null", [(condition == null).toString()]);
   assert.assertNull(condition);
 }

@@ -217,8 +217,7 @@ describe("Seller royalties recipients", () => {
       royaltyRecipients.find(walletIs(recipients_2[1]))?.minRoyaltyPercentage
     ).toEqual(recipientsPercentage_2[1]);
   });
-  xtest("custom royalties for a seller - update other recipients - check subgraph", async () => {
-    // TODO: This test doesn't pass until we properly manage update/removeRoyaltyRecipients in the subgraph handler
+  test("custom royalties for a seller - update other recipients - check subgraph", async () => {
     const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
       seedWallet
     );
@@ -340,8 +339,7 @@ describe("Seller royalties recipients", () => {
     expect(royaltyRecipients.some(walletIs(recipients[0]))).toBe(true);
     expect(royaltyRecipients.some(walletIs(recipients[1]))).toBe(false);
   });
-  xtest("custom royalties for a seller - remove other recipients - check subgraph", async () => {
-    // TODO: This test doesn't pass until we properly manage update/removeRoyaltyRecipients in the subgraph handler
+  test("custom royalties for a seller - remove other recipients - check subgraph", async () => {
     const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
       seedWallet
     );
