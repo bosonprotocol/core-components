@@ -64,7 +64,6 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
   const { isConditionMet, exchangePolicyCheckResult } = useDetailViewContext();
   const config = useConfigContext();
   const offerDetailData = useGetOfferDetailData({
-    dateFormat: config.dateFormat,
     defaultCurrencySymbol: config.defaultCurrency.symbol,
     offer,
     exchange,
@@ -110,7 +109,7 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
       {offer.condition && (
         <>
           <TokenGatedGrid>
-            <Typography tag="h3">Token Gated Offer</Typography>
+            <Typography tag="h3">Token gated Offer</Typography>
             <TokenGatedItem
               offer={offer}
               isConditionMet={isConditionMet}
@@ -122,7 +121,7 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
       )}
       {isPhygital && (
         <>
-          <Typography tag="h3">Phygital Product</Typography>
+          <Typography tag="h3">Phygital product</Typography>
           <Break />
           <GridContainer
             itemsPerRow={{

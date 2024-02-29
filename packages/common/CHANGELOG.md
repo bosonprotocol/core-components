@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.25.2...@bosonprotocol/common@1.26.0) (2024-02-23)
+
+
+### Bug Fixes
+
+* validation error and access to property in wait biconomy ([#669](https://github.com/bosonprotocol/core-components/issues/669)) ([a97e98a](https://github.com/bosonprotocol/core-components/commit/a97e98adbc2ab608e54ccb0add39672239d8db81))
+
+
+### Features
+
+* deactivate use of meta-transaction when the connected wallet is… ([#671](https://github.com/bosonprotocol/core-components/issues/671)) ([20cadab](https://github.com/bosonprotocol/core-components/commit/20cadaba47310d905d626b12f374fbfe92baeb10))
+
+
+
+
+
 ## [1.25.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.25.1...@bosonprotocol/common@1.25.2) (2024-02-05)
 
 

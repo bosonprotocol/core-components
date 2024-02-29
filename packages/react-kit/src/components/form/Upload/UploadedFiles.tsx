@@ -1,6 +1,6 @@
 import React from "react";
-import { UploadFileType } from "./Upload";
 import UploadedFile from "./UploadedFile";
+import { UploadFileType } from "../types";
 
 interface Props {
   files: UploadFileType[];

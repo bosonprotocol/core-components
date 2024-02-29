@@ -43,6 +43,12 @@ export class EthersAdapter implements Web3LibAdapter {
     return this._signer.getAddress();
   }
 
+  public async isSignerContract(): Promise<boolean> {
+    const address = await this.getSignerAddress();
+    const code = await this._provider.getCode(address);
+    return code != "0x";
+  }
+
   public async getChainId(): Promise<number> {
     return this._signer.getChainId();
   }

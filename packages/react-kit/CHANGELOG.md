@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.27.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.26.1...@bosonprotocol/react-kit@0.27.0) (2024-02-23)
+
+
+### Bug Fixes
+
+* most react-kit circular dependencies ([#664](https://github.com/bosonprotocol/core-components/issues/664)) ([b57cd0a](https://github.com/bosonprotocol/core-components/commit/b57cd0a55772926f3d307c5fc135628c22e5adc0))
+* testing issues ([#666](https://github.com/bosonprotocol/core-components/issues/666)) ([453de61](https://github.com/bosonprotocol/core-components/commit/453de61c9e5299a1c8381b4b568d06ba29de3d7d))
+
+
+### Features
+
+* deactivate use of meta-transaction when the connected wallet is… ([#671](https://github.com/bosonprotocol/core-components/issues/671)) ([20cadab](https://github.com/bosonprotocol/core-components/commit/20cadaba47310d905d626b12f374fbfe92baeb10))
+
+
+
+
+
 ## [0.26.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.26.0...@bosonprotocol/react-kit@0.26.1) (2024-02-06)
 
 

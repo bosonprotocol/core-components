@@ -35,14 +35,14 @@ export async function tokenUri(args: {
   tokenId: BigNumberish;
   web3Lib: Web3LibAdapter;
 }): Promise<string> {
-  const data = erc721Iface.encodeFunctionData("tokenUri", [args.tokenId]);
+  const data = erc721Iface.encodeFunctionData("tokenURI", [args.tokenId]);
 
   const result = await args.web3Lib.call({
     to: args.contractAddress,
     data: data
   });
 
-  const [tokenUri] = erc721Iface.decodeFunctionResult("tokenUri", result);
+  const [tokenUri] = erc721Iface.decodeFunctionResult("tokenURI", result);
   return String(tokenUri);
 }
 export async function balanceOf(args: {

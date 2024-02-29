@@ -3,9 +3,9 @@ import { BigNumber, BigNumberish } from "ethers";
 
 import { CtaButtonProps } from "../common/types";
 import { CtaButton } from "../common/CtaButton";
-import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { TransactionReceipt } from "@bosonprotocol/common";
 import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
+import { useMetaTx } from "../../../hooks/useMetaTx";
 
 type AdditionalProps = {
   accountId: string;
@@ -29,7 +29,7 @@ export const WithdrawFundsButton = ({
   const coreSdk = useCoreSdkOverrides({
     coreSdkConfig: restProps.coreSdkConfig
   });
-  const signerAddress = useSignerAddress(coreSdk.web3Lib);
+  const { isMetaTx } = useMetaTx(coreSdk);
   const tokenList = useMemo(
     () => tokensToWithdraw.map((t) => t.address),
     [tokensToWithdraw]
@@ -51,9 +51,7 @@ export const WithdrawFundsButton = ({
           tokenAmounts,
           nonce: Date.now()
         }),
-      additionalMetaTxCondition: Boolean(
-        coreSdk.isMetaTxConfigSet && signerAddress
-      )
+      additionalMetaTxCondition: isMetaTx
     }
   ];
 

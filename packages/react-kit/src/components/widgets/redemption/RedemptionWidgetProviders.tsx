@@ -7,9 +7,9 @@ import {
   ConfigProviderProps
 } from "../../config/ConfigProvider";
 import { IpfsProvider, IpfsProviderProps } from "../../ipfs/IpfsProvider";
-import { MagicProvider } from "../../magicLink/MagicContext";
+import { MagicProvider } from "../../magicLink/MagicProvider";
 import ModalProvider from "../../modal/ModalProvider";
-import { SignerProvider } from "../../signer/SignerContext";
+import { SignerProvider } from "../../signer/SignerProvider";
 import GlobalStyle from "../../styles/GlobalStyle";
 import WalletConnectionProvider, {
   WalletConnectionProviderProps

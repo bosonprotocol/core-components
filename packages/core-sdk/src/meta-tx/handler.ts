@@ -1270,7 +1270,7 @@ export async function relayMetaTransaction(args: {
         transactionHash: txHash,
         logs: txReceipt?.logs || [],
         effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice),
-        blockNumber: txReceipt.blockNumber
+        blockNumber: txReceipt?.blockNumber
       };
     },
     hash: relayTxResponse.txHash

@@ -174,6 +174,7 @@ fragment BaseOfferFields on Offer {
     ...BaseDisputeResolutionTermsEntityFields
   }
   metadata {
+    __typename
     name
     description
     externalUrl

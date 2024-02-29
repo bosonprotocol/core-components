@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { MODAL_TYPES } from "./ModalComponents";
+import { MODAL_TYPES } from "./ModalTypes";
 import ModalContext from "./ModalContext";
 
 export function useModal() {

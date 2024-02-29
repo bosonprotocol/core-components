@@ -1,4 +1,6 @@
 import { EvaluationMethod, TokenType } from "@bosonprotocol/common";
+import { ChainId, Token } from "@uniswap/sdk-core";
+import { ethers } from "ethers";
 import { ArrowSquareUpRight, Check, X } from "phosphor-react";
 import React, {
   ReactNode,
@@ -8,16 +10,21 @@ import React, {
   useState
 } from "react";
 import styled from "styled-components";
+import { useErc1155Uri } from "../../../../../hooks/contracts/erc1155/useErc1155Uri";
+import { useErc20ExchangeTokenInfo } from "../../../../../hooks/contracts/erc20/useErc20ExchangeTokenInfo";
+import { useErc721TokenUri } from "../../../../../hooks/contracts/erc721/useErc721TokenUri";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
+import { nativeOnChain } from "../../../../../lib/const/tokens";
+import { useGetTokenUriImage } from "../../../../../hooks/contracts/useGetTokenUriImage";
 import { theme } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
-import { Image } from "../../../../image/Image";
+import { useConfigContext } from "../../../../config/ConfigContext";
+import { PortfolioLogo } from "../../../../logo/PortfolioLogo";
 import { Grid } from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
 import { BuyOrSwapContainer } from "./BuyOrSwapContainer";
 import { useDetailViewContext } from "./DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "./types";
-import { ethers } from "ethers";
 const colors = theme.colors.light;
 
 type Props = OnClickBuyOrSwapHandler & {
@@ -31,6 +38,14 @@ const Wrapper = styled(Grid)`
       flex: 1 0;
     }
   }
+`;
+
+const imageSize = "2.5rem";
+const ErcImage = styled.img`
+  border-radius: 9999px;
+  background-color: #f1f3f9;
+  height: ${imageSize};
+  width: ${imageSize};
 `;
 
 const ActionText = ({ children }: { children: ReactNode }) => {
@@ -60,14 +75,6 @@ export const TokenGatedItem = ({
   });
   const [erc721Info, setErc721Info] = useState("NFT");
   const [erc1155Info, setErc1155Info] = useState("NFT");
-
-  const sellerAvatar: string | undefined = useMemo(
-    () =>
-      (offer?.metadata?.productV1Seller?.images || []).find(
-        (img) => img.tag === "profile"
-      )?.url,
-    [offer?.metadata?.productV1Seller?.images]
-  );
 
   useEffect(() => {
     (async () => {
@@ -166,18 +173,92 @@ export const TokenGatedItem = ({
     [isConditionMet]
   );
   const ActionButton = isConditionMet ? ContractButton : BuyButton;
-  const Icon = useMemo(
-    () => (
-      <>
-        {sellerAvatar && (
-          <TokenIcon>
-            <Image src={sellerAvatar} />
-          </TokenIcon>
-        )}
-      </>
-    ),
-    [sellerAvatar]
+  const { config } = useConfigContext();
+  const chainId = config.chainId;
+
+  const { data: erc20TokenInfo } = useErc20ExchangeTokenInfo(
+    { contractAddress: condition?.tokenAddress },
+    {
+      enabled:
+        !!condition?.tokenAddress &&
+        condition.tokenType === TokenType.FungibleToken
+    }
   );
+  const { data: erc721TokenUri } = useErc721TokenUri(
+    {
+      contractAddress: condition?.tokenAddress,
+      tokenIds: [condition?.minTokenId]
+    },
+    {
+      enabled:
+        !!condition?.tokenAddress &&
+        condition.tokenType === TokenType.NonFungibleToken &&
+        !!condition?.minTokenId
+    }
+  );
+  const { data: erc1155Uri } = useErc1155Uri(
+    {
+      contractAddress: condition?.tokenAddress,
+      tokenIds: [condition?.minTokenId]
+    },
+    {
+      enabled:
+        !!condition?.tokenAddress &&
+        condition.tokenType === TokenType.MultiToken &&
+        !!condition?.minTokenId
+    }
+  );
+  const currency = useMemo(
+    () =>
+      !chainId || !condition
+        ? null
+        : condition.tokenAddress === ethers.constants.AddressZero
+        ? nativeOnChain(chainId)
+        : erc20TokenInfo
+        ? new Token(
+            chainId,
+            condition.tokenAddress,
+            Number(erc20TokenInfo.decimals),
+            erc20TokenInfo.symbol,
+            erc20TokenInfo.name
+          )
+        : null,
+    [chainId, condition, erc20TokenInfo]
+  );
+
+  const tokenIdForImage = condition?.minTokenId;
+  const { data: erc721Image } = useGetTokenUriImage(
+    {
+      tokenUri: erc721TokenUri?.[0],
+      tokenId: tokenIdForImage
+    },
+    { enabled: !!(erc721TokenUri && erc721TokenUri[0] && tokenIdForImage) }
+  );
+  const { data: erc1155Image } = useGetTokenUriImage(
+    {
+      tokenUri: erc1155Uri?.[0],
+      tokenId: tokenIdForImage
+    },
+    { enabled: !!(erc1155Uri && erc1155Uri[0] && tokenIdForImage) }
+  );
+
+  const Icon = useMemo(() => {
+    return (
+      <>
+        {chainId && currency ? (
+          <PortfolioLogo
+            chainId={chainId as ChainId}
+            size={imageSize}
+            currencies={[currency]}
+          />
+        ) : erc721Image ? (
+          <ErcImage src={erc721Image} alt="erc721" />
+        ) : erc1155Image ? (
+          <ErcImage src={erc1155Image} alt="erc1155" />
+        ) : null}
+      </>
+    );
+  }, [chainId, currency, erc1155Image, erc721Image]);
   const Condition = useCallback(
     ({ children }: { children: ReactNode }) => {
       return (
@@ -208,7 +289,8 @@ export const TokenGatedItem = ({
         color: colors.darkGrey,
         fontSize: "12px",
         fontWeight: 600,
-        lineHeight: "18px"
+        lineHeight: "18px",
+        wordBreak: "break-all"
       }}
     >
       {condition.minTokenId === condition.maxTokenId
@@ -227,9 +309,15 @@ export const TokenGatedItem = ({
     >
       {condition.tokenType === TokenType.FungibleToken ? (
         <Condition>
-          <div>
-            {ethers.utils.formatUnits(condition.threshold, erc20Info.decimals)}x
-          </div>
+          {condition.threshold && erc20Info?.decimals && (
+            <div>
+              {ethers.utils.formatUnits(
+                condition.threshold,
+                erc20Info.decimals
+              )}
+              x
+            </div>
+          )}
           <Grid
             flexGrow={0}
             flexShrink={0}

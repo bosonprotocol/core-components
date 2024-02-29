@@ -7,7 +7,7 @@ import * as bundle from "./bundle";
 import * as productV1Item from "./productV1Item";
 import * as nftItem from "./nftItem";
 import { MetadataType } from "./iMetadata";
-import { buildUuid } from "./common";
+import { buildUuid, Media } from "./common";
 
 export type AnyMetadata =
   | base.BaseMetadata
@@ -127,5 +127,6 @@ export {
   nftItem,
   productV1Item,
   METADATA_LENGTH_LIMIT,
-  buildUuid
+  buildUuid,
+  Media
 };

@@ -8,7 +8,7 @@ import {
   RedeemTransactionConfirmedMessage,
   RedeemTransactionSubmittedCallbackResponse,
   RedeemTransactionSubmittedMessage
-} from "../../../../hooks/callbacks/useRedemptionCallbacks";
+} from "../../../../hooks/callbacks/types";
 
 export enum RedemptionWidgetAction {
   // The widget will ask the user to select an Exchange (My Items view)

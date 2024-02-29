@@ -40,5 +40,6 @@ export {
   nftItem,
   productV1Item,
   METADATA_LENGTH_LIMIT,
-  buildUuid
+  buildUuid,
+  Media
 } from "@bosonprotocol/metadata";

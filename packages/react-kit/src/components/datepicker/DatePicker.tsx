@@ -11,6 +11,7 @@ import Calendar from "./Calendar";
 import { DatePickerWrapper, Picker, PickerGrid } from "./DatePicker.style";
 import SelectMonth from "./SelectMonth";
 import SelectTime from "./SelectTime";
+import { ChoosenTime } from "./types";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -23,11 +24,6 @@ interface Props {
   minDate?: Dayjs | null;
   maxDate?: Dayjs | null;
   [x: string]: any;
-}
-export interface ChoosenTime {
-  hour: string | Array<string>;
-  minute: string | Array<string>;
-  timezone: string;
 }
 
 const handleInitialDates = (

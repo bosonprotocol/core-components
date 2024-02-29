@@ -7,7 +7,7 @@ import {
   ConfigProviderProps
 } from "../../config/ConfigProvider";
 import { IpfsProvider, IpfsProviderProps } from "../../ipfs/IpfsProvider";
-import { MagicProvider } from "../../magicLink/MagicContext";
+import { MagicProvider } from "../../magicLink/MagicProvider";
 import ModalProvider from "../../modal/ModalProvider";
 import WalletConnectionProvider, {
   WalletConnectionProviderProps
@@ -15,6 +15,9 @@ import WalletConnectionProvider, {
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "../finance/convertion-rate/ConvertionRateProvider";
+import { Updaters } from "../../../state/updaters";
+import { Provider } from "react-redux";
+import store from "../../../state";
 
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
@@ -37,26 +40,30 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> = ({
   ...props
 }) => {
   return (
-    <ConfigProvider
-      magicLinkKey={magicLinkKey}
-      infuraKey={infuraKey}
-      {...props}
-    >
-      <MagicProvider>
-        <QueryClientProvider client={queryClient}>
-          <WalletConnectionProvider
-            walletConnectProjectId={props.walletConnectProjectId}
-          >
-            <ChatProvider>
-              <IpfsProvider {...props}>
-                <ConvertionRateProvider>
-                  <ModalProvider>{children}</ModalProvider>
-                </ConvertionRateProvider>
-              </IpfsProvider>
-            </ChatProvider>
-          </WalletConnectionProvider>
-        </QueryClientProvider>
-      </MagicProvider>
-    </ConfigProvider>
+    <Provider store={store}>
+      <ConfigProvider
+        magicLinkKey={magicLinkKey}
+        infuraKey={infuraKey}
+        {...props}
+      >
+        <MagicProvider>
+          <QueryClientProvider client={queryClient}>
+            <WalletConnectionProvider
+              walletConnectProjectId={props.walletConnectProjectId}
+            >
+              <Updaters>
+                <ChatProvider>
+                  <IpfsProvider {...props}>
+                    <ConvertionRateProvider>
+                      <ModalProvider>{children}</ModalProvider>
+                    </ConvertionRateProvider>
+                  </IpfsProvider>
+                </ChatProvider>
+              </Updaters>
+            </WalletConnectionProvider>
+          </QueryClientProvider>
+        </MagicProvider>
+      </ConfigProvider>
+    </Provider>
   );
 };
