@@ -1,6 +1,6 @@
-import { MetadataType } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../types/offer";
+import { isBundle } from "../../lib/offer/filter";
 
 export const useIsPhygital = ({ offer }: { offer: Offer }) => {
-  return offer.metadata?.type === MetadataType.BUNDLE.toString();
+  return isBundle(offer);
 };

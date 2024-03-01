@@ -18,6 +18,7 @@ import { UseGetOfferDetailDataProps } from "../detail/useGetOfferDetailData";
 import { GeneralProductData } from "./GeneralProductData";
 import { DigitalProductData } from "./DigitalProductData";
 import { PhysicalProductData } from "./PhysicalProductData";
+import { Overview } from "./Overview";
 
 const InventoryGraph = styled(DetailChart)`
   width: 100%;
@@ -28,6 +29,7 @@ const InventoryGraph = styled(DetailChart)`
 export type OfferFullDescriptionProps = OnClickBuyOrSwapHandler & {
   imagesToShow?: number;
   offer: Offer;
+  includeOverviewTab: boolean;
   includeGeneralProductDataTab: boolean;
   exchange: Exchange | null;
   className?: string;
@@ -36,6 +38,7 @@ export type OfferFullDescriptionProps = OnClickBuyOrSwapHandler & {
   Pick<TabsProps, "withFullViewportWidth">;
 
 const ids = [
+  "overview",
   "general-product-data",
   "physical-product-data",
   "phygital-product-data",
@@ -49,6 +52,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
   exchange,
   className,
   withFullViewportWidth,
+  includeOverviewTab,
   includeGeneralProductDataTab,
   defaultSelectedTabId,
   onExchangePolicyClick,
@@ -64,10 +68,23 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
       defaultSelectedTabId={defaultSelectedTabId}
       data={
         [
-          ...(includeGeneralProductDataTab
+          ...(includeOverviewTab && isPhygital
             ? [
                 {
                   id: ids[0],
+                  title: "Overview",
+                  content: (
+                    <Content>
+                      <Overview offer={offer} />
+                    </Content>
+                  )
+                } as const
+              ]
+            : []),
+          ...(includeGeneralProductDataTab
+            ? [
+                {
+                  id: ids[1],
                   title: "General product data",
                   content: (
                     <Content>
@@ -83,7 +100,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
               ]
             : []),
           {
-            id: ids[1],
+            id: ids[2],
             title: "Physical product data",
             content: (
               <Content>
@@ -97,7 +114,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
           ...(isPhygital
             ? ([
                 {
-                  id: ids[2],
+                  id: ids[3],
                   title: "Digital product data",
                   content: (
                     <Content>
@@ -111,7 +128,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
               ] as const)
             : []),
           {
-            id: ids[3],
+            id: ids[4],
             title: "About the creator",
             content: (
               <Content>
@@ -123,7 +140,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
             )
           } as const,
           {
-            id: ids[4],
+            id: ids[5],
             title: "Shipping & inventory",
             content: (
               <Content>

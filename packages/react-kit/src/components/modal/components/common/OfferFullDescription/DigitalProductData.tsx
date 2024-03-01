@@ -9,6 +9,7 @@ import { Grid } from "../../../../ui/Grid";
 import { Typography } from "../../../../ui/Typography";
 import DetailTable from "../detail/DetailTable";
 import { SlickSlider, initialSettings } from "../detail/SlickSlider";
+import { digitalTypeMappingDisplay } from "../../../../../lib/bundle/const";
 
 const StyledDetailTable = styled(DetailTable)`
   && {
@@ -93,8 +94,18 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
                     ]
                   : []),
                 ...(nftItem.attributes || []).map((attribute) => ({
-                  name: attribute.traitType,
-                  value: <Typography tag="p">{attribute.value}</Typography>
+                  name: attribute.displayType || attribute.traitType,
+                  value: (
+                    <Typography tag="p">
+                      {digitalTypeMappingDisplay[
+                        attribute.value as keyof typeof digitalTypeMappingDisplay
+                      ]
+                        ? digitalTypeMappingDisplay[
+                            attribute.value as keyof typeof digitalTypeMappingDisplay
+                          ]
+                        : attribute.value}
+                    </Typography>
+                  )
                 })),
                 ...(nftItem.transferMethod
                   ? [
@@ -133,17 +144,6 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
                             {nftItem.tokenIdRange?.max}-
                             {nftItem.tokenIdRange?.max}
                           </Typography>
-                        )
-                      }
-                    ]
-                  : []),
-
-                ...(nftItem.externalUrl
-                  ? [
-                      {
-                        name: "External URL",
-                        value: (
-                          <Typography tag="p">{nftItem.externalUrl}</Typography>
                         )
                       }
                     ]

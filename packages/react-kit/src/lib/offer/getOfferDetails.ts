@@ -66,7 +66,7 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
     | undefined = isProductV1(offer)
     ? offer.metadata
     : isBundle(offer)
-    ? (offer.metadata?.items.find((item) => isProductV1Item(item)) as
+    ? (offer.metadata?.items?.find((item) => isProductV1Item(item)) as
         | subgraph.ProductV1ItemMetadataEntity
         | undefined)
     : undefined;
