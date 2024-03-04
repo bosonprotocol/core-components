@@ -24,6 +24,7 @@ import {
   useIsConnectedToWrongChain
 } from "../../../../../hooks/connection/connection";
 import { ExchangeCardStatus } from "../../../../exchangeCard/types";
+import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
 
 const colors = theme.colors.light;
 
@@ -67,8 +68,8 @@ export default function Exchange({
   const lens = {} as any;
   const { ipfsGateway } = useIpfsContext();
   const avatar = getLensImageUrl(getLensProfilePictureUrl(lens), ipfsGateway);
-
-  const offerImageUrl = offer.metadata?.imageUrl || "";
+  const { mainImage } = getOfferDetails(offer);
+  const offerImageUrl = offer.metadata?.imageUrl || mainImage || "";
   const imageSrc = getImageUrl(offerImageUrl, ipfsGateway, {
     height: 500
   });

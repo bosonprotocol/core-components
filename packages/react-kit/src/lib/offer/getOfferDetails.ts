@@ -26,6 +26,7 @@ interface IGetOfferDetails {
   display: boolean;
   name: string;
   offerImg: string | undefined;
+  mainImage: string;
   animationUrl: string;
   shippingInfo: IShippingInfo;
   description: string;
@@ -41,7 +42,9 @@ interface IGetOfferDetails {
     | undefined;
 }
 
-export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
+export const getOfferDetails = (
+  offer: Offer | subgraph.OfferFieldsFragment
+): IGetOfferDetails => {
   const productV1ItemMetadataEntity:
     | (Pick<subgraph.ProductV1MetadataEntity, "shipping"> & {
         product: Pick<
@@ -105,6 +108,7 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
         isNftItem(item)
       )
     : undefined;
+  const mainImage = offerImg || images?.[0] || "";
   return {
     display: false,
     name,
@@ -116,6 +120,7 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
     artistDescription,
     images,
     bundleItems,
-    nftItems
+    nftItems,
+    mainImage
   };
 };

@@ -105,14 +105,14 @@ export function RedeemSuccess({
                 videoProps={{ muted: true, loop: true, autoPlay: true }}
                 componentWhileLoading={() => (
                   <IpfsImage
-                    src={offerDetails.offerImg ?? ""}
+                    src={offerDetails.mainImage ?? ""}
                     dataTestId="offerImage"
                   />
                 )}
               />
             ) : (
               <IpfsImage
-                src={offerDetails.offerImg ?? ""}
+                src={offerDetails.mainImage ?? ""}
                 dataTestId="offerImage"
               />
             )}
