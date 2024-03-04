@@ -14,6 +14,7 @@ import {
   ProductCardCreatorName,
   ProductCardData,
   ProductCardImageWrapper,
+  ProductCardLabelWrapper,
   ProductCardPrice,
   ProductCardPriceWrapper,
   ProductCardTitle,
@@ -84,9 +85,10 @@ export const ProductCard = (props: IProductCard) => {
     productId,
     title,
     tooltip = "",
-    tooltipProps = {}
+    tooltipProps = {},
+    productType
   } = props;
-
+  const isPhygital = productType === ProductType.phygital;
   return (
     <ProductCardWrapper
       data-card={dataCard}
@@ -98,6 +100,9 @@ export const ProductCard = (props: IProductCard) => {
       }}
     >
       <ProductCardImageWrapper>
+        {isPhygital && (
+          <ProductCardLabelWrapper>Phygital</ProductCardLabelWrapper>
+        )}
         <Image {...imageProps} />
       </ProductCardImageWrapper>
       <ProductCardBottom>

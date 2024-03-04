@@ -10,7 +10,9 @@ export type Bundle = Omit<Offer, "metadata"> & {
   metadata: BundleMetadata;
 };
 
-export const isBundle = (offer: Pick<Offer, "metadata">): offer is Bundle =>
+export const isBundle = (
+  offer: Pick<Offer | subgraph.OfferFieldsFragment, "metadata">
+): offer is Bundle =>
   offer.metadata?.__typename === "BundleMetadataEntity" ||
   offer.metadata?.type === subgraph.MetadataType.Bundle;
 
@@ -24,7 +26,7 @@ export type ProductV1 = Omit<Offer, "metadata"> & {
 };
 
 export const isProductV1 = (
-  offer: Pick<Offer, "metadata">
+  offer: Pick<Offer | subgraph.OfferFieldsFragment, "metadata">
 ): offer is ProductV1 =>
   offer.metadata?.__typename === "ProductV1MetadataEntity" ||
   offer.metadata?.type === subgraph.MetadataType.ProductV1;

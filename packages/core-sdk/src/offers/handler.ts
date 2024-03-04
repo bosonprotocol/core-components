@@ -32,6 +32,20 @@ export async function createOffer(args: {
     metadataStorage: args.metadataStorage,
     theGraphStorage: args.theGraphStorage
   });
+  const offerMetadata = await args.metadataStorage?.getMetadata(
+    args.offerToCreate.metadataUri
+  );
+  if (offerMetadata.type === "BUNDLE") {
+    await Promise.all(
+      offerMetadata.items.map((item) => {
+        return storeMetadataOnTheGraph({
+          metadataUriOrHash: item.url,
+          metadataStorage: args.metadataStorage,
+          theGraphStorage: args.theGraphStorage
+        });
+      })
+    );
+  }
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,

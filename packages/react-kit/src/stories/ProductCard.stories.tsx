@@ -54,7 +54,7 @@ ProductCardPrimary.args = {
   tooltip: "lorem ipsum dolor example",
   price: 12345,
   currency: Currencies.POLYGON,
-  productType: ProductType.physical,
+  productType: ProductType.phygital,
   onCardClick: (productId) => {
     console.log("----------ON CLICK-------------");
     console.log("productId", productId);

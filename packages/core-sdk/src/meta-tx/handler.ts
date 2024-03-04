@@ -463,6 +463,20 @@ export async function signMetaTxCreateOffer(
     metadataStorage: args.metadataStorage,
     theGraphStorage: args.theGraphStorage
   });
+  const offerMetadata = await args.metadataStorage?.getMetadata(
+    args.createOfferArgs.metadataUri
+  );
+  if (offerMetadata.type === "BUNDLE") {
+    await Promise.all(
+      offerMetadata.items.map((item) => {
+        return storeMetadataOnTheGraph({
+          metadataUriOrHash: item.url,
+          metadataStorage: args.metadataStorage,
+          theGraphStorage: args.theGraphStorage
+        });
+      })
+    );
+  }
 
   return signMetaTx({
     ...args,
