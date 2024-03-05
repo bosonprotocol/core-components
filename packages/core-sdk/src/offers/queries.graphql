@@ -268,8 +268,11 @@ fragment BaseOfferFields on Offer {
             min
             max
           }
-          transferMethod
-          transferDelay
+          terms {
+            key
+            value
+            displayType
+          }
           quantity
           attributes {
             traitType

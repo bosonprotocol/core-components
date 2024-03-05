@@ -39,5 +39,15 @@ export type NftItem = Omit<IItemMetadata, "type"> & {
   };
   quantity?: number;
   transferMethod?: string;
-  transferDelay?: string;
+  terms?:
+    | {
+        key: string;
+        value: string;
+        displayType?: string;
+      }[]
+    | {
+        key: string;
+        value: string;
+        display_type?: string;
+      }[];
 };

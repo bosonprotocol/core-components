@@ -30,6 +30,14 @@
     "max": "115792089237316195423570985008687907853269984665640564039457584007913129639935"
   },
   "quantity": 18,
-  "transferMethod": "safeTransferFrom(address,address,uint256)",
-  "transferDelay": "15 days"
+  "terms": [
+    {
+      "key": "transferMethod",
+      "value": "safeTransferFrom(address,address,uint256)"
+    },
+    {
+      "key": "transferDelay",
+      "value": "15 days"
+    }
+  ]
 }

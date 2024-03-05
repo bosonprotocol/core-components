@@ -107,30 +107,6 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
                     </Typography>
                   )
                 })),
-                ...(nftItem.transferMethod
-                  ? [
-                      {
-                        name: "How will it be sent to the buyer?",
-                        value: (
-                          <Typography tag="p">
-                            {nftItem.transferMethod}
-                          </Typography>
-                        )
-                      }
-                    ]
-                  : []),
-                ...(nftItem.transferDelay
-                  ? [
-                      {
-                        name: "When will it be sent to the buyer?",
-                        value: (
-                          <Typography tag="p">
-                            {nftItem.transferDelay}
-                          </Typography>
-                        )
-                      }
-                    ]
-                  : []),
                 {
                   name: "Shipping in days",
                   value: <Typography tag="p">-</Typography>
