@@ -264,11 +264,8 @@ describe("Bundle e2e tests", () => {
       (bundles[0].items[0] as subgraph.NftItemMetadataEntity).tokenId
     ).toEqual(digitalItem.tokenId);
     expect(
-      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).transferMethod
-    ).toEqual(digitalItem.transferMethod);
-    expect(
-      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).transferDelay
-    ).toEqual(digitalItem.transferDelay);
+      (bundles[0].items[0] as subgraph.NftItemMetadataEntity).terms
+    ).toEqual(digitalItem.terms);
     expect(
       (bundles[0].items[0] as subgraph.NftItemMetadataEntity).tokenIdRange
     ).toBeTruthy();
