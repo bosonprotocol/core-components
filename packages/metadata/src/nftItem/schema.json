@@ -45,7 +45,7 @@
         "properties": {
           "key": { "type": "string"},
           "value": { "type": "string"},
-          "displayType": { "type": "string"}
+          "displayKey": { "type": "string"}
         },
         "required": ["value", "key"]
       }

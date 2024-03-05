@@ -32,10 +32,12 @@
   "quantity": 18,
   "terms": [
     {
+      "displayKey": "",
       "key": "transferMethod",
       "value": "safeTransferFrom(address,address,uint256)"
     },
     {
+      "displayKey": "",
       "key": "transferDelay",
       "value": "15 days"
     }

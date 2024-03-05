@@ -56,9 +56,9 @@ export function saveMetadataAttributes(
 export function getTermId(
   key: string,
   value: string,
-  displayType: string
+  displayKey: string
 ): string {
-  return `${key}-${value}-${displayType}`;
+  return `${key}-${value}-${displayKey}`;
 }
 
 export function saveTerms(
@@ -70,8 +70,8 @@ export function saveTerms(
     const termsObj = termsArray[i];
     const key = convertToString(termsObj.get("key"));
     const value = convertToString(termsObj.get("value"));
-    const displayType = convertToString(termsObj.get("displayType"));
-    const termId = getTermId(key, value, displayType);
+    const displayKey = convertToString(termsObj.get("displayKey"));
+    const termId = getTermId(key, value, displayKey);
 
     let term = Term.load(termId);
 
@@ -81,7 +81,7 @@ export function saveTerms(
 
     term.key = key;
     term.value = value;
-    term.displayType = displayType;
+    term.displayKey = displayKey;
     term.save();
     savedTermsIds.push(termId);
   }

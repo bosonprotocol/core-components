@@ -118,7 +118,7 @@ fragment BaseBundleMetadataEntityFields on BundleMetadataEntity {
       terms {
         key
         value
-        displayType
+        displayKey
       }
       quantity
       attributes {

@@ -291,7 +291,7 @@ type Term @entity {
   id: ID!
   key: String!
   value: String!
-  displayType: String!
+  displayKey: String!
 }
 
 

@@ -42,6 +42,6 @@ export type NftItem = Omit<IItemMetadata, "type"> & {
   terms?: {
     key: string;
     value: string;
-    displayType?: string;
+    displayKey?: string;
   }[];
 };
