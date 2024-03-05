@@ -115,8 +115,11 @@ fragment BaseBundleMetadataEntityFields on BundleMetadataEntity {
         min
         max
       }
-      transferMethod
-      transferDelay
+      terms {
+        key
+        value
+        displayKey
+      }
       quantity
       attributes {
         traitType

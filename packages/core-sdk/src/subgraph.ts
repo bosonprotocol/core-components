@@ -3673,10 +3673,9 @@ export type NftItemMetadataEntity = ItemMetadataInterface & {
   name: Scalars["String"];
   quantity?: Maybe<Scalars["Int"]>;
   schemaUrl: Scalars["String"];
+  terms?: Maybe<Array<Term>>;
   tokenId?: Maybe<Scalars["String"]>;
   tokenIdRange?: Maybe<TokenIdRange>;
-  transferDelay?: Maybe<Scalars["String"]>;
-  transferMethod?: Maybe<Scalars["String"]>;
   type: ItemMetadataType;
   youtubeUrl?: Maybe<Scalars["String"]>;
 };
@@ -3687,6 +3686,14 @@ export type NftItemMetadataEntityAttributesArgs = {
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   where?: InputMaybe<MetadataAttribute_Filter>;
+};
+
+export type NftItemMetadataEntityTermsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Term_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<Term_Filter>;
 };
 
 export type NftItemMetadataEntity_Filter = {
@@ -3904,6 +3911,13 @@ export type NftItemMetadataEntity_Filter = {
   schemaUrl_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   schemaUrl_starts_with?: InputMaybe<Scalars["String"]>;
   schemaUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  terms?: InputMaybe<Array<Scalars["String"]>>;
+  terms_?: InputMaybe<Term_Filter>;
+  terms_contains?: InputMaybe<Array<Scalars["String"]>>;
+  terms_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  terms_not?: InputMaybe<Array<Scalars["String"]>>;
+  terms_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  terms_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   tokenId?: InputMaybe<Scalars["String"]>;
   tokenIdRange?: InputMaybe<Scalars["String"]>;
   tokenIdRange_?: InputMaybe<TokenIdRange_Filter>;
@@ -3945,46 +3959,6 @@ export type NftItemMetadataEntity_Filter = {
   tokenId_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   tokenId_starts_with?: InputMaybe<Scalars["String"]>;
   tokenId_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferDelay?: InputMaybe<Scalars["String"]>;
-  transferDelay_contains?: InputMaybe<Scalars["String"]>;
-  transferDelay_contains_nocase?: InputMaybe<Scalars["String"]>;
-  transferDelay_ends_with?: InputMaybe<Scalars["String"]>;
-  transferDelay_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferDelay_gt?: InputMaybe<Scalars["String"]>;
-  transferDelay_gte?: InputMaybe<Scalars["String"]>;
-  transferDelay_in?: InputMaybe<Array<Scalars["String"]>>;
-  transferDelay_lt?: InputMaybe<Scalars["String"]>;
-  transferDelay_lte?: InputMaybe<Scalars["String"]>;
-  transferDelay_not?: InputMaybe<Scalars["String"]>;
-  transferDelay_not_contains?: InputMaybe<Scalars["String"]>;
-  transferDelay_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  transferDelay_not_ends_with?: InputMaybe<Scalars["String"]>;
-  transferDelay_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferDelay_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  transferDelay_not_starts_with?: InputMaybe<Scalars["String"]>;
-  transferDelay_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferDelay_starts_with?: InputMaybe<Scalars["String"]>;
-  transferDelay_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferMethod?: InputMaybe<Scalars["String"]>;
-  transferMethod_contains?: InputMaybe<Scalars["String"]>;
-  transferMethod_contains_nocase?: InputMaybe<Scalars["String"]>;
-  transferMethod_ends_with?: InputMaybe<Scalars["String"]>;
-  transferMethod_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferMethod_gt?: InputMaybe<Scalars["String"]>;
-  transferMethod_gte?: InputMaybe<Scalars["String"]>;
-  transferMethod_in?: InputMaybe<Array<Scalars["String"]>>;
-  transferMethod_lt?: InputMaybe<Scalars["String"]>;
-  transferMethod_lte?: InputMaybe<Scalars["String"]>;
-  transferMethod_not?: InputMaybe<Scalars["String"]>;
-  transferMethod_not_contains?: InputMaybe<Scalars["String"]>;
-  transferMethod_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  transferMethod_not_ends_with?: InputMaybe<Scalars["String"]>;
-  transferMethod_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferMethod_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  transferMethod_not_starts_with?: InputMaybe<Scalars["String"]>;
-  transferMethod_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferMethod_starts_with?: InputMaybe<Scalars["String"]>;
-  transferMethod_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   type?: InputMaybe<ItemMetadataType>;
   type_in?: InputMaybe<Array<ItemMetadataType>>;
   type_not?: InputMaybe<ItemMetadataType>;
@@ -4025,10 +3999,9 @@ export enum NftItemMetadataEntity_OrderBy {
   Name = "name",
   Quantity = "quantity",
   SchemaUrl = "schemaUrl",
+  Terms = "terms",
   TokenId = "tokenId",
   TokenIdRange = "tokenIdRange",
-  TransferDelay = "transferDelay",
-  TransferMethod = "transferMethod",
   Type = "type",
   YoutubeUrl = "youtubeUrl"
 }
@@ -8657,6 +8630,8 @@ export type Query = {
   sellerSocialLink?: Maybe<SellerSocialLink>;
   sellerSocialLinks: Array<SellerSocialLink>;
   sellers: Array<Seller>;
+  term?: Maybe<Term>;
+  terms: Array<Term>;
   tokenIdRange?: Maybe<TokenIdRange>;
   tokenIdRanges: Array<TokenIdRange>;
   unknownItemMetadataEntities: Array<UnknownItemMetadataEntity>;
@@ -9505,6 +9480,22 @@ export type QuerySellersArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Seller_Filter>;
+};
+
+export type QueryTermArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryTermsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Term_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Term_Filter>;
 };
 
 export type QueryTokenIdRangeArgs = {
@@ -10730,6 +10721,8 @@ export type Subscription = {
   sellerSocialLink?: Maybe<SellerSocialLink>;
   sellerSocialLinks: Array<SellerSocialLink>;
   sellers: Array<Seller>;
+  term?: Maybe<Term>;
+  terms: Array<Term>;
   tokenIdRange?: Maybe<TokenIdRange>;
   tokenIdRanges: Array<TokenIdRange>;
   unknownItemMetadataEntities: Array<UnknownItemMetadataEntity>;
@@ -11580,6 +11573,22 @@ export type SubscriptionSellersArgs = {
   where?: InputMaybe<Seller_Filter>;
 };
 
+export type SubscriptionTermArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionTermsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Term_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Term_Filter>;
+};
+
 export type SubscriptionTokenIdRangeArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -11611,6 +11620,94 @@ export type SubscriptionUnknownItemMetadataEntityArgs = {
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
 };
+
+export type Term = {
+  __typename?: "Term";
+  displayKey: Scalars["String"];
+  id: Scalars["ID"];
+  key: Scalars["String"];
+  value: Scalars["String"];
+};
+
+export type Term_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  displayKey?: InputMaybe<Scalars["String"]>;
+  displayKey_contains?: InputMaybe<Scalars["String"]>;
+  displayKey_contains_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_ends_with?: InputMaybe<Scalars["String"]>;
+  displayKey_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_gt?: InputMaybe<Scalars["String"]>;
+  displayKey_gte?: InputMaybe<Scalars["String"]>;
+  displayKey_in?: InputMaybe<Array<Scalars["String"]>>;
+  displayKey_lt?: InputMaybe<Scalars["String"]>;
+  displayKey_lte?: InputMaybe<Scalars["String"]>;
+  displayKey_not?: InputMaybe<Scalars["String"]>;
+  displayKey_not_contains?: InputMaybe<Scalars["String"]>;
+  displayKey_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_not_ends_with?: InputMaybe<Scalars["String"]>;
+  displayKey_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  displayKey_not_starts_with?: InputMaybe<Scalars["String"]>;
+  displayKey_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_starts_with?: InputMaybe<Scalars["String"]>;
+  displayKey_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  key?: InputMaybe<Scalars["String"]>;
+  key_contains?: InputMaybe<Scalars["String"]>;
+  key_contains_nocase?: InputMaybe<Scalars["String"]>;
+  key_ends_with?: InputMaybe<Scalars["String"]>;
+  key_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  key_gt?: InputMaybe<Scalars["String"]>;
+  key_gte?: InputMaybe<Scalars["String"]>;
+  key_in?: InputMaybe<Array<Scalars["String"]>>;
+  key_lt?: InputMaybe<Scalars["String"]>;
+  key_lte?: InputMaybe<Scalars["String"]>;
+  key_not?: InputMaybe<Scalars["String"]>;
+  key_not_contains?: InputMaybe<Scalars["String"]>;
+  key_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  key_not_ends_with?: InputMaybe<Scalars["String"]>;
+  key_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  key_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  key_not_starts_with?: InputMaybe<Scalars["String"]>;
+  key_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  key_starts_with?: InputMaybe<Scalars["String"]>;
+  key_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  value?: InputMaybe<Scalars["String"]>;
+  value_contains?: InputMaybe<Scalars["String"]>;
+  value_contains_nocase?: InputMaybe<Scalars["String"]>;
+  value_ends_with?: InputMaybe<Scalars["String"]>;
+  value_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  value_gt?: InputMaybe<Scalars["String"]>;
+  value_gte?: InputMaybe<Scalars["String"]>;
+  value_in?: InputMaybe<Array<Scalars["String"]>>;
+  value_lt?: InputMaybe<Scalars["String"]>;
+  value_lte?: InputMaybe<Scalars["String"]>;
+  value_not?: InputMaybe<Scalars["String"]>;
+  value_not_contains?: InputMaybe<Scalars["String"]>;
+  value_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  value_not_ends_with?: InputMaybe<Scalars["String"]>;
+  value_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  value_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  value_not_starts_with?: InputMaybe<Scalars["String"]>;
+  value_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  value_starts_with?: InputMaybe<Scalars["String"]>;
+  value_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum Term_OrderBy {
+  DisplayKey = "displayKey",
+  Id = "id",
+  Key = "key",
+  Value = "value"
+}
 
 export type TokenIdRange = {
   __typename?: "TokenIdRange";
@@ -12239,8 +12336,6 @@ export type GetSellerByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -12249,6 +12344,12 @@ export type GetSellerByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -13629,8 +13730,6 @@ export type GetSellersQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -13639,6 +13738,12 @@ export type GetSellersQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -15423,8 +15528,6 @@ export type GetDisputeResolverByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -15433,6 +15536,12 @@ export type GetDisputeResolverByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -16613,8 +16722,6 @@ export type GetDisputeResolversQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -16623,6 +16730,12 @@ export type GetDisputeResolversQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -17886,8 +17999,6 @@ export type GetOfferCollectionsQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -17896,6 +18007,12 @@ export type GetOfferCollectionsQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -19058,8 +19175,6 @@ export type OfferCollectionFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -19068,6 +19183,12 @@ export type OfferCollectionFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -20196,8 +20317,6 @@ export type SellerFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -20206,6 +20325,12 @@ export type SellerFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -21845,8 +21970,6 @@ export type DisputeResolverFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -21855,6 +21978,12 @@ export type DisputeResolverFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -23729,8 +23858,6 @@ export type GetExchangeTokenByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -23739,6 +23866,12 @@ export type GetExchangeTokenByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -24830,8 +24963,6 @@ export type GetExchangeTokensQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -24840,6 +24971,12 @@ export type GetExchangeTokensQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -25909,8 +26046,6 @@ export type ExchangeTokenFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -25919,6 +26054,12 @@ export type ExchangeTokenFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -27159,8 +27300,6 @@ export type GetExchangeByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -27169,6 +27308,12 @@ export type GetExchangeByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -28342,8 +28487,6 @@ export type GetExchangesQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -28352,6 +28495,12 @@ export type GetExchangesQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -29515,8 +29664,6 @@ export type ExchangeFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -29525,6 +29672,12 @@ export type ExchangeFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -30886,8 +31039,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -30896,6 +31047,12 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -32074,8 +32231,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -32084,6 +32239,12 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -33252,8 +33413,6 @@ export type BaseMetadataEntityFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -33262,6 +33421,12 @@ export type BaseMetadataEntityFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -34417,8 +34582,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -34427,6 +34590,12 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -35703,8 +35872,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -35713,6 +35880,12 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -36630,8 +36803,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
           chainId?: number | null;
           contract?: string | null;
           tokenId?: string | null;
-          transferMethod?: string | null;
-          transferDelay?: string | null;
           quantity?: number | null;
           id: string;
           schemaUrl: string;
@@ -36642,6 +36813,12 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
             min: string;
             max: string;
           } | null;
+          terms?: Array<{
+            __typename?: "Term";
+            key: string;
+            value: string;
+            displayKey: string;
+          }> | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -37419,8 +37596,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -37429,6 +37604,12 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -38346,8 +38527,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
           chainId?: number | null;
           contract?: string | null;
           tokenId?: string | null;
-          transferMethod?: string | null;
-          transferDelay?: string | null;
           quantity?: number | null;
           id: string;
           schemaUrl: string;
@@ -38358,6 +38537,12 @@ export type GetBundleMetadataEntitiesQueryQuery = {
             min: string;
             max: string;
           } | null;
+          terms?: Array<{
+            __typename?: "Term";
+            key: string;
+            value: string;
+            displayKey: string;
+          }> | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -39125,8 +39310,6 @@ export type BundleMetadataEntityFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -39135,6 +39318,12 @@ export type BundleMetadataEntityFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -40040,8 +40229,6 @@ export type BundleMetadataEntityFieldsFragment = {
         chainId?: number | null;
         contract?: string | null;
         tokenId?: string | null;
-        transferMethod?: string | null;
-        transferDelay?: string | null;
         quantity?: number | null;
         id: string;
         schemaUrl: string;
@@ -40052,6 +40239,12 @@ export type BundleMetadataEntityFieldsFragment = {
           min: string;
           max: string;
         } | null;
+        terms?: Array<{
+          __typename?: "Term";
+          key: string;
+          value: string;
+          displayKey: string;
+        }> | null;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -40818,8 +41011,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -40828,6 +41019,12 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -41733,8 +41930,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
         chainId?: number | null;
         contract?: string | null;
         tokenId?: string | null;
-        transferMethod?: string | null;
-        transferDelay?: string | null;
         quantity?: number | null;
         id: string;
         schemaUrl: string;
@@ -41745,6 +41940,12 @@ export type BaseBundleMetadataEntityFieldsFragment = {
           min: string;
           max: string;
         } | null;
+        terms?: Array<{
+          __typename?: "Term";
+          key: string;
+          value: string;
+          displayKey: string;
+        }> | null;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -42753,8 +42954,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     chainId?: number | null;
                     contract?: string | null;
                     tokenId?: string | null;
-                    transferMethod?: string | null;
-                    transferDelay?: string | null;
                     quantity?: number | null;
                     type: ItemMetadataType;
                     metadataUri: string;
@@ -42763,6 +42962,12 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       min: string;
                       max: string;
                     } | null;
+                    terms?: Array<{
+                      __typename?: "Term";
+                      key: string;
+                      value: string;
+                      displayKey: string;
+                    }> | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
                       traitType: string;
@@ -43964,8 +44169,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       chainId?: number | null;
                       contract?: string | null;
                       tokenId?: string | null;
-                      transferMethod?: string | null;
-                      transferDelay?: string | null;
                       quantity?: number | null;
                       type: ItemMetadataType;
                       metadataUri: string;
@@ -43974,6 +44177,12 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                         min: string;
                         max: string;
                       } | null;
+                      terms?: Array<{
+                        __typename?: "Term";
+                        key: string;
+                        value: string;
+                        displayKey: string;
+                      }> | null;
                       attributes?: Array<{
                         __typename?: "MetadataAttribute";
                         traitType: string;
@@ -44891,8 +45100,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               chainId?: number | null;
               contract?: string | null;
               tokenId?: string | null;
-              transferMethod?: string | null;
-              transferDelay?: string | null;
               quantity?: number | null;
               id: string;
               schemaUrl: string;
@@ -44903,6 +45110,12 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 min: string;
                 max: string;
               } | null;
+              terms?: Array<{
+                __typename?: "Term";
+                key: string;
+                value: string;
+                displayKey: string;
+              }> | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -45862,8 +46075,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     chainId?: number | null;
                     contract?: string | null;
                     tokenId?: string | null;
-                    transferMethod?: string | null;
-                    transferDelay?: string | null;
                     quantity?: number | null;
                     type: ItemMetadataType;
                     metadataUri: string;
@@ -45872,6 +46083,12 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       min: string;
                       max: string;
                     } | null;
+                    terms?: Array<{
+                      __typename?: "Term";
+                      key: string;
+                      value: string;
+                      displayKey: string;
+                    }> | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
                       traitType: string;
@@ -47073,8 +47290,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       chainId?: number | null;
                       contract?: string | null;
                       tokenId?: string | null;
-                      transferMethod?: string | null;
-                      transferDelay?: string | null;
                       quantity?: number | null;
                       type: ItemMetadataType;
                       metadataUri: string;
@@ -47083,6 +47298,12 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                         min: string;
                         max: string;
                       } | null;
+                      terms?: Array<{
+                        __typename?: "Term";
+                        key: string;
+                        value: string;
+                        displayKey: string;
+                      }> | null;
                       attributes?: Array<{
                         __typename?: "MetadataAttribute";
                         traitType: string;
@@ -48000,8 +48221,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               chainId?: number | null;
               contract?: string | null;
               tokenId?: string | null;
-              transferMethod?: string | null;
-              transferDelay?: string | null;
               quantity?: number | null;
               id: string;
               schemaUrl: string;
@@ -48012,6 +48231,12 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 min: string;
                 max: string;
               } | null;
+              terms?: Array<{
+                __typename?: "Term";
+                key: string;
+                value: string;
+                displayKey: string;
+              }> | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -48985,8 +49210,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -48995,6 +49218,12 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -50596,8 +50825,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -50606,6 +50833,12 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -52197,8 +52430,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -52207,6 +52438,12 @@ export type ProductV1MetadataEntityFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -53785,8 +54022,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -53795,6 +54030,12 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -55586,8 +55827,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -55596,6 +55835,12 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -56797,8 +57042,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     chainId?: number | null;
                     contract?: string | null;
                     tokenId?: string | null;
-                    transferMethod?: string | null;
-                    transferDelay?: string | null;
                     quantity?: number | null;
                     type: ItemMetadataType;
                     metadataUri: string;
@@ -56807,6 +57050,12 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                       min: string;
                       max: string;
                     } | null;
+                    terms?: Array<{
+                      __typename?: "Term";
+                      key: string;
+                      value: string;
+                      displayKey: string;
+                    }> | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
                       traitType: string;
@@ -57724,8 +57973,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             chainId?: number | null;
             contract?: string | null;
             tokenId?: string | null;
-            transferMethod?: string | null;
-            transferDelay?: string | null;
             quantity?: number | null;
             id: string;
             schemaUrl: string;
@@ -57736,6 +57983,12 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               min: string;
               max: string;
             } | null;
+            terms?: Array<{
+              __typename?: "Term";
+              key: string;
+              value: string;
+              displayKey: string;
+            }> | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -58684,8 +58937,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -58694,6 +58945,12 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -59895,8 +60152,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     chainId?: number | null;
                     contract?: string | null;
                     tokenId?: string | null;
-                    transferMethod?: string | null;
-                    transferDelay?: string | null;
                     quantity?: number | null;
                     type: ItemMetadataType;
                     metadataUri: string;
@@ -59905,6 +60160,12 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                       min: string;
                       max: string;
                     } | null;
+                    terms?: Array<{
+                      __typename?: "Term";
+                      key: string;
+                      value: string;
+                      displayKey: string;
+                    }> | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
                       traitType: string;
@@ -60822,8 +61083,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             chainId?: number | null;
             contract?: string | null;
             tokenId?: string | null;
-            transferMethod?: string | null;
-            transferDelay?: string | null;
             quantity?: number | null;
             id: string;
             schemaUrl: string;
@@ -60834,6 +61093,12 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               min: string;
               max: string;
             } | null;
+            terms?: Array<{
+              __typename?: "Term";
+              key: string;
+              value: string;
+              displayKey: string;
+            }> | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -61985,8 +62250,6 @@ export type GetOfferByIdQueryQuery = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -61995,6 +62258,12 @@ export type GetOfferByIdQueryQuery = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -63162,8 +63431,6 @@ export type GetOffersQueryQuery = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -63172,6 +63439,12 @@ export type GetOffersQueryQuery = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -64431,8 +64704,6 @@ export type OfferFieldsFragment = {
               chainId?: number | null;
               contract?: string | null;
               tokenId?: string | null;
-              transferMethod?: string | null;
-              transferDelay?: string | null;
               quantity?: number | null;
               type: ItemMetadataType;
               metadataUri: string;
@@ -64441,6 +64712,12 @@ export type OfferFieldsFragment = {
                 min: string;
                 max: string;
               } | null;
+              terms?: Array<{
+                __typename?: "Term";
+                key: string;
+                value: string;
+                displayKey: string;
+              }> | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -65483,8 +65760,6 @@ export type BaseOfferFieldsFragment = {
               chainId?: number | null;
               contract?: string | null;
               tokenId?: string | null;
-              transferMethod?: string | null;
-              transferDelay?: string | null;
               quantity?: number | null;
               type: ItemMetadataType;
               metadataUri: string;
@@ -65493,6 +65768,12 @@ export type BaseOfferFieldsFragment = {
                 min: string;
                 max: string;
               } | null;
+              terms?: Array<{
+                __typename?: "Term";
+                key: string;
+                value: string;
+                displayKey: string;
+              }> | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -66758,8 +67039,11 @@ export const BaseOfferFieldsFragmentDoc = gql`
               min
               max
             }
-            transferMethod
-            transferDelay
+            terms {
+              key
+              value
+              displayKey
+            }
             quantity
             attributes {
               traitType
@@ -67255,8 +67539,11 @@ export const BaseBundleMetadataEntityFieldsFragmentDoc = gql`
           min
           max
         }
-        transferMethod
-        transferDelay
+        terms {
+          key
+          value
+          displayKey
+        }
         quantity
         attributes {
           traitType
