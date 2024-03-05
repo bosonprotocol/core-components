@@ -11623,7 +11623,7 @@ export type SubscriptionUnknownItemMetadataEntityArgs = {
 
 export type Term = {
   __typename?: "Term";
-  displayType: Scalars["String"];
+  displayKey: Scalars["String"];
   id: Scalars["ID"];
   key: Scalars["String"];
   value: Scalars["String"];
@@ -11632,26 +11632,26 @@ export type Term = {
 export type Term_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  displayType?: InputMaybe<Scalars["String"]>;
-  displayType_contains?: InputMaybe<Scalars["String"]>;
-  displayType_contains_nocase?: InputMaybe<Scalars["String"]>;
-  displayType_ends_with?: InputMaybe<Scalars["String"]>;
-  displayType_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  displayType_gt?: InputMaybe<Scalars["String"]>;
-  displayType_gte?: InputMaybe<Scalars["String"]>;
-  displayType_in?: InputMaybe<Array<Scalars["String"]>>;
-  displayType_lt?: InputMaybe<Scalars["String"]>;
-  displayType_lte?: InputMaybe<Scalars["String"]>;
-  displayType_not?: InputMaybe<Scalars["String"]>;
-  displayType_not_contains?: InputMaybe<Scalars["String"]>;
-  displayType_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  displayType_not_ends_with?: InputMaybe<Scalars["String"]>;
-  displayType_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  displayType_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  displayType_not_starts_with?: InputMaybe<Scalars["String"]>;
-  displayType_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  displayType_starts_with?: InputMaybe<Scalars["String"]>;
-  displayType_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey?: InputMaybe<Scalars["String"]>;
+  displayKey_contains?: InputMaybe<Scalars["String"]>;
+  displayKey_contains_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_ends_with?: InputMaybe<Scalars["String"]>;
+  displayKey_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_gt?: InputMaybe<Scalars["String"]>;
+  displayKey_gte?: InputMaybe<Scalars["String"]>;
+  displayKey_in?: InputMaybe<Array<Scalars["String"]>>;
+  displayKey_lt?: InputMaybe<Scalars["String"]>;
+  displayKey_lte?: InputMaybe<Scalars["String"]>;
+  displayKey_not?: InputMaybe<Scalars["String"]>;
+  displayKey_not_contains?: InputMaybe<Scalars["String"]>;
+  displayKey_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_not_ends_with?: InputMaybe<Scalars["String"]>;
+  displayKey_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  displayKey_not_starts_with?: InputMaybe<Scalars["String"]>;
+  displayKey_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_starts_with?: InputMaybe<Scalars["String"]>;
+  displayKey_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -11703,7 +11703,7 @@ export type Term_Filter = {
 };
 
 export enum Term_OrderBy {
-  DisplayType = "displayType",
+  DisplayKey = "displayKey",
   Id = "id",
   Key = "key",
   Value = "value"
@@ -12348,7 +12348,7 @@ export type GetSellerByIdQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -13742,7 +13742,7 @@ export type GetSellersQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -15540,7 +15540,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -16734,7 +16734,7 @@ export type GetDisputeResolversQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -18011,7 +18011,7 @@ export type GetOfferCollectionsQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -19187,7 +19187,7 @@ export type OfferCollectionFieldsFragment = {
                   __typename?: "Term";
                   key: string;
                   value: string;
-                  displayType: string;
+                  displayKey: string;
                 }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
@@ -20329,7 +20329,7 @@ export type SellerFieldsFragment = {
                   __typename?: "Term";
                   key: string;
                   value: string;
-                  displayType: string;
+                  displayKey: string;
                 }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
@@ -21982,7 +21982,7 @@ export type DisputeResolverFieldsFragment = {
                   __typename?: "Term";
                   key: string;
                   value: string;
-                  displayType: string;
+                  displayKey: string;
                 }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
@@ -23870,7 +23870,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -24975,7 +24975,7 @@ export type GetExchangeTokensQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -26058,7 +26058,7 @@ export type ExchangeTokenFieldsFragment = {
                   __typename?: "Term";
                   key: string;
                   value: string;
-                  displayType: string;
+                  displayKey: string;
                 }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
@@ -27312,7 +27312,7 @@ export type GetExchangeByIdQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -28499,7 +28499,7 @@ export type GetExchangesQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -29676,7 +29676,7 @@ export type ExchangeFieldsFragment = {
                   __typename?: "Term";
                   key: string;
                   value: string;
-                  displayType: string;
+                  displayKey: string;
                 }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
@@ -31051,7 +31051,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -32243,7 +32243,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -33425,7 +33425,7 @@ export type BaseMetadataEntityFieldsFragment = {
                   __typename?: "Term";
                   key: string;
                   value: string;
-                  displayType: string;
+                  displayKey: string;
                 }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
@@ -34594,7 +34594,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                   __typename?: "Term";
                   key: string;
                   value: string;
-                  displayType: string;
+                  displayKey: string;
                 }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
@@ -35884,7 +35884,7 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -36817,7 +36817,7 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
             __typename?: "Term";
             key: string;
             value: string;
-            displayType: string;
+            displayKey: string;
           }> | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
@@ -37608,7 +37608,7 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -38541,7 +38541,7 @@ export type GetBundleMetadataEntitiesQueryQuery = {
             __typename?: "Term";
             key: string;
             value: string;
-            displayType: string;
+            displayKey: string;
           }> | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
@@ -39322,7 +39322,7 @@ export type BundleMetadataEntityFieldsFragment = {
                   __typename?: "Term";
                   key: string;
                   value: string;
-                  displayType: string;
+                  displayKey: string;
                 }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
@@ -40243,7 +40243,7 @@ export type BundleMetadataEntityFieldsFragment = {
           __typename?: "Term";
           key: string;
           value: string;
-          displayType: string;
+          displayKey: string;
         }> | null;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
@@ -41023,7 +41023,7 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                   __typename?: "Term";
                   key: string;
                   value: string;
-                  displayType: string;
+                  displayKey: string;
                 }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
@@ -41944,7 +41944,7 @@ export type BaseBundleMetadataEntityFieldsFragment = {
           __typename?: "Term";
           key: string;
           value: string;
-          displayType: string;
+          displayKey: string;
         }> | null;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
@@ -42966,7 +42966,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       __typename?: "Term";
                       key: string;
                       value: string;
-                      displayType: string;
+                      displayKey: string;
                     }> | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
@@ -44181,7 +44181,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                         __typename?: "Term";
                         key: string;
                         value: string;
-                        displayType: string;
+                        displayKey: string;
                       }> | null;
                       attributes?: Array<{
                         __typename?: "MetadataAttribute";
@@ -45114,7 +45114,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 __typename?: "Term";
                 key: string;
                 value: string;
-                displayType: string;
+                displayKey: string;
               }> | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
@@ -46087,7 +46087,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       __typename?: "Term";
                       key: string;
                       value: string;
-                      displayType: string;
+                      displayKey: string;
                     }> | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
@@ -47302,7 +47302,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                         __typename?: "Term";
                         key: string;
                         value: string;
-                        displayType: string;
+                        displayKey: string;
                       }> | null;
                       attributes?: Array<{
                         __typename?: "MetadataAttribute";
@@ -48235,7 +48235,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 __typename?: "Term";
                 key: string;
                 value: string;
-                displayType: string;
+                displayKey: string;
               }> | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
@@ -49222,7 +49222,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -50837,7 +50837,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -52442,7 +52442,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
                   __typename?: "Term";
                   key: string;
                   value: string;
-                  displayType: string;
+                  displayKey: string;
                 }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
@@ -54034,7 +54034,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                   __typename?: "Term";
                   key: string;
                   value: string;
-                  displayType: string;
+                  displayKey: string;
                 }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
@@ -55839,7 +55839,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -57054,7 +57054,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                       __typename?: "Term";
                       key: string;
                       value: string;
-                      displayType: string;
+                      displayKey: string;
                     }> | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
@@ -57987,7 +57987,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               __typename?: "Term";
               key: string;
               value: string;
-              displayType: string;
+              displayKey: string;
             }> | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
@@ -58949,7 +58949,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     __typename?: "Term";
                     key: string;
                     value: string;
-                    displayType: string;
+                    displayKey: string;
                   }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
@@ -60164,7 +60164,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                       __typename?: "Term";
                       key: string;
                       value: string;
-                      displayType: string;
+                      displayKey: string;
                     }> | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
@@ -61097,7 +61097,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               __typename?: "Term";
               key: string;
               value: string;
-              displayType: string;
+              displayKey: string;
             }> | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
@@ -62262,7 +62262,7 @@ export type GetOfferByIdQueryQuery = {
                   __typename?: "Term";
                   key: string;
                   value: string;
-                  displayType: string;
+                  displayKey: string;
                 }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
@@ -63443,7 +63443,7 @@ export type GetOffersQueryQuery = {
                   __typename?: "Term";
                   key: string;
                   value: string;
-                  displayType: string;
+                  displayKey: string;
                 }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
@@ -64716,7 +64716,7 @@ export type OfferFieldsFragment = {
                 __typename?: "Term";
                 key: string;
                 value: string;
-                displayType: string;
+                displayKey: string;
               }> | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
@@ -65772,7 +65772,7 @@ export type BaseOfferFieldsFragment = {
                 __typename?: "Term";
                 key: string;
                 value: string;
-                displayType: string;
+                displayKey: string;
               }> | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
@@ -67042,7 +67042,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
             terms {
               key
               value
-              displayType
+              displayKey
             }
             quantity
             attributes {
@@ -67542,7 +67542,7 @@ export const BaseBundleMetadataEntityFieldsFragmentDoc = gql`
         terms {
           key
           value
-          displayType
+          displayKey
         }
         quantity
         attributes {

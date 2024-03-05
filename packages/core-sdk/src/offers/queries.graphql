@@ -271,7 +271,7 @@ fragment BaseOfferFields on Offer {
           terms {
             key
             value
-            displayType
+            displayKey
           }
           quantity
           attributes {
