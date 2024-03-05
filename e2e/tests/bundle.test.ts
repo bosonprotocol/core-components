@@ -211,7 +211,7 @@ describe("Bundle e2e tests", () => {
       (bundles[0].items[0] as subgraph.ProductV1ItemMetadataEntity).productUuid
     ).toEqual(productV1Item.product.uuid);
   });
-  test.only("Create a BUNDLE with only one digital item", async () => {
+  test("Create a BUNDLE with only one digital item", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
       await initCoreSDKWithFundedWallet(seedWallet);
     const sellers = await ensureCreatedSeller(sellerWallet);
