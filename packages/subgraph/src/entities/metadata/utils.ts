@@ -70,10 +70,7 @@ export function saveTerms(
     const termsObj = termsArray[i];
     const key = convertToString(termsObj.get("key"));
     const value = convertToString(termsObj.get("value"));
-    let displayType = convertToString(termsObj.get("displayType"));
-    if (!displayType) {
-      displayType = convertToString(termsObj.get("display_type"));
-    }
+    const displayType = convertToString(termsObj.get("displayType"));
     const termId = getTermId(key, value, displayType);
 
     let term = Term.load(termId);
