@@ -33,13 +33,13 @@
   "terms": [
     {
       "displayKey": "",
-      "key": "transferMethod",
-      "value": "safeTransferFrom(address,address,uint256)"
+      "key": "transferDelay",
+      "value": "15 days"
     },
     {
       "displayKey": "",
-      "key": "transferDelay",
-      "value": "15 days"
+      "key": "transferMethod",
+      "value": "safeTransferFrom(address,address,uint256)"
     }
   ]
 }
