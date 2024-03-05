@@ -1,5 +1,9 @@
 import { JSONValue, TypedMap } from "@graphprotocol/graph-ts";
-import { getItemMetadataEntityId, saveMetadataAttributes } from "../utils";
+import {
+  getItemMetadataEntityId,
+  saveMetadataAttributes,
+  saveTerms
+} from "../utils";
 import {
   convertToInt,
   convertToObject,
@@ -49,12 +53,13 @@ export function saveNftItemMetadata(
   const contract = convertToString(metadataObj.get("contract"));
   const tokenId = convertToString(metadataObj.get("tokenId"));
   const tokenIdRangeObj = convertToObject(metadataObj.get("tokenIdRange"));
-  const transferMethod = convertToString(metadataObj.get("transferMethod"));
-  const transferDelay = convertToString(metadataObj.get("transferDelay"));
   const quantity = convertToInt(metadataObj.get("quantity"));
 
   const attributes = convertToObjectArray(metadataObj.get("attributes"));
   const savedMetadataAttributeIds = saveMetadataAttributes(attributes);
+
+  const terms = convertToObjectArray(metadataObj.get("terms"));
+  const savedTermsIds = saveTerms(terms);
 
   let nftItemMetadataEntity = NftItemMetadataEntity.load(metadataId);
   if (!nftItemMetadataEntity) {
@@ -75,8 +80,7 @@ export function saveNftItemMetadata(
   if (tokenIdRangeObj) {
     nftItemMetadataEntity.tokenIdRange = saveTokenIdRange(tokenIdRangeObj);
   }
-  nftItemMetadataEntity.transferMethod = transferMethod;
-  nftItemMetadataEntity.transferDelay = transferDelay;
+  nftItemMetadataEntity.terms = savedTermsIds;
   nftItemMetadataEntity.quantity = quantity;
   nftItemMetadataEntity.attributes = savedMetadataAttributeIds;
   nftItemMetadataEntity.bundle = bundleId;

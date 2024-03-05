@@ -1,6 +1,6 @@
 import { JSONValue, TypedMap } from "@graphprotocol/graph-ts";
 
-import { MetadataAttribute } from "../../../generated/schema";
+import { MetadataAttribute, Term } from "../../../generated/schema";
 import { convertToString } from "../../utils/json";
 
 export function getMetadataEntityId(id: string): string {
@@ -51,4 +51,43 @@ export function saveMetadataAttributes(
   }
 
   return savedMetadataAttributeIds;
+}
+
+export function getTermId(
+  key: string,
+  value: string,
+  displayType: string
+): string {
+  return `${key}-${value}-${displayType}`;
+}
+
+export function saveTerms(
+  termsArray: Array<TypedMap<string, JSONValue>>
+): Array<string> {
+  const savedTermsIds: string[] = [];
+
+  for (let i = 0; i < termsArray.length; i++) {
+    const termsObj = termsArray[i];
+    const key = convertToString(termsObj.get("key"));
+    const value = convertToString(termsObj.get("value"));
+    let displayType = convertToString(termsObj.get("displayType"));
+    if (!displayType) {
+      displayType = convertToString(termsObj.get("display_type"));
+    }
+    const termId = getTermId(key, value, displayType);
+
+    let term = Term.load(termId);
+
+    if (!term) {
+      term = new Term(termId);
+    }
+
+    term.key = key;
+    term.value = value;
+    term.displayType = displayType;
+    term.save();
+    savedTermsIds.push(termId);
+  }
+
+  return savedTermsIds;
 }
