@@ -56,7 +56,7 @@ export function handleGroupUpdatedEvent(event: GroupUpdated): void {
     condition.threshold = conditionFromEvent.threshold;
     condition.maxCommits = conditionFromEvent.maxCommits;
     condition.save();
-    const previousOffers = condition.offers;
+    const previousOffers = condition.offers.load();
     if (previousOffers) {
       clearPreviousOffersCondition(previousOffers);
     }
@@ -114,7 +114,7 @@ export function handleGroupUpdatedEventLegacy(event: GroupUpdatedLegacy): void {
     condition.threshold = conditionFromEvent.threshold;
     condition.maxCommits = conditionFromEvent.maxCommits;
     condition.save();
-    const previousOffers = condition.offers;
+    const previousOffers = condition.offers.load();
     if (previousOffers) {
       clearPreviousOffersCondition(previousOffers);
     }
@@ -126,16 +126,11 @@ export function handleGroupUpdatedEventLegacy(event: GroupUpdatedLegacy): void {
   addOffersCondition(groupId.toString(), groupFromEvent.offerIds);
 }
 
-function clearPreviousOffersCondition(previousOffers: string[]): void {
+function clearPreviousOffersCondition(previousOffers: Offer[]): void {
   for (let i = 0; i < previousOffers.length; i++) {
-    const offerId = previousOffers[i];
-    const offer = Offer.load(offerId.toString());
-    if (offer) {
-      offer.condition = null;
-      offer.save();
-    } else {
-      log.warning("Unable to load Offer with ID '{}'", [offerId.toString()]);
-    }
+    const offer = previousOffers[i];
+    offer.condition = null;
+    offer.save();
   }
 }
 

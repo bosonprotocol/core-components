@@ -38,7 +38,7 @@ import {
   createMockedFunction,
   mockIpfsFile
 } from "matchstick-as/assembly/index";
-import { ethereum, Address, BigInt } from "@graphprotocol/graph-ts";
+import { ethereum, Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
   SellerUpdated,
   SellerCreated as SellerCreatedLegacy,
@@ -52,13 +52,17 @@ import {
   ProductV1Product,
   Seller
 } from "../generated/schema";
-import { handleSellerCreatedEvent } from "../src/mappings/account-handler";
+import {
+  getOfferCollectionId,
+  handleSellerCreatedEvent
+} from "../src/mappings/account-handler";
 import {
   GroupCreated,
   GroupCreatedConditionStruct,
   GroupCreatedGroupStruct,
   GroupUpdated
 } from "../generated/BosonGroupHandler/IBosonGroupHandler";
+import { getDisputeResolutionTermsId } from "../src/entities/dispute-resolution";
 
 export class RoyaltyInfo {
   recipients: string[];
@@ -929,7 +933,8 @@ export function mockCreateProduct(
   product.title = "";
   product.description = "";
   product.disputeResolverId = BigInt.zero();
-  product.productionInformation_brandName = "";
+  product.productionInformation_brandName = "brand";
+  product.brand = "brand";
   product.details_offerCategory = "";
   product.offerCategory = "PHYSICAL";
   const media = new ProductV1Media("mediaId");
@@ -1122,11 +1127,35 @@ export function mockOffer(offerId: string, sellerId: string): Offer {
   const metadataHash = "QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB";
   mockIpfsFile(metadataHash, "tests/metadata/product-v1-full.json");
   const offer = new Offer(offerId);
-  offer.sellerId = BigInt.fromString(sellerId);
-  offer.quantityAvailable = BigInt.fromI32(1);
-  offer.numberOfCommits = BigInt.fromI32(0);
+  offer.createdAt = BigInt.fromI32(0);
+  offer.price = BigInt.fromI32(100);
+  offer.sellerDeposit = BigInt.fromI32(5);
+  offer.protocolFee = BigInt.fromI32(1);
+  offer.agentFee = BigInt.fromI32(0);
+  offer.agentId = BigInt.fromI32(0);
+  offer.buyerCancelPenalty = BigInt.fromI32(2);
+  offer.quantityInitial = BigInt.fromI32(10);
+  offer.quantityAvailable = BigInt.fromI32(10);
+  offer.validFromDate = BigInt.fromI32(0);
+  offer.validUntilDate = BigInt.fromI32(0);
+  offer.voucherRedeemableFromDate = BigInt.fromI32(0);
+  offer.voucherRedeemableUntilDate = BigInt.fromI32(0);
+  offer.disputePeriodDuration = BigInt.fromI32(0);
+  offer.voucherValidDuration = BigInt.fromI32(0);
+  offer.resolutionPeriodDuration = BigInt.fromI32(0);
   offer.metadataUri = `ipfs://${metadataHash}`;
   offer.metadataHash = metadataHash;
+  offer.voided = false;
+  offer.collectionIndex = BigInt.fromI32(0);
+  offer.collection = getOfferCollectionId(sellerId, "0");
+  offer.disputeResolverId = BigInt.fromI32(5);
+  offer.disputeResolver = "5";
+  offer.disputeResolutionTerms = getDisputeResolutionTermsId("5", offerId);
+  offer.sellerId = BigInt.fromString(sellerId);
+  offer.seller = sellerId;
+  offer.exchangeToken = "0xaaaaabbbbbcccccdddddeeeeefffff0000011111";
+  offer.numberOfCommits = BigInt.fromI32(0);
+  offer.numberOfRedemptions = BigInt.fromI32(0);
   offer.save();
   return offer;
 }
@@ -1134,7 +1163,26 @@ export function mockOffer(offerId: string, sellerId: string): Offer {
 export function mockSeller(sellerId: string): Seller {
   const seller = new Seller(sellerId);
   seller.sellerId = BigInt.fromString(sellerId);
-  seller.royaltyRecipients = [];
+  seller.assistant = Bytes.fromHexString(
+    "0x0000000000111111111122222222223333333333"
+  );
+  seller.admin = Bytes.fromHexString(
+    "0x0000000000111111111122222222223333333333"
+  );
+  seller.clerk = Bytes.fromHexString(
+    "0x0000000000000000000000000000000000000000"
+  );
+  seller.treasury = Bytes.fromHexString(
+    "0x0000000000111111111122222222223333333333"
+  );
+  seller.active = true;
+  seller.voucherCloneAddress = Bytes.fromHexString(
+    "0x4444444444111111111122222222223333333333"
+  );
+  seller.authTokenType = 0;
+  seller.authTokenId = BigInt.fromI32(0);
+  seller.contractURI = "ipfs://sellerContractUri";
+  seller.metadataUri = "ipfs://sellerMetadataUri";
   seller.save();
   return seller;
 }

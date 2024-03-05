@@ -20,7 +20,8 @@ import {
   createSellerUpdateAppliedEvent,
   mockCreateProduct,
   createSeller,
-  mockOffer
+  mockOffer,
+  mockSeller
 } from "./mocks";
 import { getSellerMetadataEntityId } from "../src/entities/metadata/seller";
 import {
@@ -182,8 +183,9 @@ test("handle SellerCreatedEvent", () => {
 });
 
 test("handle SellerUpdatedEvent", () => {
+  const seller = mockSeller("1");
   const sellerUpdatedEvent = createSellerUpdatedEvent(
-    1,
+    seller.sellerId.toI32(),
     sellerAddress,
     sellerAddress,
     sellerAddress,

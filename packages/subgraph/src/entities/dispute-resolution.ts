@@ -38,6 +38,7 @@ export function saveDisputeResolutionTerms(
   terms.buyerEscalationDeposit = disputeResolutionTerms.buyerEscalationDeposit;
   terms.disputeResolverId = disputeResolutionTerms.disputeResolverId;
   terms.disputeResolver = disputeResolutionTerms.disputeResolverId.toString();
+  terms.offer = offerId;
   terms.feeAmount = disputeResolutionTerms.feeAmount;
   terms.save();
 

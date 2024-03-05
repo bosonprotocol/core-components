@@ -1,7 +1,7 @@
 import { test, assert, log } from "matchstick-as/assembly/index";
 import { handleRoyaltyRecipientsChangedEvent } from "../src/mappings/account-handler";
 import { createRoyaltyRecipientsChanged, mockSeller } from "./mocks";
-import { RoyaltyRecipientEntity, Seller } from "../generated/schema";
+import { Seller } from "../generated/schema";
 
 const sellerId = 1;
 const recipients_1 = [
@@ -46,8 +46,7 @@ function checkSellerRoyaltyRecipients(
   const seller = Seller.load(sellerId.toString());
   log.debug("check seller {} exists", [sellerId.toString()]);
   assert.assertNotNull(seller);
-  const sellerRoyaltyRecipients = (seller as Seller)
-    .royaltyRecipients as string[];
+  const sellerRoyaltyRecipients = (seller as Seller).royaltyRecipients.load();
   log.debug("check sellerRoyaltyRecipients {} exists", [
     (sellerRoyaltyRecipients != null).toString()
   ]);
@@ -58,11 +57,9 @@ function checkSellerRoyaltyRecipients(
   ]);
   assert.assertTrue(recipients.length === sellerRoyaltyRecipients.length);
   for (let i = 0; i < sellerRoyaltyRecipients.length; i++) {
-    const sellerRoyaltyRecipient = RoyaltyRecipientEntity.load(
-      sellerRoyaltyRecipients[i]
-    ) as RoyaltyRecipientEntity;
+    const sellerRoyaltyRecipient = sellerRoyaltyRecipients[i];
     log.debug("check sellerRoyaltyRecipient {} exists", [
-      sellerRoyaltyRecipients[i]
+      sellerRoyaltyRecipient.id
     ]);
     assert.assertNotNull(sellerRoyaltyRecipient);
     let found = false;
