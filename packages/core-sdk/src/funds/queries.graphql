@@ -32,5 +32,7 @@ fragment FundsEntityFields on FundsEntity {
 fragment BaseFundsEntityFields on FundsEntity {
   id
   availableAmount
-  accountId
+  account {
+    id
+  }
 }

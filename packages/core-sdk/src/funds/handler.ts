@@ -56,7 +56,7 @@ export async function withdrawAllAvailableFunds(args: {
 }): Promise<TransactionResponse> {
   const funds = await getFunds(args.subgraphUrl, {
     fundsFilter: {
-      accountId: args.entityId.toString()
+      account_: { id: args.entityId.toString() }
     }
   });
 

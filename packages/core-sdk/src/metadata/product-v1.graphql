@@ -340,7 +340,6 @@ fragment BaseProductV1SellerFields on ProductV1Seller {
   description
   externalUrl
   tokenId
-  sellerId
   images {
     ...BaseProductV1MediaFields
   }

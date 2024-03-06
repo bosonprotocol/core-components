@@ -38,8 +38,18 @@
         "max": { "type": "string" }
       }
     },
-    "transferMethod": { "type": "string" },
-    "transferDelay": { "type": "string" },
+    "terms":{
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": { "type": "string"},
+          "value": { "type": "string"},
+          "displayKey": { "type": "string"}
+        },
+        "required": ["value", "key"]
+      }
+    },
     "quantity": { "type": "number", "moreThan": 0 }
   },
   "required": ["schemaUrl", "type", "name"]

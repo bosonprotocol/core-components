@@ -152,7 +152,6 @@ fragment BaseOfferFields on Offer {
   voided
   voidedAt
   collectionIndex
-  disputeResolverId
   numberOfCommits
   numberOfRedemptions
   condition {
@@ -268,8 +267,11 @@ fragment BaseOfferFields on Offer {
             min
             max
           }
-          transferMethod
-          transferDelay
+          terms {
+            key
+            value
+            displayKey
+          }
           quantity
           attributes {
             traitType

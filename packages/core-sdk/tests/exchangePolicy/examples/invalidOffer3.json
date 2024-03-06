@@ -20,10 +20,17 @@
   "metadataHash": "QmSpHGbRyfXqAqJ5xHv8E2TZjy6LDmUYoXUGHrcx7RrqGB",
   "voided": false,
   "voidedAt": null,
-  "disputeResolverId": "13",
   "numberOfCommits": "3",
   "numberOfRedemptions": "3",
   "condition": null,
+  "collectionIndex": "0",
+  "collection": {
+    "id": "30-collection-0",
+    "collectionIndex": "0",
+    "collectionAddress": "0x0123456789012345678901234567890123456789",
+    "externalIdHash": "externalIdHash",
+    "externalId": "default"
+  },
   "seller": {
     "id": "30",
     "assistant": "0xe28b648541a5376383865672dc1589c02634ec42",

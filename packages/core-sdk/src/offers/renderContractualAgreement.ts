@@ -170,6 +170,7 @@ function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
   return {
     offerData: {
       ...offerDataSubGraph,
+      disputeResolverId: offerDataSubGraph.disputeResolver.id,
       validFromDateInMS: offerDataSubGraph.validFromDate,
       validUntilDateInMS: offerDataSubGraph.validUntilDate,
       voucherRedeemableFromDateInMS:

@@ -200,8 +200,6 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   PRODUCT_V1 specific fields
   """
   uuid: String! # Offer unique ID
-  productUuid: String! # Product unique ID (unique for all variants of the same product)
-  productVersion: Int! # Product version
   product: ProductV1Product!
   variations: [ProductV1Variation!]
   productV1Seller: ProductV1Seller!
@@ -269,8 +267,6 @@ type ProductV1ItemMetadataEntity implements ItemMetadataInterface @entity {
   schemaUrl: String! # JSON schema URL
   type: ItemMetadataType!
   uuid: String! # Item unique ID
-  productUuid: String! # Product unique ID (unique for all variants of the same product)
-  productVersion: Int! # Product version
   product: ProductV1Product!
   variations: [ProductV1Variation!]
   productV1Seller: ProductV1Seller!
@@ -287,6 +283,14 @@ type TokenIdRange @entity {
   max: String!
 }
 
+type Term @entity {
+  id: ID!
+  key: String!
+  value: String!
+  displayKey: String!
+}
+
+
 type NftItemMetadataEntity implements ItemMetadataInterface @entity {
   id: ID!
   schemaUrl: String! # JSON schema URL
@@ -301,10 +305,9 @@ type NftItemMetadataEntity implements ItemMetadataInterface @entity {
   contract: String
   tokenId: String
   tokenIdRange: TokenIdRange
-  transferMethod: String
-  transferDelay: String
   quantity: Int
   attributes: [MetadataAttribute!]
+  terms: [Term!]
   bundle: BundleMetadataEntity!
   metadataUri: String!
 }
@@ -436,7 +439,6 @@ type ProductV1Seller @entity {
   description: String
   externalUrl: String
   tokenId: String
-  sellerId: String
   images: [ProductV1Media!]
   contactLinks: [ProductV1SellerContactLink!]
   contactPreference: String
@@ -544,10 +546,8 @@ type Offer @entity {
   voided: Boolean!
   collectionIndex: BigInt!
   collection: OfferCollection!
-  disputeResolverId: BigInt!
   disputeResolver: DisputeResolver!
   disputeResolutionTerms: DisputeResolutionTermsEntity!
-  sellerId: BigInt!
   seller: Seller!
   exchangeToken: ExchangeToken!
   metadata: MetadataInterface
@@ -569,7 +569,6 @@ Offer Collection
 type OfferCollection @entity {
   id: ID!
   seller: Seller!
-  sellerId: BigInt!
   collectionIndex: BigInt!
   collectionAddress: Bytes!
   externalIdHash: Bytes!
@@ -704,7 +703,6 @@ type DisputeResolver implements Account @entity {
 type DisputeResolutionTermsEntity @entity {
   "<DISPUTE_RESOLVER_ID>-terms"
   id: ID!
-  disputeResolverId: BigInt!
   escalationResponsePeriod: BigInt!
   feeAmount: BigInt!
   buyerEscalationDeposit: BigInt!
@@ -715,8 +713,6 @@ type DisputeResolutionTermsEntity @entity {
 type DisputeResolverFee @entity {
   "<DISPUTE_RESOLVER_ID>-<TOKEN_ADDRESS>-fee"
   id: ID!
-  tokenAddress: Bytes!
-  tokenName: String!
   token: ExchangeToken!
   feeAmount: BigInt!
 }
@@ -735,7 +731,6 @@ enum DisputeState {
 
 type Dispute @entity {
   id: ID!
-  exchangeId: BigInt!
   exchange: Exchange!
   state: DisputeState!
   buyerPercent: BigInt!
@@ -758,9 +753,7 @@ Funds
 type FundsEntity @entity {
   id: ID! # sellerId + "-" + tokenAddress
   availableAmount: BigInt!
-  tokenAddress: Bytes!
   token: ExchangeToken!
-  accountId: BigInt!
   account: Account!
 }
 

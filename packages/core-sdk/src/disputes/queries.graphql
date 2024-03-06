@@ -45,7 +45,9 @@ fragment DisputeFields on Dispute {
 
 fragment BaseDisputeFields on Dispute {
   id
-  exchangeId
+  exchange {
+    id
+  }
   state
   buyerPercent
   disputedDate

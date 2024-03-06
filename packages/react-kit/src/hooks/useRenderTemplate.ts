@@ -114,7 +114,7 @@ function buildOfferData(offerFields: OfferFieldsFragment): {
         .mul(1000)
         .toString(),
       exchangeToken: offerFields.exchangeToken.address as string,
-      disputeResolverId: offerFields.disputeResolverId as string,
+      disputeResolverId: offerFields.disputeResolver.id as string,
       metadataHash: offerFields.metadataHash as string,
       metadataUri: offerFields.metadataUri as string,
       collectionIndex: offerFields.collectionIndex

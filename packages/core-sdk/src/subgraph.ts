@@ -646,7 +646,6 @@ export enum BaseMetadataEntity_OrderBy {
   OfferCollectionIndex = "offer__collectionIndex",
   OfferCreatedAt = "offer__createdAt",
   OfferDisputePeriodDuration = "offer__disputePeriodDuration",
-  OfferDisputeResolverId = "offer__disputeResolverId",
   OfferId = "offer__id",
   OfferMetadataHash = "offer__metadataHash",
   OfferMetadataUri = "offer__metadataUri",
@@ -658,7 +657,6 @@ export enum BaseMetadataEntity_OrderBy {
   OfferQuantityInitial = "offer__quantityInitial",
   OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
   OfferSellerDeposit = "offer__sellerDeposit",
-  OfferSellerId = "offer__sellerId",
   OfferValidFromDate = "offer__validFromDate",
   OfferValidUntilDate = "offer__validUntilDate",
   OfferVoided = "offer__voided",
@@ -1168,7 +1166,6 @@ export enum BundleMetadataEntity_OrderBy {
   OfferCollectionIndex = "offer__collectionIndex",
   OfferCreatedAt = "offer__createdAt",
   OfferDisputePeriodDuration = "offer__disputePeriodDuration",
-  OfferDisputeResolverId = "offer__disputeResolverId",
   OfferId = "offer__id",
   OfferMetadataHash = "offer__metadataHash",
   OfferMetadataUri = "offer__metadataUri",
@@ -1180,7 +1177,6 @@ export enum BundleMetadataEntity_OrderBy {
   OfferQuantityInitial = "offer__quantityInitial",
   OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
   OfferSellerDeposit = "offer__sellerDeposit",
-  OfferSellerId = "offer__sellerId",
   OfferValidFromDate = "offer__validFromDate",
   OfferValidUntilDate = "offer__validUntilDate",
   OfferVoided = "offer__voided",
@@ -1196,7 +1192,6 @@ export enum BundleMetadataEntity_OrderBy {
   ProductV1SellerExternalUrl = "productV1Seller__externalUrl",
   ProductV1SellerId = "productV1Seller__id",
   ProductV1SellerName = "productV1Seller__name",
-  ProductV1SellerSellerId = "productV1Seller__sellerId",
   ProductV1SellerTokenId = "productV1Seller__tokenId",
   QuantityAvailable = "quantityAvailable",
   SchemaUrl = "schemaUrl",
@@ -1576,7 +1571,6 @@ export type Dispute = {
   disputedDate: Scalars["BigInt"];
   escalatedDate?: Maybe<Scalars["BigInt"]>;
   exchange: Exchange;
-  exchangeId: Scalars["BigInt"];
   finalizedDate?: Maybe<Scalars["BigInt"]>;
   id: Scalars["ID"];
   refusedDate?: Maybe<Scalars["BigInt"]>;
@@ -1705,7 +1699,6 @@ export enum DisputeEventLog_OrderBy {
   DisputeDecidedDate = "dispute__decidedDate",
   DisputeDisputedDate = "dispute__disputedDate",
   DisputeEscalatedDate = "dispute__escalatedDate",
-  DisputeExchangeId = "dispute__exchangeId",
   DisputeFinalizedDate = "dispute__finalizedDate",
   DisputeId = "dispute__id",
   DisputeRefusedDate = "dispute__refusedDate",
@@ -1724,7 +1717,6 @@ export type DisputeResolutionTermsEntity = {
   __typename?: "DisputeResolutionTermsEntity";
   buyerEscalationDeposit: Scalars["BigInt"];
   disputeResolver: DisputeResolver;
-  disputeResolverId: Scalars["BigInt"];
   escalationResponsePeriod: Scalars["BigInt"];
   feeAmount: Scalars["BigInt"];
   /** <DISPUTE_RESOLVER_ID>-terms */
@@ -1745,14 +1737,6 @@ export type DisputeResolutionTermsEntity_Filter = {
   buyerEscalationDeposit_not?: InputMaybe<Scalars["BigInt"]>;
   buyerEscalationDeposit_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   disputeResolver?: InputMaybe<Scalars["String"]>;
-  disputeResolverId?: InputMaybe<Scalars["BigInt"]>;
-  disputeResolverId_gt?: InputMaybe<Scalars["BigInt"]>;
-  disputeResolverId_gte?: InputMaybe<Scalars["BigInt"]>;
-  disputeResolverId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  disputeResolverId_lt?: InputMaybe<Scalars["BigInt"]>;
-  disputeResolverId_lte?: InputMaybe<Scalars["BigInt"]>;
-  disputeResolverId_not?: InputMaybe<Scalars["BigInt"]>;
-  disputeResolverId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   disputeResolver_?: InputMaybe<DisputeResolver_Filter>;
   disputeResolver_contains?: InputMaybe<Scalars["String"]>;
   disputeResolver_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -1824,7 +1808,6 @@ export type DisputeResolutionTermsEntity_Filter = {
 export enum DisputeResolutionTermsEntity_OrderBy {
   BuyerEscalationDeposit = "buyerEscalationDeposit",
   DisputeResolver = "disputeResolver",
-  DisputeResolverId = "disputeResolverId",
   DisputeResolverActive = "disputeResolver__active",
   DisputeResolverAdmin = "disputeResolver__admin",
   DisputeResolverAssistant = "disputeResolver__assistant",
@@ -1843,7 +1826,6 @@ export enum DisputeResolutionTermsEntity_OrderBy {
   OfferCollectionIndex = "offer__collectionIndex",
   OfferCreatedAt = "offer__createdAt",
   OfferDisputePeriodDuration = "offer__disputePeriodDuration",
-  OfferDisputeResolverId = "offer__disputeResolverId",
   OfferId = "offer__id",
   OfferMetadataHash = "offer__metadataHash",
   OfferMetadataUri = "offer__metadataUri",
@@ -1855,7 +1837,6 @@ export enum DisputeResolutionTermsEntity_OrderBy {
   OfferQuantityInitial = "offer__quantityInitial",
   OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
   OfferSellerDeposit = "offer__sellerDeposit",
-  OfferSellerId = "offer__sellerId",
   OfferValidFromDate = "offer__validFromDate",
   OfferValidUntilDate = "offer__validUntilDate",
   OfferVoided = "offer__voided",
@@ -1921,8 +1902,6 @@ export type DisputeResolverFee = {
   /** <DISPUTE_RESOLVER_ID>-<TOKEN_ADDRESS>-fee */
   id: Scalars["ID"];
   token: ExchangeToken;
-  tokenAddress: Scalars["Bytes"];
-  tokenName: Scalars["String"];
 };
 
 export type DisputeResolverFee_Filter = {
@@ -1947,36 +1926,6 @@ export type DisputeResolverFee_Filter = {
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
   or?: InputMaybe<Array<InputMaybe<DisputeResolverFee_Filter>>>;
   token?: InputMaybe<Scalars["String"]>;
-  tokenAddress?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_contains?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_gt?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_gte?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  tokenAddress_lt?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_lte?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_not?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  tokenName?: InputMaybe<Scalars["String"]>;
-  tokenName_contains?: InputMaybe<Scalars["String"]>;
-  tokenName_contains_nocase?: InputMaybe<Scalars["String"]>;
-  tokenName_ends_with?: InputMaybe<Scalars["String"]>;
-  tokenName_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  tokenName_gt?: InputMaybe<Scalars["String"]>;
-  tokenName_gte?: InputMaybe<Scalars["String"]>;
-  tokenName_in?: InputMaybe<Array<Scalars["String"]>>;
-  tokenName_lt?: InputMaybe<Scalars["String"]>;
-  tokenName_lte?: InputMaybe<Scalars["String"]>;
-  tokenName_not?: InputMaybe<Scalars["String"]>;
-  tokenName_not_contains?: InputMaybe<Scalars["String"]>;
-  tokenName_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  tokenName_not_ends_with?: InputMaybe<Scalars["String"]>;
-  tokenName_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  tokenName_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  tokenName_not_starts_with?: InputMaybe<Scalars["String"]>;
-  tokenName_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  tokenName_starts_with?: InputMaybe<Scalars["String"]>;
-  tokenName_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   token_?: InputMaybe<ExchangeToken_Filter>;
   token_contains?: InputMaybe<Scalars["String"]>;
   token_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -2003,8 +1952,6 @@ export enum DisputeResolverFee_OrderBy {
   FeeAmount = "feeAmount",
   Id = "id",
   Token = "token",
-  TokenAddress = "tokenAddress",
-  TokenName = "tokenName",
   TokenAddress = "token__address",
   TokenDecimals = "token__decimals",
   TokenId = "token__id",
@@ -2229,14 +2176,6 @@ export type Dispute_Filter = {
   escalatedDate_not?: InputMaybe<Scalars["BigInt"]>;
   escalatedDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   exchange?: InputMaybe<Scalars["String"]>;
-  exchangeId?: InputMaybe<Scalars["BigInt"]>;
-  exchangeId_gt?: InputMaybe<Scalars["BigInt"]>;
-  exchangeId_gte?: InputMaybe<Scalars["BigInt"]>;
-  exchangeId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  exchangeId_lt?: InputMaybe<Scalars["BigInt"]>;
-  exchangeId_lte?: InputMaybe<Scalars["BigInt"]>;
-  exchangeId_not?: InputMaybe<Scalars["BigInt"]>;
-  exchangeId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   exchange_?: InputMaybe<Exchange_Filter>;
   exchange_contains?: InputMaybe<Scalars["String"]>;
   exchange_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -2352,7 +2291,6 @@ export enum Dispute_OrderBy {
   DisputedDate = "disputedDate",
   EscalatedDate = "escalatedDate",
   Exchange = "exchange",
-  ExchangeId = "exchangeId",
   ExchangeCancelledDate = "exchange__cancelledDate",
   ExchangeCommittedDate = "exchange__committedDate",
   ExchangeCompletedDate = "exchange__completedDate",
@@ -3042,7 +2980,6 @@ export enum Exchange_OrderBy {
   DisputeDecidedDate = "dispute__decidedDate",
   DisputeDisputedDate = "dispute__disputedDate",
   DisputeEscalatedDate = "dispute__escalatedDate",
-  DisputeExchangeId = "dispute__exchangeId",
   DisputeFinalizedDate = "dispute__finalizedDate",
   DisputeId = "dispute__id",
   DisputeRefusedDate = "dispute__refusedDate",
@@ -3062,7 +2999,6 @@ export enum Exchange_OrderBy {
   OfferCollectionIndex = "offer__collectionIndex",
   OfferCreatedAt = "offer__createdAt",
   OfferDisputePeriodDuration = "offer__disputePeriodDuration",
-  OfferDisputeResolverId = "offer__disputeResolverId",
   OfferId = "offer__id",
   OfferMetadataHash = "offer__metadataHash",
   OfferMetadataUri = "offer__metadataUri",
@@ -3074,7 +3010,6 @@ export enum Exchange_OrderBy {
   OfferQuantityInitial = "offer__quantityInitial",
   OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
   OfferSellerDeposit = "offer__sellerDeposit",
-  OfferSellerId = "offer__sellerId",
   OfferValidFromDate = "offer__validFromDate",
   OfferValidUntilDate = "offer__validUntilDate",
   OfferVoided = "offer__voided",
@@ -3109,25 +3044,15 @@ export enum Exchange_OrderBy {
 export type FundsEntity = {
   __typename?: "FundsEntity";
   account: Account;
-  accountId: Scalars["BigInt"];
   availableAmount: Scalars["BigInt"];
   id: Scalars["ID"];
   token: ExchangeToken;
-  tokenAddress: Scalars["Bytes"];
 };
 
 export type FundsEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   account?: InputMaybe<Scalars["String"]>;
-  accountId?: InputMaybe<Scalars["BigInt"]>;
-  accountId_gt?: InputMaybe<Scalars["BigInt"]>;
-  accountId_gte?: InputMaybe<Scalars["BigInt"]>;
-  accountId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  accountId_lt?: InputMaybe<Scalars["BigInt"]>;
-  accountId_lte?: InputMaybe<Scalars["BigInt"]>;
-  accountId_not?: InputMaybe<Scalars["BigInt"]>;
-  accountId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   account_?: InputMaybe<Account_Filter>;
   account_contains?: InputMaybe<Scalars["String"]>;
   account_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -3167,16 +3092,6 @@ export type FundsEntity_Filter = {
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
   or?: InputMaybe<Array<InputMaybe<FundsEntity_Filter>>>;
   token?: InputMaybe<Scalars["String"]>;
-  tokenAddress?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_contains?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_gt?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_gte?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  tokenAddress_lt?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_lte?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_not?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
-  tokenAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   token_?: InputMaybe<ExchangeToken_Filter>;
   token_contains?: InputMaybe<Scalars["String"]>;
   token_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -3201,12 +3116,10 @@ export type FundsEntity_Filter = {
 
 export enum FundsEntity_OrderBy {
   Account = "account",
-  AccountId = "accountId",
   AccountId = "account__id",
   AvailableAmount = "availableAmount",
   Id = "id",
   Token = "token",
-  TokenAddress = "tokenAddress",
   TokenAddress = "token__address",
   TokenDecimals = "token__decimals",
   TokenId = "token__id",
@@ -3329,10 +3242,8 @@ export enum FundsEventLog_OrderBy {
   AccountId = "account__id",
   ExecutedBy = "executedBy",
   Funds = "funds",
-  FundsAccountId = "funds__accountId",
   FundsAvailableAmount = "funds__availableAmount",
   FundsId = "funds__id",
-  FundsTokenAddress = "funds__tokenAddress",
   Hash = "hash",
   Id = "id",
   Timestamp = "timestamp",
@@ -3947,7 +3858,6 @@ export enum MetadataInterface_OrderBy {
   OfferCollectionIndex = "offer__collectionIndex",
   OfferCreatedAt = "offer__createdAt",
   OfferDisputePeriodDuration = "offer__disputePeriodDuration",
-  OfferDisputeResolverId = "offer__disputeResolverId",
   OfferId = "offer__id",
   OfferMetadataHash = "offer__metadataHash",
   OfferMetadataUri = "offer__metadataUri",
@@ -3959,7 +3869,6 @@ export enum MetadataInterface_OrderBy {
   OfferQuantityInitial = "offer__quantityInitial",
   OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
   OfferSellerDeposit = "offer__sellerDeposit",
-  OfferSellerId = "offer__sellerId",
   OfferValidFromDate = "offer__validFromDate",
   OfferValidUntilDate = "offer__validUntilDate",
   OfferVoided = "offer__voided",
@@ -4144,10 +4053,9 @@ export type NftItemMetadataEntity = ItemMetadataInterface & {
   name: Scalars["String"];
   quantity?: Maybe<Scalars["Int"]>;
   schemaUrl: Scalars["String"];
+  terms?: Maybe<Array<Term>>;
   tokenId?: Maybe<Scalars["String"]>;
   tokenIdRange?: Maybe<TokenIdRange>;
-  transferDelay?: Maybe<Scalars["String"]>;
-  transferMethod?: Maybe<Scalars["String"]>;
   type: ItemMetadataType;
   youtubeUrl?: Maybe<Scalars["String"]>;
 };
@@ -4158,6 +4066,14 @@ export type NftItemMetadataEntityAttributesArgs = {
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   where?: InputMaybe<MetadataAttribute_Filter>;
+};
+
+export type NftItemMetadataEntityTermsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Term_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<Term_Filter>;
 };
 
 export type NftItemMetadataEntity_Filter = {
@@ -4377,6 +4293,13 @@ export type NftItemMetadataEntity_Filter = {
   schemaUrl_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   schemaUrl_starts_with?: InputMaybe<Scalars["String"]>;
   schemaUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  terms?: InputMaybe<Array<Scalars["String"]>>;
+  terms_?: InputMaybe<Term_Filter>;
+  terms_contains?: InputMaybe<Array<Scalars["String"]>>;
+  terms_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  terms_not?: InputMaybe<Array<Scalars["String"]>>;
+  terms_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  terms_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   tokenId?: InputMaybe<Scalars["String"]>;
   tokenIdRange?: InputMaybe<Scalars["String"]>;
   tokenIdRange_?: InputMaybe<TokenIdRange_Filter>;
@@ -4418,46 +4341,6 @@ export type NftItemMetadataEntity_Filter = {
   tokenId_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   tokenId_starts_with?: InputMaybe<Scalars["String"]>;
   tokenId_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferDelay?: InputMaybe<Scalars["String"]>;
-  transferDelay_contains?: InputMaybe<Scalars["String"]>;
-  transferDelay_contains_nocase?: InputMaybe<Scalars["String"]>;
-  transferDelay_ends_with?: InputMaybe<Scalars["String"]>;
-  transferDelay_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferDelay_gt?: InputMaybe<Scalars["String"]>;
-  transferDelay_gte?: InputMaybe<Scalars["String"]>;
-  transferDelay_in?: InputMaybe<Array<Scalars["String"]>>;
-  transferDelay_lt?: InputMaybe<Scalars["String"]>;
-  transferDelay_lte?: InputMaybe<Scalars["String"]>;
-  transferDelay_not?: InputMaybe<Scalars["String"]>;
-  transferDelay_not_contains?: InputMaybe<Scalars["String"]>;
-  transferDelay_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  transferDelay_not_ends_with?: InputMaybe<Scalars["String"]>;
-  transferDelay_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferDelay_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  transferDelay_not_starts_with?: InputMaybe<Scalars["String"]>;
-  transferDelay_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferDelay_starts_with?: InputMaybe<Scalars["String"]>;
-  transferDelay_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferMethod?: InputMaybe<Scalars["String"]>;
-  transferMethod_contains?: InputMaybe<Scalars["String"]>;
-  transferMethod_contains_nocase?: InputMaybe<Scalars["String"]>;
-  transferMethod_ends_with?: InputMaybe<Scalars["String"]>;
-  transferMethod_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferMethod_gt?: InputMaybe<Scalars["String"]>;
-  transferMethod_gte?: InputMaybe<Scalars["String"]>;
-  transferMethod_in?: InputMaybe<Array<Scalars["String"]>>;
-  transferMethod_lt?: InputMaybe<Scalars["String"]>;
-  transferMethod_lte?: InputMaybe<Scalars["String"]>;
-  transferMethod_not?: InputMaybe<Scalars["String"]>;
-  transferMethod_not_contains?: InputMaybe<Scalars["String"]>;
-  transferMethod_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  transferMethod_not_ends_with?: InputMaybe<Scalars["String"]>;
-  transferMethod_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferMethod_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  transferMethod_not_starts_with?: InputMaybe<Scalars["String"]>;
-  transferMethod_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  transferMethod_starts_with?: InputMaybe<Scalars["String"]>;
-  transferMethod_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   type?: InputMaybe<ItemMetadataType>;
   type_in?: InputMaybe<Array<ItemMetadataType>>;
   type_not?: InputMaybe<ItemMetadataType>;
@@ -4516,13 +4399,12 @@ export enum NftItemMetadataEntity_OrderBy {
   Name = "name",
   Quantity = "quantity",
   SchemaUrl = "schemaUrl",
+  Terms = "terms",
   TokenId = "tokenId",
   TokenIdRange = "tokenIdRange",
   TokenIdRangeId = "tokenIdRange__id",
   TokenIdRangeMax = "tokenIdRange__max",
   TokenIdRangeMin = "tokenIdRange__min",
-  TransferDelay = "transferDelay",
-  TransferMethod = "transferMethod",
   Type = "type",
   YoutubeUrl = "youtubeUrl"
 }
@@ -4544,7 +4426,6 @@ export type Offer = {
   disputePeriodDuration: Scalars["BigInt"];
   disputeResolutionTerms: DisputeResolutionTermsEntity;
   disputeResolver: DisputeResolver;
-  disputeResolverId: Scalars["BigInt"];
   exchangeToken: ExchangeToken;
   exchanges: Array<Exchange>;
   id: Scalars["ID"];
@@ -4563,7 +4444,6 @@ export type Offer = {
   resolutionPeriodDuration: Scalars["BigInt"];
   seller: Seller;
   sellerDeposit: Scalars["BigInt"];
-  sellerId: Scalars["BigInt"];
   /** Offer dates */
   validFromDate: Scalars["BigInt"];
   validUntilDate: Scalars["BigInt"];
@@ -4600,7 +4480,6 @@ export type OfferCollection = {
   metadata?: Maybe<NftContractMetadata>;
   offers: Array<Offer>;
   seller: Seller;
-  sellerId: Scalars["BigInt"];
 };
 
 /**
@@ -4699,14 +4578,6 @@ export type OfferCollection_Filter = {
   offers_?: InputMaybe<Offer_Filter>;
   or?: InputMaybe<Array<InputMaybe<OfferCollection_Filter>>>;
   seller?: InputMaybe<Scalars["String"]>;
-  sellerId?: InputMaybe<Scalars["BigInt"]>;
-  sellerId_gt?: InputMaybe<Scalars["BigInt"]>;
-  sellerId_gte?: InputMaybe<Scalars["BigInt"]>;
-  sellerId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  sellerId_lt?: InputMaybe<Scalars["BigInt"]>;
-  sellerId_lte?: InputMaybe<Scalars["BigInt"]>;
-  sellerId_not?: InputMaybe<Scalars["BigInt"]>;
-  sellerId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   seller_?: InputMaybe<Seller_Filter>;
   seller_contains?: InputMaybe<Scalars["String"]>;
   seller_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -4744,7 +4615,6 @@ export enum OfferCollection_OrderBy {
   MetadataName = "metadata__name",
   Offers = "offers",
   Seller = "seller",
-  SellerId = "sellerId",
   SellerActive = "seller__active",
   SellerAdmin = "seller__admin",
   SellerAssistant = "seller__assistant",
@@ -4883,7 +4753,6 @@ export enum OfferEventLog_OrderBy {
   OfferCollectionIndex = "offer__collectionIndex",
   OfferCreatedAt = "offer__createdAt",
   OfferDisputePeriodDuration = "offer__disputePeriodDuration",
-  OfferDisputeResolverId = "offer__disputeResolverId",
   OfferId = "offer__id",
   OfferMetadataHash = "offer__metadataHash",
   OfferMetadataUri = "offer__metadataUri",
@@ -4895,7 +4764,6 @@ export enum OfferEventLog_OrderBy {
   OfferQuantityInitial = "offer__quantityInitial",
   OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
   OfferSellerDeposit = "offer__sellerDeposit",
-  OfferSellerId = "offer__sellerId",
   OfferValidFromDate = "offer__validFromDate",
   OfferValidUntilDate = "offer__validUntilDate",
   OfferVoided = "offer__voided",
@@ -5023,14 +4891,6 @@ export type Offer_Filter = {
   disputeResolutionTerms_starts_with?: InputMaybe<Scalars["String"]>;
   disputeResolutionTerms_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   disputeResolver?: InputMaybe<Scalars["String"]>;
-  disputeResolverId?: InputMaybe<Scalars["BigInt"]>;
-  disputeResolverId_gt?: InputMaybe<Scalars["BigInt"]>;
-  disputeResolverId_gte?: InputMaybe<Scalars["BigInt"]>;
-  disputeResolverId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  disputeResolverId_lt?: InputMaybe<Scalars["BigInt"]>;
-  disputeResolverId_lte?: InputMaybe<Scalars["BigInt"]>;
-  disputeResolverId_not?: InputMaybe<Scalars["BigInt"]>;
-  disputeResolverId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   disputeResolver_?: InputMaybe<DisputeResolver_Filter>;
   disputeResolver_contains?: InputMaybe<Scalars["String"]>;
   disputeResolver_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -5229,14 +5089,6 @@ export type Offer_Filter = {
   sellerDeposit_lte?: InputMaybe<Scalars["BigInt"]>;
   sellerDeposit_not?: InputMaybe<Scalars["BigInt"]>;
   sellerDeposit_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  sellerId?: InputMaybe<Scalars["BigInt"]>;
-  sellerId_gt?: InputMaybe<Scalars["BigInt"]>;
-  sellerId_gte?: InputMaybe<Scalars["BigInt"]>;
-  sellerId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  sellerId_lt?: InputMaybe<Scalars["BigInt"]>;
-  sellerId_lte?: InputMaybe<Scalars["BigInt"]>;
-  sellerId_not?: InputMaybe<Scalars["BigInt"]>;
-  sellerId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   seller_?: InputMaybe<Seller_Filter>;
   seller_contains?: InputMaybe<Scalars["String"]>;
   seller_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -5322,7 +5174,6 @@ export enum Offer_OrderBy {
   CollectionExternalId = "collection__externalId",
   CollectionExternalIdHash = "collection__externalIdHash",
   CollectionId = "collection__id",
-  CollectionSellerId = "collection__sellerId",
   Condition = "condition",
   ConditionGatingType = "condition__gatingType",
   ConditionId = "condition__id",
@@ -5337,12 +5188,10 @@ export enum Offer_OrderBy {
   DisputePeriodDuration = "disputePeriodDuration",
   DisputeResolutionTerms = "disputeResolutionTerms",
   DisputeResolutionTermsBuyerEscalationDeposit = "disputeResolutionTerms__buyerEscalationDeposit",
-  DisputeResolutionTermsDisputeResolverId = "disputeResolutionTerms__disputeResolverId",
   DisputeResolutionTermsEscalationResponsePeriod = "disputeResolutionTerms__escalationResponsePeriod",
   DisputeResolutionTermsFeeAmount = "disputeResolutionTerms__feeAmount",
   DisputeResolutionTermsId = "disputeResolutionTerms__id",
   DisputeResolver = "disputeResolver",
-  DisputeResolverId = "disputeResolverId",
   DisputeResolverActive = "disputeResolver__active",
   DisputeResolverAdmin = "disputeResolver__admin",
   DisputeResolverAssistant = "disputeResolver__assistant",
@@ -5394,7 +5243,6 @@ export enum Offer_OrderBy {
   ResolutionPeriodDuration = "resolutionPeriodDuration",
   Seller = "seller",
   SellerDeposit = "sellerDeposit",
-  SellerId = "sellerId",
   SellerActive = "seller__active",
   SellerAdmin = "seller__admin",
   SellerAssistant = "seller__assistant",
@@ -5915,9 +5763,7 @@ export type ProductV1ItemMetadataEntity = ItemMetadataInterface & {
   metadataUri: Scalars["String"];
   product: ProductV1Product;
   productOverrides?: Maybe<ProductV1ProductOverrides>;
-  productUuid: Scalars["String"];
   productV1Seller: ProductV1Seller;
-  productVersion: Scalars["Int"];
   schemaUrl: Scalars["String"];
   shipping?: Maybe<ProductV1ShippingOption>;
   type: ItemMetadataType;
@@ -6030,26 +5876,6 @@ export type ProductV1ItemMetadataEntity_Filter = {
   productOverrides_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   productOverrides_starts_with?: InputMaybe<Scalars["String"]>;
   productOverrides_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  productUuid?: InputMaybe<Scalars["String"]>;
-  productUuid_contains?: InputMaybe<Scalars["String"]>;
-  productUuid_contains_nocase?: InputMaybe<Scalars["String"]>;
-  productUuid_ends_with?: InputMaybe<Scalars["String"]>;
-  productUuid_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  productUuid_gt?: InputMaybe<Scalars["String"]>;
-  productUuid_gte?: InputMaybe<Scalars["String"]>;
-  productUuid_in?: InputMaybe<Array<Scalars["String"]>>;
-  productUuid_lt?: InputMaybe<Scalars["String"]>;
-  productUuid_lte?: InputMaybe<Scalars["String"]>;
-  productUuid_not?: InputMaybe<Scalars["String"]>;
-  productUuid_not_contains?: InputMaybe<Scalars["String"]>;
-  productUuid_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  productUuid_not_ends_with?: InputMaybe<Scalars["String"]>;
-  productUuid_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  productUuid_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  productUuid_not_starts_with?: InputMaybe<Scalars["String"]>;
-  productUuid_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  productUuid_starts_with?: InputMaybe<Scalars["String"]>;
-  productUuid_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   productV1Seller?: InputMaybe<Scalars["String"]>;
   productV1Seller_?: InputMaybe<ProductV1Seller_Filter>;
   productV1Seller_contains?: InputMaybe<Scalars["String"]>;
@@ -6071,14 +5897,6 @@ export type ProductV1ItemMetadataEntity_Filter = {
   productV1Seller_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   productV1Seller_starts_with?: InputMaybe<Scalars["String"]>;
   productV1Seller_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  productVersion?: InputMaybe<Scalars["Int"]>;
-  productVersion_gt?: InputMaybe<Scalars["Int"]>;
-  productVersion_gte?: InputMaybe<Scalars["Int"]>;
-  productVersion_in?: InputMaybe<Array<Scalars["Int"]>>;
-  productVersion_lt?: InputMaybe<Scalars["Int"]>;
-  productVersion_lte?: InputMaybe<Scalars["Int"]>;
-  productVersion_not?: InputMaybe<Scalars["Int"]>;
-  productVersion_not_in?: InputMaybe<Array<Scalars["Int"]>>;
   product_?: InputMaybe<ProductV1Product_Filter>;
   product_contains?: InputMaybe<Scalars["String"]>;
   product_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -6223,7 +6041,6 @@ export enum ProductV1ItemMetadataEntity_OrderBy {
   ProductOverridesProductionInformationModelNumber = "productOverrides__productionInformation_modelNumber",
   ProductOverridesTitle = "productOverrides__title",
   ProductOverridesVersion = "productOverrides__version",
-  ProductUuid = "productUuid",
   ProductV1Seller = "productV1Seller",
   ProductV1SellerContactPreference = "productV1Seller__contactPreference",
   ProductV1SellerDefaultVersion = "productV1Seller__defaultVersion",
@@ -6231,9 +6048,7 @@ export enum ProductV1ItemMetadataEntity_OrderBy {
   ProductV1SellerExternalUrl = "productV1Seller__externalUrl",
   ProductV1SellerId = "productV1Seller__id",
   ProductV1SellerName = "productV1Seller__name",
-  ProductV1SellerSellerId = "productV1Seller__sellerId",
   ProductV1SellerTokenId = "productV1Seller__tokenId",
-  ProductVersion = "productVersion",
   ProductAllVariantsVoided = "product__allVariantsVoided",
   ProductDescription = "product__description",
   ProductDetailsCategory = "product__details_category",
@@ -6408,9 +6223,7 @@ export type ProductV1MetadataEntity = MetadataInterface & {
   offer: Offer;
   product: ProductV1Product;
   productOverrides?: Maybe<ProductV1ProductOverrides>;
-  productUuid: Scalars["String"];
   productV1Seller: ProductV1Seller;
-  productVersion: Scalars["Int"];
   quantityAvailable: Scalars["BigInt"];
   schemaUrl: Scalars["String"];
   seller: Seller;
@@ -6734,26 +6547,6 @@ export type ProductV1MetadataEntity_Filter = {
   productOverrides_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   productOverrides_starts_with?: InputMaybe<Scalars["String"]>;
   productOverrides_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  productUuid?: InputMaybe<Scalars["String"]>;
-  productUuid_contains?: InputMaybe<Scalars["String"]>;
-  productUuid_contains_nocase?: InputMaybe<Scalars["String"]>;
-  productUuid_ends_with?: InputMaybe<Scalars["String"]>;
-  productUuid_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  productUuid_gt?: InputMaybe<Scalars["String"]>;
-  productUuid_gte?: InputMaybe<Scalars["String"]>;
-  productUuid_in?: InputMaybe<Array<Scalars["String"]>>;
-  productUuid_lt?: InputMaybe<Scalars["String"]>;
-  productUuid_lte?: InputMaybe<Scalars["String"]>;
-  productUuid_not?: InputMaybe<Scalars["String"]>;
-  productUuid_not_contains?: InputMaybe<Scalars["String"]>;
-  productUuid_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  productUuid_not_ends_with?: InputMaybe<Scalars["String"]>;
-  productUuid_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  productUuid_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  productUuid_not_starts_with?: InputMaybe<Scalars["String"]>;
-  productUuid_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  productUuid_starts_with?: InputMaybe<Scalars["String"]>;
-  productUuid_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   productV1Seller?: InputMaybe<Scalars["String"]>;
   productV1Seller_?: InputMaybe<ProductV1Seller_Filter>;
   productV1Seller_contains?: InputMaybe<Scalars["String"]>;
@@ -6775,14 +6568,6 @@ export type ProductV1MetadataEntity_Filter = {
   productV1Seller_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   productV1Seller_starts_with?: InputMaybe<Scalars["String"]>;
   productV1Seller_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  productVersion?: InputMaybe<Scalars["Int"]>;
-  productVersion_gt?: InputMaybe<Scalars["Int"]>;
-  productVersion_gte?: InputMaybe<Scalars["Int"]>;
-  productVersion_in?: InputMaybe<Array<Scalars["Int"]>>;
-  productVersion_lt?: InputMaybe<Scalars["Int"]>;
-  productVersion_lte?: InputMaybe<Scalars["Int"]>;
-  productVersion_not?: InputMaybe<Scalars["Int"]>;
-  productVersion_not_in?: InputMaybe<Array<Scalars["Int"]>>;
   product_?: InputMaybe<ProductV1Product_Filter>;
   product_contains?: InputMaybe<Scalars["String"]>;
   product_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -6965,7 +6750,6 @@ export enum ProductV1MetadataEntity_OrderBy {
   OfferCollectionIndex = "offer__collectionIndex",
   OfferCreatedAt = "offer__createdAt",
   OfferDisputePeriodDuration = "offer__disputePeriodDuration",
-  OfferDisputeResolverId = "offer__disputeResolverId",
   OfferId = "offer__id",
   OfferMetadataHash = "offer__metadataHash",
   OfferMetadataUri = "offer__metadataUri",
@@ -6977,7 +6761,6 @@ export enum ProductV1MetadataEntity_OrderBy {
   OfferQuantityInitial = "offer__quantityInitial",
   OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
   OfferSellerDeposit = "offer__sellerDeposit",
-  OfferSellerId = "offer__sellerId",
   OfferValidFromDate = "offer__validFromDate",
   OfferValidUntilDate = "offer__validUntilDate",
   OfferVoided = "offer__voided",
@@ -7005,7 +6788,6 @@ export enum ProductV1MetadataEntity_OrderBy {
   ProductOverridesProductionInformationModelNumber = "productOverrides__productionInformation_modelNumber",
   ProductOverridesTitle = "productOverrides__title",
   ProductOverridesVersion = "productOverrides__version",
-  ProductUuid = "productUuid",
   ProductV1Seller = "productV1Seller",
   ProductV1SellerContactPreference = "productV1Seller__contactPreference",
   ProductV1SellerDefaultVersion = "productV1Seller__defaultVersion",
@@ -7013,9 +6795,7 @@ export enum ProductV1MetadataEntity_OrderBy {
   ProductV1SellerExternalUrl = "productV1Seller__externalUrl",
   ProductV1SellerId = "productV1Seller__id",
   ProductV1SellerName = "productV1Seller__name",
-  ProductV1SellerSellerId = "productV1Seller__sellerId",
   ProductV1SellerTokenId = "productV1Seller__tokenId",
-  ProductVersion = "productVersion",
   ProductAllVariantsVoided = "product__allVariantsVoided",
   ProductDescription = "product__description",
   ProductDetailsCategory = "product__details_category",
@@ -8740,7 +8520,6 @@ export enum ProductV1Product_OrderBy {
   ProductV1SellerExternalUrl = "productV1Seller__externalUrl",
   ProductV1SellerId = "productV1Seller__id",
   ProductV1SellerName = "productV1Seller__name",
-  ProductV1SellerSellerId = "productV1Seller__sellerId",
   ProductV1SellerTokenId = "productV1Seller__tokenId",
   ProductionInformationBrandName = "productionInformation_brandName",
   ProductionInformationManufacturer = "productionInformation_manufacturer",
@@ -8826,7 +8605,6 @@ export type ProductV1Seller = {
    *
    */
   seller: Seller;
-  sellerId?: Maybe<Scalars["String"]>;
   tokenId?: Maybe<Scalars["String"]>;
 };
 
@@ -9030,26 +8808,6 @@ export type ProductV1Seller_Filter = {
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   or?: InputMaybe<Array<InputMaybe<ProductV1Seller_Filter>>>;
   seller?: InputMaybe<Scalars["String"]>;
-  sellerId?: InputMaybe<Scalars["String"]>;
-  sellerId_contains?: InputMaybe<Scalars["String"]>;
-  sellerId_contains_nocase?: InputMaybe<Scalars["String"]>;
-  sellerId_ends_with?: InputMaybe<Scalars["String"]>;
-  sellerId_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  sellerId_gt?: InputMaybe<Scalars["String"]>;
-  sellerId_gte?: InputMaybe<Scalars["String"]>;
-  sellerId_in?: InputMaybe<Array<Scalars["String"]>>;
-  sellerId_lt?: InputMaybe<Scalars["String"]>;
-  sellerId_lte?: InputMaybe<Scalars["String"]>;
-  sellerId_not?: InputMaybe<Scalars["String"]>;
-  sellerId_not_contains?: InputMaybe<Scalars["String"]>;
-  sellerId_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  sellerId_not_ends_with?: InputMaybe<Scalars["String"]>;
-  sellerId_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  sellerId_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  sellerId_not_starts_with?: InputMaybe<Scalars["String"]>;
-  sellerId_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  sellerId_starts_with?: InputMaybe<Scalars["String"]>;
-  sellerId_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   seller_?: InputMaybe<Seller_Filter>;
   seller_contains?: InputMaybe<Scalars["String"]>;
   seller_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -9102,7 +8860,6 @@ export enum ProductV1Seller_OrderBy {
   Images = "images",
   Name = "name",
   Seller = "seller",
-  SellerId = "sellerId",
   SellerActive = "seller__active",
   SellerAdmin = "seller__admin",
   SellerAssistant = "seller__assistant",
@@ -9448,7 +9205,6 @@ export enum ProductV1Variant_OrderBy {
   OfferCollectionIndex = "offer__collectionIndex",
   OfferCreatedAt = "offer__createdAt",
   OfferDisputePeriodDuration = "offer__disputePeriodDuration",
-  OfferDisputeResolverId = "offer__disputeResolverId",
   OfferId = "offer__id",
   OfferMetadataHash = "offer__metadataHash",
   OfferMetadataUri = "offer__metadataUri",
@@ -9460,7 +9216,6 @@ export enum ProductV1Variant_OrderBy {
   OfferQuantityInitial = "offer__quantityInitial",
   OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
   OfferSellerDeposit = "offer__sellerDeposit",
-  OfferSellerId = "offer__sellerId",
   OfferValidFromDate = "offer__validFromDate",
   OfferValidUntilDate = "offer__validUntilDate",
   OfferVoided = "offer__voided",
@@ -9647,6 +9402,8 @@ export type Query = {
   sellerSocialLink?: Maybe<SellerSocialLink>;
   sellerSocialLinks: Array<SellerSocialLink>;
   sellers: Array<Seller>;
+  term?: Maybe<Term>;
+  terms: Array<Term>;
   tokenIdRange?: Maybe<TokenIdRange>;
   tokenIdRanges: Array<TokenIdRange>;
   unknownItemMetadataEntities: Array<UnknownItemMetadataEntity>;
@@ -10495,6 +10252,22 @@ export type QuerySellersArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Seller_Filter>;
+};
+
+export type QueryTermArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryTermsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Term_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Term_Filter>;
 };
 
 export type QueryTokenIdRangeArgs = {
@@ -11808,6 +11581,8 @@ export type Subscription = {
   sellerSocialLink?: Maybe<SellerSocialLink>;
   sellerSocialLinks: Array<SellerSocialLink>;
   sellers: Array<Seller>;
+  term?: Maybe<Term>;
+  terms: Array<Term>;
   tokenIdRange?: Maybe<TokenIdRange>;
   tokenIdRanges: Array<TokenIdRange>;
   unknownItemMetadataEntities: Array<UnknownItemMetadataEntity>;
@@ -12658,6 +12433,22 @@ export type SubscriptionSellersArgs = {
   where?: InputMaybe<Seller_Filter>;
 };
 
+export type SubscriptionTermArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionTermsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Term_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Term_Filter>;
+};
+
 export type SubscriptionTokenIdRangeArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -12689,6 +12480,96 @@ export type SubscriptionUnknownItemMetadataEntityArgs = {
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
 };
+
+export type Term = {
+  __typename?: "Term";
+  displayKey: Scalars["String"];
+  id: Scalars["ID"];
+  key: Scalars["String"];
+  value: Scalars["String"];
+};
+
+export type Term_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Term_Filter>>>;
+  displayKey?: InputMaybe<Scalars["String"]>;
+  displayKey_contains?: InputMaybe<Scalars["String"]>;
+  displayKey_contains_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_ends_with?: InputMaybe<Scalars["String"]>;
+  displayKey_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_gt?: InputMaybe<Scalars["String"]>;
+  displayKey_gte?: InputMaybe<Scalars["String"]>;
+  displayKey_in?: InputMaybe<Array<Scalars["String"]>>;
+  displayKey_lt?: InputMaybe<Scalars["String"]>;
+  displayKey_lte?: InputMaybe<Scalars["String"]>;
+  displayKey_not?: InputMaybe<Scalars["String"]>;
+  displayKey_not_contains?: InputMaybe<Scalars["String"]>;
+  displayKey_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_not_ends_with?: InputMaybe<Scalars["String"]>;
+  displayKey_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  displayKey_not_starts_with?: InputMaybe<Scalars["String"]>;
+  displayKey_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  displayKey_starts_with?: InputMaybe<Scalars["String"]>;
+  displayKey_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  key?: InputMaybe<Scalars["String"]>;
+  key_contains?: InputMaybe<Scalars["String"]>;
+  key_contains_nocase?: InputMaybe<Scalars["String"]>;
+  key_ends_with?: InputMaybe<Scalars["String"]>;
+  key_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  key_gt?: InputMaybe<Scalars["String"]>;
+  key_gte?: InputMaybe<Scalars["String"]>;
+  key_in?: InputMaybe<Array<Scalars["String"]>>;
+  key_lt?: InputMaybe<Scalars["String"]>;
+  key_lte?: InputMaybe<Scalars["String"]>;
+  key_not?: InputMaybe<Scalars["String"]>;
+  key_not_contains?: InputMaybe<Scalars["String"]>;
+  key_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  key_not_ends_with?: InputMaybe<Scalars["String"]>;
+  key_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  key_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  key_not_starts_with?: InputMaybe<Scalars["String"]>;
+  key_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  key_starts_with?: InputMaybe<Scalars["String"]>;
+  key_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<Term_Filter>>>;
+  value?: InputMaybe<Scalars["String"]>;
+  value_contains?: InputMaybe<Scalars["String"]>;
+  value_contains_nocase?: InputMaybe<Scalars["String"]>;
+  value_ends_with?: InputMaybe<Scalars["String"]>;
+  value_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  value_gt?: InputMaybe<Scalars["String"]>;
+  value_gte?: InputMaybe<Scalars["String"]>;
+  value_in?: InputMaybe<Array<Scalars["String"]>>;
+  value_lt?: InputMaybe<Scalars["String"]>;
+  value_lte?: InputMaybe<Scalars["String"]>;
+  value_not?: InputMaybe<Scalars["String"]>;
+  value_not_contains?: InputMaybe<Scalars["String"]>;
+  value_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  value_not_ends_with?: InputMaybe<Scalars["String"]>;
+  value_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  value_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  value_not_starts_with?: InputMaybe<Scalars["String"]>;
+  value_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  value_starts_with?: InputMaybe<Scalars["String"]>;
+  value_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum Term_OrderBy {
+  DisplayKey = "displayKey",
+  Id = "id",
+  Key = "key",
+  Value = "value"
+}
 
 export type TokenIdRange = {
   __typename?: "TokenIdRange";
@@ -12898,7 +12779,6 @@ export enum UnknownItemMetadataEntity_OrderBy {
   ProductV1SellerExternalUrl = "productV1Seller__externalUrl",
   ProductV1SellerId = "productV1Seller__id",
   ProductV1SellerName = "productV1Seller__name",
-  ProductV1SellerSellerId = "productV1Seller__sellerId",
   ProductV1SellerTokenId = "productV1Seller__tokenId",
   SchemaUrl = "schemaUrl",
   Type = "type"
@@ -12985,11 +12865,11 @@ export type GetSellerByIdQueryQuery = {
     collections: Array<{
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -13013,7 +12893,6 @@ export type GetSellerByIdQueryQuery = {
       __typename?: "FundsEntity";
       id: string;
       availableAmount: string;
-      accountId: string;
       token: {
         __typename?: "ExchangeToken";
         id: string;
@@ -13022,6 +12901,10 @@ export type GetSellerByIdQueryQuery = {
         symbol: string;
         name: string;
       };
+      account:
+        | { __typename?: "Buyer"; id: string }
+        | { __typename?: "DisputeResolver"; id: string }
+        | { __typename?: "Seller"; id: string };
     }>;
     offers?: Array<{
       __typename?: "Offer";
@@ -13047,7 +12930,6 @@ export type GetSellerByIdQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       condition?: {
@@ -13137,11 +13019,11 @@ export type GetSellerByIdQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -13175,8 +13057,6 @@ export type GetSellerByIdQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -13191,10 +13071,10 @@ export type GetSellerByIdQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -13247,7 +13127,6 @@ export type GetSellerByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -13349,8 +13228,6 @@ export type GetSellerByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -13359,6 +13236,12 @@ export type GetSellerByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -13464,7 +13347,6 @@ export type GetSellerByIdQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -13828,7 +13710,6 @@ export type GetSellerByIdQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -13955,7 +13836,6 @@ export type GetSellerByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -14103,7 +13983,6 @@ export type GetSellerByIdQueryQuery = {
       dispute?: {
         __typename?: "Dispute";
         id: string;
-        exchangeId: string;
         state: DisputeState;
         buyerPercent: string;
         disputedDate: string;
@@ -14114,6 +13993,7 @@ export type GetSellerByIdQueryQuery = {
         decidedDate?: string | null;
         refusedDate?: string | null;
         timeout: string;
+        exchange: { __typename?: "Exchange"; id: string };
       } | null;
       buyer: {
         __typename?: "Buyer";
@@ -14375,11 +14255,11 @@ export type GetSellersQueryQuery = {
     collections: Array<{
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -14403,7 +14283,6 @@ export type GetSellersQueryQuery = {
       __typename?: "FundsEntity";
       id: string;
       availableAmount: string;
-      accountId: string;
       token: {
         __typename?: "ExchangeToken";
         id: string;
@@ -14412,6 +14291,10 @@ export type GetSellersQueryQuery = {
         symbol: string;
         name: string;
       };
+      account:
+        | { __typename?: "Buyer"; id: string }
+        | { __typename?: "DisputeResolver"; id: string }
+        | { __typename?: "Seller"; id: string };
     }>;
     offers?: Array<{
       __typename?: "Offer";
@@ -14437,7 +14320,6 @@ export type GetSellersQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       condition?: {
@@ -14527,11 +14409,11 @@ export type GetSellersQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -14565,8 +14447,6 @@ export type GetSellersQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -14581,10 +14461,10 @@ export type GetSellersQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -14637,7 +14517,6 @@ export type GetSellersQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -14739,8 +14618,6 @@ export type GetSellersQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -14749,6 +14626,12 @@ export type GetSellersQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -14854,7 +14737,6 @@ export type GetSellersQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -15218,7 +15100,6 @@ export type GetSellersQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -15345,7 +15226,6 @@ export type GetSellersQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -15493,7 +15373,6 @@ export type GetSellersQueryQuery = {
       dispute?: {
         __typename?: "Dispute";
         id: string;
-        exchangeId: string;
         state: DisputeState;
         buyerPercent: string;
         disputedDate: string;
@@ -15504,6 +15383,7 @@ export type GetSellersQueryQuery = {
         decidedDate?: string | null;
         refusedDate?: string | null;
         timeout: string;
+        exchange: { __typename?: "Exchange"; id: string };
       } | null;
       buyer: {
         __typename?: "Buyer";
@@ -15747,7 +15627,6 @@ export type GetBuyerByIdQueryQuery = {
       __typename?: "FundsEntity";
       id: string;
       availableAmount: string;
-      accountId: string;
       token: {
         __typename?: "ExchangeToken";
         id: string;
@@ -15756,6 +15635,10 @@ export type GetBuyerByIdQueryQuery = {
         symbol: string;
         name: string;
       };
+      account:
+        | { __typename?: "Buyer"; id: string }
+        | { __typename?: "DisputeResolver"; id: string }
+        | { __typename?: "Seller"; id: string };
     }>;
     exchanges?: Array<{
       __typename?: "Exchange";
@@ -15774,7 +15657,6 @@ export type GetBuyerByIdQueryQuery = {
       dispute?: {
         __typename?: "Dispute";
         id: string;
-        exchangeId: string;
         state: DisputeState;
         buyerPercent: string;
         disputedDate: string;
@@ -15785,6 +15667,7 @@ export type GetBuyerByIdQueryQuery = {
         decidedDate?: string | null;
         refusedDate?: string | null;
         timeout: string;
+        exchange: { __typename?: "Exchange"; id: string };
       } | null;
       buyer: {
         __typename?: "Buyer";
@@ -15981,7 +15864,6 @@ export type GetBuyersQueryQuery = {
       __typename?: "FundsEntity";
       id: string;
       availableAmount: string;
-      accountId: string;
       token: {
         __typename?: "ExchangeToken";
         id: string;
@@ -15990,6 +15872,10 @@ export type GetBuyersQueryQuery = {
         symbol: string;
         name: string;
       };
+      account:
+        | { __typename?: "Buyer"; id: string }
+        | { __typename?: "DisputeResolver"; id: string }
+        | { __typename?: "Seller"; id: string };
     }>;
     exchanges?: Array<{
       __typename?: "Exchange";
@@ -16008,7 +15894,6 @@ export type GetBuyersQueryQuery = {
       dispute?: {
         __typename?: "Dispute";
         id: string;
-        exchangeId: string;
         state: DisputeState;
         buyerPercent: string;
         disputedDate: string;
@@ -16019,6 +15904,7 @@ export type GetBuyersQueryQuery = {
         decidedDate?: string | null;
         refusedDate?: string | null;
         timeout: string;
+        exchange: { __typename?: "Exchange"; id: string };
       } | null;
       buyer: {
         __typename?: "Buyer";
@@ -16231,7 +16117,6 @@ export type GetDisputeResolverByIdQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       condition?: {
@@ -16321,11 +16206,11 @@ export type GetDisputeResolverByIdQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -16359,8 +16244,6 @@ export type GetDisputeResolverByIdQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -16375,10 +16258,10 @@ export type GetDisputeResolverByIdQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -16431,7 +16314,6 @@ export type GetDisputeResolverByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -16533,8 +16415,6 @@ export type GetDisputeResolverByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -16543,6 +16423,12 @@ export type GetDisputeResolverByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -16648,7 +16534,6 @@ export type GetDisputeResolverByIdQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -17012,7 +16897,6 @@ export type GetDisputeResolverByIdQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -17139,7 +17023,6 @@ export type GetDisputeResolverByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -17343,8 +17226,6 @@ export type GetDisputeResolverByIdQueryQuery = {
     fees: Array<{
       __typename?: "DisputeResolverFee";
       id: string;
-      tokenAddress: string;
-      tokenName: string;
       feeAmount: string;
       token: {
         __typename?: "ExchangeToken";
@@ -17421,7 +17302,6 @@ export type GetDisputeResolversQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       condition?: {
@@ -17511,11 +17391,11 @@ export type GetDisputeResolversQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -17549,8 +17429,6 @@ export type GetDisputeResolversQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -17565,10 +17443,10 @@ export type GetDisputeResolversQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -17621,7 +17499,6 @@ export type GetDisputeResolversQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -17723,8 +17600,6 @@ export type GetDisputeResolversQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -17733,6 +17608,12 @@ export type GetDisputeResolversQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -17838,7 +17719,6 @@ export type GetDisputeResolversQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -18202,7 +18082,6 @@ export type GetDisputeResolversQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -18329,7 +18208,6 @@ export type GetDisputeResolversQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -18533,8 +18411,6 @@ export type GetDisputeResolversQueryQuery = {
     fees: Array<{
       __typename?: "DisputeResolverFee";
       id: string;
-      tokenAddress: string;
-      tokenName: string;
       feeAmount: string;
       token: {
         __typename?: "ExchangeToken";
@@ -18593,7 +18469,6 @@ export type GetOfferCollectionsQueryQuery = {
   offerCollections: Array<{
     __typename?: "OfferCollection";
     id: string;
-    sellerId: string;
     collectionIndex: string;
     collectionAddress: string;
     externalIdHash: string;
@@ -18694,7 +18569,6 @@ export type GetOfferCollectionsQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       condition?: {
@@ -18784,11 +18658,11 @@ export type GetOfferCollectionsQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -18822,8 +18696,6 @@ export type GetOfferCollectionsQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -18838,10 +18710,10 @@ export type GetOfferCollectionsQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -18894,7 +18766,6 @@ export type GetOfferCollectionsQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -18996,8 +18867,6 @@ export type GetOfferCollectionsQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -19006,6 +18875,12 @@ export type GetOfferCollectionsQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -19111,7 +18986,6 @@ export type GetOfferCollectionsQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -19475,7 +19349,6 @@ export type GetOfferCollectionsQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -19602,7 +19475,6 @@ export type GetOfferCollectionsQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -19765,7 +19637,6 @@ export type GetAuthTokenIdsQuery = {
 export type OfferCollectionFieldsFragment = {
   __typename?: "OfferCollection";
   id: string;
-  sellerId: string;
   collectionIndex: string;
   collectionAddress: string;
   externalIdHash: string;
@@ -19866,7 +19737,6 @@ export type OfferCollectionFieldsFragment = {
     voided: boolean;
     voidedAt?: string | null;
     collectionIndex: string;
-    disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
     condition?: {
@@ -19956,11 +19826,11 @@ export type OfferCollectionFieldsFragment = {
     collection: {
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -19994,8 +19864,6 @@ export type OfferCollectionFieldsFragment = {
       fees: Array<{
         __typename?: "DisputeResolverFee";
         id: string;
-        tokenAddress: string;
-        tokenName: string;
         feeAmount: string;
         token: {
           __typename?: "ExchangeToken";
@@ -20010,10 +19878,10 @@ export type OfferCollectionFieldsFragment = {
     disputeResolutionTerms: {
       __typename?: "DisputeResolutionTermsEntity";
       id: string;
-      disputeResolverId: string;
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      disputeResolver: { __typename?: "DisputeResolver"; id: string };
     };
     metadata?:
       | {
@@ -20066,7 +19934,6 @@ export type OfferCollectionFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -20168,8 +20035,6 @@ export type OfferCollectionFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -20178,6 +20043,12 @@ export type OfferCollectionFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -20281,7 +20152,6 @@ export type OfferCollectionFieldsFragment = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -20635,7 +20505,6 @@ export type OfferCollectionFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -20762,7 +20631,6 @@ export type OfferCollectionFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -20908,11 +20776,11 @@ export type OfferCollectionFieldsFragment = {
 export type BaseOfferCollectionFieldsFragment = {
   __typename?: "OfferCollection";
   id: string;
-  sellerId: string;
   collectionIndex: string;
   collectionAddress: string;
   externalIdHash: string;
   externalId: string;
+  seller: { __typename?: "Seller"; id: string };
   metadata?: {
     __typename?: "NftContractMetadata";
     id: string;
@@ -20942,11 +20810,11 @@ export type SellerFieldsFragment = {
   collections: Array<{
     __typename?: "OfferCollection";
     id: string;
-    sellerId: string;
     collectionIndex: string;
     collectionAddress: string;
     externalIdHash: string;
     externalId: string;
+    seller: { __typename?: "Seller"; id: string };
     metadata?: {
       __typename?: "NftContractMetadata";
       id: string;
@@ -20970,7 +20838,6 @@ export type SellerFieldsFragment = {
     __typename?: "FundsEntity";
     id: string;
     availableAmount: string;
-    accountId: string;
     token: {
       __typename?: "ExchangeToken";
       id: string;
@@ -20979,6 +20846,10 @@ export type SellerFieldsFragment = {
       symbol: string;
       name: string;
     };
+    account:
+      | { __typename?: "Buyer"; id: string }
+      | { __typename?: "DisputeResolver"; id: string }
+      | { __typename?: "Seller"; id: string };
   }>;
   offers?: Array<{
     __typename?: "Offer";
@@ -21004,7 +20875,6 @@ export type SellerFieldsFragment = {
     voided: boolean;
     voidedAt?: string | null;
     collectionIndex: string;
-    disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
     condition?: {
@@ -21094,11 +20964,11 @@ export type SellerFieldsFragment = {
     collection: {
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -21132,8 +21002,6 @@ export type SellerFieldsFragment = {
       fees: Array<{
         __typename?: "DisputeResolverFee";
         id: string;
-        tokenAddress: string;
-        tokenName: string;
         feeAmount: string;
         token: {
           __typename?: "ExchangeToken";
@@ -21148,10 +21016,10 @@ export type SellerFieldsFragment = {
     disputeResolutionTerms: {
       __typename?: "DisputeResolutionTermsEntity";
       id: string;
-      disputeResolverId: string;
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      disputeResolver: { __typename?: "DisputeResolver"; id: string };
     };
     metadata?:
       | {
@@ -21204,7 +21072,6 @@ export type SellerFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -21306,8 +21173,6 @@ export type SellerFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -21316,6 +21181,12 @@ export type SellerFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -21419,7 +21290,6 @@ export type SellerFieldsFragment = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -21773,7 +21643,6 @@ export type SellerFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -21900,7 +21769,6 @@ export type SellerFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -22048,7 +21916,6 @@ export type SellerFieldsFragment = {
     dispute?: {
       __typename?: "Dispute";
       id: string;
-      exchangeId: string;
       state: DisputeState;
       buyerPercent: string;
       disputedDate: string;
@@ -22059,6 +21926,7 @@ export type SellerFieldsFragment = {
       decidedDate?: string | null;
       refusedDate?: string | null;
       timeout: string;
+      exchange: { __typename?: "Exchange"; id: string };
     } | null;
     buyer: {
       __typename?: "Buyer";
@@ -22415,7 +22283,6 @@ export type BuyerFieldsFragment = {
     __typename?: "FundsEntity";
     id: string;
     availableAmount: string;
-    accountId: string;
     token: {
       __typename?: "ExchangeToken";
       id: string;
@@ -22424,6 +22291,10 @@ export type BuyerFieldsFragment = {
       symbol: string;
       name: string;
     };
+    account:
+      | { __typename?: "Buyer"; id: string }
+      | { __typename?: "DisputeResolver"; id: string }
+      | { __typename?: "Seller"; id: string };
   }>;
   exchanges?: Array<{
     __typename?: "Exchange";
@@ -22442,7 +22313,6 @@ export type BuyerFieldsFragment = {
     dispute?: {
       __typename?: "Dispute";
       id: string;
-      exchangeId: string;
       state: DisputeState;
       buyerPercent: string;
       disputedDate: string;
@@ -22453,6 +22323,7 @@ export type BuyerFieldsFragment = {
       decidedDate?: string | null;
       refusedDate?: string | null;
       timeout: string;
+      exchange: { __typename?: "Exchange"; id: string };
     } | null;
     buyer: {
       __typename?: "Buyer";
@@ -22653,7 +22524,6 @@ export type DisputeResolverFieldsFragment = {
     voided: boolean;
     voidedAt?: string | null;
     collectionIndex: string;
-    disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
     condition?: {
@@ -22743,11 +22613,11 @@ export type DisputeResolverFieldsFragment = {
     collection: {
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -22781,8 +22651,6 @@ export type DisputeResolverFieldsFragment = {
       fees: Array<{
         __typename?: "DisputeResolverFee";
         id: string;
-        tokenAddress: string;
-        tokenName: string;
         feeAmount: string;
         token: {
           __typename?: "ExchangeToken";
@@ -22797,10 +22665,10 @@ export type DisputeResolverFieldsFragment = {
     disputeResolutionTerms: {
       __typename?: "DisputeResolutionTermsEntity";
       id: string;
-      disputeResolverId: string;
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      disputeResolver: { __typename?: "DisputeResolver"; id: string };
     };
     metadata?:
       | {
@@ -22853,7 +22721,6 @@ export type DisputeResolverFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -22955,8 +22822,6 @@ export type DisputeResolverFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -22965,6 +22830,12 @@ export type DisputeResolverFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -23068,7 +22939,6 @@ export type DisputeResolverFieldsFragment = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -23422,7 +23292,6 @@ export type DisputeResolverFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -23549,7 +23418,6 @@ export type DisputeResolverFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -23753,8 +23621,6 @@ export type DisputeResolverFieldsFragment = {
   fees: Array<{
     __typename?: "DisputeResolverFee";
     id: string;
-    tokenAddress: string;
-    tokenName: string;
     feeAmount: string;
     token: {
       __typename?: "ExchangeToken";
@@ -23781,8 +23647,6 @@ export type BaseDisputeResolverFieldsFragment = {
   fees: Array<{
     __typename?: "DisputeResolverFee";
     id: string;
-    tokenAddress: string;
-    tokenName: string;
     feeAmount: string;
     token: {
       __typename?: "ExchangeToken";
@@ -23805,8 +23669,6 @@ export type PendingDisputeResolverFieldsFragment = {
 export type BaseDisputeResolverFeeFieldsFragment = {
   __typename?: "DisputeResolverFee";
   id: string;
-  tokenAddress: string;
-  tokenName: string;
   feeAmount: string;
   token: {
     __typename?: "ExchangeToken";
@@ -23821,10 +23683,10 @@ export type BaseDisputeResolverFeeFieldsFragment = {
 export type BaseDisputeResolutionTermsEntityFieldsFragment = {
   __typename?: "DisputeResolutionTermsEntity";
   id: string;
-  disputeResolverId: string;
   escalationResponsePeriod: string;
   feeAmount: string;
   buyerEscalationDeposit: string;
+  disputeResolver: { __typename?: "DisputeResolver"; id: string };
 };
 
 export type BaseConditionalCommitAuthorizedEventLogsFieldsFragment = {
@@ -23857,7 +23719,6 @@ export type GetDisputeByIdQueryQuery = {
   dispute?: {
     __typename?: "Dispute";
     id: string;
-    exchangeId: string;
     state: DisputeState;
     buyerPercent: string;
     disputedDate: string;
@@ -23885,7 +23746,6 @@ export type GetDisputeByIdQueryQuery = {
       dispute?: {
         __typename?: "Dispute";
         id: string;
-        exchangeId: string;
         state: DisputeState;
         buyerPercent: string;
         disputedDate: string;
@@ -23896,6 +23756,7 @@ export type GetDisputeByIdQueryQuery = {
         decidedDate?: string | null;
         refusedDate?: string | null;
         timeout: string;
+        exchange: { __typename?: "Exchange"; id: string };
       } | null;
       buyer: {
         __typename?: "Buyer";
@@ -24070,7 +23931,6 @@ export type GetDisputesQueryQuery = {
   disputes: Array<{
     __typename?: "Dispute";
     id: string;
-    exchangeId: string;
     state: DisputeState;
     buyerPercent: string;
     disputedDate: string;
@@ -24098,7 +23958,6 @@ export type GetDisputesQueryQuery = {
       dispute?: {
         __typename?: "Dispute";
         id: string;
-        exchangeId: string;
         state: DisputeState;
         buyerPercent: string;
         disputedDate: string;
@@ -24109,6 +23968,7 @@ export type GetDisputesQueryQuery = {
         decidedDate?: string | null;
         refusedDate?: string | null;
         timeout: string;
+        exchange: { __typename?: "Exchange"; id: string };
       } | null;
       buyer: {
         __typename?: "Buyer";
@@ -24273,7 +24133,6 @@ export type GetDisputesQueryQuery = {
 export type DisputeFieldsFragment = {
   __typename?: "Dispute";
   id: string;
-  exchangeId: string;
   state: DisputeState;
   buyerPercent: string;
   disputedDate: string;
@@ -24301,7 +24160,6 @@ export type DisputeFieldsFragment = {
     dispute?: {
       __typename?: "Dispute";
       id: string;
-      exchangeId: string;
       state: DisputeState;
       buyerPercent: string;
       disputedDate: string;
@@ -24312,6 +24170,7 @@ export type DisputeFieldsFragment = {
       decidedDate?: string | null;
       refusedDate?: string | null;
       timeout: string;
+      exchange: { __typename?: "Exchange"; id: string };
     } | null;
     buyer: {
       __typename?: "Buyer";
@@ -24470,7 +24329,6 @@ export type DisputeFieldsFragment = {
 export type BaseDisputeFieldsFragment = {
   __typename?: "Dispute";
   id: string;
-  exchangeId: string;
   state: DisputeState;
   buyerPercent: string;
   disputedDate: string;
@@ -24481,6 +24339,7 @@ export type BaseDisputeFieldsFragment = {
   decidedDate?: string | null;
   refusedDate?: string | null;
   timeout: string;
+  exchange: { __typename?: "Exchange"; id: string };
 };
 
 export type GetExchangeTokenByIdQueryQueryVariables = Exact<{
@@ -24537,7 +24396,6 @@ export type GetExchangeTokenByIdQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       condition?: {
@@ -24627,11 +24485,11 @@ export type GetExchangeTokenByIdQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -24665,8 +24523,6 @@ export type GetExchangeTokenByIdQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -24681,10 +24537,10 @@ export type GetExchangeTokenByIdQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -24737,7 +24593,6 @@ export type GetExchangeTokenByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -24839,8 +24694,6 @@ export type GetExchangeTokenByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -24849,6 +24702,12 @@ export type GetExchangeTokenByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -24954,7 +24813,6 @@ export type GetExchangeTokenByIdQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -25318,7 +25176,6 @@ export type GetExchangeTokenByIdQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -25445,7 +25302,6 @@ export type GetExchangeTokenByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -25580,7 +25436,10 @@ export type GetExchangeTokenByIdQueryQuery = {
       __typename?: "FundsEntity";
       id: string;
       availableAmount: string;
-      accountId: string;
+      account:
+        | { __typename?: "Buyer"; id: string }
+        | { __typename?: "DisputeResolver"; id: string }
+        | { __typename?: "Seller"; id: string };
     }>;
   } | null;
 };
@@ -25638,7 +25497,6 @@ export type GetExchangeTokensQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       condition?: {
@@ -25728,11 +25586,11 @@ export type GetExchangeTokensQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -25766,8 +25624,6 @@ export type GetExchangeTokensQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -25782,10 +25638,10 @@ export type GetExchangeTokensQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -25838,7 +25694,6 @@ export type GetExchangeTokensQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -25940,8 +25795,6 @@ export type GetExchangeTokensQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -25950,6 +25803,12 @@ export type GetExchangeTokensQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -26055,7 +25914,6 @@ export type GetExchangeTokensQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -26419,7 +26277,6 @@ export type GetExchangeTokensQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -26546,7 +26403,6 @@ export type GetExchangeTokensQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -26681,7 +26537,10 @@ export type GetExchangeTokensQueryQuery = {
       __typename?: "FundsEntity";
       id: string;
       availableAmount: string;
-      accountId: string;
+      account:
+        | { __typename?: "Buyer"; id: string }
+        | { __typename?: "DisputeResolver"; id: string }
+        | { __typename?: "Seller"; id: string };
     }>;
   }>;
 };
@@ -26717,7 +26576,6 @@ export type ExchangeTokenFieldsFragment = {
     voided: boolean;
     voidedAt?: string | null;
     collectionIndex: string;
-    disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
     condition?: {
@@ -26807,11 +26665,11 @@ export type ExchangeTokenFieldsFragment = {
     collection: {
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -26845,8 +26703,6 @@ export type ExchangeTokenFieldsFragment = {
       fees: Array<{
         __typename?: "DisputeResolverFee";
         id: string;
-        tokenAddress: string;
-        tokenName: string;
         feeAmount: string;
         token: {
           __typename?: "ExchangeToken";
@@ -26861,10 +26717,10 @@ export type ExchangeTokenFieldsFragment = {
     disputeResolutionTerms: {
       __typename?: "DisputeResolutionTermsEntity";
       id: string;
-      disputeResolverId: string;
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      disputeResolver: { __typename?: "DisputeResolver"; id: string };
     };
     metadata?:
       | {
@@ -26917,7 +26773,6 @@ export type ExchangeTokenFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -27019,8 +26874,6 @@ export type ExchangeTokenFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -27029,6 +26882,12 @@ export type ExchangeTokenFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -27132,7 +26991,6 @@ export type ExchangeTokenFieldsFragment = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -27486,7 +27344,6 @@ export type ExchangeTokenFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -27613,7 +27470,6 @@ export type ExchangeTokenFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -27748,7 +27604,10 @@ export type ExchangeTokenFieldsFragment = {
     __typename?: "FundsEntity";
     id: string;
     availableAmount: string;
-    accountId: string;
+    account:
+      | { __typename?: "Buyer"; id: string }
+      | { __typename?: "DisputeResolver"; id: string }
+      | { __typename?: "Seller"; id: string };
   }>;
 };
 
@@ -27967,7 +27826,6 @@ export type GetExchangeByIdQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       condition?: {
@@ -28057,11 +27915,11 @@ export type GetExchangeByIdQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -28095,8 +27953,6 @@ export type GetExchangeByIdQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -28111,10 +27967,10 @@ export type GetExchangeByIdQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -28167,7 +28023,6 @@ export type GetExchangeByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -28269,8 +28124,6 @@ export type GetExchangeByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -28279,6 +28132,12 @@ export type GetExchangeByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -28384,7 +28243,6 @@ export type GetExchangeByIdQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -28748,7 +28606,6 @@ export type GetExchangeByIdQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -28875,7 +28732,6 @@ export type GetExchangeByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -29009,7 +28865,6 @@ export type GetExchangeByIdQueryQuery = {
     dispute?: {
       __typename?: "Dispute";
       id: string;
-      exchangeId: string;
       state: DisputeState;
       buyerPercent: string;
       disputedDate: string;
@@ -29020,6 +28875,7 @@ export type GetExchangeByIdQueryQuery = {
       decidedDate?: string | null;
       refusedDate?: string | null;
       timeout: string;
+      exchange: { __typename?: "Exchange"; id: string };
     } | null;
     buyer: {
       __typename?: "Buyer";
@@ -29150,7 +29006,6 @@ export type GetExchangesQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       condition?: {
@@ -29240,11 +29095,11 @@ export type GetExchangesQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -29278,8 +29133,6 @@ export type GetExchangesQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -29294,10 +29147,10 @@ export type GetExchangesQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -29350,7 +29203,6 @@ export type GetExchangesQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -29452,8 +29304,6 @@ export type GetExchangesQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -29462,6 +29312,12 @@ export type GetExchangesQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -29567,7 +29423,6 @@ export type GetExchangesQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -29931,7 +29786,6 @@ export type GetExchangesQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -30058,7 +29912,6 @@ export type GetExchangesQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -30192,7 +30045,6 @@ export type GetExchangesQueryQuery = {
     dispute?: {
       __typename?: "Dispute";
       id: string;
-      exchangeId: string;
       state: DisputeState;
       buyerPercent: string;
       disputedDate: string;
@@ -30203,6 +30055,7 @@ export type GetExchangesQueryQuery = {
       decidedDate?: string | null;
       refusedDate?: string | null;
       timeout: string;
+      exchange: { __typename?: "Exchange"; id: string };
     } | null;
     buyer: {
       __typename?: "Buyer";
@@ -30323,7 +30176,6 @@ export type ExchangeFieldsFragment = {
     voided: boolean;
     voidedAt?: string | null;
     collectionIndex: string;
-    disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
     condition?: {
@@ -30413,11 +30265,11 @@ export type ExchangeFieldsFragment = {
     collection: {
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -30451,8 +30303,6 @@ export type ExchangeFieldsFragment = {
       fees: Array<{
         __typename?: "DisputeResolverFee";
         id: string;
-        tokenAddress: string;
-        tokenName: string;
         feeAmount: string;
         token: {
           __typename?: "ExchangeToken";
@@ -30467,10 +30317,10 @@ export type ExchangeFieldsFragment = {
     disputeResolutionTerms: {
       __typename?: "DisputeResolutionTermsEntity";
       id: string;
-      disputeResolverId: string;
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      disputeResolver: { __typename?: "DisputeResolver"; id: string };
     };
     metadata?:
       | {
@@ -30523,7 +30373,6 @@ export type ExchangeFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -30625,8 +30474,6 @@ export type ExchangeFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -30635,6 +30482,12 @@ export type ExchangeFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -30738,7 +30591,6 @@ export type ExchangeFieldsFragment = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -31092,7 +30944,6 @@ export type ExchangeFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -31219,7 +31070,6 @@ export type ExchangeFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -31353,7 +31203,6 @@ export type ExchangeFieldsFragment = {
   dispute?: {
     __typename?: "Dispute";
     id: string;
-    exchangeId: string;
     state: DisputeState;
     buyerPercent: string;
     disputedDate: string;
@@ -31364,6 +31213,7 @@ export type ExchangeFieldsFragment = {
     decidedDate?: string | null;
     refusedDate?: string | null;
     timeout: string;
+    exchange: { __typename?: "Exchange"; id: string };
   } | null;
   buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
   seller: {
@@ -31457,7 +31307,6 @@ export type BaseExchangeFieldsFragment = {
   dispute?: {
     __typename?: "Dispute";
     id: string;
-    exchangeId: string;
     state: DisputeState;
     buyerPercent: string;
     disputedDate: string;
@@ -31468,6 +31317,7 @@ export type BaseExchangeFieldsFragment = {
     decidedDate?: string | null;
     refusedDate?: string | null;
     timeout: string;
+    exchange: { __typename?: "Exchange"; id: string };
   } | null;
   buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
   seller: {
@@ -31554,7 +31404,6 @@ export type GetFundsByIdQuery = {
     __typename?: "FundsEntity";
     id: string;
     availableAmount: string;
-    accountId: string;
     token: {
       __typename?: "ExchangeToken";
       id: string;
@@ -31563,6 +31412,10 @@ export type GetFundsByIdQuery = {
       symbol: string;
       name: string;
     };
+    account:
+      | { __typename?: "Buyer"; id: string }
+      | { __typename?: "DisputeResolver"; id: string }
+      | { __typename?: "Seller"; id: string };
   } | null;
 };
 
@@ -31580,7 +31433,6 @@ export type GetFundsQuery = {
     __typename?: "FundsEntity";
     id: string;
     availableAmount: string;
-    accountId: string;
     token: {
       __typename?: "ExchangeToken";
       id: string;
@@ -31589,6 +31441,10 @@ export type GetFundsQuery = {
       symbol: string;
       name: string;
     };
+    account:
+      | { __typename?: "Buyer"; id: string }
+      | { __typename?: "DisputeResolver"; id: string }
+      | { __typename?: "Seller"; id: string };
   }>;
 };
 
@@ -31596,7 +31452,6 @@ export type FundsEntityFieldsFragment = {
   __typename?: "FundsEntity";
   id: string;
   availableAmount: string;
-  accountId: string;
   token: {
     __typename?: "ExchangeToken";
     id: string;
@@ -31605,13 +31460,20 @@ export type FundsEntityFieldsFragment = {
     symbol: string;
     name: string;
   };
+  account:
+    | { __typename?: "Buyer"; id: string }
+    | { __typename?: "DisputeResolver"; id: string }
+    | { __typename?: "Seller"; id: string };
 };
 
 export type BaseFundsEntityFieldsFragment = {
   __typename?: "FundsEntity";
   id: string;
   availableAmount: string;
-  accountId: string;
+  account:
+    | { __typename?: "Buyer"; id: string }
+    | { __typename?: "DisputeResolver"; id: string }
+    | { __typename?: "Seller"; id: string };
 };
 
 export type BaseConditionFieldsFragment = {
@@ -31694,7 +31556,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       condition?: {
@@ -31784,11 +31645,11 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -31822,8 +31683,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -31838,10 +31697,10 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -31894,7 +31753,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -31996,8 +31854,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -32006,6 +31862,12 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -32111,7 +31973,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -32475,7 +32336,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -32602,7 +32462,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -32882,7 +32741,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       condition?: {
@@ -32972,11 +32830,11 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -33010,8 +32868,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -33026,10 +32882,10 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -33082,7 +32938,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -33184,8 +33039,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -33194,6 +33047,12 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -33299,7 +33158,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -33663,7 +33521,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -33790,7 +33647,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -34060,7 +33916,6 @@ export type BaseMetadataEntityFieldsFragment = {
     voided: boolean;
     voidedAt?: string | null;
     collectionIndex: string;
-    disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
     condition?: {
@@ -34150,11 +34005,11 @@ export type BaseMetadataEntityFieldsFragment = {
     collection: {
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -34188,8 +34043,6 @@ export type BaseMetadataEntityFieldsFragment = {
       fees: Array<{
         __typename?: "DisputeResolverFee";
         id: string;
-        tokenAddress: string;
-        tokenName: string;
         feeAmount: string;
         token: {
           __typename?: "ExchangeToken";
@@ -34204,10 +34057,10 @@ export type BaseMetadataEntityFieldsFragment = {
     disputeResolutionTerms: {
       __typename?: "DisputeResolutionTermsEntity";
       id: string;
-      disputeResolverId: string;
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      disputeResolver: { __typename?: "DisputeResolver"; id: string };
     };
     metadata?:
       | {
@@ -34260,7 +34113,6 @@ export type BaseMetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -34362,8 +34214,6 @@ export type BaseMetadataEntityFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -34372,6 +34222,12 @@ export type BaseMetadataEntityFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -34475,7 +34331,6 @@ export type BaseMetadataEntityFieldsFragment = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -34829,7 +34684,6 @@ export type BaseMetadataEntityFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -34956,7 +34810,6 @@ export type BaseMetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -35225,7 +35078,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     voided: boolean;
     voidedAt?: string | null;
     collectionIndex: string;
-    disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
     condition?: {
@@ -35315,11 +35167,11 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     collection: {
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -35353,8 +35205,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       fees: Array<{
         __typename?: "DisputeResolverFee";
         id: string;
-        tokenAddress: string;
-        tokenName: string;
         feeAmount: string;
         token: {
           __typename?: "ExchangeToken";
@@ -35369,10 +35219,10 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     disputeResolutionTerms: {
       __typename?: "DisputeResolutionTermsEntity";
       id: string;
-      disputeResolverId: string;
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      disputeResolver: { __typename?: "DisputeResolver"; id: string };
     };
     metadata?:
       | {
@@ -35425,7 +35275,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -35527,8 +35376,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -35537,6 +35384,12 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -35640,7 +35493,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -35994,7 +35846,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -36121,7 +35972,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -36403,7 +36253,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       exchanges: Array<{
@@ -36423,7 +36272,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
         dispute?: {
           __typename?: "Dispute";
           id: string;
-          exchangeId: string;
           state: DisputeState;
           buyerPercent: string;
           disputedDate: string;
@@ -36434,6 +36282,7 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
           decidedDate?: string | null;
           refusedDate?: string | null;
           timeout: string;
+          exchange: { __typename?: "Exchange"; id: string };
         } | null;
         buyer: {
           __typename?: "Buyer";
@@ -36601,11 +36450,11 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -36639,8 +36488,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -36655,10 +36502,10 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -36711,7 +36558,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -36813,8 +36659,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -36823,6 +36667,12 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -36928,7 +36778,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -37292,7 +37141,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -37419,7 +37267,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -37638,7 +37485,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
       description?: string | null;
       externalUrl?: string | null;
       tokenId?: string | null;
-      sellerId?: string | null;
       contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
@@ -37740,8 +37586,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
           chainId?: number | null;
           contract?: string | null;
           tokenId?: string | null;
-          transferMethod?: string | null;
-          transferDelay?: string | null;
           quantity?: number | null;
           id: string;
           schemaUrl: string;
@@ -37752,6 +37596,12 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
             min: string;
             max: string;
           } | null;
+          terms?: Array<{
+            __typename?: "Term";
+            key: string;
+            value: string;
+            displayKey: string;
+          }> | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -37762,8 +37612,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
       | {
           __typename?: "ProductV1ItemMetadataEntity";
           uuid: string;
-          productUuid: string;
-          productVersion: number;
           id: string;
           schemaUrl: string;
           type: ItemMetadataType;
@@ -37855,7 +37703,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -38119,7 +37966,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       exchanges: Array<{
@@ -38139,7 +37985,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
         dispute?: {
           __typename?: "Dispute";
           id: string;
-          exchangeId: string;
           state: DisputeState;
           buyerPercent: string;
           disputedDate: string;
@@ -38150,6 +37995,7 @@ export type GetBundleMetadataEntitiesQueryQuery = {
           decidedDate?: string | null;
           refusedDate?: string | null;
           timeout: string;
+          exchange: { __typename?: "Exchange"; id: string };
         } | null;
         buyer: {
           __typename?: "Buyer";
@@ -38317,11 +38163,11 @@ export type GetBundleMetadataEntitiesQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -38355,8 +38201,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -38371,10 +38215,10 @@ export type GetBundleMetadataEntitiesQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -38427,7 +38271,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -38529,8 +38372,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -38539,6 +38380,12 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -38644,7 +38491,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -39008,7 +38854,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -39135,7 +38980,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -39354,7 +39198,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
       description?: string | null;
       externalUrl?: string | null;
       tokenId?: string | null;
-      sellerId?: string | null;
       contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
@@ -39456,8 +39299,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
           chainId?: number | null;
           contract?: string | null;
           tokenId?: string | null;
-          transferMethod?: string | null;
-          transferDelay?: string | null;
           quantity?: number | null;
           id: string;
           schemaUrl: string;
@@ -39468,6 +39309,12 @@ export type GetBundleMetadataEntitiesQueryQuery = {
             min: string;
             max: string;
           } | null;
+          terms?: Array<{
+            __typename?: "Term";
+            key: string;
+            value: string;
+            displayKey: string;
+          }> | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -39478,8 +39325,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
       | {
           __typename?: "ProductV1ItemMetadataEntity";
           uuid: string;
-          productUuid: string;
-          productVersion: number;
           id: string;
           schemaUrl: string;
           type: ItemMetadataType;
@@ -39571,7 +39416,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -39825,7 +39669,6 @@ export type BundleMetadataEntityFieldsFragment = {
     voided: boolean;
     voidedAt?: string | null;
     collectionIndex: string;
-    disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
     exchanges: Array<{
@@ -39845,7 +39688,6 @@ export type BundleMetadataEntityFieldsFragment = {
       dispute?: {
         __typename?: "Dispute";
         id: string;
-        exchangeId: string;
         state: DisputeState;
         buyerPercent: string;
         disputedDate: string;
@@ -39856,6 +39698,7 @@ export type BundleMetadataEntityFieldsFragment = {
         decidedDate?: string | null;
         refusedDate?: string | null;
         timeout: string;
+        exchange: { __typename?: "Exchange"; id: string };
       } | null;
       buyer: {
         __typename?: "Buyer";
@@ -40023,11 +39866,11 @@ export type BundleMetadataEntityFieldsFragment = {
     collection: {
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -40061,8 +39904,6 @@ export type BundleMetadataEntityFieldsFragment = {
       fees: Array<{
         __typename?: "DisputeResolverFee";
         id: string;
-        tokenAddress: string;
-        tokenName: string;
         feeAmount: string;
         token: {
           __typename?: "ExchangeToken";
@@ -40077,10 +39918,10 @@ export type BundleMetadataEntityFieldsFragment = {
     disputeResolutionTerms: {
       __typename?: "DisputeResolutionTermsEntity";
       id: string;
-      disputeResolverId: string;
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      disputeResolver: { __typename?: "DisputeResolver"; id: string };
     };
     metadata?:
       | {
@@ -40133,7 +39974,6 @@ export type BundleMetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -40235,8 +40075,6 @@ export type BundleMetadataEntityFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -40245,6 +40083,12 @@ export type BundleMetadataEntityFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -40348,7 +40192,6 @@ export type BundleMetadataEntityFieldsFragment = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -40702,7 +40545,6 @@ export type BundleMetadataEntityFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -40829,7 +40671,6 @@ export type BundleMetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -41048,7 +40889,6 @@ export type BundleMetadataEntityFieldsFragment = {
     description?: string | null;
     externalUrl?: string | null;
     tokenId?: string | null;
-    sellerId?: string | null;
     contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
@@ -41150,8 +40990,6 @@ export type BundleMetadataEntityFieldsFragment = {
         chainId?: number | null;
         contract?: string | null;
         tokenId?: string | null;
-        transferMethod?: string | null;
-        transferDelay?: string | null;
         quantity?: number | null;
         id: string;
         schemaUrl: string;
@@ -41162,6 +41000,12 @@ export type BundleMetadataEntityFieldsFragment = {
           min: string;
           max: string;
         } | null;
+        terms?: Array<{
+          __typename?: "Term";
+          key: string;
+          value: string;
+          displayKey: string;
+        }> | null;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -41172,8 +41016,6 @@ export type BundleMetadataEntityFieldsFragment = {
     | {
         __typename?: "ProductV1ItemMetadataEntity";
         uuid: string;
-        productUuid: string;
-        productVersion: number;
         id: string;
         schemaUrl: string;
         type: ItemMetadataType;
@@ -41265,7 +41107,6 @@ export type BundleMetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -41518,7 +41359,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
     voided: boolean;
     voidedAt?: string | null;
     collectionIndex: string;
-    disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
     exchanges: Array<{
@@ -41538,7 +41378,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
       dispute?: {
         __typename?: "Dispute";
         id: string;
-        exchangeId: string;
         state: DisputeState;
         buyerPercent: string;
         disputedDate: string;
@@ -41549,6 +41388,7 @@ export type BaseBundleMetadataEntityFieldsFragment = {
         decidedDate?: string | null;
         refusedDate?: string | null;
         timeout: string;
+        exchange: { __typename?: "Exchange"; id: string };
       } | null;
       buyer: {
         __typename?: "Buyer";
@@ -41716,11 +41556,11 @@ export type BaseBundleMetadataEntityFieldsFragment = {
     collection: {
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -41754,8 +41594,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
       fees: Array<{
         __typename?: "DisputeResolverFee";
         id: string;
-        tokenAddress: string;
-        tokenName: string;
         feeAmount: string;
         token: {
           __typename?: "ExchangeToken";
@@ -41770,10 +41608,10 @@ export type BaseBundleMetadataEntityFieldsFragment = {
     disputeResolutionTerms: {
       __typename?: "DisputeResolutionTermsEntity";
       id: string;
-      disputeResolverId: string;
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      disputeResolver: { __typename?: "DisputeResolver"; id: string };
     };
     metadata?:
       | {
@@ -41826,7 +41664,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -41928,8 +41765,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -41938,6 +41773,12 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -42041,7 +41882,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -42395,7 +42235,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -42522,7 +42361,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -42741,7 +42579,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
     description?: string | null;
     externalUrl?: string | null;
     tokenId?: string | null;
-    sellerId?: string | null;
     contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
@@ -42843,8 +42680,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
         chainId?: number | null;
         contract?: string | null;
         tokenId?: string | null;
-        transferMethod?: string | null;
-        transferDelay?: string | null;
         quantity?: number | null;
         id: string;
         schemaUrl: string;
@@ -42855,6 +42690,12 @@ export type BaseBundleMetadataEntityFieldsFragment = {
           min: string;
           max: string;
         } | null;
+        terms?: Array<{
+          __typename?: "Term";
+          key: string;
+          value: string;
+          displayKey: string;
+        }> | null;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -42865,8 +42706,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
     | {
         __typename?: "ProductV1ItemMetadataEntity";
         uuid: string;
-        productUuid: string;
-        productVersion: number;
         id: string;
         schemaUrl: string;
         type: ItemMetadataType;
@@ -42958,7 +42797,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -43267,7 +43105,6 @@ export type GetProductV1ProductsQueryQuery = {
       description?: string | null;
       externalUrl?: string | null;
       tokenId?: string | null;
-      sellerId?: string | null;
       contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
@@ -43453,7 +43290,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         voided: boolean;
         voidedAt?: string | null;
         collectionIndex: string;
-        disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
         exchanges: Array<{
@@ -43473,7 +43309,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           dispute?: {
             __typename?: "Dispute";
             id: string;
-            exchangeId: string;
             state: DisputeState;
             buyerPercent: string;
             disputedDate: string;
@@ -43484,6 +43319,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             decidedDate?: string | null;
             refusedDate?: string | null;
             timeout: string;
+            exchange: { __typename?: "Exchange"; id: string };
           } | null;
           buyer: {
             __typename?: "Buyer";
@@ -43651,11 +43487,11 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         collection: {
           __typename?: "OfferCollection";
           id: string;
-          sellerId: string;
           collectionIndex: string;
           collectionAddress: string;
           externalIdHash: string;
           externalId: string;
+          seller: { __typename?: "Seller"; id: string };
           metadata?: {
             __typename?: "NftContractMetadata";
             id: string;
@@ -43689,8 +43525,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           fees: Array<{
             __typename?: "DisputeResolverFee";
             id: string;
-            tokenAddress: string;
-            tokenName: string;
             feeAmount: string;
             token: {
               __typename?: "ExchangeToken";
@@ -43705,10 +43539,10 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         disputeResolutionTerms: {
           __typename?: "DisputeResolutionTermsEntity";
           id: string;
-          disputeResolverId: string;
           escalationResponsePeriod: string;
           feeAmount: string;
           buyerEscalationDeposit: string;
+          disputeResolver: { __typename?: "DisputeResolver"; id: string };
         };
         metadata?:
           | {
@@ -43761,7 +43595,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -43863,8 +43696,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     chainId?: number | null;
                     contract?: string | null;
                     tokenId?: string | null;
-                    transferMethod?: string | null;
-                    transferDelay?: string | null;
                     quantity?: number | null;
                     type: ItemMetadataType;
                     metadataUri: string;
@@ -43873,6 +43704,12 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       min: string;
                       max: string;
                     } | null;
+                    terms?: Array<{
+                      __typename?: "Term";
+                      key: string;
+                      value: string;
+                      displayKey: string;
+                    }> | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
                       traitType: string;
@@ -43978,7 +43815,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                         description?: string | null;
                         externalUrl?: string | null;
                         tokenId?: string | null;
-                        sellerId?: string | null;
                         contactPreference?: string | null;
                         images?: Array<{
                           __typename?: "ProductV1Media";
@@ -44342,7 +44178,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   description?: string | null;
                   externalUrl?: string | null;
                   tokenId?: string | null;
-                  sellerId?: string | null;
                   contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
@@ -44469,7 +44304,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -44664,7 +44498,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           voided: boolean;
           voidedAt?: string | null;
           collectionIndex: string;
-          disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
           exchanges: Array<{
@@ -44684,7 +44517,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             dispute?: {
               __typename?: "Dispute";
               id: string;
-              exchangeId: string;
               state: DisputeState;
               buyerPercent: string;
               disputedDate: string;
@@ -44695,6 +44527,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               decidedDate?: string | null;
               refusedDate?: string | null;
               timeout: string;
+              exchange: { __typename?: "Exchange"; id: string };
             } | null;
             buyer: {
               __typename?: "Buyer";
@@ -44862,11 +44695,11 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           collection: {
             __typename?: "OfferCollection";
             id: string;
-            sellerId: string;
             collectionIndex: string;
             collectionAddress: string;
             externalIdHash: string;
             externalId: string;
+            seller: { __typename?: "Seller"; id: string };
             metadata?: {
               __typename?: "NftContractMetadata";
               id: string;
@@ -44900,8 +44733,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             fees: Array<{
               __typename?: "DisputeResolverFee";
               id: string;
-              tokenAddress: string;
-              tokenName: string;
               feeAmount: string;
               token: {
                 __typename?: "ExchangeToken";
@@ -44916,10 +44747,10 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           disputeResolutionTerms: {
             __typename?: "DisputeResolutionTermsEntity";
             id: string;
-            disputeResolverId: string;
             escalationResponsePeriod: string;
             feeAmount: string;
             buyerEscalationDeposit: string;
+            disputeResolver: { __typename?: "DisputeResolver"; id: string };
           };
           metadata?:
             | {
@@ -44972,7 +44803,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   description?: string | null;
                   externalUrl?: string | null;
                   tokenId?: string | null;
-                  sellerId?: string | null;
                   contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
@@ -45074,8 +44904,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       chainId?: number | null;
                       contract?: string | null;
                       tokenId?: string | null;
-                      transferMethod?: string | null;
-                      transferDelay?: string | null;
                       quantity?: number | null;
                       type: ItemMetadataType;
                       metadataUri: string;
@@ -45084,6 +44912,12 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                         min: string;
                         max: string;
                       } | null;
+                      terms?: Array<{
+                        __typename?: "Term";
+                        key: string;
+                        value: string;
+                        displayKey: string;
+                      }> | null;
                       attributes?: Array<{
                         __typename?: "MetadataAttribute";
                         traitType: string;
@@ -45189,7 +45023,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                           description?: string | null;
                           externalUrl?: string | null;
                           tokenId?: string | null;
-                          sellerId?: string | null;
                           contactPreference?: string | null;
                           images?: Array<{
                             __typename?: "ProductV1Media";
@@ -45553,7 +45386,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -45680,7 +45512,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   description?: string | null;
                   externalUrl?: string | null;
                   tokenId?: string | null;
-                  sellerId?: string | null;
                   contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
@@ -45899,7 +45730,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           description?: string | null;
           externalUrl?: string | null;
           tokenId?: string | null;
-          sellerId?: string | null;
           contactPreference?: string | null;
           images?: Array<{
             __typename?: "ProductV1Media";
@@ -46001,8 +45831,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               chainId?: number | null;
               contract?: string | null;
               tokenId?: string | null;
-              transferMethod?: string | null;
-              transferDelay?: string | null;
               quantity?: number | null;
               id: string;
               schemaUrl: string;
@@ -46013,6 +45841,12 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 min: string;
                 max: string;
               } | null;
+              terms?: Array<{
+                __typename?: "Term";
+                key: string;
+                value: string;
+                displayKey: string;
+              }> | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -46023,8 +45857,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           | {
               __typename?: "ProductV1ItemMetadataEntity";
               uuid: string;
-              productUuid: string;
-              productVersion: number;
               id: string;
               schemaUrl: string;
               type: ItemMetadataType;
@@ -46120,7 +45952,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   description?: string | null;
                   externalUrl?: string | null;
                   tokenId?: string | null;
-                  sellerId?: string | null;
                   contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
@@ -46376,7 +46207,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
       description?: string | null;
       externalUrl?: string | null;
       tokenId?: string | null;
-      sellerId?: string | null;
       contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
@@ -46562,7 +46392,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         voided: boolean;
         voidedAt?: string | null;
         collectionIndex: string;
-        disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
         exchanges: Array<{
@@ -46582,7 +46411,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           dispute?: {
             __typename?: "Dispute";
             id: string;
-            exchangeId: string;
             state: DisputeState;
             buyerPercent: string;
             disputedDate: string;
@@ -46593,6 +46421,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             decidedDate?: string | null;
             refusedDate?: string | null;
             timeout: string;
+            exchange: { __typename?: "Exchange"; id: string };
           } | null;
           buyer: {
             __typename?: "Buyer";
@@ -46760,11 +46589,11 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         collection: {
           __typename?: "OfferCollection";
           id: string;
-          sellerId: string;
           collectionIndex: string;
           collectionAddress: string;
           externalIdHash: string;
           externalId: string;
+          seller: { __typename?: "Seller"; id: string };
           metadata?: {
             __typename?: "NftContractMetadata";
             id: string;
@@ -46798,8 +46627,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           fees: Array<{
             __typename?: "DisputeResolverFee";
             id: string;
-            tokenAddress: string;
-            tokenName: string;
             feeAmount: string;
             token: {
               __typename?: "ExchangeToken";
@@ -46814,10 +46641,10 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         disputeResolutionTerms: {
           __typename?: "DisputeResolutionTermsEntity";
           id: string;
-          disputeResolverId: string;
           escalationResponsePeriod: string;
           feeAmount: string;
           buyerEscalationDeposit: string;
+          disputeResolver: { __typename?: "DisputeResolver"; id: string };
         };
         metadata?:
           | {
@@ -46870,7 +46697,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -46972,8 +46798,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     chainId?: number | null;
                     contract?: string | null;
                     tokenId?: string | null;
-                    transferMethod?: string | null;
-                    transferDelay?: string | null;
                     quantity?: number | null;
                     type: ItemMetadataType;
                     metadataUri: string;
@@ -46982,6 +46806,12 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       min: string;
                       max: string;
                     } | null;
+                    terms?: Array<{
+                      __typename?: "Term";
+                      key: string;
+                      value: string;
+                      displayKey: string;
+                    }> | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
                       traitType: string;
@@ -47087,7 +46917,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                         description?: string | null;
                         externalUrl?: string | null;
                         tokenId?: string | null;
-                        sellerId?: string | null;
                         contactPreference?: string | null;
                         images?: Array<{
                           __typename?: "ProductV1Media";
@@ -47451,7 +47280,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   description?: string | null;
                   externalUrl?: string | null;
                   tokenId?: string | null;
-                  sellerId?: string | null;
                   contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
@@ -47578,7 +47406,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -47773,7 +47600,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           voided: boolean;
           voidedAt?: string | null;
           collectionIndex: string;
-          disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
           exchanges: Array<{
@@ -47793,7 +47619,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             dispute?: {
               __typename?: "Dispute";
               id: string;
-              exchangeId: string;
               state: DisputeState;
               buyerPercent: string;
               disputedDate: string;
@@ -47804,6 +47629,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               decidedDate?: string | null;
               refusedDate?: string | null;
               timeout: string;
+              exchange: { __typename?: "Exchange"; id: string };
             } | null;
             buyer: {
               __typename?: "Buyer";
@@ -47971,11 +47797,11 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           collection: {
             __typename?: "OfferCollection";
             id: string;
-            sellerId: string;
             collectionIndex: string;
             collectionAddress: string;
             externalIdHash: string;
             externalId: string;
+            seller: { __typename?: "Seller"; id: string };
             metadata?: {
               __typename?: "NftContractMetadata";
               id: string;
@@ -48009,8 +47835,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             fees: Array<{
               __typename?: "DisputeResolverFee";
               id: string;
-              tokenAddress: string;
-              tokenName: string;
               feeAmount: string;
               token: {
                 __typename?: "ExchangeToken";
@@ -48025,10 +47849,10 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           disputeResolutionTerms: {
             __typename?: "DisputeResolutionTermsEntity";
             id: string;
-            disputeResolverId: string;
             escalationResponsePeriod: string;
             feeAmount: string;
             buyerEscalationDeposit: string;
+            disputeResolver: { __typename?: "DisputeResolver"; id: string };
           };
           metadata?:
             | {
@@ -48081,7 +47905,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   description?: string | null;
                   externalUrl?: string | null;
                   tokenId?: string | null;
-                  sellerId?: string | null;
                   contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
@@ -48183,8 +48006,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       chainId?: number | null;
                       contract?: string | null;
                       tokenId?: string | null;
-                      transferMethod?: string | null;
-                      transferDelay?: string | null;
                       quantity?: number | null;
                       type: ItemMetadataType;
                       metadataUri: string;
@@ -48193,6 +48014,12 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                         min: string;
                         max: string;
                       } | null;
+                      terms?: Array<{
+                        __typename?: "Term";
+                        key: string;
+                        value: string;
+                        displayKey: string;
+                      }> | null;
                       attributes?: Array<{
                         __typename?: "MetadataAttribute";
                         traitType: string;
@@ -48298,7 +48125,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                           description?: string | null;
                           externalUrl?: string | null;
                           tokenId?: string | null;
-                          sellerId?: string | null;
                           contactPreference?: string | null;
                           images?: Array<{
                             __typename?: "ProductV1Media";
@@ -48662,7 +48488,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -48789,7 +48614,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   description?: string | null;
                   externalUrl?: string | null;
                   tokenId?: string | null;
-                  sellerId?: string | null;
                   contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
@@ -49008,7 +48832,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           description?: string | null;
           externalUrl?: string | null;
           tokenId?: string | null;
-          sellerId?: string | null;
           contactPreference?: string | null;
           images?: Array<{
             __typename?: "ProductV1Media";
@@ -49110,8 +48933,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               chainId?: number | null;
               contract?: string | null;
               tokenId?: string | null;
-              transferMethod?: string | null;
-              transferDelay?: string | null;
               quantity?: number | null;
               id: string;
               schemaUrl: string;
@@ -49122,6 +48943,12 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 min: string;
                 max: string;
               } | null;
+              terms?: Array<{
+                __typename?: "Term";
+                key: string;
+                value: string;
+                displayKey: string;
+              }> | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -49132,8 +48959,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           | {
               __typename?: "ProductV1ItemMetadataEntity";
               uuid: string;
-              productUuid: string;
-              productVersion: number;
               id: string;
               schemaUrl: string;
               type: ItemMetadataType;
@@ -49229,7 +49054,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   description?: string | null;
                   externalUrl?: string | null;
                   tokenId?: string | null;
-                  sellerId?: string | null;
                   contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
@@ -49485,7 +49309,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
       description?: string | null;
       externalUrl?: string | null;
       tokenId?: string | null;
-      sellerId?: string | null;
       contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
@@ -49685,7 +49508,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       exchanges: Array<{
@@ -49705,7 +49527,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         dispute?: {
           __typename?: "Dispute";
           id: string;
-          exchangeId: string;
           state: DisputeState;
           buyerPercent: string;
           disputedDate: string;
@@ -49716,6 +49537,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           decidedDate?: string | null;
           refusedDate?: string | null;
           timeout: string;
+          exchange: { __typename?: "Exchange"; id: string };
         } | null;
         buyer: {
           __typename?: "Buyer";
@@ -49883,11 +49705,11 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -49921,8 +49743,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -49937,10 +49757,10 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -49993,7 +49813,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -50095,8 +49914,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -50105,6 +49922,12 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -50210,7 +50033,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -50574,7 +50396,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -50701,7 +50522,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -50999,7 +50819,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         description?: string | null;
         externalUrl?: string | null;
         tokenId?: string | null;
-        sellerId?: string | null;
         contactPreference?: string | null;
         images?: Array<{
           __typename?: "ProductV1Media";
@@ -51126,7 +50945,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       description?: string | null;
       externalUrl?: string | null;
       tokenId?: string | null;
-      sellerId?: string | null;
       contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
@@ -51296,7 +51114,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       exchanges: Array<{
@@ -51316,7 +51133,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         dispute?: {
           __typename?: "Dispute";
           id: string;
-          exchangeId: string;
           state: DisputeState;
           buyerPercent: string;
           disputedDate: string;
@@ -51327,6 +51143,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           decidedDate?: string | null;
           refusedDate?: string | null;
           timeout: string;
+          exchange: { __typename?: "Exchange"; id: string };
         } | null;
         buyer: {
           __typename?: "Buyer";
@@ -51494,11 +51311,11 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -51532,8 +51349,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -51548,10 +51363,10 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -51604,7 +51419,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -51706,8 +51520,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -51716,6 +51528,12 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -51821,7 +51639,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -52185,7 +52002,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -52312,7 +52128,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -52610,7 +52425,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         description?: string | null;
         externalUrl?: string | null;
         tokenId?: string | null;
-        sellerId?: string | null;
         contactPreference?: string | null;
         images?: Array<{
           __typename?: "ProductV1Media";
@@ -52737,7 +52551,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       description?: string | null;
       externalUrl?: string | null;
       tokenId?: string | null;
-      sellerId?: string | null;
       contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
@@ -52897,7 +52710,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
     voided: boolean;
     voidedAt?: string | null;
     collectionIndex: string;
-    disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
     exchanges: Array<{
@@ -52917,7 +52729,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
       dispute?: {
         __typename?: "Dispute";
         id: string;
-        exchangeId: string;
         state: DisputeState;
         buyerPercent: string;
         disputedDate: string;
@@ -52928,6 +52739,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
         decidedDate?: string | null;
         refusedDate?: string | null;
         timeout: string;
+        exchange: { __typename?: "Exchange"; id: string };
       } | null;
       buyer: {
         __typename?: "Buyer";
@@ -53095,11 +52907,11 @@ export type ProductV1MetadataEntityFieldsFragment = {
     collection: {
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -53133,8 +52945,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
       fees: Array<{
         __typename?: "DisputeResolverFee";
         id: string;
-        tokenAddress: string;
-        tokenName: string;
         feeAmount: string;
         token: {
           __typename?: "ExchangeToken";
@@ -53149,10 +52959,10 @@ export type ProductV1MetadataEntityFieldsFragment = {
     disputeResolutionTerms: {
       __typename?: "DisputeResolutionTermsEntity";
       id: string;
-      disputeResolverId: string;
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      disputeResolver: { __typename?: "DisputeResolver"; id: string };
     };
     metadata?:
       | {
@@ -53205,7 +53015,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -53307,8 +53116,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -53317,6 +53124,12 @@ export type ProductV1MetadataEntityFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -53420,7 +53233,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -53774,7 +53586,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -53901,7 +53712,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -54199,7 +54009,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
       description?: string | null;
       externalUrl?: string | null;
       tokenId?: string | null;
-      sellerId?: string | null;
       contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
@@ -54326,7 +54135,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
     description?: string | null;
     externalUrl?: string | null;
     tokenId?: string | null;
-    sellerId?: string | null;
     contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
@@ -54485,7 +54293,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     voided: boolean;
     voidedAt?: string | null;
     collectionIndex: string;
-    disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
     exchanges: Array<{
@@ -54505,7 +54312,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       dispute?: {
         __typename?: "Dispute";
         id: string;
-        exchangeId: string;
         state: DisputeState;
         buyerPercent: string;
         disputedDate: string;
@@ -54516,6 +54322,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         decidedDate?: string | null;
         refusedDate?: string | null;
         timeout: string;
+        exchange: { __typename?: "Exchange"; id: string };
       } | null;
       buyer: {
         __typename?: "Buyer";
@@ -54683,11 +54490,11 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     collection: {
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -54721,8 +54528,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       fees: Array<{
         __typename?: "DisputeResolverFee";
         id: string;
-        tokenAddress: string;
-        tokenName: string;
         feeAmount: string;
         token: {
           __typename?: "ExchangeToken";
@@ -54737,10 +54542,10 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     disputeResolutionTerms: {
       __typename?: "DisputeResolutionTermsEntity";
       id: string;
-      disputeResolverId: string;
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      disputeResolver: { __typename?: "DisputeResolver"; id: string };
     };
     metadata?:
       | {
@@ -54793,7 +54598,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -54895,8 +54699,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -54905,6 +54707,12 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -55008,7 +54816,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -55362,7 +55169,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -55489,7 +55295,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -55787,7 +55592,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       description?: string | null;
       externalUrl?: string | null;
       tokenId?: string | null;
-      sellerId?: string | null;
       contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
@@ -55914,7 +55718,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     description?: string | null;
     externalUrl?: string | null;
     tokenId?: string | null;
-    sellerId?: string | null;
     contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
@@ -56111,7 +55914,6 @@ export type BaseProductV1ProductFieldsFragment = {
     description?: string | null;
     externalUrl?: string | null;
     tokenId?: string | null;
-    sellerId?: string | null;
     contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
@@ -56286,7 +56088,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       exchanges: Array<{
@@ -56306,7 +56107,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         dispute?: {
           __typename?: "Dispute";
           id: string;
-          exchangeId: string;
           state: DisputeState;
           buyerPercent: string;
           disputedDate: string;
@@ -56317,6 +56117,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           decidedDate?: string | null;
           refusedDate?: string | null;
           timeout: string;
+          exchange: { __typename?: "Exchange"; id: string };
         } | null;
         buyer: {
           __typename?: "Buyer";
@@ -56484,11 +56285,11 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -56522,8 +56323,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -56538,10 +56337,10 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -56594,7 +56393,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -56696,8 +56494,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -56706,6 +56502,12 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -56811,7 +56613,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -57175,7 +56976,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -57302,7 +57102,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -57497,7 +57296,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         voided: boolean;
         voidedAt?: string | null;
         collectionIndex: string;
-        disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
         exchanges: Array<{
@@ -57517,7 +57315,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           dispute?: {
             __typename?: "Dispute";
             id: string;
-            exchangeId: string;
             state: DisputeState;
             buyerPercent: string;
             disputedDate: string;
@@ -57528,6 +57325,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             decidedDate?: string | null;
             refusedDate?: string | null;
             timeout: string;
+            exchange: { __typename?: "Exchange"; id: string };
           } | null;
           buyer: {
             __typename?: "Buyer";
@@ -57695,11 +57493,11 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         collection: {
           __typename?: "OfferCollection";
           id: string;
-          sellerId: string;
           collectionIndex: string;
           collectionAddress: string;
           externalIdHash: string;
           externalId: string;
+          seller: { __typename?: "Seller"; id: string };
           metadata?: {
             __typename?: "NftContractMetadata";
             id: string;
@@ -57733,8 +57531,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           fees: Array<{
             __typename?: "DisputeResolverFee";
             id: string;
-            tokenAddress: string;
-            tokenName: string;
             feeAmount: string;
             token: {
               __typename?: "ExchangeToken";
@@ -57749,10 +57545,10 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         disputeResolutionTerms: {
           __typename?: "DisputeResolutionTermsEntity";
           id: string;
-          disputeResolverId: string;
           escalationResponsePeriod: string;
           feeAmount: string;
           buyerEscalationDeposit: string;
+          disputeResolver: { __typename?: "DisputeResolver"; id: string };
         };
         metadata?:
           | {
@@ -57805,7 +57601,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -57907,8 +57702,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     chainId?: number | null;
                     contract?: string | null;
                     tokenId?: string | null;
-                    transferMethod?: string | null;
-                    transferDelay?: string | null;
                     quantity?: number | null;
                     type: ItemMetadataType;
                     metadataUri: string;
@@ -57917,6 +57710,12 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                       min: string;
                       max: string;
                     } | null;
+                    terms?: Array<{
+                      __typename?: "Term";
+                      key: string;
+                      value: string;
+                      displayKey: string;
+                    }> | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
                       traitType: string;
@@ -58022,7 +57821,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                         description?: string | null;
                         externalUrl?: string | null;
                         tokenId?: string | null;
-                        sellerId?: string | null;
                         contactPreference?: string | null;
                         images?: Array<{
                           __typename?: "ProductV1Media";
@@ -58386,7 +58184,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   description?: string | null;
                   externalUrl?: string | null;
                   tokenId?: string | null;
-                  sellerId?: string | null;
                   contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
@@ -58513,7 +58310,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -58732,7 +58528,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         description?: string | null;
         externalUrl?: string | null;
         tokenId?: string | null;
-        sellerId?: string | null;
         contactPreference?: string | null;
         images?: Array<{
           __typename?: "ProductV1Media";
@@ -58834,8 +58629,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             chainId?: number | null;
             contract?: string | null;
             tokenId?: string | null;
-            transferMethod?: string | null;
-            transferDelay?: string | null;
             quantity?: number | null;
             id: string;
             schemaUrl: string;
@@ -58846,6 +58639,12 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               min: string;
               max: string;
             } | null;
+            terms?: Array<{
+              __typename?: "Term";
+              key: string;
+              value: string;
+              displayKey: string;
+            }> | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -58856,8 +58655,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         | {
             __typename?: "ProductV1ItemMetadataEntity";
             uuid: string;
-            productUuid: string;
-            productVersion: number;
             id: string;
             schemaUrl: string;
             type: ItemMetadataType;
@@ -58953,7 +58750,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -59209,7 +59005,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
     description?: string | null;
     externalUrl?: string | null;
     tokenId?: string | null;
-    sellerId?: string | null;
     contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
@@ -59384,7 +59179,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       voided: boolean;
       voidedAt?: string | null;
       collectionIndex: string;
-      disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
       exchanges: Array<{
@@ -59404,7 +59198,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         dispute?: {
           __typename?: "Dispute";
           id: string;
-          exchangeId: string;
           state: DisputeState;
           buyerPercent: string;
           disputedDate: string;
@@ -59415,6 +59208,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           decidedDate?: string | null;
           refusedDate?: string | null;
           timeout: string;
+          exchange: { __typename?: "Exchange"; id: string };
         } | null;
         buyer: {
           __typename?: "Buyer";
@@ -59582,11 +59376,11 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       collection: {
         __typename?: "OfferCollection";
         id: string;
-        sellerId: string;
         collectionIndex: string;
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        seller: { __typename?: "Seller"; id: string };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -59620,8 +59414,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         fees: Array<{
           __typename?: "DisputeResolverFee";
           id: string;
-          tokenAddress: string;
-          tokenName: string;
           feeAmount: string;
           token: {
             __typename?: "ExchangeToken";
@@ -59636,10 +59428,10 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       disputeResolutionTerms: {
         __typename?: "DisputeResolutionTermsEntity";
         id: string;
-        disputeResolverId: string;
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        disputeResolver: { __typename?: "DisputeResolver"; id: string };
       };
       metadata?:
         | {
@@ -59692,7 +59484,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -59794,8 +59585,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   chainId?: number | null;
                   contract?: string | null;
                   tokenId?: string | null;
-                  transferMethod?: string | null;
-                  transferDelay?: string | null;
                   quantity?: number | null;
                   type: ItemMetadataType;
                   metadataUri: string;
@@ -59804,6 +59593,12 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     min: string;
                     max: string;
                   } | null;
+                  terms?: Array<{
+                    __typename?: "Term";
+                    key: string;
+                    value: string;
+                    displayKey: string;
+                  }> | null;
                   attributes?: Array<{
                     __typename?: "MetadataAttribute";
                     traitType: string;
@@ -59909,7 +59704,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                       description?: string | null;
                       externalUrl?: string | null;
                       tokenId?: string | null;
-                      sellerId?: string | null;
                       contactPreference?: string | null;
                       images?: Array<{
                         __typename?: "ProductV1Media";
@@ -60273,7 +60067,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -60400,7 +60193,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -60595,7 +60387,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         voided: boolean;
         voidedAt?: string | null;
         collectionIndex: string;
-        disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
         exchanges: Array<{
@@ -60615,7 +60406,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           dispute?: {
             __typename?: "Dispute";
             id: string;
-            exchangeId: string;
             state: DisputeState;
             buyerPercent: string;
             disputedDate: string;
@@ -60626,6 +60416,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             decidedDate?: string | null;
             refusedDate?: string | null;
             timeout: string;
+            exchange: { __typename?: "Exchange"; id: string };
           } | null;
           buyer: {
             __typename?: "Buyer";
@@ -60793,11 +60584,11 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         collection: {
           __typename?: "OfferCollection";
           id: string;
-          sellerId: string;
           collectionIndex: string;
           collectionAddress: string;
           externalIdHash: string;
           externalId: string;
+          seller: { __typename?: "Seller"; id: string };
           metadata?: {
             __typename?: "NftContractMetadata";
             id: string;
@@ -60831,8 +60622,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           fees: Array<{
             __typename?: "DisputeResolverFee";
             id: string;
-            tokenAddress: string;
-            tokenName: string;
             feeAmount: string;
             token: {
               __typename?: "ExchangeToken";
@@ -60847,10 +60636,10 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         disputeResolutionTerms: {
           __typename?: "DisputeResolutionTermsEntity";
           id: string;
-          disputeResolverId: string;
           escalationResponsePeriod: string;
           feeAmount: string;
           buyerEscalationDeposit: string;
+          disputeResolver: { __typename?: "DisputeResolver"; id: string };
         };
         metadata?:
           | {
@@ -60903,7 +60692,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -61005,8 +60793,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     chainId?: number | null;
                     contract?: string | null;
                     tokenId?: string | null;
-                    transferMethod?: string | null;
-                    transferDelay?: string | null;
                     quantity?: number | null;
                     type: ItemMetadataType;
                     metadataUri: string;
@@ -61015,6 +60801,12 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                       min: string;
                       max: string;
                     } | null;
+                    terms?: Array<{
+                      __typename?: "Term";
+                      key: string;
+                      value: string;
+                      displayKey: string;
+                    }> | null;
                     attributes?: Array<{
                       __typename?: "MetadataAttribute";
                       traitType: string;
@@ -61120,7 +60912,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                         description?: string | null;
                         externalUrl?: string | null;
                         tokenId?: string | null;
-                        sellerId?: string | null;
                         contactPreference?: string | null;
                         images?: Array<{
                           __typename?: "ProductV1Media";
@@ -61484,7 +61275,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   description?: string | null;
                   externalUrl?: string | null;
                   tokenId?: string | null;
-                  sellerId?: string | null;
                   contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
@@ -61611,7 +61401,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -61830,7 +61619,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         description?: string | null;
         externalUrl?: string | null;
         tokenId?: string | null;
-        sellerId?: string | null;
         contactPreference?: string | null;
         images?: Array<{
           __typename?: "ProductV1Media";
@@ -61932,8 +61720,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             chainId?: number | null;
             contract?: string | null;
             tokenId?: string | null;
-            transferMethod?: string | null;
-            transferDelay?: string | null;
             quantity?: number | null;
             id: string;
             schemaUrl: string;
@@ -61944,6 +61730,12 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               min: string;
               max: string;
             } | null;
+            terms?: Array<{
+              __typename?: "Term";
+              key: string;
+              value: string;
+              displayKey: string;
+            }> | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -61954,8 +61746,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         | {
             __typename?: "ProductV1ItemMetadataEntity";
             uuid: string;
-            productUuid: string;
-            productVersion: number;
             id: string;
             schemaUrl: string;
             type: ItemMetadataType;
@@ -62051,7 +61841,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 description?: string | null;
                 externalUrl?: string | null;
                 tokenId?: string | null;
-                sellerId?: string | null;
                 contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
@@ -62307,7 +62096,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
     description?: string | null;
     externalUrl?: string | null;
     tokenId?: string | null;
-    sellerId?: string | null;
     contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
@@ -62476,7 +62264,6 @@ export type BaseProductV1SellerFieldsFragment = {
   description?: string | null;
   externalUrl?: string | null;
   tokenId?: string | null;
-  sellerId?: string | null;
   contactPreference?: string | null;
   images?: Array<{
     __typename?: "ProductV1Media";
@@ -62685,7 +62472,6 @@ export type GetOfferByIdQueryQuery = {
     voided: boolean;
     voidedAt?: string | null;
     collectionIndex: string;
-    disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
     exchanges?: Array<{
@@ -62705,7 +62491,6 @@ export type GetOfferByIdQueryQuery = {
       dispute?: {
         __typename?: "Dispute";
         id: string;
-        exchangeId: string;
         state: DisputeState;
         buyerPercent: string;
         disputedDate: string;
@@ -62716,6 +62501,7 @@ export type GetOfferByIdQueryQuery = {
         decidedDate?: string | null;
         refusedDate?: string | null;
         timeout: string;
+        exchange: { __typename?: "Exchange"; id: string };
       } | null;
       buyer: {
         __typename?: "Buyer";
@@ -62883,11 +62669,11 @@ export type GetOfferByIdQueryQuery = {
     collection: {
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -62921,8 +62707,6 @@ export type GetOfferByIdQueryQuery = {
       fees: Array<{
         __typename?: "DisputeResolverFee";
         id: string;
-        tokenAddress: string;
-        tokenName: string;
         feeAmount: string;
         token: {
           __typename?: "ExchangeToken";
@@ -62937,10 +62721,10 @@ export type GetOfferByIdQueryQuery = {
     disputeResolutionTerms: {
       __typename?: "DisputeResolutionTermsEntity";
       id: string;
-      disputeResolverId: string;
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      disputeResolver: { __typename?: "DisputeResolver"; id: string };
     };
     metadata?:
       | {
@@ -62993,7 +62777,6 @@ export type GetOfferByIdQueryQuery = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -63095,8 +62878,6 @@ export type GetOfferByIdQueryQuery = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -63105,6 +62886,12 @@ export type GetOfferByIdQueryQuery = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -63208,7 +62995,6 @@ export type GetOfferByIdQueryQuery = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -63562,7 +63348,6 @@ export type GetOfferByIdQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -63689,7 +63474,6 @@ export type GetOfferByIdQueryQuery = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -63862,7 +63646,6 @@ export type GetOffersQueryQuery = {
     voided: boolean;
     voidedAt?: string | null;
     collectionIndex: string;
-    disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
     exchanges?: Array<{
@@ -63882,7 +63665,6 @@ export type GetOffersQueryQuery = {
       dispute?: {
         __typename?: "Dispute";
         id: string;
-        exchangeId: string;
         state: DisputeState;
         buyerPercent: string;
         disputedDate: string;
@@ -63893,6 +63675,7 @@ export type GetOffersQueryQuery = {
         decidedDate?: string | null;
         refusedDate?: string | null;
         timeout: string;
+        exchange: { __typename?: "Exchange"; id: string };
       } | null;
       buyer: {
         __typename?: "Buyer";
@@ -64060,11 +63843,11 @@ export type GetOffersQueryQuery = {
     collection: {
       __typename?: "OfferCollection";
       id: string;
-      sellerId: string;
       collectionIndex: string;
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      seller: { __typename?: "Seller"; id: string };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -64098,8 +63881,6 @@ export type GetOffersQueryQuery = {
       fees: Array<{
         __typename?: "DisputeResolverFee";
         id: string;
-        tokenAddress: string;
-        tokenName: string;
         feeAmount: string;
         token: {
           __typename?: "ExchangeToken";
@@ -64114,10 +63895,10 @@ export type GetOffersQueryQuery = {
     disputeResolutionTerms: {
       __typename?: "DisputeResolutionTermsEntity";
       id: string;
-      disputeResolverId: string;
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      disputeResolver: { __typename?: "DisputeResolver"; id: string };
     };
     metadata?:
       | {
@@ -64170,7 +63951,6 @@ export type GetOffersQueryQuery = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -64272,8 +64052,6 @@ export type GetOffersQueryQuery = {
                 chainId?: number | null;
                 contract?: string | null;
                 tokenId?: string | null;
-                transferMethod?: string | null;
-                transferDelay?: string | null;
                 quantity?: number | null;
                 type: ItemMetadataType;
                 metadataUri: string;
@@ -64282,6 +64060,12 @@ export type GetOffersQueryQuery = {
                   min: string;
                   max: string;
                 } | null;
+                terms?: Array<{
+                  __typename?: "Term";
+                  key: string;
+                  value: string;
+                  displayKey: string;
+                }> | null;
                 attributes?: Array<{
                   __typename?: "MetadataAttribute";
                   traitType: string;
@@ -64385,7 +64169,6 @@ export type GetOffersQueryQuery = {
                     description?: string | null;
                     externalUrl?: string | null;
                     tokenId?: string | null;
-                    sellerId?: string | null;
                     contactPreference?: string | null;
                     images?: Array<{
                       __typename?: "ProductV1Media";
@@ -64739,7 +64522,6 @@ export type GetOffersQueryQuery = {
               description?: string | null;
               externalUrl?: string | null;
               tokenId?: string | null;
-              sellerId?: string | null;
               contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
@@ -64866,7 +64648,6 @@ export type GetOffersQueryQuery = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -65131,7 +64912,6 @@ export type OfferFieldsFragment = {
   voided: boolean;
   voidedAt?: string | null;
   collectionIndex: string;
-  disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
   exchanges?: Array<{
@@ -65151,7 +64931,6 @@ export type OfferFieldsFragment = {
     dispute?: {
       __typename?: "Dispute";
       id: string;
-      exchangeId: string;
       state: DisputeState;
       buyerPercent: string;
       disputedDate: string;
@@ -65162,6 +64941,7 @@ export type OfferFieldsFragment = {
       decidedDate?: string | null;
       refusedDate?: string | null;
       timeout: string;
+      exchange: { __typename?: "Exchange"; id: string };
     } | null;
     buyer: {
       __typename?: "Buyer";
@@ -65329,11 +65109,11 @@ export type OfferFieldsFragment = {
   collection: {
     __typename?: "OfferCollection";
     id: string;
-    sellerId: string;
     collectionIndex: string;
     collectionAddress: string;
     externalIdHash: string;
     externalId: string;
+    seller: { __typename?: "Seller"; id: string };
     metadata?: {
       __typename?: "NftContractMetadata";
       id: string;
@@ -65367,8 +65147,6 @@ export type OfferFieldsFragment = {
     fees: Array<{
       __typename?: "DisputeResolverFee";
       id: string;
-      tokenAddress: string;
-      tokenName: string;
       feeAmount: string;
       token: {
         __typename?: "ExchangeToken";
@@ -65383,10 +65161,10 @@ export type OfferFieldsFragment = {
   disputeResolutionTerms: {
     __typename?: "DisputeResolutionTermsEntity";
     id: string;
-    disputeResolverId: string;
     escalationResponsePeriod: string;
     feeAmount: string;
     buyerEscalationDeposit: string;
+    disputeResolver: { __typename?: "DisputeResolver"; id: string };
   };
   metadata?:
     | {
@@ -65439,7 +65217,6 @@ export type OfferFieldsFragment = {
           description?: string | null;
           externalUrl?: string | null;
           tokenId?: string | null;
-          sellerId?: string | null;
           contactPreference?: string | null;
           images?: Array<{
             __typename?: "ProductV1Media";
@@ -65541,8 +65318,6 @@ export type OfferFieldsFragment = {
               chainId?: number | null;
               contract?: string | null;
               tokenId?: string | null;
-              transferMethod?: string | null;
-              transferDelay?: string | null;
               quantity?: number | null;
               type: ItemMetadataType;
               metadataUri: string;
@@ -65551,6 +65326,12 @@ export type OfferFieldsFragment = {
                 min: string;
                 max: string;
               } | null;
+              terms?: Array<{
+                __typename?: "Term";
+                key: string;
+                value: string;
+                displayKey: string;
+              }> | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -65654,7 +65435,6 @@ export type OfferFieldsFragment = {
                   description?: string | null;
                   externalUrl?: string | null;
                   tokenId?: string | null;
-                  sellerId?: string | null;
                   contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
@@ -66008,7 +65788,6 @@ export type OfferFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -66135,7 +65914,6 @@ export type OfferFieldsFragment = {
           description?: string | null;
           externalUrl?: string | null;
           tokenId?: string | null;
-          sellerId?: string | null;
           contactPreference?: string | null;
           images?: Array<{
             __typename?: "ProductV1Media";
@@ -66291,7 +66069,6 @@ export type BaseOfferFieldsFragment = {
   voided: boolean;
   voidedAt?: string | null;
   collectionIndex: string;
-  disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
   condition?: {
@@ -66381,11 +66158,11 @@ export type BaseOfferFieldsFragment = {
   collection: {
     __typename?: "OfferCollection";
     id: string;
-    sellerId: string;
     collectionIndex: string;
     collectionAddress: string;
     externalIdHash: string;
     externalId: string;
+    seller: { __typename?: "Seller"; id: string };
     metadata?: {
       __typename?: "NftContractMetadata";
       id: string;
@@ -66419,8 +66196,6 @@ export type BaseOfferFieldsFragment = {
     fees: Array<{
       __typename?: "DisputeResolverFee";
       id: string;
-      tokenAddress: string;
-      tokenName: string;
       feeAmount: string;
       token: {
         __typename?: "ExchangeToken";
@@ -66435,10 +66210,10 @@ export type BaseOfferFieldsFragment = {
   disputeResolutionTerms: {
     __typename?: "DisputeResolutionTermsEntity";
     id: string;
-    disputeResolverId: string;
     escalationResponsePeriod: string;
     feeAmount: string;
     buyerEscalationDeposit: string;
+    disputeResolver: { __typename?: "DisputeResolver"; id: string };
   };
   metadata?:
     | {
@@ -66491,7 +66266,6 @@ export type BaseOfferFieldsFragment = {
           description?: string | null;
           externalUrl?: string | null;
           tokenId?: string | null;
-          sellerId?: string | null;
           contactPreference?: string | null;
           images?: Array<{
             __typename?: "ProductV1Media";
@@ -66593,8 +66367,6 @@ export type BaseOfferFieldsFragment = {
               chainId?: number | null;
               contract?: string | null;
               tokenId?: string | null;
-              transferMethod?: string | null;
-              transferDelay?: string | null;
               quantity?: number | null;
               type: ItemMetadataType;
               metadataUri: string;
@@ -66603,6 +66375,12 @@ export type BaseOfferFieldsFragment = {
                 min: string;
                 max: string;
               } | null;
+              terms?: Array<{
+                __typename?: "Term";
+                key: string;
+                value: string;
+                displayKey: string;
+              }> | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -66706,7 +66484,6 @@ export type BaseOfferFieldsFragment = {
                   description?: string | null;
                   externalUrl?: string | null;
                   tokenId?: string | null;
-                  sellerId?: string | null;
                   contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
@@ -67060,7 +66837,6 @@ export type BaseOfferFieldsFragment = {
             description?: string | null;
             externalUrl?: string | null;
             tokenId?: string | null;
-            sellerId?: string | null;
             contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
@@ -67187,7 +66963,6 @@ export type BaseOfferFieldsFragment = {
           description?: string | null;
           externalUrl?: string | null;
           tokenId?: string | null;
-          sellerId?: string | null;
           contactPreference?: string | null;
           images?: Array<{
             __typename?: "ProductV1Media";
@@ -67330,7 +67105,9 @@ export type BaseRangeFieldsFragment = {
 export const BaseOfferCollectionFieldsFragmentDoc = gql`
   fragment BaseOfferCollectionFields on OfferCollection {
     id
-    sellerId
+    seller {
+      id
+    }
     collectionIndex
     collectionAddress
     externalIdHash
@@ -67461,8 +67238,6 @@ export const BaseExchangeTokenFieldsFragmentDoc = gql`
 export const BaseDisputeResolverFeeFieldsFragmentDoc = gql`
   fragment BaseDisputeResolverFeeFields on DisputeResolverFee {
     id
-    tokenAddress
-    tokenName
     token {
       ...BaseExchangeTokenFields
     }
@@ -67490,7 +67265,9 @@ export const BaseDisputeResolverFieldsFragmentDoc = gql`
 export const BaseDisputeResolutionTermsEntityFieldsFragmentDoc = gql`
   fragment BaseDisputeResolutionTermsEntityFields on DisputeResolutionTermsEntity {
     id
-    disputeResolverId
+    disputeResolver {
+      id
+    }
     escalationResponsePeriod
     feeAmount
     buyerEscalationDeposit
@@ -67593,7 +67370,6 @@ export const BaseProductV1SellerFieldsFragmentDoc = gql`
     description
     externalUrl
     tokenId
-    sellerId
     images {
       ...BaseProductV1MediaFields
     }
@@ -67752,7 +67528,6 @@ export const BaseOfferFieldsFragmentDoc = gql`
     voided
     voidedAt
     collectionIndex
-    disputeResolverId
     numberOfCommits
     numberOfRedemptions
     condition {
@@ -67868,8 +67643,11 @@ export const BaseOfferFieldsFragmentDoc = gql`
               min
               max
             }
-            transferMethod
-            transferDelay
+            terms {
+              key
+              value
+              displayKey
+            }
             quantity
             attributes {
               traitType
@@ -67932,7 +67710,9 @@ export const BaseFundsEntityFieldsFragmentDoc = gql`
   fragment BaseFundsEntityFields on FundsEntity {
     id
     availableAmount
-    accountId
+    account {
+      id
+    }
   }
 `;
 export const FundsEntityFieldsFragmentDoc = gql`
@@ -67948,7 +67728,9 @@ export const FundsEntityFieldsFragmentDoc = gql`
 export const BaseDisputeFieldsFragmentDoc = gql`
   fragment BaseDisputeFields on Dispute {
     id
-    exchangeId
+    exchange {
+      id
+    }
     state
     buyerPercent
     disputedDate
@@ -68333,8 +68115,6 @@ export const BaseBundleMetadataEntityFieldsFragmentDoc = gql`
       metadataUri
       ... on ProductV1ItemMetadataEntity {
         uuid
-        productUuid
-        productVersion
         product {
           ...BaseProductV1ProductFields
         }
@@ -68365,8 +68145,11 @@ export const BaseBundleMetadataEntityFieldsFragmentDoc = gql`
           min
           max
         }
-        transferMethod
-        transferDelay
+        terms {
+          key
+          value
+          displayKey
+        }
         quantity
         attributes {
           traitType

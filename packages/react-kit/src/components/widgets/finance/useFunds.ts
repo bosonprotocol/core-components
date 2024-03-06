@@ -78,7 +78,7 @@ export default function useFunds(
       setFundStatus(ProgressStatus.LOADING);
       coreSdk
         .getFunds({
-          fundsFilter: { accountId }
+          fundsFilter: { account_: { id: accountId } }
         })
         .then((funds) => handleFunds(funds))
         .catch(() => {

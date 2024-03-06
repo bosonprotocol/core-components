@@ -264,7 +264,9 @@ fragment OfferCollectionFields on OfferCollection {
 
 fragment BaseOfferCollectionFields on OfferCollection {
   id
-  sellerId
+  seller {
+    id
+  }
   collectionIndex
   collectionAddress
   externalIdHash
@@ -506,8 +508,6 @@ fragment PendingDisputeResolverFields on PendingDisputeResolver {
 
 fragment BaseDisputeResolverFeeFields on DisputeResolverFee {
   id
-  tokenAddress
-  tokenName
   token {
     ...BaseExchangeTokenFields
   }
@@ -516,7 +516,9 @@ fragment BaseDisputeResolverFeeFields on DisputeResolverFee {
 
 fragment BaseDisputeResolutionTermsEntityFields on DisputeResolutionTermsEntity {
   id
-  disputeResolverId
+  disputeResolver {
+    id
+  }
   escalationResponsePeriod
   feeAmount
   buyerEscalationDeposit

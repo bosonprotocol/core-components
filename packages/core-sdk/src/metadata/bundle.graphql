@@ -83,8 +83,6 @@ fragment BaseBundleMetadataEntityFields on BundleMetadataEntity {
     metadataUri
     ... on ProductV1ItemMetadataEntity {
       uuid
-      productUuid
-      productVersion
       product {
         ...BaseProductV1ProductFields
       }
@@ -115,8 +113,11 @@ fragment BaseBundleMetadataEntityFields on BundleMetadataEntity {
         min
         max
       }
-      transferMethod
-      transferDelay
+      terms {
+        key
+        value
+        displayKey
+      }
       quantity
       attributes {
         traitType

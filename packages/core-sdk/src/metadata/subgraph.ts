@@ -212,9 +212,9 @@ export async function getProductWithVariants(
     subgraphUrl,
     {
       metadataFilter: {
-        productUuid,
+        product_: { uuid: productUuid },
         offer_: {
-          sellerId
+          seller_: { id: sellerId }
         }
       }
     }
@@ -224,7 +224,7 @@ export async function getProductWithVariants(
     metadataFilter: {
       productUuids_contains: [productUuid],
       offer_: {
-        sellerId
+        seller_: { id: sellerId }
       }
     }
   });
@@ -292,7 +292,7 @@ function getProductV1ItemFromBundle(
       (item): item is ProductV1ItemMetadataEntity =>
         item.type === ItemMetadataType.ItemProductV1
     )
-    .filter((item) => item.productUuid === productUuid)
+    .filter((item) => item.product.uuid === productUuid)
     .map((item) => {
       return {
         productV1Item: item,
