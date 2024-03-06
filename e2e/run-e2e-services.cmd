@@ -27,7 +27,7 @@ if %ERRORLEVEL% NEQ 0 (
   echo Please try this command from Linux using WSL
   echo "> wsl"
   echo "> cd packages/subgraph"
-  echo "> ./node_modules/.bin/graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 boson/corecomponents -l 0.0.1"
+  echo "> ../../node_modules/.bin/graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 boson/corecomponents -l 0.0.1"
   exit /B 1
 )
 echo [92m*** Successfully deployed subgraph ***[0m

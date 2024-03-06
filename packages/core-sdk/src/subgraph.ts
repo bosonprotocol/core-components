@@ -22,6 +22,7 @@ export type Scalars = {
   BigDecimal: any;
   BigInt: string;
   Bytes: string;
+  Int8: any;
 };
 
 /**
@@ -72,6 +73,7 @@ export type AccountEventLog_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   account?: InputMaybe<Scalars["String"]>;
+  account_?: InputMaybe<Account_Filter>;
   account_contains?: InputMaybe<Scalars["String"]>;
   account_contains_nocase?: InputMaybe<Scalars["String"]>;
   account_ends_with?: InputMaybe<Scalars["String"]>;
@@ -91,9 +93,14 @@ export type AccountEventLog_Filter = {
   account_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   account_starts_with?: InputMaybe<Scalars["String"]>;
   account_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  and?: InputMaybe<Array<InputMaybe<AccountEventLog_Filter>>>;
   executedBy?: InputMaybe<Scalars["Bytes"]>;
   executedBy_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_gt?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_gte?: InputMaybe<Scalars["Bytes"]>;
   executedBy_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  executedBy_lt?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_lte?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not_contains?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -125,6 +132,7 @@ export type AccountEventLog_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<AccountEventLog_Filter>>>;
   timestamp?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -141,6 +149,7 @@ export type AccountEventLog_Filter = {
 
 export enum AccountEventLog_OrderBy {
   Account = "account",
+  AccountId = "account__id",
   ExecutedBy = "executedBy",
   Hash = "hash",
   Id = "id",
@@ -151,6 +160,7 @@ export enum AccountEventLog_OrderBy {
 export type Account_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Account_Filter>>>;
   funds_?: InputMaybe<FundsEntity_Filter>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
@@ -160,6 +170,8 @@ export type Account_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  logs_?: InputMaybe<EventLog_Filter>;
+  or?: InputMaybe<Array<InputMaybe<Account_Filter>>>;
 };
 
 export enum Account_OrderBy {
@@ -179,6 +191,7 @@ export type AnimationMetadata = {
 export type AnimationMetadata_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<AnimationMetadata_Filter>>>;
   height?: InputMaybe<Scalars["Int"]>;
   height_gt?: InputMaybe<Scalars["Int"]>;
   height_gte?: InputMaybe<Scalars["Int"]>;
@@ -195,6 +208,7 @@ export type AnimationMetadata_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<AnimationMetadata_Filter>>>;
   type?: InputMaybe<Scalars["String"]>;
   type_contains?: InputMaybe<Scalars["String"]>;
   type_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -282,6 +296,7 @@ export type BaseMetadataEntityAttributesArgs = {
 export type BaseMetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<BaseMetadataEntity_Filter>>>;
   animationMetadata?: InputMaybe<Scalars["String"]>;
   animationMetadata_?: InputMaybe<AnimationMetadata_Filter>;
   animationMetadata_contains?: InputMaybe<Scalars["String"]>;
@@ -524,6 +539,7 @@ export type BaseMetadataEntity_Filter = {
   offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offer_starts_with?: InputMaybe<Scalars["String"]>;
   offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<BaseMetadataEntity_Filter>>>;
   quantityAvailable?: InputMaybe<Scalars["BigInt"]>;
   quantityAvailable_gt?: InputMaybe<Scalars["BigInt"]>;
   quantityAvailable_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -601,12 +617,21 @@ export type BaseMetadataEntity_Filter = {
 
 export enum BaseMetadataEntity_OrderBy {
   AnimationMetadata = "animationMetadata",
+  AnimationMetadataHeight = "animationMetadata__height",
+  AnimationMetadataId = "animationMetadata__id",
+  AnimationMetadataType = "animationMetadata__type",
+  AnimationMetadataWidth = "animationMetadata__width",
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
   Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangeToken = "exchangeToken",
+  ExchangeTokenAddress = "exchangeToken__address",
+  ExchangeTokenDecimals = "exchangeToken__decimals",
+  ExchangeTokenId = "exchangeToken__id",
+  ExchangeTokenName = "exchangeToken__name",
+  ExchangeTokenSymbol = "exchangeToken__symbol",
   ExternalUrl = "externalUrl",
   Id = "id",
   Image = "image",
@@ -615,9 +640,48 @@ export enum BaseMetadataEntity_OrderBy {
   NumberOfCommits = "numberOfCommits",
   NumberOfRedemptions = "numberOfRedemptions",
   Offer = "offer",
+  OfferAgentFee = "offer__agentFee",
+  OfferAgentId = "offer__agentId",
+  OfferBuyerCancelPenalty = "offer__buyerCancelPenalty",
+  OfferCollectionIndex = "offer__collectionIndex",
+  OfferCreatedAt = "offer__createdAt",
+  OfferDisputePeriodDuration = "offer__disputePeriodDuration",
+  OfferDisputeResolverId = "offer__disputeResolverId",
+  OfferId = "offer__id",
+  OfferMetadataHash = "offer__metadataHash",
+  OfferMetadataUri = "offer__metadataUri",
+  OfferNumberOfCommits = "offer__numberOfCommits",
+  OfferNumberOfRedemptions = "offer__numberOfRedemptions",
+  OfferPrice = "offer__price",
+  OfferProtocolFee = "offer__protocolFee",
+  OfferQuantityAvailable = "offer__quantityAvailable",
+  OfferQuantityInitial = "offer__quantityInitial",
+  OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
+  OfferSellerDeposit = "offer__sellerDeposit",
+  OfferSellerId = "offer__sellerId",
+  OfferValidFromDate = "offer__validFromDate",
+  OfferValidUntilDate = "offer__validUntilDate",
+  OfferVoided = "offer__voided",
+  OfferVoidedAt = "offer__voidedAt",
+  OfferVoucherRedeemableFromDate = "offer__voucherRedeemableFromDate",
+  OfferVoucherRedeemableUntilDate = "offer__voucherRedeemableUntilDate",
+  OfferVoucherValidDuration = "offer__voucherValidDuration",
   QuantityAvailable = "quantityAvailable",
   SchemaUrl = "schemaUrl",
   Seller = "seller",
+  SellerActive = "seller__active",
+  SellerAdmin = "seller__admin",
+  SellerAssistant = "seller__assistant",
+  SellerAuthTokenId = "seller__authTokenId",
+  SellerAuthTokenType = "seller__authTokenType",
+  SellerClerk = "seller__clerk",
+  SellerContractUri = "seller__contractURI",
+  SellerId = "seller__id",
+  SellerMetadataUri = "seller__metadataUri",
+  SellerRoyaltyPercentage = "seller__royaltyPercentage",
+  SellerSellerId = "seller__sellerId",
+  SellerTreasury = "seller__treasury",
+  SellerVoucherCloneAddress = "seller__voucherCloneAddress",
   Type = "type",
   ValidFromDate = "validFromDate",
   ValidUntilDate = "validUntilDate",
@@ -704,6 +768,7 @@ export type BundleMetadataEntityItemsArgs = {
 export type BundleMetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<BundleMetadataEntity_Filter>>>;
   animationMetadata?: InputMaybe<Scalars["String"]>;
   animationMetadata_?: InputMaybe<AnimationMetadata_Filter>;
   animationMetadata_contains?: InputMaybe<Scalars["String"]>;
@@ -889,6 +954,7 @@ export type BundleMetadataEntity_Filter = {
   image_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   image_starts_with?: InputMaybe<Scalars["String"]>;
   image_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  items_?: InputMaybe<ItemMetadataInterface_Filter>;
   licenseUrl?: InputMaybe<Scalars["String"]>;
   licenseUrl_contains?: InputMaybe<Scalars["String"]>;
   licenseUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -966,6 +1032,7 @@ export type BundleMetadataEntity_Filter = {
   offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offer_starts_with?: InputMaybe<Scalars["String"]>;
   offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<BundleMetadataEntity_Filter>>>;
   productUuids?: InputMaybe<Array<Scalars["String"]>>;
   productUuids_contains?: InputMaybe<Array<Scalars["String"]>>;
   productUuids_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
@@ -1070,6 +1137,10 @@ export type BundleMetadataEntity_Filter = {
 
 export enum BundleMetadataEntity_OrderBy {
   AnimationMetadata = "animationMetadata",
+  AnimationMetadataHeight = "animationMetadata__height",
+  AnimationMetadataId = "animationMetadata__id",
+  AnimationMetadataType = "animationMetadata__type",
+  AnimationMetadataWidth = "animationMetadata__width",
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
   BundleUuid = "bundleUuid",
@@ -1077,6 +1148,11 @@ export enum BundleMetadataEntity_OrderBy {
   CreatedAt = "createdAt",
   Description = "description",
   ExchangeToken = "exchangeToken",
+  ExchangeTokenAddress = "exchangeToken__address",
+  ExchangeTokenDecimals = "exchangeToken__decimals",
+  ExchangeTokenId = "exchangeToken__id",
+  ExchangeTokenName = "exchangeToken__name",
+  ExchangeTokenSymbol = "exchangeToken__symbol",
   ExternalUrl = "externalUrl",
   Id = "id",
   Image = "image",
@@ -1086,11 +1162,58 @@ export enum BundleMetadataEntity_OrderBy {
   NumberOfCommits = "numberOfCommits",
   NumberOfRedemptions = "numberOfRedemptions",
   Offer = "offer",
+  OfferAgentFee = "offer__agentFee",
+  OfferAgentId = "offer__agentId",
+  OfferBuyerCancelPenalty = "offer__buyerCancelPenalty",
+  OfferCollectionIndex = "offer__collectionIndex",
+  OfferCreatedAt = "offer__createdAt",
+  OfferDisputePeriodDuration = "offer__disputePeriodDuration",
+  OfferDisputeResolverId = "offer__disputeResolverId",
+  OfferId = "offer__id",
+  OfferMetadataHash = "offer__metadataHash",
+  OfferMetadataUri = "offer__metadataUri",
+  OfferNumberOfCommits = "offer__numberOfCommits",
+  OfferNumberOfRedemptions = "offer__numberOfRedemptions",
+  OfferPrice = "offer__price",
+  OfferProtocolFee = "offer__protocolFee",
+  OfferQuantityAvailable = "offer__quantityAvailable",
+  OfferQuantityInitial = "offer__quantityInitial",
+  OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
+  OfferSellerDeposit = "offer__sellerDeposit",
+  OfferSellerId = "offer__sellerId",
+  OfferValidFromDate = "offer__validFromDate",
+  OfferValidUntilDate = "offer__validUntilDate",
+  OfferVoided = "offer__voided",
+  OfferVoidedAt = "offer__voidedAt",
+  OfferVoucherRedeemableFromDate = "offer__voucherRedeemableFromDate",
+  OfferVoucherRedeemableUntilDate = "offer__voucherRedeemableUntilDate",
+  OfferVoucherValidDuration = "offer__voucherValidDuration",
   ProductUuids = "productUuids",
   ProductV1Seller = "productV1Seller",
+  ProductV1SellerContactPreference = "productV1Seller__contactPreference",
+  ProductV1SellerDefaultVersion = "productV1Seller__defaultVersion",
+  ProductV1SellerDescription = "productV1Seller__description",
+  ProductV1SellerExternalUrl = "productV1Seller__externalUrl",
+  ProductV1SellerId = "productV1Seller__id",
+  ProductV1SellerName = "productV1Seller__name",
+  ProductV1SellerSellerId = "productV1Seller__sellerId",
+  ProductV1SellerTokenId = "productV1Seller__tokenId",
   QuantityAvailable = "quantityAvailable",
   SchemaUrl = "schemaUrl",
   Seller = "seller",
+  SellerActive = "seller__active",
+  SellerAdmin = "seller__admin",
+  SellerAssistant = "seller__assistant",
+  SellerAuthTokenId = "seller__authTokenId",
+  SellerAuthTokenType = "seller__authTokenType",
+  SellerClerk = "seller__clerk",
+  SellerContractUri = "seller__contractURI",
+  SellerId = "seller__id",
+  SellerMetadataUri = "seller__metadataUri",
+  SellerRoyaltyPercentage = "seller__royaltyPercentage",
+  SellerSellerId = "seller__sellerId",
+  SellerTreasury = "seller__treasury",
+  SellerVoucherCloneAddress = "seller__voucherCloneAddress",
   Type = "type",
   ValidFromDate = "validFromDate",
   ValidUntilDate = "validUntilDate",
@@ -1138,6 +1261,7 @@ export type Buyer_Filter = {
   active_in?: InputMaybe<Array<Scalars["Boolean"]>>;
   active_not?: InputMaybe<Scalars["Boolean"]>;
   active_not_in?: InputMaybe<Array<Scalars["Boolean"]>>;
+  and?: InputMaybe<Array<InputMaybe<Buyer_Filter>>>;
   exchanges_?: InputMaybe<Exchange_Filter>;
   funds_?: InputMaybe<FundsEntity_Filter>;
   id?: InputMaybe<Scalars["ID"]>;
@@ -1148,9 +1272,15 @@ export type Buyer_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  logs_?: InputMaybe<EventLog_Filter>;
+  or?: InputMaybe<Array<InputMaybe<Buyer_Filter>>>;
   wallet?: InputMaybe<Scalars["Bytes"]>;
   wallet_contains?: InputMaybe<Scalars["Bytes"]>;
+  wallet_gt?: InputMaybe<Scalars["Bytes"]>;
+  wallet_gte?: InputMaybe<Scalars["Bytes"]>;
   wallet_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  wallet_lt?: InputMaybe<Scalars["Bytes"]>;
+  wallet_lte?: InputMaybe<Scalars["Bytes"]>;
   wallet_not?: InputMaybe<Scalars["Bytes"]>;
   wallet_not_contains?: InputMaybe<Scalars["Bytes"]>;
   wallet_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -1185,6 +1315,7 @@ export type ConditionEntity = {
 export type ConditionEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ConditionEntity_Filter>>>;
   gatingType?: InputMaybe<Scalars["Int"]>;
   gatingType_gt?: InputMaybe<Scalars["Int"]>;
   gatingType_gte?: InputMaybe<Scalars["Int"]>;
@@ -1233,6 +1364,7 @@ export type ConditionEntity_Filter = {
   minTokenId_lte?: InputMaybe<Scalars["BigInt"]>;
   minTokenId_not?: InputMaybe<Scalars["BigInt"]>;
   minTokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  or?: InputMaybe<Array<InputMaybe<ConditionEntity_Filter>>>;
   threshold?: InputMaybe<Scalars["BigInt"]>;
   threshold_gt?: InputMaybe<Scalars["BigInt"]>;
   threshold_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -1243,7 +1375,11 @@ export type ConditionEntity_Filter = {
   threshold_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   tokenAddress?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_contains?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_gt?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_gte?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  tokenAddress_lt?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_lte?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_not?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -1287,9 +1423,16 @@ export type ConditionalCommitAuthorizedEventLog = {
 export type ConditionalCommitAuthorizedEventLog_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<
+    Array<InputMaybe<ConditionalCommitAuthorizedEventLog_Filter>>
+  >;
   buyerAddress?: InputMaybe<Scalars["Bytes"]>;
   buyerAddress_contains?: InputMaybe<Scalars["Bytes"]>;
+  buyerAddress_gt?: InputMaybe<Scalars["Bytes"]>;
+  buyerAddress_gte?: InputMaybe<Scalars["Bytes"]>;
   buyerAddress_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  buyerAddress_lt?: InputMaybe<Scalars["Bytes"]>;
+  buyerAddress_lte?: InputMaybe<Scalars["Bytes"]>;
   buyerAddress_not?: InputMaybe<Scalars["Bytes"]>;
   buyerAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
   buyerAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -1385,6 +1528,9 @@ export type ConditionalCommitAuthorizedEventLog_Filter = {
   offerId_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offerId_starts_with?: InputMaybe<Scalars["String"]>;
   offerId_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<
+    Array<InputMaybe<ConditionalCommitAuthorizedEventLog_Filter>>
+  >;
   timestamp?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -1456,6 +1602,7 @@ export type DisputeEventLog_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   account?: InputMaybe<Scalars["String"]>;
+  account_?: InputMaybe<Account_Filter>;
   account_contains?: InputMaybe<Scalars["String"]>;
   account_contains_nocase?: InputMaybe<Scalars["String"]>;
   account_ends_with?: InputMaybe<Scalars["String"]>;
@@ -1475,6 +1622,7 @@ export type DisputeEventLog_Filter = {
   account_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   account_starts_with?: InputMaybe<Scalars["String"]>;
   account_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  and?: InputMaybe<Array<InputMaybe<DisputeEventLog_Filter>>>;
   dispute?: InputMaybe<Scalars["String"]>;
   dispute_?: InputMaybe<Dispute_Filter>;
   dispute_contains?: InputMaybe<Scalars["String"]>;
@@ -1498,7 +1646,11 @@ export type DisputeEventLog_Filter = {
   dispute_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   executedBy?: InputMaybe<Scalars["Bytes"]>;
   executedBy_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_gt?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_gte?: InputMaybe<Scalars["Bytes"]>;
   executedBy_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  executedBy_lt?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_lte?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not_contains?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -1530,6 +1682,7 @@ export type DisputeEventLog_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<DisputeEventLog_Filter>>>;
   timestamp?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -1546,7 +1699,20 @@ export type DisputeEventLog_Filter = {
 
 export enum DisputeEventLog_OrderBy {
   Account = "account",
+  AccountId = "account__id",
   Dispute = "dispute",
+  DisputeBuyerPercent = "dispute__buyerPercent",
+  DisputeDecidedDate = "dispute__decidedDate",
+  DisputeDisputedDate = "dispute__disputedDate",
+  DisputeEscalatedDate = "dispute__escalatedDate",
+  DisputeExchangeId = "dispute__exchangeId",
+  DisputeFinalizedDate = "dispute__finalizedDate",
+  DisputeId = "dispute__id",
+  DisputeRefusedDate = "dispute__refusedDate",
+  DisputeResolvedDate = "dispute__resolvedDate",
+  DisputeRetractedDate = "dispute__retractedDate",
+  DisputeState = "dispute__state",
+  DisputeTimeout = "dispute__timeout",
   ExecutedBy = "executedBy",
   Hash = "hash",
   Id = "id",
@@ -1569,6 +1735,7 @@ export type DisputeResolutionTermsEntity = {
 export type DisputeResolutionTermsEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<DisputeResolutionTermsEntity_Filter>>>;
   buyerEscalationDeposit?: InputMaybe<Scalars["BigInt"]>;
   buyerEscalationDeposit_gt?: InputMaybe<Scalars["BigInt"]>;
   buyerEscalationDeposit_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -1651,16 +1818,51 @@ export type DisputeResolutionTermsEntity_Filter = {
   offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offer_starts_with?: InputMaybe<Scalars["String"]>;
   offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<DisputeResolutionTermsEntity_Filter>>>;
 };
 
 export enum DisputeResolutionTermsEntity_OrderBy {
   BuyerEscalationDeposit = "buyerEscalationDeposit",
   DisputeResolver = "disputeResolver",
   DisputeResolverId = "disputeResolverId",
+  DisputeResolverActive = "disputeResolver__active",
+  DisputeResolverAdmin = "disputeResolver__admin",
+  DisputeResolverAssistant = "disputeResolver__assistant",
+  DisputeResolverClerk = "disputeResolver__clerk",
+  DisputeResolverEscalationResponsePeriod = "disputeResolver__escalationResponsePeriod",
+  DisputeResolverId = "disputeResolver__id",
+  DisputeResolverMetadataUri = "disputeResolver__metadataUri",
+  DisputeResolverTreasury = "disputeResolver__treasury",
   EscalationResponsePeriod = "escalationResponsePeriod",
   FeeAmount = "feeAmount",
   Id = "id",
-  Offer = "offer"
+  Offer = "offer",
+  OfferAgentFee = "offer__agentFee",
+  OfferAgentId = "offer__agentId",
+  OfferBuyerCancelPenalty = "offer__buyerCancelPenalty",
+  OfferCollectionIndex = "offer__collectionIndex",
+  OfferCreatedAt = "offer__createdAt",
+  OfferDisputePeriodDuration = "offer__disputePeriodDuration",
+  OfferDisputeResolverId = "offer__disputeResolverId",
+  OfferId = "offer__id",
+  OfferMetadataHash = "offer__metadataHash",
+  OfferMetadataUri = "offer__metadataUri",
+  OfferNumberOfCommits = "offer__numberOfCommits",
+  OfferNumberOfRedemptions = "offer__numberOfRedemptions",
+  OfferPrice = "offer__price",
+  OfferProtocolFee = "offer__protocolFee",
+  OfferQuantityAvailable = "offer__quantityAvailable",
+  OfferQuantityInitial = "offer__quantityInitial",
+  OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
+  OfferSellerDeposit = "offer__sellerDeposit",
+  OfferSellerId = "offer__sellerId",
+  OfferValidFromDate = "offer__validFromDate",
+  OfferValidUntilDate = "offer__validUntilDate",
+  OfferVoided = "offer__voided",
+  OfferVoidedAt = "offer__voidedAt",
+  OfferVoucherRedeemableFromDate = "offer__voucherRedeemableFromDate",
+  OfferVoucherRedeemableUntilDate = "offer__voucherRedeemableUntilDate",
+  OfferVoucherValidDuration = "offer__voucherValidDuration"
 }
 
 export type DisputeResolver = Account & {
@@ -1726,6 +1928,7 @@ export type DisputeResolverFee = {
 export type DisputeResolverFee_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<DisputeResolverFee_Filter>>>;
   feeAmount?: InputMaybe<Scalars["BigInt"]>;
   feeAmount_gt?: InputMaybe<Scalars["BigInt"]>;
   feeAmount_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -1742,10 +1945,15 @@ export type DisputeResolverFee_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<DisputeResolverFee_Filter>>>;
   token?: InputMaybe<Scalars["String"]>;
   tokenAddress?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_contains?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_gt?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_gte?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  tokenAddress_lt?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_lte?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_not?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -1796,7 +2004,12 @@ export enum DisputeResolverFee_OrderBy {
   Id = "id",
   Token = "token",
   TokenAddress = "tokenAddress",
-  TokenName = "tokenName"
+  TokenName = "tokenName",
+  TokenAddress = "token__address",
+  TokenDecimals = "token__decimals",
+  TokenId = "token__id",
+  TokenName = "token__name",
+  TokenSymbol = "token__symbol"
 }
 
 export type DisputeResolver_Filter = {
@@ -1808,19 +2021,32 @@ export type DisputeResolver_Filter = {
   active_not_in?: InputMaybe<Array<Scalars["Boolean"]>>;
   admin?: InputMaybe<Scalars["Bytes"]>;
   admin_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_gt?: InputMaybe<Scalars["Bytes"]>;
+  admin_gte?: InputMaybe<Scalars["Bytes"]>;
   admin_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  admin_lt?: InputMaybe<Scalars["Bytes"]>;
+  admin_lte?: InputMaybe<Scalars["Bytes"]>;
   admin_not?: InputMaybe<Scalars["Bytes"]>;
   admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
   admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  and?: InputMaybe<Array<InputMaybe<DisputeResolver_Filter>>>;
   assistant?: InputMaybe<Scalars["Bytes"]>;
   assistant_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_gt?: InputMaybe<Scalars["Bytes"]>;
+  assistant_gte?: InputMaybe<Scalars["Bytes"]>;
   assistant_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant_lt?: InputMaybe<Scalars["Bytes"]>;
+  assistant_lte?: InputMaybe<Scalars["Bytes"]>;
   assistant_not?: InputMaybe<Scalars["Bytes"]>;
   assistant_not_contains?: InputMaybe<Scalars["Bytes"]>;
   assistant_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   clerk?: InputMaybe<Scalars["Bytes"]>;
   clerk_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_gt?: InputMaybe<Scalars["Bytes"]>;
+  clerk_gte?: InputMaybe<Scalars["Bytes"]>;
   clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  clerk_lt?: InputMaybe<Scalars["Bytes"]>;
+  clerk_lte?: InputMaybe<Scalars["Bytes"]>;
   clerk_not?: InputMaybe<Scalars["Bytes"]>;
   clerk_not_contains?: InputMaybe<Scalars["Bytes"]>;
   clerk_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -1848,6 +2074,7 @@ export type DisputeResolver_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  logs_?: InputMaybe<EventLog_Filter>;
   metadataUri?: InputMaybe<Scalars["String"]>;
   metadataUri_contains?: InputMaybe<Scalars["String"]>;
   metadataUri_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -1869,6 +2096,7 @@ export type DisputeResolver_Filter = {
   metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offers_?: InputMaybe<Offer_Filter>;
+  or?: InputMaybe<Array<InputMaybe<DisputeResolver_Filter>>>;
   pendingDisputeResolver_?: InputMaybe<PendingDisputeResolver_Filter>;
   sellerAllowList?: InputMaybe<Array<Scalars["BigInt"]>>;
   sellerAllowList_contains?: InputMaybe<Array<Scalars["BigInt"]>>;
@@ -1878,7 +2106,11 @@ export type DisputeResolver_Filter = {
   sellerAllowList_not_contains_nocase?: InputMaybe<Array<Scalars["BigInt"]>>;
   treasury?: InputMaybe<Scalars["Bytes"]>;
   treasury_contains?: InputMaybe<Scalars["Bytes"]>;
+  treasury_gt?: InputMaybe<Scalars["Bytes"]>;
+  treasury_gte?: InputMaybe<Scalars["Bytes"]>;
   treasury_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  treasury_lt?: InputMaybe<Scalars["Bytes"]>;
+  treasury_lte?: InputMaybe<Scalars["Bytes"]>;
   treasury_not?: InputMaybe<Scalars["Bytes"]>;
   treasury_not_contains?: InputMaybe<Scalars["Bytes"]>;
   treasury_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -1897,6 +2129,10 @@ export enum DisputeResolver_OrderBy {
   MetadataUri = "metadataUri",
   Offers = "offers",
   PendingDisputeResolver = "pendingDisputeResolver",
+  PendingDisputeResolverAdmin = "pendingDisputeResolver__admin",
+  PendingDisputeResolverAssistant = "pendingDisputeResolver__assistant",
+  PendingDisputeResolverClerk = "pendingDisputeResolver__clerk",
+  PendingDisputeResolverId = "pendingDisputeResolver__id",
   SellerAllowList = "sellerAllowList",
   Treasury = "treasury"
 }
@@ -1917,6 +2153,7 @@ export enum DisputeState {
 export type Dispute_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Dispute_Filter>>>;
   buyer?: InputMaybe<Scalars["String"]>;
   buyerPercent?: InputMaybe<Scalars["BigInt"]>;
   buyerPercent_gt?: InputMaybe<Scalars["BigInt"]>;
@@ -2036,6 +2273,7 @@ export type Dispute_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<Dispute_Filter>>>;
   refusedDate?: InputMaybe<Scalars["BigInt"]>;
   refusedDate_gt?: InputMaybe<Scalars["BigInt"]>;
   refusedDate_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -2098,18 +2336,54 @@ export type Dispute_Filter = {
 export enum Dispute_OrderBy {
   Buyer = "buyer",
   BuyerPercent = "buyerPercent",
+  BuyerActive = "buyer__active",
+  BuyerId = "buyer__id",
+  BuyerWallet = "buyer__wallet",
   DecidedDate = "decidedDate",
   DisputeResolver = "disputeResolver",
+  DisputeResolverActive = "disputeResolver__active",
+  DisputeResolverAdmin = "disputeResolver__admin",
+  DisputeResolverAssistant = "disputeResolver__assistant",
+  DisputeResolverClerk = "disputeResolver__clerk",
+  DisputeResolverEscalationResponsePeriod = "disputeResolver__escalationResponsePeriod",
+  DisputeResolverId = "disputeResolver__id",
+  DisputeResolverMetadataUri = "disputeResolver__metadataUri",
+  DisputeResolverTreasury = "disputeResolver__treasury",
   DisputedDate = "disputedDate",
   EscalatedDate = "escalatedDate",
   Exchange = "exchange",
   ExchangeId = "exchangeId",
+  ExchangeCancelledDate = "exchange__cancelledDate",
+  ExchangeCommittedDate = "exchange__committedDate",
+  ExchangeCompletedDate = "exchange__completedDate",
+  ExchangeDisputed = "exchange__disputed",
+  ExchangeDisputedDate = "exchange__disputedDate",
+  ExchangeExpired = "exchange__expired",
+  ExchangeFinalizedDate = "exchange__finalizedDate",
+  ExchangeId = "exchange__id",
+  ExchangeRedeemedDate = "exchange__redeemedDate",
+  ExchangeRevokedDate = "exchange__revokedDate",
+  ExchangeState = "exchange__state",
+  ExchangeValidUntilDate = "exchange__validUntilDate",
   FinalizedDate = "finalizedDate",
   Id = "id",
   RefusedDate = "refusedDate",
   ResolvedDate = "resolvedDate",
   RetractedDate = "retractedDate",
   Seller = "seller",
+  SellerActive = "seller__active",
+  SellerAdmin = "seller__admin",
+  SellerAssistant = "seller__assistant",
+  SellerAuthTokenId = "seller__authTokenId",
+  SellerAuthTokenType = "seller__authTokenType",
+  SellerClerk = "seller__clerk",
+  SellerContractUri = "seller__contractURI",
+  SellerId = "seller__id",
+  SellerMetadataUri = "seller__metadataUri",
+  SellerRoyaltyPercentage = "seller__royaltyPercentage",
+  SellerSellerId = "seller__sellerId",
+  SellerTreasury = "seller__treasury",
+  SellerVoucherCloneAddress = "seller__voucherCloneAddress",
   State = "state",
   Timeout = "timeout"
 }
@@ -2127,6 +2401,7 @@ export type EventLog_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   account?: InputMaybe<Scalars["String"]>;
+  account_?: InputMaybe<Account_Filter>;
   account_contains?: InputMaybe<Scalars["String"]>;
   account_contains_nocase?: InputMaybe<Scalars["String"]>;
   account_ends_with?: InputMaybe<Scalars["String"]>;
@@ -2146,9 +2421,14 @@ export type EventLog_Filter = {
   account_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   account_starts_with?: InputMaybe<Scalars["String"]>;
   account_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  and?: InputMaybe<Array<InputMaybe<EventLog_Filter>>>;
   executedBy?: InputMaybe<Scalars["Bytes"]>;
   executedBy_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_gt?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_gte?: InputMaybe<Scalars["Bytes"]>;
   executedBy_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  executedBy_lt?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_lte?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not_contains?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -2180,6 +2460,7 @@ export type EventLog_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<EventLog_Filter>>>;
   timestamp?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -2196,6 +2477,7 @@ export type EventLog_Filter = {
 
 export enum EventLog_OrderBy {
   Account = "account",
+  AccountId = "account__id",
   ExecutedBy = "executedBy",
   Hash = "hash",
   Id = "id",
@@ -2287,6 +2569,7 @@ export type ExchangeEventLog_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   account?: InputMaybe<Scalars["String"]>;
+  account_?: InputMaybe<Account_Filter>;
   account_contains?: InputMaybe<Scalars["String"]>;
   account_contains_nocase?: InputMaybe<Scalars["String"]>;
   account_ends_with?: InputMaybe<Scalars["String"]>;
@@ -2306,6 +2589,7 @@ export type ExchangeEventLog_Filter = {
   account_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   account_starts_with?: InputMaybe<Scalars["String"]>;
   account_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  and?: InputMaybe<Array<InputMaybe<ExchangeEventLog_Filter>>>;
   exchange?: InputMaybe<Scalars["String"]>;
   exchange_?: InputMaybe<Exchange_Filter>;
   exchange_contains?: InputMaybe<Scalars["String"]>;
@@ -2329,7 +2613,11 @@ export type ExchangeEventLog_Filter = {
   exchange_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   executedBy?: InputMaybe<Scalars["Bytes"]>;
   executedBy_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_gt?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_gte?: InputMaybe<Scalars["Bytes"]>;
   executedBy_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  executedBy_lt?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_lte?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not_contains?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -2361,6 +2649,7 @@ export type ExchangeEventLog_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<ExchangeEventLog_Filter>>>;
   timestamp?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -2377,7 +2666,20 @@ export type ExchangeEventLog_Filter = {
 
 export enum ExchangeEventLog_OrderBy {
   Account = "account",
+  AccountId = "account__id",
   Exchange = "exchange",
+  ExchangeCancelledDate = "exchange__cancelledDate",
+  ExchangeCommittedDate = "exchange__committedDate",
+  ExchangeCompletedDate = "exchange__completedDate",
+  ExchangeDisputed = "exchange__disputed",
+  ExchangeDisputedDate = "exchange__disputedDate",
+  ExchangeExpired = "exchange__expired",
+  ExchangeFinalizedDate = "exchange__finalizedDate",
+  ExchangeId = "exchange__id",
+  ExchangeRedeemedDate = "exchange__redeemedDate",
+  ExchangeRevokedDate = "exchange__revokedDate",
+  ExchangeState = "exchange__state",
+  ExchangeValidUntilDate = "exchange__validUntilDate",
   ExecutedBy = "executedBy",
   Hash = "hash",
   Id = "id",
@@ -2442,10 +2744,15 @@ export type ExchangeToken_Filter = {
   _change_block?: InputMaybe<BlockChangedFilter>;
   address?: InputMaybe<Scalars["Bytes"]>;
   address_contains?: InputMaybe<Scalars["Bytes"]>;
+  address_gt?: InputMaybe<Scalars["Bytes"]>;
+  address_gte?: InputMaybe<Scalars["Bytes"]>;
   address_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  address_lt?: InputMaybe<Scalars["Bytes"]>;
+  address_lte?: InputMaybe<Scalars["Bytes"]>;
   address_not?: InputMaybe<Scalars["Bytes"]>;
   address_not_contains?: InputMaybe<Scalars["Bytes"]>;
   address_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  and?: InputMaybe<Array<InputMaybe<ExchangeToken_Filter>>>;
   decimals?: InputMaybe<Scalars["BigInt"]>;
   decimals_gt?: InputMaybe<Scalars["BigInt"]>;
   decimals_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -2484,6 +2791,7 @@ export type ExchangeToken_Filter = {
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offers_?: InputMaybe<Offer_Filter>;
+  or?: InputMaybe<Array<InputMaybe<ExchangeToken_Filter>>>;
   symbol?: InputMaybe<Scalars["String"]>;
   symbol_contains?: InputMaybe<Scalars["String"]>;
   symbol_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -2519,6 +2827,7 @@ export enum ExchangeToken_OrderBy {
 export type Exchange_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Exchange_Filter>>>;
   buyer?: InputMaybe<Scalars["String"]>;
   buyer_?: InputMaybe<Buyer_Filter>;
   buyer_contains?: InputMaybe<Scalars["String"]>;
@@ -2659,6 +2968,7 @@ export type Exchange_Filter = {
   offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offer_starts_with?: InputMaybe<Scalars["String"]>;
   offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<Exchange_Filter>>>;
   redeemedDate?: InputMaybe<Scalars["BigInt"]>;
   redeemedDate_gt?: InputMaybe<Scalars["BigInt"]>;
   redeemedDate_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -2712,20 +3022,82 @@ export type Exchange_Filter = {
 
 export enum Exchange_OrderBy {
   Buyer = "buyer",
+  BuyerActive = "buyer__active",
+  BuyerId = "buyer__id",
+  BuyerWallet = "buyer__wallet",
   CancelledDate = "cancelledDate",
   CommittedDate = "committedDate",
   CompletedDate = "completedDate",
   Dispute = "dispute",
   DisputeResolver = "disputeResolver",
+  DisputeResolverActive = "disputeResolver__active",
+  DisputeResolverAdmin = "disputeResolver__admin",
+  DisputeResolverAssistant = "disputeResolver__assistant",
+  DisputeResolverClerk = "disputeResolver__clerk",
+  DisputeResolverEscalationResponsePeriod = "disputeResolver__escalationResponsePeriod",
+  DisputeResolverId = "disputeResolver__id",
+  DisputeResolverMetadataUri = "disputeResolver__metadataUri",
+  DisputeResolverTreasury = "disputeResolver__treasury",
+  DisputeBuyerPercent = "dispute__buyerPercent",
+  DisputeDecidedDate = "dispute__decidedDate",
+  DisputeDisputedDate = "dispute__disputedDate",
+  DisputeEscalatedDate = "dispute__escalatedDate",
+  DisputeExchangeId = "dispute__exchangeId",
+  DisputeFinalizedDate = "dispute__finalizedDate",
+  DisputeId = "dispute__id",
+  DisputeRefusedDate = "dispute__refusedDate",
+  DisputeResolvedDate = "dispute__resolvedDate",
+  DisputeRetractedDate = "dispute__retractedDate",
+  DisputeState = "dispute__state",
+  DisputeTimeout = "dispute__timeout",
   Disputed = "disputed",
   DisputedDate = "disputedDate",
   Expired = "expired",
   FinalizedDate = "finalizedDate",
   Id = "id",
   Offer = "offer",
+  OfferAgentFee = "offer__agentFee",
+  OfferAgentId = "offer__agentId",
+  OfferBuyerCancelPenalty = "offer__buyerCancelPenalty",
+  OfferCollectionIndex = "offer__collectionIndex",
+  OfferCreatedAt = "offer__createdAt",
+  OfferDisputePeriodDuration = "offer__disputePeriodDuration",
+  OfferDisputeResolverId = "offer__disputeResolverId",
+  OfferId = "offer__id",
+  OfferMetadataHash = "offer__metadataHash",
+  OfferMetadataUri = "offer__metadataUri",
+  OfferNumberOfCommits = "offer__numberOfCommits",
+  OfferNumberOfRedemptions = "offer__numberOfRedemptions",
+  OfferPrice = "offer__price",
+  OfferProtocolFee = "offer__protocolFee",
+  OfferQuantityAvailable = "offer__quantityAvailable",
+  OfferQuantityInitial = "offer__quantityInitial",
+  OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
+  OfferSellerDeposit = "offer__sellerDeposit",
+  OfferSellerId = "offer__sellerId",
+  OfferValidFromDate = "offer__validFromDate",
+  OfferValidUntilDate = "offer__validUntilDate",
+  OfferVoided = "offer__voided",
+  OfferVoidedAt = "offer__voidedAt",
+  OfferVoucherRedeemableFromDate = "offer__voucherRedeemableFromDate",
+  OfferVoucherRedeemableUntilDate = "offer__voucherRedeemableUntilDate",
+  OfferVoucherValidDuration = "offer__voucherValidDuration",
   RedeemedDate = "redeemedDate",
   RevokedDate = "revokedDate",
   Seller = "seller",
+  SellerActive = "seller__active",
+  SellerAdmin = "seller__admin",
+  SellerAssistant = "seller__assistant",
+  SellerAuthTokenId = "seller__authTokenId",
+  SellerAuthTokenType = "seller__authTokenType",
+  SellerClerk = "seller__clerk",
+  SellerContractUri = "seller__contractURI",
+  SellerId = "seller__id",
+  SellerMetadataUri = "seller__metadataUri",
+  SellerRoyaltyPercentage = "seller__royaltyPercentage",
+  SellerSellerId = "seller__sellerId",
+  SellerTreasury = "seller__treasury",
+  SellerVoucherCloneAddress = "seller__voucherCloneAddress",
   State = "state",
   ValidUntilDate = "validUntilDate"
 }
@@ -2756,6 +3128,7 @@ export type FundsEntity_Filter = {
   accountId_lte?: InputMaybe<Scalars["BigInt"]>;
   accountId_not?: InputMaybe<Scalars["BigInt"]>;
   accountId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  account_?: InputMaybe<Account_Filter>;
   account_contains?: InputMaybe<Scalars["String"]>;
   account_contains_nocase?: InputMaybe<Scalars["String"]>;
   account_ends_with?: InputMaybe<Scalars["String"]>;
@@ -2775,6 +3148,7 @@ export type FundsEntity_Filter = {
   account_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   account_starts_with?: InputMaybe<Scalars["String"]>;
   account_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  and?: InputMaybe<Array<InputMaybe<FundsEntity_Filter>>>;
   availableAmount?: InputMaybe<Scalars["BigInt"]>;
   availableAmount_gt?: InputMaybe<Scalars["BigInt"]>;
   availableAmount_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -2791,10 +3165,15 @@ export type FundsEntity_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<FundsEntity_Filter>>>;
   token?: InputMaybe<Scalars["String"]>;
   tokenAddress?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_contains?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_gt?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_gte?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  tokenAddress_lt?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_lte?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_not?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -2823,10 +3202,16 @@ export type FundsEntity_Filter = {
 export enum FundsEntity_OrderBy {
   Account = "account",
   AccountId = "accountId",
+  AccountId = "account__id",
   AvailableAmount = "availableAmount",
   Id = "id",
   Token = "token",
-  TokenAddress = "tokenAddress"
+  TokenAddress = "tokenAddress",
+  TokenAddress = "token__address",
+  TokenDecimals = "token__decimals",
+  TokenId = "token__id",
+  TokenName = "token__name",
+  TokenSymbol = "token__symbol"
 }
 
 export type FundsEventLog = EventLog & {
@@ -2844,6 +3229,7 @@ export type FundsEventLog_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   account?: InputMaybe<Scalars["String"]>;
+  account_?: InputMaybe<Account_Filter>;
   account_contains?: InputMaybe<Scalars["String"]>;
   account_contains_nocase?: InputMaybe<Scalars["String"]>;
   account_ends_with?: InputMaybe<Scalars["String"]>;
@@ -2863,9 +3249,14 @@ export type FundsEventLog_Filter = {
   account_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   account_starts_with?: InputMaybe<Scalars["String"]>;
   account_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  and?: InputMaybe<Array<InputMaybe<FundsEventLog_Filter>>>;
   executedBy?: InputMaybe<Scalars["Bytes"]>;
   executedBy_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_gt?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_gte?: InputMaybe<Scalars["Bytes"]>;
   executedBy_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  executedBy_lt?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_lte?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not_contains?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -2918,6 +3309,7 @@ export type FundsEventLog_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<FundsEventLog_Filter>>>;
   timestamp?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -2934,8 +3326,13 @@ export type FundsEventLog_Filter = {
 
 export enum FundsEventLog_OrderBy {
   Account = "account",
+  AccountId = "account__id",
   ExecutedBy = "executedBy",
   Funds = "funds",
+  FundsAccountId = "funds__accountId",
+  FundsAvailableAmount = "funds__availableAmount",
+  FundsId = "funds__id",
+  FundsTokenAddress = "funds__tokenAddress",
   Hash = "hash",
   Id = "id",
   Timestamp = "timestamp",
@@ -2953,6 +3350,7 @@ export type ItemMetadataInterface = {
 export type ItemMetadataInterface_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ItemMetadataInterface_Filter>>>;
   bundle?: InputMaybe<Scalars["String"]>;
   bundle_?: InputMaybe<BundleMetadataEntity_Filter>;
   bundle_contains?: InputMaybe<Scalars["String"]>;
@@ -3002,6 +3400,7 @@ export type ItemMetadataInterface_Filter = {
   metadataUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ItemMetadataInterface_Filter>>>;
   schemaUrl?: InputMaybe<Scalars["String"]>;
   schemaUrl_contains?: InputMaybe<Scalars["String"]>;
   schemaUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -3030,6 +3429,24 @@ export type ItemMetadataInterface_Filter = {
 
 export enum ItemMetadataInterface_OrderBy {
   Bundle = "bundle",
+  BundleAnimationUrl = "bundle__animationUrl",
+  BundleBundleUuid = "bundle__bundleUuid",
+  BundleCondition = "bundle__condition",
+  BundleCreatedAt = "bundle__createdAt",
+  BundleDescription = "bundle__description",
+  BundleExternalUrl = "bundle__externalUrl",
+  BundleId = "bundle__id",
+  BundleImage = "bundle__image",
+  BundleLicenseUrl = "bundle__licenseUrl",
+  BundleName = "bundle__name",
+  BundleNumberOfCommits = "bundle__numberOfCommits",
+  BundleNumberOfRedemptions = "bundle__numberOfRedemptions",
+  BundleQuantityAvailable = "bundle__quantityAvailable",
+  BundleSchemaUrl = "bundle__schemaUrl",
+  BundleType = "bundle__type",
+  BundleValidFromDate = "bundle__validFromDate",
+  BundleValidUntilDate = "bundle__validUntilDate",
+  BundleVoided = "bundle__voided",
   Id = "id",
   MetadataUri = "metadataUri",
   SchemaUrl = "schemaUrl",
@@ -3053,6 +3470,7 @@ export type MetadataAttribute = {
 export type MetadataAttribute_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<MetadataAttribute_Filter>>>;
   displayType?: InputMaybe<Scalars["String"]>;
   displayType_contains?: InputMaybe<Scalars["String"]>;
   displayType_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -3081,6 +3499,7 @@ export type MetadataAttribute_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<MetadataAttribute_Filter>>>;
   traitType?: InputMaybe<Scalars["String"]>;
   traitType_contains?: InputMaybe<Scalars["String"]>;
   traitType_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -3178,6 +3597,7 @@ export type MetadataInterfaceAttributesArgs = {
 export type MetadataInterface_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<MetadataInterface_Filter>>>;
   animationMetadata?: InputMaybe<Scalars["String"]>;
   animationMetadata_?: InputMaybe<AnimationMetadata_Filter>;
   animationMetadata_contains?: InputMaybe<Scalars["String"]>;
@@ -3420,6 +3840,7 @@ export type MetadataInterface_Filter = {
   offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offer_starts_with?: InputMaybe<Scalars["String"]>;
   offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<MetadataInterface_Filter>>>;
   quantityAvailable?: InputMaybe<Scalars["BigInt"]>;
   quantityAvailable_gt?: InputMaybe<Scalars["BigInt"]>;
   quantityAvailable_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -3497,12 +3918,21 @@ export type MetadataInterface_Filter = {
 
 export enum MetadataInterface_OrderBy {
   AnimationMetadata = "animationMetadata",
+  AnimationMetadataHeight = "animationMetadata__height",
+  AnimationMetadataId = "animationMetadata__id",
+  AnimationMetadataType = "animationMetadata__type",
+  AnimationMetadataWidth = "animationMetadata__width",
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
   Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangeToken = "exchangeToken",
+  ExchangeTokenAddress = "exchangeToken__address",
+  ExchangeTokenDecimals = "exchangeToken__decimals",
+  ExchangeTokenId = "exchangeToken__id",
+  ExchangeTokenName = "exchangeToken__name",
+  ExchangeTokenSymbol = "exchangeToken__symbol",
   ExternalUrl = "externalUrl",
   Id = "id",
   Image = "image",
@@ -3511,9 +3941,48 @@ export enum MetadataInterface_OrderBy {
   NumberOfCommits = "numberOfCommits",
   NumberOfRedemptions = "numberOfRedemptions",
   Offer = "offer",
+  OfferAgentFee = "offer__agentFee",
+  OfferAgentId = "offer__agentId",
+  OfferBuyerCancelPenalty = "offer__buyerCancelPenalty",
+  OfferCollectionIndex = "offer__collectionIndex",
+  OfferCreatedAt = "offer__createdAt",
+  OfferDisputePeriodDuration = "offer__disputePeriodDuration",
+  OfferDisputeResolverId = "offer__disputeResolverId",
+  OfferId = "offer__id",
+  OfferMetadataHash = "offer__metadataHash",
+  OfferMetadataUri = "offer__metadataUri",
+  OfferNumberOfCommits = "offer__numberOfCommits",
+  OfferNumberOfRedemptions = "offer__numberOfRedemptions",
+  OfferPrice = "offer__price",
+  OfferProtocolFee = "offer__protocolFee",
+  OfferQuantityAvailable = "offer__quantityAvailable",
+  OfferQuantityInitial = "offer__quantityInitial",
+  OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
+  OfferSellerDeposit = "offer__sellerDeposit",
+  OfferSellerId = "offer__sellerId",
+  OfferValidFromDate = "offer__validFromDate",
+  OfferValidUntilDate = "offer__validUntilDate",
+  OfferVoided = "offer__voided",
+  OfferVoidedAt = "offer__voidedAt",
+  OfferVoucherRedeemableFromDate = "offer__voucherRedeemableFromDate",
+  OfferVoucherRedeemableUntilDate = "offer__voucherRedeemableUntilDate",
+  OfferVoucherValidDuration = "offer__voucherValidDuration",
   QuantityAvailable = "quantityAvailable",
   SchemaUrl = "schemaUrl",
   Seller = "seller",
+  SellerActive = "seller__active",
+  SellerAdmin = "seller__admin",
+  SellerAssistant = "seller__assistant",
+  SellerAuthTokenId = "seller__authTokenId",
+  SellerAuthTokenType = "seller__authTokenType",
+  SellerClerk = "seller__clerk",
+  SellerContractUri = "seller__contractURI",
+  SellerId = "seller__id",
+  SellerMetadataUri = "seller__metadataUri",
+  SellerRoyaltyPercentage = "seller__royaltyPercentage",
+  SellerSellerId = "seller__sellerId",
+  SellerTreasury = "seller__treasury",
+  SellerVoucherCloneAddress = "seller__voucherCloneAddress",
   Type = "type",
   ValidFromDate = "validFromDate",
   ValidUntilDate = "validUntilDate",
@@ -3544,6 +4013,7 @@ export type NftContractMetadata = {
 export type NftContractMetadata_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<NftContractMetadata_Filter>>>;
   collaborators?: InputMaybe<Array<Scalars["String"]>>;
   collaborators_contains?: InputMaybe<Array<Scalars["String"]>>;
   collaborators_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
@@ -3646,6 +4116,7 @@ export type NftContractMetadata_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<NftContractMetadata_Filter>>>;
 };
 
 export enum NftContractMetadata_OrderBy {
@@ -3692,6 +4163,7 @@ export type NftItemMetadataEntityAttributesArgs = {
 export type NftItemMetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<NftItemMetadataEntity_Filter>>>;
   animationUrl?: InputMaybe<Scalars["String"]>;
   animationUrl_contains?: InputMaybe<Scalars["String"]>;
   animationUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -3876,6 +4348,7 @@ export type NftItemMetadataEntity_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<NftItemMetadataEntity_Filter>>>;
   quantity?: InputMaybe<Scalars["Int"]>;
   quantity_gt?: InputMaybe<Scalars["Int"]>;
   quantity_gte?: InputMaybe<Scalars["Int"]>;
@@ -4015,6 +4488,24 @@ export enum NftItemMetadataEntity_OrderBy {
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
   Bundle = "bundle",
+  BundleAnimationUrl = "bundle__animationUrl",
+  BundleBundleUuid = "bundle__bundleUuid",
+  BundleCondition = "bundle__condition",
+  BundleCreatedAt = "bundle__createdAt",
+  BundleDescription = "bundle__description",
+  BundleExternalUrl = "bundle__externalUrl",
+  BundleId = "bundle__id",
+  BundleImage = "bundle__image",
+  BundleLicenseUrl = "bundle__licenseUrl",
+  BundleName = "bundle__name",
+  BundleNumberOfCommits = "bundle__numberOfCommits",
+  BundleNumberOfRedemptions = "bundle__numberOfRedemptions",
+  BundleQuantityAvailable = "bundle__quantityAvailable",
+  BundleSchemaUrl = "bundle__schemaUrl",
+  BundleType = "bundle__type",
+  BundleValidFromDate = "bundle__validFromDate",
+  BundleValidUntilDate = "bundle__validUntilDate",
+  BundleVoided = "bundle__voided",
   ChainId = "chainId",
   Contract = "contract",
   Description = "description",
@@ -4027,6 +4518,9 @@ export enum NftItemMetadataEntity_OrderBy {
   SchemaUrl = "schemaUrl",
   TokenId = "tokenId",
   TokenIdRange = "tokenIdRange",
+  TokenIdRangeId = "tokenIdRange__id",
+  TokenIdRangeMax = "tokenIdRange__max",
+  TokenIdRangeMin = "tokenIdRange__min",
   TransferDelay = "transferDelay",
   TransferMethod = "transferMethod",
   Type = "type",
@@ -4124,9 +4618,14 @@ export type OfferCollectionOffersArgs = {
 export type OfferCollection_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<OfferCollection_Filter>>>;
   collectionAddress?: InputMaybe<Scalars["Bytes"]>;
   collectionAddress_contains?: InputMaybe<Scalars["Bytes"]>;
+  collectionAddress_gt?: InputMaybe<Scalars["Bytes"]>;
+  collectionAddress_gte?: InputMaybe<Scalars["Bytes"]>;
   collectionAddress_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  collectionAddress_lt?: InputMaybe<Scalars["Bytes"]>;
+  collectionAddress_lte?: InputMaybe<Scalars["Bytes"]>;
   collectionAddress_not?: InputMaybe<Scalars["Bytes"]>;
   collectionAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
   collectionAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -4141,7 +4640,11 @@ export type OfferCollection_Filter = {
   externalId?: InputMaybe<Scalars["String"]>;
   externalIdHash?: InputMaybe<Scalars["Bytes"]>;
   externalIdHash_contains?: InputMaybe<Scalars["Bytes"]>;
+  externalIdHash_gt?: InputMaybe<Scalars["Bytes"]>;
+  externalIdHash_gte?: InputMaybe<Scalars["Bytes"]>;
   externalIdHash_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  externalIdHash_lt?: InputMaybe<Scalars["Bytes"]>;
+  externalIdHash_lte?: InputMaybe<Scalars["Bytes"]>;
   externalIdHash_not?: InputMaybe<Scalars["Bytes"]>;
   externalIdHash_not_contains?: InputMaybe<Scalars["Bytes"]>;
   externalIdHash_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -4194,6 +4697,7 @@ export type OfferCollection_Filter = {
   metadata_starts_with?: InputMaybe<Scalars["String"]>;
   metadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offers_?: InputMaybe<Offer_Filter>;
+  or?: InputMaybe<Array<InputMaybe<OfferCollection_Filter>>>;
   seller?: InputMaybe<Scalars["String"]>;
   sellerId?: InputMaybe<Scalars["BigInt"]>;
   sellerId_gt?: InputMaybe<Scalars["BigInt"]>;
@@ -4232,9 +4736,28 @@ export enum OfferCollection_OrderBy {
   ExternalIdHash = "externalIdHash",
   Id = "id",
   Metadata = "metadata",
+  MetadataCreatedAt = "metadata__createdAt",
+  MetadataDescription = "metadata__description",
+  MetadataExternalLink = "metadata__externalLink",
+  MetadataId = "metadata__id",
+  MetadataImage = "metadata__image",
+  MetadataName = "metadata__name",
   Offers = "offers",
   Seller = "seller",
-  SellerId = "sellerId"
+  SellerId = "sellerId",
+  SellerActive = "seller__active",
+  SellerAdmin = "seller__admin",
+  SellerAssistant = "seller__assistant",
+  SellerAuthTokenId = "seller__authTokenId",
+  SellerAuthTokenType = "seller__authTokenType",
+  SellerClerk = "seller__clerk",
+  SellerContractUri = "seller__contractURI",
+  SellerId = "seller__id",
+  SellerMetadataUri = "seller__metadataUri",
+  SellerRoyaltyPercentage = "seller__royaltyPercentage",
+  SellerSellerId = "seller__sellerId",
+  SellerTreasury = "seller__treasury",
+  SellerVoucherCloneAddress = "seller__voucherCloneAddress"
 }
 
 export type OfferEventLog = EventLog & {
@@ -4252,6 +4775,7 @@ export type OfferEventLog_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   account?: InputMaybe<Scalars["String"]>;
+  account_?: InputMaybe<Account_Filter>;
   account_contains?: InputMaybe<Scalars["String"]>;
   account_contains_nocase?: InputMaybe<Scalars["String"]>;
   account_ends_with?: InputMaybe<Scalars["String"]>;
@@ -4271,9 +4795,14 @@ export type OfferEventLog_Filter = {
   account_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   account_starts_with?: InputMaybe<Scalars["String"]>;
   account_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  and?: InputMaybe<Array<InputMaybe<OfferEventLog_Filter>>>;
   executedBy?: InputMaybe<Scalars["Bytes"]>;
   executedBy_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_gt?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_gte?: InputMaybe<Scalars["Bytes"]>;
   executedBy_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  executedBy_lt?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_lte?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not_contains?: InputMaybe<Scalars["Bytes"]>;
   executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -4326,6 +4855,7 @@ export type OfferEventLog_Filter = {
   offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offer_starts_with?: InputMaybe<Scalars["String"]>;
   offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<OfferEventLog_Filter>>>;
   timestamp?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
   timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -4342,10 +4872,37 @@ export type OfferEventLog_Filter = {
 
 export enum OfferEventLog_OrderBy {
   Account = "account",
+  AccountId = "account__id",
   ExecutedBy = "executedBy",
   Hash = "hash",
   Id = "id",
   Offer = "offer",
+  OfferAgentFee = "offer__agentFee",
+  OfferAgentId = "offer__agentId",
+  OfferBuyerCancelPenalty = "offer__buyerCancelPenalty",
+  OfferCollectionIndex = "offer__collectionIndex",
+  OfferCreatedAt = "offer__createdAt",
+  OfferDisputePeriodDuration = "offer__disputePeriodDuration",
+  OfferDisputeResolverId = "offer__disputeResolverId",
+  OfferId = "offer__id",
+  OfferMetadataHash = "offer__metadataHash",
+  OfferMetadataUri = "offer__metadataUri",
+  OfferNumberOfCommits = "offer__numberOfCommits",
+  OfferNumberOfRedemptions = "offer__numberOfRedemptions",
+  OfferPrice = "offer__price",
+  OfferProtocolFee = "offer__protocolFee",
+  OfferQuantityAvailable = "offer__quantityAvailable",
+  OfferQuantityInitial = "offer__quantityInitial",
+  OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
+  OfferSellerDeposit = "offer__sellerDeposit",
+  OfferSellerId = "offer__sellerId",
+  OfferValidFromDate = "offer__validFromDate",
+  OfferValidUntilDate = "offer__validUntilDate",
+  OfferVoided = "offer__voided",
+  OfferVoidedAt = "offer__voidedAt",
+  OfferVoucherRedeemableFromDate = "offer__voucherRedeemableFromDate",
+  OfferVoucherRedeemableUntilDate = "offer__voucherRedeemableUntilDate",
+  OfferVoucherValidDuration = "offer__voucherValidDuration",
   Timestamp = "timestamp",
   Type = "type"
 }
@@ -4369,6 +4926,7 @@ export type Offer_Filter = {
   agentId_lte?: InputMaybe<Scalars["BigInt"]>;
   agentId_not?: InputMaybe<Scalars["BigInt"]>;
   agentId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  and?: InputMaybe<Array<InputMaybe<Offer_Filter>>>;
   buyerCancelPenalty?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_gt?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -4564,6 +5122,7 @@ export type Offer_Filter = {
   metadataUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_?: InputMaybe<MetadataInterface_Filter>;
   metadata_contains?: InputMaybe<Scalars["String"]>;
   metadata_contains_nocase?: InputMaybe<Scalars["String"]>;
   metadata_ends_with?: InputMaybe<Scalars["String"]>;
@@ -4599,6 +5158,7 @@ export type Offer_Filter = {
   numberOfRedemptions_lte?: InputMaybe<Scalars["BigInt"]>;
   numberOfRedemptions_not?: InputMaybe<Scalars["BigInt"]>;
   numberOfRedemptions_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  or?: InputMaybe<Array<InputMaybe<Offer_Filter>>>;
   price?: InputMaybe<Scalars["BigInt"]>;
   price_gt?: InputMaybe<Scalars["BigInt"]>;
   price_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -4757,18 +5317,68 @@ export enum Offer_OrderBy {
   BuyerCancelPenalty = "buyerCancelPenalty",
   Collection = "collection",
   CollectionIndex = "collectionIndex",
+  CollectionCollectionAddress = "collection__collectionAddress",
+  CollectionCollectionIndex = "collection__collectionIndex",
+  CollectionExternalId = "collection__externalId",
+  CollectionExternalIdHash = "collection__externalIdHash",
+  CollectionId = "collection__id",
+  CollectionSellerId = "collection__sellerId",
   Condition = "condition",
+  ConditionGatingType = "condition__gatingType",
+  ConditionId = "condition__id",
+  ConditionMaxCommits = "condition__maxCommits",
+  ConditionMaxTokenId = "condition__maxTokenId",
+  ConditionMethod = "condition__method",
+  ConditionMinTokenId = "condition__minTokenId",
+  ConditionThreshold = "condition__threshold",
+  ConditionTokenAddress = "condition__tokenAddress",
+  ConditionTokenType = "condition__tokenType",
   CreatedAt = "createdAt",
   DisputePeriodDuration = "disputePeriodDuration",
   DisputeResolutionTerms = "disputeResolutionTerms",
+  DisputeResolutionTermsBuyerEscalationDeposit = "disputeResolutionTerms__buyerEscalationDeposit",
+  DisputeResolutionTermsDisputeResolverId = "disputeResolutionTerms__disputeResolverId",
+  DisputeResolutionTermsEscalationResponsePeriod = "disputeResolutionTerms__escalationResponsePeriod",
+  DisputeResolutionTermsFeeAmount = "disputeResolutionTerms__feeAmount",
+  DisputeResolutionTermsId = "disputeResolutionTerms__id",
   DisputeResolver = "disputeResolver",
   DisputeResolverId = "disputeResolverId",
+  DisputeResolverActive = "disputeResolver__active",
+  DisputeResolverAdmin = "disputeResolver__admin",
+  DisputeResolverAssistant = "disputeResolver__assistant",
+  DisputeResolverClerk = "disputeResolver__clerk",
+  DisputeResolverEscalationResponsePeriod = "disputeResolver__escalationResponsePeriod",
+  DisputeResolverId = "disputeResolver__id",
+  DisputeResolverMetadataUri = "disputeResolver__metadataUri",
+  DisputeResolverTreasury = "disputeResolver__treasury",
   ExchangeToken = "exchangeToken",
+  ExchangeTokenAddress = "exchangeToken__address",
+  ExchangeTokenDecimals = "exchangeToken__decimals",
+  ExchangeTokenId = "exchangeToken__id",
+  ExchangeTokenName = "exchangeToken__name",
+  ExchangeTokenSymbol = "exchangeToken__symbol",
   Exchanges = "exchanges",
   Id = "id",
   Metadata = "metadata",
   MetadataHash = "metadataHash",
   MetadataUri = "metadataUri",
+  MetadataAnimationUrl = "metadata__animationUrl",
+  MetadataCondition = "metadata__condition",
+  MetadataCreatedAt = "metadata__createdAt",
+  MetadataDescription = "metadata__description",
+  MetadataExternalUrl = "metadata__externalUrl",
+  MetadataId = "metadata__id",
+  MetadataImage = "metadata__image",
+  MetadataLicenseUrl = "metadata__licenseUrl",
+  MetadataName = "metadata__name",
+  MetadataNumberOfCommits = "metadata__numberOfCommits",
+  MetadataNumberOfRedemptions = "metadata__numberOfRedemptions",
+  MetadataQuantityAvailable = "metadata__quantityAvailable",
+  MetadataSchemaUrl = "metadata__schemaUrl",
+  MetadataType = "metadata__type",
+  MetadataValidFromDate = "metadata__validFromDate",
+  MetadataValidUntilDate = "metadata__validUntilDate",
+  MetadataVoided = "metadata__voided",
   NumberOfCommits = "numberOfCommits",
   NumberOfRedemptions = "numberOfRedemptions",
   Price = "price",
@@ -4776,10 +5386,28 @@ export enum Offer_OrderBy {
   QuantityAvailable = "quantityAvailable",
   QuantityInitial = "quantityInitial",
   Range = "range",
+  RangeEnd = "range__end",
+  RangeId = "range__id",
+  RangeMinted = "range__minted",
+  RangeOwner = "range__owner",
+  RangeStart = "range__start",
   ResolutionPeriodDuration = "resolutionPeriodDuration",
   Seller = "seller",
   SellerDeposit = "sellerDeposit",
   SellerId = "sellerId",
+  SellerActive = "seller__active",
+  SellerAdmin = "seller__admin",
+  SellerAssistant = "seller__assistant",
+  SellerAuthTokenId = "seller__authTokenId",
+  SellerAuthTokenType = "seller__authTokenType",
+  SellerClerk = "seller__clerk",
+  SellerContractUri = "seller__contractURI",
+  SellerId = "seller__id",
+  SellerMetadataUri = "seller__metadataUri",
+  SellerRoyaltyPercentage = "seller__royaltyPercentage",
+  SellerSellerId = "seller__sellerId",
+  SellerTreasury = "seller__treasury",
+  SellerVoucherCloneAddress = "seller__voucherCloneAddress",
   ValidFromDate = "validFromDate",
   ValidUntilDate = "validUntilDate",
   Voided = "voided",
@@ -4809,19 +5437,32 @@ export type PendingDisputeResolver_Filter = {
   _change_block?: InputMaybe<BlockChangedFilter>;
   admin?: InputMaybe<Scalars["Bytes"]>;
   admin_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_gt?: InputMaybe<Scalars["Bytes"]>;
+  admin_gte?: InputMaybe<Scalars["Bytes"]>;
   admin_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  admin_lt?: InputMaybe<Scalars["Bytes"]>;
+  admin_lte?: InputMaybe<Scalars["Bytes"]>;
   admin_not?: InputMaybe<Scalars["Bytes"]>;
   admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
   admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  and?: InputMaybe<Array<InputMaybe<PendingDisputeResolver_Filter>>>;
   assistant?: InputMaybe<Scalars["Bytes"]>;
   assistant_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_gt?: InputMaybe<Scalars["Bytes"]>;
+  assistant_gte?: InputMaybe<Scalars["Bytes"]>;
   assistant_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant_lt?: InputMaybe<Scalars["Bytes"]>;
+  assistant_lte?: InputMaybe<Scalars["Bytes"]>;
   assistant_not?: InputMaybe<Scalars["Bytes"]>;
   assistant_not_contains?: InputMaybe<Scalars["Bytes"]>;
   assistant_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   clerk?: InputMaybe<Scalars["Bytes"]>;
   clerk_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_gt?: InputMaybe<Scalars["Bytes"]>;
+  clerk_gte?: InputMaybe<Scalars["Bytes"]>;
   clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  clerk_lt?: InputMaybe<Scalars["Bytes"]>;
+  clerk_lte?: InputMaybe<Scalars["Bytes"]>;
   clerk_not?: InputMaybe<Scalars["Bytes"]>;
   clerk_not_contains?: InputMaybe<Scalars["Bytes"]>;
   clerk_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -4854,6 +5495,7 @@ export type PendingDisputeResolver_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<PendingDisputeResolver_Filter>>>;
 };
 
 export enum PendingDisputeResolver_OrderBy {
@@ -4861,6 +5503,14 @@ export enum PendingDisputeResolver_OrderBy {
   Assistant = "assistant",
   Clerk = "clerk",
   DisputeResolver = "disputeResolver",
+  DisputeResolverActive = "disputeResolver__active",
+  DisputeResolverAdmin = "disputeResolver__admin",
+  DisputeResolverAssistant = "disputeResolver__assistant",
+  DisputeResolverClerk = "disputeResolver__clerk",
+  DisputeResolverEscalationResponsePeriod = "disputeResolver__escalationResponsePeriod",
+  DisputeResolverId = "disputeResolver__id",
+  DisputeResolverMetadataUri = "disputeResolver__metadataUri",
+  DisputeResolverTreasury = "disputeResolver__treasury",
   Id = "id"
 }
 
@@ -4881,13 +5531,22 @@ export type PendingSeller_Filter = {
   _change_block?: InputMaybe<BlockChangedFilter>;
   admin?: InputMaybe<Scalars["Bytes"]>;
   admin_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_gt?: InputMaybe<Scalars["Bytes"]>;
+  admin_gte?: InputMaybe<Scalars["Bytes"]>;
   admin_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  admin_lt?: InputMaybe<Scalars["Bytes"]>;
+  admin_lte?: InputMaybe<Scalars["Bytes"]>;
   admin_not?: InputMaybe<Scalars["Bytes"]>;
   admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
   admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  and?: InputMaybe<Array<InputMaybe<PendingSeller_Filter>>>;
   assistant?: InputMaybe<Scalars["Bytes"]>;
   assistant_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_gt?: InputMaybe<Scalars["Bytes"]>;
+  assistant_gte?: InputMaybe<Scalars["Bytes"]>;
   assistant_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant_lt?: InputMaybe<Scalars["Bytes"]>;
+  assistant_lte?: InputMaybe<Scalars["Bytes"]>;
   assistant_not?: InputMaybe<Scalars["Bytes"]>;
   assistant_not_contains?: InputMaybe<Scalars["Bytes"]>;
   assistant_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -4909,7 +5568,11 @@ export type PendingSeller_Filter = {
   authTokenType_not_in?: InputMaybe<Array<Scalars["Int"]>>;
   clerk?: InputMaybe<Scalars["Bytes"]>;
   clerk_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_gt?: InputMaybe<Scalars["Bytes"]>;
+  clerk_gte?: InputMaybe<Scalars["Bytes"]>;
   clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  clerk_lt?: InputMaybe<Scalars["Bytes"]>;
+  clerk_lte?: InputMaybe<Scalars["Bytes"]>;
   clerk_not?: InputMaybe<Scalars["Bytes"]>;
   clerk_not_contains?: InputMaybe<Scalars["Bytes"]>;
   clerk_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -4941,6 +5604,7 @@ export type PendingSeller_Filter = {
   metadataUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<PendingSeller_Filter>>>;
   seller?: InputMaybe<Scalars["String"]>;
   seller_?: InputMaybe<Seller_Filter>;
   seller_contains?: InputMaybe<Scalars["String"]>;
@@ -4972,7 +5636,20 @@ export enum PendingSeller_OrderBy {
   Clerk = "clerk",
   Id = "id",
   MetadataUri = "metadataUri",
-  Seller = "seller"
+  Seller = "seller",
+  SellerActive = "seller__active",
+  SellerAdmin = "seller__admin",
+  SellerAssistant = "seller__assistant",
+  SellerAuthTokenId = "seller__authTokenId",
+  SellerAuthTokenType = "seller__authTokenType",
+  SellerClerk = "seller__clerk",
+  SellerContractUri = "seller__contractURI",
+  SellerId = "seller__id",
+  SellerMetadataUri = "seller__metadataUri",
+  SellerRoyaltyPercentage = "seller__royaltyPercentage",
+  SellerSellerId = "seller__sellerId",
+  SellerTreasury = "seller__treasury",
+  SellerVoucherCloneAddress = "seller__voucherCloneAddress"
 }
 
 export type ProductV1Brand = {
@@ -4993,6 +5670,7 @@ export type ProductV1BrandProductsArgs = {
 export type ProductV1Brand_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1Brand_Filter>>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -5021,6 +5699,7 @@ export type ProductV1Brand_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1Brand_Filter>>>;
   products_?: InputMaybe<ProductV1Product_Filter>;
 };
 
@@ -5039,6 +5718,7 @@ export type ProductV1Category = {
 export type ProductV1Category_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1Category_Filter>>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -5067,6 +5747,7 @@ export type ProductV1Category_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1Category_Filter>>>;
 };
 
 export enum ProductV1Category_OrderBy {
@@ -5088,6 +5769,7 @@ export type ProductV1ExchangePolicy = {
 export type ProductV1ExchangePolicy_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1ExchangePolicy_Filter>>>;
   disputeResolverContactMethod?: InputMaybe<Scalars["String"]>;
   disputeResolverContactMethod_contains?: InputMaybe<Scalars["String"]>;
   disputeResolverContactMethod_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -5144,6 +5826,7 @@ export type ProductV1ExchangePolicy_Filter = {
   label_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   label_starts_with?: InputMaybe<Scalars["String"]>;
   label_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1ExchangePolicy_Filter>>>;
   sellerContactMethod?: InputMaybe<Scalars["String"]>;
   sellerContactMethod_contains?: InputMaybe<Scalars["String"]>;
   sellerContactMethod_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -5253,6 +5936,7 @@ export type ProductV1ItemMetadataEntityVariationsArgs = {
 export type ProductV1ItemMetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1ItemMetadataEntity_Filter>>>;
   bundle?: InputMaybe<Scalars["String"]>;
   bundle_?: InputMaybe<BundleMetadataEntity_Filter>;
   bundle_contains?: InputMaybe<Scalars["String"]>;
@@ -5323,6 +6007,7 @@ export type ProductV1ItemMetadataEntity_Filter = {
   metadataUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1ItemMetadataEntity_Filter>>>;
   product?: InputMaybe<Scalars["String"]>;
   productOverrides?: InputMaybe<Scalars["String"]>;
   productOverrides_?: InputMaybe<ProductV1ProductOverrides_Filter>;
@@ -5490,16 +6175,103 @@ export type ProductV1ItemMetadataEntity_Filter = {
 
 export enum ProductV1ItemMetadataEntity_OrderBy {
   Bundle = "bundle",
+  BundleAnimationUrl = "bundle__animationUrl",
+  BundleBundleUuid = "bundle__bundleUuid",
+  BundleCondition = "bundle__condition",
+  BundleCreatedAt = "bundle__createdAt",
+  BundleDescription = "bundle__description",
+  BundleExternalUrl = "bundle__externalUrl",
+  BundleId = "bundle__id",
+  BundleImage = "bundle__image",
+  BundleLicenseUrl = "bundle__licenseUrl",
+  BundleName = "bundle__name",
+  BundleNumberOfCommits = "bundle__numberOfCommits",
+  BundleNumberOfRedemptions = "bundle__numberOfRedemptions",
+  BundleQuantityAvailable = "bundle__quantityAvailable",
+  BundleSchemaUrl = "bundle__schemaUrl",
+  BundleType = "bundle__type",
+  BundleValidFromDate = "bundle__validFromDate",
+  BundleValidUntilDate = "bundle__validUntilDate",
+  BundleVoided = "bundle__voided",
   ExchangePolicy = "exchangePolicy",
+  ExchangePolicyDisputeResolverContactMethod = "exchangePolicy__disputeResolverContactMethod",
+  ExchangePolicyId = "exchangePolicy__id",
+  ExchangePolicyLabel = "exchangePolicy__label",
+  ExchangePolicySellerContactMethod = "exchangePolicy__sellerContactMethod",
+  ExchangePolicyTemplate = "exchangePolicy__template",
+  ExchangePolicyUuid = "exchangePolicy__uuid",
+  ExchangePolicyVersion = "exchangePolicy__version",
   Id = "id",
   MetadataUri = "metadataUri",
   Product = "product",
   ProductOverrides = "productOverrides",
+  ProductOverridesDescription = "productOverrides__description",
+  ProductOverridesId = "productOverrides__id",
+  ProductOverridesIdentificationProductId = "productOverrides__identification_productId",
+  ProductOverridesIdentificationProductIdType = "productOverrides__identification_productIdType",
+  ProductOverridesIdentificationSKu = "productOverrides__identification_sKU",
+  ProductOverridesPackagingDimensionsHeight = "productOverrides__packaging_dimensions_height",
+  ProductOverridesPackagingDimensionsLength = "productOverrides__packaging_dimensions_length",
+  ProductOverridesPackagingDimensionsUnit = "productOverrides__packaging_dimensions_unit",
+  ProductOverridesPackagingDimensionsWidth = "productOverrides__packaging_dimensions_width",
+  ProductOverridesPackagingPackageQuantity = "productOverrides__packaging_packageQuantity",
+  ProductOverridesPackagingWeightUnit = "productOverrides__packaging_weight_unit",
+  ProductOverridesPackagingWeightValue = "productOverrides__packaging_weight_value",
+  ProductOverridesProductionInformationBrandName = "productOverrides__productionInformation_brandName",
+  ProductOverridesProductionInformationManufacturer = "productOverrides__productionInformation_manufacturer",
+  ProductOverridesProductionInformationManufacturerPartNumber = "productOverrides__productionInformation_manufacturerPartNumber",
+  ProductOverridesProductionInformationModelNumber = "productOverrides__productionInformation_modelNumber",
+  ProductOverridesTitle = "productOverrides__title",
+  ProductOverridesVersion = "productOverrides__version",
   ProductUuid = "productUuid",
   ProductV1Seller = "productV1Seller",
+  ProductV1SellerContactPreference = "productV1Seller__contactPreference",
+  ProductV1SellerDefaultVersion = "productV1Seller__defaultVersion",
+  ProductV1SellerDescription = "productV1Seller__description",
+  ProductV1SellerExternalUrl = "productV1Seller__externalUrl",
+  ProductV1SellerId = "productV1Seller__id",
+  ProductV1SellerName = "productV1Seller__name",
+  ProductV1SellerSellerId = "productV1Seller__sellerId",
+  ProductV1SellerTokenId = "productV1Seller__tokenId",
   ProductVersion = "productVersion",
+  ProductAllVariantsVoided = "product__allVariantsVoided",
+  ProductDescription = "product__description",
+  ProductDetailsCategory = "product__details_category",
+  ProductDetailsOfferCategory = "product__details_offerCategory",
+  ProductDetailsSubCategory = "product__details_subCategory",
+  ProductDetailsSubCategory2 = "product__details_subCategory2",
+  ProductDisputeResolverId = "product__disputeResolverId",
+  ProductId = "product__id",
+  ProductIdentificationProductId = "product__identification_productId",
+  ProductIdentificationProductIdType = "product__identification_productIdType",
+  ProductIdentificationSKu = "product__identification_sKU",
+  ProductMaxValidFromDate = "product__maxValidFromDate",
+  ProductMaxValidUntilDate = "product__maxValidUntilDate",
+  ProductMinValidFromDate = "product__minValidFromDate",
+  ProductMinValidUntilDate = "product__minValidUntilDate",
+  ProductOfferCategory = "product__offerCategory",
+  ProductPackagingDimensionsHeight = "product__packaging_dimensions_height",
+  ProductPackagingDimensionsLength = "product__packaging_dimensions_length",
+  ProductPackagingDimensionsUnit = "product__packaging_dimensions_unit",
+  ProductPackagingDimensionsWidth = "product__packaging_dimensions_width",
+  ProductPackagingPackageQuantity = "product__packaging_packageQuantity",
+  ProductPackagingWeightUnit = "product__packaging_weight_unit",
+  ProductPackagingWeightValue = "product__packaging_weight_value",
+  ProductProductionInformationBrandName = "product__productionInformation_brandName",
+  ProductProductionInformationManufacturer = "product__productionInformation_manufacturer",
+  ProductProductionInformationManufacturerPartNumber = "product__productionInformation_manufacturerPartNumber",
+  ProductProductionInformationModelNumber = "product__productionInformation_modelNumber",
+  ProductSellerId = "product__sellerId",
+  ProductTitle = "product__title",
+  ProductUuid = "product__uuid",
+  ProductVersion = "product__version",
   SchemaUrl = "schemaUrl",
   Shipping = "shipping",
+  ShippingCountryOfOrigin = "shipping__countryOfOrigin",
+  ShippingDefaultVersion = "shipping__defaultVersion",
+  ShippingId = "shipping__id",
+  ShippingRedemptionPoint = "shipping__redemptionPoint",
+  ShippingReturnPeriodInDays = "shipping__returnPeriodInDays",
   Type = "type",
   Uuid = "uuid",
   Variations = "variations"
@@ -5523,6 +6295,7 @@ export enum ProductV1MediaType {
 export type ProductV1Media_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1Media_Filter>>>;
   height?: InputMaybe<Scalars["Int"]>;
   height_gt?: InputMaybe<Scalars["Int"]>;
   height_gte?: InputMaybe<Scalars["Int"]>;
@@ -5539,6 +6312,7 @@ export type ProductV1Media_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1Media_Filter>>>;
   tag?: InputMaybe<Scalars["String"]>;
   tag_contains?: InputMaybe<Scalars["String"]>;
   tag_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -5673,6 +6447,7 @@ export type ProductV1MetadataEntityVariationsArgs = {
 export type ProductV1MetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1MetadataEntity_Filter>>>;
   animationMetadata?: InputMaybe<Scalars["String"]>;
   animationMetadata_?: InputMaybe<AnimationMetadata_Filter>;
   animationMetadata_contains?: InputMaybe<Scalars["String"]>;
@@ -5936,6 +6711,7 @@ export type ProductV1MetadataEntity_Filter = {
   offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offer_starts_with?: InputMaybe<Scalars["String"]>;
   offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1MetadataEntity_Filter>>>;
   product?: InputMaybe<Scalars["String"]>;
   productOverrides?: InputMaybe<Scalars["String"]>;
   productOverrides_?: InputMaybe<ProductV1ProductOverrides_Filter>;
@@ -6152,13 +6928,29 @@ export type ProductV1MetadataEntity_Filter = {
 
 export enum ProductV1MetadataEntity_OrderBy {
   AnimationMetadata = "animationMetadata",
+  AnimationMetadataHeight = "animationMetadata__height",
+  AnimationMetadataId = "animationMetadata__id",
+  AnimationMetadataType = "animationMetadata__type",
+  AnimationMetadataWidth = "animationMetadata__width",
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
   Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangePolicy = "exchangePolicy",
+  ExchangePolicyDisputeResolverContactMethod = "exchangePolicy__disputeResolverContactMethod",
+  ExchangePolicyId = "exchangePolicy__id",
+  ExchangePolicyLabel = "exchangePolicy__label",
+  ExchangePolicySellerContactMethod = "exchangePolicy__sellerContactMethod",
+  ExchangePolicyTemplate = "exchangePolicy__template",
+  ExchangePolicyUuid = "exchangePolicy__uuid",
+  ExchangePolicyVersion = "exchangePolicy__version",
   ExchangeToken = "exchangeToken",
+  ExchangeTokenAddress = "exchangeToken__address",
+  ExchangeTokenDecimals = "exchangeToken__decimals",
+  ExchangeTokenId = "exchangeToken__id",
+  ExchangeTokenName = "exchangeToken__name",
+  ExchangeTokenSymbol = "exchangeToken__symbol",
   ExternalUrl = "externalUrl",
   Id = "id",
   Image = "image",
@@ -6167,15 +6959,116 @@ export enum ProductV1MetadataEntity_OrderBy {
   NumberOfCommits = "numberOfCommits",
   NumberOfRedemptions = "numberOfRedemptions",
   Offer = "offer",
+  OfferAgentFee = "offer__agentFee",
+  OfferAgentId = "offer__agentId",
+  OfferBuyerCancelPenalty = "offer__buyerCancelPenalty",
+  OfferCollectionIndex = "offer__collectionIndex",
+  OfferCreatedAt = "offer__createdAt",
+  OfferDisputePeriodDuration = "offer__disputePeriodDuration",
+  OfferDisputeResolverId = "offer__disputeResolverId",
+  OfferId = "offer__id",
+  OfferMetadataHash = "offer__metadataHash",
+  OfferMetadataUri = "offer__metadataUri",
+  OfferNumberOfCommits = "offer__numberOfCommits",
+  OfferNumberOfRedemptions = "offer__numberOfRedemptions",
+  OfferPrice = "offer__price",
+  OfferProtocolFee = "offer__protocolFee",
+  OfferQuantityAvailable = "offer__quantityAvailable",
+  OfferQuantityInitial = "offer__quantityInitial",
+  OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
+  OfferSellerDeposit = "offer__sellerDeposit",
+  OfferSellerId = "offer__sellerId",
+  OfferValidFromDate = "offer__validFromDate",
+  OfferValidUntilDate = "offer__validUntilDate",
+  OfferVoided = "offer__voided",
+  OfferVoidedAt = "offer__voidedAt",
+  OfferVoucherRedeemableFromDate = "offer__voucherRedeemableFromDate",
+  OfferVoucherRedeemableUntilDate = "offer__voucherRedeemableUntilDate",
+  OfferVoucherValidDuration = "offer__voucherValidDuration",
   Product = "product",
   ProductOverrides = "productOverrides",
+  ProductOverridesDescription = "productOverrides__description",
+  ProductOverridesId = "productOverrides__id",
+  ProductOverridesIdentificationProductId = "productOverrides__identification_productId",
+  ProductOverridesIdentificationProductIdType = "productOverrides__identification_productIdType",
+  ProductOverridesIdentificationSKu = "productOverrides__identification_sKU",
+  ProductOverridesPackagingDimensionsHeight = "productOverrides__packaging_dimensions_height",
+  ProductOverridesPackagingDimensionsLength = "productOverrides__packaging_dimensions_length",
+  ProductOverridesPackagingDimensionsUnit = "productOverrides__packaging_dimensions_unit",
+  ProductOverridesPackagingDimensionsWidth = "productOverrides__packaging_dimensions_width",
+  ProductOverridesPackagingPackageQuantity = "productOverrides__packaging_packageQuantity",
+  ProductOverridesPackagingWeightUnit = "productOverrides__packaging_weight_unit",
+  ProductOverridesPackagingWeightValue = "productOverrides__packaging_weight_value",
+  ProductOverridesProductionInformationBrandName = "productOverrides__productionInformation_brandName",
+  ProductOverridesProductionInformationManufacturer = "productOverrides__productionInformation_manufacturer",
+  ProductOverridesProductionInformationManufacturerPartNumber = "productOverrides__productionInformation_manufacturerPartNumber",
+  ProductOverridesProductionInformationModelNumber = "productOverrides__productionInformation_modelNumber",
+  ProductOverridesTitle = "productOverrides__title",
+  ProductOverridesVersion = "productOverrides__version",
   ProductUuid = "productUuid",
   ProductV1Seller = "productV1Seller",
+  ProductV1SellerContactPreference = "productV1Seller__contactPreference",
+  ProductV1SellerDefaultVersion = "productV1Seller__defaultVersion",
+  ProductV1SellerDescription = "productV1Seller__description",
+  ProductV1SellerExternalUrl = "productV1Seller__externalUrl",
+  ProductV1SellerId = "productV1Seller__id",
+  ProductV1SellerName = "productV1Seller__name",
+  ProductV1SellerSellerId = "productV1Seller__sellerId",
+  ProductV1SellerTokenId = "productV1Seller__tokenId",
   ProductVersion = "productVersion",
+  ProductAllVariantsVoided = "product__allVariantsVoided",
+  ProductDescription = "product__description",
+  ProductDetailsCategory = "product__details_category",
+  ProductDetailsOfferCategory = "product__details_offerCategory",
+  ProductDetailsSubCategory = "product__details_subCategory",
+  ProductDetailsSubCategory2 = "product__details_subCategory2",
+  ProductDisputeResolverId = "product__disputeResolverId",
+  ProductId = "product__id",
+  ProductIdentificationProductId = "product__identification_productId",
+  ProductIdentificationProductIdType = "product__identification_productIdType",
+  ProductIdentificationSKu = "product__identification_sKU",
+  ProductMaxValidFromDate = "product__maxValidFromDate",
+  ProductMaxValidUntilDate = "product__maxValidUntilDate",
+  ProductMinValidFromDate = "product__minValidFromDate",
+  ProductMinValidUntilDate = "product__minValidUntilDate",
+  ProductOfferCategory = "product__offerCategory",
+  ProductPackagingDimensionsHeight = "product__packaging_dimensions_height",
+  ProductPackagingDimensionsLength = "product__packaging_dimensions_length",
+  ProductPackagingDimensionsUnit = "product__packaging_dimensions_unit",
+  ProductPackagingDimensionsWidth = "product__packaging_dimensions_width",
+  ProductPackagingPackageQuantity = "product__packaging_packageQuantity",
+  ProductPackagingWeightUnit = "product__packaging_weight_unit",
+  ProductPackagingWeightValue = "product__packaging_weight_value",
+  ProductProductionInformationBrandName = "product__productionInformation_brandName",
+  ProductProductionInformationManufacturer = "product__productionInformation_manufacturer",
+  ProductProductionInformationManufacturerPartNumber = "product__productionInformation_manufacturerPartNumber",
+  ProductProductionInformationModelNumber = "product__productionInformation_modelNumber",
+  ProductSellerId = "product__sellerId",
+  ProductTitle = "product__title",
+  ProductUuid = "product__uuid",
+  ProductVersion = "product__version",
   QuantityAvailable = "quantityAvailable",
   SchemaUrl = "schemaUrl",
   Seller = "seller",
+  SellerActive = "seller__active",
+  SellerAdmin = "seller__admin",
+  SellerAssistant = "seller__assistant",
+  SellerAuthTokenId = "seller__authTokenId",
+  SellerAuthTokenType = "seller__authTokenType",
+  SellerClerk = "seller__clerk",
+  SellerContractUri = "seller__contractURI",
+  SellerId = "seller__id",
+  SellerMetadataUri = "seller__metadataUri",
+  SellerRoyaltyPercentage = "seller__royaltyPercentage",
+  SellerSellerId = "seller__sellerId",
+  SellerTreasury = "seller__treasury",
+  SellerVoucherCloneAddress = "seller__voucherCloneAddress",
   Shipping = "shipping",
+  ShippingCountryOfOrigin = "shipping__countryOfOrigin",
+  ShippingDefaultVersion = "shipping__defaultVersion",
+  ShippingId = "shipping__id",
+  ShippingRedemptionPoint = "shipping__redemptionPoint",
+  ShippingReturnPeriodInDays = "shipping__returnPeriodInDays",
   Type = "type",
   Uuid = "uuid",
   ValidFromDate = "validFromDate",
@@ -6199,6 +7092,7 @@ export type ProductV1Personalisation = {
 export type ProductV1Personalisation_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1Personalisation_Filter>>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -6227,6 +7121,7 @@ export type ProductV1Personalisation_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1Personalisation_Filter>>>;
 };
 
 export enum ProductV1Personalisation_OrderBy {
@@ -6423,6 +7318,7 @@ export type ProductV1ProductOverridesVisuals_VideosArgs = {
 export type ProductV1ProductOverrides_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1ProductOverrides_Filter>>>;
   brand?: InputMaybe<Scalars["String"]>;
   brand_?: InputMaybe<ProductV1Brand_Filter>;
   brand_contains?: InputMaybe<Scalars["String"]>;
@@ -6542,6 +7438,7 @@ export type ProductV1ProductOverrides_Filter = {
   identification_sKU_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   identification_sKU_starts_with?: InputMaybe<Scalars["String"]>;
   identification_sKU_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1ProductOverrides_Filter>>>;
   packaging_dimensions_height?: InputMaybe<Scalars["String"]>;
   packaging_dimensions_height_contains?: InputMaybe<Scalars["String"]>;
   packaging_dimensions_height_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -6946,6 +7843,8 @@ export type ProductV1ProductOverrides_Filter = {
 
 export enum ProductV1ProductOverrides_OrderBy {
   Brand = "brand",
+  BrandId = "brand__id",
+  BrandName = "brand__name",
   Description = "description",
   Id = "id",
   IdentificationProductId = "identification_productId",
@@ -6976,6 +7875,7 @@ export type ProductV1Product_Filter = {
   allVariantsVoided_in?: InputMaybe<Array<Scalars["Boolean"]>>;
   allVariantsVoided_not?: InputMaybe<Scalars["Boolean"]>;
   allVariantsVoided_not_in?: InputMaybe<Array<Scalars["Boolean"]>>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1Product_Filter>>>;
   brand?: InputMaybe<Scalars["String"]>;
   brand_?: InputMaybe<ProductV1Brand_Filter>;
   brand_contains?: InputMaybe<Scalars["String"]>;
@@ -7269,6 +8169,7 @@ export type ProductV1Product_Filter = {
   offerCategory_in?: InputMaybe<Array<ProductV1OfferCategory>>;
   offerCategory_not?: InputMaybe<ProductV1OfferCategory>;
   offerCategory_not_in?: InputMaybe<Array<ProductV1OfferCategory>>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1Product_Filter>>>;
   packaging_dimensions_height?: InputMaybe<Scalars["String"]>;
   packaging_dimensions_height_contains?: InputMaybe<Scalars["String"]>;
   packaging_dimensions_height_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -7800,7 +8701,11 @@ export type ProductV1Product_Filter = {
 export enum ProductV1Product_OrderBy {
   AllVariantsVoided = "allVariantsVoided",
   Brand = "brand",
+  BrandId = "brand__id",
+  BrandName = "brand__name",
   Category = "category",
+  CategoryId = "category__id",
+  CategoryName = "category__name",
   Description = "description",
   DetailsCategory = "details_category",
   DetailsOfferCategory = "details_offerCategory",
@@ -7829,6 +8734,14 @@ export enum ProductV1Product_OrderBy {
   PackagingWeightValue = "packaging_weight_value",
   Personalisation = "personalisation",
   ProductV1Seller = "productV1Seller",
+  ProductV1SellerContactPreference = "productV1Seller__contactPreference",
+  ProductV1SellerDefaultVersion = "productV1Seller__defaultVersion",
+  ProductV1SellerDescription = "productV1Seller__description",
+  ProductV1SellerExternalUrl = "productV1Seller__externalUrl",
+  ProductV1SellerId = "productV1Seller__id",
+  ProductV1SellerName = "productV1Seller__name",
+  ProductV1SellerSellerId = "productV1Seller__sellerId",
+  ProductV1SellerTokenId = "productV1Seller__tokenId",
   ProductionInformationBrandName = "productionInformation_brandName",
   ProductionInformationManufacturer = "productionInformation_manufacturer",
   ProductionInformationManufacturerPartNumber = "productionInformation_manufacturerPartNumber",
@@ -7839,6 +8752,10 @@ export enum ProductV1Product_OrderBy {
   SellerId = "sellerId",
   SubCategory = "subCategory",
   SubCategory2 = "subCategory2",
+  SubCategory2Id = "subCategory2__id",
+  SubCategory2Name = "subCategory2__name",
+  SubCategoryId = "subCategory__id",
+  SubCategoryName = "subCategory__name",
   Tags = "tags",
   Title = "title",
   Uuid = "uuid",
@@ -7857,6 +8774,7 @@ export type ProductV1Section = {
 export type ProductV1Section_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1Section_Filter>>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -7885,6 +8803,7 @@ export type ProductV1Section_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1Section_Filter>>>;
 };
 
 export enum ProductV1Section_OrderBy {
@@ -7937,6 +8856,7 @@ export type ProductV1SellerContactLink = {
 export type ProductV1SellerContactLink_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1SellerContactLink_Filter>>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -7945,6 +8865,7 @@ export type ProductV1SellerContactLink_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1SellerContactLink_Filter>>>;
   tag?: InputMaybe<Scalars["String"]>;
   tag_contains?: InputMaybe<Scalars["String"]>;
   tag_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -7996,6 +8917,7 @@ export enum ProductV1SellerContactLink_OrderBy {
 export type ProductV1Seller_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1Seller_Filter>>>;
   contactLinks?: InputMaybe<Array<Scalars["String"]>>;
   contactLinks_?: InputMaybe<ProductV1SellerContactLink_Filter>;
   contactLinks_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -8106,6 +9028,7 @@ export type ProductV1Seller_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1Seller_Filter>>>;
   seller?: InputMaybe<Scalars["String"]>;
   sellerId?: InputMaybe<Scalars["String"]>;
   sellerId_contains?: InputMaybe<Scalars["String"]>;
@@ -8180,6 +9103,19 @@ export enum ProductV1Seller_OrderBy {
   Name = "name",
   Seller = "seller",
   SellerId = "sellerId",
+  SellerActive = "seller__active",
+  SellerAdmin = "seller__admin",
+  SellerAssistant = "seller__assistant",
+  SellerAuthTokenId = "seller__authTokenId",
+  SellerAuthTokenType = "seller__authTokenType",
+  SellerClerk = "seller__clerk",
+  SellerContractUri = "seller__contractURI",
+  SellerId = "seller__id",
+  SellerMetadataUri = "seller__metadataUri",
+  SellerRoyaltyPercentage = "seller__royaltyPercentage",
+  SellerSellerId = "seller__sellerId",
+  SellerTreasury = "seller__treasury",
+  SellerVoucherCloneAddress = "seller__voucherCloneAddress",
   TokenId = "tokenId"
 }
 
@@ -8193,6 +9129,7 @@ export type ProductV1ShippingJurisdiction = {
 export type ProductV1ShippingJurisdiction_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1ShippingJurisdiction_Filter>>>;
   deliveryTime?: InputMaybe<Scalars["String"]>;
   deliveryTime_contains?: InputMaybe<Scalars["String"]>;
   deliveryTime_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -8241,6 +9178,7 @@ export type ProductV1ShippingJurisdiction_Filter = {
   label_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   label_starts_with?: InputMaybe<Scalars["String"]>;
   label_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1ShippingJurisdiction_Filter>>>;
 };
 
 export enum ProductV1ShippingJurisdiction_OrderBy {
@@ -8270,6 +9208,7 @@ export type ProductV1ShippingOptionSupportedJurisdictionsArgs = {
 export type ProductV1ShippingOption_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1ShippingOption_Filter>>>;
   countryOfOrigin?: InputMaybe<Scalars["String"]>;
   countryOfOrigin_contains?: InputMaybe<Scalars["String"]>;
   countryOfOrigin_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -8306,6 +9245,7 @@ export type ProductV1ShippingOption_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1ShippingOption_Filter>>>;
   redemptionPoint?: InputMaybe<Scalars["String"]>;
   redemptionPoint_contains?: InputMaybe<Scalars["String"]>;
   redemptionPoint_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -8363,6 +9303,7 @@ export type ProductV1Tag = {
 export type ProductV1Tag_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1Tag_Filter>>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -8391,6 +9332,7 @@ export type ProductV1Tag_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1Tag_Filter>>>;
 };
 
 export enum ProductV1Tag_OrderBy {
@@ -8417,6 +9359,7 @@ export type ProductV1VariantVariationsArgs = {
 export type ProductV1Variant_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1Variant_Filter>>>;
   bundle?: InputMaybe<Scalars["String"]>;
   bundle_?: InputMaybe<BundleMetadataEntity_Filter>;
   bundle_contains?: InputMaybe<Scalars["String"]>;
@@ -8467,6 +9410,7 @@ export type ProductV1Variant_Filter = {
   offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offer_starts_with?: InputMaybe<Scalars["String"]>;
   offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1Variant_Filter>>>;
   variations?: InputMaybe<Array<Scalars["String"]>>;
   variations_?: InputMaybe<ProductV1Variation_Filter>;
   variations_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -8478,8 +9422,52 @@ export type ProductV1Variant_Filter = {
 
 export enum ProductV1Variant_OrderBy {
   Bundle = "bundle",
+  BundleAnimationUrl = "bundle__animationUrl",
+  BundleBundleUuid = "bundle__bundleUuid",
+  BundleCondition = "bundle__condition",
+  BundleCreatedAt = "bundle__createdAt",
+  BundleDescription = "bundle__description",
+  BundleExternalUrl = "bundle__externalUrl",
+  BundleId = "bundle__id",
+  BundleImage = "bundle__image",
+  BundleLicenseUrl = "bundle__licenseUrl",
+  BundleName = "bundle__name",
+  BundleNumberOfCommits = "bundle__numberOfCommits",
+  BundleNumberOfRedemptions = "bundle__numberOfRedemptions",
+  BundleQuantityAvailable = "bundle__quantityAvailable",
+  BundleSchemaUrl = "bundle__schemaUrl",
+  BundleType = "bundle__type",
+  BundleValidFromDate = "bundle__validFromDate",
+  BundleValidUntilDate = "bundle__validUntilDate",
+  BundleVoided = "bundle__voided",
   Id = "id",
   Offer = "offer",
+  OfferAgentFee = "offer__agentFee",
+  OfferAgentId = "offer__agentId",
+  OfferBuyerCancelPenalty = "offer__buyerCancelPenalty",
+  OfferCollectionIndex = "offer__collectionIndex",
+  OfferCreatedAt = "offer__createdAt",
+  OfferDisputePeriodDuration = "offer__disputePeriodDuration",
+  OfferDisputeResolverId = "offer__disputeResolverId",
+  OfferId = "offer__id",
+  OfferMetadataHash = "offer__metadataHash",
+  OfferMetadataUri = "offer__metadataUri",
+  OfferNumberOfCommits = "offer__numberOfCommits",
+  OfferNumberOfRedemptions = "offer__numberOfRedemptions",
+  OfferPrice = "offer__price",
+  OfferProtocolFee = "offer__protocolFee",
+  OfferQuantityAvailable = "offer__quantityAvailable",
+  OfferQuantityInitial = "offer__quantityInitial",
+  OfferResolutionPeriodDuration = "offer__resolutionPeriodDuration",
+  OfferSellerDeposit = "offer__sellerDeposit",
+  OfferSellerId = "offer__sellerId",
+  OfferValidFromDate = "offer__validFromDate",
+  OfferValidUntilDate = "offer__validUntilDate",
+  OfferVoided = "offer__voided",
+  OfferVoidedAt = "offer__voidedAt",
+  OfferVoucherRedeemableFromDate = "offer__voucherRedeemableFromDate",
+  OfferVoucherRedeemableUntilDate = "offer__voucherRedeemableUntilDate",
+  OfferVoucherValidDuration = "offer__voucherValidDuration",
   Variations = "variations"
 }
 
@@ -8493,6 +9481,7 @@ export type ProductV1Variation = {
 export type ProductV1Variation_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProductV1Variation_Filter>>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -8521,6 +9510,7 @@ export type ProductV1Variation_Filter = {
   option_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   option_starts_with?: InputMaybe<Scalars["String"]>;
   option_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<ProductV1Variation_Filter>>>;
   type?: InputMaybe<Scalars["String"]>;
   type_contains?: InputMaybe<Scalars["String"]>;
   type_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -9555,6 +10545,7 @@ export type RangeEntity = {
 export type RangeEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<RangeEntity_Filter>>>;
   end?: InputMaybe<Scalars["BigInt"]>;
   end_gt?: InputMaybe<Scalars["BigInt"]>;
   end_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -9579,9 +10570,14 @@ export type RangeEntity_Filter = {
   minted_lte?: InputMaybe<Scalars["BigInt"]>;
   minted_not?: InputMaybe<Scalars["BigInt"]>;
   minted_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  or?: InputMaybe<Array<InputMaybe<RangeEntity_Filter>>>;
   owner?: InputMaybe<Scalars["Bytes"]>;
   owner_contains?: InputMaybe<Scalars["Bytes"]>;
+  owner_gt?: InputMaybe<Scalars["Bytes"]>;
+  owner_gte?: InputMaybe<Scalars["Bytes"]>;
   owner_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  owner_lt?: InputMaybe<Scalars["Bytes"]>;
+  owner_lte?: InputMaybe<Scalars["Bytes"]>;
   owner_not?: InputMaybe<Scalars["Bytes"]>;
   owner_not_contains?: InputMaybe<Scalars["Bytes"]>;
   owner_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -9634,6 +10630,7 @@ export type SalesChannelDeployment = {
 export type SalesChannelDeployment_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<SalesChannelDeployment_Filter>>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -9682,6 +10679,7 @@ export type SalesChannelDeployment_Filter = {
   link_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   link_starts_with?: InputMaybe<Scalars["String"]>;
   link_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<SalesChannelDeployment_Filter>>>;
   product?: InputMaybe<Scalars["String"]>;
   product_?: InputMaybe<ProductV1Product_Filter>;
   product_contains?: InputMaybe<Scalars["String"]>;
@@ -9730,12 +10728,44 @@ export enum SalesChannelDeployment_OrderBy {
   LastUpdated = "lastUpdated",
   Link = "link",
   Product = "product",
+  ProductAllVariantsVoided = "product__allVariantsVoided",
+  ProductDescription = "product__description",
+  ProductDetailsCategory = "product__details_category",
+  ProductDetailsOfferCategory = "product__details_offerCategory",
+  ProductDetailsSubCategory = "product__details_subCategory",
+  ProductDetailsSubCategory2 = "product__details_subCategory2",
+  ProductDisputeResolverId = "product__disputeResolverId",
+  ProductId = "product__id",
+  ProductIdentificationProductId = "product__identification_productId",
+  ProductIdentificationProductIdType = "product__identification_productIdType",
+  ProductIdentificationSKu = "product__identification_sKU",
+  ProductMaxValidFromDate = "product__maxValidFromDate",
+  ProductMaxValidUntilDate = "product__maxValidUntilDate",
+  ProductMinValidFromDate = "product__minValidFromDate",
+  ProductMinValidUntilDate = "product__minValidUntilDate",
+  ProductOfferCategory = "product__offerCategory",
+  ProductPackagingDimensionsHeight = "product__packaging_dimensions_height",
+  ProductPackagingDimensionsLength = "product__packaging_dimensions_length",
+  ProductPackagingDimensionsUnit = "product__packaging_dimensions_unit",
+  ProductPackagingDimensionsWidth = "product__packaging_dimensions_width",
+  ProductPackagingPackageQuantity = "product__packaging_packageQuantity",
+  ProductPackagingWeightUnit = "product__packaging_weight_unit",
+  ProductPackagingWeightValue = "product__packaging_weight_value",
+  ProductProductionInformationBrandName = "product__productionInformation_brandName",
+  ProductProductionInformationManufacturer = "product__productionInformation_manufacturer",
+  ProductProductionInformationManufacturerPartNumber = "product__productionInformation_manufacturerPartNumber",
+  ProductProductionInformationModelNumber = "product__productionInformation_modelNumber",
+  ProductSellerId = "product__sellerId",
+  ProductTitle = "product__title",
+  ProductUuid = "product__uuid",
+  ProductVersion = "product__version",
   Status = "status"
 }
 
 export type SalesChannel_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<SalesChannel_Filter>>>;
   deployments?: InputMaybe<Array<Scalars["String"]>>;
   deployments_?: InputMaybe<SalesChannelDeployment_Filter>;
   deployments_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -9791,6 +10821,7 @@ export type SalesChannel_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<SalesChannel_Filter>>>;
   settingsEditor?: InputMaybe<Scalars["String"]>;
   settingsEditor_contains?: InputMaybe<Scalars["String"]>;
   settingsEditor_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -9938,6 +10969,7 @@ export type SellerContactLink = {
 export type SellerContactLink_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<SellerContactLink_Filter>>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -9946,6 +10978,7 @@ export type SellerContactLink_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<SellerContactLink_Filter>>>;
   tag?: InputMaybe<Scalars["String"]>;
   tag_contains?: InputMaybe<Scalars["String"]>;
   tag_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -10058,6 +11091,7 @@ export type SellerMetadataMedia = {
 export type SellerMetadataMedia_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<SellerMetadataMedia_Filter>>>;
   fit?: InputMaybe<Scalars["String"]>;
   fit_contains?: InputMaybe<Scalars["String"]>;
   fit_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -10094,6 +11128,7 @@ export type SellerMetadataMedia_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<SellerMetadataMedia_Filter>>>;
   position?: InputMaybe<Scalars["String"]>;
   position_contains?: InputMaybe<Scalars["String"]>;
   position_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -10202,6 +11237,7 @@ export enum SellerMetadataType {
 export type SellerMetadata_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<SellerMetadata_Filter>>>;
   contactLinks?: InputMaybe<Array<Scalars["String"]>>;
   contactLinks_?: InputMaybe<SellerContactLink_Filter>;
   contactLinks_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -10332,6 +11368,7 @@ export type SellerMetadata_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<SellerMetadata_Filter>>>;
   salesChannels?: InputMaybe<Array<Scalars["String"]>>;
   salesChannels_?: InputMaybe<SalesChannel_Filter>;
   salesChannels_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -10398,6 +11435,7 @@ export type SellerSocialLink = {
 export type SellerSocialLink_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<SellerSocialLink_Filter>>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -10406,6 +11444,7 @@ export type SellerSocialLink_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  or?: InputMaybe<Array<InputMaybe<SellerSocialLink_Filter>>>;
   tag?: InputMaybe<Scalars["String"]>;
   tag_contains?: InputMaybe<Scalars["String"]>;
   tag_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -10463,13 +11502,22 @@ export type Seller_Filter = {
   active_not_in?: InputMaybe<Array<Scalars["Boolean"]>>;
   admin?: InputMaybe<Scalars["Bytes"]>;
   admin_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_gt?: InputMaybe<Scalars["Bytes"]>;
+  admin_gte?: InputMaybe<Scalars["Bytes"]>;
   admin_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  admin_lt?: InputMaybe<Scalars["Bytes"]>;
+  admin_lte?: InputMaybe<Scalars["Bytes"]>;
   admin_not?: InputMaybe<Scalars["Bytes"]>;
   admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
   admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  and?: InputMaybe<Array<InputMaybe<Seller_Filter>>>;
   assistant?: InputMaybe<Scalars["Bytes"]>;
   assistant_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_gt?: InputMaybe<Scalars["Bytes"]>;
+  assistant_gte?: InputMaybe<Scalars["Bytes"]>;
   assistant_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant_lt?: InputMaybe<Scalars["Bytes"]>;
+  assistant_lte?: InputMaybe<Scalars["Bytes"]>;
   assistant_not?: InputMaybe<Scalars["Bytes"]>;
   assistant_not_contains?: InputMaybe<Scalars["Bytes"]>;
   assistant_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -10491,7 +11539,11 @@ export type Seller_Filter = {
   authTokenType_not_in?: InputMaybe<Array<Scalars["Int"]>>;
   clerk?: InputMaybe<Scalars["Bytes"]>;
   clerk_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_gt?: InputMaybe<Scalars["Bytes"]>;
+  clerk_gte?: InputMaybe<Scalars["Bytes"]>;
   clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  clerk_lt?: InputMaybe<Scalars["Bytes"]>;
+  clerk_lte?: InputMaybe<Scalars["Bytes"]>;
   clerk_not?: InputMaybe<Scalars["Bytes"]>;
   clerk_not_contains?: InputMaybe<Scalars["Bytes"]>;
   clerk_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -10526,6 +11578,7 @@ export type Seller_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  logs_?: InputMaybe<EventLog_Filter>;
   metadata?: InputMaybe<Scalars["String"]>;
   metadataUri?: InputMaybe<Scalars["String"]>;
   metadataUri_contains?: InputMaybe<Scalars["String"]>;
@@ -10568,6 +11621,7 @@ export type Seller_Filter = {
   metadata_starts_with?: InputMaybe<Scalars["String"]>;
   metadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offers_?: InputMaybe<Offer_Filter>;
+  or?: InputMaybe<Array<InputMaybe<Seller_Filter>>>;
   pendingSeller_?: InputMaybe<PendingSeller_Filter>;
   royaltyPercentage?: InputMaybe<Scalars["BigInt"]>;
   royaltyPercentage_gt?: InputMaybe<Scalars["BigInt"]>;
@@ -10587,13 +11641,21 @@ export type Seller_Filter = {
   sellerId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   treasury?: InputMaybe<Scalars["Bytes"]>;
   treasury_contains?: InputMaybe<Scalars["Bytes"]>;
+  treasury_gt?: InputMaybe<Scalars["Bytes"]>;
+  treasury_gte?: InputMaybe<Scalars["Bytes"]>;
   treasury_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  treasury_lt?: InputMaybe<Scalars["Bytes"]>;
+  treasury_lte?: InputMaybe<Scalars["Bytes"]>;
   treasury_not?: InputMaybe<Scalars["Bytes"]>;
   treasury_not_contains?: InputMaybe<Scalars["Bytes"]>;
   treasury_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   voucherCloneAddress?: InputMaybe<Scalars["Bytes"]>;
   voucherCloneAddress_contains?: InputMaybe<Scalars["Bytes"]>;
+  voucherCloneAddress_gt?: InputMaybe<Scalars["Bytes"]>;
+  voucherCloneAddress_gte?: InputMaybe<Scalars["Bytes"]>;
   voucherCloneAddress_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  voucherCloneAddress_lt?: InputMaybe<Scalars["Bytes"]>;
+  voucherCloneAddress_lte?: InputMaybe<Scalars["Bytes"]>;
   voucherCloneAddress_not?: InputMaybe<Scalars["Bytes"]>;
   voucherCloneAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
   voucherCloneAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -10614,8 +11676,24 @@ export enum Seller_OrderBy {
   Logs = "logs",
   Metadata = "metadata",
   MetadataUri = "metadataUri",
+  MetadataContactPreference = "metadata__contactPreference",
+  MetadataCreatedAt = "metadata__createdAt",
+  MetadataDescription = "metadata__description",
+  MetadataId = "metadata__id",
+  MetadataKind = "metadata__kind",
+  MetadataLegalTradingName = "metadata__legalTradingName",
+  MetadataName = "metadata__name",
+  MetadataType = "metadata__type",
+  MetadataWebsite = "metadata__website",
   Offers = "offers",
   PendingSeller = "pendingSeller",
+  PendingSellerAdmin = "pendingSeller__admin",
+  PendingSellerAssistant = "pendingSeller__assistant",
+  PendingSellerAuthTokenId = "pendingSeller__authTokenId",
+  PendingSellerAuthTokenType = "pendingSeller__authTokenType",
+  PendingSellerClerk = "pendingSeller__clerk",
+  PendingSellerId = "pendingSeller__id",
+  PendingSellerMetadataUri = "pendingSeller__metadataUri",
   RoyaltyPercentage = "royaltyPercentage",
   SellerId = "sellerId",
   Treasury = "treasury",
@@ -11622,6 +12700,7 @@ export type TokenIdRange = {
 export type TokenIdRange_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<TokenIdRange_Filter>>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -11670,6 +12749,7 @@ export type TokenIdRange_Filter = {
   min_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   min_starts_with?: InputMaybe<Scalars["String"]>;
   min_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<TokenIdRange_Filter>>>;
 };
 
 export enum TokenIdRange_OrderBy {
@@ -11691,6 +12771,7 @@ export type UnknownItemMetadataEntity = ItemMetadataInterface & {
 export type UnknownItemMetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<UnknownItemMetadataEntity_Filter>>>;
   bundle?: InputMaybe<Scalars["String"]>;
   bundle_?: InputMaybe<BundleMetadataEntity_Filter>;
   bundle_contains?: InputMaybe<Scalars["String"]>;
@@ -11740,6 +12821,7 @@ export type UnknownItemMetadataEntity_Filter = {
   metadataUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  or?: InputMaybe<Array<InputMaybe<UnknownItemMetadataEntity_Filter>>>;
   productV1Seller?: InputMaybe<Scalars["String"]>;
   productV1Seller_?: InputMaybe<ProductV1Seller_Filter>;
   productV1Seller_contains?: InputMaybe<Scalars["String"]>;
@@ -11789,9 +12871,35 @@ export type UnknownItemMetadataEntity_Filter = {
 
 export enum UnknownItemMetadataEntity_OrderBy {
   Bundle = "bundle",
+  BundleAnimationUrl = "bundle__animationUrl",
+  BundleBundleUuid = "bundle__bundleUuid",
+  BundleCondition = "bundle__condition",
+  BundleCreatedAt = "bundle__createdAt",
+  BundleDescription = "bundle__description",
+  BundleExternalUrl = "bundle__externalUrl",
+  BundleId = "bundle__id",
+  BundleImage = "bundle__image",
+  BundleLicenseUrl = "bundle__licenseUrl",
+  BundleName = "bundle__name",
+  BundleNumberOfCommits = "bundle__numberOfCommits",
+  BundleNumberOfRedemptions = "bundle__numberOfRedemptions",
+  BundleQuantityAvailable = "bundle__quantityAvailable",
+  BundleSchemaUrl = "bundle__schemaUrl",
+  BundleType = "bundle__type",
+  BundleValidFromDate = "bundle__validFromDate",
+  BundleValidUntilDate = "bundle__validUntilDate",
+  BundleVoided = "bundle__voided",
   Id = "id",
   MetadataUri = "metadataUri",
   ProductV1Seller = "productV1Seller",
+  ProductV1SellerContactPreference = "productV1Seller__contactPreference",
+  ProductV1SellerDefaultVersion = "productV1Seller__defaultVersion",
+  ProductV1SellerDescription = "productV1Seller__description",
+  ProductV1SellerExternalUrl = "productV1Seller__externalUrl",
+  ProductV1SellerId = "productV1Seller__id",
+  ProductV1SellerName = "productV1Seller__name",
+  ProductV1SellerSellerId = "productV1Seller__sellerId",
+  ProductV1SellerTokenId = "productV1Seller__tokenId",
   SchemaUrl = "schemaUrl",
   Type = "type"
 }
@@ -11802,6 +12910,8 @@ export type _Block_ = {
   hash?: Maybe<Scalars["Bytes"]>;
   /** The block number */
   number: Scalars["Int"];
+  /** Integer representation of the timestamp stored in blocks for the chain */
+  timestamp?: Maybe<Scalars["Int"]>;
 };
 
 /** The type for the top-level _meta field */
