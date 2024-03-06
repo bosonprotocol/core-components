@@ -22,11 +22,7 @@ import {
   ProductCardWrapper
 } from "./ProductCard.styles";
 
-export enum ProductType {
-  phygital = "Phygital",
-  physical = "Physical",
-  digital = "Digital"
-}
+import { ProductType } from "./const";
 interface IProductCard {
   asterisk?: boolean;
   avatar: string;

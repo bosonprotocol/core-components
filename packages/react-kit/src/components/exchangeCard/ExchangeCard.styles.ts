@@ -1,7 +1,14 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { theme } from "../../theme";
 import { ExchangeCardStatus } from "./types";
+import { ProductCardLabelWrapper } from "../productCard/ProductCard.styles";
 
+const topSpace = "1rem";
+const sideSpace = "1rem";
+export const ExchangeCardLabelWrapper = styled(ProductCardLabelWrapper)`
+  top: ${topSpace};
+  left: ${sideSpace};
+`;
 export const ExchangeCreator = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -112,25 +119,26 @@ export const ExchangeCardWrapper = styled.div<{
   }
   ${({ $isHoverDisabled }) =>
     !$isHoverDisabled
-      ? `
-    transition: all 300ms ease-in-out;
-    &:hover {
-      box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.05), 4px 4px 4px rgba(0, 0, 0, 0.05),
-        8px 8px 8px rgba(0, 0, 0, 0.05), 16px 16px 16px rgba(0, 0, 0, 0.05);
-
-      [data-image-wrapper] {
-        img {
-          transform: scale(1.05);
+      ? css`
           transition: all 300ms ease-in-out;
-        }
-      }
-      [data-cta-wrapper] {
-        transition: all 0.4s ease-in-out;
-        max-height: 100rem;
-      }
-    }
-  `
-      : `
+          &:hover {
+            box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.05),
+              4px 4px 4px rgba(0, 0, 0, 0.05), 8px 8px 8px rgba(0, 0, 0, 0.05),
+              16px 16px 16px rgba(0, 0, 0, 0.05);
+
+            [data-image-wrapper] {
+              img {
+                transform: scale(1.05);
+                transition: all 300ms ease-in-out;
+              }
+            }
+            [data-cta-wrapper] {
+              transition: all 0.4s ease-in-out;
+              max-height: 100rem;
+            }
+          }
+        `
+      : css`
       &:hover {
       [data-cta-wrapper] {
         transition: all 0.4s ease-in-out;
@@ -174,8 +182,8 @@ export const ExchangeStatus = styled.div<{
   $status: ExchangeCardStatus;
 }>`
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: ${topSpace};
+  right: ${sideSpace};
   z-index: 10;
   letter-spacing: 0.5px;
   line-height: 16px;

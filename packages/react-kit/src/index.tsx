@@ -24,6 +24,7 @@ export * from "./components/exchangeCard/ExchangeCard";
 export * from "./components/image/Image";
 export * from "./components/Loading";
 export * from "./components/productCard/ProductCard";
+export * from "./components/productCard/const";
 export * from "./components/skeleton/ProductCardSkeleton";
 export * from "./components/skeleton/CollectionsCardSkeleton";
 export { LoadingBubble } from "./components/skeleton/common";
