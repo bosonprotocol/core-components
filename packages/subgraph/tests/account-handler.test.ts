@@ -19,7 +19,9 @@ import {
   createSellerCreatedEventLegacy,
   createSellerUpdateAppliedEvent,
   mockCreateProduct,
-  createSeller
+  createSeller,
+  mockSeller,
+  mockOffer
 } from "./mocks";
 import { getSellerMetadataEntityId } from "../src/entities/metadata/seller";
 import {
@@ -27,12 +29,10 @@ import {
   getSalesChannelId
 } from "../src/entities/metadata/seller/salesChannels";
 import {
-  Offer,
   ProductV1Product,
   SalesChannel,
   SellerMetadata
 } from "../generated/schema";
-import { getMetadataEntityId } from "../src/entities/metadata/utils";
 import { saveMetadata } from "../src/entities/metadata/handler";
 import { getProductId } from "../src/entities/metadata/product-v1/product";
 
@@ -183,8 +183,9 @@ test("handle SellerCreatedEvent", () => {
 });
 
 test("handle SellerUpdatedEvent", () => {
+  const seller = mockSeller("1");
   const sellerUpdatedEvent = createSellerUpdatedEvent(
-    1,
+    seller.sellerId.toI32(),
     sellerAddress,
     sellerAddress,
     sellerAddress,
@@ -274,23 +275,11 @@ test("add/remove product salesChannels", () => {
   assert.assertNotNull((salesChannelProductB as SalesChannel).tag);
   assert.assertTrue((salesChannelProductB as SalesChannel).tag == "DCL");
 
-  // mirrored values from `tests/metadata/product-v1-full.json`
-  const metadataUuid = "ecf2a6dc-555b-41b5-aca8-b7e29eebbb30";
   const productUuid = "77593bb2-f797-11ec-b939-0242ac120002";
   const productVersion = 1;
 
-  const metadataHash = "QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB";
-  mockIpfsFile(metadataHash, "tests/metadata/product-v1-full.json");
-
   const offerId = 1;
-  const offer = new Offer(offerId.toString());
-  offer.sellerId = BigInt.fromString(sellerId);
-  offer.quantityAvailable = BigInt.fromI32(1);
-  offer.metadataUri = metadataHash;
-  offer.metadataHash = metadataHash;
-  offer.save();
-
-  const metadataId = getMetadataEntityId(offerId.toString());
+  const offer = mockOffer(offerId.toString(), sellerId);
   saveMetadata(offer, BigInt.fromI32(1651574093));
   const productId = getProductId(
     sellerId,
