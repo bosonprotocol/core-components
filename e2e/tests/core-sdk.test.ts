@@ -1467,7 +1467,7 @@ async function checkDisputeResolving(exchangeId: string, coreSDK: CoreSDK) {
   expect(dispute).toBeTruthy();
 
   // dispute state is now RESOLVING
-  expect(dispute.state).toBe(DisputeState.Resolving);
+  expect(dispute.state).toBe(DisputeState.RESOLVING);
 
   // dispute date is correct
   expect(dispute.disputedDate).toBeTruthy();
@@ -1501,7 +1501,7 @@ async function checkDisputeRetracted(exchangeId: string, coreSDK: CoreSDK) {
   expect(dispute).toBeTruthy();
 
   // dispute state is now RETRACTED
-  expect(dispute.state).toBe(DisputeState.Retracted);
+  expect(dispute.state).toBe(DisputeState.RETRACTED);
 
   // dispute buyerPercent is 0
   expect(dispute.buyerPercent).toEqual("0");
@@ -1560,7 +1560,7 @@ async function checkDisputeResolved(
   expect(dispute).toBeTruthy();
 
   // dispute state is now RESOLVED
-  expect(dispute.state).toBe(DisputeState.Resolved);
+  expect(dispute.state).toBe(DisputeState.RESOLVED);
 
   // dispute buyerPercent is the one specified
   expect(dispute.buyerPercent).toEqual(buyerPercent);
@@ -1591,7 +1591,7 @@ async function checkDisputeEscalated(exchangeId: string, coreSDK: CoreSDK) {
   expect(dispute).toBeTruthy();
 
   // dispute state is now ESCALATED
-  expect(dispute.state).toBe(DisputeState.Escalated);
+  expect(dispute.state).toBe(DisputeState.ESCALATED);
 
   // dispute finalizedDate is null
   expect(dispute.finalizedDate).toBeNull();
@@ -1636,7 +1636,7 @@ async function checkDisputeDecided(
   expect(dispute).toBeTruthy();
 
   // dispute state is now DECIDED
-  expect(dispute.state).toBe(DisputeState.Decided);
+  expect(dispute.state).toBe(DisputeState.DECIDED);
 
   // dispute finalizedDate is filled
   expect(dispute.finalizedDate).toBeTruthy();
@@ -1693,7 +1693,7 @@ async function checkDisputeRefused(exchangeId: string, coreSDK: CoreSDK) {
   expect(dispute).toBeTruthy();
 
   // dispute state is now REFUSED
-  expect(dispute.state).toBe(DisputeState.Refused);
+  expect(dispute.state).toBe(DisputeState.REFUSED);
 
   // dispute finalizedDate is filled
   expect(dispute.finalizedDate).toBeTruthy();

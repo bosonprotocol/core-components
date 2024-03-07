@@ -880,7 +880,7 @@ export async function publishNftContractMetadata(
 
 export async function getSubgraphBlockNumber(): Promise<number> {
   const client = new GraphQLClient(getFirstEnvConfig("local").subgraphUrl);
-  const response = await client.request(gql`
+  const response = await client.request<{ _meta?: { block?: { number?: number } } }>(gql`
     query MyQuery {
       _meta {
         block {

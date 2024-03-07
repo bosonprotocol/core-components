@@ -105,11 +105,11 @@ describe("Bundle e2e tests", () => {
 
     expect(
       bundles[0].items.some(
-        (item) => item.type === subgraph.ItemMetadataType.ItemNft
+        (item) => item.type === subgraph.ItemMetadataType.ITEM_NFT
       )
     ).toBe(true);
     const nftItemFromSubgraph = bundles[0].items.find(
-      (item) => item.type === subgraph.ItemMetadataType.ItemNft
+      (item) => item.type === subgraph.ItemMetadataType.ITEM_NFT
     ) as subgraph.NftItemMetadataEntity;
     expect(nftItemFromSubgraph.name).toEqual(digitalItem.name);
   });
@@ -241,7 +241,7 @@ describe("Bundle e2e tests", () => {
     expect(bundles[0].offer.id).toEqual(offer.id);
     expect(bundles[0].items.length).toEqual(1);
 
-    expect(bundles[0].items[0].type).toEqual(subgraph.ItemMetadataType.ItemNft);
+    expect(bundles[0].items[0].type).toEqual(subgraph.ItemMetadataType.ITEM_NFT);
     expect(
       (bundles[0].items[0] as subgraph.NftItemMetadataEntity).name
     ).toEqual(digitalItem.name);
@@ -298,7 +298,7 @@ describe("Bundle e2e tests", () => {
     expect(bundles[0].items.length).toEqual(1);
 
     expect(bundles[0].items[0].type).toEqual(
-      subgraph.ItemMetadataType.ItemUnknown
+      subgraph.ItemMetadataType.ITEM_UNKNOWN
     );
     expect(bundles[0].items[0].metadataUri).toBeTruthy();
   });
