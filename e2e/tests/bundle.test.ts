@@ -92,11 +92,11 @@ describe("Bundle e2e tests", () => {
 
     expect(
       bundles[0].items.some(
-        (item) => item.type === subgraph.ItemMetadataType.ItemProductV1
+        (item) => item.type === subgraph.ItemMetadataType.ITEM_PRODUCT_V1
       )
     ).toBe(true);
     const productItemFromSubgraph = bundles[0].items.find(
-      (item) => item.type === subgraph.ItemMetadataType.ItemProductV1
+      (item) => item.type === subgraph.ItemMetadataType.ITEM_PRODUCT_V1
     ) as subgraph.ProductV1ItemMetadataEntity;
     expect(productItemFromSubgraph.uuid).toEqual(productV1Item.uuid);
     expect(productItemFromSubgraph.product.uuid).toEqual(
@@ -205,7 +205,7 @@ describe("Bundle e2e tests", () => {
     expect(bundles[0].items.length).toEqual(1);
 
     expect(bundles[0].items[0].type).toEqual(
-      subgraph.ItemMetadataType.ItemProductV1
+      subgraph.ItemMetadataType.ITEM_PRODUCT_V1
     );
     expect(
       (bundles[0].items[0] as subgraph.ProductV1ItemMetadataEntity).productUuid

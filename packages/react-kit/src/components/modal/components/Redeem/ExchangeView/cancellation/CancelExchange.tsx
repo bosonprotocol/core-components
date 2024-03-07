@@ -220,7 +220,7 @@ export function CancelExchange({
               const [hash, isMetaTx] = args;
               onPendingTransaction?.(...args);
               addPendingTransaction({
-                type: subgraph.EventType.VoucherCanceled,
+                type: subgraph.EventType.VOUCHER_CANCELED,
                 hash,
                 isMetaTx,
                 accountType: "Buyer",
