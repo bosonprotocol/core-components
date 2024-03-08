@@ -28,9 +28,9 @@ describe("Seller royalties recipients", () => {
     const seller = await createSeller(coreSDK, fundedWallet.address);
     expect(seller).toBeTruthy();
     expect(seller.royaltyRecipients).toBeTruthy();
-    expect(seller.royaltyRecipients.length).toEqual(1);
-    expect(seller.royaltyRecipients[0].wallet).toEqual(ZERO_ADDRESS);
-    expect(seller.royaltyRecipients[0].minRoyaltyPercentage).toEqual("0");
+    expect(seller.royaltyRecipients?.length).toEqual(1);
+    expect(seller.royaltyRecipients?.[0].wallet).toEqual(ZERO_ADDRESS);
+    expect(seller.royaltyRecipients?.[0].minRoyaltyPercentage).toEqual("0");
   });
   test("custom royalties for a seller - non-zero percentage for treasury", async () => {
     const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
@@ -45,9 +45,9 @@ describe("Seller royalties recipients", () => {
     });
     expect(seller).toBeTruthy();
     expect(seller.royaltyRecipients).toBeTruthy();
-    expect(seller.royaltyRecipients.length).toEqual(1);
-    expect(seller.royaltyRecipients[0].wallet).toEqual(ZERO_ADDRESS);
-    expect(seller.royaltyRecipients[0].minRoyaltyPercentage).toEqual(
+    expect(seller.royaltyRecipients?.length).toEqual(1);
+    expect(seller.royaltyRecipients?.[0].wallet).toEqual(ZERO_ADDRESS);
+    expect(seller.royaltyRecipients?.[0].minRoyaltyPercentage).toEqual(
       treasuryPercentage
     );
   });
@@ -64,7 +64,7 @@ describe("Seller royalties recipients", () => {
     });
     expect(seller).toBeTruthy();
     expect(seller.royaltyRecipients).toBeTruthy();
-    expect(seller.royaltyRecipients.length).toEqual(1);
+    expect(seller.royaltyRecipients?.length).toEqual(1);
 
     const recipients = [
       Wallet.createRandom().address.toLowerCase(),
@@ -84,20 +84,20 @@ describe("Seller royalties recipients", () => {
     seller = await coreSDK.getSellerById(seller.id);
     expect(seller).toBeTruthy();
     expect(seller.royaltyRecipients).toBeTruthy();
-    expect(seller.royaltyRecipients.length).toEqual(1 + recipients.length);
-    expect(seller.royaltyRecipients.some(walletIs(ZERO_ADDRESS))).toBe(true);
-    expect(seller.royaltyRecipients.some(walletIs(recipients[0]))).toBe(true);
-    expect(seller.royaltyRecipients.some(walletIs(recipients[1]))).toBe(true);
+    expect(seller.royaltyRecipients?.length).toEqual(1 + recipients.length);
+    expect(seller.royaltyRecipients?.some(walletIs(ZERO_ADDRESS))).toBe(true);
+    expect(seller.royaltyRecipients?.some(walletIs(recipients[0]))).toBe(true);
+    expect(seller.royaltyRecipients?.some(walletIs(recipients[1]))).toBe(true);
     expect(
-      seller.royaltyRecipients.find(walletIs(ZERO_ADDRESS))
+      seller.royaltyRecipients?.find(walletIs(ZERO_ADDRESS))
         ?.minRoyaltyPercentage
     ).toEqual(treasuryPercentage);
     expect(
-      seller.royaltyRecipients.find(walletIs(recipients[0]))
+      seller.royaltyRecipients?.find(walletIs(recipients[0]))
         ?.minRoyaltyPercentage
     ).toEqual(recipientsPercentage[0]);
     expect(
-      seller.royaltyRecipients.find(walletIs(recipients[1]))
+      seller.royaltyRecipients?.find(walletIs(recipients[1]))
         ?.minRoyaltyPercentage
     ).toEqual(recipientsPercentage[1]);
 
@@ -119,17 +119,21 @@ describe("Seller royalties recipients", () => {
     seller = await coreSDK.getSellerById(seller.id);
     expect(seller).toBeTruthy();
     expect(seller.royaltyRecipients).toBeTruthy();
-    expect(seller.royaltyRecipients.length).toEqual(
+    expect(seller.royaltyRecipients?.length).toEqual(
       1 + recipients.length + recipients_2.length
     );
-    expect(seller.royaltyRecipients.some(walletIs(recipients_2[0]))).toBe(true);
-    expect(seller.royaltyRecipients.some(walletIs(recipients_2[1]))).toBe(true);
+    expect(seller.royaltyRecipients?.some(walletIs(recipients_2[0]))).toBe(
+      true
+    );
+    expect(seller.royaltyRecipients?.some(walletIs(recipients_2[1]))).toBe(
+      true
+    );
     expect(
-      seller.royaltyRecipients.find(walletIs(recipients_2[0]))
+      seller.royaltyRecipients?.find(walletIs(recipients_2[0]))
         ?.minRoyaltyPercentage
     ).toEqual(recipientsPercentage_2[0]);
     expect(
-      seller.royaltyRecipients.find(walletIs(recipients_2[1]))
+      seller.royaltyRecipients?.find(walletIs(recipients_2[1]))
         ?.minRoyaltyPercentage
     ).toEqual(recipientsPercentage_2[1]);
   });
@@ -247,18 +251,18 @@ describe("Seller royalties recipients", () => {
     expect(seller).toBeTruthy();
     let royaltyRecipients = seller.royaltyRecipients;
     expect(royaltyRecipients).toBeTruthy();
-    expect(royaltyRecipients.length).toEqual(1 + recipients.length);
-    expect(royaltyRecipients.some(walletIs(ZERO_ADDRESS))).toBe(true);
-    expect(royaltyRecipients.some(walletIs(recipients[0]))).toBe(true);
-    expect(royaltyRecipients.some(walletIs(recipients[1]))).toBe(true);
+    expect(royaltyRecipients?.length).toEqual(1 + recipients.length);
+    expect(royaltyRecipients?.some(walletIs(ZERO_ADDRESS))).toBe(true);
+    expect(royaltyRecipients?.some(walletIs(recipients[0]))).toBe(true);
+    expect(royaltyRecipients?.some(walletIs(recipients[1]))).toBe(true);
     expect(
-      royaltyRecipients.find(walletIs(ZERO_ADDRESS))?.minRoyaltyPercentage
+      royaltyRecipients?.find(walletIs(ZERO_ADDRESS))?.minRoyaltyPercentage
     ).toEqual(treasuryPercentage);
     expect(
-      royaltyRecipients.find(walletIs(recipients[0]))?.minRoyaltyPercentage
+      royaltyRecipients?.find(walletIs(recipients[0]))?.minRoyaltyPercentage
     ).toEqual(recipientsPercentage[0]);
     expect(
-      royaltyRecipients.find(walletIs(recipients[1]))?.minRoyaltyPercentage
+      royaltyRecipients?.find(walletIs(recipients[1]))?.minRoyaltyPercentage
     ).toEqual(recipientsPercentage[1]);
 
     const recipients_2 = [
@@ -281,14 +285,14 @@ describe("Seller royalties recipients", () => {
     expect(seller).toBeTruthy();
     royaltyRecipients = seller.royaltyRecipients;
     expect(royaltyRecipients).toBeTruthy();
-    expect(royaltyRecipients.length).toEqual(1 + recipients_2.length);
-    expect(royaltyRecipients.some(walletIs(recipients_2[0]))).toBe(true);
-    expect(royaltyRecipients.some(walletIs(recipients_2[1]))).toBe(true);
+    expect(royaltyRecipients?.length).toEqual(1 + recipients_2.length);
+    expect(royaltyRecipients?.some(walletIs(recipients_2[0]))).toBe(true);
+    expect(royaltyRecipients?.some(walletIs(recipients_2[1]))).toBe(true);
     expect(
-      royaltyRecipients.find(walletIs(recipients_2[0]))?.minRoyaltyPercentage
+      royaltyRecipients?.find(walletIs(recipients_2[0]))?.minRoyaltyPercentage
     ).toEqual(recipientsPercentage_2[0]);
     expect(
-      royaltyRecipients.find(walletIs(recipients_2[1]))?.minRoyaltyPercentage
+      royaltyRecipients?.find(walletIs(recipients_2[1]))?.minRoyaltyPercentage
     ).toEqual(recipientsPercentage_2[1]);
   });
   test("custom royalties for a seller - remove other recipients - check onchain", async () => {
@@ -369,14 +373,18 @@ describe("Seller royalties recipients", () => {
     expect(seller).toBeTruthy();
     let royaltyRecipients = seller.royaltyRecipients;
     expect(royaltyRecipients).toBeTruthy();
-    expect(royaltyRecipients.length).toEqual(1 + recipients.length);
-    expect(royaltyRecipients.some(walletIs(ZERO_ADDRESS))).toBe(true);
-    expect(royaltyRecipients.some(walletIs(recipients[0]))).toBe(true);
-    expect(royaltyRecipients.some(walletIs(recipients[1]))).toBe(true);
+    expect(royaltyRecipients?.length).toEqual(1 + recipients.length);
+    expect(royaltyRecipients?.some(walletIs(ZERO_ADDRESS))).toBe(true);
+    expect(royaltyRecipients?.some(walletIs(recipients[0]))).toBe(true);
+    expect(royaltyRecipients?.some(walletIs(recipients[1]))).toBe(true);
 
-    const recipient2Index = royaltyRecipients.findIndex(
-      walletIs(recipients[1])
+    // Find the index of recipients[1] in the onChain result
+    const royaltyRecipientsOnChain = await coreSDK.getRoyaltyRecipients(
+      seller.id
     );
+    const recipient2Index = royaltyRecipientsOnChain.findIndex(
+      walletIs(recipients[1])
+    ) as number;
     expect(recipient2Index).not.toBe(-1);
 
     const tx_2 = await coreSDK.removeRoyaltyRecipients(seller.id, [
@@ -387,9 +395,9 @@ describe("Seller royalties recipients", () => {
     expect(seller).toBeTruthy();
     royaltyRecipients = seller.royaltyRecipients;
     expect(royaltyRecipients).toBeTruthy();
-    expect(royaltyRecipients.length).toEqual(1 + recipients.length - 1);
-    expect(royaltyRecipients.some(walletIs(recipients[0]))).toBe(true);
-    expect(royaltyRecipients.some(walletIs(recipients[1]))).toBe(false);
+    expect(royaltyRecipients?.length).toEqual(1 + recipients.length - 1);
+    expect(royaltyRecipients?.some(walletIs(recipients[0]))).toBe(true);
+    expect(royaltyRecipients?.some(walletIs(recipients[1]))).toBe(false);
   });
 });
 
