@@ -13541,7 +13541,6 @@ export type UnknownItemMetadataEntity = ItemMetadataInterface & {
   bundle: BundleMetadataEntity;
   id: Scalars["ID"]["output"];
   metadataUri: Scalars["String"]["output"];
-  productV1Seller: ProductV1Seller;
   schemaUrl: Scalars["String"]["output"];
   type: ItemMetadataType;
 };
@@ -13600,29 +13599,6 @@ export type UnknownItemMetadataEntity_Filter = {
   metadataUri_starts_with?: InputMaybe<Scalars["String"]["input"]>;
   metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
   or?: InputMaybe<Array<InputMaybe<UnknownItemMetadataEntity_Filter>>>;
-  productV1Seller?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_?: InputMaybe<ProductV1Seller_Filter>;
-  productV1Seller_contains?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_ends_with?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_gt?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_gte?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
-  productV1Seller_lt?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_lte?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_not?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_not_contains?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_not_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_not_ends_with?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_not_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_not_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
-  productV1Seller_not_starts_with?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_not_starts_with_nocase?: InputMaybe<
-    Scalars["String"]["input"]
-  >;
-  productV1Seller_starts_with?: InputMaybe<Scalars["String"]["input"]>;
-  productV1Seller_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
   schemaUrl?: InputMaybe<Scalars["String"]["input"]>;
   schemaUrl_contains?: InputMaybe<Scalars["String"]["input"]>;
   schemaUrl_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
@@ -13671,15 +13647,6 @@ export enum UnknownItemMetadataEntity_OrderBy {
   BUNDLE__VOIDED = "bundle__voided",
   ID = "id",
   METADATAURI = "metadataUri",
-  PRODUCTV1SELLER = "productV1Seller",
-  PRODUCTV1SELLER__CONTACTPREFERENCE = "productV1Seller__contactPreference",
-  PRODUCTV1SELLER__DEFAULTVERSION = "productV1Seller__defaultVersion",
-  PRODUCTV1SELLER__DESCRIPTION = "productV1Seller__description",
-  PRODUCTV1SELLER__EXTERNALURL = "productV1Seller__externalUrl",
-  PRODUCTV1SELLER__ID = "productV1Seller__id",
-  PRODUCTV1SELLER__NAME = "productV1Seller__name",
-  PRODUCTV1SELLER__SELLERID = "productV1Seller__sellerId",
-  PRODUCTV1SELLER__TOKENID = "productV1Seller__tokenId",
   SCHEMAURL = "schemaUrl",
   TYPE = "type"
 }

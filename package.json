@@ -19,7 +19,7 @@
     "e2e:suite": "run-script-os",
     "e2e:suite:default": "./e2e/run-e2e-suite.sh",
     "e2e:suite:win32": "cmd /c .\\e2e\\run-e2e-suite.cmd",
-    "e2e:test": "jest -c ./e2e/jest.config.js --runInBand",
+    "e2e:test": "jest -c ./e2e/jest.config.js",
     "e2e:services": "run-script-os",
     "e2e:services:default": "./e2e/run-e2e-services.sh",
     "e2e:services:win32": "cmd /c .\\e2e\\run-e2e-services.cmd",

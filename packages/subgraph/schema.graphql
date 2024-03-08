@@ -259,7 +259,6 @@ type UnknownItemMetadataEntity implements ItemMetadataInterface @entity {
   id: ID!
   schemaUrl: String! # JSON schema URL
   type: ItemMetadataType!
-  productV1Seller: ProductV1Seller!
   bundle: BundleMetadataEntity!
   metadataUri: String!
 }

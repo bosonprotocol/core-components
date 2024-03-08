@@ -114,7 +114,7 @@ module.exports = {
       })),
       mining: {
         auto: false,
-        interval: 1000
+        interval: 200
       }
     },
     localhost: {

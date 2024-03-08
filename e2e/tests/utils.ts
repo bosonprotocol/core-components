@@ -282,13 +282,14 @@ export async function waitForGraphNodeIndexing(
   }
   if (blockToWaitFor > 0) {
     let currentBlock = await getSubgraphBlockNumber();
-    let oldCurrentBlock = 0;
+    let oldCurrentBlock = currentBlock;
     let sameBlockNumber = 0;
+    const MAX_SAME_BLOCK = 5;
     while (currentBlock < blockToWaitFor) {
-      await wait(500);
+      await wait(200);
       currentBlock = await getSubgraphBlockNumber();
       if (currentBlock === oldCurrentBlock) {
-        if (sameBlockNumber++ >= 10) {
+        if (sameBlockNumber++ >= MAX_SAME_BLOCK) {
           // Seems that the subgraph does not update its current block
           console.error(
             `Seems that the subgraph does not update its current block after ${currentBlock}`
@@ -296,6 +297,9 @@ export async function waitForGraphNodeIndexing(
           await wait(1_000);
           return;
         }
+        console.log(
+          `${currentBlock} repeats ${sameBlockNumber}/${MAX_SAME_BLOCK}`
+        );
       }
       oldCurrentBlock = currentBlock;
     }
