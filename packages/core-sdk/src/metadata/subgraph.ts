@@ -290,7 +290,7 @@ function getProductV1ItemFromBundle(
   return bundle.items
     .filter(
       (item): item is ProductV1ItemMetadataEntity =>
-        item.type === ItemMetadataType.ItemProductV1
+        item.type === ItemMetadataType.ITEM_PRODUCT_V1
     )
     .filter((item) => item.productUuid === productUuid)
     .map((item) => {

@@ -20,14 +20,14 @@ services:
 
   hardhat-node:
     build: ../contracts
-    image: hardhat-node:be6ff0815e959fcc78377780ae6b06227528dde0_0
+    image: hardhat-node:be6ff0815e959fcc78377780ae6b06227528dde0_1
     ports:
       - "8545:8545"
     volumes:
       - ../contracts/scripts/deploy.js:/app/scripts/deploy.js
 
   graph-node:
-    image: graphprotocol/graph-node:v0.33.0 # TODO: find out why ^0.28.0 not starting to index
+    image: graphprotocol/graph-node:v0.33.0
     ports:
       - "8000:8000"
       - "8001:8001"

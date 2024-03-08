@@ -177,7 +177,7 @@ export async function revokeVoucher(
   ]);
 
   assertExchange(args.exchangeId, exchange);
-  assertExchangeState(exchange, ExchangeState.Committed);
+  assertExchangeState(exchange, ExchangeState.COMMITTED);
   assertSignerIsAssistant(signerAddress, exchange);
 
   return args.web3Lib.sendTransaction({
@@ -197,7 +197,7 @@ export async function cancelVoucher(
   ]);
 
   assertExchange(args.exchangeId, exchange);
-  assertExchangeState(exchange, ExchangeState.Committed);
+  assertExchangeState(exchange, ExchangeState.COMMITTED);
   assertSignerIsBuyer(signerAddress, exchange);
 
   return args.web3Lib.sendTransaction({
@@ -236,7 +236,7 @@ export async function redeemVoucher(
   ]);
 
   assertExchange(args.exchangeId, exchange);
-  assertExchangeState(exchange, ExchangeState.Committed);
+  assertExchangeState(exchange, ExchangeState.COMMITTED);
   assertSignerIsBuyer(signerAddress, exchange);
 
   if (Date.now() < Number(exchange.offer.voucherRedeemableFromDate) * 1000) {

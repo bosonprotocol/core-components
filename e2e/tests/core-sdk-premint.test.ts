@@ -112,7 +112,7 @@ describe("core-sdk-premint", () => {
       .wait();
     await waitForGraphNodeIndexing(receipt2);
     const exchange = await sellerCoreSDK.getExchangeById(exchangeId);
-    expect(exchange.state).toBe(ExchangeState.Committed);
+    expect(exchange.state).toBe(ExchangeState.COMMITTED);
   });
   test("raiseAndEscalateDispute with a preMinted exchange", async () => {
     const { coreSDK: buyerCoreSDK, fundedWallet: fundedBuyerWallet } =

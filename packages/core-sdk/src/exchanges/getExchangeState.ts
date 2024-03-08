@@ -18,7 +18,7 @@ export function getExchangeState(
   }
 
   if (
-    exchange.state === ExchangeState.Committed &&
+    exchange.state === ExchangeState.COMMITTED &&
     Number(exchange.validUntilDate) * 1000 < Date.now()
   ) {
     return ExtendedExchangeState.Expired;

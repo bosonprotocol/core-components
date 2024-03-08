@@ -33,7 +33,7 @@ describe("fundsEventLogs", () => {
     let eventLogs = await coreSDK.getEventLogs({
       logsFilter: {
         account: createdOffer.seller.id,
-        type: EventType.FundsEncumbered
+        type: EventType.FUNDS_ENCUMBERED
       }
     });
     expect(eventLogs.length).toEqual(0);
@@ -51,7 +51,7 @@ describe("fundsEventLogs", () => {
     eventLogs = await coreSDK.getEventLogs({
       logsFilter: {
         account: createdOffer.seller.id,
-        type: EventType.FundsEncumbered
+        type: EventType.FUNDS_ENCUMBERED
       }
     });
     expect(eventLogs.length).toEqual(1);

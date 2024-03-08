@@ -144,8 +144,8 @@ async function main() {
     const queryVars = {
       offersFirst: first,
       offersSkip: page * first,
-      offersOrderDirection: subgraph.OrderDirection.Asc,
-      offersOrderBy: subgraph.Offer_OrderBy.CreatedAt,
+      offersOrderDirection: subgraph.OrderDirection.ASC,
+      offersOrderBy: subgraph.Offer_OrderBy.CREATEDAT,
       offersFilter: {
         disputeResolverId: defaultConfig.defaultDisputeResolverId,
         id_in: list ? list.split(",") : undefined,

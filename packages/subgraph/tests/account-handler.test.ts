@@ -20,8 +20,8 @@ import {
   createSellerUpdateAppliedEvent,
   mockCreateProduct,
   createSeller,
-  mockOffer,
-  mockSeller
+  mockSeller,
+  mockOffer
 } from "./mocks";
 import { getSellerMetadataEntityId } from "../src/entities/metadata/seller";
 import {
@@ -275,12 +275,11 @@ test("add/remove product salesChannels", () => {
   assert.assertNotNull((salesChannelProductB as SalesChannel).tag);
   assert.assertTrue((salesChannelProductB as SalesChannel).tag == "DCL");
 
-  // mirrored values from `tests/metadata/product-v1-full.json`
   const productUuid = "77593bb2-f797-11ec-b939-0242ac120002";
   const productVersion = 1;
+
   const offerId = 1;
   const offer = mockOffer(offerId.toString(), sellerId);
-
   saveMetadata(offer, BigInt.fromI32(1651574093));
   const productId = getProductId(
     sellerId,

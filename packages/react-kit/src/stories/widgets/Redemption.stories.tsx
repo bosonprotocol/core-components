@@ -56,7 +56,7 @@ Redemption.args = {
   modalMargin: "2%",
   widgetAction: RedemptionWidgetAction.SELECT_EXCHANGE,
   showRedemptionOverview: true,
-  exchangeState: subgraph.ExchangeState.Committed,
+  exchangeState: subgraph.ExchangeState.COMMITTED,
   sendDeliveryInfoThroughXMTP: true,
   forcedAccount: "",
   withExternalSigner: false,

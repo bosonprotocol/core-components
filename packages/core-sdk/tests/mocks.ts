@@ -143,7 +143,7 @@ export function mockRawOfferFromSubgraph(
       animationUrl: "animationUrl",
       licenseUrl: "licenseUrl",
       schemaUrl: "schemaUrl",
-      type: MetadataType.Base,
+      type: MetadataType.BASE,
       image: "imageUrl",
       ...metadata
     } as OfferFieldsFragment["metadata"],
@@ -187,7 +187,7 @@ export function mockRawExchangeFromSubgraph(
   return {
     id: "1",
     disputed: false,
-    state: ExchangeState.Committed,
+    state: ExchangeState.COMMITTED,
     committedDate: utils.timestamp.msToSec(Date.now() - DAY_IN_MS).toString(),
     validUntilDate: utils.timestamp
       .msToSec(Date.now() + 3 * DAY_IN_MS)
@@ -234,7 +234,7 @@ export function buildProductV1Metadata(template: string) {
     licenseUrl: "licenseUrl",
     schemaUrl: "schemaUrl",
     image: "imageUrl",
-    type: subgraph.MetadataType.ProductV1,
+    type: subgraph.MetadataType.PRODUCT_V1,
     exchangePolicy: {
       template,
       sellerContactMethod: "Chat App in the dApp",

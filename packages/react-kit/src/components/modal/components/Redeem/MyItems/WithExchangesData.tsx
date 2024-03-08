@@ -13,8 +13,8 @@ import { Exchange } from "../../../../../types/exchange";
 import { useCurationLists } from "../../../../../hooks/useCurationLists";
 
 const orderProps = {
-  orderBy: Exchange_OrderBy.CommittedDate,
-  orderDirection: OrderDirection.Desc
+  orderBy: Exchange_OrderBy.COMMITTEDDATE,
+  orderDirection: OrderDirection.DESC
 } as const;
 
 interface CommonProps {
@@ -57,7 +57,7 @@ export function WithExchangesData(
     const committedExchanges = useExchanges(
       {
         ...orderProps,
-        state: ExchangeState.Committed,
+        state: ExchangeState.COMMITTED,
         buyer: buyerId,
         seller_in,
         ...(enableCurationLists && {
@@ -69,7 +69,7 @@ export function WithExchangesData(
     const cancelledExchanges = useExchanges(
       {
         ...orderProps,
-        state: ExchangeState.Cancelled,
+        state: ExchangeState.CANCELLED,
         buyer: buyerId,
         seller_in,
         ...(enableCurationLists && {
@@ -81,7 +81,7 @@ export function WithExchangesData(
     const disputedExchanges = useExchanges(
       {
         ...orderProps,
-        state: ExchangeState.Disputed,
+        state: ExchangeState.DISPUTED,
         buyer: buyerId,
         seller_in,
         ...(enableCurationLists && {
@@ -93,7 +93,7 @@ export function WithExchangesData(
     const redeemedExchanges = useExchanges(
       {
         ...orderProps,
-        state: ExchangeState.Redeemed,
+        state: ExchangeState.REDEEMED,
         buyer: buyerId,
         seller_in,
         ...(enableCurationLists && {
@@ -105,7 +105,7 @@ export function WithExchangesData(
     const completedExchanges = useExchanges(
       {
         ...orderProps,
-        state: ExchangeState.Completed,
+        state: ExchangeState.COMPLETED,
         buyer: buyerId,
         seller_in,
         ...(enableCurationLists && {
