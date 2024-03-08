@@ -9,3 +9,10 @@ export const digitalTypeMapping = {
   "digital-file": "digital-file",
   experiential: "experiential"
 } as const;
+
+export const digitalNftTypeMapping = {
+  wearable: "Wearable",
+  image: "Image",
+  event: "Event",
+  other: "Other"
+};

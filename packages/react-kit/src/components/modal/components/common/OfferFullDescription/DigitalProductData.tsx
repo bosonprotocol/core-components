@@ -9,13 +9,11 @@ import { Grid } from "../../../../ui/Grid";
 import { Typography } from "../../../../ui/Typography";
 import DetailTable from "../detail/DetailTable";
 import { SlickSlider, initialSettings } from "../detail/SlickSlider";
-import { digitalTypeMappingDisplay } from "../../../../../lib/bundle/const";
+import {
+  digitalNftTypeMapping,
+  digitalTypeMappingDisplay
+} from "../../../../../lib/bundle/const";
 
-const StyledDetailTable = styled(DetailTable)`
-  && {
-    padding-bottom: 0;
-  }
-`;
 const StyledDetailsSummary = styled(DetailsSummary)`
   .icon-wrapper {
     padding: 0;
@@ -69,7 +67,7 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
             summaryText={nftItem.name || nftItem.contract || ""}
             initiallyOpen={index === 0}
           >
-            <StyledDetailTable
+            <DetailTable
               align={false}
               noBorder
               data={[
@@ -103,14 +101,16 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
                         ? digitalTypeMappingDisplay[
                             attribute.value as keyof typeof digitalTypeMappingDisplay
                           ]
+                        : digitalNftTypeMapping[
+                            attribute.value as keyof typeof digitalNftTypeMapping
+                          ]
+                        ? digitalNftTypeMapping[
+                            attribute.value as keyof typeof digitalNftTypeMapping
+                          ]
                         : attribute.value}
                     </Typography>
                   )
                 })),
-                {
-                  name: "Shipping in days",
-                  value: <Typography tag="p">-</Typography>
-                },
                 ...(nftItem.tokenIdRange?.min && nftItem.tokenIdRange.max
                   ? [
                       {
@@ -123,7 +123,11 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
                         )
                       }
                     ]
-                  : [])
+                  : []),
+                ...(nftItem.terms || []).map((term) => ({
+                  name: term.displayKey || term.key,
+                  value: <Typography tag="p">{term.value}</Typography>
+                }))
               ]}
               inheritColor={false}
             />

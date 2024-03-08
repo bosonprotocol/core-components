@@ -181,7 +181,8 @@ export const TokenGatedItem = ({
     {
       enabled:
         !!condition?.tokenAddress &&
-        condition.tokenType === TokenType.FungibleToken
+        condition.tokenType === TokenType.FungibleToken,
+      coreSDK
     }
   );
   const { data: erc721TokenUri } = useErc721TokenUri(
@@ -193,7 +194,8 @@ export const TokenGatedItem = ({
       enabled:
         !!condition?.tokenAddress &&
         condition.tokenType === TokenType.NonFungibleToken &&
-        !!condition?.minTokenId
+        !!condition?.minTokenId,
+      coreSDK
     }
   );
   const { data: erc1155Uri } = useErc1155Uri(
@@ -205,7 +207,8 @@ export const TokenGatedItem = ({
       enabled:
         !!condition?.tokenAddress &&
         condition.tokenType === TokenType.MultiToken &&
-        !!condition?.minTokenId
+        !!condition?.minTokenId,
+      coreSDK
     }
   );
   const currency = useMemo(

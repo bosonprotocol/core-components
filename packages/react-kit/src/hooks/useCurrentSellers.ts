@@ -340,7 +340,8 @@ export function useCurrentSellers(
       tokenIds: profileIds
     },
     {
-      enabled: enableResultLens && enabled
+      enabled: enableResultLens && enabled,
+      coreSDK
     }
   );
   const lensOwners: (string | null)[] = useMemo(() => {

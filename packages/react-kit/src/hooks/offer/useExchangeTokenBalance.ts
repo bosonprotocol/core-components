@@ -4,6 +4,7 @@ import { BigNumber, ethers } from "ethers";
 import { useAccount, useBalance, useChainId } from "../connection/connection";
 import { useConfigContext } from "../../components/config/ConfigContext";
 import { useErc20Balance } from "../contracts/erc20/useErc20Balance";
+import { useCoreSDKWithContext } from "../core-sdk/useCoreSdkWithContext";
 
 export function useExchangeTokenBalance(
   exchangeToken: Pick<
@@ -13,6 +14,7 @@ export function useExchangeTokenBalance(
   { enabled }: { enabled: boolean }
 ) {
   const chainId = useChainId();
+  const coreSDK = useCoreSDKWithContext();
   const { config } = useConfigContext();
   const chainIdToUse = chainId ?? config.chainId;
   const { address } = useAccount();
@@ -29,7 +31,8 @@ export function useExchangeTokenBalance(
       owner: address
     },
     {
-      enabled: isErc20Enabled && enabled
+      enabled: isErc20Enabled && enabled,
+      coreSDK
     }
   );
   const isNativeEnabled = isNativeCoin && !!chainIdToUse;

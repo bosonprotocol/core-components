@@ -34,7 +34,7 @@ export const useGetTokenUriImage = (
             if (!tokenUri || !tokenId) {
               return "";
             }
-            if (tokenUri.toLowerCase().includes("json")) {
+            if (tokenUri.startsWith("data:application/json")) {
               const base64Data = tokenUri.substring(tokenUri.indexOf(",") + 1);
               const jsonValue = window.atob(base64Data);
               const parsedJson = JSON.parse(jsonValue);
@@ -70,6 +70,16 @@ export const useGetTokenUriImage = (
                 url: tokenUri,
                 tokenId
               });
+              const fetchedMetadata = await fetch(urlWithIdReplaced);
+              try {
+                const jsonMetadata = await fetchedMetadata.json();
+                const image = jsonMetadata.image;
+                const imageUrl = getImageUrl(image, ipfsGateway);
+                return imageUrl;
+              } catch (error) {
+                console.debug(error);
+              }
+
               return urlWithIdReplaced;
             }
 

@@ -62,7 +62,9 @@ const Wrapper = ({
   }
   return <>{children}</>;
 };
-
+export const PhygitalLabel = () => {
+  return <ProductCardLabelWrapper>Phygital</ProductCardLabelWrapper>;
+};
 export const ProductCard = (props: IProductCard) => {
   const {
     asterisk = false,
@@ -96,9 +98,7 @@ export const ProductCard = (props: IProductCard) => {
       }}
     >
       <ProductCardImageWrapper>
-        {isPhygital && (
-          <ProductCardLabelWrapper>Phygital</ProductCardLabelWrapper>
-        )}
+        {isPhygital && <PhygitalLabel />}
         <Image {...imageProps} />
       </ProductCardImageWrapper>
       <ProductCardBottom>

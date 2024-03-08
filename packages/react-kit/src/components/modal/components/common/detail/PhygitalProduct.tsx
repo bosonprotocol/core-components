@@ -42,13 +42,13 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
     {
       contractAddresses: contracts
     },
-    { enabled: !!contracts?.length }
+    { enabled: !!contracts?.length, coreSDK }
   );
   const { data: erc1155Names } = useErc1155Name(
     {
       contractAddresses: contracts
     },
-    { enabled: !!contracts?.length }
+    { enabled: !!contracts?.length, coreSDK }
   );
   const { data: ercImages } = useGetTokenUriImage(
     {

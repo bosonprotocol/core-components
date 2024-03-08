@@ -11,3 +11,8 @@ export * from "../components/widgets/finance/useOffersBacked";
 export * from "./contracts/useGetTokenUriImage";
 export * from "./products/useProductByUuid";
 export * from "./bundles/useBundleByUuid";
+export * from "./contracts/erc721/useErc721TokenUri";
+export * from "./contracts/erc721/useErc721Name";
+export * from "./contracts/erc721/useErc721OwnerOf";
+export * from "./contracts/erc1155/useErc1155Name";
+export * from "./contracts/erc1155/useErc1155Uri";
