@@ -282,9 +282,22 @@ export async function waitForGraphNodeIndexing(
   }
   if (blockToWaitFor > 0) {
     let currentBlock = await getSubgraphBlockNumber();
+    let oldCurrentBlock = 0;
+    let sameBlockNumber = 0;
     while (currentBlock < blockToWaitFor) {
-      await wait(200);
+      await wait(500);
       currentBlock = await getSubgraphBlockNumber();
+      if (currentBlock === oldCurrentBlock) {
+        if (sameBlockNumber++ >= 10) {
+          // Seems that the subgraph does not update its current block
+          console.error(
+            `Seems that the subgraph does not update its current block after ${currentBlock}`
+          );
+          await wait(1_000);
+          return;
+        }
+      }
+      oldCurrentBlock = currentBlock;
     }
     return;
   }
@@ -880,7 +893,9 @@ export async function publishNftContractMetadata(
 
 export async function getSubgraphBlockNumber(): Promise<number> {
   const client = new GraphQLClient(getFirstEnvConfig("local").subgraphUrl);
-  const response = await client.request<{ _meta?: { block?: { number?: number } } }>(gql`
+  const response = await client.request<{
+    _meta?: { block?: { number?: number } };
+  }>(gql`
     query MyQuery {
       _meta {
         block {
