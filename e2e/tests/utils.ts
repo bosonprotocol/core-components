@@ -284,7 +284,7 @@ export async function waitForGraphNodeIndexing(
     let currentBlock = await getSubgraphBlockNumber();
     let oldCurrentBlock = currentBlock;
     let sameBlockNumber = 0;
-    const MAX_SAME_BLOCK = 5;
+    const MAX_SAME_BLOCK = 20;
     while (currentBlock < blockToWaitFor) {
       await wait(200);
       currentBlock = await getSubgraphBlockNumber();
@@ -297,9 +297,6 @@ export async function waitForGraphNodeIndexing(
           await wait(1_000);
           return;
         }
-        console.log(
-          `${currentBlock} repeats ${sameBlockNumber}/${MAX_SAME_BLOCK}`
-        );
       }
       oldCurrentBlock = currentBlock;
     }

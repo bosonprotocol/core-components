@@ -113,8 +113,8 @@ module.exports = {
         balance: "1000000000000000000000000000"
       })),
       mining: {
-        auto: false,
-        interval: 200
+        auto: true,
+        interval: 5000
       }
     },
     localhost: {
