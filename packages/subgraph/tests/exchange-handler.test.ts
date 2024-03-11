@@ -157,3 +157,11 @@ test("handle VoucherExtendedEvent", () => {
     validUntil.toString()
   );
 });
+
+// TODO: add test for handleVoucherRevokedEvent
+// TODO: add test for handleVoucherCanceledEvent
+// TODO: add test for handleVoucherExpiredEvent
+// TODO: add test for handleVoucherRedeemedEvent
+// TODO: add test for handleVoucherTransferredEvent
+// TODO: add test for handleExchangeCompletedEvent
+// TODO: add test for handleConditionalCommitAuthorizedEvent

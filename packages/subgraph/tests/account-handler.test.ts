@@ -325,3 +325,17 @@ function checkProductSalesChannelsLength(
       expected
   );
 }
+
+// TODO: add test for handleSellerUpdatePendingEvent
+// TODO: add test for handleDisputeResolverCreatedEvent
+// TODO: add test for handleDisputeResolverUpdatePendingEvent
+// TODO: add test for handleDisputeResolverUpdateAppliedEvent
+// TODO: add test for handleDisputeResolverFeesAddedEvent
+// TODO: add test for handleDisputeResolverFeesRemovedEvent
+// TODO: add test for handleAllowedSellersAddedEvent
+// TODO: add test for handleAllowedSellersRemovedEvent
+// TODO: add test for handleCollectionCreatedEvent
+// TODO: add test for handleSellerUpdateAppliedEventLegacy
+// TODO: add test for handleSellerUpdatePendingEventLegacy
+// TODO: add test for handleDisputeResolverUpdatedEvent (?)
+// TODO: add test for handleDisputeResolverActivatedEvent (?)
