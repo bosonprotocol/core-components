@@ -1336,9 +1336,22 @@ export type ConditionEntity = {
   maxTokenId: Scalars["BigInt"]["output"];
   method: Scalars["Int"]["output"];
   minTokenId: Scalars["BigInt"]["output"];
+  offers?: Maybe<Array<Offer>>;
   threshold: Scalars["BigInt"]["output"];
   tokenAddress: Scalars["Bytes"]["output"];
   tokenType: Scalars["Int"]["output"];
+};
+
+/**
+ * Groups
+ *
+ */
+export type ConditionEntityOffersArgs = {
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<Offer_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  where?: InputMaybe<Offer_Filter>;
 };
 
 export type ConditionEntity_Filter = {
@@ -1393,6 +1406,7 @@ export type ConditionEntity_Filter = {
   minTokenId_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
   minTokenId_not?: InputMaybe<Scalars["BigInt"]["input"]>;
   minTokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  offers_?: InputMaybe<Offer_Filter>;
   or?: InputMaybe<Array<InputMaybe<ConditionEntity_Filter>>>;
   threshold?: InputMaybe<Scalars["BigInt"]["input"]>;
   threshold_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
@@ -1429,6 +1443,7 @@ export enum ConditionEntity_OrderBy {
   MAXTOKENID = "maxTokenId",
   METHOD = "method",
   MINTOKENID = "minTokenId",
+  OFFERS = "offers",
   THRESHOLD = "threshold",
   TOKENADDRESS = "tokenAddress",
   TOKENTYPE = "tokenType"
@@ -13808,6 +13823,33 @@ export type GetSellerByIdQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -15202,6 +15244,33 @@ export type GetSellersQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -17000,6 +17069,33 @@ export type GetDisputeResolverByIdQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -18194,6 +18290,33 @@ export type GetDisputeResolversQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -19471,6 +19594,33 @@ export type GetOfferCollectionsQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -20647,6 +20797,33 @@ export type OfferCollectionFieldsFragment = {
       maxTokenId: string;
       threshold: string;
       maxCommits: string;
+      offers?: Array<{
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+      }> | null;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -21789,6 +21966,33 @@ export type SellerFieldsFragment = {
       maxTokenId: string;
       threshold: string;
       maxCommits: string;
+      offers?: Array<{
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+      }> | null;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -23442,6 +23646,33 @@ export type DisputeResolverFieldsFragment = {
       maxTokenId: string;
       threshold: string;
       maxCommits: string;
+      offers?: Array<{
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+      }> | null;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -25330,6 +25561,33 @@ export type GetExchangeTokenByIdQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -26435,6 +26693,33 @@ export type GetExchangeTokensQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -27518,6 +27803,33 @@ export type ExchangeTokenFieldsFragment = {
       maxTokenId: string;
       threshold: string;
       maxCommits: string;
+      offers?: Array<{
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+      }> | null;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -28772,6 +29084,33 @@ export type GetExchangeByIdQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -29959,6 +30298,33 @@ export type GetExchangesQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -31136,6 +31502,33 @@ export type ExchangeFieldsFragment = {
       maxTokenId: string;
       threshold: string;
       maxCommits: string;
+      offers?: Array<{
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+      }> | null;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -32428,6 +32821,33 @@ export type BaseConditionFieldsFragment = {
   maxTokenId: string;
   threshold: string;
   maxCommits: string;
+  offers?: Array<{
+    __typename?: "Offer";
+    id: string;
+    price: string;
+    sellerDeposit: string;
+    protocolFee: string;
+    agentFee: string;
+    agentId: string;
+    buyerCancelPenalty: string;
+    quantityAvailable: string;
+    quantityInitial: string;
+    validFromDate: string;
+    validUntilDate: string;
+    voucherRedeemableFromDate: string;
+    voucherRedeemableUntilDate: string;
+    disputePeriodDuration: string;
+    voucherValidDuration: string;
+    resolutionPeriodDuration: string;
+    metadataUri: string;
+    metadataHash: string;
+    voided: boolean;
+    voidedAt?: string | null;
+    collectionIndex: string;
+    disputeResolverId: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
+  }> | null;
 };
 
 export type GetBaseMetadataEntityByIdQueryQueryVariables = Exact<{
@@ -32511,6 +32931,33 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -33703,6 +34150,33 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -34885,6 +35359,33 @@ export type BaseMetadataEntityFieldsFragment = {
       maxTokenId: string;
       threshold: string;
       maxCommits: string;
+      offers?: Array<{
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+      }> | null;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -36054,6 +36555,33 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       maxTokenId: string;
       threshold: string;
       maxCommits: string;
+      offers?: Array<{
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+      }> | null;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -37344,6 +37872,33 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -39068,6 +39623,33 @@ export type GetBundleMetadataEntitiesQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -40782,6 +41364,33 @@ export type BundleMetadataEntityFieldsFragment = {
       maxTokenId: string;
       threshold: string;
       maxCommits: string;
+      offers?: Array<{
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+      }> | null;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -42483,6 +43092,33 @@ export type BaseBundleMetadataEntityFieldsFragment = {
       maxTokenId: string;
       threshold: string;
       maxCommits: string;
+      offers?: Array<{
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+      }> | null;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -44426,6 +45062,33 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           maxTokenId: string;
           threshold: string;
           maxCommits: string;
+          offers?: Array<{
+            __typename?: "Offer";
+            id: string;
+            price: string;
+            sellerDeposit: string;
+            protocolFee: string;
+            agentFee: string;
+            agentId: string;
+            buyerCancelPenalty: string;
+            quantityAvailable: string;
+            quantityInitial: string;
+            validFromDate: string;
+            validUntilDate: string;
+            voucherRedeemableFromDate: string;
+            voucherRedeemableUntilDate: string;
+            disputePeriodDuration: string;
+            voucherValidDuration: string;
+            resolutionPeriodDuration: string;
+            metadataUri: string;
+            metadataHash: string;
+            voided: boolean;
+            voidedAt?: string | null;
+            collectionIndex: string;
+            disputeResolverId: string;
+            numberOfCommits: string;
+            numberOfRedemptions: string;
+          }> | null;
         } | null;
         seller: {
           __typename?: "Seller";
@@ -45641,6 +46304,33 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             maxTokenId: string;
             threshold: string;
             maxCommits: string;
+            offers?: Array<{
+              __typename?: "Offer";
+              id: string;
+              price: string;
+              sellerDeposit: string;
+              protocolFee: string;
+              agentFee: string;
+              agentId: string;
+              buyerCancelPenalty: string;
+              quantityAvailable: string;
+              quantityInitial: string;
+              validFromDate: string;
+              validUntilDate: string;
+              voucherRedeemableFromDate: string;
+              voucherRedeemableUntilDate: string;
+              disputePeriodDuration: string;
+              voucherValidDuration: string;
+              resolutionPeriodDuration: string;
+              metadataUri: string;
+              metadataHash: string;
+              voided: boolean;
+              voidedAt?: string | null;
+              collectionIndex: string;
+              disputeResolverId: string;
+              numberOfCommits: string;
+              numberOfRedemptions: string;
+            }> | null;
           } | null;
           seller: {
             __typename?: "Seller";
@@ -47547,6 +48237,33 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           maxTokenId: string;
           threshold: string;
           maxCommits: string;
+          offers?: Array<{
+            __typename?: "Offer";
+            id: string;
+            price: string;
+            sellerDeposit: string;
+            protocolFee: string;
+            agentFee: string;
+            agentId: string;
+            buyerCancelPenalty: string;
+            quantityAvailable: string;
+            quantityInitial: string;
+            validFromDate: string;
+            validUntilDate: string;
+            voucherRedeemableFromDate: string;
+            voucherRedeemableUntilDate: string;
+            disputePeriodDuration: string;
+            voucherValidDuration: string;
+            resolutionPeriodDuration: string;
+            metadataUri: string;
+            metadataHash: string;
+            voided: boolean;
+            voidedAt?: string | null;
+            collectionIndex: string;
+            disputeResolverId: string;
+            numberOfCommits: string;
+            numberOfRedemptions: string;
+          }> | null;
         } | null;
         seller: {
           __typename?: "Seller";
@@ -48762,6 +49479,33 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             maxTokenId: string;
             threshold: string;
             maxCommits: string;
+            offers?: Array<{
+              __typename?: "Offer";
+              id: string;
+              price: string;
+              sellerDeposit: string;
+              protocolFee: string;
+              agentFee: string;
+              agentId: string;
+              buyerCancelPenalty: string;
+              quantityAvailable: string;
+              quantityInitial: string;
+              validFromDate: string;
+              validUntilDate: string;
+              voucherRedeemableFromDate: string;
+              voucherRedeemableUntilDate: string;
+              disputePeriodDuration: string;
+              voucherValidDuration: string;
+              resolutionPeriodDuration: string;
+              metadataUri: string;
+              metadataHash: string;
+              voided: boolean;
+              voidedAt?: string | null;
+              collectionIndex: string;
+              disputeResolverId: string;
+              numberOfCommits: string;
+              numberOfRedemptions: string;
+            }> | null;
           } | null;
           seller: {
             __typename?: "Seller";
@@ -50682,6 +51426,33 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -52297,6 +53068,33 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -53902,6 +54700,33 @@ export type ProductV1MetadataEntityFieldsFragment = {
       maxTokenId: string;
       threshold: string;
       maxCommits: string;
+      offers?: Array<{
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+      }> | null;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -55494,6 +56319,33 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       maxTokenId: string;
       threshold: string;
       maxCommits: string;
+      offers?: Array<{
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+      }> | null;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -57299,6 +58151,33 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -58514,6 +59393,33 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           maxTokenId: string;
           threshold: string;
           maxCommits: string;
+          offers?: Array<{
+            __typename?: "Offer";
+            id: string;
+            price: string;
+            sellerDeposit: string;
+            protocolFee: string;
+            agentFee: string;
+            agentId: string;
+            buyerCancelPenalty: string;
+            quantityAvailable: string;
+            quantityInitial: string;
+            validFromDate: string;
+            validUntilDate: string;
+            voucherRedeemableFromDate: string;
+            voucherRedeemableUntilDate: string;
+            disputePeriodDuration: string;
+            voucherValidDuration: string;
+            resolutionPeriodDuration: string;
+            metadataUri: string;
+            metadataHash: string;
+            voided: boolean;
+            voidedAt?: string | null;
+            collectionIndex: string;
+            disputeResolverId: string;
+            numberOfCommits: string;
+            numberOfRedemptions: string;
+          }> | null;
         } | null;
         seller: {
           __typename?: "Seller";
@@ -60409,6 +61315,33 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         maxTokenId: string;
         threshold: string;
         maxCommits: string;
+        offers?: Array<{
+          __typename?: "Offer";
+          id: string;
+          price: string;
+          sellerDeposit: string;
+          protocolFee: string;
+          agentFee: string;
+          agentId: string;
+          buyerCancelPenalty: string;
+          quantityAvailable: string;
+          quantityInitial: string;
+          validFromDate: string;
+          validUntilDate: string;
+          voucherRedeemableFromDate: string;
+          voucherRedeemableUntilDate: string;
+          disputePeriodDuration: string;
+          voucherValidDuration: string;
+          resolutionPeriodDuration: string;
+          metadataUri: string;
+          metadataHash: string;
+          voided: boolean;
+          voidedAt?: string | null;
+          collectionIndex: string;
+          disputeResolverId: string;
+          numberOfCommits: string;
+          numberOfRedemptions: string;
+        }> | null;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -61624,6 +62557,33 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           maxTokenId: string;
           threshold: string;
           maxCommits: string;
+          offers?: Array<{
+            __typename?: "Offer";
+            id: string;
+            price: string;
+            sellerDeposit: string;
+            protocolFee: string;
+            agentFee: string;
+            agentId: string;
+            buyerCancelPenalty: string;
+            quantityAvailable: string;
+            quantityInitial: string;
+            validFromDate: string;
+            validUntilDate: string;
+            voucherRedeemableFromDate: string;
+            voucherRedeemableUntilDate: string;
+            disputePeriodDuration: string;
+            voucherValidDuration: string;
+            resolutionPeriodDuration: string;
+            metadataUri: string;
+            metadataHash: string;
+            voided: boolean;
+            voidedAt?: string | null;
+            collectionIndex: string;
+            disputeResolverId: string;
+            numberOfCommits: string;
+            numberOfRedemptions: string;
+          }> | null;
         } | null;
         seller: {
           __typename?: "Seller";
@@ -63722,6 +64682,33 @@ export type GetOfferByIdQueryQuery = {
       maxTokenId: string;
       threshold: string;
       maxCommits: string;
+      offers?: Array<{
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+      }> | null;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -64903,6 +65890,33 @@ export type GetOffersQueryQuery = {
       maxTokenId: string;
       threshold: string;
       maxCommits: string;
+      offers?: Array<{
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        collectionIndex: string;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+      }> | null;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -66176,6 +67190,33 @@ export type OfferFieldsFragment = {
     maxTokenId: string;
     threshold: string;
     maxCommits: string;
+    offers?: Array<{
+      __typename?: "Offer";
+      id: string;
+      price: string;
+      sellerDeposit: string;
+      protocolFee: string;
+      agentFee: string;
+      agentId: string;
+      buyerCancelPenalty: string;
+      quantityAvailable: string;
+      quantityInitial: string;
+      validFromDate: string;
+      validUntilDate: string;
+      voucherRedeemableFromDate: string;
+      voucherRedeemableUntilDate: string;
+      disputePeriodDuration: string;
+      voucherValidDuration: string;
+      resolutionPeriodDuration: string;
+      metadataUri: string;
+      metadataHash: string;
+      voided: boolean;
+      voidedAt?: string | null;
+      collectionIndex: string;
+      disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
+    }> | null;
   } | null;
   seller: {
     __typename?: "Seller";
@@ -67232,6 +68273,33 @@ export type BaseOfferFieldsFragment = {
     maxTokenId: string;
     threshold: string;
     maxCommits: string;
+    offers?: Array<{
+      __typename?: "Offer";
+      id: string;
+      price: string;
+      sellerDeposit: string;
+      protocolFee: string;
+      agentFee: string;
+      agentId: string;
+      buyerCancelPenalty: string;
+      quantityAvailable: string;
+      quantityInitial: string;
+      validFromDate: string;
+      validUntilDate: string;
+      voucherRedeemableFromDate: string;
+      voucherRedeemableUntilDate: string;
+      disputePeriodDuration: string;
+      voucherValidDuration: string;
+      resolutionPeriodDuration: string;
+      metadataUri: string;
+      metadataHash: string;
+      voided: boolean;
+      voidedAt?: string | null;
+      collectionIndex: string;
+      disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
+    }> | null;
   } | null;
   seller: {
     __typename?: "Seller";
@@ -68378,6 +69446,32 @@ export const BaseConditionFieldsFragmentDoc = gql`
     maxTokenId
     threshold
     maxCommits
+    offers {
+      id
+      price
+      sellerDeposit
+      protocolFee
+      agentFee
+      agentId
+      buyerCancelPenalty
+      quantityAvailable
+      quantityInitial
+      validFromDate
+      validUntilDate
+      voucherRedeemableFromDate
+      voucherRedeemableUntilDate
+      disputePeriodDuration
+      voucherValidDuration
+      resolutionPeriodDuration
+      metadataUri
+      metadataHash
+      voided
+      voidedAt
+      collectionIndex
+      disputeResolverId
+      numberOfCommits
+      numberOfRedemptions
+    }
   }
 `;
 export const BaseExchangeTokenFieldsFragmentDoc = gql`

@@ -920,6 +920,7 @@ type ConditionEntity @entity {
   maxTokenId: BigInt!
   threshold: BigInt!
   maxCommits: BigInt!
+  offers: [Offer!] @derivedFrom(field: "condition")
 }
 
 """

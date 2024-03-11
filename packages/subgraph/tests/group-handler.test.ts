@@ -63,6 +63,95 @@ test("handle GroupCreated event", () => {
   }
 });
 
+test("handle GroupUpdated event", () => {
+  for (let i = 0; i < offerIds.length; i++) {
+    const offerId = offerIds[i];
+    mockOffer(offerId.toString(), sellerId.toString());
+    checkOfferHasNoCondition(offerId.toString());
+  }
+  for (let i = 0; i < offerIds_2.length; i++) {
+    const offerId = offerIds_2[i];
+    mockOffer(offerId.toString(), sellerId.toString());
+    checkOfferHasNoCondition(offerId.toString());
+  }
+  const groupCreatedEvent = createGroupCreatedEvent(
+    groupId,
+    sellerId,
+    offerIds,
+    method,
+    tokenType,
+    tokenAddress,
+    gating,
+    minTokenId,
+    threshold,
+    maxCommits,
+    maxTokenId,
+    executedBy
+  );
+  handleGroupCreatedEvent(groupCreatedEvent);
+  assert.fieldEquals(
+    "ConditionEntity",
+    groupId.toString(),
+    "id",
+    groupId.toString()
+  );
+  assert.fieldEquals(
+    "ConditionEntity",
+    groupId.toString(),
+    "tokenAddress",
+    tokenAddress
+  );
+  for (let i = 0; i < offerIds.length; i++) {
+    const offerId = offerIds[i];
+    assert.fieldEquals(
+      "Offer",
+      offerId.toString(),
+      "condition",
+      groupId.toString()
+    );
+  }
+  const groupUpdatedEvent = createGroupUpdatedEvent(
+    groupId,
+    sellerId,
+    offerIds_2,
+    method,
+    tokenType,
+    tokenAddress_2,
+    gating,
+    minTokenId,
+    threshold,
+    maxCommits,
+    maxTokenId,
+    executedBy
+  );
+  handleGroupUpdatedEvent(groupUpdatedEvent);
+  assert.fieldEquals(
+    "ConditionEntity",
+    groupId.toString(),
+    "id",
+    groupId.toString()
+  );
+  assert.fieldEquals(
+    "ConditionEntity",
+    groupId.toString(),
+    "tokenAddress",
+    tokenAddress_2
+  );
+  for (let i = 0; i < offerIds.length; i++) {
+    const offerId = offerIds[i];
+    checkOfferHasNoCondition(offerId.toString());
+  }
+  for (let i = 0; i < offerIds_2.length; i++) {
+    const offerId = offerIds_2[i];
+    assert.fieldEquals(
+      "Offer",
+      offerId.toString(),
+      "condition",
+      groupId.toString()
+    );
+  }
+});
+
 function checkOfferHasNoCondition(offerId: string): void {
   const offer = Offer.load(offerId);
   log.debug("check offer {} exists", [offerId]);
