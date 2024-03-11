@@ -55,6 +55,7 @@ import { getNonce, verifyEIP712 } from "../forwarder/handler";
 import { MockForwardRequest } from "../forwarder/mock-interface";
 import { isTrustedForwarder } from "../voucher/handler";
 import { findCollectionSalt } from "../accounts/handler";
+import { storeMetadataItems } from "../metadata/storeMetadataItems";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -463,20 +464,10 @@ export async function signMetaTxCreateOffer(
     metadataStorage: args.metadataStorage,
     theGraphStorage: args.theGraphStorage
   });
-  const offerMetadata = await args.metadataStorage?.getMetadata(
-    args.createOfferArgs.metadataUri
-  );
-  if (offerMetadata.type === "BUNDLE") {
-    await Promise.all(
-      offerMetadata.items.map((item) => {
-        return storeMetadataOnTheGraph({
-          metadataUriOrHash: item.url,
-          metadataStorage: args.metadataStorage,
-          theGraphStorage: args.theGraphStorage
-        });
-      })
-    );
-  }
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.createOfferArgs]
+  });
 
   return signMetaTx({
     ...args,
@@ -508,6 +499,7 @@ export async function signMetaTxCreateOfferBatch(
       })
     )
   );
+  await storeMetadataItems(args);
 
   return signMetaTx({
     ...args,
@@ -807,6 +799,11 @@ export async function signMetaTxCreateOfferWithCondition(
     metadataUriOrHash: args.offerToCreate.metadataUri,
     metadataStorage: args.metadataStorage,
     theGraphStorage: args.theGraphStorage
+  });
+
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.offerToCreate]
   });
 
   return signMetaTx({
