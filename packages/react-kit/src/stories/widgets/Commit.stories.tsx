@@ -42,6 +42,7 @@ Commit.args = {
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
+  bundleUuid: "",
   productUuid: "086b32-3fcd-00d1-0624-67513e85415c", // with size variations
   sellerId: "138",
   metaTx: {
@@ -80,6 +81,7 @@ CommitTokenGated_ERC20.args = {
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
+  bundleUuid: "",
   productUuid: "cc482a1-c004-d003-c3ca-a1ed7537af1", // token gated no variations
   sellerId: "138",
   metaTx: {
@@ -119,6 +121,7 @@ CommitWithColorAndSizeVariations.args = {
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
+  bundleUuid: "",
   productUuid: "1d4573d-42e-f557-0032-b1ab8170c102", // with color and size variations
   sellerId: "138",
   metaTx: {
@@ -157,6 +160,7 @@ CommitTokenGated_ERC721.args = {
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
+  bundleUuid: "",
   productUuid: "ce7faab-00c-26-a351-c71f615c07c2",
   sellerId: "138",
   metaTx: {
@@ -195,6 +199,7 @@ CommitTokenGated_ERC721_2.args = {
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
+  bundleUuid: "",
   productUuid: "5d14af-ee3b-8ea2-c4bc-4ab732c4b05c",
   sellerId: "26",
   metaTx: {
@@ -233,6 +238,7 @@ CommitTokenGated_ERC1155.args = {
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
+  bundleUuid: "",
   productUuid: "d75860e-da32-224-870e-2a884c51a2ee", // token gated 1155
   sellerId: "138",
   metaTx: {
