@@ -41,14 +41,13 @@ test("EthConnectAdapter getSignerAddress with signer", async () => {
   expect(signerAddress).toEqual(WALLETS[2]);
 });
 
-
 function mockProvider(): Provider {
   return {
     getBalance: async () => {
       return { toString: () => BALANCE };
     },
     call: async () => CALL_RET,
-    getTransactionReceipt: async (txHash: string) => {
+    getTransactionReceipt: async () => {
       return {
         status: 1, // 0 means failure
         transactionHash: TX_HASH,
@@ -57,9 +56,9 @@ function mockProvider(): Provider {
         blockNumber: BLOCK_NUMBER
       };
     },
-    send: async (t: any) => TX_HASH,
+    send: async () => TX_HASH,
     getSigner: () => mockSigner(WALLETS[0]),
-    getCode: async (address: string) => "0x"
+    getCode: async () => "0x"
   } as unknown as Provider;
 }
 
