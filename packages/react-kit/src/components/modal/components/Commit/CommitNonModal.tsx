@@ -168,12 +168,7 @@ function CommitNonModal({
   if (isLoading) {
     return <Loading />;
   }
-  console.log("variants", variants, {
-    defaultVariant,
-    variants,
-    firstNotVoidedVariant,
-    firstVariant
-  });
+
   if (!selectedVariant) {
     return <p>This product could not be loaded</p>;
   }

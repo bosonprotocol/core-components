@@ -41,36 +41,43 @@ interface IGetOfferDetails {
       >["items"]
     | undefined;
 }
-
+type ProductV1Sub = Pick<
+  subgraph.ProductV1MetadataEntity,
+  "shipping" | "productOverrides"
+> & {
+  product: Pick<
+    subgraph.ProductV1MetadataEntity["product"],
+    "title" | "description" | "visuals_images"
+  >;
+  productV1Seller: Pick<
+    subgraph.ProductV1MetadataEntity["productV1Seller"],
+    "images" | "description"
+  >;
+};
+type ProductV1Subitem = Pick<
+  subgraph.ProductV1ItemMetadataEntity,
+  "shipping" | "productOverrides"
+> & {
+  product: Pick<
+    subgraph.ProductV1ItemMetadataEntity["product"],
+    "title" | "description" | "visuals_images"
+  >;
+  productV1Seller: Pick<
+    subgraph.ProductV1ItemMetadataEntity["productV1Seller"],
+    "images" | "description"
+  >;
+};
 export const getOfferDetails = (
   offer: Offer | subgraph.OfferFieldsFragment
 ): IGetOfferDetails => {
   const productV1ItemMetadataEntity:
-    | (Pick<subgraph.ProductV1MetadataEntity, "shipping"> & {
-        product: Pick<
-          subgraph.ProductV1MetadataEntity["product"],
-          "title" | "description" | "visuals_images"
-        >;
-        productV1Seller: Pick<
-          subgraph.ProductV1MetadataEntity["productV1Seller"],
-          "images" | "description"
-        >;
-      })
-    | (Pick<subgraph.ProductV1ItemMetadataEntity, "shipping"> & {
-        product: Pick<
-          subgraph.ProductV1ItemMetadataEntity["product"],
-          "title" | "description" | "visuals_images"
-        >;
-        productV1Seller: Pick<
-          subgraph.ProductV1ItemMetadataEntity["productV1Seller"],
-          "images" | "description"
-        >;
-      })
+    | ProductV1Sub
+    | ProductV1Subitem
     | undefined = isProductV1(offer)
-    ? offer.metadata
+    ? (offer.metadata as ProductV1Sub)
     : isBundle(offer)
     ? (offer.metadata?.items?.find((item) => isProductV1Item(item)) as
-        | subgraph.ProductV1ItemMetadataEntity
+        | ProductV1Subitem
         | undefined)
     : undefined;
   const name =
@@ -102,13 +109,17 @@ export const getOfferDetails = (
     productV1ItemMetadataEntity?.product?.visuals_images?.map(
       ({ url }: { url: string }) => url
     ) || [];
+  const variantsImages =
+    productV1ItemMetadataEntity?.productOverrides?.visuals_images?.map(
+      ({ url }: { url: string }) => url
+    ) || [];
   const bundleItems = isBundle(offer) ? offer.metadata.items : undefined;
   const nftItems = bundleItems
     ? bundleItems.filter((item): item is subgraph.NftItemMetadataEntity =>
         isNftItem(item)
       )
     : undefined;
-  const mainImage = offerImg || images?.[0] || "";
+  const mainImage = offerImg || variantsImages?.[0] || images?.[0] || "";
   return {
     display: false,
     name,
@@ -118,7 +129,7 @@ export const getOfferDetails = (
     description,
     artist,
     artistDescription,
-    images,
+    images: variantsImages?.length ? variantsImages : images,
     bundleItems,
     nftItems,
     mainImage

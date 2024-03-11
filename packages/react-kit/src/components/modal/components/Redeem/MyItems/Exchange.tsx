@@ -68,8 +68,8 @@ export default function Exchange({
   const lens = {} as any;
   const { ipfsGateway } = useIpfsContext();
   const avatar = getLensImageUrl(getLensProfilePictureUrl(lens), ipfsGateway);
-  const { mainImage } = getOfferDetails(offer);
-  const offerImageUrl = offer.metadata?.imageUrl || mainImage || "";
+  const { mainImage, offerImg } = getOfferDetails(offer);
+  const offerImageUrl = offer.metadata?.imageUrl || offerImg || mainImage || "";
   const imageSrc = getImageUrl(offerImageUrl, ipfsGateway, {
     height: 500
   });
