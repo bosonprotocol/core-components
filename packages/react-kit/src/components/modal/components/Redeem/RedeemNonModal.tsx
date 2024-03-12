@@ -324,8 +324,9 @@ function RedeemNonModal({
     exchangeState,
     deliveryInfo: initialDeliveryInfo
   } = useRedemptionContext();
+
   const emailPreference =
-    exchange?.offer?.metadata?.productV1Seller?.contactPreference ===
+    exchange?.seller.metadata?.contactPreference ===
     ContactPreference.XMTP_AND_EMAIL;
   const validationSchema = useMemo(() => {
     return Yup.object({

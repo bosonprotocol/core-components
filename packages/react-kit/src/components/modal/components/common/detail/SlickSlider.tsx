@@ -204,7 +204,7 @@ export const SlickSlider: React.FC<SlickSliderProps> = ({
       $alignLeft={alignLeft ?? false}
       $hasSomeActive={activeIndex !== undefined}
     >
-      <Slider {...settings}>
+      <Slider {...settings} key={JSON.stringify(mediaFiles)}>
         {mediaFiles?.map(({ url, type }, index: number) =>
           type === "image" ? (
             <IpfsImage

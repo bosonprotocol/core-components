@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAccount } from "../../../../hooks/connection/connection";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
-import { ReturnUseProductByUuid } from "../../../../hooks/products/useProductByUuid";
 import { theme } from "../../../../theme";
 import { Exchange } from "../../../../types/exchange";
 import { VariantV1 } from "../../../../types/variants";
@@ -9,16 +8,16 @@ import Loading from "../../../ui/loading/Loading";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import { BosonFooter } from "../common/BosonFooter";
 import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
+import {
+  DetailContextProps,
+  DetailViewProvider
+} from "../common/detail/DetailViewProvider";
 import { CommitSuccess } from "./CommitSuccess/CommitSuccess";
 import { ContractualAgreementView } from "./ContractualAgreementView/ContractualAgreementView";
 import { LicenseAgreementView } from "./LicenseAgreementView/LicenseAgreementView";
 import { OfferFullDescriptionView } from "./OfferFullDescriptionView/OfferFullDescriptionView";
 import { CommitOfferPolicyView } from "./OfferPolicyView/CommitOfferPolicyView";
 import { OfferVariantView, OfferVariantViewProps } from "./OfferVariantView";
-import {
-  DetailContextProps,
-  DetailViewProvider
-} from "../common/detail/DetailViewProvider";
 
 const colors = theme.colors.light;
 enum CommitStep {
@@ -35,7 +34,7 @@ export type CommitNonModalProps = Pick<
   OfferVariantViewProps,
   "onClickBuyOrSwap" | "onAlreadyOwnOfferClick"
 > & {
-  product?: ReturnUseProductByUuid;
+  variants: VariantV1[] | undefined;
   showBosonLogo?: boolean;
   defaultSelectedOfferId?: string;
   disableVariationsSelects?: boolean;
@@ -69,7 +68,7 @@ export default function CommitWrapper({
 }
 
 function CommitNonModal({
-  product: productResult,
+  variants,
   showBosonLogo,
   defaultSelectedOfferId,
   disableVariationsSelects,
@@ -81,16 +80,12 @@ function CommitNonModal({
   onClickBuyOrSwap,
   forcedAccount
 }: CommitNonModalProps) {
-  const variants = productResult?.variants;
-  const variantsWithV1 = variants?.filter(
-    ({ offer: { metadata } }) => metadata?.type === "PRODUCT_V1"
-  ) as VariantV1[] | undefined;
-  const firstVariant = variantsWithV1?.[0];
-  const firstNotVoidedVariant = variantsWithV1?.find(
+  const firstVariant = variants?.[0];
+  const firstNotVoidedVariant = variants?.find(
     (variant) => !variant.offer.voided
   );
   const defaultVariant = defaultSelectedOfferId
-    ? variantsWithV1?.find(
+    ? variants?.find(
         (variant) => variant.offer.id === defaultSelectedOfferId
       ) ??
       firstNotVoidedVariant ??
@@ -101,6 +96,7 @@ function CommitNonModal({
     exchangeId: Exchange["id"];
     txHash: string;
   } | null>(null);
+
   const [selectedVariant, setSelectedVariant] = useState<VariantV1 | undefined>(
     defaultVariant
   );
@@ -182,7 +178,7 @@ function CommitNonModal({
       {currentStep === CommitStep.OFFER_VIEW ? (
         <OfferVariantView
           showBosonLogo={showBosonLogo}
-          allVariants={variantsWithV1 ?? [selectedVariant]}
+          allVariants={variants ?? [selectedVariant]}
           selectedVariant={selectedVariant}
           setSelectedVariant={setSelectedVariant}
           disableVariationsSelects={disableVariationsSelects}

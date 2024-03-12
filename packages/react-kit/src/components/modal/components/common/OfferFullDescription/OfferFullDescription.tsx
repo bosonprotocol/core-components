@@ -16,6 +16,9 @@ import { SlickSlider, initialSettings } from "../detail/SlickSlider";
 import { OnClickBuyOrSwapHandler } from "../detail/types";
 import { UseGetOfferDetailDataProps } from "../detail/useGetOfferDetailData";
 import { GeneralProductData } from "./GeneralProductData";
+import { DigitalProductData } from "./DigitalProductData";
+import { PhysicalProductData } from "./PhysicalProductData";
+import { Overview } from "./Overview";
 
 const InventoryGraph = styled(DetailChart)`
   width: 100%;
@@ -26,6 +29,7 @@ const InventoryGraph = styled(DetailChart)`
 export type OfferFullDescriptionProps = OnClickBuyOrSwapHandler & {
   imagesToShow?: number;
   offer: Offer;
+  includeOverviewTab: boolean;
   includeGeneralProductDataTab: boolean;
   exchange: Exchange | null;
   className?: string;
@@ -34,6 +38,7 @@ export type OfferFullDescriptionProps = OnClickBuyOrSwapHandler & {
   Pick<TabsProps, "withFullViewportWidth">;
 
 const ids = [
+  "overview",
   "general-product-data",
   "physical-product-data",
   "phygital-product-data",
@@ -47,35 +52,13 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
   exchange,
   className,
   withFullViewportWidth,
+  includeOverviewTab,
   includeGeneralProductDataTab,
   defaultSelectedTabId,
   onExchangePolicyClick,
   onClickBuyOrSwap
 }) => {
-  const {
-    description,
-    artistDescription,
-    shippingInfo,
-    animationUrl,
-    images,
-    offerImg
-  } = getOfferDetails(offer);
-  const allImages = useMemo(() => {
-    return Array.from(new Set([offerImg || "", ...(images || [])])).filter(
-      isTruthy
-    );
-  }, [offerImg, images]);
-  const mediaFiles = useMemo(() => {
-    const imgs = [...allImages.map((img) => ({ url: img, type: "image" }))];
-    return (
-      animationUrl
-        ? [
-            { url: animationUrl, type: "video" },
-            ...allImages.map((img) => ({ url: img, type: "image" }))
-          ]
-        : imgs
-    ) as { url: string; type: "image" | "video" }[];
-  }, [allImages, animationUrl]);
+  const { artistDescription, shippingInfo } = getOfferDetails(offer);
   const buyerAddress = exchange?.buyer.wallet;
   const isPhygital = useIsPhygital({ offer });
   return (
@@ -85,10 +68,23 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
       defaultSelectedTabId={defaultSelectedTabId}
       data={
         [
-          ...(includeGeneralProductDataTab
+          ...(includeOverviewTab && isPhygital
             ? [
                 {
                   id: ids[0],
+                  title: "Overview",
+                  content: (
+                    <Content>
+                      <Overview offer={offer} />
+                    </Content>
+                  )
+                } as const
+              ]
+            : []),
+          ...(includeGeneralProductDataTab
+            ? [
+                {
+                  id: ids[1],
                   title: "General product data",
                   content: (
                     <Content>
@@ -104,25 +100,13 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
               ]
             : []),
           {
-            id: ids[1],
+            id: ids[2],
             title: "Physical product data",
             content: (
               <Content>
-                <Typography tag="h3">Physical product data</Typography>
-                <Typography
-                  tag="p"
-                  data-testid="description"
-                  style={{ whiteSpace: "pre-wrap" }}
-                >
-                  {description}
-                </Typography>
-                <Typography tag="h3">Physical product images</Typography>
-
-                <SlickSlider
-                  settings={{ ...initialSettings, slidesToShow: imagesToShow }}
-                  mediaFiles={mediaFiles}
-                  alignLeft
-                  imageOptimizationOpts={{ height: 500 }}
+                <PhysicalProductData
+                  offer={offer}
+                  imagesToShow={imagesToShow}
                 />
               </Content>
             )
@@ -130,18 +114,21 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
           ...(isPhygital
             ? ([
                 {
-                  id: ids[2],
+                  id: ids[3],
                   title: "Digital product data",
                   content: (
                     <Content>
-                      <Typography tag="h3">Digital product data</Typography>
+                      <DigitalProductData
+                        offer={offer}
+                        imagesToShow={imagesToShow}
+                      />
                     </Content>
                   )
                 } as const
               ] as const)
             : []),
           {
-            id: ids[3],
+            id: ids[4],
             title: "About the creator",
             content: (
               <Content>
@@ -153,7 +140,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
             )
           } as const,
           {
-            id: ids[4],
+            id: ids[5],
             title: "Shipping & inventory",
             content: (
               <Content>

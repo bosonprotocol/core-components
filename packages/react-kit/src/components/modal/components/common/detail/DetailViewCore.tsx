@@ -3,12 +3,12 @@ import React, { ElementRef, forwardRef, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../../../../assets/logo.svg";
+import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
 import { theme } from "../../../../../theme";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import Price from "../../../../price/Price";
 import { DetailsSummary } from "../../../../ui/DetailsSummary";
 import { Grid } from "../../../../ui/Grid";
-import { Typography } from "../../../../ui/Typography";
 import {
   BaseWidget,
   BosonExclusiveContainer,
@@ -18,10 +18,10 @@ import {
 } from "./Detail.style";
 import DetailTable from "./DetailTable";
 import { useDetailViewContext } from "./DetailViewProvider";
+import { PhygitalProduct } from "./PhygitalProduct";
 import { TokenGatedItem } from "./TokenGatedItem";
 import { DetailViewProps } from "./types";
 import { useGetOfferDetailData } from "./useGetOfferDetailData";
-import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
 
 const colors = theme.colors.light;
 
@@ -151,16 +151,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
               }
             }}
           >
-            <Grid flexDirection="column" alignItems="flex-start" gap="1rem">
-              <Typography>
-                This is what you'll get when you purchase this product.
-              </Typography>
-              <Grid flexDirection="column" alignItems="flex-start">
-                <Typography>
-                  <b>This product includes:</b>
-                </Typography>
-              </Grid>
-            </Grid>
+            <PhygitalProduct offer={offer} />
           </DetailsSummary>
         )}
         <DetailsSummary

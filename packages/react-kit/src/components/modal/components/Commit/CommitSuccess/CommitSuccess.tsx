@@ -8,7 +8,6 @@ import {
 } from "phosphor-react";
 import React, { useEffect } from "react";
 import { useExchanges } from "../../../../../hooks/useExchanges";
-import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
 import { getOpenSeaUrl } from "../../../../../lib/opensea/getOpenSeaUrl";
 import { theme } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
@@ -43,9 +42,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
     }
   );
   const exchange = exchanges?.[0];
-  const offer = exchange?.offer;
 
-  const offerDetails = offer ? getOfferDetails(offer) : undefined;
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
@@ -73,7 +70,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
         <Loading />
       ) : !exchange ? (
         <div data-testid="notFound">This exchange does not exist</div>
-      ) : isError || !exchangeId || !offerDetails ? (
+      ) : isError || !exchangeId ? (
         <div data-testid="errorExchange">
           There has been an error, please try again later...
         </div>

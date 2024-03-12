@@ -7,7 +7,12 @@ export enum OfferState {
   VALID = "VALID"
 }
 
-export function getOfferStatus(offer: OfferFieldsFragment) {
+export function getOfferStatus(
+  offer: Pick<
+    OfferFieldsFragment,
+    "voidedAt" | "validFromDate" | "validUntilDate"
+  >
+) {
   const toTimeStamp = (numberString: string) => Number(numberString) * 1000;
   const timeNow = Date.now();
 

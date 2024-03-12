@@ -2,6 +2,17 @@ import styled, { css } from "styled-components";
 import { theme } from "../../theme";
 import { cardWrapperStyles } from "./commonStyles";
 
+export const ProductCardLabelWrapper = styled.div`
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background: white;
+  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme?.colors?.light.darkGrey};
+  z-index: 1;
+`;
+
 export const ProductCardCreator = styled.div`
   display: flex;
   flex-direction: column;

@@ -35,7 +35,7 @@ export function ExchangeFullDescriptionView({
               style={{ cursor: "pointer" }}
             />
             <Typography tag="h3" style={{ flex: "1" }}>
-              {exchange?.offer.metadata.name || ""}
+              {exchange?.offer.metadata?.name || ""}
             </Typography>
           </Grid>
         ),
@@ -46,7 +46,7 @@ export function ExchangeFullDescriptionView({
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, exchange?.offer.metadata.name]);
+  }, [dispatch, exchange?.offer.metadata?.name]);
   return (
     <>
       {!exchange ? (

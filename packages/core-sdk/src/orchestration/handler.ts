@@ -21,6 +21,7 @@ import { CreateOfferArgs } from "../offers/types";
 import { CreateSellerArgs } from "../accounts/types";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { findCollectionSalt } from "../accounts/handler";
+import { storeMetadataItems } from "../metadata/storeMetadataItems";
 
 export async function createOfferAndSeller(args: {
   offerToCreate: CreateOfferArgs;
@@ -52,6 +53,11 @@ export async function createOfferAndSeller(args: {
     )
   );
 
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.offerToCreate]
+  });
+
   const collectionSalt = await findCollectionSalt(args);
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
@@ -79,6 +85,11 @@ export async function createOfferWithCondition(args: {
     metadataUriOrHash: args.offerToCreate.metadataUri,
     metadataStorage: args.metadataStorage,
     theGraphStorage: args.theGraphStorage
+  });
+
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.offerToCreate]
   });
 
   return args.web3Lib.sendTransaction({
@@ -114,6 +125,11 @@ export async function createSellerAndOfferWithCondition(args: {
     )
   );
 
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.offerToCreate]
+  });
+
   const collectionSalt = await findCollectionSalt(args);
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
@@ -145,6 +161,11 @@ export async function createPremintedOfferAddToGroup(args: {
     theGraphStorage: args.theGraphStorage
   });
 
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.offerToCreate]
+  });
+
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreatePremintedOfferAddToGroup(
@@ -172,6 +193,11 @@ export async function createPremintedOfferWithCondition(args: {
     metadataUriOrHash: args.offerToCreate.metadataUri,
     metadataStorage: args.metadataStorage,
     theGraphStorage: args.theGraphStorage
+  });
+
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.offerToCreate]
   });
 
   return args.web3Lib.sendTransaction({
@@ -210,6 +236,11 @@ export async function createSellerAndPremintedOffer(args: {
       })
     )
   );
+
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.offerToCreate]
+  });
 
   const collectionSalt = await findCollectionSalt(args);
   return args.web3Lib.sendTransaction({
@@ -250,6 +281,11 @@ export async function createSellerAndPremintedOfferWithCondition(args: {
       })
     )
   );
+
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.offerToCreate]
+  });
 
   const collectionSalt = await findCollectionSalt(args);
   return args.web3Lib.sendTransaction({
