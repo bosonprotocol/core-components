@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent } from "../../../../assets/logo.svg";
+import ReactComponent from "../../../../assets/logo.svg";
 import { Grid } from "../../../ui/Grid";
 
 export function BosonFooter() {

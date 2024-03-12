@@ -1,7 +1,7 @@
 import React from "react";
 import { useExchanges } from "../../../hooks/useExchanges";
-import RedeemNonModal, {
-  RedeemNonModalProps
+import {
+  RedeemNonModalProps, PublicRedeemNonModal
 } from "../../modal/components/Redeem/RedeemNonModal";
 
 function WithExchange(
@@ -24,4 +24,4 @@ function WithExchange(
   return ComponentWithExchange;
 }
 
-export const RedeemModalWithExchange = WithExchange(RedeemNonModal);
+export const RedeemModalWithExchange = WithExchange(PublicRedeemNonModal);

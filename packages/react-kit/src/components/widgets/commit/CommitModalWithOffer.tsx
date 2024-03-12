@@ -1,6 +1,6 @@
 import React from "react";
-import CommitNonModal, {
-  CommitNonModalProps
+import {
+  CommitNonModalProps, CommitWrapper
 } from "../../modal/components/Commit/CommitNonModal";
 import { useProductByUuid } from "../../../hooks/products/useProductByUuid";
 import useProductByOfferId from "../../../hooks/products/useProductByOfferId";
@@ -99,4 +99,4 @@ function WithProductOrOffer(
   return ComponentWithProductOrOffer;
 }
 
-export const CommitModalWithOffer = WithProductOrOffer(CommitNonModal);
+export const CommitModalWithOffer = WithProductOrOffer(CommitWrapper);

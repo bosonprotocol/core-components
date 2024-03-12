@@ -8,7 +8,7 @@ import Video from "../../../../ui/Video";
 import styled, { CSSProperties, css } from "styled-components";
 import { theme } from "../../../../../theme";
 import { ImageOptimizationOpts } from "../../../../../lib/images/images";
-export { Settings } from "react-slick";
+export type { Settings } from "react-slick";
 
 const colors = theme.colors.light;
 const Container = styled.div<{ $alignLeft: boolean; $hasSomeActive: boolean }>`
