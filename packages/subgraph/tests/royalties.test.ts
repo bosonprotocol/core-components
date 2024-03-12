@@ -1,7 +1,7 @@
 import { test, assert, log } from "matchstick-as/assembly/index";
 import { handleRoyaltyRecipientsChangedEvent } from "../src/mappings/account-handler";
 import { createRoyaltyRecipientsChanged, mockSeller } from "./mocks";
-import { Seller } from "../generated/schema";
+import { RoyaltyRecipient, Seller } from "../generated/schema";
 
 const sellerId = 1;
 const recipients_1 = [
@@ -64,13 +64,13 @@ function checkSellerRoyaltyRecipients(
     assert.assertNotNull(sellerRoyaltyRecipient);
     let found = false;
     for (let j = 0; j < recipients.length && !found; j++) {
-      found =
-        sellerRoyaltyRecipient.wallet.toHexString().toLowerCase() ==
-        recipients[j].toLowerCase();
+      const recipient = RoyaltyRecipient.load(sellerRoyaltyRecipient.recipient);
+      if (recipient) {
+        found =
+          recipient.wallet.toHexString().toLowerCase() ==
+          recipients[j].toLowerCase();
+      }
     }
-    log.debug("check wallet {} is found", [
-      sellerRoyaltyRecipient.wallet.toHexString()
-    ]);
     assert.assertTrue(found);
     found = false;
     for (let j = 0; j < minRoyaltyPercentages.length && !found; j++) {

@@ -242,6 +242,8 @@ export function handleOfferCreatedEvent230(event: OfferCreated230): void {
     );
     offer.numberOfCommits = BigInt.fromI32(0);
     offer.numberOfRedemptions = BigInt.fromI32(0);
+    offer.priceType = i8(0); // default value for legacy offers
+    // TODO: set default royalty recipients for legacy offers?
 
     offer.save();
 
@@ -323,6 +325,8 @@ export function handleOfferCreatedEventLegacy(event: OfferCreatedLegacy): void {
 
     offer.numberOfCommits = BigInt.fromI32(0);
     offer.numberOfRedemptions = BigInt.fromI32(0);
+    offer.priceType = i8(0); // default value for legacy offers
+    // TODO: set default royalty recipients for legacy offers?
 
     offer.save();
 

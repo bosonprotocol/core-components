@@ -55,6 +55,7 @@ test("handle BuyerCommittedEvent", () => {
   // note: mockOffer() does not work in this test, no idea why
   offer.createdAt = BigInt.fromI32(0);
   offer.price = BigInt.fromI32(100);
+  offer.priceType = i8(0);
   offer.sellerDeposit = BigInt.fromI32(5);
   offer.protocolFee = BigInt.fromI32(1);
   offer.agentFee = BigInt.fromI32(0);

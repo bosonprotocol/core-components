@@ -252,10 +252,19 @@ test("handleOfferExtendedEvent", () => {
   handleOfferCreatedEvent(offerCreatedEvent);
   assert.fieldEquals("Offer", "1", "validUntilDate", validUntilDate.toString());
 
-  const offerExtendedEvent = createOfferExtendedEvent(offerId, sellerId, validUntilDate + 1000, executedBy);
+  const offerExtendedEvent = createOfferExtendedEvent(
+    offerId,
+    sellerId,
+    validUntilDate + 1000,
+    executedBy
+  );
   handleOfferExtendedEvent(offerExtendedEvent);
-  assert.fieldEquals("Offer", "1", "validUntilDate", (validUntilDate + 1000).toString());
-  
+  assert.fieldEquals(
+    "Offer",
+    "1",
+    "validUntilDate",
+    (validUntilDate + 1000).toString()
+  );
 });
 
 test("handleRangeReservedEvent", () => {
@@ -278,12 +287,24 @@ test("handleRangeReservedEvent", () => {
 
   const start = 12;
   const end = 24;
-  const rangeReservedEvent = createRangeReservedEvent(offerId, sellerId, start, end, sellerAddress, executedBy);
+  const rangeReservedEvent = createRangeReservedEvent(
+    offerId,
+    sellerId,
+    start,
+    end,
+    sellerAddress,
+    executedBy
+  );
   handleRangeReservedEvent(rangeReservedEvent);
   const rangeId = getRangeId(offerId.toString());
   assert.fieldEquals("RangeEntity", rangeId, "start", start.toString());
   assert.fieldEquals("RangeEntity", rangeId, "end", end.toString());
-  assert.fieldEquals("RangeEntity", rangeId, "owner", sellerAddress.toLowerCase());
+  assert.fieldEquals(
+    "RangeEntity",
+    rangeId,
+    "owner",
+    sellerAddress.toLowerCase()
+  );
   assert.fieldEquals("RangeEntity", rangeId, "minted", "0");
 });
 

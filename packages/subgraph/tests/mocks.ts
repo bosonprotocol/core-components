@@ -987,7 +987,11 @@ export function createRoyaltyInfoStruct(
   royaltyInfo: RoyaltyInfo
 ): OfferCreatedOfferRoyaltyInfoStruct {
   const tuple = new OfferCreatedOfferRoyaltyInfoStruct();
-  tuple.push(ethereum.Value.fromStringArray(royaltyInfo.recipients));
+  const recipientAddresses: Address[] = [];
+  for (let i = 0; i < royaltyInfo.recipients.length; i++) {
+    recipientAddresses.push(Address.fromString(royaltyInfo.recipients[i]));
+  }
+  tuple.push(ethereum.Value.fromAddressArray(recipientAddresses));
   tuple.push(ethereum.Value.fromI32Array(royaltyInfo.bps));
   return tuple;
 }
@@ -1284,6 +1288,7 @@ export function mockOffer(offerId: string, sellerId: string): Offer {
   const offer = new Offer(offerId);
   offer.createdAt = BigInt.fromI32(0);
   offer.price = BigInt.fromI32(100);
+  offer.priceType = i8(0);
   offer.sellerDeposit = BigInt.fromI32(5);
   offer.protocolFee = BigInt.fromI32(1);
   offer.agentFee = BigInt.fromI32(0);
