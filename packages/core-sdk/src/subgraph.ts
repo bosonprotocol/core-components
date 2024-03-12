@@ -670,6 +670,7 @@ export enum BaseMetadataEntity_OrderBy {
   OFFER__NUMBEROFCOMMITS = "offer__numberOfCommits",
   OFFER__NUMBEROFREDEMPTIONS = "offer__numberOfRedemptions",
   OFFER__PRICE = "offer__price",
+  OFFER__PRICETYPE = "offer__priceType",
   OFFER__PROTOCOLFEE = "offer__protocolFee",
   OFFER__QUANTITYAVAILABLE = "offer__quantityAvailable",
   OFFER__QUANTITYINITIAL = "offer__quantityInitial",
@@ -1203,6 +1204,7 @@ export enum BundleMetadataEntity_OrderBy {
   OFFER__NUMBEROFCOMMITS = "offer__numberOfCommits",
   OFFER__NUMBEROFREDEMPTIONS = "offer__numberOfRedemptions",
   OFFER__PRICE = "offer__price",
+  OFFER__PRICETYPE = "offer__priceType",
   OFFER__PROTOCOLFEE = "offer__protocolFee",
   OFFER__QUANTITYAVAILABLE = "offer__quantityAvailable",
   OFFER__QUANTITYINITIAL = "offer__quantityInitial",
@@ -1896,6 +1898,7 @@ export enum DisputeResolutionTermsEntity_OrderBy {
   OFFER__NUMBEROFCOMMITS = "offer__numberOfCommits",
   OFFER__NUMBEROFREDEMPTIONS = "offer__numberOfRedemptions",
   OFFER__PRICE = "offer__price",
+  OFFER__PRICETYPE = "offer__priceType",
   OFFER__PROTOCOLFEE = "offer__protocolFee",
   OFFER__QUANTITYAVAILABLE = "offer__quantityAvailable",
   OFFER__QUANTITYINITIAL = "offer__quantityInitial",
@@ -3124,6 +3127,7 @@ export enum Exchange_OrderBy {
   OFFER__NUMBEROFCOMMITS = "offer__numberOfCommits",
   OFFER__NUMBEROFREDEMPTIONS = "offer__numberOfRedemptions",
   OFFER__PRICE = "offer__price",
+  OFFER__PRICETYPE = "offer__priceType",
   OFFER__PROTOCOLFEE = "offer__protocolFee",
   OFFER__QUANTITYAVAILABLE = "offer__quantityAvailable",
   OFFER__QUANTITYINITIAL = "offer__quantityInitial",
@@ -4016,6 +4020,7 @@ export enum MetadataInterface_OrderBy {
   OFFER__NUMBEROFCOMMITS = "offer__numberOfCommits",
   OFFER__NUMBEROFREDEMPTIONS = "offer__numberOfRedemptions",
   OFFER__PRICE = "offer__price",
+  OFFER__PRICETYPE = "offer__priceType",
   OFFER__PROTOCOLFEE = "offer__protocolFee",
   OFFER__QUANTITYAVAILABLE = "offer__quantityAvailable",
   OFFER__QUANTITYINITIAL = "offer__quantityInitial",
@@ -4593,12 +4598,14 @@ export type Offer = {
   numberOfCommits: Scalars["BigInt"]["output"];
   numberOfRedemptions: Scalars["BigInt"]["output"];
   price: Scalars["BigInt"]["output"];
+  priceType: Scalars["Int"]["output"];
   protocolFee: Scalars["BigInt"]["output"];
   quantityAvailable: Scalars["BigInt"]["output"];
   quantityInitial: Scalars["BigInt"]["output"];
   /** Range */
   range?: Maybe<RangeEntity>;
   resolutionPeriodDuration: Scalars["BigInt"]["output"];
+  royaltyInfos: Array<RoyaltyInfo>;
   seller: Seller;
   sellerDeposit: Scalars["BigInt"]["output"];
   sellerId: Scalars["BigInt"]["output"];
@@ -4622,6 +4629,18 @@ export type OfferExchangesArgs = {
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]["input"]>;
   where?: InputMaybe<Exchange_Filter>;
+};
+
+/**
+ * Offer
+ *
+ */
+export type OfferRoyaltyInfosArgs = {
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<RoyaltyInfo_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  where?: InputMaybe<RoyaltyInfo_Filter>;
 };
 
 /**
@@ -4927,6 +4946,7 @@ export enum OfferEventLog_OrderBy {
   OFFER__NUMBEROFCOMMITS = "offer__numberOfCommits",
   OFFER__NUMBEROFREDEMPTIONS = "offer__numberOfRedemptions",
   OFFER__PRICE = "offer__price",
+  OFFER__PRICETYPE = "offer__priceType",
   OFFER__PROTOCOLFEE = "offer__protocolFee",
   OFFER__QUANTITYAVAILABLE = "offer__quantityAvailable",
   OFFER__QUANTITYINITIAL = "offer__quantityInitial",
@@ -5213,6 +5233,14 @@ export type Offer_Filter = {
   numberOfRedemptions_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
   or?: InputMaybe<Array<InputMaybe<Offer_Filter>>>;
   price?: InputMaybe<Scalars["BigInt"]["input"]>;
+  priceType?: InputMaybe<Scalars["Int"]["input"]>;
+  priceType_gt?: InputMaybe<Scalars["Int"]["input"]>;
+  priceType_gte?: InputMaybe<Scalars["Int"]["input"]>;
+  priceType_in?: InputMaybe<Array<Scalars["Int"]["input"]>>;
+  priceType_lt?: InputMaybe<Scalars["Int"]["input"]>;
+  priceType_lte?: InputMaybe<Scalars["Int"]["input"]>;
+  priceType_not?: InputMaybe<Scalars["Int"]["input"]>;
+  priceType_not_in?: InputMaybe<Array<Scalars["Int"]["input"]>>;
   price_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
   price_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
   price_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
@@ -5275,6 +5303,7 @@ export type Offer_Filter = {
   resolutionPeriodDuration_not_in?: InputMaybe<
     Array<Scalars["BigInt"]["input"]>
   >;
+  royaltyInfos_?: InputMaybe<RoyaltyInfo_Filter>;
   seller?: InputMaybe<Scalars["String"]["input"]>;
   sellerDeposit?: InputMaybe<Scalars["BigInt"]["input"]>;
   sellerDeposit_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
@@ -5441,6 +5470,7 @@ export enum Offer_OrderBy {
   NUMBEROFCOMMITS = "numberOfCommits",
   NUMBEROFREDEMPTIONS = "numberOfRedemptions",
   PRICE = "price",
+  PRICETYPE = "priceType",
   PROTOCOLFEE = "protocolFee",
   QUANTITYAVAILABLE = "quantityAvailable",
   QUANTITYINITIAL = "quantityInitial",
@@ -5451,6 +5481,7 @@ export enum Offer_OrderBy {
   RANGE__OWNER = "range__owner",
   RANGE__START = "range__start",
   RESOLUTIONPERIODDURATION = "resolutionPeriodDuration",
+  ROYALTYINFOS = "royaltyInfos",
   SELLER = "seller",
   SELLERDEPOSIT = "sellerDeposit",
   SELLERID = "sellerId",
@@ -5709,6 +5740,11 @@ export enum PendingSeller_OrderBy {
   SELLER__SELLERID = "seller__sellerId",
   SELLER__TREASURY = "seller__treasury",
   SELLER__VOUCHERCLONEADDRESS = "seller__voucherCloneAddress"
+}
+
+export enum PriceType {
+  DISCOVERY = "DISCOVERY",
+  STATIC = "STATIC"
 }
 
 export type ProductV1Brand = {
@@ -7087,6 +7123,7 @@ export enum ProductV1MetadataEntity_OrderBy {
   OFFER__NUMBEROFCOMMITS = "offer__numberOfCommits",
   OFFER__NUMBEROFREDEMPTIONS = "offer__numberOfRedemptions",
   OFFER__PRICE = "offer__price",
+  OFFER__PRICETYPE = "offer__priceType",
   OFFER__PROTOCOLFEE = "offer__protocolFee",
   OFFER__QUANTITYAVAILABLE = "offer__quantityAvailable",
   OFFER__QUANTITYINITIAL = "offer__quantityInitial",
@@ -10092,6 +10129,7 @@ export enum ProductV1Variant_OrderBy {
   OFFER__NUMBEROFCOMMITS = "offer__numberOfCommits",
   OFFER__NUMBEROFREDEMPTIONS = "offer__numberOfRedemptions",
   OFFER__PRICE = "offer__price",
+  OFFER__PRICETYPE = "offer__priceType",
   OFFER__PROTOCOLFEE = "offer__protocolFee",
   OFFER__QUANTITYAVAILABLE = "offer__quantityAvailable",
   OFFER__QUANTITYINITIAL = "offer__quantityInitial",
@@ -10271,8 +10309,14 @@ export type Query = {
   productV1Variations: Array<ProductV1Variation>;
   rangeEntities: Array<RangeEntity>;
   rangeEntity?: Maybe<RangeEntity>;
-  royaltyRecipientEntities: Array<RoyaltyRecipientEntity>;
-  royaltyRecipientEntity?: Maybe<RoyaltyRecipientEntity>;
+  royaltyInfo?: Maybe<RoyaltyInfo>;
+  royaltyInfos: Array<RoyaltyInfo>;
+  royaltyRecipient?: Maybe<RoyaltyRecipient>;
+  royaltyRecipientXOffer?: Maybe<RoyaltyRecipientXOffer>;
+  royaltyRecipientXOffers: Array<RoyaltyRecipientXOffer>;
+  royaltyRecipientXSeller?: Maybe<RoyaltyRecipientXSeller>;
+  royaltyRecipientXSellers: Array<RoyaltyRecipientXSeller>;
+  royaltyRecipients: Array<RoyaltyRecipient>;
   salesChannel?: Maybe<SalesChannel>;
   salesChannelDeployment?: Maybe<SalesChannelDeployment>;
   salesChannelDeployments: Array<SalesChannelDeployment>;
@@ -11032,20 +11076,68 @@ export type QueryRangeEntityArgs = {
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
-export type QueryRoyaltyRecipientEntitiesArgs = {
-  block?: InputMaybe<Block_Height>;
-  first?: InputMaybe<Scalars["Int"]["input"]>;
-  orderBy?: InputMaybe<RoyaltyRecipientEntity_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars["Int"]["input"]>;
-  subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<RoyaltyRecipientEntity_Filter>;
-};
-
-export type QueryRoyaltyRecipientEntityArgs = {
+export type QueryRoyaltyInfoArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"]["input"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryRoyaltyInfosArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<RoyaltyInfo_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RoyaltyInfo_Filter>;
+};
+
+export type QueryRoyaltyRecipientArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryRoyaltyRecipientXOfferArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryRoyaltyRecipientXOffersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<RoyaltyRecipientXOffer_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RoyaltyRecipientXOffer_Filter>;
+};
+
+export type QueryRoyaltyRecipientXSellerArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryRoyaltyRecipientXSellersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<RoyaltyRecipientXSeller_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RoyaltyRecipientXSeller_Filter>;
+};
+
+export type QueryRoyaltyRecipientsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<RoyaltyRecipient_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RoyaltyRecipient_Filter>;
 };
 
 export type QuerySalesChannelArgs = {
@@ -11272,18 +11364,254 @@ export enum RangeEntity_OrderBy {
   START = "start"
 }
 
-export type RoyaltyRecipientEntity = {
-  __typename?: "RoyaltyRecipientEntity";
+export type RoyaltyInfo = {
+  __typename?: "RoyaltyInfo";
   id: Scalars["ID"]["output"];
-  minRoyaltyPercentage: Scalars["BigInt"]["output"];
-  seller: Seller;
+  offer: Offer;
+  recipients?: Maybe<Array<RoyaltyRecipientXOffer>>;
+  timestamp: Scalars["BigInt"]["output"];
+};
+
+export type RoyaltyInfoRecipientsArgs = {
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<RoyaltyRecipientXOffer_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  where?: InputMaybe<RoyaltyRecipientXOffer_Filter>;
+};
+
+export type RoyaltyInfo_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<RoyaltyInfo_Filter>>>;
+  id?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_lte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  offer?: InputMaybe<Scalars["String"]["input"]>;
+  offer_?: InputMaybe<Offer_Filter>;
+  offer_contains?: InputMaybe<Scalars["String"]["input"]>;
+  offer_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  offer_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  offer_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  offer_gt?: InputMaybe<Scalars["String"]["input"]>;
+  offer_gte?: InputMaybe<Scalars["String"]["input"]>;
+  offer_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  offer_lt?: InputMaybe<Scalars["String"]["input"]>;
+  offer_lte?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  offer_not_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  offer_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  offer_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  or?: InputMaybe<Array<InputMaybe<RoyaltyInfo_Filter>>>;
+  recipients?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  recipients_?: InputMaybe<RoyaltyRecipientXOffer_Filter>;
+  recipients_contains?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  recipients_contains_nocase?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  recipients_not?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  recipients_not_contains?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  recipients_not_contains_nocase?: InputMaybe<
+    Array<Scalars["String"]["input"]>
+  >;
+  timestamp?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  timestamp_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+};
+
+export enum RoyaltyInfo_OrderBy {
+  ID = "id",
+  OFFER = "offer",
+  OFFER__AGENTFEE = "offer__agentFee",
+  OFFER__AGENTID = "offer__agentId",
+  OFFER__BUYERCANCELPENALTY = "offer__buyerCancelPenalty",
+  OFFER__COLLECTIONINDEX = "offer__collectionIndex",
+  OFFER__CREATEDAT = "offer__createdAt",
+  OFFER__DISPUTEPERIODDURATION = "offer__disputePeriodDuration",
+  OFFER__DISPUTERESOLVERID = "offer__disputeResolverId",
+  OFFER__ID = "offer__id",
+  OFFER__METADATAHASH = "offer__metadataHash",
+  OFFER__METADATAURI = "offer__metadataUri",
+  OFFER__NUMBEROFCOMMITS = "offer__numberOfCommits",
+  OFFER__NUMBEROFREDEMPTIONS = "offer__numberOfRedemptions",
+  OFFER__PRICE = "offer__price",
+  OFFER__PRICETYPE = "offer__priceType",
+  OFFER__PROTOCOLFEE = "offer__protocolFee",
+  OFFER__QUANTITYAVAILABLE = "offer__quantityAvailable",
+  OFFER__QUANTITYINITIAL = "offer__quantityInitial",
+  OFFER__RESOLUTIONPERIODDURATION = "offer__resolutionPeriodDuration",
+  OFFER__SELLERDEPOSIT = "offer__sellerDeposit",
+  OFFER__SELLERID = "offer__sellerId",
+  OFFER__VALIDFROMDATE = "offer__validFromDate",
+  OFFER__VALIDUNTILDATE = "offer__validUntilDate",
+  OFFER__VOIDED = "offer__voided",
+  OFFER__VOIDEDAT = "offer__voidedAt",
+  OFFER__VOUCHERREDEEMABLEFROMDATE = "offer__voucherRedeemableFromDate",
+  OFFER__VOUCHERREDEEMABLEUNTILDATE = "offer__voucherRedeemableUntilDate",
+  OFFER__VOUCHERVALIDDURATION = "offer__voucherValidDuration",
+  RECIPIENTS = "recipients",
+  TIMESTAMP = "timestamp"
+}
+
+export type RoyaltyRecipient = {
+  __typename?: "RoyaltyRecipient";
+  id: Scalars["ID"]["output"];
+  royalties: Array<RoyaltyRecipientXOffer>;
+  sellers: Array<RoyaltyRecipientXSeller>;
   wallet: Scalars["Bytes"]["output"];
 };
 
-export type RoyaltyRecipientEntity_Filter = {
+export type RoyaltyRecipientRoyaltiesArgs = {
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<RoyaltyRecipientXOffer_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  where?: InputMaybe<RoyaltyRecipientXOffer_Filter>;
+};
+
+export type RoyaltyRecipientSellersArgs = {
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<RoyaltyRecipientXSeller_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  where?: InputMaybe<RoyaltyRecipientXSeller_Filter>;
+};
+
+export type RoyaltyRecipientXOffer = {
+  __typename?: "RoyaltyRecipientXOffer";
+  bps: Scalars["BigInt"]["output"];
+  id: Scalars["ID"]["output"];
+  offer: Offer;
+  recipient: RoyaltyRecipient;
+};
+
+export type RoyaltyRecipientXOffer_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<RoyaltyRecipientEntity_Filter>>>;
+  and?: InputMaybe<Array<InputMaybe<RoyaltyRecipientXOffer_Filter>>>;
+  bps?: InputMaybe<Scalars["BigInt"]["input"]>;
+  bps_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  bps_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  bps_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  bps_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  bps_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  bps_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  bps_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  id?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_lte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  offer?: InputMaybe<Scalars["String"]["input"]>;
+  offer_?: InputMaybe<Offer_Filter>;
+  offer_contains?: InputMaybe<Scalars["String"]["input"]>;
+  offer_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  offer_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  offer_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  offer_gt?: InputMaybe<Scalars["String"]["input"]>;
+  offer_gte?: InputMaybe<Scalars["String"]["input"]>;
+  offer_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  offer_lt?: InputMaybe<Scalars["String"]["input"]>;
+  offer_lte?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  offer_not_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  offer_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  offer_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  or?: InputMaybe<Array<InputMaybe<RoyaltyRecipientXOffer_Filter>>>;
+  recipient?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_?: InputMaybe<RoyaltyRecipient_Filter>;
+  recipient_contains?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_gt?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_gte?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  recipient_lt?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_lte?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  recipient_not_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export enum RoyaltyRecipientXOffer_OrderBy {
+  BPS = "bps",
+  ID = "id",
+  OFFER = "offer",
+  OFFER__AGENTFEE = "offer__agentFee",
+  OFFER__AGENTID = "offer__agentId",
+  OFFER__BUYERCANCELPENALTY = "offer__buyerCancelPenalty",
+  OFFER__COLLECTIONINDEX = "offer__collectionIndex",
+  OFFER__CREATEDAT = "offer__createdAt",
+  OFFER__DISPUTEPERIODDURATION = "offer__disputePeriodDuration",
+  OFFER__DISPUTERESOLVERID = "offer__disputeResolverId",
+  OFFER__ID = "offer__id",
+  OFFER__METADATAHASH = "offer__metadataHash",
+  OFFER__METADATAURI = "offer__metadataUri",
+  OFFER__NUMBEROFCOMMITS = "offer__numberOfCommits",
+  OFFER__NUMBEROFREDEMPTIONS = "offer__numberOfRedemptions",
+  OFFER__PRICE = "offer__price",
+  OFFER__PRICETYPE = "offer__priceType",
+  OFFER__PROTOCOLFEE = "offer__protocolFee",
+  OFFER__QUANTITYAVAILABLE = "offer__quantityAvailable",
+  OFFER__QUANTITYINITIAL = "offer__quantityInitial",
+  OFFER__RESOLUTIONPERIODDURATION = "offer__resolutionPeriodDuration",
+  OFFER__SELLERDEPOSIT = "offer__sellerDeposit",
+  OFFER__SELLERID = "offer__sellerId",
+  OFFER__VALIDFROMDATE = "offer__validFromDate",
+  OFFER__VALIDUNTILDATE = "offer__validUntilDate",
+  OFFER__VOIDED = "offer__voided",
+  OFFER__VOIDEDAT = "offer__voidedAt",
+  OFFER__VOUCHERREDEEMABLEFROMDATE = "offer__voucherRedeemableFromDate",
+  OFFER__VOUCHERREDEEMABLEUNTILDATE = "offer__voucherRedeemableUntilDate",
+  OFFER__VOUCHERVALIDDURATION = "offer__voucherValidDuration",
+  RECIPIENT = "recipient",
+  RECIPIENT__ID = "recipient__id",
+  RECIPIENT__WALLET = "recipient__wallet"
+}
+
+export type RoyaltyRecipientXSeller = {
+  __typename?: "RoyaltyRecipientXSeller";
+  id: Scalars["ID"]["output"];
+  minRoyaltyPercentage: Scalars["BigInt"]["output"];
+  recipient: RoyaltyRecipient;
+  seller: Seller;
+};
+
+export type RoyaltyRecipientXSeller_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<RoyaltyRecipientXSeller_Filter>>>;
   id?: InputMaybe<Scalars["ID"]["input"]>;
   id_gt?: InputMaybe<Scalars["ID"]["input"]>;
   id_gte?: InputMaybe<Scalars["ID"]["input"]>;
@@ -11300,7 +11628,28 @@ export type RoyaltyRecipientEntity_Filter = {
   minRoyaltyPercentage_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
   minRoyaltyPercentage_not?: InputMaybe<Scalars["BigInt"]["input"]>;
   minRoyaltyPercentage_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
-  or?: InputMaybe<Array<InputMaybe<RoyaltyRecipientEntity_Filter>>>;
+  or?: InputMaybe<Array<InputMaybe<RoyaltyRecipientXSeller_Filter>>>;
+  recipient?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_?: InputMaybe<RoyaltyRecipient_Filter>;
+  recipient_contains?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_gt?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_gte?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  recipient_lt?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_lte?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  recipient_not_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  recipient_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
   seller?: InputMaybe<Scalars["String"]["input"]>;
   seller_?: InputMaybe<Seller_Filter>;
   seller_contains?: InputMaybe<Scalars["String"]["input"]>;
@@ -11322,21 +11671,14 @@ export type RoyaltyRecipientEntity_Filter = {
   seller_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
   seller_starts_with?: InputMaybe<Scalars["String"]["input"]>;
   seller_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
-  wallet?: InputMaybe<Scalars["Bytes"]["input"]>;
-  wallet_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
-  wallet_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
-  wallet_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
-  wallet_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
-  wallet_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
-  wallet_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
-  wallet_not?: InputMaybe<Scalars["Bytes"]["input"]>;
-  wallet_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
-  wallet_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
 };
 
-export enum RoyaltyRecipientEntity_OrderBy {
+export enum RoyaltyRecipientXSeller_OrderBy {
   ID = "id",
   MINROYALTYPERCENTAGE = "minRoyaltyPercentage",
+  RECIPIENT = "recipient",
+  RECIPIENT__ID = "recipient__id",
+  RECIPIENT__WALLET = "recipient__wallet",
   SELLER = "seller",
   SELLER__ACTIVE = "seller__active",
   SELLER__ADMIN = "seller__admin",
@@ -11349,7 +11691,40 @@ export enum RoyaltyRecipientEntity_OrderBy {
   SELLER__METADATAURI = "seller__metadataUri",
   SELLER__SELLERID = "seller__sellerId",
   SELLER__TREASURY = "seller__treasury",
-  SELLER__VOUCHERCLONEADDRESS = "seller__voucherCloneAddress",
+  SELLER__VOUCHERCLONEADDRESS = "seller__voucherCloneAddress"
+}
+
+export type RoyaltyRecipient_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<RoyaltyRecipient_Filter>>>;
+  id?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_lte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  or?: InputMaybe<Array<InputMaybe<RoyaltyRecipient_Filter>>>;
+  royalties_?: InputMaybe<RoyaltyRecipientXOffer_Filter>;
+  sellers_?: InputMaybe<RoyaltyRecipientXSeller_Filter>;
+  wallet?: InputMaybe<Scalars["Bytes"]["input"]>;
+  wallet_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  wallet_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  wallet_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  wallet_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  wallet_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  wallet_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  wallet_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  wallet_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  wallet_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+};
+
+export enum RoyaltyRecipient_OrderBy {
+  ID = "id",
+  ROYALTIES = "royalties",
+  SELLERS = "sellers",
   WALLET = "wallet"
 }
 
@@ -11671,7 +12046,7 @@ export type Seller = Account & {
   offers: Array<Offer>;
   pendingSeller?: Maybe<PendingSeller>;
   /** Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100% */
-  royaltyRecipients?: Maybe<Array<RoyaltyRecipientEntity>>;
+  royaltyRecipients?: Maybe<Array<RoyaltyRecipientXSeller>>;
   sellerId: Scalars["BigInt"]["output"];
   treasury: Scalars["Bytes"]["output"];
   voucherCloneAddress: Scalars["Bytes"]["output"];
@@ -11719,10 +12094,10 @@ export type SellerOffersArgs = {
 
 export type SellerRoyaltyRecipientsArgs = {
   first?: InputMaybe<Scalars["Int"]["input"]>;
-  orderBy?: InputMaybe<RoyaltyRecipientEntity_OrderBy>;
+  orderBy?: InputMaybe<RoyaltyRecipientXSeller_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]["input"]>;
-  where?: InputMaybe<RoyaltyRecipientEntity_Filter>;
+  where?: InputMaybe<RoyaltyRecipientXSeller_Filter>;
 };
 
 export type SellerContactLink = {
@@ -12405,7 +12780,7 @@ export type Seller_Filter = {
   offers_?: InputMaybe<Offer_Filter>;
   or?: InputMaybe<Array<InputMaybe<Seller_Filter>>>;
   pendingSeller_?: InputMaybe<PendingSeller_Filter>;
-  royaltyRecipients_?: InputMaybe<RoyaltyRecipientEntity_Filter>;
+  royaltyRecipients_?: InputMaybe<RoyaltyRecipientXSeller_Filter>;
   sellerId?: InputMaybe<Scalars["BigInt"]["input"]>;
   sellerId_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
   sellerId_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
@@ -12570,8 +12945,14 @@ export type Subscription = {
   productV1Variations: Array<ProductV1Variation>;
   rangeEntities: Array<RangeEntity>;
   rangeEntity?: Maybe<RangeEntity>;
-  royaltyRecipientEntities: Array<RoyaltyRecipientEntity>;
-  royaltyRecipientEntity?: Maybe<RoyaltyRecipientEntity>;
+  royaltyInfo?: Maybe<RoyaltyInfo>;
+  royaltyInfos: Array<RoyaltyInfo>;
+  royaltyRecipient?: Maybe<RoyaltyRecipient>;
+  royaltyRecipientXOffer?: Maybe<RoyaltyRecipientXOffer>;
+  royaltyRecipientXOffers: Array<RoyaltyRecipientXOffer>;
+  royaltyRecipientXSeller?: Maybe<RoyaltyRecipientXSeller>;
+  royaltyRecipientXSellers: Array<RoyaltyRecipientXSeller>;
+  royaltyRecipients: Array<RoyaltyRecipient>;
   salesChannel?: Maybe<SalesChannel>;
   salesChannelDeployment?: Maybe<SalesChannelDeployment>;
   salesChannelDeployments: Array<SalesChannelDeployment>;
@@ -13331,20 +13712,68 @@ export type SubscriptionRangeEntityArgs = {
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
-export type SubscriptionRoyaltyRecipientEntitiesArgs = {
-  block?: InputMaybe<Block_Height>;
-  first?: InputMaybe<Scalars["Int"]["input"]>;
-  orderBy?: InputMaybe<RoyaltyRecipientEntity_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars["Int"]["input"]>;
-  subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<RoyaltyRecipientEntity_Filter>;
-};
-
-export type SubscriptionRoyaltyRecipientEntityArgs = {
+export type SubscriptionRoyaltyInfoArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"]["input"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionRoyaltyInfosArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<RoyaltyInfo_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RoyaltyInfo_Filter>;
+};
+
+export type SubscriptionRoyaltyRecipientArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionRoyaltyRecipientXOfferArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionRoyaltyRecipientXOffersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<RoyaltyRecipientXOffer_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RoyaltyRecipientXOffer_Filter>;
+};
+
+export type SubscriptionRoyaltyRecipientXSellerArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionRoyaltyRecipientXSellersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<RoyaltyRecipientXSeller_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RoyaltyRecipientXSeller_Filter>;
+};
+
+export type SubscriptionRoyaltyRecipientsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<RoyaltyRecipient_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RoyaltyRecipient_Filter>;
 };
 
 export type SubscriptionSalesChannelArgs = {
@@ -13919,6 +14348,20 @@ export type GetSellerByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -13945,10 +14388,19 @@ export type GetSellerByIdQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -14152,10 +14604,19 @@ export type GetSellerByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -14378,10 +14839,19 @@ export type GetSellerByIdQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -14747,10 +15217,19 @@ export type GetSellerByIdQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -14879,10 +15358,19 @@ export type GetSellerByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -15033,10 +15521,19 @@ export type GetSellerByIdQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -15168,10 +15665,19 @@ export type GetSellerByIdQueryQuery = {
         }
     >;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -15348,6 +15854,20 @@ export type GetSellersQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -15374,10 +15894,19 @@ export type GetSellersQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -15581,10 +16110,19 @@ export type GetSellersQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -15807,10 +16345,19 @@ export type GetSellersQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -16176,10 +16723,19 @@ export type GetSellersQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -16308,10 +16864,19 @@ export type GetSellersQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -16462,10 +17027,19 @@ export type GetSellersQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -16597,10 +17171,19 @@ export type GetSellersQueryQuery = {
         }
     >;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -16754,10 +17337,19 @@ export type GetBuyerByIdQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -16993,10 +17585,19 @@ export type GetBuyersQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -17192,6 +17793,20 @@ export type GetDisputeResolverByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -17218,10 +17833,19 @@ export type GetDisputeResolverByIdQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -17425,10 +18049,19 @@ export type GetDisputeResolverByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -17651,10 +18284,19 @@ export type GetDisputeResolverByIdQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -18020,10 +18662,19 @@ export type GetDisputeResolverByIdQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -18152,10 +18803,19 @@ export type GetDisputeResolverByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -18411,6 +19071,20 @@ export type GetDisputeResolversQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -18437,10 +19111,19 @@ export type GetDisputeResolversQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -18644,10 +19327,19 @@ export type GetDisputeResolversQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -18870,10 +19562,19 @@ export type GetDisputeResolversQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -19239,10 +19940,19 @@ export type GetDisputeResolversQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -19371,10 +20081,19 @@ export type GetDisputeResolversQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -19628,10 +20347,19 @@ export type GetOfferCollectionsQueryQuery = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -19718,6 +20446,20 @@ export type GetOfferCollectionsQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -19744,10 +20486,19 @@ export type GetOfferCollectionsQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -19951,10 +20702,19 @@ export type GetOfferCollectionsQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -20177,10 +20937,19 @@ export type GetOfferCollectionsQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -20546,10 +21315,19 @@ export type GetOfferCollectionsQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -20678,10 +21456,19 @@ export type GetOfferCollectionsQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -20834,10 +21621,19 @@ export type OfferCollectionFieldsFragment = {
     contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -20924,6 +21720,20 @@ export type OfferCollectionFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    priceType: number;
+    royaltyInfos: Array<{
+      __typename?: "RoyaltyInfo";
+      timestamp: string;
+      recipients?: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+        };
+      }> | null;
+    }>;
     condition?: {
       __typename?: "ConditionEntity";
       id: string;
@@ -20950,10 +21760,19 @@ export type OfferCollectionFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -21157,10 +21976,19 @@ export type OfferCollectionFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -21381,10 +22209,19 @@ export type OfferCollectionFieldsFragment = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -21740,10 +22577,19 @@ export type OfferCollectionFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -21872,10 +22718,19 @@ export type OfferCollectionFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -22090,6 +22945,20 @@ export type SellerFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    priceType: number;
+    royaltyInfos: Array<{
+      __typename?: "RoyaltyInfo";
+      timestamp: string;
+      recipients?: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+        };
+      }> | null;
+    }>;
     condition?: {
       __typename?: "ConditionEntity";
       id: string;
@@ -22116,10 +22985,19 @@ export type SellerFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -22323,10 +23201,19 @@ export type SellerFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -22547,10 +23434,19 @@ export type SellerFieldsFragment = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -22906,10 +23802,19 @@ export type SellerFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -23038,10 +23943,19 @@ export type SellerFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -23192,10 +24106,19 @@ export type SellerFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -23327,10 +24250,19 @@ export type SellerFieldsFragment = {
       }
   >;
   royaltyRecipients?: Array<{
-    __typename?: "RoyaltyRecipientEntity";
+    __typename?: "RoyaltyRecipientXSeller";
     id: string;
-    wallet: string;
     minRoyaltyPercentage: string;
+    recipient: {
+      __typename?: "RoyaltyRecipient";
+      id: string;
+      wallet: string;
+      royalties: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        offer: { __typename?: "Offer"; id: string };
+      }>;
+    };
   }> | null;
   metadata?: {
     __typename?: "SellerMetadata";
@@ -23454,10 +24386,19 @@ export type BaseSellerFieldsFragment = {
   contractURI: string;
   metadataUri: string;
   royaltyRecipients?: Array<{
-    __typename?: "RoyaltyRecipientEntity";
+    __typename?: "RoyaltyRecipientXSeller";
     id: string;
-    wallet: string;
     minRoyaltyPercentage: string;
+    recipient: {
+      __typename?: "RoyaltyRecipient";
+      id: string;
+      wallet: string;
+      royalties: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        offer: { __typename?: "Offer"; id: string };
+      }>;
+    };
   }> | null;
   metadata?: {
     __typename?: "SellerMetadata";
@@ -23602,10 +24543,19 @@ export type BuyerFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -23789,6 +24739,20 @@ export type DisputeResolverFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    priceType: number;
+    royaltyInfos: Array<{
+      __typename?: "RoyaltyInfo";
+      timestamp: string;
+      recipients?: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+        };
+      }> | null;
+    }>;
     condition?: {
       __typename?: "ConditionEntity";
       id: string;
@@ -23815,10 +24779,19 @@ export type DisputeResolverFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -24022,10 +24995,19 @@ export type DisputeResolverFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -24246,10 +25228,19 @@ export type DisputeResolverFieldsFragment = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -24605,10 +25596,19 @@ export type DisputeResolverFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -24737,10 +25737,19 @@ export type DisputeResolverFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -25079,10 +26088,19 @@ export type GetDisputeByIdQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -25157,10 +26175,19 @@ export type GetDisputeByIdQueryQuery = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -25302,10 +26329,19 @@ export type GetDisputesQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -25380,10 +26416,19 @@ export type GetDisputesQueryQuery = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -25515,10 +26560,19 @@ export type DisputeFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -25593,10 +26647,19 @@ export type DisputeFieldsFragment = {
     contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -25732,6 +26795,20 @@ export type GetExchangeTokenByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -25758,10 +26835,19 @@ export type GetExchangeTokenByIdQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -25965,10 +27051,19 @@ export type GetExchangeTokenByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -26191,10 +27286,19 @@ export type GetExchangeTokenByIdQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -26560,10 +27664,19 @@ export type GetExchangeTokenByIdQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -26692,10 +27805,19 @@ export type GetExchangeTokenByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -26862,6 +27984,20 @@ export type GetExchangeTokensQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -26888,10 +28024,19 @@ export type GetExchangeTokensQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -27095,10 +28240,19 @@ export type GetExchangeTokensQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -27321,10 +28475,19 @@ export type GetExchangeTokensQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -27690,10 +28853,19 @@ export type GetExchangeTokensQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -27822,10 +28994,19 @@ export type GetExchangeTokensQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -27970,6 +29151,20 @@ export type ExchangeTokenFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    priceType: number;
+    royaltyInfos: Array<{
+      __typename?: "RoyaltyInfo";
+      timestamp: string;
+      recipients?: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+        };
+      }> | null;
+    }>;
     condition?: {
       __typename?: "ConditionEntity";
       id: string;
@@ -27996,10 +29191,19 @@ export type ExchangeTokenFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -28203,10 +29407,19 @@ export type ExchangeTokenFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -28427,10 +29640,19 @@ export type ExchangeTokenFieldsFragment = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -28786,10 +30008,19 @@ export type ExchangeTokenFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -28918,10 +30149,19 @@ export type ExchangeTokenFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -29249,6 +30489,20 @@ export type GetExchangeByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -29275,10 +30529,19 @@ export type GetExchangeByIdQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -29482,10 +30745,19 @@ export type GetExchangeByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -29708,10 +30980,19 @@ export type GetExchangeByIdQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -30077,10 +31358,19 @@ export type GetExchangeByIdQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -30209,10 +31499,19 @@ export type GetExchangeByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -30349,10 +31648,19 @@ export type GetExchangeByIdQueryQuery = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -30466,6 +31774,20 @@ export type GetExchangesQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -30492,10 +31814,19 @@ export type GetExchangesQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -30699,10 +32030,19 @@ export type GetExchangesQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -30925,10 +32265,19 @@ export type GetExchangesQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -31294,10 +32643,19 @@ export type GetExchangesQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -31426,10 +32784,19 @@ export type GetExchangesQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -31566,10 +32933,19 @@ export type GetExchangesQueryQuery = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -31673,6 +33049,20 @@ export type ExchangeFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    priceType: number;
+    royaltyInfos: Array<{
+      __typename?: "RoyaltyInfo";
+      timestamp: string;
+      recipients?: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+        };
+      }> | null;
+    }>;
     condition?: {
       __typename?: "ConditionEntity";
       id: string;
@@ -31699,10 +33089,19 @@ export type ExchangeFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -31906,10 +33305,19 @@ export type ExchangeFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -32130,10 +33538,19 @@ export type ExchangeFieldsFragment = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -32489,10 +33906,19 @@ export type ExchangeFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -32621,10 +34047,19 @@ export type ExchangeFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -32756,10 +34191,19 @@ export type ExchangeFieldsFragment = {
     contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -32865,10 +34309,19 @@ export type BaseExchangeFieldsFragment = {
     contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -33083,6 +34536,20 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -33109,10 +34576,19 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -33316,10 +34792,19 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -33542,10 +35027,19 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -33911,10 +35405,19 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -34043,10 +35546,19 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -34162,10 +35674,19 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -34305,6 +35826,20 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -34331,10 +35866,19 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -34538,10 +36082,19 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -34764,10 +36317,19 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -35133,10 +36695,19 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -35265,10 +36836,19 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -35384,10 +36964,19 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -35517,6 +37106,20 @@ export type BaseMetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    priceType: number;
+    royaltyInfos: Array<{
+      __typename?: "RoyaltyInfo";
+      timestamp: string;
+      recipients?: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+        };
+      }> | null;
+    }>;
     condition?: {
       __typename?: "ConditionEntity";
       id: string;
@@ -35543,10 +37146,19 @@ export type BaseMetadataEntityFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -35750,10 +37362,19 @@ export type BaseMetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -35974,10 +37595,19 @@ export type BaseMetadataEntityFieldsFragment = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -36333,10 +37963,19 @@ export type BaseMetadataEntityFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -36465,10 +38104,19 @@ export type BaseMetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -36584,10 +38232,19 @@ export type BaseMetadataEntityFieldsFragment = {
     contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -36716,6 +38373,20 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    priceType: number;
+    royaltyInfos: Array<{
+      __typename?: "RoyaltyInfo";
+      timestamp: string;
+      recipients?: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+        };
+      }> | null;
+    }>;
     condition?: {
       __typename?: "ConditionEntity";
       id: string;
@@ -36742,10 +38413,19 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -36949,10 +38629,19 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -37173,10 +38862,19 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -37532,10 +39230,19 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -37664,10 +39371,19 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -37783,10 +39499,19 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -37928,6 +39653,7 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
       exchanges: Array<{
         __typename?: "Exchange";
         id: string;
@@ -37977,10 +39703,19 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -38041,6 +39776,19 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
           } | null;
         };
       }>;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -38067,10 +39815,19 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -38274,10 +40031,19 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -38500,10 +40266,19 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -38869,10 +40644,19 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -39001,10 +40785,19 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -39120,10 +40913,19 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -39230,10 +41032,19 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -39456,10 +41267,19 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -39697,6 +41517,7 @@ export type GetBundleMetadataEntitiesQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
       exchanges: Array<{
         __typename?: "Exchange";
         id: string;
@@ -39746,10 +41567,19 @@ export type GetBundleMetadataEntitiesQueryQuery = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -39810,6 +41640,19 @@ export type GetBundleMetadataEntitiesQueryQuery = {
           } | null;
         };
       }>;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -39836,10 +41679,19 @@ export type GetBundleMetadataEntitiesQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -40043,10 +41895,19 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -40269,10 +42130,19 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -40638,10 +42508,19 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -40770,10 +42649,19 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -40889,10 +42777,19 @@ export type GetBundleMetadataEntitiesQueryQuery = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -40999,10 +42896,19 @@ export type GetBundleMetadataEntitiesQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -41225,10 +43131,19 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -41456,6 +43371,7 @@ export type BundleMetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    priceType: number;
     exchanges: Array<{
       __typename?: "Exchange";
       id: string;
@@ -41505,10 +43421,19 @@ export type BundleMetadataEntityFieldsFragment = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -41569,6 +43494,19 @@ export type BundleMetadataEntityFieldsFragment = {
         } | null;
       };
     }>;
+    royaltyInfos: Array<{
+      __typename?: "RoyaltyInfo";
+      timestamp: string;
+      recipients?: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+        };
+      }> | null;
+    }>;
     condition?: {
       __typename?: "ConditionEntity";
       id: string;
@@ -41595,10 +43533,19 @@ export type BundleMetadataEntityFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -41802,10 +43749,19 @@ export type BundleMetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -42026,10 +43982,19 @@ export type BundleMetadataEntityFieldsFragment = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -42385,10 +44350,19 @@ export type BundleMetadataEntityFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -42517,10 +44491,19 @@ export type BundleMetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -42636,10 +44619,19 @@ export type BundleMetadataEntityFieldsFragment = {
     contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -42746,10 +44738,19 @@ export type BundleMetadataEntityFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -42972,10 +44973,19 @@ export type BundleMetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -43202,6 +45212,7 @@ export type BaseBundleMetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    priceType: number;
     exchanges: Array<{
       __typename?: "Exchange";
       id: string;
@@ -43251,10 +45262,19 @@ export type BaseBundleMetadataEntityFieldsFragment = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -43315,6 +45335,19 @@ export type BaseBundleMetadataEntityFieldsFragment = {
         } | null;
       };
     }>;
+    royaltyInfos: Array<{
+      __typename?: "RoyaltyInfo";
+      timestamp: string;
+      recipients?: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+        };
+      }> | null;
+    }>;
     condition?: {
       __typename?: "ConditionEntity";
       id: string;
@@ -43341,10 +45374,19 @@ export type BaseBundleMetadataEntityFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -43548,10 +45590,19 @@ export type BaseBundleMetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -43772,10 +45823,19 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -44131,10 +46191,19 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -44263,10 +46332,19 @@ export type BaseBundleMetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -44382,10 +46460,19 @@ export type BaseBundleMetadataEntityFieldsFragment = {
     contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -44492,10 +46579,19 @@ export type BaseBundleMetadataEntityFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -44718,10 +46814,19 @@ export type BaseBundleMetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -45032,10 +47137,19 @@ export type GetProductV1ProductsQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -45195,6 +47309,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
+        priceType: number;
         exchanges: Array<{
           __typename?: "Exchange";
           id: string;
@@ -45244,10 +47359,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
-              __typename?: "RoyaltyRecipientEntity";
+              __typename?: "RoyaltyRecipientXSeller";
               id: string;
-              wallet: string;
               minRoyaltyPercentage: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+                royalties: Array<{
+                  __typename?: "RoyaltyRecipientXOffer";
+                  bps: string;
+                  offer: { __typename?: "Offer"; id: string };
+                }>;
+              };
             }> | null;
             metadata?: {
               __typename?: "SellerMetadata";
@@ -45308,6 +47432,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             } | null;
           };
         }>;
+        royaltyInfos: Array<{
+          __typename?: "RoyaltyInfo";
+          timestamp: string;
+          recipients?: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+            };
+          }> | null;
+        }>;
         condition?: {
           __typename?: "ConditionEntity";
           id: string;
@@ -45334,10 +47471,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -45541,10 +47687,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -45767,10 +47922,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                           contractURI: string;
                           metadataUri: string;
                           royaltyRecipients?: Array<{
-                            __typename?: "RoyaltyRecipientEntity";
+                            __typename?: "RoyaltyRecipientXSeller";
                             id: string;
-                            wallet: string;
                             minRoyaltyPercentage: string;
+                            recipient: {
+                              __typename?: "RoyaltyRecipient";
+                              id: string;
+                              wallet: string;
+                              royalties: Array<{
+                                __typename?: "RoyaltyRecipientXOffer";
+                                bps: string;
+                                offer: { __typename?: "Offer"; id: string };
+                              }>;
+                            };
                           }> | null;
                           metadata?: {
                             __typename?: "SellerMetadata";
@@ -46136,10 +48300,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
-                      __typename?: "RoyaltyRecipientEntity";
+                      __typename?: "RoyaltyRecipientXSeller";
                       id: string;
-                      wallet: string;
                       minRoyaltyPercentage: string;
+                      recipient: {
+                        __typename?: "RoyaltyRecipient";
+                        id: string;
+                        wallet: string;
+                        royalties: Array<{
+                          __typename?: "RoyaltyRecipientXOffer";
+                          bps: string;
+                          offer: { __typename?: "Offer"; id: string };
+                        }>;
+                      };
                     }> | null;
                     metadata?: {
                       __typename?: "SellerMetadata";
@@ -46268,10 +48441,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -46440,6 +48622,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
+          priceType: number;
           exchanges: Array<{
             __typename?: "Exchange";
             id: string;
@@ -46489,10 +48672,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -46553,6 +48745,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               } | null;
             };
           }>;
+          royaltyInfos: Array<{
+            __typename?: "RoyaltyInfo";
+            timestamp: string;
+            recipients?: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+              };
+            }> | null;
+          }>;
           condition?: {
             __typename?: "ConditionEntity";
             id: string;
@@ -46579,10 +48784,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
-              __typename?: "RoyaltyRecipientEntity";
+              __typename?: "RoyaltyRecipientXSeller";
               id: string;
-              wallet: string;
               minRoyaltyPercentage: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+                royalties: Array<{
+                  __typename?: "RoyaltyRecipientXOffer";
+                  bps: string;
+                  offer: { __typename?: "Offer"; id: string };
+                }>;
+              };
             }> | null;
             metadata?: {
               __typename?: "SellerMetadata";
@@ -46786,10 +49000,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
-                      __typename?: "RoyaltyRecipientEntity";
+                      __typename?: "RoyaltyRecipientXSeller";
                       id: string;
-                      wallet: string;
                       minRoyaltyPercentage: string;
+                      recipient: {
+                        __typename?: "RoyaltyRecipient";
+                        id: string;
+                        wallet: string;
+                        royalties: Array<{
+                          __typename?: "RoyaltyRecipientXOffer";
+                          bps: string;
+                          offer: { __typename?: "Offer"; id: string };
+                        }>;
+                      };
                     }> | null;
                     metadata?: {
                       __typename?: "SellerMetadata";
@@ -47012,10 +49235,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                             contractURI: string;
                             metadataUri: string;
                             royaltyRecipients?: Array<{
-                              __typename?: "RoyaltyRecipientEntity";
+                              __typename?: "RoyaltyRecipientXSeller";
                               id: string;
-                              wallet: string;
                               minRoyaltyPercentage: string;
+                              recipient: {
+                                __typename?: "RoyaltyRecipient";
+                                id: string;
+                                wallet: string;
+                                royalties: Array<{
+                                  __typename?: "RoyaltyRecipientXOffer";
+                                  bps: string;
+                                  offer: { __typename?: "Offer"; id: string };
+                                }>;
+                              };
                             }> | null;
                             metadata?: {
                               __typename?: "SellerMetadata";
@@ -47381,10 +49613,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -47513,10 +49754,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
-                      __typename?: "RoyaltyRecipientEntity";
+                      __typename?: "RoyaltyRecipientXSeller";
                       id: string;
-                      wallet: string;
                       minRoyaltyPercentage: string;
+                      recipient: {
+                        __typename?: "RoyaltyRecipient";
+                        id: string;
+                        wallet: string;
+                        royalties: Array<{
+                          __typename?: "RoyaltyRecipientXOffer";
+                          bps: string;
+                          offer: { __typename?: "Offer"; id: string };
+                        }>;
+                      };
                     }> | null;
                     metadata?: {
                       __typename?: "SellerMetadata";
@@ -47632,10 +49882,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -47742,10 +50001,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
-              __typename?: "RoyaltyRecipientEntity";
+              __typename?: "RoyaltyRecipientXSeller";
               id: string;
-              wallet: string;
               minRoyaltyPercentage: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+                royalties: Array<{
+                  __typename?: "RoyaltyRecipientXOffer";
+                  bps: string;
+                  offer: { __typename?: "Offer"; id: string };
+                }>;
+              };
             }> | null;
             metadata?: {
               __typename?: "SellerMetadata";
@@ -47972,10 +50240,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
-                      __typename?: "RoyaltyRecipientEntity";
+                      __typename?: "RoyaltyRecipientXSeller";
                       id: string;
-                      wallet: string;
                       minRoyaltyPercentage: string;
+                      recipient: {
+                        __typename?: "RoyaltyRecipient";
+                        id: string;
+                        wallet: string;
+                        royalties: Array<{
+                          __typename?: "RoyaltyRecipientXOffer";
+                          bps: string;
+                          offer: { __typename?: "Offer"; id: string };
+                        }>;
+                      };
                     }> | null;
                     metadata?: {
                       __typename?: "SellerMetadata";
@@ -48233,10 +50510,19 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -48396,6 +50682,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
+        priceType: number;
         exchanges: Array<{
           __typename?: "Exchange";
           id: string;
@@ -48445,10 +50732,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
-              __typename?: "RoyaltyRecipientEntity";
+              __typename?: "RoyaltyRecipientXSeller";
               id: string;
-              wallet: string;
               minRoyaltyPercentage: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+                royalties: Array<{
+                  __typename?: "RoyaltyRecipientXOffer";
+                  bps: string;
+                  offer: { __typename?: "Offer"; id: string };
+                }>;
+              };
             }> | null;
             metadata?: {
               __typename?: "SellerMetadata";
@@ -48509,6 +50805,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             } | null;
           };
         }>;
+        royaltyInfos: Array<{
+          __typename?: "RoyaltyInfo";
+          timestamp: string;
+          recipients?: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+            };
+          }> | null;
+        }>;
         condition?: {
           __typename?: "ConditionEntity";
           id: string;
@@ -48535,10 +50844,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -48742,10 +51060,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -48968,10 +51295,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                           contractURI: string;
                           metadataUri: string;
                           royaltyRecipients?: Array<{
-                            __typename?: "RoyaltyRecipientEntity";
+                            __typename?: "RoyaltyRecipientXSeller";
                             id: string;
-                            wallet: string;
                             minRoyaltyPercentage: string;
+                            recipient: {
+                              __typename?: "RoyaltyRecipient";
+                              id: string;
+                              wallet: string;
+                              royalties: Array<{
+                                __typename?: "RoyaltyRecipientXOffer";
+                                bps: string;
+                                offer: { __typename?: "Offer"; id: string };
+                              }>;
+                            };
                           }> | null;
                           metadata?: {
                             __typename?: "SellerMetadata";
@@ -49337,10 +51673,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
-                      __typename?: "RoyaltyRecipientEntity";
+                      __typename?: "RoyaltyRecipientXSeller";
                       id: string;
-                      wallet: string;
                       minRoyaltyPercentage: string;
+                      recipient: {
+                        __typename?: "RoyaltyRecipient";
+                        id: string;
+                        wallet: string;
+                        royalties: Array<{
+                          __typename?: "RoyaltyRecipientXOffer";
+                          bps: string;
+                          offer: { __typename?: "Offer"; id: string };
+                        }>;
+                      };
                     }> | null;
                     metadata?: {
                       __typename?: "SellerMetadata";
@@ -49469,10 +51814,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -49641,6 +51995,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
+          priceType: number;
           exchanges: Array<{
             __typename?: "Exchange";
             id: string;
@@ -49690,10 +52045,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -49754,6 +52118,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               } | null;
             };
           }>;
+          royaltyInfos: Array<{
+            __typename?: "RoyaltyInfo";
+            timestamp: string;
+            recipients?: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+              };
+            }> | null;
+          }>;
           condition?: {
             __typename?: "ConditionEntity";
             id: string;
@@ -49780,10 +52157,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
-              __typename?: "RoyaltyRecipientEntity";
+              __typename?: "RoyaltyRecipientXSeller";
               id: string;
-              wallet: string;
               minRoyaltyPercentage: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+                royalties: Array<{
+                  __typename?: "RoyaltyRecipientXOffer";
+                  bps: string;
+                  offer: { __typename?: "Offer"; id: string };
+                }>;
+              };
             }> | null;
             metadata?: {
               __typename?: "SellerMetadata";
@@ -49987,10 +52373,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
-                      __typename?: "RoyaltyRecipientEntity";
+                      __typename?: "RoyaltyRecipientXSeller";
                       id: string;
-                      wallet: string;
                       minRoyaltyPercentage: string;
+                      recipient: {
+                        __typename?: "RoyaltyRecipient";
+                        id: string;
+                        wallet: string;
+                        royalties: Array<{
+                          __typename?: "RoyaltyRecipientXOffer";
+                          bps: string;
+                          offer: { __typename?: "Offer"; id: string };
+                        }>;
+                      };
                     }> | null;
                     metadata?: {
                       __typename?: "SellerMetadata";
@@ -50213,10 +52608,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                             contractURI: string;
                             metadataUri: string;
                             royaltyRecipients?: Array<{
-                              __typename?: "RoyaltyRecipientEntity";
+                              __typename?: "RoyaltyRecipientXSeller";
                               id: string;
-                              wallet: string;
                               minRoyaltyPercentage: string;
+                              recipient: {
+                                __typename?: "RoyaltyRecipient";
+                                id: string;
+                                wallet: string;
+                                royalties: Array<{
+                                  __typename?: "RoyaltyRecipientXOffer";
+                                  bps: string;
+                                  offer: { __typename?: "Offer"; id: string };
+                                }>;
+                              };
                             }> | null;
                             metadata?: {
                               __typename?: "SellerMetadata";
@@ -50582,10 +52986,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -50714,10 +53127,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
-                      __typename?: "RoyaltyRecipientEntity";
+                      __typename?: "RoyaltyRecipientXSeller";
                       id: string;
-                      wallet: string;
                       minRoyaltyPercentage: string;
+                      recipient: {
+                        __typename?: "RoyaltyRecipient";
+                        id: string;
+                        wallet: string;
+                        royalties: Array<{
+                          __typename?: "RoyaltyRecipientXOffer";
+                          bps: string;
+                          offer: { __typename?: "Offer"; id: string };
+                        }>;
+                      };
                     }> | null;
                     metadata?: {
                       __typename?: "SellerMetadata";
@@ -50833,10 +53255,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -50943,10 +53374,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
-              __typename?: "RoyaltyRecipientEntity";
+              __typename?: "RoyaltyRecipientXSeller";
               id: string;
-              wallet: string;
               minRoyaltyPercentage: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+                royalties: Array<{
+                  __typename?: "RoyaltyRecipientXOffer";
+                  bps: string;
+                  offer: { __typename?: "Offer"; id: string };
+                }>;
+              };
             }> | null;
             metadata?: {
               __typename?: "SellerMetadata";
@@ -51173,10 +53613,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
-                      __typename?: "RoyaltyRecipientEntity";
+                      __typename?: "RoyaltyRecipientXSeller";
                       id: string;
-                      wallet: string;
                       minRoyaltyPercentage: string;
+                      recipient: {
+                        __typename?: "RoyaltyRecipient";
+                        id: string;
+                        wallet: string;
+                        royalties: Array<{
+                          __typename?: "RoyaltyRecipientXOffer";
+                          bps: string;
+                          offer: { __typename?: "Offer"; id: string };
+                        }>;
+                      };
                     }> | null;
                     metadata?: {
                       __typename?: "SellerMetadata";
@@ -51434,10 +53883,19 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -51611,6 +54069,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
       exchanges: Array<{
         __typename?: "Exchange";
         id: string;
@@ -51660,10 +54119,19 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -51724,6 +54192,19 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           } | null;
         };
       }>;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -51750,10 +54231,19 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -51957,10 +54447,19 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -52183,10 +54682,19 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -52552,10 +55060,19 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -52684,10 +55201,19 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -52803,10 +55329,19 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -52992,10 +55527,19 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -53124,10 +55668,19 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -53271,6 +55824,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
       exchanges: Array<{
         __typename?: "Exchange";
         id: string;
@@ -53320,10 +55874,19 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -53384,6 +55947,19 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           } | null;
         };
       }>;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -53410,10 +55986,19 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -53617,10 +56202,19 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -53843,10 +56437,19 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -54212,10 +56815,19 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -54344,10 +56956,19 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -54463,10 +57084,19 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -54652,10 +57282,19 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -54784,10 +57423,19 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -54921,6 +57569,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    priceType: number;
     exchanges: Array<{
       __typename?: "Exchange";
       id: string;
@@ -54970,10 +57619,19 @@ export type ProductV1MetadataEntityFieldsFragment = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -55034,6 +57692,19 @@ export type ProductV1MetadataEntityFieldsFragment = {
         } | null;
       };
     }>;
+    royaltyInfos: Array<{
+      __typename?: "RoyaltyInfo";
+      timestamp: string;
+      recipients?: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+        };
+      }> | null;
+    }>;
     condition?: {
       __typename?: "ConditionEntity";
       id: string;
@@ -55060,10 +57731,19 @@ export type ProductV1MetadataEntityFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -55267,10 +57947,19 @@ export type ProductV1MetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -55491,10 +58180,19 @@ export type ProductV1MetadataEntityFieldsFragment = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -55850,10 +58548,19 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -55982,10 +58689,19 @@ export type ProductV1MetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -56101,10 +58817,19 @@ export type ProductV1MetadataEntityFieldsFragment = {
     contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -56290,10 +59015,19 @@ export type ProductV1MetadataEntityFieldsFragment = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -56422,10 +59156,19 @@ export type ProductV1MetadataEntityFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -56558,6 +59301,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    priceType: number;
     exchanges: Array<{
       __typename?: "Exchange";
       id: string;
@@ -56607,10 +59351,19 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -56671,6 +59424,19 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         } | null;
       };
     }>;
+    royaltyInfos: Array<{
+      __typename?: "RoyaltyInfo";
+      timestamp: string;
+      recipients?: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+        };
+      }> | null;
+    }>;
     condition?: {
       __typename?: "ConditionEntity";
       id: string;
@@ -56697,10 +59463,19 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -56904,10 +59679,19 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -57128,10 +59912,19 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -57487,10 +60280,19 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -57619,10 +60421,19 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -57738,10 +60549,19 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -57927,10 +60747,19 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -58059,10 +60888,19 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -58261,10 +61099,19 @@ export type BaseProductV1ProductFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -58413,6 +61260,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
       exchanges: Array<{
         __typename?: "Exchange";
         id: string;
@@ -58462,10 +61310,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -58526,6 +61383,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           } | null;
         };
       }>;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -58552,10 +61422,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -58759,10 +61638,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -58985,10 +61873,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -59354,10 +62251,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -59486,10 +62392,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -59658,6 +62573,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
+        priceType: number;
         exchanges: Array<{
           __typename?: "Exchange";
           id: string;
@@ -59707,10 +62623,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
-              __typename?: "RoyaltyRecipientEntity";
+              __typename?: "RoyaltyRecipientXSeller";
               id: string;
-              wallet: string;
               minRoyaltyPercentage: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+                royalties: Array<{
+                  __typename?: "RoyaltyRecipientXOffer";
+                  bps: string;
+                  offer: { __typename?: "Offer"; id: string };
+                }>;
+              };
             }> | null;
             metadata?: {
               __typename?: "SellerMetadata";
@@ -59771,6 +62696,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             } | null;
           };
         }>;
+        royaltyInfos: Array<{
+          __typename?: "RoyaltyInfo";
+          timestamp: string;
+          recipients?: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+            };
+          }> | null;
+        }>;
         condition?: {
           __typename?: "ConditionEntity";
           id: string;
@@ -59797,10 +62735,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -60004,10 +62951,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -60230,10 +63186,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                           contractURI: string;
                           metadataUri: string;
                           royaltyRecipients?: Array<{
-                            __typename?: "RoyaltyRecipientEntity";
+                            __typename?: "RoyaltyRecipientXSeller";
                             id: string;
-                            wallet: string;
                             minRoyaltyPercentage: string;
+                            recipient: {
+                              __typename?: "RoyaltyRecipient";
+                              id: string;
+                              wallet: string;
+                              royalties: Array<{
+                                __typename?: "RoyaltyRecipientXOffer";
+                                bps: string;
+                                offer: { __typename?: "Offer"; id: string };
+                              }>;
+                            };
                           }> | null;
                           metadata?: {
                             __typename?: "SellerMetadata";
@@ -60599,10 +63564,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
-                      __typename?: "RoyaltyRecipientEntity";
+                      __typename?: "RoyaltyRecipientXSeller";
                       id: string;
-                      wallet: string;
                       minRoyaltyPercentage: string;
+                      recipient: {
+                        __typename?: "RoyaltyRecipient";
+                        id: string;
+                        wallet: string;
+                        royalties: Array<{
+                          __typename?: "RoyaltyRecipientXOffer";
+                          bps: string;
+                          offer: { __typename?: "Offer"; id: string };
+                        }>;
+                      };
                     }> | null;
                     metadata?: {
                       __typename?: "SellerMetadata";
@@ -60731,10 +63705,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -60850,10 +63833,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -60960,10 +63952,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -61190,10 +64191,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -61451,10 +64461,19 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -61603,6 +64622,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      priceType: number;
       exchanges: Array<{
         __typename?: "Exchange";
         id: string;
@@ -61652,10 +64672,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -61716,6 +64745,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           } | null;
         };
       }>;
+      royaltyInfos: Array<{
+        __typename?: "RoyaltyInfo";
+        timestamp: string;
+        recipients?: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+          };
+        }> | null;
+      }>;
       condition?: {
         __typename?: "ConditionEntity";
         id: string;
@@ -61742,10 +64784,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -61949,10 +65000,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -62175,10 +65235,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                         contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
-                          __typename?: "RoyaltyRecipientEntity";
+                          __typename?: "RoyaltyRecipientXSeller";
                           id: string;
-                          wallet: string;
                           minRoyaltyPercentage: string;
+                          recipient: {
+                            __typename?: "RoyaltyRecipient";
+                            id: string;
+                            wallet: string;
+                            royalties: Array<{
+                              __typename?: "RoyaltyRecipientXOffer";
+                              bps: string;
+                              offer: { __typename?: "Offer"; id: string };
+                            }>;
+                          };
                         }> | null;
                         metadata?: {
                           __typename?: "SellerMetadata";
@@ -62544,10 +65613,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -62676,10 +65754,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -62848,6 +65935,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
+        priceType: number;
         exchanges: Array<{
           __typename?: "Exchange";
           id: string;
@@ -62897,10 +65985,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
-              __typename?: "RoyaltyRecipientEntity";
+              __typename?: "RoyaltyRecipientXSeller";
               id: string;
-              wallet: string;
               minRoyaltyPercentage: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+                royalties: Array<{
+                  __typename?: "RoyaltyRecipientXOffer";
+                  bps: string;
+                  offer: { __typename?: "Offer"; id: string };
+                }>;
+              };
             }> | null;
             metadata?: {
               __typename?: "SellerMetadata";
@@ -62961,6 +66058,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             } | null;
           };
         }>;
+        royaltyInfos: Array<{
+          __typename?: "RoyaltyInfo";
+          timestamp: string;
+          recipients?: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+            };
+          }> | null;
+        }>;
         condition?: {
           __typename?: "ConditionEntity";
           id: string;
@@ -62987,10 +66097,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -63194,10 +66313,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -63420,10 +66548,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                           contractURI: string;
                           metadataUri: string;
                           royaltyRecipients?: Array<{
-                            __typename?: "RoyaltyRecipientEntity";
+                            __typename?: "RoyaltyRecipientXSeller";
                             id: string;
-                            wallet: string;
                             minRoyaltyPercentage: string;
+                            recipient: {
+                              __typename?: "RoyaltyRecipient";
+                              id: string;
+                              wallet: string;
+                              royalties: Array<{
+                                __typename?: "RoyaltyRecipientXOffer";
+                                bps: string;
+                                offer: { __typename?: "Offer"; id: string };
+                              }>;
+                            };
                           }> | null;
                           metadata?: {
                             __typename?: "SellerMetadata";
@@ -63789,10 +66926,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
-                      __typename?: "RoyaltyRecipientEntity";
+                      __typename?: "RoyaltyRecipientXSeller";
                       id: string;
-                      wallet: string;
                       minRoyaltyPercentage: string;
+                      recipient: {
+                        __typename?: "RoyaltyRecipient";
+                        id: string;
+                        wallet: string;
+                        royalties: Array<{
+                          __typename?: "RoyaltyRecipientXOffer";
+                          bps: string;
+                          offer: { __typename?: "Offer"; id: string };
+                        }>;
+                      };
                     }> | null;
                     metadata?: {
                       __typename?: "SellerMetadata";
@@ -63921,10 +67067,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -64040,10 +67195,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -64150,10 +67314,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
-            __typename?: "RoyaltyRecipientEntity";
+            __typename?: "RoyaltyRecipientXSeller";
             id: string;
-            wallet: string;
             minRoyaltyPercentage: string;
+            recipient: {
+              __typename?: "RoyaltyRecipient";
+              id: string;
+              wallet: string;
+              royalties: Array<{
+                __typename?: "RoyaltyRecipientXOffer";
+                bps: string;
+                offer: { __typename?: "Offer"; id: string };
+              }>;
+            };
           }> | null;
           metadata?: {
             __typename?: "SellerMetadata";
@@ -64380,10 +67553,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
-                    __typename?: "RoyaltyRecipientEntity";
+                    __typename?: "RoyaltyRecipientXSeller";
                     id: string;
-                    wallet: string;
                     minRoyaltyPercentage: string;
+                    recipient: {
+                      __typename?: "RoyaltyRecipient";
+                      id: string;
+                      wallet: string;
+                      royalties: Array<{
+                        __typename?: "RoyaltyRecipientXOffer";
+                        bps: string;
+                        offer: { __typename?: "Offer"; id: string };
+                      }>;
+                    };
                   }> | null;
                   metadata?: {
                     __typename?: "SellerMetadata";
@@ -64641,10 +67823,19 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -64815,10 +68006,19 @@ export type BaseProductV1SellerFieldsFragment = {
     contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -65001,6 +68201,7 @@ export type GetOfferByIdQueryQuery = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    priceType: number;
     exchanges?: Array<{
       __typename?: "Exchange";
       id: string;
@@ -65050,10 +68251,19 @@ export type GetOfferByIdQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -65114,6 +68324,19 @@ export type GetOfferByIdQueryQuery = {
         } | null;
       };
     }>;
+    royaltyInfos: Array<{
+      __typename?: "RoyaltyInfo";
+      timestamp: string;
+      recipients?: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+        };
+      }> | null;
+    }>;
     condition?: {
       __typename?: "ConditionEntity";
       id: string;
@@ -65140,10 +68363,19 @@ export type GetOfferByIdQueryQuery = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -65347,10 +68579,19 @@ export type GetOfferByIdQueryQuery = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -65571,10 +68812,19 @@ export type GetOfferByIdQueryQuery = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -65930,10 +69180,19 @@ export type GetOfferByIdQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -66062,10 +69321,19 @@ export type GetOfferByIdQueryQuery = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -66212,6 +69480,7 @@ export type GetOffersQueryQuery = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    priceType: number;
     exchanges?: Array<{
       __typename?: "Exchange";
       id: string;
@@ -66261,10 +69530,19 @@ export type GetOffersQueryQuery = {
         contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
-          __typename?: "RoyaltyRecipientEntity";
+          __typename?: "RoyaltyRecipientXSeller";
           id: string;
-          wallet: string;
           minRoyaltyPercentage: string;
+          recipient: {
+            __typename?: "RoyaltyRecipient";
+            id: string;
+            wallet: string;
+            royalties: Array<{
+              __typename?: "RoyaltyRecipientXOffer";
+              bps: string;
+              offer: { __typename?: "Offer"; id: string };
+            }>;
+          };
         }> | null;
         metadata?: {
           __typename?: "SellerMetadata";
@@ -66325,6 +69603,19 @@ export type GetOffersQueryQuery = {
         } | null;
       };
     }>;
+    royaltyInfos: Array<{
+      __typename?: "RoyaltyInfo";
+      timestamp: string;
+      recipients?: Array<{
+        __typename?: "RoyaltyRecipientXOffer";
+        bps: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+        };
+      }> | null;
+    }>;
     condition?: {
       __typename?: "ConditionEntity";
       id: string;
@@ -66351,10 +69642,19 @@ export type GetOffersQueryQuery = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -66558,10 +69858,19 @@ export type GetOffersQueryQuery = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -66782,10 +70091,19 @@ export type GetOffersQueryQuery = {
                       contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
-                        __typename?: "RoyaltyRecipientEntity";
+                        __typename?: "RoyaltyRecipientXSeller";
                         id: string;
-                        wallet: string;
                         minRoyaltyPercentage: string;
+                        recipient: {
+                          __typename?: "RoyaltyRecipient";
+                          id: string;
+                          wallet: string;
+                          royalties: Array<{
+                            __typename?: "RoyaltyRecipientXOffer";
+                            bps: string;
+                            offer: { __typename?: "Offer"; id: string };
+                          }>;
+                        };
                       }> | null;
                       metadata?: {
                         __typename?: "SellerMetadata";
@@ -67141,10 +70459,19 @@ export type GetOffersQueryQuery = {
                 contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
-                  __typename?: "RoyaltyRecipientEntity";
+                  __typename?: "RoyaltyRecipientXSeller";
                   id: string;
-                  wallet: string;
                   minRoyaltyPercentage: string;
+                  recipient: {
+                    __typename?: "RoyaltyRecipient";
+                    id: string;
+                    wallet: string;
+                    royalties: Array<{
+                      __typename?: "RoyaltyRecipientXOffer";
+                      bps: string;
+                      offer: { __typename?: "Offer"; id: string };
+                    }>;
+                  };
                 }> | null;
                 metadata?: {
                   __typename?: "SellerMetadata";
@@ -67273,10 +70600,19 @@ export type GetOffersQueryQuery = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -67515,6 +70851,7 @@ export type OfferFieldsFragment = {
   disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
+  priceType: number;
   exchanges?: Array<{
     __typename?: "Exchange";
     id: string;
@@ -67564,10 +70901,19 @@ export type OfferFieldsFragment = {
       contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
-        __typename?: "RoyaltyRecipientEntity";
+        __typename?: "RoyaltyRecipientXSeller";
         id: string;
-        wallet: string;
         minRoyaltyPercentage: string;
+        recipient: {
+          __typename?: "RoyaltyRecipient";
+          id: string;
+          wallet: string;
+          royalties: Array<{
+            __typename?: "RoyaltyRecipientXOffer";
+            bps: string;
+            offer: { __typename?: "Offer"; id: string };
+          }>;
+        };
       }> | null;
       metadata?: {
         __typename?: "SellerMetadata";
@@ -67628,6 +70974,19 @@ export type OfferFieldsFragment = {
       } | null;
     };
   }>;
+  royaltyInfos: Array<{
+    __typename?: "RoyaltyInfo";
+    timestamp: string;
+    recipients?: Array<{
+      __typename?: "RoyaltyRecipientXOffer";
+      bps: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+      };
+    }> | null;
+  }>;
   condition?: {
     __typename?: "ConditionEntity";
     id: string;
@@ -67654,10 +71013,19 @@ export type OfferFieldsFragment = {
     contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -67861,10 +71229,19 @@ export type OfferFieldsFragment = {
             contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
-              __typename?: "RoyaltyRecipientEntity";
+              __typename?: "RoyaltyRecipientXSeller";
               id: string;
-              wallet: string;
               minRoyaltyPercentage: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+                royalties: Array<{
+                  __typename?: "RoyaltyRecipientXOffer";
+                  bps: string;
+                  offer: { __typename?: "Offer"; id: string };
+                }>;
+              };
             }> | null;
             metadata?: {
               __typename?: "SellerMetadata";
@@ -68085,10 +71462,19 @@ export type OfferFieldsFragment = {
                     contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
-                      __typename?: "RoyaltyRecipientEntity";
+                      __typename?: "RoyaltyRecipientXSeller";
                       id: string;
-                      wallet: string;
                       minRoyaltyPercentage: string;
+                      recipient: {
+                        __typename?: "RoyaltyRecipient";
+                        id: string;
+                        wallet: string;
+                        royalties: Array<{
+                          __typename?: "RoyaltyRecipientXOffer";
+                          bps: string;
+                          offer: { __typename?: "Offer"; id: string };
+                        }>;
+                      };
                     }> | null;
                     metadata?: {
                       __typename?: "SellerMetadata";
@@ -68444,10 +71830,19 @@ export type OfferFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -68576,10 +71971,19 @@ export type OfferFieldsFragment = {
             contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
-              __typename?: "RoyaltyRecipientEntity";
+              __typename?: "RoyaltyRecipientXSeller";
               id: string;
-              wallet: string;
               minRoyaltyPercentage: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+                royalties: Array<{
+                  __typename?: "RoyaltyRecipientXOffer";
+                  bps: string;
+                  offer: { __typename?: "Offer"; id: string };
+                }>;
+              };
             }> | null;
             metadata?: {
               __typename?: "SellerMetadata";
@@ -68709,6 +72113,20 @@ export type BaseOfferFieldsFragment = {
   disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
+  priceType: number;
+  royaltyInfos: Array<{
+    __typename?: "RoyaltyInfo";
+    timestamp: string;
+    recipients?: Array<{
+      __typename?: "RoyaltyRecipientXOffer";
+      bps: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+      };
+    }> | null;
+  }>;
   condition?: {
     __typename?: "ConditionEntity";
     id: string;
@@ -68735,10 +72153,19 @@ export type BaseOfferFieldsFragment = {
     contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
-      __typename?: "RoyaltyRecipientEntity";
+      __typename?: "RoyaltyRecipientXSeller";
       id: string;
-      wallet: string;
       minRoyaltyPercentage: string;
+      recipient: {
+        __typename?: "RoyaltyRecipient";
+        id: string;
+        wallet: string;
+        royalties: Array<{
+          __typename?: "RoyaltyRecipientXOffer";
+          bps: string;
+          offer: { __typename?: "Offer"; id: string };
+        }>;
+      };
     }> | null;
     metadata?: {
       __typename?: "SellerMetadata";
@@ -68942,10 +72369,19 @@ export type BaseOfferFieldsFragment = {
             contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
-              __typename?: "RoyaltyRecipientEntity";
+              __typename?: "RoyaltyRecipientXSeller";
               id: string;
-              wallet: string;
               minRoyaltyPercentage: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+                royalties: Array<{
+                  __typename?: "RoyaltyRecipientXOffer";
+                  bps: string;
+                  offer: { __typename?: "Offer"; id: string };
+                }>;
+              };
             }> | null;
             metadata?: {
               __typename?: "SellerMetadata";
@@ -69166,10 +72602,19 @@ export type BaseOfferFieldsFragment = {
                     contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
-                      __typename?: "RoyaltyRecipientEntity";
+                      __typename?: "RoyaltyRecipientXSeller";
                       id: string;
-                      wallet: string;
                       minRoyaltyPercentage: string;
+                      recipient: {
+                        __typename?: "RoyaltyRecipient";
+                        id: string;
+                        wallet: string;
+                        royalties: Array<{
+                          __typename?: "RoyaltyRecipientXOffer";
+                          bps: string;
+                          offer: { __typename?: "Offer"; id: string };
+                        }>;
+                      };
                     }> | null;
                     metadata?: {
                       __typename?: "SellerMetadata";
@@ -69525,10 +72970,19 @@ export type BaseOfferFieldsFragment = {
               contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
-                __typename?: "RoyaltyRecipientEntity";
+                __typename?: "RoyaltyRecipientXSeller";
                 id: string;
-                wallet: string;
                 minRoyaltyPercentage: string;
+                recipient: {
+                  __typename?: "RoyaltyRecipient";
+                  id: string;
+                  wallet: string;
+                  royalties: Array<{
+                    __typename?: "RoyaltyRecipientXOffer";
+                    bps: string;
+                    offer: { __typename?: "Offer"; id: string };
+                  }>;
+                };
               }> | null;
               metadata?: {
                 __typename?: "SellerMetadata";
@@ -69657,10 +73111,19 @@ export type BaseOfferFieldsFragment = {
             contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
-              __typename?: "RoyaltyRecipientEntity";
+              __typename?: "RoyaltyRecipientXSeller";
               id: string;
-              wallet: string;
               minRoyaltyPercentage: string;
+              recipient: {
+                __typename?: "RoyaltyRecipient";
+                id: string;
+                wallet: string;
+                royalties: Array<{
+                  __typename?: "RoyaltyRecipientXOffer";
+                  bps: string;
+                  offer: { __typename?: "Offer"; id: string };
+                }>;
+              };
             }> | null;
             metadata?: {
               __typename?: "SellerMetadata";
@@ -69851,7 +73314,16 @@ export const BaseSellerFieldsFragmentDoc = gql`
     contractURI
     royaltyRecipients {
       id
-      wallet
+      recipient {
+        id
+        wallet
+        royalties {
+          bps
+          offer {
+            id
+          }
+        }
+      }
       minRoyaltyPercentage
     }
     metadataUri
@@ -70203,6 +73675,17 @@ export const BaseOfferFieldsFragmentDoc = gql`
     disputeResolverId
     numberOfCommits
     numberOfRedemptions
+    priceType
+    royaltyInfos {
+      timestamp
+      recipients {
+        recipient {
+          id
+          wallet
+        }
+        bps
+      }
+    }
     condition {
       ...BaseConditionFields
     }

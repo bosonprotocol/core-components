@@ -39,7 +39,8 @@ import {
   DisputeResolver,
   PendingDisputeResolver,
   OfferCollection,
-  RoyaltyRecipientEntity
+  RoyaltyRecipientXSeller,
+  RoyaltyRecipient
 } from "../../generated/schema";
 import { BosonVoucher } from "../../generated/templates";
 import {
@@ -677,10 +678,10 @@ export function handleRoyaltyRecipientsChangedEvent(
     const oldRecipients = seller.royaltyRecipients.load();
     if (oldRecipients) {
       for (let i = 0; i < oldRecipients.length; i++) {
-        log.debug("remove RoyaltyRecipientEntity with ID {}", [
+        log.debug("remove RoyaltyRecipientXSeller with ID {}", [
           oldRecipients[i].id
         ]);
-        store.remove("RoyaltyRecipientEntity", oldRecipients[i].id);
+        store.remove("RoyaltyRecipientXSeller", oldRecipients[i].id);
       }
     }
   } else {
@@ -689,18 +690,47 @@ export function handleRoyaltyRecipientsChangedEvent(
   for (let i = 0; i < royaltyRecipients.length; i++) {
     const wallet = royaltyRecipients[i].wallet;
     const minRoyaltyPercentage = royaltyRecipients[i].minRoyaltyPercentage;
-    const royaltyRecipientId = getRoyaltyRecipientId(sellerId, wallet);
-    let royaltyRecipient = RoyaltyRecipientEntity.load(royaltyRecipientId);
-    if (!royaltyRecipient) {
-      royaltyRecipient = new RoyaltyRecipientEntity(royaltyRecipientId);
-      royaltyRecipient.wallet = wallet;
-    }
-    royaltyRecipient.seller = sellerId;
-    royaltyRecipient.minRoyaltyPercentage = minRoyaltyPercentage;
-    royaltyRecipient.save();
+    saveRoyaltyRecipientXSeller(sellerId, wallet, minRoyaltyPercentage);
   }
 }
 
-function getRoyaltyRecipientId(sellerId: string, wallet: Bytes): string {
+function saveRoyaltyRecipientXSeller(
+  sellerId: string,
+  wallet: Address,
+  minRoyaltyPercentage: BigInt
+): void {
+  const royaltyRecipientXSellerId = getRoyaltyRecipientXSellerId(
+    sellerId,
+    wallet
+  );
+  let royaltyRecipientXSeller = RoyaltyRecipientXSeller.load(
+    royaltyRecipientXSellerId
+  );
+  if (!royaltyRecipientXSeller) {
+    royaltyRecipientXSeller = new RoyaltyRecipientXSeller(
+      royaltyRecipientXSellerId
+    );
+    royaltyRecipientXSeller.recipient = saveRoyaltyRecipient(wallet);
+  }
+  royaltyRecipientXSeller.seller = sellerId;
+  royaltyRecipientXSeller.minRoyaltyPercentage = minRoyaltyPercentage;
+  royaltyRecipientXSeller.save();
+}
+
+function getRoyaltyRecipientXSellerId(
+  sellerId: string,
+  wallet: Address
+): string {
   return `${sellerId}-royalty-${wallet.toHexString()}`;
+}
+
+export function saveRoyaltyRecipient(wallet: Address): string {
+  const royaltyRecipientId = `${wallet.toHexString()}`;
+  let royaltyRecipient = RoyaltyRecipient.load(royaltyRecipientId);
+  if (!royaltyRecipient) {
+    royaltyRecipient = new RoyaltyRecipient(royaltyRecipientId);
+  }
+  royaltyRecipient.wallet = wallet;
+  royaltyRecipient.save();
+  return royaltyRecipientId;
 }

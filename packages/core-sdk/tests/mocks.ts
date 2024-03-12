@@ -43,7 +43,18 @@ export function mockRawSellerFromSubgraph(
     royaltyRecipients: [
       {
         id: "1-royalty-0x0000000000000000000000000000000000000000",
-        wallet: "0x0000000000000000000000000000000000000000",
+        recipient: {
+          id: "0x0000000000000000000000000000000000000000",
+          wallet: "0x0000000000000000000000000000000000000000",
+          royalties: [
+            {
+              bps: "0",
+              offer: {
+                id: "1"
+              }
+            }
+          ]
+        },
         minRoyaltyPercentage: "0"
       }
     ],
@@ -107,6 +118,21 @@ export function mockRawOfferFromSubgraph(
     agentId: "0",
     numberOfCommits: "0",
     numberOfRedemptions: "0",
+    priceType: 0,
+    royaltyInfos: [
+      {
+        timestamp: "1710251696",
+        recipients: [
+          {
+            bps: "0",
+            recipient: {
+              id: "0x0000000000000000000000000000000000000000",
+              wallet: "0x0000000000000000000000000000000000000000"
+            }
+          }
+        ]
+      }
+    ],
     seller: {
       id: "1",
       assistant: ZERO_ADDRESS,
@@ -122,7 +148,18 @@ export function mockRawOfferFromSubgraph(
       royaltyRecipients: [
         {
           id: "1-royalty-0x0000000000000000000000000000000000000000",
-          wallet: "0x0000000000000000000000000000000000000000",
+          recipient: {
+            id: "0x0000000000000000000000000000000000000000",
+            wallet: "0x0000000000000000000000000000000000000000",
+            royalties: [
+              {
+                bps: "0",
+                offer: {
+                  id: "1"
+                }
+              }
+            ]
+          },
           minRoyaltyPercentage: "0"
         }
       ],
@@ -214,7 +251,18 @@ export function mockRawExchangeFromSubgraph(
       royaltyRecipients: [
         {
           id: "1-royalty-0x0000000000000000000000000000000000000000",
-          wallet: "0x0000000000000000000000000000000000000000",
+          recipient: {
+            id: "0x0000000000000000000000000000000000000000",
+            wallet: "0x0000000000000000000000000000000000000000",
+            royalties: [
+              {
+                bps: "0",
+                offer: {
+                  id: "1"
+                }
+              }
+            ]
+          },
           minRoyaltyPercentage: "0"
         }
       ],

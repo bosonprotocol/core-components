@@ -111,7 +111,18 @@ describe("#voidOffer()", () => {
             royaltyRecipients: [
               {
                 id: "1-royalty-0x0000000000000000000000000000000000000000",
-                wallet: "0x0000000000000000000000000000000000000000",
+                recipient: {
+                  id: "0x0000000000000000000000000000000000000000",
+                  wallet: "0x0000000000000000000000000000000000000000",
+                  royalties: [
+                    {
+                      bps: "0",
+                      offer: {
+                        id: "1"
+                      }
+                    }
+                  ]
+                },
                 minRoyaltyPercentage: "0"
               }
             ],
@@ -151,7 +162,18 @@ describe("#voidOffer()", () => {
             royaltyRecipients: [
               {
                 id: "1-royalty-0x0000000000000000000000000000000000000000",
-                wallet: "0x0000000000000000000000000000000000000000",
+                recipient: {
+                  id: "0x0000000000000000000000000000000000000000",
+                  wallet: "0x0000000000000000000000000000000000000000",
+                  royalties: [
+                    {
+                      bps: "0",
+                      offer: {
+                        id: "1"
+                      }
+                    }
+                  ]
+                },
                 minRoyaltyPercentage: "0"
               }
             ],
@@ -237,7 +259,18 @@ describe("#voidOfferBatch()", () => {
               royaltyRecipients: [
                 {
                   id: "1-royalty-0x0000000000000000000000000000000000000000",
-                  wallet: "0x0000000000000000000000000000000000000000",
+                  recipient: {
+                    id: "0x0000000000000000000000000000000000000000",
+                    wallet: "0x0000000000000000000000000000000000000000",
+                    royalties: [
+                      {
+                        bps: "0",
+                        offer: {
+                          id: "1"
+                        }
+                      }
+                    ]
+                  },
                   minRoyaltyPercentage: "0"
                 }
               ],
@@ -280,7 +313,18 @@ describe("#voidOfferBatch()", () => {
               royaltyRecipients: [
                 {
                   id: "1-royalty-0x0000000000000000000000000000000000000000",
-                  wallet: "0x0000000000000000000000000000000000000000",
+                  recipient: {
+                    id: "0x0000000000000000000000000000000000000000",
+                    wallet: "0x0000000000000000000000000000000000000000",
+                    royalties: [
+                      {
+                        bps: "0",
+                        offer: {
+                          id: "1"
+                        }
+                      }
+                    ]
+                  },
                   minRoyaltyPercentage: "0"
                 }
               ],

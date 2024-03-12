@@ -382,7 +382,16 @@ fragment BaseSellerFields on Seller {
   contractURI
   royaltyRecipients {
     id
-    wallet
+    recipient {
+      id
+      wallet
+      royalties {
+        bps
+        offer {
+          id
+        }
+      }
+    }
     minRoyaltyPercentage
   }
   metadataUri

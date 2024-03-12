@@ -1,14 +1,21 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+/* eslint-disable @typescript-eslint/ban-types */
+import { Address, BigInt, log } from "@graphprotocol/graph-ts";
 import {
   OfferCreated,
   OfferVoided,
   OfferExtended,
-  RangeReserved
+  RangeReserved,
+  OfferCreatedOfferRoyaltyInfoStruct
 } from "../../generated/BosonOfferHandler/IBosonOfferHandler";
 import { OfferCreated as OfferCreated230 } from "../../generated/BosonOfferHandler230/IBosonOfferHandler230";
 import { OfferCreated as OfferCreatedLegacy } from "../../generated/BosonOfferHandlerLegacy/IBosonOfferHandlerLegacy";
 
-import { Offer, RangeEntity } from "../../generated/schema";
+import {
+  Offer,
+  RangeEntity,
+  RoyaltyInfo,
+  RoyaltyRecipientXOffer
+} from "../../generated/schema";
 
 import { saveMetadata } from "../entities/metadata/handler";
 import { saveExchangeToken } from "../entities/token";
@@ -19,7 +26,11 @@ import {
   saveDisputeResolutionTermsLegacy
 } from "../entities/dispute-resolution";
 import { saveOfferEventLog } from "../entities/event-log";
-import { checkSellerExist, getOfferCollectionId } from "./account-handler";
+import {
+  checkSellerExist,
+  getOfferCollectionId,
+  saveRoyaltyRecipient
+} from "./account-handler";
 
 export function handleOfferCreatedEvent(event: OfferCreated): void {
   const offerId = event.params.offerId;
@@ -70,6 +81,16 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     offer.exchangeToken = offerStruct.exchangeToken.toHexString();
     offer.metadataUri = offerStruct.metadataUri;
     offer.metadataHash = offerStruct.metadataHash;
+    offer.priceType = offerStruct.priceType;
+    const royaltyInfos = offerStruct.royaltyInfo;
+    for (let i = 0; i < royaltyInfos.length; i++) {
+      saveRoyaltyInfo(
+        offerId.toString(),
+        royaltyInfos[i],
+        i,
+        event.block.timestamp
+      );
+    }
     offer.metadata = offerId.toString() + "-metadata";
     offer.voided = false;
     offer.collectionIndex = offerStruct.collectionIndex;
@@ -98,6 +119,69 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
       offerId.toString()
     );
   }
+}
+
+function saveRoyaltyInfo(
+  offerId: string,
+  royaltyInfo: OfferCreatedOfferRoyaltyInfoStruct,
+  index: number,
+  timestamp: BigInt
+): void {
+  const royaltyInfoId = getRoyaltyInfoId(offerId, index, timestamp);
+  let royaltyInfoEntity = RoyaltyInfo.load(royaltyInfoId);
+  if (!royaltyInfoEntity) {
+    royaltyInfoEntity = new RoyaltyInfo(royaltyInfoId);
+    royaltyInfoEntity.timestamp = timestamp;
+    royaltyInfoEntity.offer = offerId;
+  }
+  const recipients = royaltyInfo.recipients;
+  const bps = royaltyInfo.bps;
+  const royaltyRecipientXOffers: string[] = [];
+  for (let i = 0; i < recipients.length; i++) {
+    const wallet = recipients[i];
+    let bp = BigInt.zero();
+    if (i < bps.length) {
+      bp = bps[i];
+    }
+    royaltyRecipientXOffers.push(
+      saveRoyaltyRecipientXOffer(offerId, wallet, bp)
+    );
+  }
+  royaltyInfoEntity.recipients = royaltyRecipientXOffers;
+  royaltyInfoEntity.save();
+}
+
+function getRoyaltyInfoId(
+  offerId: string,
+  index: number,
+  timestamp: BigInt
+): string {
+  return `${offerId}-royaltyInfo-${index.toString()}-${timestamp.toString()}`;
+}
+
+function getRoyaltyRecipientXOfferId(offerId: string, wallet: Address): string {
+  return `${offerId}-royalty-${wallet.toHexString()}`;
+}
+
+function saveRoyaltyRecipientXOffer(
+  offerId: string,
+  wallet: Address,
+  bps: BigInt
+): string {
+  const royaltyRecipientXOfferId = getRoyaltyRecipientXOfferId(offerId, wallet);
+  let royaltyRecipientXOffer = RoyaltyRecipientXOffer.load(
+    royaltyRecipientXOfferId
+  );
+  if (!royaltyRecipientXOffer) {
+    royaltyRecipientXOffer = new RoyaltyRecipientXOffer(
+      royaltyRecipientXOfferId
+    );
+    royaltyRecipientXOffer.recipient = saveRoyaltyRecipient(wallet);
+  }
+  royaltyRecipientXOffer.offer = offerId;
+  royaltyRecipientXOffer.bps = bps;
+  royaltyRecipientXOffer.save();
+  return royaltyRecipientXOfferId;
 }
 
 export function handleOfferCreatedEvent230(event: OfferCreated230): void {
