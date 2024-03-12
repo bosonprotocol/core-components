@@ -1,6 +1,8 @@
-/* eslint @typescript-eslint/no-explicit-any: "off" */
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../types/offer";
+import { getOfferAnimationUrl } from "./getOfferAnimationUrl";
+import { isBundle, isProductV1 } from "./filter";
+import { isNftItem, isProductV1Item } from "../bundle/filter";
 
 interface ITable {
   name: string;
@@ -10,37 +12,86 @@ interface IShippingInfo {
   returnPeriodInDays: number | undefined;
   shippingTable: Array<ITable>;
 }
+
+type ProductV1OrProductV1ItemSubProductV1Seller =
+  | Pick<
+      subgraph.ProductV1ItemMetadataEntity["productV1Seller"],
+      "images" | "description"
+    >
+  | Pick<
+      subgraph.ProductV1MetadataEntity["productV1Seller"],
+      "images" | "description"
+    >;
 interface IGetOfferDetails {
   display: boolean;
   name: string;
-  offerImg: string;
+  offerImg: string | undefined;
+  mainImage: string;
   animationUrl: string;
   shippingInfo: IShippingInfo;
   description: string;
-  productData: Array<ITable>;
-  artist: subgraph.ProductV1Seller;
+  artist: ProductV1OrProductV1ItemSubProductV1Seller | null;
   artistDescription: string;
   images: Array<string>;
+  nftItems: subgraph.NftItemMetadataEntity[] | undefined;
+  bundleItems:
+    | Extract<
+        subgraph.OfferFieldsFragment["metadata"],
+        { __typename: "BundleMetadataEntity" }
+      >["items"]
+    | undefined;
 }
-
-export const getOfferAnimationUrl = (
-  offer: Offer | undefined | null
-): string => {
-  return offer?.metadata?.animationUrl === "about:blank"
-    ? ""
-    : offer?.metadata?.animationUrl || "";
+type ProductV1Sub = Pick<
+  subgraph.ProductV1MetadataEntity,
+  "shipping" | "productOverrides"
+> & {
+  product: Pick<
+    subgraph.ProductV1MetadataEntity["product"],
+    "title" | "description" | "visuals_images" | "productV1Seller"
+  >;
+  productV1Seller: Pick<
+    subgraph.ProductV1MetadataEntity["productV1Seller"],
+    "images" | "description"
+  >;
 };
-
-export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
+type ProductV1Subitem = Pick<
+  subgraph.ProductV1ItemMetadataEntity,
+  "shipping" | "productOverrides"
+> & {
+  product: Pick<
+    subgraph.ProductV1ItemMetadataEntity["product"],
+    "title" | "description" | "visuals_images" | "productV1Seller"
+  >;
+  productV1Seller: Pick<
+    subgraph.ProductV1ItemMetadataEntity["productV1Seller"],
+    "images" | "description"
+  >;
+};
+export const getOfferDetails = (
+  offer: Offer | subgraph.OfferFieldsFragment
+): IGetOfferDetails => {
+  const productV1ItemMetadataEntity:
+    | ProductV1Sub
+    | ProductV1Subitem
+    | undefined = isProductV1(offer)
+    ? (offer.metadata as ProductV1Sub)
+    : isBundle(offer)
+    ? (offer.metadata?.items?.find((item) => isProductV1Item(item)) as
+        | ProductV1Subitem
+        | undefined)
+    : undefined;
   const name =
-    offer.metadata?.product?.title || offer.metadata?.name || "Untitled";
+    productV1ItemMetadataEntity?.product?.title ||
+    offer.metadata?.name ||
+    "Untitled";
   const offerImg = offer.metadata?.image;
 
   const animationUrl = getOfferAnimationUrl(offer);
   const shippingInfo = {
-    returnPeriodInDays: offer.metadata?.shipping?.returnPeriodInDays,
+    returnPeriodInDays:
+      productV1ItemMetadataEntity?.shipping?.returnPeriodInDays,
     shippingTable:
-      offer.metadata?.shipping?.supportedJurisdictions?.map(
+      productV1ItemMetadataEntity?.shipping?.supportedJurisdictions?.map(
         (jurisdiction: any) => ({
           name: jurisdiction.label,
           value: jurisdiction.deliveryTime
@@ -48,22 +99,29 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
       ) || []
   };
   const description =
-    offer.metadata?.product?.description || offer.metadata?.description || "";
-  const productData =
-    offer.metadata?.attributes?.map((attr: any) => ({
-      name: attr.traitType,
-      value:
-        attr.displayType === "date"
-          ? new Date(parseInt(attr.value)).toUTCString()
-          : attr.value
-    })) || [];
-  const artist = offer.metadata?.productV1Seller || null;
-  const artistDescription = offer.metadata?.productV1Seller?.description || "";
+    productV1ItemMetadataEntity?.product?.description ||
+    offer.metadata?.description ||
+    "";
+  const artist = productV1ItemMetadataEntity?.productV1Seller || null;
+  const artistDescription =
+    artist?.description ||
+    productV1ItemMetadataEntity?.product.productV1Seller?.description ||
+    "";
   const images =
-    offer.metadata?.product?.visuals_images?.map(
+    productV1ItemMetadataEntity?.product?.visuals_images?.map(
       ({ url }: { url: string }) => url
     ) || [];
-
+  const variantsImages =
+    productV1ItemMetadataEntity?.productOverrides?.visuals_images?.map(
+      ({ url }: { url: string }) => url
+    ) || [];
+  const bundleItems = isBundle(offer) ? offer.metadata.items : undefined;
+  const nftItems = bundleItems
+    ? bundleItems.filter((item): item is subgraph.NftItemMetadataEntity =>
+        isNftItem(item)
+      )
+    : undefined;
+  const mainImage = offerImg || variantsImages?.[0] || images?.[0] || "";
   return {
     display: false,
     name,
@@ -71,9 +129,11 @@ export const getOfferDetails = (offer: Offer): IGetOfferDetails => {
     animationUrl,
     shippingInfo,
     description,
-    productData,
     artist,
     artistDescription,
-    images
+    images: variantsImages?.length ? variantsImages : images,
+    bundleItems,
+    nftItems,
+    mainImage
   };
 };

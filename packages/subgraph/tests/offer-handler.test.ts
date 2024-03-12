@@ -6,13 +6,20 @@ import {
   clearStore
 } from "matchstick-as/assembly/index";
 import {
+  getRangeId,
   handleOfferCreatedEvent,
-  handleOfferVoidedEvent
+  handleOfferCreatedEventLegacy,
+  handleOfferExtendedEvent,
+  handleOfferVoidedEvent,
+  handleRangeReservedEvent
 } from "../src/mappings/offer-handler";
 import {
   RoyaltyInfo,
   createOfferCreatedEvent,
+  createOfferCreatedEventLegacy,
+  createOfferExtendedEvent,
   createOfferVoidedEvent,
+  createRangeReservedEvent,
   createSeller,
   mockExchangeTokenContractCalls
 } from "./mocks";
@@ -84,6 +91,34 @@ const offerCreatedEvent = createOfferCreatedEvent(
   agentId,
   executedBy,
   royaltyInfo
+);
+
+const offerCreatedEventLegacy = createOfferCreatedEventLegacy(
+  offerId,
+  sellerId,
+  price,
+  sellerDeposit,
+  protocolFee,
+  agentFee,
+  buyerCancelPenalty,
+  quantityAvailable,
+  validFromDate,
+  validUntilDate,
+  voucherRedeemableFromDate,
+  voucherRedeemableUntilDate,
+  disputePeriodDuration,
+  voucherValidDuration,
+  resolutionPeriodDuration,
+  exchangeTokenAddress,
+  disputeResolverId,
+  disputeEscalationResponsePeriod,
+  disputeFeeAmount,
+  disputeBuyerEscalationDeposit,
+  "ipfs://" + metadataHash,
+  metadataHash,
+  false,
+  agentId,
+  executedBy
 );
 
 beforeEach(() => {
@@ -197,4 +232,88 @@ test("handle OfferVoidedEvent", () => {
 
   assert.fieldEquals("Offer", "1", "voided", "true");
   assert.fieldEquals("BaseMetadataEntity", "1-metadata", "voided", "true");
+});
+
+test("handleOfferExtendedEvent", () => {
+  mockExchangeTokenContractCalls(
+    exchangeTokenAddress,
+    exchangeTokenDecimals,
+    exchangeTokenName,
+    exchangeTokenSymbol
+  );
+  mockIpfsFile(metadataHash, "tests/metadata/base.json");
+  createSeller(
+    1,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
+  );
+  handleOfferCreatedEvent(offerCreatedEvent);
+  assert.fieldEquals("Offer", "1", "validUntilDate", validUntilDate.toString());
+
+  const offerExtendedEvent = createOfferExtendedEvent(offerId, sellerId, validUntilDate + 1000, executedBy);
+  handleOfferExtendedEvent(offerExtendedEvent);
+  assert.fieldEquals("Offer", "1", "validUntilDate", (validUntilDate + 1000).toString());
+  
+});
+
+test("handleRangeReservedEvent", () => {
+  mockExchangeTokenContractCalls(
+    exchangeTokenAddress,
+    exchangeTokenDecimals,
+    exchangeTokenName,
+    exchangeTokenSymbol
+  );
+  mockIpfsFile(metadataHash, "tests/metadata/base.json");
+  createSeller(
+    1,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
+  );
+  handleOfferCreatedEvent(offerCreatedEvent);
+  assert.fieldEquals("Offer", "1", "validUntilDate", validUntilDate.toString());
+
+  const start = 12;
+  const end = 24;
+  const rangeReservedEvent = createRangeReservedEvent(offerId, sellerId, start, end, sellerAddress, executedBy);
+  handleRangeReservedEvent(rangeReservedEvent);
+  const rangeId = getRangeId(offerId.toString());
+  assert.fieldEquals("RangeEntity", rangeId, "start", start.toString());
+  assert.fieldEquals("RangeEntity", rangeId, "end", end.toString());
+  assert.fieldEquals("RangeEntity", rangeId, "owner", sellerAddress.toLowerCase());
+  assert.fieldEquals("RangeEntity", rangeId, "minted", "0");
+});
+
+test("handleOfferCreatedEventLegacy", () => {
+  mockExchangeTokenContractCalls(
+    exchangeTokenAddress,
+    exchangeTokenDecimals,
+    exchangeTokenName,
+    exchangeTokenSymbol
+  );
+  mockIpfsFile(metadataHash, "tests/metadata/base.json");
+  createSeller(
+    1,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
+  );
+  handleOfferCreatedEventLegacy(offerCreatedEventLegacy);
+  assert.fieldEquals("Offer", "1", "id", "1");
+  assert.fieldEquals(
+    "ExchangeToken",
+    exchangeTokenAddress.toLowerCase(),
+    "id",
+    exchangeTokenAddress.toLowerCase()
+  );
+  assert.fieldEquals(
+    "ExchangeToken",
+    exchangeTokenAddress.toLowerCase(),
+    "name",
+    exchangeTokenName
+  );
 });

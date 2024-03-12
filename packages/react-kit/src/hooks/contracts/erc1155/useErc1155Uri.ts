@@ -1,14 +1,13 @@
+import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { useQuery } from "react-query";
-import { useCoreSDKWithContext } from "../../core-sdk/useCoreSdkWithContext";
 
 export const useErc1155Uri = (
   props: {
     contractAddress: string | undefined;
     tokenIds: (string | null | undefined)[] | undefined;
   },
-  { enabled }: { enabled: boolean | undefined }
+  { enabled, coreSDK }: { enabled: boolean | undefined; coreSDK: CoreSDK }
 ) => {
-  const coreSDK = useCoreSDKWithContext();
   return useQuery(
     ["useErc1155Uri", coreSDK.uuid, props],
     async () => {

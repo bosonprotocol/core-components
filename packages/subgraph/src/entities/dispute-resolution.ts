@@ -93,6 +93,7 @@ export function saveDisputeResolutionTermsLegacy(
   terms.disputeResolverId = disputeResolutionTerms.disputeResolverId;
   terms.disputeResolver = disputeResolutionTerms.disputeResolverId.toString();
   terms.feeAmount = disputeResolutionTerms.feeAmount;
+  terms.offer = offerId;
   terms.save();
 
   return disputeResolutionTermsId;

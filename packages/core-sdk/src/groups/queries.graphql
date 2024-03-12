@@ -8,4 +8,30 @@ fragment BaseConditionFields on ConditionEntity {
   maxTokenId
   threshold
   maxCommits
+  offers {
+    id
+    price
+    sellerDeposit
+    protocolFee
+    agentFee
+    agentId
+    buyerCancelPenalty
+    quantityAvailable
+    quantityInitial
+    validFromDate
+    validUntilDate
+    voucherRedeemableFromDate
+    voucherRedeemableUntilDate
+    disputePeriodDuration
+    voucherValidDuration
+    resolutionPeriodDuration
+    metadataUri
+    metadataHash
+    voided
+    voidedAt
+    collectionIndex
+    disputeResolverId
+    numberOfCommits
+    numberOfRedemptions
+  }
 }

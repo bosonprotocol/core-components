@@ -1,5 +1,6 @@
 import { Offer } from "../../types/offer";
+import { isBundle } from "../../lib/offer/filter";
 
 export const useIsPhygital = ({ offer }: { offer: Offer }) => {
-  return false; // TODO: change
+  return isBundle(offer);
 };

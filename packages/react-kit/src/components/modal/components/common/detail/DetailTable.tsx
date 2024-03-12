@@ -20,6 +20,7 @@ interface Props {
   noBorder?: boolean;
   inheritColor?: boolean;
   tag?: keyof JSX.IntrinsicElements;
+  className?: string;
 }
 
 export default function DetailTable({
@@ -27,12 +28,17 @@ export default function DetailTable({
   data,
   noBorder = false,
   inheritColor = false,
-  tag = "span"
+  tag = "span",
+  className
 }: Props) {
   const [displayIndex, setDisplayIndex] = useState<number | undefined>();
   const tipRef = useRef<Record<number, Instance<unknown>>>();
   return (
-    <Table $noBorder={noBorder} $inheritColor={inheritColor}>
+    <Table
+      $noBorder={noBorder}
+      $inheritColor={inheritColor}
+      className={className}
+    >
       <tbody>
         {data?.map(
           ({ hide = false, ...d }: Data, index: number) =>

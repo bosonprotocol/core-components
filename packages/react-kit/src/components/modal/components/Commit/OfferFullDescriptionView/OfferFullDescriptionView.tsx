@@ -32,7 +32,7 @@ export function OfferFullDescriptionView({
               size={32}
               style={{ cursor: "pointer" }}
             />
-            <Typography tag="h3">{offer.metadata.name || ""}</Typography>
+            <Typography tag="h3">{offer.metadata?.name || ""}</Typography>
           </Grid>
         ),
         contentStyle: {
@@ -42,9 +42,10 @@ export function OfferFullDescriptionView({
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, offer.metadata.name]);
+  }, [dispatch, offer.metadata?.name]);
   return (
     <OfferFullDescription
+      includeOverviewTab
       includeGeneralProductDataTab
       offer={offer}
       exchange={null}

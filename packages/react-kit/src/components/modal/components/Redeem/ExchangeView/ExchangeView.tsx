@@ -21,6 +21,7 @@ import DetailSlider from "../../common/detail/DetailSlider";
 import { SellerAndDescription } from "../../common/detail/SellerAndDescription";
 import { SlickSlider, initialSettings } from "../../common/detail/SlickSlider";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
+import { getOfferVariations } from "../../../../../lib/offer/getOfferVariations";
 
 const colors = theme.colors.light;
 
@@ -110,17 +111,18 @@ export function ExchangeView({
   );
   const exchange = exchanges?.[0];
   const offer = exchange?.offer;
-  const metadata = offer?.metadata;
-  const variations = metadata?.variations;
+  const variations = getOfferVariations(offer);
   const hasVariations = !!variations?.length;
 
   const variant = {
     offer,
     variations
   };
-  const { offerImg, animationUrl, images } = offer
-    ? getOfferDetails(offer)
-    : ({} as ReturnType<typeof getOfferDetails>);
+  const {
+    offerImg = undefined,
+    animationUrl = undefined,
+    images = undefined
+  } = offer ? getOfferDetails(offer) : {};
   const allImages = useMemo(() => {
     return Array.from(new Set([offerImg || "", ...(images || [])])).filter(
       isTruthy
@@ -232,7 +234,7 @@ export function ExchangeView({
             alignItems="flex-start"
           >
             <Typography tag="h3" marginTop="0" marginBottom="1rem">
-              {offer.metadata.name || ""}
+              {offer.metadata?.name || ""}
             </Typography>
             {hasVariations && (
               <ResponsiveVariationSelects

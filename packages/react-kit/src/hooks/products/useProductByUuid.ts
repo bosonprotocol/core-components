@@ -1,15 +1,14 @@
+import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { useQuery } from "react-query";
-import { useCoreSDKWithContext } from "../core-sdk/useCoreSdkWithContext";
 
-export default function useProductByUuid(
+export function useProductByUuid(
   sellerId: string | undefined | null,
   uuid: string | undefined | null,
+  coreSDK: CoreSDK,
   options: {
     enabled?: boolean;
   } = {}
 ) {
-  const coreSDK = useCoreSDKWithContext();
-
   return useQuery(
     ["get-product-by-uuid", uuid, coreSDK.uuid, sellerId],
     async () => {

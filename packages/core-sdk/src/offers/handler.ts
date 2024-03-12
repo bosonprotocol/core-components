@@ -15,6 +15,7 @@ import { getOfferById, getOffers } from "./subgraph";
 import { storeMetadataOnTheGraph } from "./storage";
 import { CreateOfferArgs } from "./types";
 import { OfferFieldsFragment } from "../subgraph";
+import { storeMetadataItems } from "../metadata/storeMetadataItems";
 
 export async function createOffer(args: {
   offerToCreate: CreateOfferArgs;
@@ -31,6 +32,11 @@ export async function createOffer(args: {
     metadataUriOrHash: args.offerToCreate.metadataUri,
     metadataStorage: args.metadataStorage,
     theGraphStorage: args.theGraphStorage
+  });
+
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.offerToCreate]
   });
 
   return args.web3Lib.sendTransaction({
@@ -61,6 +67,11 @@ export async function createOfferBatch(args: {
       })
     )
   );
+
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: args.offersToCreate
+  });
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,

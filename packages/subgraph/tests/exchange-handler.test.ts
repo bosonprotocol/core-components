@@ -10,11 +10,35 @@ import { BigInt } from "@graphprotocol/graph-ts";
 import { BaseMetadataEntity } from "../generated/schema";
 import {
   handleBuyerCommittedEvent,
-  handleVoucherExtendedEvent
+  handleConditionalCommitAuthorizedEvent,
+  handleExchangeCompletedEvent,
+  handleVoucherCanceledEvent,
+  handleVoucherExpiredEvent,
+  handleVoucherExtendedEvent,
+  handleVoucherRedeemedEvent,
+  handleVoucherRevokedEvent,
+  handleVoucherTransferredEvent
 } from "../src/mappings/exchange-handler";
-import { createBuyerCommittedEvent, createVoucherExtendedEvent } from "./mocks";
+import {
+  createBuyerCommittedEvent,
+  createConditionalCommitAuthorizedEvent,
+  createExchangeCompletedEvent,
+  createGroupCreatedEvent,
+  createVoucherCanceledEvent,
+  createVoucherExpiredEvent,
+  createVoucherExtendedEvent,
+  createVoucherRedeemedEvent,
+  createVoucherRevokedEvent,
+  createVoucherTransferredEvent,
+  mockExchange,
+  mockOffer
+} from "./mocks";
 import { getOfferCollectionId } from "../src/mappings/account-handler";
 import { getDisputeResolutionTermsId } from "../src/entities/dispute-resolution";
+import { handleGroupCreatedEvent } from "../src/mappings/group-handler";
+import { getEventLogId } from "../src/entities/event-log";
+
+const executedBy = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 
 beforeEach(() => {
   clearStore();
@@ -154,5 +178,242 @@ test("handle VoucherExtendedEvent", () => {
     exchangeId.toString(),
     "validUntilDate",
     validUntil.toString()
+  );
+});
+
+test("handleVoucherRevokedEvent", () => {
+  const offerId = 1;
+  const buyerId = 2;
+  const exchangeId = 3;
+  const sellerId = 4;
+  const disputeResolverId = 5;
+  mockExchange(
+    exchangeId.toString(),
+    offerId.toString(),
+    sellerId.toString(),
+    buyerId.toString(),
+    disputeResolverId.toString()
+  );
+  assert.fieldEquals("Exchange", exchangeId.toString(), "state", "COMMITTED");
+  const voucherRevokedEvent = createVoucherRevokedEvent(
+    offerId,
+    exchangeId,
+    executedBy
+  );
+  handleVoucherRevokedEvent(voucherRevokedEvent);
+  assert.fieldEquals("Exchange", exchangeId.toString(), "state", "REVOKED");
+});
+
+test("handleVoucherCanceledEvent", () => {
+  const offerId = 1;
+  const buyerId = 2;
+  const exchangeId = 3;
+  const sellerId = 4;
+  const disputeResolverId = 5;
+  mockExchange(
+    exchangeId.toString(),
+    offerId.toString(),
+    sellerId.toString(),
+    buyerId.toString(),
+    disputeResolverId.toString()
+  );
+  assert.fieldEquals("Exchange", exchangeId.toString(), "state", "COMMITTED");
+  const voucherCanceledEvent = createVoucherCanceledEvent(
+    offerId,
+    exchangeId,
+    executedBy
+  );
+  handleVoucherCanceledEvent(voucherCanceledEvent);
+  assert.fieldEquals("Exchange", exchangeId.toString(), "state", "CANCELLED");
+});
+
+test("handleVoucherExpiredEvent", () => {
+  const offerId = 1;
+  const buyerId = 2;
+  const exchangeId = 3;
+  const sellerId = 4;
+  const disputeResolverId = 5;
+  mockExchange(
+    exchangeId.toString(),
+    offerId.toString(),
+    sellerId.toString(),
+    buyerId.toString(),
+    disputeResolverId.toString()
+  );
+  assert.fieldEquals("Exchange", exchangeId.toString(), "state", "COMMITTED");
+  const voucherExpiredEvent = createVoucherExpiredEvent(
+    offerId,
+    exchangeId,
+    executedBy
+  );
+  handleVoucherExpiredEvent(voucherExpiredEvent);
+  assert.fieldEquals("Exchange", exchangeId.toString(), "state", "CANCELLED");
+  assert.fieldEquals("Exchange", exchangeId.toString(), "expired", "true");
+});
+
+test("handleVoucherRedeemedEvent", () => {
+  const offerId = 1;
+  const buyerId = 2;
+  const exchangeId = 3;
+  const sellerId = 4;
+  const disputeResolverId = 5;
+  mockExchange(
+    exchangeId.toString(),
+    offerId.toString(),
+    sellerId.toString(),
+    buyerId.toString(),
+    disputeResolverId.toString()
+  );
+  assert.fieldEquals("Exchange", exchangeId.toString(), "state", "COMMITTED");
+  const voucherRedeemedEvent = createVoucherRedeemedEvent(
+    offerId,
+    exchangeId,
+    executedBy
+  );
+  handleVoucherRedeemedEvent(voucherRedeemedEvent);
+  assert.fieldEquals("Exchange", exchangeId.toString(), "state", "REDEEMED");
+});
+
+test("handleExchangeCompletedEvent", () => {
+  const offerId = 1;
+  const buyerId = 2;
+  const exchangeId = 3;
+  const sellerId = 4;
+  const disputeResolverId = 5;
+  mockExchange(
+    exchangeId.toString(),
+    offerId.toString(),
+    sellerId.toString(),
+    buyerId.toString(),
+    disputeResolverId.toString()
+  );
+  assert.fieldEquals("Exchange", exchangeId.toString(), "state", "COMMITTED");
+  const exchangeCompletedEvent = createExchangeCompletedEvent(
+    offerId,
+    buyerId,
+    exchangeId,
+    executedBy
+  );
+  handleExchangeCompletedEvent(exchangeCompletedEvent);
+  assert.fieldEquals("Exchange", exchangeId.toString(), "state", "COMPLETED");
+});
+
+test("handleVoucherTransferredEvent", () => {
+  const offerId = 1;
+  const buyerId = 2;
+  const exchangeId = 3;
+  const sellerId = 4;
+  const disputeResolverId = 5;
+  const newBuyerId = 6;
+  mockExchange(
+    exchangeId.toString(),
+    offerId.toString(),
+    sellerId.toString(),
+    buyerId.toString(),
+    disputeResolverId.toString()
+  );
+  assert.fieldEquals(
+    "Exchange",
+    exchangeId.toString(),
+    "buyer",
+    buyerId.toString()
+  );
+  const voucherTransferredEvent = createVoucherTransferredEvent(
+    offerId,
+    exchangeId,
+    newBuyerId,
+    executedBy
+  );
+  handleVoucherTransferredEvent(voucherTransferredEvent);
+  assert.fieldEquals(
+    "Exchange",
+    exchangeId.toString(),
+    "buyer",
+    newBuyerId.toString()
+  );
+});
+
+test("handleConditionalCommitAuthorizedEvent", () => {
+  const offerId = 1;
+  const buyerId = 2;
+  const exchangeId = 3;
+  const sellerId = 4;
+  const disputeResolverId = 5;
+  const gating = i8(1);
+  const buyerAddress = "0x0123456789987654321001234567899876543210";
+  const tokenId = 123456789;
+  const commitCount = 1;
+  const maxCommits = 3;
+  const groupId = 7;
+  const method = i8(0);
+  const tokenType = i8(1);
+  const tokenAddress = "0x0123456789012345678901234567890123456789";
+  const minTokenId = 123;
+  const maxTokenId = 456;
+  const threshold = 6;
+  const executedBy = "0x0abcdef1234567890abcdef12345678901234567";
+
+  mockOffer(offerId.toString(), sellerId.toString());
+  const groupCreatedEvent = createGroupCreatedEvent(
+    groupId,
+    sellerId,
+    [offerId],
+    method,
+    tokenType,
+    tokenAddress,
+    gating,
+    minTokenId,
+    threshold,
+    maxCommits,
+    maxTokenId,
+    executedBy
+  );
+  handleGroupCreatedEvent(groupCreatedEvent);
+  assert.fieldEquals(
+    "ConditionEntity",
+    groupId.toString(),
+    "id",
+    groupId.toString()
+  );
+  assert.fieldEquals(
+    "Offer",
+    offerId.toString(),
+    "condition",
+    groupId.toString()
+  );
+
+  mockExchange(
+    exchangeId.toString(),
+    offerId.toString(),
+    sellerId.toString(),
+    buyerId.toString(),
+    disputeResolverId.toString()
+  );
+  assert.fieldEquals(
+    "Exchange",
+    exchangeId.toString(),
+    "buyer",
+    buyerId.toString()
+  );
+  const conditionalCommitAuthorizedEvent =
+    createConditionalCommitAuthorizedEvent(
+      offerId,
+      gating,
+      buyerAddress,
+      tokenId,
+      commitCount,
+      maxCommits
+    );
+  const txHash =
+    conditionalCommitAuthorizedEvent.transaction.hash.toHexString();
+  const logIndex = conditionalCommitAuthorizedEvent.logIndex;
+
+  handleConditionalCommitAuthorizedEvent(conditionalCommitAuthorizedEvent);
+  const eventLogId = getEventLogId(txHash, logIndex, offerId.toString());
+  assert.fieldEquals(
+    "ConditionalCommitAuthorizedEventLog",
+    eventLogId,
+    "hash",
+    txHash
   );
 });

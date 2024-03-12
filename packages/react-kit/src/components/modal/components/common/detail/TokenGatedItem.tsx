@@ -181,7 +181,8 @@ export const TokenGatedItem = ({
     {
       enabled:
         !!condition?.tokenAddress &&
-        condition.tokenType === TokenType.FungibleToken
+        condition.tokenType === TokenType.FungibleToken,
+      coreSDK
     }
   );
   const { data: erc721TokenUri } = useErc721TokenUri(
@@ -193,7 +194,8 @@ export const TokenGatedItem = ({
       enabled:
         !!condition?.tokenAddress &&
         condition.tokenType === TokenType.NonFungibleToken &&
-        !!condition?.minTokenId
+        !!condition?.minTokenId,
+      coreSDK
     }
   );
   const { data: erc1155Uri } = useErc1155Uri(
@@ -205,7 +207,8 @@ export const TokenGatedItem = ({
       enabled:
         !!condition?.tokenAddress &&
         condition.tokenType === TokenType.MultiToken &&
-        !!condition?.minTokenId
+        !!condition?.minTokenId,
+      coreSDK
     }
   );
   const currency = useMemo(
@@ -229,15 +232,15 @@ export const TokenGatedItem = ({
   const tokenIdForImage = condition?.minTokenId;
   const { data: erc721Image } = useGetTokenUriImage(
     {
-      tokenUri: erc721TokenUri?.[0],
-      tokenId: tokenIdForImage
+      tokenUris: erc721TokenUri,
+      tokenIds: [tokenIdForImage]
     },
     { enabled: !!(erc721TokenUri && erc721TokenUri[0] && tokenIdForImage) }
   );
   const { data: erc1155Image } = useGetTokenUriImage(
     {
-      tokenUri: erc1155Uri?.[0],
-      tokenId: tokenIdForImage
+      tokenUris: erc1155Uri,
+      tokenIds: [tokenIdForImage]
     },
     { enabled: !!(erc1155Uri && erc1155Uri[0] && tokenIdForImage) }
   );
@@ -252,9 +255,9 @@ export const TokenGatedItem = ({
             currencies={[currency]}
           />
         ) : erc721Image ? (
-          <ErcImage src={erc721Image} alt="erc721" />
+          <ErcImage src={erc721Image[0]} alt="erc721" />
         ) : erc1155Image ? (
-          <ErcImage src={erc1155Image} alt="erc1155" />
+          <ErcImage src={erc1155Image[0]} alt="erc1155" />
         ) : null}
       </>
     );
@@ -391,14 +394,3 @@ export const TokenGatedItem = ({
     </Wrapper>
   );
 };
-
-const TokenIcon = styled.div`
-  > * {
-    padding-top: 0;
-  }
-  img {
-    width: 2rem;
-    padding: 0;
-    border-radius: 9999px;
-  }
-`;

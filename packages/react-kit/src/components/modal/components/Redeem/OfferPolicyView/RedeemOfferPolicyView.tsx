@@ -23,7 +23,7 @@ export function RedeemOfferPolicyView({
   onContractualAgreementClick,
   onLicenseAgreementClick
 }: Props) {
-  const offerName = offer?.metadata.name || "";
+  const offerName = offer?.metadata?.name || "";
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({

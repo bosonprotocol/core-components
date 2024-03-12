@@ -23,6 +23,10 @@ type CommitProps = {
         sellerId: string;
         productUuid: string;
       }
+    | {
+        sellerId: string;
+        bundleUuid: string;
+      }
   ) &
   (
     | { lookAndFeel: "regular" }

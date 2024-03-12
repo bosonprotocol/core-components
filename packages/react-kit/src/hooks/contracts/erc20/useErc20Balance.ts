@@ -1,15 +1,14 @@
+import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { useQuery } from "react-query";
-import { useCoreSDKWithContext } from "../../core-sdk/useCoreSdkWithContext";
 
 export const useErc20Balance = (
   args: {
     contractAddress: string | undefined;
     owner: string | undefined;
   },
-  options: { enabled?: boolean }
+  { enabled, coreSDK }: { enabled: boolean | undefined; coreSDK: CoreSDK }
 ) => {
   const { contractAddress = "", owner = "" } = args;
-  const coreSDK = useCoreSDKWithContext();
   return useQuery(
     ["erc-20-balance", coreSDK.uuid, args],
     async () => {
@@ -22,7 +21,7 @@ export const useErc20Balance = (
       });
     },
     {
-      enabled: options.enabled
+      enabled
     }
   );
 };

@@ -160,3 +160,6 @@ function checkOfferHasNoCondition(offerId: string): void {
   log.debug("check condition is null", [(condition == null).toString()]);
   assert.assertNull(condition);
 }
+
+// TODO: add test for handleGroupCreatedEventLegacy
+// TODO: add test for handleGroupUpdatedEventLegacy

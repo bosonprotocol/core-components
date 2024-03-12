@@ -8,4 +8,4 @@ export const cardWrapperStyles = css`
   min-height: 31.25rem;
   box-shadow: 0px 4.31783px 107.946px rgba(21, 30, 52, 0.1);
   background: ${theme.colors.light.white};
-`
+`;

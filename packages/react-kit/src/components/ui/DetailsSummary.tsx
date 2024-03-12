@@ -61,7 +61,7 @@ const Details = styled.details<Pick<DetailsSummaryProps, "$paddingSides">>`
 
 type DetailsSummaryProps = {
   summaryText: string;
-  icon?: ReactElement;
+  icon?: ReactElement | null;
   children: ReactNode;
   initiallyOpen?: boolean;
   isOpen?: boolean;
@@ -101,7 +101,7 @@ export const DetailsSummary: React.FC<DetailsSummaryProps> = ({
         }}
       >
         <Grid justifyContent="flex-start" gap="1rem">
-          {icon && <IconWrapper>{icon}</IconWrapper>}
+          {icon && <IconWrapper className="icon-wrapper">{icon}</IconWrapper>}
           {summaryText}
         </Grid>
         {open ? <CaretUp {...caretProps} /> : <CaretDown {...caretProps} />}
