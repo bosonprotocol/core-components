@@ -136,7 +136,7 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   seller.active = true;
   seller.contractURI = collectionMetadataUri;
   seller.royaltyPercentage = bosonVoucherContract.getRoyaltyPercentage();
-  seller.metadataUri = sellerFromEvent.metadataUri || "NA";
+  seller.metadataUri = sellerFromEvent.metadataUri || "";
   seller.metadata = getSellerMetadataEntityId(seller.id.toString());
   seller.save();
 
