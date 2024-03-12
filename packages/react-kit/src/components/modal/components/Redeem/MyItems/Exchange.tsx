@@ -24,6 +24,7 @@ import {
   useIsConnectedToWrongChain
 } from "../../../../../hooks/connection/connection";
 import { ExchangeCardStatus } from "../../../../exchangeCard/types";
+import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
 
 const colors = theme.colors.light;
 
@@ -67,8 +68,8 @@ export default function Exchange({
   const lens = {} as any;
   const { ipfsGateway } = useIpfsContext();
   const avatar = getLensImageUrl(getLensProfilePictureUrl(lens), ipfsGateway);
-
-  const offerImageUrl = offer.metadata?.imageUrl || "";
+  const { mainImage, offerImg } = getOfferDetails(offer);
+  const offerImageUrl = offer.metadata?.imageUrl || offerImg || mainImage || "";
   const imageSrc = getImageUrl(offerImageUrl, ipfsGateway, {
     height: 500
   });
@@ -160,7 +161,7 @@ export default function Exchange({
         onCardClick={handleOnCardClick}
         dataCard="exchange-card"
         id={offer.id}
-        title={offer.metadata.name}
+        title={offer.metadata?.name ?? ""}
         avatarName={lens?.name ? lens?.name : `Seller ID: ${offer.seller.id}`}
         avatar={avatar || mockedAvatar}
         imageProps={{

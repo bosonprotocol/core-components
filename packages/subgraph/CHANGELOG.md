@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.31.0...@bosonprotocol/subgraph@1.32.0) (2024-03-08)
+
+
+### Features
+
+* add terms to nftitem metadata ([#675](https://github.com/bosonprotocol/core-components/issues/675)) ([575f0eb](https://github.com/bosonprotocol/core-components/commit/575f0eb6e3ee3b46e56f1ef43b611e4e60418369))
+
+
+
+
+
 # [1.31.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.30.2...@bosonprotocol/subgraph@1.31.0) (2024-02-05)
 
 

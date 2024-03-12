@@ -14,6 +14,7 @@ import {
   ProductCardCreatorName,
   ProductCardData,
   ProductCardImageWrapper,
+  ProductCardLabelWrapper,
   ProductCardPrice,
   ProductCardPriceWrapper,
   ProductCardTitle,
@@ -21,11 +22,7 @@ import {
   ProductCardWrapper
 } from "./ProductCard.styles";
 
-export enum ProductType {
-  phygital = "Phygital",
-  physical = "Physical",
-  digital = "Digital"
-}
+import { ProductType } from "./const";
 interface IProductCard {
   asterisk?: boolean;
   avatar: string;
@@ -65,7 +62,9 @@ const Wrapper = ({
   }
   return <>{children}</>;
 };
-
+export const PhygitalLabel = () => {
+  return <ProductCardLabelWrapper>Phygital</ProductCardLabelWrapper>;
+};
 export const ProductCard = (props: IProductCard) => {
   const {
     asterisk = false,
@@ -84,9 +83,10 @@ export const ProductCard = (props: IProductCard) => {
     productId,
     title,
     tooltip = "",
-    tooltipProps = {}
+    tooltipProps = {},
+    productType
   } = props;
-
+  const isPhygital = productType === ProductType.phygital;
   return (
     <ProductCardWrapper
       data-card={dataCard}
@@ -98,6 +98,7 @@ export const ProductCard = (props: IProductCard) => {
       }}
     >
       <ProductCardImageWrapper>
+        {isPhygital && <PhygitalLabel />}
         <Image {...imageProps} />
       </ProductCardImageWrapper>
       <ProductCardBottom>

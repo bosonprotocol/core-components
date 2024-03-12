@@ -3,6 +3,7 @@ import { ComponentStory, ComponentMeta, Story } from "@storybook/react";
 
 import { ExchangeCard } from "../components/exchangeCard/ExchangeCard";
 import { Currencies } from "../components/currencyDisplay/CurrencyDisplay";
+import { ProductType } from "../components/productCard/const";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -46,6 +47,7 @@ Redeemed.args = {
       errorImageText: "TEST"
     }
   },
+  productType: ProductType.phygital,
   price: 0.1,
   currency: Currencies.ETH,
   isHoverDisabled: true,

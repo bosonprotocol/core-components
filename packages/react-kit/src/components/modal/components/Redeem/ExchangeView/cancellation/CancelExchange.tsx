@@ -250,7 +250,7 @@ export function CancelExchange({
               toast((t) => (
                 <SuccessTransactionToast
                   t={t}
-                  action={`Cancelled exchange: ${offer.metadata.name}`}
+                  action={`Cancelled exchange: ${offer.metadata?.name}`}
                 />
               ));
             }}

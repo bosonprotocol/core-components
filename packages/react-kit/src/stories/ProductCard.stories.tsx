@@ -2,10 +2,8 @@ import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 import React from "react";
 
 import { Currencies } from "../components/currencyDisplay/CurrencyDisplay";
-import {
-  ProductCard,
-  ProductType
-} from "../components/productCard/ProductCard";
+import { ProductCard } from "../components/productCard/ProductCard";
+import { ProductType } from "../components/productCard/const";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -54,7 +52,7 @@ ProductCardPrimary.args = {
   tooltip: "lorem ipsum dolor example",
   price: 12345,
   currency: Currencies.POLYGON,
-  productType: ProductType.physical,
+  productType: ProductType.phygital,
   onCardClick: (productId) => {
     console.log("----------ON CLICK-------------");
     console.log("productId", productId);

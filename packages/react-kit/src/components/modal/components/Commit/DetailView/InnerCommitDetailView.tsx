@@ -215,7 +215,7 @@ export default function InnerCommitDetailView(
       toast((t) => (
         <SuccessTransactionToast
           t={t}
-          action={`Commit to offer: ${offer.metadata.name}`}
+          action={`Commit to offer: ${offer.metadata?.name}`}
           onViewDetails={() => {
             showDetailWidgetModal();
           }}
@@ -285,7 +285,7 @@ export default function InnerCommitDetailView(
           >
             <p style={{ color: colors.orange, margin: 0, fontSize: "0.75rem" }}>
               You already own {userCommittedOffersLength}{" "}
-              <b>{offer.metadata.name}</b> rNFT
+              <b>{offer.metadata?.name}</b> rNFT
             </p>
             {onAlreadyOwnOfferClick && (
               <ArrowRight size={18} color={colors.orange} />

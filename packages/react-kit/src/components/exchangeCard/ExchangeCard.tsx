@@ -1,17 +1,22 @@
 import React, { useMemo, useState } from "react";
 import { Button } from "../buttons/Button";
 import {
-  CurrencyDisplay,
-  Currencies
+  Currencies,
+  CurrencyDisplay
 } from "../currencyDisplay/CurrencyDisplay";
 import { IBaseImage, Image } from "../image/Image";
 
+import { ProductType } from "../productCard/const";
+import { IButton } from "../ui/ThemedButton";
 import {
-  CommittedButtonWrapper,
   CommittedBottomText,
+  CommittedButtonWrapper,
+  ExchangeButtonWrapper,
+  ExchangeCTAWrapper,
   ExchangeCarData,
   ExchangeCardBottom,
   ExchangeCardBottomContent,
+  ExchangeCardLabelWrapper,
   ExchangeCardPrice,
   ExchangeCardPriceWrapper,
   ExchangeCardTop,
@@ -19,16 +24,13 @@ import {
   ExchangeCreator,
   ExchangeCreatorAvatar,
   ExchangeCreatorName,
-  ExchangeTitle,
-  RedeemButtonWrapper,
-  ExchangeStatus,
-  ExchangeButtonWrapper,
   ExchangeImageWrapper,
-  ExchangeCTAWrapper
+  ExchangeStatus,
+  ExchangeTitle,
+  RedeemButtonWrapper
 } from "./ExchangeCard.styles";
-import { IButton } from "../ui/ThemedButton";
 import { ExchangeCardStatus } from "./types";
-
+export type { ExchangeCardStatus } from "./types";
 interface Base {
   id: string;
   title: string;
@@ -43,6 +45,7 @@ interface Base {
   dataTestId?: string;
   isHoverDisabled?: boolean;
   dataCard?: string;
+  productType?: ProductType;
 }
 
 interface RedeemCard extends Base {
@@ -78,7 +81,8 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     onAvatarNameClick,
     dataTestId = "offer",
     isHoverDisabled = false,
-    dataCard = "exchange-card"
+    dataCard = "exchange-card",
+    productType
   } = props;
 
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -149,7 +153,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
 
   const [height, setHeight] = useState<number | null>(null);
   const isNotImageLoaded = !isImageLoaded;
-
+  const isPhygital = productType === ProductType.phygital;
   return (
     <ExchangeCardWrapper
       data-card={dataCard}
@@ -162,6 +166,9 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     >
       <ExchangeCardTop $isNotImageLoaded={isNotImageLoaded}>
         <ExchangeImageWrapper>
+          {isPhygital && (
+            <ExchangeCardLabelWrapper>Phygital</ExchangeCardLabelWrapper>
+          )}
           <Image {...imageProps} onLoaded={() => setIsImageLoaded(true)} />
         </ExchangeImageWrapper>
         <ExchangeStatus $status={status}>{status.toLowerCase()}</ExchangeStatus>
