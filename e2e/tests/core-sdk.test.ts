@@ -180,7 +180,10 @@ describe("core-sdk", () => {
         const conditionClone = {
           ...offerWithCondition.condition
         };
-        delete conditionClone.id;
+        expect(conditionClone.offers).toBeTruthy();
+        expect(conditionClone.offers?.length).toEqual(offerIds.length);
+        delete conditionClone.id; // remove to allow easy comparison
+        delete conditionClone.offers; // remove to allow easy comparison
         expect(offerWithCondition.condition).toBeTruthy();
         expect(conditionClone).toEqual(condition);
       }
@@ -221,7 +224,10 @@ describe("core-sdk", () => {
       const conditionClone = {
         ...offerWithCondition.condition
       };
-      delete conditionClone.id;
+      expect(conditionClone.offers).toBeTruthy();
+      expect(conditionClone.offers?.length).toEqual(1);
+      delete conditionClone.id; // remove to allow easy comparison
+      delete conditionClone.offers; // remove to allow easy comparison
       expect(conditionClone).toEqual(condition);
       // Check the condition description is set in the metadata from the subgraph
       expect(offerWithCondition.metadata?.condition).toBeTruthy();
@@ -265,7 +271,10 @@ describe("core-sdk", () => {
       const conditionClone = {
         ...offerWithCondition.condition
       };
-      delete conditionClone.id;
+      expect(conditionClone.offers).toBeTruthy();
+      expect(conditionClone.offers?.length).toEqual(1);
+      delete conditionClone.id; // remove to allow easy comparison
+      delete conditionClone.offers; // remove to allow easy comparison
       expect(conditionClone).toEqual(condition);
       // Check the condition description is set in the metadata from the subgraph
       expect(offerWithCondition.metadata?.condition).toBeTruthy();
@@ -362,7 +371,10 @@ describe("core-sdk", () => {
         const conditionClone = {
           ...offerWithCondition.condition
         };
-        delete conditionClone.id;
+        expect(conditionClone.offers).toBeTruthy();
+        expect(conditionClone.offers?.length).toEqual(1);
+        delete conditionClone.id; // remove to allow easy comparison
+        delete conditionClone.offers; // remove to allow easy comparison
         expect(conditionClone).toEqual(condition);
 
         await expect(
