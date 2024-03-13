@@ -34,7 +34,7 @@ export type CommitNonModalProps = Pick<
   OfferVariantViewProps,
   "onClickBuyOrSwap" | "onAlreadyOwnOfferClick"
 > & {
-  variants: VariantV1[] | undefined;
+  variants?: VariantV1[];
   showBosonLogo?: boolean;
   defaultSelectedOfferId?: string;
   disableVariationsSelects?: boolean;
