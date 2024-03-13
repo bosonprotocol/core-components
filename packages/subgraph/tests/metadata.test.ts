@@ -2,15 +2,14 @@ import {
   beforeEach,
   test,
   assert,
-  mockIpfsFile,
   clearStore
 } from "matchstick-as/assembly/index";
 import { BigInt } from "@graphprotocol/graph-ts";
-import { Offer } from "../generated/schema";
 
 import { saveMetadata } from "../src/entities/metadata/handler";
 import { getMetadataEntityId } from "../src/entities/metadata/utils";
 import { getProductId } from "../src/entities/metadata/product-v1/product";
+import { mockOffer } from "./mocks";
 
 beforeEach(() => {
   clearStore();
@@ -22,17 +21,9 @@ test("save PRODUCT_V1 metadata product-v1-full.json", () => {
   const productUuid = "77593bb2-f797-11ec-b939-0242ac120002";
   const productVersion = 1;
 
-  const metadataHash = "QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB";
-  mockIpfsFile(metadataHash, "tests/metadata/product-v1-full.json");
-
   const offerId = 1;
   const sellerId = "1";
-  const offer = new Offer(offerId.toString());
-  offer.sellerId = BigInt.fromString(sellerId);
-  offer.quantityAvailable = BigInt.fromI32(1);
-  offer.metadataUri = metadataHash;
-  offer.metadataHash = metadataHash;
-  offer.save();
+  const offer = mockOffer(offerId.toString(), sellerId);
 
   const metadataId = getMetadataEntityId(offerId.toString());
   saveMetadata(offer, BigInt.fromI32(1651574093));

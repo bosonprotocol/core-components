@@ -78,7 +78,7 @@ async function main() {
 
   const exchanges = await coreSDK.getExchanges({
     exchangesFilter: {
-      state_in: [ExchangeState.Redeemed],
+      state_in: [ExchangeState.REDEEMED],
       id_in: exchangeIds
     }
   });
@@ -88,7 +88,7 @@ async function main() {
       exchangesFirst: MAX_EXCHANGES_PER_SELLER,
       exchangesFilter: {
         seller: opts.sellerId as string,
-        state_in: [ExchangeState.Redeemed],
+        state_in: [ExchangeState.REDEEMED],
         id_not_in: exchangeIds
       }
     });

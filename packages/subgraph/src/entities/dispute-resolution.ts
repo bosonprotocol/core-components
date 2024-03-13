@@ -38,6 +38,7 @@ export function saveDisputeResolutionTerms(
   terms.disputeResolverId = disputeResolutionTerms.disputeResolverId;
   terms.disputeResolver = disputeResolutionTerms.disputeResolverId.toString();
   terms.feeAmount = disputeResolutionTerms.feeAmount;
+  terms.offer = offerId;
   terms.save();
 
   return disputeResolutionTermsId;
@@ -64,6 +65,7 @@ export function saveDisputeResolutionTermsLegacy(
   terms.disputeResolverId = disputeResolutionTerms.disputeResolverId;
   terms.disputeResolver = disputeResolutionTerms.disputeResolverId.toString();
   terms.feeAmount = disputeResolutionTerms.feeAmount;
+  terms.offer = offerId;
   terms.save();
 
   return disputeResolutionTermsId;
@@ -86,6 +88,7 @@ export function getAndSaveDisputeResolver(
 
   if (!disputeResolver) {
     disputeResolver = new DisputeResolver(disputeResolverId.toString());
+    disputeResolver.fees = []; // will be filled up later by the calling code
   }
 
   disputeResolver.escalationResponsePeriod =
@@ -97,6 +100,7 @@ export function getAndSaveDisputeResolver(
   disputeResolver.metadataUri = disputeResolverFromContract.metadataUri;
   disputeResolver.active = disputeResolverFromContract.active;
   disputeResolver.sellerAllowList = sellerAllowList;
+
   disputeResolver.save();
 }
 

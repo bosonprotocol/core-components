@@ -473,7 +473,7 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
               };
               onPendingTransaction?.(...args);
               addPendingTransaction({
-                type: subgraph.EventType.VoucherRedeemed,
+                type: subgraph.EventType.VOUCHER_REDEEMED,
                 hash,
                 isMetaTx,
                 accountType: "Buyer",

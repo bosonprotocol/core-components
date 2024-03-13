@@ -88,8 +88,8 @@ export function useSellers(
                     ]
                   : props.id_in
             },
-            sellersOrderBy: subgraph.Seller_OrderBy.SellerId,
-            sellersOrderDirection: subgraph.OrderDirection.Asc,
+            sellersOrderBy: subgraph.Seller_OrderBy.SELLERID,
+            sellersOrderDirection: subgraph.OrderDirection.ASC,
             includeFunds: props.includeFunds
           })
         : [];

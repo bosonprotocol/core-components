@@ -78,6 +78,7 @@ export function handleSellerCreatedEventWithoutMetadataUri(
   seller.active = true;
   seller.contractURI = collectionMetadataUri;
   seller.royaltyPercentage = bosonVoucherContract.getRoyaltyPercentage();
+  seller.metadataUri = "";
   seller.save();
 
   const externalId = "initial";
@@ -174,10 +175,11 @@ export function handleSellerUpdatedEvent(event: SellerUpdated): void {
   const authTokenFromEvent = event.params.authToken;
   const sellerId = event.params.sellerId.toString();
 
-  let seller = Seller.load(sellerId);
+  const seller = Seller.load(sellerId);
 
   if (!seller) {
-    seller = new Seller(sellerId);
+    log.error("Unable to find Seller with ID {}", [sellerId]);
+    return;
   }
 
   seller.assistant = sellerFromEvent.assistant;
@@ -597,9 +599,9 @@ function saveOfferCollection(
   let offerCollection = OfferCollection.load(offerCollectionId);
 
   if (offerCollection) {
-     log.warning("Offer collection with ID '{}' already exists!", [
-        offerCollectionId
-      ]);
+    log.warning("Offer collection with ID '{}' already exists!", [
+      offerCollectionId
+    ]);
   } else {
     offerCollection = new OfferCollection(offerCollectionId);
     offerCollection.sellerId = sellerId;
