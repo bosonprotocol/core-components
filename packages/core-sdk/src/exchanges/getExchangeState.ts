@@ -9,7 +9,10 @@ export enum ExtendedExchangeState {
 export type AllExchangeStates = ExtendedExchangeState | ExchangeState;
 
 export function getExchangeState(
-  exchange: subgraph.ExchangeFieldsFragment
+  exchange: Pick<
+    subgraph.ExchangeFieldsFragment,
+    "offer" | "state" | "validUntilDate"
+  >
 ): AllExchangeStates {
   const { offer } = exchange;
 

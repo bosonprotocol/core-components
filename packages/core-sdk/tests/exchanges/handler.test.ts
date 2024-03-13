@@ -8,6 +8,8 @@ import {
   mockRawExchangeFromSubgraph,
   ZERO_ADDRESS
 } from "../mocks";
+import { ExtendedExchangeState, getExchangeState } from "../../src/exchanges";
+import { ExchangeFieldsFragment, ExchangeState } from "../../src/subgraph";
 
 describe("#commitToOffer()", () => {
   test("throw if offer not existent", async () => {
@@ -243,5 +245,95 @@ describe("#completeExchange()", () => {
     });
 
     expect(typeof txResponse.hash === "string").toBeTruthy();
+  });
+});
+
+describe("getExchangeState", () => {
+  test("exchange COMMITTED still valid still redeemable => COMMITTED", () => {
+    const nowSec = Math.floor(Date.now() / 1000);
+    const voucherRedeemableFromDate = (nowSec - 10).toString(); // voucher is redeemable
+    const validUntilDate = (nowSec + 10).toString(); // offer is still valid
+    const offer = {
+      voucherRedeemableFromDate
+    } as unknown as ExchangeFieldsFragment["offer"];
+    const exchange: Pick<
+      ExchangeFieldsFragment,
+      "offer" | "state" | "validUntilDate"
+    > = {
+      offer,
+      state: ExchangeState.COMMITTED,
+      validUntilDate
+    };
+    expect(getExchangeState(exchange)).toEqual(ExchangeState.COMMITTED);
+  });
+  test("exchange CANCELLED still valid still redeemable => CANCELLED", () => {
+    const nowSec = Math.floor(Date.now() / 1000);
+    const voucherRedeemableFromDate = (nowSec - 10).toString(); // voucher is redeemable
+    const validUntilDate = (nowSec + 10).toString(); // offer is still valid
+    const offer = {
+      voucherRedeemableFromDate
+    } as unknown as ExchangeFieldsFragment["offer"];
+    const exchange: Pick<
+      ExchangeFieldsFragment,
+      "offer" | "state" | "validUntilDate"
+    > = {
+      offer,
+      state: ExchangeState.CANCELLED,
+      validUntilDate
+    };
+    expect(getExchangeState(exchange)).toEqual(ExchangeState.CANCELLED);
+  });
+  test("exchange COMMITTED no redeemable yet => NotRedeemableYet", () => {
+    const nowSec = Math.floor(Date.now() / 1000);
+    const voucherRedeemableFromDate = (nowSec + 10).toString(); // voucher is not redeemable yet
+    const validUntilDate = (nowSec + 10).toString(); // offer is still valid
+    const offer = {
+      voucherRedeemableFromDate
+    } as unknown as ExchangeFieldsFragment["offer"];
+    const exchange: Pick<
+      ExchangeFieldsFragment,
+      "offer" | "state" | "validUntilDate"
+    > = {
+      offer,
+      state: ExchangeState.COMMITTED,
+      validUntilDate
+    };
+    expect(getExchangeState(exchange)).toEqual(
+      ExtendedExchangeState.NotRedeemableYet
+    );
+  });
+  test("exchange COMMITTED offer no longer valid => Expired", () => {
+    const nowSec = Math.floor(Date.now() / 1000);
+    const voucherRedeemableFromDate = (nowSec - 10).toString(); // voucher is redeemable
+    const validUntilDate = (nowSec - 10).toString(); // offer is no longer valid
+    const offer = {
+      voucherRedeemableFromDate
+    } as unknown as ExchangeFieldsFragment["offer"];
+    const exchange: Pick<
+      ExchangeFieldsFragment,
+      "offer" | "state" | "validUntilDate"
+    > = {
+      offer,
+      state: ExchangeState.COMMITTED,
+      validUntilDate
+    };
+    expect(getExchangeState(exchange)).toEqual(ExtendedExchangeState.Expired);
+  });
+  test("exchange REDEEMED offer no longer valid => REDEEMED", () => {
+    const nowSec = Math.floor(Date.now() / 1000);
+    const voucherRedeemableFromDate = (nowSec - 10).toString(); // voucher is redeemable
+    const validUntilDate = (nowSec - 10).toString(); // offer is no longer valid
+    const offer = {
+      voucherRedeemableFromDate
+    } as unknown as ExchangeFieldsFragment["offer"];
+    const exchange: Pick<
+      ExchangeFieldsFragment,
+      "offer" | "state" | "validUntilDate"
+    > = {
+      offer,
+      state: ExchangeState.REDEEMED,
+      validUntilDate
+    };
+    expect(getExchangeState(exchange)).toEqual(ExchangeState.REDEEMED);
   });
 });
