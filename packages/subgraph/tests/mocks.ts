@@ -17,6 +17,8 @@ import {
   OfferCreatedOfferFeesStruct,
   OfferCreatedOfferRoyaltyInfoStruct,
   OfferExtended,
+  OfferRoyaltyInfoUpdated,
+  OfferRoyaltyInfoUpdatedRoyaltyInfoStruct,
   RangeReserved
 } from "./../generated/BosonOfferHandler/IBosonOfferHandler";
 import {
@@ -57,7 +59,7 @@ import {
 } from "../generated/BosonAccountHandlerLegacy/IBosonAccountHandlerLegacy";
 import {
   OfferCreated as OfferCreatedLegacy,
-  OfferCreatedOfferStruct as OfferCreatedOfferStructLegacy,
+  OfferCreatedOfferStruct as OfferCreatedOfferStructLegacy
 } from "../generated/BosonOfferHandlerLegacy/IBosonOfferHandlerLegacy";
 import { SellerUpdateApplied } from "../generated/BosonAccountHandler/IBosonAccountHandler";
 import { getProductId } from "../src/entities/metadata/product-v1/product";
@@ -1385,12 +1387,12 @@ export function createRoyaltyRecipientsChanged(
 }
 
 export function mockExchange(
-    exchangeId: string,
-    offerId: string,
-    sellerId: string,
-    buyerId: string,
-    disputeResolverId: string
-  ): Exchange {
+  exchangeId: string,
+  offerId: string,
+  sellerId: string,
+  buyerId: string,
+  disputeResolverId: string
+): Exchange {
   const exchange = new Exchange(exchangeId);
   exchange.offer = offerId;
   exchange.buyer = buyerId;
@@ -1406,7 +1408,12 @@ export function mockExchange(
   return exchange;
 }
 
-export function createOfferExtendedEvent(offerId: i32, sellerId: i32, validUntilDate: i32, executedBy: string): OfferExtended {
+export function createOfferExtendedEvent(
+  offerId: i32,
+  sellerId: i32,
+  validUntilDate: i32,
+  executedBy: string
+): OfferExtended {
   const offerExtendedEvent = changetype<OfferExtended>(newMockEvent());
   offerExtendedEvent.parameters = [];
   const offerIdParam = new ethereum.EventParam(
@@ -1435,13 +1442,13 @@ export function createOfferExtendedEvent(offerId: i32, sellerId: i32, validUntil
 }
 
 export function createRangeReservedEvent(
-    offerId: i32,
-    sellerId: i32,
-    startExchangeId: i32,
-    endExchangeId: i32,
-    owner: string,
-    executedBy: string
-  ): RangeReserved {
+  offerId: i32,
+  sellerId: i32,
+  startExchangeId: i32,
+  endExchangeId: i32,
+  owner: string,
+  executedBy: string
+): RangeReserved {
   const rangeReservedEvent = changetype<RangeReserved>(newMockEvent());
   rangeReservedEvent.parameters = [];
   const offerIdParam = new ethereum.EventParam(
@@ -1585,7 +1592,9 @@ export function createVoucherTransferredEvent(
   newBuyerId: i32,
   executedBy: string
 ): VoucherTransferred {
-  const voucherTransferredEvent = changetype<VoucherTransferred>(newMockEvent());
+  const voucherTransferredEvent = changetype<VoucherTransferred>(
+    newMockEvent()
+  );
   voucherTransferredEvent.parameters = [];
   const offerIdParam = new ethereum.EventParam(
     "offerId",
@@ -1649,7 +1658,9 @@ export function createConditionalCommitAuthorizedEvent(
   commitCount: i32,
   maxCommits: i32
 ): ConditionalCommitAuthorized {
-  const conditionalCommitAuthorized = changetype<ConditionalCommitAuthorized>(newMockEvent());
+  const conditionalCommitAuthorized = changetype<ConditionalCommitAuthorized>(
+    newMockEvent()
+  );
   conditionalCommitAuthorized.parameters = [];
   const offerIdParam = new ethereum.EventParam(
     "offerId",
@@ -1682,4 +1693,53 @@ export function createConditionalCommitAuthorizedEvent(
   conditionalCommitAuthorized.parameters.push(commitCountParam);
   conditionalCommitAuthorized.parameters.push(maxCommitsParam);
   return conditionalCommitAuthorized;
+}
+
+export function createOfferRoyaltyInfoUpdatedEvent(
+  offerId: i32,
+  sellerId: i32,
+  royaltyInfo: RoyaltyInfo,
+  executedBy: string
+): OfferRoyaltyInfoUpdated {
+  const offerRoyaltyInfoUpdated = changetype<OfferRoyaltyInfoUpdated>(
+    newMockEvent()
+  );
+  offerRoyaltyInfoUpdated.parameters = [];
+  const offerIdParam = new ethereum.EventParam(
+    "offerId",
+    ethereum.Value.fromI32(offerId)
+  );
+  const sellerIdParam = new ethereum.EventParam(
+    "sellerId",
+    ethereum.Value.fromI32(sellerId)
+  );
+
+  const offerRoyaltyInfoUpdatedRoyaltyInfoStruct =
+    new OfferRoyaltyInfoUpdatedRoyaltyInfoStruct();
+  const recipientAddresses: Address[] = [];
+  for (let i = 0; i < royaltyInfo.recipients.length; i++) {
+    recipientAddresses.push(Address.fromString(royaltyInfo.recipients[i]));
+  }
+  offerRoyaltyInfoUpdatedRoyaltyInfoStruct.push(
+    ethereum.Value.fromAddressArray(recipientAddresses)
+  );
+  offerRoyaltyInfoUpdatedRoyaltyInfoStruct.push(
+    ethereum.Value.fromI32Array(royaltyInfo.bps)
+  );
+  const royaltyInfoParam = new ethereum.EventParam(
+    "royaltyInfo",
+    ethereum.Value.fromTuple(offerRoyaltyInfoUpdatedRoyaltyInfoStruct)
+  );
+
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
+
+  offerRoyaltyInfoUpdated.parameters.push(offerIdParam);
+  offerRoyaltyInfoUpdated.parameters.push(sellerIdParam);
+  offerRoyaltyInfoUpdated.parameters.push(royaltyInfoParam);
+  offerRoyaltyInfoUpdated.parameters.push(executedByParam);
+
+  return offerRoyaltyInfoUpdated;
 }

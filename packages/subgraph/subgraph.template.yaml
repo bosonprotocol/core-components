@@ -39,6 +39,8 @@ dataSources:
           handler: handleOfferExtendedEvent
         - event: RangeReserved(indexed uint256,indexed uint256,uint256,uint256,address,indexed address)
           handler: handleRangeReservedEvent
+        - event: OfferRoyaltyInfoUpdated(indexed uint256,indexed uint256,(address[],uint256[]),indexed address)
+          handler: handleOfferRoyaltyInfoUpdatedEvent
       file: ./src/mappings/offer-handler.ts
   - kind: ethereum/contract
     name: BosonOfferHandler230

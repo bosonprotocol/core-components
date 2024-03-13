@@ -10,6 +10,7 @@ import {
   handleOfferCreatedEvent,
   handleOfferCreatedEventLegacy,
   handleOfferExtendedEvent,
+  handleOfferRoyaltyInfoUpdatedEvent,
   handleOfferVoidedEvent,
   handleRangeReservedEvent
 } from "../src/mappings/offer-handler";
@@ -18,11 +19,13 @@ import {
   createOfferCreatedEvent,
   createOfferCreatedEventLegacy,
   createOfferExtendedEvent,
+  createOfferRoyaltyInfoUpdatedEvent,
   createOfferVoidedEvent,
   createRangeReservedEvent,
   createSeller,
   mockExchangeTokenContractCalls
 } from "./mocks";
+import { Offer } from "../generated/schema";
 
 const exchangeTokenAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const exchangeTokenDecimals = 18;
@@ -337,4 +340,56 @@ test("handleOfferCreatedEventLegacy", () => {
     "name",
     exchangeTokenName
   );
+});
+
+// TODO: add test for handleOfferRoyaltyInfoUpdatedEvent()
+test("handleOfferRoyaltyInfoUpdatedEvent", () => {
+  mockExchangeTokenContractCalls(
+    exchangeTokenAddress,
+    exchangeTokenDecimals,
+    exchangeTokenName,
+    exchangeTokenSymbol
+  );
+  mockIpfsFile(metadataHash, "tests/metadata/base.json");
+  createSeller(
+    1,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
+  );
+  handleOfferCreatedEvent(offerCreatedEvent);
+  let offer = Offer.load(offerId.toString()) as Offer;
+  assert.assertNotNull(offer);
+  const royaltyInfos1 = offer.royaltyInfos.load();
+  assert.assertTrue(royaltyInfos1.length == 1);
+
+  const newRoyaltyInfo: RoyaltyInfo = new RoyaltyInfo(
+    [
+      "0x0000000000000000000000000000000000000000",
+      "0x0123456789012345678901234567890123456789"
+    ],
+    [10, 20]
+  );
+
+  const offerRoyaltyInfoUpdatedEvent = createOfferRoyaltyInfoUpdatedEvent(
+    offerId,
+    sellerId,
+    newRoyaltyInfo,
+    executedBy
+  );
+  handleOfferRoyaltyInfoUpdatedEvent(offerRoyaltyInfoUpdatedEvent);
+  offer = Offer.load(offerId.toString()) as Offer;
+  assert.assertNotNull(offer);
+  const royaltyInfos2 = offer.royaltyInfos.load();
+  assert.assertTrue(royaltyInfos2.length == 2);
+  const royaltyInfo1 = royaltyInfos2[0];
+  assert.assertNotNull(royaltyInfo1);
+  const recipients1 = royaltyInfo1.recipients as string[];
+  assert.assertNotNull(recipients1);
+  const royaltyInfo2 = royaltyInfos2[1];
+  assert.assertNotNull(royaltyInfo2);
+  const recipients2 = royaltyInfo2.recipients as string[];
+  assert.assertNotNull(recipients2);
+  assert.assertTrue(recipients1.length + recipients2.length == 3);
 });

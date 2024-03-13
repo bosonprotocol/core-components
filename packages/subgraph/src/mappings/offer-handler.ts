@@ -5,7 +5,7 @@ import {
   OfferVoided,
   OfferExtended,
   RangeReserved,
-  OfferCreatedOfferRoyaltyInfoStruct
+  OfferRoyaltyInfoUpdated
 } from "../../generated/BosonOfferHandler/IBosonOfferHandler";
 import { OfferCreated as OfferCreated230 } from "../../generated/BosonOfferHandler230/IBosonOfferHandler230";
 import { OfferCreated as OfferCreatedLegacy } from "../../generated/BosonOfferHandlerLegacy/IBosonOfferHandlerLegacy";
@@ -86,7 +86,8 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     for (let i = 0; i < royaltyInfos.length; i++) {
       saveRoyaltyInfo(
         offerId.toString(),
-        royaltyInfos[i],
+        royaltyInfos[i].recipients,
+        royaltyInfos[i].bps,
         i,
         event.block.timestamp
       );
@@ -123,7 +124,8 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
 
 function saveRoyaltyInfo(
   offerId: string,
-  royaltyInfo: OfferCreatedOfferRoyaltyInfoStruct,
+  recipients: Address[],
+  bps: BigInt[],
   index: number,
   timestamp: BigInt
 ): void {
@@ -134,8 +136,6 @@ function saveRoyaltyInfo(
     royaltyInfoEntity.timestamp = timestamp;
     royaltyInfoEntity.offer = offerId;
   }
-  const recipients = royaltyInfo.recipients;
-  const bps = royaltyInfo.bps;
   const royaltyRecipientXOffers: string[] = [];
   for (let i = 0; i < recipients.length; i++) {
     const wallet = recipients[i];
@@ -432,5 +432,28 @@ export function handleRangeReservedEvent(event: RangeReserved): void {
       offer.sellerId.toString(),
       offerId.toString()
     );
+  }
+}
+
+export function handleOfferRoyaltyInfoUpdatedEvent(
+  event: OfferRoyaltyInfoUpdated
+): void {
+  const offerId = event.params.offerId;
+  const royaltyInfo = event.params.royaltyInfo;
+  const offer = Offer.load(offerId.toString());
+  const timestamp = event.block.timestamp;
+
+  if (offer) {
+    const royaltyInfos = offer.royaltyInfos.load();
+    const index = royaltyInfos.length;
+    saveRoyaltyInfo(
+      offerId.toString(),
+      royaltyInfo.recipients,
+      royaltyInfo.bps,
+      index,
+      timestamp
+    );
+  } else {
+    log.warning("Offer with ID '{}' not found", [offerId.toString()]);
   }
 }
