@@ -3,13 +3,16 @@ import {
   Web3LibAdapter,
   TransactionResponse,
   MetadataStorage,
-  utils
+  utils,
+  RoyaltyInfo
 } from "@bosonprotocol/common";
 import {
   bosonOfferHandlerIface,
   encodeCreateOffer,
   encodeCreateOfferBatch,
-  encodeReserveRange
+  encodeReserveRange,
+  encodeUpdateOfferRoyaltyRecipients,
+  encodeUpdateOfferRoyaltyRecipientsBatch
 } from "./interface";
 import { getOfferById, getOffers } from "./subgraph";
 import { storeMetadataOnTheGraph } from "./storage";
@@ -186,6 +189,30 @@ export async function extendOfferBatch(args: {
       args.offerIds,
       args.validUntil
     ])
+  });
+}
+
+export async function updateOfferRoyaltyRecipients(args: {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  offerId: BigNumberish;
+  royaltyInfo: RoyaltyInfo;
+}) {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeUpdateOfferRoyaltyRecipients(args)
+  });
+}
+
+export async function updateOfferRoyaltyRecipientsBatch(args: {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  offerIds: BigNumberish[];
+  royaltyInfo: RoyaltyInfo;
+}) {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeUpdateOfferRoyaltyRecipientsBatch(args)
   });
 }
 

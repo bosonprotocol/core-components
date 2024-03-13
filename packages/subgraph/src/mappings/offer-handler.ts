@@ -88,7 +88,7 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
         offerId.toString(),
         royaltyInfos[i].recipients,
         royaltyInfos[i].bps,
-        i,
+        i8(i),
         event.block.timestamp
       );
     }
@@ -126,10 +126,10 @@ function saveRoyaltyInfo(
   offerId: string,
   recipients: Address[],
   bps: BigInt[],
-  index: number,
+  index: i8,
   timestamp: BigInt
 ): void {
-  const royaltyInfoId = getRoyaltyInfoId(offerId, index, timestamp);
+  const royaltyInfoId = getRoyaltyInfoId(offerId, index);
   let royaltyInfoEntity = RoyaltyInfo.load(royaltyInfoId);
   if (!royaltyInfoEntity) {
     royaltyInfoEntity = new RoyaltyInfo(royaltyInfoId);
@@ -151,12 +151,8 @@ function saveRoyaltyInfo(
   royaltyInfoEntity.save();
 }
 
-function getRoyaltyInfoId(
-  offerId: string,
-  index: number,
-  timestamp: BigInt
-): string {
-  return `${offerId}-royaltyInfo-${index.toString()}-${timestamp.toString()}`;
+function getRoyaltyInfoId(offerId: string, index: i8): string {
+  return `${offerId}-royaltyInfo-${index.toString()}`;
 }
 
 function getRoyaltyRecipientXOfferId(offerId: string, wallet: Address): string {
@@ -445,7 +441,7 @@ export function handleOfferRoyaltyInfoUpdatedEvent(
 
   if (offer) {
     const royaltyInfos = offer.royaltyInfos.load();
-    const index = royaltyInfos.length;
+    const index = i8(royaltyInfos.length);
     saveRoyaltyInfo(
       offerId.toString(),
       royaltyInfo.recipients,

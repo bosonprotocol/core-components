@@ -12,7 +12,8 @@ import {
   Log,
   TokenType,
   EvaluationMethod,
-  GatingType
+  GatingType,
+  RoyaltyInfo
 } from "@bosonprotocol/common";
 import groupBy from "lodash/groupBy";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
@@ -680,5 +681,49 @@ export class OfferMixin extends BaseCoreSDK {
       offerId
     );
     return offers.checkExchangePolicy(offerData, rules);
+  }
+
+  /**
+   * Sets new valid royalty info to a given offer.
+   * @param offerId - Id of the offer
+   * @param royaltyInfo - new royaltyInfo to be applied
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async updateOfferRoyaltyRecipients(
+    offerId: BigNumberish,
+    royaltyInfo: RoyaltyInfo,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return offers.handler.updateOfferRoyaltyRecipients({
+      offerId,
+      royaltyInfo,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  /**
+   * Sets new valid until date for a batch of offers.
+   * @param offerIds - list of ids of the offers to extend
+   * @param royaltyInfo - new royaltyInfo to be applied
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async updateOfferRoyaltyRecipientsBatch(
+    offerIds: BigNumberish[],
+    royaltyInfo: RoyaltyInfo,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return offers.handler.updateOfferRoyaltyRecipientsBatch({
+      offerIds,
+      royaltyInfo,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
   }
 }

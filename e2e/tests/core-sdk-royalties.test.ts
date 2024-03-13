@@ -2,13 +2,17 @@ import { Wallet, BigNumber } from "ethers";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 import {
   createOffer,
+  createOfferBatch,
   createSeller,
   createSellerAndOffer,
   initCoreSDKWithFundedWallet,
   initCoreSDKWithWallet,
+  prepareMultiVariantOffers,
   seedWallet23,
+  wait,
   waitForGraphNodeIndexing
 } from "./utils";
+import { productV1 } from "@bosonprotocol/metadata/src";
 
 const seedWallet = seedWallet23; // be sure the seedWallet is not used by another test (to allow concurrent run)
 
@@ -458,8 +462,6 @@ describe.only("Offer royalties recipients", () => {
     const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
       seedWallet
     );
-    // create a seller with default royalties
-    // create an offer with default royalties
     const createdOffer = await createSellerAndOffer(
       coreSDK,
       fundedWallet.address
@@ -593,13 +595,176 @@ describe.only("Offer royalties recipients", () => {
         walletIs_subgraph(recipients[1])
       )
     ).toBe(true);
-    // Offer royalties includes does not include treasury
+    // Offer royalties does not include treasury
     expect(
       createdOffer.royaltyInfos[0].recipients?.some(
         walletIs_subgraph(ZERO_ADDRESS)
       )
     ).toBe(false);
   });
-  // TODO: add test for updateOfferRoyaltyRecipients()
-  // TODO: add test for updateOfferRoyaltyRecipientsBatch()
+  test("updateOfferRoyaltyRecipients()", async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+    const createdOffer = await createSellerAndOffer(
+      coreSDK,
+      fundedWallet.address
+    );
+    expect(createdOffer.royaltyInfos).toBeTruthy();
+    expect(createdOffer.royaltyInfos.length).toEqual(1);
+    const recipients = [
+      Wallet.createRandom().address.toLowerCase(),
+      Wallet.createRandom().address.toLowerCase()
+    ];
+    const recipientsPercentage = ["200", "300"];
+    const tx1 = await coreSDK.addRoyaltyRecipients(
+      createdOffer.seller.id,
+      recipients.map((wallet, index) => {
+        return {
+          wallet,
+          minRoyaltyPercentage: recipientsPercentage[index]
+        };
+      })
+    );
+    await tx1.wait();
+    const newRoyaltyInfo = {
+      recipients,
+      bps: recipientsPercentage
+    };
+    const tx2 = await coreSDK.updateOfferRoyaltyRecipients(
+      createdOffer.id,
+      newRoyaltyInfo
+    );
+    await waitForGraphNodeIndexing(tx2);
+    const offer = await coreSDK.getOfferById(createdOffer.id);
+    expect(offer.royaltyInfos).toBeTruthy();
+    expect(offer.royaltyInfos.length).toEqual(2);
+    const recipients1 = offer.royaltyInfos[0].recipients as unknown[];
+    const recipients2 = offer.royaltyInfos[1].recipients as unknown[];
+    expect(recipients1).toBeTruthy();
+    expect(recipients2).toBeTruthy();
+    expect(recipients1?.length + recipients2?.length).toEqual(
+      1 + recipients.length
+    );
+  });
+  test("updateOfferRoyaltyRecipientsBatch() - only 1 offer", async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+    const createdOffer = await createSellerAndOffer(
+      coreSDK,
+      fundedWallet.address
+    );
+    expect(createdOffer.royaltyInfos).toBeTruthy();
+    expect(createdOffer.royaltyInfos.length).toEqual(1);
+    const recipients = [
+      Wallet.createRandom().address.toLowerCase(),
+      Wallet.createRandom().address.toLowerCase()
+    ];
+    const recipientsPercentage = ["200", "300"];
+    const tx1 = await coreSDK.addRoyaltyRecipients(
+      createdOffer.seller.id,
+      recipients.map((wallet, index) => {
+        return {
+          wallet,
+          minRoyaltyPercentage: recipientsPercentage[index]
+        };
+      })
+    );
+    await tx1.wait();
+    const newRoyaltyInfo = {
+      recipients,
+      bps: recipientsPercentage
+    };
+    const tx2 = await coreSDK.updateOfferRoyaltyRecipientsBatch(
+      [createdOffer.id],
+      newRoyaltyInfo
+    );
+    await waitForGraphNodeIndexing(tx2);
+    const offer = await coreSDK.getOfferById(createdOffer.id);
+    expect(offer.royaltyInfos).toBeTruthy();
+    expect(offer.royaltyInfos.length).toEqual(2);
+    const recipients1 = offer.royaltyInfos[0].recipients as unknown[];
+    const recipients2 = offer.royaltyInfos[1].recipients as unknown[];
+    expect(recipients1).toBeTruthy();
+    expect(recipients2).toBeTruthy();
+    expect(recipients1?.length + recipients2?.length).toEqual(
+      1 + recipients.length
+    );
+  });
+  test("updateOfferRoyaltyRecipientsBatch() - 3 offers", async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+    const seller = await createSeller(coreSDK, fundedWallet.address);
+    const productVariations: productV1.ProductV1Variant[] = [
+      [
+        {
+          type: "Size",
+          option: "S"
+        }
+      ],
+      [
+        {
+          type: "Size",
+          option: "M"
+        }
+      ],
+      [
+        {
+          type: "Size",
+          option: "L"
+        }
+      ]
+    ];
+    const { offerArgs } = await prepareMultiVariantOffers(
+      coreSDK,
+      productVariations
+    );
+    const createdOffers = await createOfferBatch(
+      coreSDK,
+      fundedWallet,
+      offerArgs
+    );
+    createdOffers.forEach((createdOffer) => {
+      expect(createdOffer.royaltyInfos).toBeTruthy();
+      expect(createdOffer.royaltyInfos.length).toEqual(1);
+    });
+    const recipients = [
+      Wallet.createRandom().address.toLowerCase(),
+      Wallet.createRandom().address.toLowerCase()
+    ];
+    const recipientsPercentage = ["200", "300"];
+    const tx1 = await coreSDK.addRoyaltyRecipients(
+      seller.id,
+      recipients.map((wallet, index) => {
+        return {
+          wallet,
+          minRoyaltyPercentage: recipientsPercentage[index]
+        };
+      })
+    );
+    await tx1.wait();
+    const newRoyaltyInfo = {
+      recipients,
+      bps: recipientsPercentage
+    };
+    const tx2 = await coreSDK.updateOfferRoyaltyRecipientsBatch(
+      createdOffers.map((offer) => offer.id),
+      newRoyaltyInfo
+    );
+    await waitForGraphNodeIndexing(tx2);
+    createdOffers.forEach(async (createdOffer) => {
+      const offer = await coreSDK.getOfferById(createdOffer.id);
+      expect(offer.royaltyInfos).toBeTruthy();
+      expect(offer.royaltyInfos.length).toEqual(2);
+      const recipients1 = offer.royaltyInfos[0].recipients as unknown[];
+      const recipients2 = offer.royaltyInfos[1].recipients as unknown[];
+      expect(recipients1).toBeTruthy();
+      expect(recipients2).toBeTruthy();
+      expect(recipients1?.length + recipients2?.length).toEqual(
+        1 + recipients.length
+      );
+    });
+  });
 });

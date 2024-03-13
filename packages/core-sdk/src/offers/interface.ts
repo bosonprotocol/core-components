@@ -4,7 +4,8 @@ import {
   abis,
   OfferDatesStruct,
   OfferDurationsStruct,
-  PriceType
+  PriceType,
+  RoyaltyInfo
 } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { getAddress } from "@ethersproject/address";
@@ -18,6 +19,26 @@ export function encodeCreateOffer(args: CreateOfferArgs) {
   return bosonOfferHandlerIface.encodeFunctionData(
     "createOffer",
     createOfferArgsToStructs(args)
+  );
+}
+
+export function encodeUpdateOfferRoyaltyRecipients(args: {
+  offerId: BigNumberish;
+  royaltyInfo: RoyaltyInfo;
+}) {
+  return bosonOfferHandlerIface.encodeFunctionData(
+    "updateOfferRoyaltyRecipients",
+    [args.offerId, args.royaltyInfo]
+  );
+}
+
+export function encodeUpdateOfferRoyaltyRecipientsBatch(args: {
+  offerIds: BigNumberish[];
+  royaltyInfo: RoyaltyInfo;
+}) {
+  return bosonOfferHandlerIface.encodeFunctionData(
+    "updateOfferRoyaltyRecipientsBatch",
+    [args.offerIds, args.royaltyInfo]
   );
 }
 
