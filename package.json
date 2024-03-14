@@ -87,6 +87,7 @@
     "npm": "8.11.0"
   },
   "dependencies": {
+    "@types/react": "^18.0.15",
     "clone-deep": "^4.0.1"
   }
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import {
-  CommitNonModalProps, CommitWrapper
+  CommitNonModalProps,
+  CommitWrapper
 } from "../../modal/components/Commit/CommitNonModal";
 import { useProductByUuid } from "../../../hooks/products/useProductByUuid";
 import useProductByOfferId from "../../../hooks/products/useProductByOfferId";

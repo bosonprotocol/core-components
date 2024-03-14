@@ -1,7 +1,8 @@
 import React from "react";
 import { useExchanges } from "../../../hooks/useExchanges";
 import {
-  RedeemNonModalProps, PublicRedeemNonModal
+  RedeemNonModalProps,
+  PublicRedeemNonModal
 } from "../../modal/components/Redeem/RedeemNonModal";
 
 function WithExchange(
