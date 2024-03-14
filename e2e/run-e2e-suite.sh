@@ -38,6 +38,6 @@ echo "Successfully deployed subgraph ✅"
 
 echo "Run e2e tests..."
 cd ..
-npm run e2e:test
+npm run e2e:test -- --no-cache
 
 exit
