@@ -40,6 +40,7 @@ export function saveDisputeResolutionTerms(
   terms.disputeResolver = disputeResolutionTerms.disputeResolverId.toString();
   terms.offer = offerId;
   terms.feeAmount = disputeResolutionTerms.feeAmount;
+  terms.offer = offerId;
   terms.save();
 
   return disputeResolutionTermsId;

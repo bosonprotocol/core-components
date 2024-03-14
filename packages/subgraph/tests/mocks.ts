@@ -323,6 +323,119 @@ export function createOfferCreatedEventLegacy(
   return offerCreatedEvent;
 }
 
+export function createOfferCreatedEventLegacy(
+  offerId: i32,
+  sellerId: i32,
+  price: i32,
+  sellerDeposit: i32,
+  protocolFee: i32,
+  agentFee: i32,
+  buyerCancelPenalty: i32,
+  quantityAvailable: i32,
+  validFromDate: i32,
+  validUntilDate: i32,
+  voucherRedeemableFromDate: i32,
+  voucherRedeemableUntilDate: i32,
+  disputePeriodDuration: i32,
+  voucherValidDuration: i32,
+  resolutionPeriodDuration: i32,
+  exchangeToken: string,
+  disputeResolverId: i32,
+  disputeEscalationResponsePeriod: i32,
+  disputeFeeAmount: i32,
+  disputeBuyerEscalationDeposit: i32,
+  metadataUri: string,
+  metadataHash: string,
+  voided: boolean,
+  agentId: i32,
+  executedBy: string
+): OfferCreatedLegacy {
+  const offerCreatedEvent = changetype<OfferCreatedLegacy>(newMockEvent());
+  offerCreatedEvent.parameters = [];
+
+  const offerIdParam = new ethereum.EventParam(
+    "offerId",
+    ethereum.Value.fromI32(offerId)
+  );
+  const sellerIdParam = new ethereum.EventParam(
+    "sellerId",
+    ethereum.Value.fromI32(sellerId)
+  );
+  const offerParam = new ethereum.EventParam(
+    "offer",
+    ethereum.Value.fromTuple(
+      createOfferStructLegacy(
+        offerId,
+        sellerId,
+        price,
+        sellerDeposit,
+        buyerCancelPenalty,
+        quantityAvailable,
+        exchangeToken,
+        metadataUri,
+        metadataHash,
+        voided
+      )
+    )
+  );
+  const offerDatesParams = new ethereum.EventParam(
+    "offerDates",
+    ethereum.Value.fromTuple(
+      createOfferDatesStruct(
+        validFromDate,
+        validUntilDate,
+        voucherRedeemableFromDate,
+        voucherRedeemableUntilDate
+      )
+    )
+  );
+  const offerDurationsParams = new ethereum.EventParam(
+    "offerDurations",
+    ethereum.Value.fromTuple(
+      createOfferDurationsStruct(
+        disputePeriodDuration,
+        voucherValidDuration,
+        resolutionPeriodDuration
+      )
+    )
+  );
+  const offerFeesParams = new ethereum.EventParam(
+    "offerFees",
+    ethereum.Value.fromTuple(createOfferFeesStruct(protocolFee, agentFee))
+  );
+  const disputeResolutionTermsParams = new ethereum.EventParam(
+    "disputeResolutionTerms",
+    ethereum.Value.fromTuple(
+      createDisputeResolutionTermsStruct(
+        disputeResolverId,
+        disputeEscalationResponsePeriod,
+        disputeFeeAmount,
+        disputeBuyerEscalationDeposit
+      )
+    )
+  );
+  const agentIdParam = new ethereum.EventParam(
+    "agentId",
+    ethereum.Value.fromI32(agentId)
+  );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
+
+  offerCreatedEvent.parameters.push(offerIdParam);
+  offerCreatedEvent.parameters.push(sellerIdParam);
+  offerCreatedEvent.parameters.push(offerParam);
+  offerCreatedEvent.parameters.push(offerDatesParams);
+  offerCreatedEvent.parameters.push(offerDurationsParams);
+  offerCreatedEvent.parameters.push(disputeResolutionTermsParams);
+  offerCreatedEvent.parameters.push(offerFeesParams);
+  offerCreatedEvent.parameters.push(agentIdParam);
+  offerCreatedEvent.parameters.push(executedByParam);
+
+  return offerCreatedEvent;
+}
+
 export function createOfferVoidedEvent(
   offerId: i32,
   sellerId: i32,
@@ -920,6 +1033,32 @@ export function createOfferStruct(
   tuple.push(
     ethereum.Value.fromTupleArray([createRoyaltyInfoStruct(royaltyInfo)])
   );
+  return tuple;
+}
+
+export function createOfferStructLegacy(
+  offerId: i32,
+  sellerId: i32,
+  price: i32,
+  sellerDeposit: i32,
+  buyerCancelPenalty: i32,
+  quantityAvailable: i32,
+  exchangeToken: string,
+  metadataUri: string,
+  metadataHash: string,
+  voided: boolean
+): OfferCreatedOfferStructLegacy {
+  const tuple = new OfferCreatedOfferStructLegacy();
+  tuple.push(ethereum.Value.fromI32(offerId));
+  tuple.push(ethereum.Value.fromI32(sellerId));
+  tuple.push(ethereum.Value.fromI32(price));
+  tuple.push(ethereum.Value.fromI32(sellerDeposit));
+  tuple.push(ethereum.Value.fromI32(buyerCancelPenalty));
+  tuple.push(ethereum.Value.fromI32(quantityAvailable));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(exchangeToken)));
+  tuple.push(ethereum.Value.fromString(metadataUri));
+  tuple.push(ethereum.Value.fromString(metadataHash));
+  tuple.push(ethereum.Value.fromBoolean(voided));
   return tuple;
 }
 

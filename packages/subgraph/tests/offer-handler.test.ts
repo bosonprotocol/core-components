@@ -124,6 +124,34 @@ const offerCreatedEventLegacy = createOfferCreatedEventLegacy(
   executedBy
 );
 
+const offerCreatedEventLegacy = createOfferCreatedEventLegacy(
+  offerId,
+  sellerId,
+  price,
+  sellerDeposit,
+  protocolFee,
+  agentFee,
+  buyerCancelPenalty,
+  quantityAvailable,
+  validFromDate,
+  validUntilDate,
+  voucherRedeemableFromDate,
+  voucherRedeemableUntilDate,
+  disputePeriodDuration,
+  voucherValidDuration,
+  resolutionPeriodDuration,
+  exchangeTokenAddress,
+  disputeResolverId,
+  disputeEscalationResponsePeriod,
+  disputeFeeAmount,
+  disputeBuyerEscalationDeposit,
+  "ipfs://" + metadataHash,
+  metadataHash,
+  false,
+  agentId,
+  executedBy
+);
+
 beforeEach(() => {
   clearStore();
 });
@@ -342,7 +370,6 @@ test("handleOfferCreatedEventLegacy", () => {
   );
 });
 
-// TODO: add test for handleOfferRoyaltyInfoUpdatedEvent()
 test("handleOfferRoyaltyInfoUpdatedEvent", () => {
   mockExchangeTokenContractCalls(
     exchangeTokenAddress,
