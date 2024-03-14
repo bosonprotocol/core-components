@@ -1,6 +1,6 @@
 import { ChainId, Currency } from "@uniswap/sdk-core";
 import blankTokenUrl from "../../assets/svg/blank_token.svg";
-import { ReactComponent as UnknownStatus } from "../../assets/svg/contract-interaction.svg";
+import UnknownStatus from "../../assets/svg/contract-interaction.svg";
 import React from "react";
 import styled from "styled-components";
 import { MissingImageLogo } from "./AssetLogo";
@@ -168,5 +168,7 @@ function getLogo({
       />
     );
   }
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   return <UnknownContract width={size} height={size} />;
 }

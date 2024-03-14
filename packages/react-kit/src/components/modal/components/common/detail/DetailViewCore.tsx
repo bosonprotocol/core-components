@@ -2,7 +2,7 @@ import { Cube, Info, Lock, LockOpen } from "phosphor-react";
 import React, { ElementRef, forwardRef, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
-import { ReactComponent as Logo } from "../../../../../assets/logo.svg";
+import Logo from "../../../../../assets/logo.svg";
 import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
 import { theme } from "../../../../../theme";
 import { useConfigContext } from "../../../../config/ConfigContext";

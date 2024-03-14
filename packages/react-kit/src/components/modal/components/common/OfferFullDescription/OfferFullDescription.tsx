@@ -1,9 +1,8 @@
-import React, { useMemo } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
 import { Exchange } from "../../../../../types/exchange";
-import { isTruthy } from "../../../../../types/helpers";
 import { Offer } from "../../../../../types/offer";
 import { DetailChart } from "../../../../detail/DetailChart";
 import { Grid } from "../../../../ui/Grid";
@@ -12,13 +11,12 @@ import { Typography } from "../../../../ui/Typography";
 import { Content } from "../../../nonModal/styles";
 import DetailTable from "../detail/DetailTable";
 import DetailTransactions from "../detail/DetailTransactions";
-import { SlickSlider, initialSettings } from "../detail/SlickSlider";
 import { OnClickBuyOrSwapHandler } from "../detail/types";
 import { UseGetOfferDetailDataProps } from "../detail/useGetOfferDetailData";
-import { GeneralProductData } from "./GeneralProductData";
 import { DigitalProductData } from "./DigitalProductData";
-import { PhysicalProductData } from "./PhysicalProductData";
+import { GeneralProductData } from "./GeneralProductData";
 import { Overview } from "./Overview";
+import { PhysicalProductData } from "./PhysicalProductData";
 
 const InventoryGraph = styled(DetailChart)`
   width: 100%;

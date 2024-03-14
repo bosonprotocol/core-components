@@ -48,10 +48,7 @@ export type CommitNonModalProps = Pick<
   lookAndFeel: "regular" | "modal";
 };
 
-export default function CommitWrapper({
-  hideModal,
-  ...props
-}: CommitNonModalProps) {
+export function CommitWrapper({ hideModal, ...props }: CommitNonModalProps) {
   return (
     <NonModal
       hideModal={hideModal}
