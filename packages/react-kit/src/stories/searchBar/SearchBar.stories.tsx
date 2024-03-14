@@ -1,6 +1,7 @@
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 
+import { EnvironmentType, getEnvConfigs } from "@bosonprotocol/core-sdk";
 import { SearchBar } from "../../components/searchBar/SearchBar";
 
 export default {
@@ -13,8 +14,11 @@ const Template: ComponentStory<typeof SearchBar> = (args) => (
 );
 
 export const Primary: ComponentStory<typeof SearchBar> = Template.bind({});
-
+const envName =
+  (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
+const envConfig = getEnvConfigs(envName);
 Primary.args = {
   disabled: false,
-  envName: "testing"
+  envName,
+  configId: envConfig[0].configId
 };

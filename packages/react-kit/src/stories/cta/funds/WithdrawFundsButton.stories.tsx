@@ -1,11 +1,11 @@
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 import React, { useRef } from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { WithdrawFundsButton } from "../../../components/cta/funds/WithdrawFundsButton";
 
+import { BigNumber } from "ethers";
 import { hooks } from "../../helpers/connect-wallet";
 import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
-import { BigNumberish } from "ethers";
 
 export default {
   title: "Visual Components/CTA/funds/WithdrawFundsButton",
@@ -52,10 +52,7 @@ Simple.args = {
   tokensToWithdraw: [
     {
       address: "",
-      amount: {
-        type: "BigNumber",
-        hex: ""
-      } as unknown as BigNumberish
+      amount: BigNumber.from(0)
     }
   ],
   disabled: false,
