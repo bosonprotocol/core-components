@@ -79,6 +79,11 @@ const config: StorybookConfig = {
     });
     config.plugins = config.plugins?.filter((plugin) => !!plugin);
     return config;
-  }
+  },
+  env: (config) => ({
+    ...config,
+    REACT_APP_MAGIC_API_KEY: process.env.REACT_APP_MAGIC_API_KEY || "REACT_APP_MAGIC_API_KEY_NOT_SET",
+    INFURA_PROJECT_SECRET: process.env.INFURA_PROJECT_SECRET || "INFURA_PROJECT_SECRET_NOT_SET",
+  }),
 };
 export default config;
