@@ -128,8 +128,8 @@ export function argsToOfferStruct(args: CreateOfferArgs): Partial<OfferStruct> {
       ? args.royaltyInfo
       : [
           {
-            recipients: [AddressZero],
-            bps: [0]
+            recipients: [],
+            bps: []
           }
         ];
 

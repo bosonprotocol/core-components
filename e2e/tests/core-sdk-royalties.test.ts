@@ -469,14 +469,7 @@ describe.only("Offer royalties recipients", () => {
     expect(createdOffer.royaltyInfos).toBeTruthy();
     expect(createdOffer.royaltyInfos.length).toEqual(1);
     expect(createdOffer.royaltyInfos[0].recipients).toBeTruthy();
-    expect(createdOffer.royaltyInfos[0].recipients?.length).toEqual(1);
-    expect(
-      createdOffer.royaltyInfos[0].recipients?.[0].recipient.wallet
-    ).toEqual(ZERO_ADDRESS);
-    expect(
-      createdOffer.royaltyInfos[0].recipients?.[0].recipient.wallet
-    ).toEqual(ZERO_ADDRESS);
-    expect(createdOffer.royaltyInfos[0].recipients?.[0].bps).toEqual("0");
+    expect(createdOffer.royaltyInfos[0].recipients?.length).toEqual(0);
   });
   test("royalties #2 zero minimum - set treasury royalty for offer", async () => {
     const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
@@ -517,10 +510,19 @@ describe.only("Offer royalties recipients", () => {
         royaltyPercentage: minTreasuryPercentage
       }
     });
-    // Try to create an offer with no royalties
-    (await expect(createOffer(coreSDK))).rejects.toThrow(
-      /InvalidRoyaltyPercentage()/
-    );
+    // Try to create an offer with insufficient royalties
+    (
+      await expect(
+        createOffer(coreSDK, {
+          royaltyInfo: [
+            {
+              recipients: [ZERO_ADDRESS],
+              bps: ["50"] // less than the minimum
+            }
+          ]
+        })
+      )
+    ).rejects.toThrow(/InvalidRoyaltyPercentage()/);
     // Create an offer with all royalties for treasury
     const createdOffer = await createOffer(coreSDK, {
       royaltyInfo: [
@@ -602,6 +604,24 @@ describe.only("Offer royalties recipients", () => {
       )
     ).toBe(false);
   });
+  test("royalties #5 positive minimum royalty and offer with no royalties", async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+    // Set a >0 minimum royalty percentage for the seller
+    const minTreasuryPercentage = "100"; // 1%
+    await createSeller(coreSDK, fundedWallet.address, {
+      sellerParams: {
+        royaltyPercentage: minTreasuryPercentage
+      }
+    });
+    // Create an offer with no royalty
+    const createdOffer = await createOffer(coreSDK);
+    expect(createdOffer.royaltyInfos).toBeTruthy();
+    expect(createdOffer.royaltyInfos.length).toEqual(1);
+    expect(createdOffer.royaltyInfos[0].recipients).toBeTruthy();
+    expect(createdOffer.royaltyInfos[0].recipients?.length).toEqual(0);
+  });
   test("updateOfferRoyaltyRecipients()", async () => {
     const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
       seedWallet
@@ -639,12 +659,13 @@ describe.only("Offer royalties recipients", () => {
     const offer = await coreSDK.getOfferById(createdOffer.id);
     expect(offer.royaltyInfos).toBeTruthy();
     expect(offer.royaltyInfos.length).toEqual(2);
-    const recipients1 = offer.royaltyInfos[0].recipients as unknown[];
-    const recipients2 = offer.royaltyInfos[1].recipients as unknown[];
-    expect(recipients1).toBeTruthy();
-    expect(recipients2).toBeTruthy();
-    expect(recipients1?.length + recipients2?.length).toEqual(
-      1 + recipients.length
+    const mostRecentRoyaltyInfo = offer.royaltyInfos.reduce(
+      (prev, current) =>
+        BigNumber.from(current.timestamp).gt(prev.timestamp) ? current : prev,
+      offer.royaltyInfos[0]
+    );
+    expect(mostRecentRoyaltyInfo?.recipients?.length).toEqual(
+      recipients.length
     );
   });
   test("updateOfferRoyaltyRecipientsBatch() - only 1 offer", async () => {
@@ -684,12 +705,13 @@ describe.only("Offer royalties recipients", () => {
     const offer = await coreSDK.getOfferById(createdOffer.id);
     expect(offer.royaltyInfos).toBeTruthy();
     expect(offer.royaltyInfos.length).toEqual(2);
-    const recipients1 = offer.royaltyInfos[0].recipients as unknown[];
-    const recipients2 = offer.royaltyInfos[1].recipients as unknown[];
-    expect(recipients1).toBeTruthy();
-    expect(recipients2).toBeTruthy();
-    expect(recipients1?.length + recipients2?.length).toEqual(
-      1 + recipients.length
+    const mostRecentRoyaltyInfo = offer.royaltyInfos.reduce(
+      (prev, current) =>
+        BigNumber.from(current.timestamp).gt(prev.timestamp) ? current : prev,
+      offer.royaltyInfos[0]
+    );
+    expect(mostRecentRoyaltyInfo?.recipients?.length).toEqual(
+      recipients.length
     );
   });
   test("updateOfferRoyaltyRecipientsBatch() - 3 offers", async () => {
@@ -758,12 +780,13 @@ describe.only("Offer royalties recipients", () => {
       const offer = await coreSDK.getOfferById(createdOffer.id);
       expect(offer.royaltyInfos).toBeTruthy();
       expect(offer.royaltyInfos.length).toEqual(2);
-      const recipients1 = offer.royaltyInfos[0].recipients as unknown[];
-      const recipients2 = offer.royaltyInfos[1].recipients as unknown[];
-      expect(recipients1).toBeTruthy();
-      expect(recipients2).toBeTruthy();
-      expect(recipients1?.length + recipients2?.length).toEqual(
-        1 + recipients.length
+      const mostRecentRoyaltyInfo = offer.royaltyInfos.reduce(
+        (prev, current) =>
+          BigNumber.from(current.timestamp).gt(prev.timestamp) ? current : prev,
+        offer.royaltyInfos[0]
+      );
+      expect(mostRecentRoyaltyInfo?.recipients?.length).toEqual(
+        recipients.length
       );
     });
   });
