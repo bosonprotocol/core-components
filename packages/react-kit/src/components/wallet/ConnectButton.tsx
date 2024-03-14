@@ -3,7 +3,7 @@ import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import * as Sentry from "@sentry/browser";
 import styled from "styled-components";
 
-import metamaskLogo from "../../assets/metamask-logo.svg";
+import MetamaskLogo from "../../assets/metamask-logo.svg";
 import FallbackAvatar from "../avatar/fallback-avatar";
 import { Button } from "../buttons/Button";
 import ThemedButton from "../ui/ThemedButton";
@@ -44,9 +44,12 @@ const InnerProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const MetaMaskLogo = styled.img`
+const StyledMetamaskLogo = styled(MetamaskLogo).attrs({ id: "metamask-logo" })`
   height: 15px;
   width: 16px;
+  &#metamask-logo path {
+    stroke: initial !important;
+  }
 `;
 
 const ENSAvatar = styled.img`
@@ -136,7 +139,7 @@ export default function ConnectButton({
                             }}
                           >
                             Connect Wallet
-                            {!isLteXS && <MetaMaskLogo src={metamaskLogo} />}
+                            {!isLteXS && <StyledMetamaskLogo />}
                           </Button>
                         </>
                       );

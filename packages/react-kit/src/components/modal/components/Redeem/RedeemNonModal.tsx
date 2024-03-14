@@ -227,7 +227,7 @@ export type RedeemNonModalProps = Pick<
     withExternalSigner: boolean | undefined | null;
   };
 
-export default function RedeemWrapper({
+export function PublicRedeemNonModal({
   hideModal,
   ...props
 }: RedeemNonModalProps) {
