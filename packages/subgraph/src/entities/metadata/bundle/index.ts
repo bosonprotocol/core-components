@@ -163,12 +163,14 @@ export function saveUnknownItemMetadata(
 ): string {
   const offerId = offer.id.toString();
   const metadataId = getItemMetadataEntityId(offerId, index);
+  const schemaUrl = convertToString(metadataObj.get("schemaUrl"));
 
   let unknownItemMetadataEntity = UnknownItemMetadataEntity.load(metadataId);
   if (!unknownItemMetadataEntity) {
     unknownItemMetadataEntity = new UnknownItemMetadataEntity(metadataId);
   }
 
+  unknownItemMetadataEntity.schemaUrl = schemaUrl;
   unknownItemMetadataEntity.type = "ITEM_UNKNOWN";
   unknownItemMetadataEntity.bundle = bundleId;
   unknownItemMetadataEntity.metadataUri = itemMetadataUri;

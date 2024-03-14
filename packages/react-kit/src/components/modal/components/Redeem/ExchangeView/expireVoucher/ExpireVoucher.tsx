@@ -223,7 +223,7 @@ export default function ExpireVoucher({
               const [hash, isMetaTx] = args;
               onPendingTransaction?.(...args);
               addPendingTransaction({
-                type: subgraph.EventType.VoucherExpired,
+                type: subgraph.EventType.VOUCHER_EXPIRED,
                 hash,
                 isMetaTx,
                 accountType: "Buyer",

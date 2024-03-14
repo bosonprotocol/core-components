@@ -1,4 +1,5 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+/* eslint-disable @typescript-eslint/ban-types */
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import { ConditionEntity } from "./../../generated/schema";
 import { Offer } from "../../generated/schema";
 import {
@@ -31,14 +32,7 @@ export function handleGroupCreatedEvent(event: GroupCreated): void {
   condition.save();
 
   // find the offers and update them: isConditional = true?, condition = Condition
-  for (let i = 0; i < groupFromEvent.offerIds.length; i++) {
-    const offerId = groupFromEvent.offerIds[i];
-    const offer = Offer.load(offerId.toString());
-    if (offer) {
-      offer.condition = groupId.toString();
-      offer.save();
-    }
-  }
+  addOffersCondition(groupId.toString(), groupFromEvent.offerIds);
   // TODO: record Created group event ?
 }
 
@@ -48,13 +42,30 @@ export function handleGroupCreatedEvent(event: GroupCreated): void {
 // - group condition is modified
 export function handleGroupUpdatedEvent(event: GroupUpdated): void {
   const groupId = event.params.groupId;
+  const groupFromEvent = event.params.group;
+  const conditionFromEvent = event.params.condition;
 
-  // TODO: find the Condition
-  // Update the condition
-  // TODO: find the offers that were associated to this condition
-  // in case they are not associated anymore, remove the condition for the offer
-  // TODO: find the offers that are now associated to this condition and were not before
-  // add the condition for the offer
+  const condition = ConditionEntity.load(groupId.toString());
+  if (condition) {
+    condition.method = conditionFromEvent.method;
+    condition.tokenType = conditionFromEvent.tokenType;
+    condition.tokenAddress = conditionFromEvent.tokenAddress;
+    condition.gatingType = conditionFromEvent.gating;
+    condition.minTokenId = conditionFromEvent.minTokenId;
+    condition.maxTokenId = conditionFromEvent.maxTokenId;
+    condition.threshold = conditionFromEvent.threshold;
+    condition.maxCommits = conditionFromEvent.maxCommits;
+    condition.save();
+    const previousOffers = condition.offers.load();
+    if (previousOffers) {
+      clearPreviousOffersCondition(previousOffers);
+    }
+  } else {
+    log.warning("Not found ConditionEntity with ID '{}'", [groupId.toString()]);
+  }
+
+  // find the offers and update them: condition = Condition
+  addOffersCondition(groupId.toString(), groupFromEvent.offerIds);
 }
 
 export function handleGroupCreatedEventLegacy(event: GroupCreatedLegacy): void {
@@ -78,14 +89,7 @@ export function handleGroupCreatedEventLegacy(event: GroupCreatedLegacy): void {
   condition.save();
 
   // find the offers and update them: isConditional = true?, condition = Condition
-  for (let i = 0; i < groupFromEvent.offerIds.length; i++) {
-    const offerId = groupFromEvent.offerIds[i];
-    const offer = Offer.load(offerId.toString());
-    if (offer) {
-      offer.condition = groupId.toString();
-      offer.save();
-    }
-  }
+  addOffersCondition(groupId.toString(), groupFromEvent.offerIds);
   // TODO: record Created group event ?
 }
 
@@ -95,11 +99,49 @@ export function handleGroupCreatedEventLegacy(event: GroupCreatedLegacy): void {
 // - group condition is modified
 export function handleGroupUpdatedEventLegacy(event: GroupUpdatedLegacy): void {
   const groupId = event.params.groupId;
+  const groupFromEvent = event.params.group;
+  const conditionFromEvent = event.params.condition;
 
-  // TODO: find the Condition
-  // Update the condition
-  // TODO: find the offers that were associated to this condition
-  // in case they are not associated anymore, remove the condition for the offer
-  // TODO: find the offers that are now associated to this condition and were not before
-  // add the condition for the offer
+  // create a Condition Entity (identified with groupId)
+  const condition = ConditionEntity.load(groupId.toString());
+  if (condition) {
+    condition.method = conditionFromEvent.method;
+    condition.tokenType = conditionFromEvent.tokenType;
+    condition.tokenAddress = conditionFromEvent.tokenAddress;
+    condition.minTokenId = conditionFromEvent.tokenId; // minTokenId does not exist in GroupCreatedLegacy event (< v2.3.0)
+    condition.maxTokenId = conditionFromEvent.tokenId; // maxTokenId does not exist in GroupCreatedLegacy event (< v2.3.0)
+    condition.gatingType = 0; // gating does not exist in GroupCreatedLegacy event (< v2.3.0)
+    condition.threshold = conditionFromEvent.threshold;
+    condition.maxCommits = conditionFromEvent.maxCommits;
+    condition.save();
+    const previousOffers = condition.offers.load();
+    if (previousOffers) {
+      clearPreviousOffersCondition(previousOffers);
+    }
+  } else {
+    log.warning("Not found ConditionEntity with ID '{}'", [groupId.toString()]);
+  }
+
+  // find the offers and update them: isConditional = true?, condition = Condition
+  addOffersCondition(groupId.toString(), groupFromEvent.offerIds);
+}
+
+function clearPreviousOffersCondition(previousOffers: Offer[]): void {
+  for (let i = 0; i < previousOffers.length; i++) {
+    const offer = previousOffers[i];
+    offer.condition = null;
+    offer.save();
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+function addOffersCondition(conditionId: string, offerIds: BigInt[]): void {
+  for (let i = 0; i < offerIds.length; i++) {
+    const offerId = offerIds[i];
+    const offer = Offer.load(offerId.toString());
+    if (offer) {
+      offer.condition = conditionId;
+      offer.save();
+    }
+  }
 }

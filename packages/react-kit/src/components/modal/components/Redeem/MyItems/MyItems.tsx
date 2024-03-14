@@ -66,10 +66,10 @@ export function MyItems({
           initialValues={{
             committed:
               !exchangeState ||
-              exchangeState === subgraph.ExchangeState.Committed,
-            redeemed: exchangeState === subgraph.ExchangeState.Redeemed,
-            disputed: exchangeState === subgraph.ExchangeState.Disputed,
-            completed: exchangeState === subgraph.ExchangeState.Completed
+              exchangeState === subgraph.ExchangeState.COMMITTED,
+            redeemed: exchangeState === subgraph.ExchangeState.REDEEMED,
+            disputed: exchangeState === subgraph.ExchangeState.DISPUTED,
+            completed: exchangeState === subgraph.ExchangeState.COMPLETED
           }}
         >
           {({ values }) => {

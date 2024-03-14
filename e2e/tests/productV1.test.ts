@@ -983,7 +983,7 @@ describe("additional tests", () => {
     const offer = await createOffer2(coreSDK, sellerWallet, offerArgs);
     expect(offer).toBeTruthy();
 
-    expect(offer.metadata?.type).toEqual(MetadataType.ProductV1);
+    expect(offer.metadata?.type).toEqual(MetadataType.PRODUCT_V1);
     expect(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ((offer?.metadata as any)?.product as any)?.visuals_videos?.length

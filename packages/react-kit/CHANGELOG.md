@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.28.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.28.0...@bosonprotocol/react-kit@0.28.1) (2024-03-13)
+
+
+### Bug Fixes
+
+* commit widget is not loading ([#679](https://github.com/bosonprotocol/core-components/issues/679)) ([1c0d168](https://github.com/bosonprotocol/core-components/commit/1c0d1682731dc7e43bf805c03b0d7f8ef2e621b0))
+
+
+
+
+
+# [0.28.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.27.1...@bosonprotocol/react-kit@0.28.0) (2024-03-13)
+
+
+### Features
+
+* add phygitals ([#673](https://github.com/bosonprotocol/core-components/issues/673)) ([e233f8c](https://github.com/bosonprotocol/core-components/commit/e233f8c44c8a234d6556a361905a2c59c4b9958e))
+
+
+
+
+
 ## [0.27.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.27.0...@bosonprotocol/react-kit@0.27.1) (2024-03-08)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit

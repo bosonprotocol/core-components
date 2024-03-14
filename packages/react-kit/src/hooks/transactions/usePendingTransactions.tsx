@@ -115,13 +115,13 @@ export const usePendingTransactionsStore = (
         }));
 
         const commitTransactions = get().transactions.filter(
-          (tx) => tx.type === subgraph.EventType.BuyerCommitted
+          (tx) => tx.type === subgraph.EventType.BUYER_COMMITTED
         );
         const pendingTransactions = get().transactions.filter(
-          (tx) => !tx.isMetaTx && tx.type !== subgraph.EventType.BuyerCommitted
+          (tx) => !tx.isMetaTx && tx.type !== subgraph.EventType.BUYER_COMMITTED
         );
         const pendingMetaTransactions = get().transactions.filter(
-          (tx) => tx.isMetaTx && tx.type !== subgraph.EventType.BuyerCommitted
+          (tx) => tx.isMetaTx && tx.type !== subgraph.EventType.BUYER_COMMITTED
         );
 
         const [

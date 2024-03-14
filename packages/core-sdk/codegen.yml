@@ -8,6 +8,8 @@ generates:
       - "typescript-operations"
       - "typescript-graphql-request"
     config:
+      namingConvention:
+        enumValues: change-case-all#upperCase
       gqlImport: graphql-request#gql
       scalars:
         Bytes: string

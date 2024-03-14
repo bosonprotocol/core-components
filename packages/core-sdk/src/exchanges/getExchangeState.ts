@@ -9,7 +9,10 @@ export enum ExtendedExchangeState {
 export type AllExchangeStates = ExtendedExchangeState | ExchangeState;
 
 export function getExchangeState(
-  exchange: subgraph.ExchangeFieldsFragment
+  exchange: Pick<
+    subgraph.ExchangeFieldsFragment,
+    "offer" | "state" | "validUntilDate"
+  >
 ): AllExchangeStates {
   const { offer } = exchange;
 
@@ -18,7 +21,7 @@ export function getExchangeState(
   }
 
   if (
-    exchange.state === ExchangeState.Committed &&
+    exchange.state === ExchangeState.COMMITTED &&
     Number(exchange.validUntilDate) * 1000 < Date.now()
   ) {
     return ExtendedExchangeState.Expired;

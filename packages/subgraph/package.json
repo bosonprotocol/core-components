@@ -1,14 +1,15 @@
 {
   "name": "@bosonprotocol/subgraph",
-  "version": "1.32.0",
+  "version": "1.32.1",
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.26.0",
-    "@graphprotocol/graph-ts": "^0.27.0"
+    "@graphprotocol/graph-cli": "0.68.5",
+    "@graphprotocol/graph-ts": "0.33.0"
   },
   "devDependencies": {
+    "assemblyscript": "0.19.23",
     "ethers": "^5.5.4",
     "handlebars": "^4.7.7",
-    "matchstick-as": "^0.5.0",
+    "matchstick-as": "^0.6.0",
     "ts-node": "^10.7.0"
   },
   "license": "Apache-2.0",
@@ -32,6 +33,6 @@
     "deploy:staging:goerli": "npm run manifest:staging:goerli && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/goerli-staging",
     "deploy:production": "npm run manifest:production && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/polygon",
     "deploy:production:ethereum": "npm run manifest:production:ethereum && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/ethereum",
-    "test": "npm run manifest:local && graph test -v 0.5.4"
+    "test": "npm run manifest:local && graph test"
   }
 }

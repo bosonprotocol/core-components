@@ -771,7 +771,7 @@ describe("renderContractualAgreementForOffer", () => {
     test("BASE Type Metadata is not supported", async () => {
       const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph();
       expect(mockedRawOfferFromSubgraph.metadata?.type).toEqual(
-        subgraph.MetadataType.Base
+        subgraph.MetadataType.BASE
       );
       await expect(
         renderContractualAgreementForOffer(mockedRawOfferFromSubgraph)
@@ -787,7 +787,7 @@ describe("renderContractualAgreementForOffer", () => {
       const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph({ metadata });
 
       expect(mockedRawOfferFromSubgraph.metadata?.type).toEqual(
-        subgraph.MetadataType.ProductV1
+        subgraph.MetadataType.PRODUCT_V1
       );
       await expect(
         renderContractualAgreementForOffer(mockedRawOfferFromSubgraph)
@@ -803,7 +803,7 @@ describe("renderContractualAgreementForOffer", () => {
       const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph({ metadata });
 
       expect(mockedRawOfferFromSubgraph.metadata?.type).toEqual(
-        subgraph.MetadataType.ProductV1
+        subgraph.MetadataType.PRODUCT_V1
       );
       await expect(
         renderContractualAgreementForOffer(mockedRawOfferFromSubgraph)

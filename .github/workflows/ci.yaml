@@ -38,7 +38,7 @@ jobs:
 
   e2e-tests:
     name: Run e2e tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: [lint-build-test]
     steps:
       - uses: actions/checkout@v3

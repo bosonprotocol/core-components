@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.39.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.39.0...@bosonprotocol/core-sdk@1.39.1) (2024-03-13)
+
+**Note:** Version bump only for package @bosonprotocol/core-sdk
+
+
+
+
+
+# [1.39.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.38.0...@bosonprotocol/core-sdk@1.39.0) (2024-03-13)
+
+
+### Features
+
+* add phygitals ([#673](https://github.com/bosonprotocol/core-components/issues/673)) ([e233f8c](https://github.com/bosonprotocol/core-components/commit/e233f8c44c8a234d6556a361905a2c59c4b9958e))
+
+
+
+
+
 # [1.38.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.37.0...@bosonprotocol/core-sdk@1.38.0) (2024-03-08)
 
 

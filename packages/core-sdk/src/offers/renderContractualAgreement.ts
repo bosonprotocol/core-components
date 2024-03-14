@@ -292,7 +292,7 @@ export async function renderContractualAgreementForOffer(
   if (!existingOfferData.metadata) {
     throw new Error(`Offer Metadata is undefined`);
   }
-  if (existingOfferData.metadata.type !== MetadataType.ProductV1) {
+  if (existingOfferData.metadata.type !== MetadataType.PRODUCT_V1) {
     throw new Error(
       `Invalid Offer Metadata: Type is not supported: '${existingOfferData.metadata.type}'`
     );

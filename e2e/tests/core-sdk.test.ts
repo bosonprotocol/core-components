@@ -180,7 +180,10 @@ describe("core-sdk", () => {
         const conditionClone = {
           ...offerWithCondition.condition
         };
-        delete conditionClone.id;
+        expect(conditionClone.offers).toBeTruthy();
+        expect(conditionClone.offers?.length).toEqual(offerIds.length);
+        delete conditionClone.id; // remove to allow easy comparison
+        delete conditionClone.offers; // remove to allow easy comparison
         expect(offerWithCondition.condition).toBeTruthy();
         expect(conditionClone).toEqual(condition);
       }
@@ -221,7 +224,10 @@ describe("core-sdk", () => {
       const conditionClone = {
         ...offerWithCondition.condition
       };
-      delete conditionClone.id;
+      expect(conditionClone.offers).toBeTruthy();
+      expect(conditionClone.offers?.length).toEqual(1);
+      delete conditionClone.id; // remove to allow easy comparison
+      delete conditionClone.offers; // remove to allow easy comparison
       expect(conditionClone).toEqual(condition);
       // Check the condition description is set in the metadata from the subgraph
       expect(offerWithCondition.metadata?.condition).toBeTruthy();
@@ -265,7 +271,10 @@ describe("core-sdk", () => {
       const conditionClone = {
         ...offerWithCondition.condition
       };
-      delete conditionClone.id;
+      expect(conditionClone.offers).toBeTruthy();
+      expect(conditionClone.offers?.length).toEqual(1);
+      delete conditionClone.id; // remove to allow easy comparison
+      delete conditionClone.offers; // remove to allow easy comparison
       expect(conditionClone).toEqual(condition);
       // Check the condition description is set in the metadata from the subgraph
       expect(offerWithCondition.metadata?.condition).toBeTruthy();
@@ -362,7 +371,10 @@ describe("core-sdk", () => {
         const conditionClone = {
           ...offerWithCondition.condition
         };
-        delete conditionClone.id;
+        expect(conditionClone.offers).toBeTruthy();
+        expect(conditionClone.offers?.length).toEqual(1);
+        delete conditionClone.id; // remove to allow easy comparison
+        delete conditionClone.offers; // remove to allow easy comparison
         expect(conditionClone).toEqual(condition);
 
         await expect(
@@ -1033,7 +1045,7 @@ describe("core-sdk", () => {
         exchange.id
       );
 
-      expect(exchangeAfterRevoke.state).toBe(ExchangeState.Revoked);
+      expect(exchangeAfterRevoke.state).toBe(ExchangeState.REVOKED);
       expect(exchangeAfterRevoke.revokedDate).toBeTruthy();
     });
 
@@ -1061,7 +1073,7 @@ describe("core-sdk", () => {
         exchange.id
       );
 
-      expect(exchangeAfterRevoke.state).toBe(ExchangeState.Cancelled);
+      expect(exchangeAfterRevoke.state).toBe(ExchangeState.CANCELLED);
       expect(exchangeAfterRevoke.cancelledDate).toBeTruthy();
     });
 
@@ -1089,7 +1101,7 @@ describe("core-sdk", () => {
         exchange.id
       );
 
-      expect(exchangeAfterRevoke.state).toBe(ExchangeState.Redeemed);
+      expect(exchangeAfterRevoke.state).toBe(ExchangeState.REDEEMED);
       expect(exchangeAfterRevoke.redeemedDate).toBeTruthy();
 
       const exchangeAfterComplete = await completeExchange({
@@ -1097,7 +1109,7 @@ describe("core-sdk", () => {
         exchangeId: exchange.id
       });
 
-      expect(exchangeAfterComplete.state).toBe(ExchangeState.Completed);
+      expect(exchangeAfterComplete.state).toBe(ExchangeState.COMPLETED);
       expect(exchangeAfterComplete.completedDate).toBeTruthy();
     });
 
@@ -1134,9 +1146,9 @@ describe("core-sdk", () => {
         exchangeIds: [exchange1.id, exchange2.id]
       });
 
-      expect(exchangesAfterComplete[0].state).toBe(ExchangeState.Completed);
+      expect(exchangesAfterComplete[0].state).toBe(ExchangeState.COMPLETED);
       expect(exchangesAfterComplete[0].completedDate).toBeTruthy();
-      expect(exchangesAfterComplete[1].state).toBe(ExchangeState.Completed);
+      expect(exchangesAfterComplete[1].state).toBe(ExchangeState.COMPLETED);
       expect(exchangesAfterComplete[1].completedDate).toBeTruthy();
     });
 
@@ -1443,7 +1455,7 @@ async function completeExchangeBatch(args: {
 
 async function raiseDispute(exchangeId: string, buyerCoreSDK: CoreSDK) {
   const exchangeAfterRedeem = await buyerCoreSDK.getExchangeById(exchangeId);
-  expect(exchangeAfterRedeem.state).toBe(ExchangeState.Redeemed);
+  expect(exchangeAfterRedeem.state).toBe(ExchangeState.REDEEMED);
   expect(exchangeAfterRedeem.disputed).toBeFalsy();
 
   const dispute = await buyerCoreSDK.getDisputeById(exchangeId);
@@ -1453,7 +1465,7 @@ async function raiseDispute(exchangeId: string, buyerCoreSDK: CoreSDK) {
   await txResponse.wait();
   await waitForGraphNodeIndexing(txResponse);
   const exchangeAfterDispute = await buyerCoreSDK.getExchangeById(exchangeId);
-  expect(exchangeAfterDispute.state).toBe(ExchangeState.Disputed);
+  expect(exchangeAfterDispute.state).toBe(ExchangeState.DISPUTED);
   expect(exchangeAfterDispute.completedDate).toBeNull();
   expect(exchangeAfterDispute.finalizedDate).toBeNull();
 
@@ -1467,7 +1479,7 @@ async function checkDisputeResolving(exchangeId: string, coreSDK: CoreSDK) {
   expect(dispute).toBeTruthy();
 
   // dispute state is now RESOLVING
-  expect(dispute.state).toBe(DisputeState.Resolving);
+  expect(dispute.state).toBe(DisputeState.RESOLVING);
 
   // dispute date is correct
   expect(dispute.disputedDate).toBeTruthy();
@@ -1491,7 +1503,7 @@ async function checkDisputeRetracted(exchangeId: string, coreSDK: CoreSDK) {
 
   // exchange state is still DISPUTED
   expect(exchangeAfterRetract.disputed).toBeTruthy();
-  expect(exchangeAfterRetract.state).toBe(ExchangeState.Disputed);
+  expect(exchangeAfterRetract.state).toBe(ExchangeState.DISPUTED);
 
   // exchange finalizedDate is filled
   expect(exchangeAfterRetract.finalizedDate).toBeTruthy();
@@ -1501,7 +1513,7 @@ async function checkDisputeRetracted(exchangeId: string, coreSDK: CoreSDK) {
   expect(dispute).toBeTruthy();
 
   // dispute state is now RETRACTED
-  expect(dispute.state).toBe(DisputeState.Retracted);
+  expect(dispute.state).toBe(DisputeState.RETRACTED);
 
   // dispute buyerPercent is 0
   expect(dispute.buyerPercent).toEqual("0");
@@ -1550,7 +1562,7 @@ async function checkDisputeResolved(
 
   // exchange state is still DISPUTED
   expect(exchangeAfterResolve.disputed).toBeTruthy();
-  expect(exchangeAfterResolve.state).toBe(ExchangeState.Disputed);
+  expect(exchangeAfterResolve.state).toBe(ExchangeState.DISPUTED);
 
   // exchange finalizedDate is filled
   expect(exchangeAfterResolve.finalizedDate).toBeTruthy();
@@ -1560,7 +1572,7 @@ async function checkDisputeResolved(
   expect(dispute).toBeTruthy();
 
   // dispute state is now RESOLVED
-  expect(dispute.state).toBe(DisputeState.Resolved);
+  expect(dispute.state).toBe(DisputeState.RESOLVED);
 
   // dispute buyerPercent is the one specified
   expect(dispute.buyerPercent).toEqual(buyerPercent);
@@ -1581,7 +1593,7 @@ async function checkDisputeEscalated(exchangeId: string, coreSDK: CoreSDK) {
 
   // exchange state is still DISPUTED
   expect(exchangeAfterEscalate.disputed).toBeTruthy();
-  expect(exchangeAfterEscalate.state).toBe(ExchangeState.Disputed);
+  expect(exchangeAfterEscalate.state).toBe(ExchangeState.DISPUTED);
 
   // exchange finalizedDate is still null
   expect(exchangeAfterEscalate.finalizedDate).toBeNull();
@@ -1591,7 +1603,7 @@ async function checkDisputeEscalated(exchangeId: string, coreSDK: CoreSDK) {
   expect(dispute).toBeTruthy();
 
   // dispute state is now ESCALATED
-  expect(dispute.state).toBe(DisputeState.Escalated);
+  expect(dispute.state).toBe(DisputeState.ESCALATED);
 
   // dispute finalizedDate is null
   expect(dispute.finalizedDate).toBeNull();
@@ -1626,7 +1638,7 @@ async function checkDisputeDecided(
 
   // exchange state is still DISPUTED
   expect(exchangeAfterDecide.disputed).toBeTruthy();
-  expect(exchangeAfterDecide.state).toBe(ExchangeState.Disputed);
+  expect(exchangeAfterDecide.state).toBe(ExchangeState.DISPUTED);
 
   // exchange finalizedDate is filled
   expect(exchangeAfterDecide.finalizedDate).toBeTruthy();
@@ -1636,7 +1648,7 @@ async function checkDisputeDecided(
   expect(dispute).toBeTruthy();
 
   // dispute state is now DECIDED
-  expect(dispute.state).toBe(DisputeState.Decided);
+  expect(dispute.state).toBe(DisputeState.DECIDED);
 
   // dispute finalizedDate is filled
   expect(dispute.finalizedDate).toBeTruthy();
@@ -1683,7 +1695,7 @@ async function checkDisputeRefused(exchangeId: string, coreSDK: CoreSDK) {
 
   // exchange state is still DISPUTED
   expect(exchangeAfterDecide.disputed).toBeTruthy();
-  expect(exchangeAfterDecide.state).toBe(ExchangeState.Disputed);
+  expect(exchangeAfterDecide.state).toBe(ExchangeState.DISPUTED);
 
   // exchange finalizedDate is filled
   expect(exchangeAfterDecide.finalizedDate).toBeTruthy();
@@ -1693,7 +1705,7 @@ async function checkDisputeRefused(exchangeId: string, coreSDK: CoreSDK) {
   expect(dispute).toBeTruthy();
 
   // dispute state is now REFUSED
-  expect(dispute.state).toBe(DisputeState.Refused);
+  expect(dispute.state).toBe(DisputeState.REFUSED);
 
   // dispute finalizedDate is filled
   expect(dispute.finalizedDate).toBeTruthy();

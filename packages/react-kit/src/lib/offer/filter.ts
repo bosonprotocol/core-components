@@ -14,7 +14,7 @@ export const isBundle = (
   offer: Pick<Offer | subgraph.OfferFieldsFragment, "metadata">
 ): offer is Bundle =>
   offer.metadata?.__typename === "BundleMetadataEntity" ||
-  offer.metadata?.type === subgraph.MetadataType.Bundle;
+  offer.metadata?.type === subgraph.MetadataType.BUNDLE;
 
 export type ProductV1Metadata = Extract<
   Offer["metadata"],
@@ -29,4 +29,4 @@ export const isProductV1 = (
   offer: Pick<Offer | subgraph.OfferFieldsFragment, "metadata">
 ): offer is ProductV1 =>
   offer.metadata?.__typename === "ProductV1MetadataEntity" ||
-  offer.metadata?.type === subgraph.MetadataType.ProductV1;
+  offer.metadata?.type === subgraph.MetadataType.PRODUCT_V1;

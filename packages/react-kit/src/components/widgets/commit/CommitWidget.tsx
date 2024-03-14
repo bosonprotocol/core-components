@@ -27,11 +27,10 @@ type CommitProps = {
         sellerId: string;
         bundleUuid: string;
       }
-  ) &
-  (
-    | { lookAndFeel: "regular" }
-    | { lookAndFeel: "modal"; modalMargin?: CSSProperties["margin"] }
-  );
+  ) & {
+    lookAndFeel: "regular" | "modal";
+    modalMargin?: CSSProperties["margin"];
+  };
 export type CommitWidgetProps = CommitProps & CommitWidgetProvidersProps;
 export function CommitWidget(props: CommitWidgetProps) {
   const Container = useCallback(
