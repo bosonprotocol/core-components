@@ -147,7 +147,16 @@ export function createSellerArgsToStruct(
   args: CreateSellerArgs,
   collectionSalt: string
 ): {
-  sellerStruct: Partial<SellerStruct>;
+  sellerStruct: Pick<
+    SellerStruct,
+    | "id"
+    | "assistant"
+    | "admin"
+    | "clerk"
+    | "treasury"
+    | "active"
+    | "metadataUri"
+  >;
   authTokenStruct: AuthTokenStruct;
   voucherInitValues: VoucherInitValuesStruct;
 } {
@@ -206,7 +215,10 @@ function argsToSellerStruct(args: {
   admin: string;
   treasury: string;
   metadataUri: string;
-}): Partial<SellerStruct> {
+}): Pick<
+  SellerStruct,
+  "id" | "assistant" | "admin" | "clerk" | "treasury" | "active" | "metadataUri"
+> {
   return {
     // NOTE: It doesn't matter which values we set for `id` and `active` here
     // as they will be overridden by the contract. But to conform to the struct

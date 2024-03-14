@@ -115,6 +115,7 @@ export type SellerStruct = {
   authTokenId: BigNumberish;
   authTokenType: number;
   active: boolean;
+  metadataUri: string;
 };
 
 export type AuthTokenStruct = {
