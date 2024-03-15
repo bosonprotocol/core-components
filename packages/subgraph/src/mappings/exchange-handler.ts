@@ -29,10 +29,6 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   }
 
   const offer = Offer.load(exchangeFromEvent.offerId.toString());
-  log.debug("exchangeFromEvent.offerId.toString() {}", [
-    exchangeFromEvent.offerId.toString()
-  ]);
-
   if (offer) {
     offer.quantityAvailable = offer.quantityAvailable.minus(BigInt.fromI32(1));
     offer.numberOfCommits = offer.numberOfCommits.plus(BigInt.fromI32(1));

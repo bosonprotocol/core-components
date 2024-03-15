@@ -332,15 +332,4 @@ export function decodeGetRoyaltyRecipients(
     result
   );
   return royaltyRecipients;
-  // // Temporary patch (until the protocol ABI for getRoyaltyRecipients() is fixed)
-  // const trim = (s: string) => {
-  //   const s1 = s.replace("0x", "");
-  //   return `0x${s1.length <= 40 ? "0".repeat(40 - s1.length) : ""}${s1}`;
-  // };
-  // return royaltyRecipients.map((rr) => {
-  //   return {
-  //     wallet: trim(BigNumber.from(rr.id).toHexString()),
-  //     minRoyaltyPercentage: BigNumber.from(rr.wallet).toString()
-  //   };
-  // });
 }
