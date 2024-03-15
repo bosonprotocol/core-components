@@ -79,6 +79,12 @@ const config: StorybookConfig = {
     });
     config.plugins = config.plugins?.filter((plugin) => !!plugin);
     return config;
+  },
+  env: (config) => {
+    console.log("main storybook", config, process.env);
+    return {
+      ...config
+    };
   }
 };
 export default config;
