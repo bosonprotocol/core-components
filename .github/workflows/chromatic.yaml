@@ -23,6 +23,3 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/react-kit
-        env:
-          STORYBOOK_INFURA_PROJECT_SECRET: ${{ secrets.STORYBOOK_INFURA_PROJECT_SECRET }}
-          STORYBOOK_REACT_APP_MAGIC_API_KEY: ${{ secrets.STORYBOOK_REACT_APP_MAGIC_API_KEY }}

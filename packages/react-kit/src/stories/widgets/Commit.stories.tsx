@@ -1,8 +1,14 @@
+import { EnvironmentType, getEnvConfigs } from "@bosonprotocol/core-sdk";
 import React from "react";
+const envVars = process.env;
+console.log("envVars", envVars);
+const envName =
+  (envVars.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
 import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 
+// eslint-disable-next-line import/first
 import { CommitWidget } from "../../components/widgets/commit/CommitWidget";
-import { EnvironmentType, getEnvConfigs } from "@bosonprotocol/core-sdk";
+
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Widgets/Commit",
@@ -19,8 +25,7 @@ const wrapper = (Story: Story) => (
     <Story />
   </div>
 );
-const envName =
-  (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
+
 const envConfig = getEnvConfigs(envName);
 
 export const Commit: ComponentStory<typeof CommitWidget> = Template.bind({});
