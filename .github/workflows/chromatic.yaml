@@ -6,13 +6,13 @@ jobs:
   chromatic:
     runs-on: ubuntu-latest
     steps:
-      - run: pwd
-      - run: ls
-      - run: cd packages/react-kit && mv .env.test .env
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - run: pwd
+      - run: ls
+      - run: cd packages/react-kit && mv .env.test .env
       - name: Install dependencies
         run: npm ci
       - id: build
