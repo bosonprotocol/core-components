@@ -13,6 +13,8 @@ jobs:
       - run: pwd
       - run: ls
       - run: cd packages/react-kit && mv .env.test .env
+      - run: ls
+      - run: cat .env
       - name: Install dependencies
         run: npm ci
       - id: build
