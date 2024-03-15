@@ -10,8 +10,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: mv .env.test .env
-        working-directory: ./packages/react-kit
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_REACT_APP_WALLET_CONNECT_PROJECT_ID: ${{ secrets.REACT_APP_WALLET_CONNECT_PROJECT_ID }}
+          envkey_STORYBOOK_INFURA_PROJECT_SECRET: ${{ secrets.INFURA_PROJECT_SECRET }}
+          envkey_STORYBOOK_REACT_APP_MAGIC_API_KEY: ${{ secrets.REACT_APP_MAGIC_API_KEY }}
+          directory: ./packages/react-kit
+          file_name: .env
       - run: cat .env
         working-directory: ./packages/react-kit
       - name: Install dependencies
