@@ -14,6 +14,9 @@ jobs:
         run: npm ci
       - id: build
         run: npm run build -- --cache-dir=".turbo"
+        with:
+          INFURA_PROJECT_SECRET: ${{ secrets.INFURA_PROJECT_SECRET }}
+          REACT_APP_MAGIC_API_KEY: ${{ secrets.REACT_APP_MAGIC_API_KEY }}
       - name: Publish to Chromatic
         uses: chromaui/action@latest
         with:
