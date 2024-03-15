@@ -6,7 +6,7 @@ jobs:
   chromatic:
     runs-on: ubuntu-latest
     steps:
-      - run: mv .env.test .env
+      - run: cd packages/react-kit && mv .env.test .env
       - name: Checkout code
         uses: actions/checkout@v4
         with:
