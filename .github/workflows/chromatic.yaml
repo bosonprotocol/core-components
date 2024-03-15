@@ -10,14 +10,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: pwd
-      - run: ls
-      - run: cd packages/react-kit
-      - run: pwd
-      - run: ls
       - run: mv .env.test .env
-      - run: ls
+        working-directory: ./packages/react-kit
       - run: cat .env
+        working-directory: ./packages/react-kit
       - name: Install dependencies
         run: npm ci
       - id: build
