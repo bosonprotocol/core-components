@@ -3,6 +3,7 @@
 /* eslint-disable */
 export type { BiconomyForwarder } from "./BiconomyForwarder";
 export type { ERC1155 } from "./ERC1155";
+export type { ERC165 } from "./ERC165";
 export type { ERC20 } from "./ERC20";
 export type { ERC721Enumerable } from "./ERC721Enumerable";
 export type { IBosonAccountHandler } from "./IBosonAccountHandler";
@@ -14,6 +15,7 @@ export type { IBosonGroupHandler } from "./IBosonGroupHandler";
 export type { IBosonGroupHandlerLegacy } from "./IBosonGroupHandlerLegacy";
 export type { IBosonMetaTransactionsHandler } from "./IBosonMetaTransactionsHandler";
 export type { IBosonOfferHandler } from "./IBosonOfferHandler";
+export type { IBosonOfferHandler230 } from "./IBosonOfferHandler230";
 export type { IBosonOfferHandlerLegacy } from "./IBosonOfferHandlerLegacy";
 export type { IBosonOrchestrationHandler } from "./IBosonOrchestrationHandler";
 export type { IBosonVoucher } from "./IBosonVoucher";
@@ -23,6 +25,7 @@ export type { ProtocolDiamond } from "./ProtocolDiamond";
 
 export { BiconomyForwarder__factory } from "./factories/BiconomyForwarder__factory";
 export { ERC1155__factory } from "./factories/ERC1155__factory";
+export { ERC165__factory } from "./factories/ERC165__factory";
 export { ERC20__factory } from "./factories/ERC20__factory";
 export { ERC721Enumerable__factory } from "./factories/ERC721Enumerable__factory";
 export { IBosonAccountHandler__factory } from "./factories/IBosonAccountHandler__factory";
@@ -34,6 +37,7 @@ export { IBosonGroupHandler__factory } from "./factories/IBosonGroupHandler__fac
 export { IBosonGroupHandlerLegacy__factory } from "./factories/IBosonGroupHandlerLegacy__factory";
 export { IBosonMetaTransactionsHandler__factory } from "./factories/IBosonMetaTransactionsHandler__factory";
 export { IBosonOfferHandler__factory } from "./factories/IBosonOfferHandler__factory";
+export { IBosonOfferHandler230__factory } from "./factories/IBosonOfferHandler230__factory";
 export { IBosonOfferHandlerLegacy__factory } from "./factories/IBosonOfferHandlerLegacy__factory";
 export { IBosonOrchestrationHandler__factory } from "./factories/IBosonOrchestrationHandler__factory";
 export { IBosonVoucher__factory } from "./factories/IBosonVoucher__factory";

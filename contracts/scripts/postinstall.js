@@ -36,8 +36,22 @@ const seaport = {
   )}`
 };
 
+const royaltyRegistry = {
+  target: `${resolve(
+    __dirname,
+    "..",
+    "node_modules",
+    "@manifoldxyz/royalty-registry-solidity"
+  )}`,
+  linkPath: `${resolve(
+    __dirname,
+    "..",
+    "protocol-contracts/submodules/royalty-registry-solidity"
+  )}`
+};
+
 async function main() {
-  for (const entry of [protocol, seaport]) {
+  for (const entry of [protocol, seaport, royaltyRegistry]) {
     await createLink(entry.linkPath, entry.target);
   }
 }

@@ -18,6 +18,13 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export declare namespace BosonTypes {
+  export type RoyaltyInfoStruct = { recipients: string[]; bps: BigNumberish[] };
+
+  export type RoyaltyInfoStructOutput = [string[], BigNumber[]] & {
+    recipients: string[];
+    bps: BigNumber[];
+  };
+
   export type OfferStruct = {
     id: BigNumberish;
     sellerId: BigNumberish;
@@ -26,10 +33,12 @@ export declare namespace BosonTypes {
     buyerCancelPenalty: BigNumberish;
     quantityAvailable: BigNumberish;
     exchangeToken: string;
+    priceType: BigNumberish;
     metadataUri: string;
     metadataHash: string;
     voided: boolean;
     collectionIndex: BigNumberish;
+    royaltyInfo: BosonTypes.RoyaltyInfoStruct[];
   };
 
   export type OfferStructOutput = [
@@ -40,10 +49,12 @@ export declare namespace BosonTypes {
     BigNumber,
     BigNumber,
     string,
+    number,
     string,
     string,
     boolean,
-    BigNumber
+    BigNumber,
+    BosonTypes.RoyaltyInfoStructOutput[]
   ] & {
     id: BigNumber;
     sellerId: BigNumber;
@@ -52,10 +63,12 @@ export declare namespace BosonTypes {
     buyerCancelPenalty: BigNumber;
     quantityAvailable: BigNumber;
     exchangeToken: string;
+    priceType: number;
     metadataUri: string;
     metadataHash: string;
     voided: boolean;
     collectionIndex: BigNumber;
+    royaltyInfo: BosonTypes.RoyaltyInfoStructOutput[];
   };
 
   export type OfferDatesStruct = {
@@ -122,8 +135,8 @@ export declare namespace BosonTypes {
 export interface IBosonOfferHandlerInterface extends utils.Interface {
   contractName: "IBosonOfferHandler";
   functions: {
-    "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool,uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256)": FunctionFragment;
-    "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool,uint256)[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],uint256[],uint256[])": FunctionFragment;
+    "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256)": FunctionFragment;
+    "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[])[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],uint256[],uint256[],uint256[])": FunctionFragment;
     "extendOffer(uint256,uint256)": FunctionFragment;
     "extendOfferBatch(uint256[],uint256)": FunctionFragment;
     "getAgentIdByOffer(uint256)": FunctionFragment;
@@ -131,6 +144,8 @@ export interface IBosonOfferHandlerInterface extends utils.Interface {
     "getOffer(uint256)": FunctionFragment;
     "isOfferVoided(uint256)": FunctionFragment;
     "reserveRange(uint256,uint256,address)": FunctionFragment;
+    "updateOfferRoyaltyRecipients(uint256,(address[],uint256[]))": FunctionFragment;
+    "updateOfferRoyaltyRecipientsBatch(uint256[],(address[],uint256[]))": FunctionFragment;
     "voidOffer(uint256)": FunctionFragment;
     "voidOfferBatch(uint256[])": FunctionFragment;
   };
@@ -142,6 +157,7 @@ export interface IBosonOfferHandlerInterface extends utils.Interface {
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
       BigNumberish,
+      BigNumberish,
       BigNumberish
     ]
   ): string;
@@ -151,6 +167,7 @@ export interface IBosonOfferHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct[],
       BosonTypes.OfferDatesStruct[],
       BosonTypes.OfferDurationsStruct[],
+      BigNumberish[],
       BigNumberish[],
       BigNumberish[]
     ]
@@ -182,6 +199,14 @@ export interface IBosonOfferHandlerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "reserveRange",
     values: [BigNumberish, BigNumberish, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateOfferRoyaltyRecipients",
+    values: [BigNumberish, BosonTypes.RoyaltyInfoStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateOfferRoyaltyRecipientsBatch",
+    values: [BigNumberish[], BosonTypes.RoyaltyInfoStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "voidOffer",
@@ -225,6 +250,14 @@ export interface IBosonOfferHandlerInterface extends utils.Interface {
     functionFragment: "reserveRange",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateOfferRoyaltyRecipients",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateOfferRoyaltyRecipientsBatch",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "voidOffer", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "voidOfferBatch",
@@ -234,12 +267,14 @@ export interface IBosonOfferHandlerInterface extends utils.Interface {
   events: {
     "OfferCreated(uint256,uint256,tuple,tuple,tuple,tuple,tuple,uint256,address)": EventFragment;
     "OfferExtended(uint256,uint256,uint256,address)": EventFragment;
+    "OfferRoyaltyInfoUpdated(uint256,uint256,tuple,address)": EventFragment;
     "OfferVoided(uint256,uint256,address)": EventFragment;
     "RangeReserved(uint256,uint256,uint256,uint256,address,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "OfferCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OfferExtended"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OfferRoyaltyInfoUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OfferVoided"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RangeReserved"): EventFragment;
 }
@@ -282,6 +317,19 @@ export type OfferExtendedEvent = TypedEvent<
 >;
 
 export type OfferExtendedEventFilter = TypedEventFilter<OfferExtendedEvent>;
+
+export type OfferRoyaltyInfoUpdatedEvent = TypedEvent<
+  [BigNumber, BigNumber, BosonTypes.RoyaltyInfoStructOutput, string],
+  {
+    offerId: BigNumber;
+    sellerId: BigNumber;
+    royaltyInfo: BosonTypes.RoyaltyInfoStructOutput;
+    executedBy: string;
+  }
+>;
+
+export type OfferRoyaltyInfoUpdatedEventFilter =
+  TypedEventFilter<OfferRoyaltyInfoUpdatedEvent>;
 
 export type OfferVoidedEvent = TypedEvent<
   [BigNumber, BigNumber, string],
@@ -338,6 +386,7 @@ export interface IBosonOfferHandler extends BaseContract {
       _offerDurations: BosonTypes.OfferDurationsStruct,
       _disputeResolverId: BigNumberish,
       _agentId: BigNumberish,
+      _feeLimit: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -347,6 +396,7 @@ export interface IBosonOfferHandler extends BaseContract {
       _offerDurations: BosonTypes.OfferDurationsStruct[],
       _disputeResolverIds: BigNumberish[],
       _agentIds: BigNumberish[],
+      _feeLimits: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -404,6 +454,18 @@ export interface IBosonOfferHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    updateOfferRoyaltyRecipients(
+      _offerId: BigNumberish,
+      _royaltyInfo: BosonTypes.RoyaltyInfoStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    updateOfferRoyaltyRecipientsBatch(
+      _offerIds: BigNumberish[],
+      _royaltyInfo: BosonTypes.RoyaltyInfoStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     voidOffer(
       _offerId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -421,6 +483,7 @@ export interface IBosonOfferHandler extends BaseContract {
     _offerDurations: BosonTypes.OfferDurationsStruct,
     _disputeResolverId: BigNumberish,
     _agentId: BigNumberish,
+    _feeLimit: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -430,6 +493,7 @@ export interface IBosonOfferHandler extends BaseContract {
     _offerDurations: BosonTypes.OfferDurationsStruct[],
     _disputeResolverIds: BigNumberish[],
     _agentIds: BigNumberish[],
+    _feeLimits: BigNumberish[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -485,6 +549,18 @@ export interface IBosonOfferHandler extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  updateOfferRoyaltyRecipients(
+    _offerId: BigNumberish,
+    _royaltyInfo: BosonTypes.RoyaltyInfoStruct,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  updateOfferRoyaltyRecipientsBatch(
+    _offerIds: BigNumberish[],
+    _royaltyInfo: BosonTypes.RoyaltyInfoStruct,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   voidOffer(
     _offerId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -502,6 +578,7 @@ export interface IBosonOfferHandler extends BaseContract {
       _offerDurations: BosonTypes.OfferDurationsStruct,
       _disputeResolverId: BigNumberish,
       _agentId: BigNumberish,
+      _feeLimit: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -511,6 +588,7 @@ export interface IBosonOfferHandler extends BaseContract {
       _offerDurations: BosonTypes.OfferDurationsStruct[],
       _disputeResolverIds: BigNumberish[],
       _agentIds: BigNumberish[],
+      _feeLimits: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -566,6 +644,18 @@ export interface IBosonOfferHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    updateOfferRoyaltyRecipients(
+      _offerId: BigNumberish,
+      _royaltyInfo: BosonTypes.RoyaltyInfoStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateOfferRoyaltyRecipientsBatch(
+      _offerIds: BigNumberish[],
+      _royaltyInfo: BosonTypes.RoyaltyInfoStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     voidOffer(_offerId: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
     voidOfferBatch(
@@ -611,6 +701,19 @@ export interface IBosonOfferHandler extends BaseContract {
       executedBy?: string | null
     ): OfferExtendedEventFilter;
 
+    "OfferRoyaltyInfoUpdated(uint256,uint256,tuple,address)"(
+      offerId?: BigNumberish | null,
+      sellerId?: BigNumberish | null,
+      royaltyInfo?: null,
+      executedBy?: string | null
+    ): OfferRoyaltyInfoUpdatedEventFilter;
+    OfferRoyaltyInfoUpdated(
+      offerId?: BigNumberish | null,
+      sellerId?: BigNumberish | null,
+      royaltyInfo?: null,
+      executedBy?: string | null
+    ): OfferRoyaltyInfoUpdatedEventFilter;
+
     "OfferVoided(uint256,uint256,address)"(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
@@ -647,6 +750,7 @@ export interface IBosonOfferHandler extends BaseContract {
       _offerDurations: BosonTypes.OfferDurationsStruct,
       _disputeResolverId: BigNumberish,
       _agentId: BigNumberish,
+      _feeLimit: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -656,6 +760,7 @@ export interface IBosonOfferHandler extends BaseContract {
       _offerDurations: BosonTypes.OfferDurationsStruct[],
       _disputeResolverIds: BigNumberish[],
       _agentIds: BigNumberish[],
+      _feeLimits: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -695,6 +800,18 @@ export interface IBosonOfferHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    updateOfferRoyaltyRecipients(
+      _offerId: BigNumberish,
+      _royaltyInfo: BosonTypes.RoyaltyInfoStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    updateOfferRoyaltyRecipientsBatch(
+      _offerIds: BigNumberish[],
+      _royaltyInfo: BosonTypes.RoyaltyInfoStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     voidOffer(
       _offerId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -713,6 +830,7 @@ export interface IBosonOfferHandler extends BaseContract {
       _offerDurations: BosonTypes.OfferDurationsStruct,
       _disputeResolverId: BigNumberish,
       _agentId: BigNumberish,
+      _feeLimit: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -722,6 +840,7 @@ export interface IBosonOfferHandler extends BaseContract {
       _offerDurations: BosonTypes.OfferDurationsStruct[],
       _disputeResolverIds: BigNumberish[],
       _agentIds: BigNumberish[],
+      _feeLimits: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -758,6 +877,18 @@ export interface IBosonOfferHandler extends BaseContract {
       _offerId: BigNumberish,
       _length: BigNumberish,
       _to: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateOfferRoyaltyRecipients(
+      _offerId: BigNumberish,
+      _royaltyInfo: BosonTypes.RoyaltyInfoStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateOfferRoyaltyRecipientsBatch(
+      _offerIds: BigNumberish[],
+      _royaltyInfo: BosonTypes.RoyaltyInfoStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

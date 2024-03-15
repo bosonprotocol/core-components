@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Address, BigInt, Bytes, crypto, log } from "@graphprotocol/graph-ts";
+import {
+  Address,
+  BigInt,
+  Bytes,
+  crypto,
+  log,
+  store
+} from "@graphprotocol/graph-ts";
 import {
   SellerCreated,
   SellerUpdatePending,
@@ -13,7 +20,8 @@ import {
   DisputeResolverUpdateApplied,
   DisputeResolverUpdatePending,
   CollectionCreated,
-  IBosonAccountHandler
+  IBosonAccountHandler,
+  RoyaltyRecipientsChanged
 } from "../../generated/BosonAccountHandler/IBosonAccountHandler";
 import {
   SellerCreated as SellerCreatedLegacy,
@@ -30,7 +38,9 @@ import {
   PendingSeller,
   DisputeResolver,
   PendingDisputeResolver,
-  OfferCollection
+  OfferCollection,
+  RoyaltyRecipientXSeller,
+  RoyaltyRecipient
 } from "../../generated/schema";
 import { BosonVoucher } from "../../generated/templates";
 import {
@@ -77,7 +87,6 @@ export function handleSellerCreatedEventWithoutMetadataUri(
   seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = true;
   seller.contractURI = collectionMetadataUri;
-  seller.royaltyPercentage = bosonVoucherContract.getRoyaltyPercentage();
   seller.metadataUri = "";
   seller.save();
 
@@ -135,7 +144,6 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = true;
   seller.contractURI = collectionMetadataUri;
-  seller.royaltyPercentage = bosonVoucherContract.getRoyaltyPercentage();
   seller.metadataUri = sellerFromEvent.metadataUri || "";
   seller.metadata = getSellerMetadataEntityId(seller.id.toString());
   seller.save();
@@ -658,4 +666,68 @@ export function handleCollectionCreatedEvent(event: CollectionCreated): void {
     event.params.externalId,
     externalId
   );
+}
+
+export function handleRoyaltyRecipientsChangedEvent(
+  event: RoyaltyRecipientsChanged
+): void {
+  const sellerId = event.params.sellerId.toString();
+  const royaltyRecipients = event.params.royaltyRecipients;
+  const seller = Seller.load(sellerId);
+  if (seller) {
+    const oldRecipients = seller.royaltyRecipients.load();
+    if (oldRecipients) {
+      for (let i = 0; i < oldRecipients.length; i++) {
+        store.remove("RoyaltyRecipientXSeller", oldRecipients[i].id);
+      }
+    }
+  } else {
+    log.warning("Unable to find Seller with ID '{}'", [sellerId]);
+  }
+  for (let i = 0; i < royaltyRecipients.length; i++) {
+    const wallet = royaltyRecipients[i].wallet;
+    const minRoyaltyPercentage = royaltyRecipients[i].minRoyaltyPercentage;
+    saveRoyaltyRecipientXSeller(sellerId, wallet, minRoyaltyPercentage);
+  }
+}
+
+function saveRoyaltyRecipientXSeller(
+  sellerId: string,
+  wallet: Address,
+  minRoyaltyPercentage: BigInt
+): void {
+  const royaltyRecipientXSellerId = getRoyaltyRecipientXSellerId(
+    sellerId,
+    wallet
+  );
+  let royaltyRecipientXSeller = RoyaltyRecipientXSeller.load(
+    royaltyRecipientXSellerId
+  );
+  if (!royaltyRecipientXSeller) {
+    royaltyRecipientXSeller = new RoyaltyRecipientXSeller(
+      royaltyRecipientXSellerId
+    );
+    royaltyRecipientXSeller.recipient = saveRoyaltyRecipient(wallet);
+  }
+  royaltyRecipientXSeller.seller = sellerId;
+  royaltyRecipientXSeller.minRoyaltyPercentage = minRoyaltyPercentage;
+  royaltyRecipientXSeller.save();
+}
+
+function getRoyaltyRecipientXSellerId(
+  sellerId: string,
+  wallet: Address
+): string {
+  return `${sellerId}-royalty-${wallet.toHexString()}`;
+}
+
+export function saveRoyaltyRecipient(wallet: Address): string {
+  const royaltyRecipientId = `${wallet.toHexString()}`;
+  let royaltyRecipient = RoyaltyRecipient.load(royaltyRecipientId);
+  if (!royaltyRecipient) {
+    royaltyRecipient = new RoyaltyRecipient(royaltyRecipientId);
+  }
+  royaltyRecipient.wallet = wallet;
+  royaltyRecipient.save();
+  return royaltyRecipientId;
 }

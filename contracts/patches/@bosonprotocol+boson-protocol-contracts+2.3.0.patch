@@ -1,0 +1,41 @@
+diff --git a/node_modules/@bosonprotocol/boson-protocol-contracts/scripts/config/supported-interfaces.js b/node_modules/@bosonprotocol/boson-protocol-contracts/scripts/config/supported-interfaces.js
+index 0d197df..687f662 100644
+--- a/node_modules/@bosonprotocol/boson-protocol-contracts/scripts/config/supported-interfaces.js
++++ b/node_modules/@bosonprotocol/boson-protocol-contracts/scripts/config/supported-interfaces.js
+@@ -51,9 +51,9 @@ async function getInterfaceIds(useCache = true) {
+ 
+   [
+     "IBosonVoucher",
+-    "contracts/interfaces/IERC1155.sol:IERC1155",
+-    "contracts/interfaces/IERC721.sol:IERC721",
+-    "contracts/interfaces/IERC2981.sol:IERC2981",
++    "protocol-contracts/contracts/interfaces/IERC1155.sol:IERC1155",
++    "protocol-contracts/contracts/interfaces/IERC721.sol:IERC721",
++    "protocol-contracts/contracts/interfaces/IERC2981.sol:IERC2981",
+     "IAccessControl",
+     "IBosonSequentialCommitHandler",
+     "IBosonPriceDiscovery",
+@@ -92,8 +92,8 @@ async function getInterfaceNames() {
+     const [source, name] = contractName.split(":");
+ 
+     // If starts with prefix and is not in skip list, return name
+-    return /.*contracts\/interfaces\/(.*)/.test(source) &&
+-      !skip.some((s) => new RegExp(`.*contracts/interfaces/${s}`).test(source))
++    return /.*protocol-contracts\/contracts\/interfaces\/(.*)/.test(source) &&
++      !skip.some((s) => new RegExp(`.*protocol-contracts/contracts/interfaces/${s}`).test(source))
+       ? interfacesWithMultipleArtifacts.includes(name)
+         ? contractName
+         : name
+diff --git a/node_modules/@bosonprotocol/boson-protocol-contracts/scripts/util/diamond-utils.js b/node_modules/@bosonprotocol/boson-protocol-contracts/scripts/util/diamond-utils.js
+index b0e6e5e..956a44e 100644
+--- a/node_modules/@bosonprotocol/boson-protocol-contracts/scripts/util/diamond-utils.js
++++ b/node_modules/@bosonprotocol/boson-protocol-contracts/scripts/util/diamond-utils.js
+@@ -64,7 +64,7 @@ async function getInterfaceId(contractName, skipBaseCheck = false, isFullPath =
+       const baseContractInterfaceId = BigInt(
+         await getInterfaceId(
+           interfacesWithMultipleArtifacts.includes(baseName)
+-            ? `contracts/interfaces/${baseName}.sol:${baseName}`
++            ? `protocol-contracts/contracts/interfaces/${baseName}.sol:${baseName}`
+             : baseName,
+           false,
+           isFullPath

@@ -21,6 +21,7 @@ import { CreateOfferArgs } from "../offers/types";
 import { CreateSellerArgs } from "../accounts/types";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { findCollectionSalt } from "../accounts/handler";
+import { PremintParametersStruct } from "@bosonprotocol/common/src";
 import { storeMetadataItems } from "../metadata/storeMetadataItems";
 
 export async function createOfferAndSeller(args: {
@@ -144,7 +145,7 @@ export async function createSellerAndOfferWithCondition(args: {
 
 export async function createPremintedOfferAddToGroup(args: {
   offerToCreate: CreateOfferArgs;
-  reservedRangeLength: BigNumberish;
+  premintParameters: PremintParametersStruct;
   groupId: BigNumberish;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
@@ -170,7 +171,7 @@ export async function createPremintedOfferAddToGroup(args: {
     to: args.contractAddress,
     data: encodeCreatePremintedOfferAddToGroup(
       args.offerToCreate,
-      args.reservedRangeLength,
+      args.premintParameters,
       args.groupId
     )
   });
@@ -178,7 +179,7 @@ export async function createPremintedOfferAddToGroup(args: {
 
 export async function createPremintedOfferWithCondition(args: {
   offerToCreate: CreateOfferArgs;
-  reservedRangeLength: BigNumberish;
+  premintParameters: PremintParametersStruct;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
   metadataStorage?: MetadataStorage;
@@ -204,7 +205,7 @@ export async function createPremintedOfferWithCondition(args: {
     to: args.contractAddress,
     data: encodeCreatePremintedOfferWithCondition(
       args.offerToCreate,
-      args.reservedRangeLength,
+      args.premintParameters,
       args.condition
     )
   });
@@ -213,7 +214,7 @@ export async function createPremintedOfferWithCondition(args: {
 export async function createSellerAndPremintedOffer(args: {
   sellerToCreate: CreateSellerArgs;
   offerToCreate: CreateOfferArgs;
-  reservedRangeLength: BigNumberish;
+  premintParameters: PremintParametersStruct;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
   metadataStorage?: MetadataStorage;
@@ -249,7 +250,7 @@ export async function createSellerAndPremintedOffer(args: {
       args.sellerToCreate,
       collectionSalt,
       args.offerToCreate,
-      args.reservedRangeLength
+      args.premintParameters
     )
   });
 }
@@ -257,7 +258,7 @@ export async function createSellerAndPremintedOffer(args: {
 export async function createSellerAndPremintedOfferWithCondition(args: {
   sellerToCreate: CreateSellerArgs;
   offerToCreate: CreateOfferArgs;
-  reservedRangeLength: BigNumberish;
+  premintParameters: PremintParametersStruct;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
   metadataStorage?: MetadataStorage;
@@ -294,7 +295,7 @@ export async function createSellerAndPremintedOfferWithCondition(args: {
       args.sellerToCreate,
       collectionSalt,
       args.offerToCreate,
-      args.reservedRangeLength,
+      args.premintParameters,
       args.condition
     )
   });

@@ -519,6 +519,39 @@ enum ProductV1MediaType {
   VIDEO
 }
 
+enum PriceType {
+  STATIC
+  DISCOVERY
+}
+
+type RoyaltyRecipientXSeller @entity {
+  id: ID!
+  seller: Seller!
+  recipient: RoyaltyRecipient!
+  minRoyaltyPercentage: BigInt!
+}
+
+type RoyaltyRecipient @entity {
+  id: ID!
+  wallet: Bytes!
+  royalties: [RoyaltyRecipientXOffer!]! @derivedFrom(field: "recipient")
+  sellers: [RoyaltyRecipientXSeller!]! @derivedFrom(field: "recipient")
+}
+
+type RoyaltyRecipientXOffer @entity {
+  id: ID!
+  recipient: RoyaltyRecipient!
+  bps: BigInt!
+  offer: Offer!
+}
+
+type RoyaltyInfo @entity {
+  id: ID!
+  offer: Offer!
+  recipients: [RoyaltyRecipientXOffer!]
+  timestamp: BigInt!
+}
+
 """
 Offer
 """
@@ -556,6 +589,8 @@ type Offer @entity {
   sellerId: BigInt!
   seller: Seller!
   exchangeToken: ExchangeToken!
+  priceType: Int!
+  royaltyInfos: [RoyaltyInfo!]! @derivedFrom(field: "offer")
   metadata: MetadataInterface
   voidedAt: BigInt
   exchanges: [Exchange!]! @derivedFrom(field: "offer")
@@ -667,7 +702,7 @@ type Seller implements Account @entity {
   logs: [EventLog!]! @derivedFrom(field: "account")
   contractURI: String!
   "Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100%"
-  royaltyPercentage: BigInt!
+  royaltyRecipients: [RoyaltyRecipientXSeller!] @derivedFrom(field: "seller")
   pendingSeller: PendingSeller @derivedFrom(field: "seller")
   metadataUri: String!
   metadata: SellerMetadata

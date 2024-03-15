@@ -12,7 +12,8 @@ import {
   OfferDatesStruct,
   OfferDurationsStruct,
   TransactionRequest,
-  TransactionReceipt
+  TransactionReceipt,
+  PriceType
 } from "../src/types";
 import { MetadataType } from "@bosonprotocol/metadata";
 
@@ -34,6 +35,13 @@ export function mockOfferStruct(overrides?: Partial<OfferStruct>): OfferStruct {
     exchangeToken: AddressZero,
     metadataUri: IPFS_URI,
     metadataHash: IPFS_HASH,
+    priceType: PriceType.Static,
+    royaltyInfo: [
+      {
+        recipients: [AddressZero],
+        bps: [0]
+      }
+    ],
     ...overrides
   };
 }

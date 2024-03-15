@@ -2,13 +2,26 @@ import {
   encodeCreateOffer,
   bosonOfferHandlerIface
 } from "../../src/offers/interface";
-import { utils } from "@bosonprotocol/common";
+import { PriceType, utils } from "@bosonprotocol/common";
 import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
+import { getAddress } from "@ethersproject/address";
+import { AddressZero } from "@ethersproject/constants";
 
 describe("#encodeCreateOffer()", () => {
   test("encode correct calldata", () => {
+    const royaltyRecipients = [
+      AddressZero,
+      getAddress("0x0123456789abcdef0123456789abcdef01234567")
+    ];
+    const royaltyBps = [2, 1];
     const mockedCreateOfferArgs = mockCreateOfferArgs({
-      voucherValidDurationInMS: 1000
+      voucherValidDurationInMS: 1000,
+      royaltyInfo: [
+        {
+          recipients: royaltyRecipients,
+          bps: royaltyBps
+        }
+      ]
     });
 
     const encodedCalldata = encodeCreateOffer(mockedCreateOfferArgs);
@@ -24,9 +37,12 @@ describe("#encodeCreateOffer()", () => {
       buyerCancelPenalty,
       quantityAvailable,
       exchangeToken,
+      priceType,
       metadataUri,
       metadataHash,
-      voided
+      voided,
+      collectionIndex,
+      ...royaltyInfos
     ] = decodedCalldata[0].toString().split(","); // Offer struct
     const [
       validFrom,
@@ -93,5 +109,12 @@ describe("#encodeCreateOffer()", () => {
     expect(exchangeToken).toBe(mockedCreateOfferArgs.exchangeToken);
     expect(metadataUri).toBe(mockedCreateOfferArgs.metadataUri);
     expect(metadataHash).toBe(mockedCreateOfferArgs.metadataHash);
+    expect(priceType).toBe(PriceType.Static.toString());
+    expect(collectionIndex).toBe("0");
+    expect(royaltyInfos.length).toBe(4);
+    expect(royaltyInfos[0]).toBe(royaltyRecipients[0]);
+    expect(royaltyInfos[1]).toBe(royaltyRecipients[1]);
+    expect(royaltyInfos[2]).toBe(royaltyBps[0].toString());
+    expect(royaltyInfos[3]).toBe(royaltyBps[1].toString());
   });
 });

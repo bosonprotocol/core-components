@@ -1,16 +1,10 @@
 import { AuthTokenType } from "../../packages/common";
-import { CoreSDK } from "../../packages/core-sdk/src";
-import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import {
-  createOffer,
   createSeller,
-  createSellerAndOffer,
   initCoreSDKWithFundedWallet,
   mintLensToken,
-  publishNftContractMetadata,
   seedWallet21,
-  updateSeller,
-  waitForGraphNodeIndexing
+  updateSeller
 } from "./utils";
 import { Wallet } from "ethers";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
@@ -65,7 +59,7 @@ describe("CoreSDK Accounts", () => {
             ]
           );
           expect(seller1).toBeTruthy();
-          resolve();  
+          resolve();
         } catch (e) {
           reject(e);
         }
@@ -74,7 +68,10 @@ describe("CoreSDK Accounts", () => {
         // Create seller2 and update so that the assistant != admin != treasury, and admin is defined by an authTokenId
         try {
           const tokenType = AuthTokenType.LENS;
-          authTokenId2 = await mintLensToken(sellerWallet2, sellerWallet2.address);
+          authTokenId2 = await mintLensToken(
+            sellerWallet2,
+            sellerWallet2.address
+          );
           let seller2 = await createSeller(coreSDK2, sellerWallet2.address);
           expect(seller2).toBeTruthy();
           sellerId2 = seller2.id;
@@ -139,7 +136,7 @@ describe("CoreSDK Accounts", () => {
     expect(seller).not.toBeTruthy();
     const sellers = await coreSDK.getSellersByTreasury(admin2);
     expect(sellers.length).toEqual(0);
-    [ seller ] = await coreSDK.getSellersByAddress(admin2);
+    [seller] = await coreSDK.getSellersByAddress(admin2);
     expect(seller.id).toEqual(sellerId2);
   });
 });

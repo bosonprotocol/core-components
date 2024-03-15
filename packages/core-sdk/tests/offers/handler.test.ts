@@ -108,9 +108,26 @@ describe("#voidOffer()", () => {
             treasury: sellerAddress,
             authTokenId: "0",
             authTokenType: 0,
+            royaltyRecipients: [
+              {
+                id: "1-royalty-0x0000000000000000000000000000000000000000",
+                recipient: {
+                  id: "0x0000000000000000000000000000000000000000",
+                  wallet: "0x0000000000000000000000000000000000000000",
+                  royalties: [
+                    {
+                      bps: "0",
+                      offer: {
+                        id: "1"
+                      }
+                    }
+                  ]
+                },
+                minRoyaltyPercentage: "0"
+              }
+            ],
             voucherCloneAddress: "0x0000111122223333444455556666777788889999",
             active: true,
-            royaltyPercentage: "0",
             contractURI: "ipfs://seller-contract-uri",
             metadataUri: sellerMetadataUri
           }
@@ -142,9 +159,26 @@ describe("#voidOffer()", () => {
             treasury: ADDRESS,
             authTokenId: "0",
             authTokenType: 0,
+            royaltyRecipients: [
+              {
+                id: "1-royalty-0x0000000000000000000000000000000000000000",
+                recipient: {
+                  id: "0x0000000000000000000000000000000000000000",
+                  wallet: "0x0000000000000000000000000000000000000000",
+                  royalties: [
+                    {
+                      bps: "0",
+                      offer: {
+                        id: "1"
+                      }
+                    }
+                  ]
+                },
+                minRoyaltyPercentage: "0"
+              }
+            ],
             voucherCloneAddress: "0x0000111122223333444455556666777788889999",
             active: true,
-            royaltyPercentage: "0",
             contractURI: "ipfs://seller-contract-uri",
             metadataUri: sellerMetadataUri
           }
@@ -222,9 +256,26 @@ describe("#voidOfferBatch()", () => {
               treasury: sellerAddress,
               authTokenId: "0",
               authTokenType: 0,
+              royaltyRecipients: [
+                {
+                  id: "1-royalty-0x0000000000000000000000000000000000000000",
+                  recipient: {
+                    id: "0x0000000000000000000000000000000000000000",
+                    wallet: "0x0000000000000000000000000000000000000000",
+                    royalties: [
+                      {
+                        bps: "0",
+                        offer: {
+                          id: "1"
+                        }
+                      }
+                    ]
+                  },
+                  minRoyaltyPercentage: "0"
+                }
+              ],
               voucherCloneAddress: "0x0000111122223333444455556666777788889999",
               active: true,
-              royaltyPercentage: "0",
               contractURI: "ipfs://seller-contract-uri",
               metadataUri: sellerMetadataUri
             }
@@ -259,9 +310,26 @@ describe("#voidOfferBatch()", () => {
               treasury: ADDRESS,
               authTokenId: "0",
               authTokenType: 0,
+              royaltyRecipients: [
+                {
+                  id: "1-royalty-0x0000000000000000000000000000000000000000",
+                  recipient: {
+                    id: "0x0000000000000000000000000000000000000000",
+                    wallet: "0x0000000000000000000000000000000000000000",
+                    royalties: [
+                      {
+                        bps: "0",
+                        offer: {
+                          id: "1"
+                        }
+                      }
+                    ]
+                  },
+                  minRoyaltyPercentage: "0"
+                }
+              ],
               voucherCloneAddress: "0x0000111122223333444455556666777788889999",
               active: true,
-              royaltyPercentage: "0",
               contractURI: "ipfs://seller-contract-uri",
               metadataUri: sellerMetadataUri
             }

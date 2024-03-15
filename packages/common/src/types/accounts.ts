@@ -115,6 +115,7 @@ export type SellerStruct = {
   authTokenId: BigNumberish;
   authTokenType: number;
   active: boolean;
+  metadataUri: string;
 };
 
 export type AuthTokenStruct = {
@@ -144,8 +145,6 @@ export type CreateCollectionArgs = {
   collectionId: string;
   /** Uri of the metadata of the collection voucher contract */
   contractUri: string;
-  /** Royalty percentage for voucher secondary sales */
-  royaltyPercentage: BigNumberish;
   /** collectionSalt is added to the seller admin address to give the sellerSalt
       that is used to compute the voucher contract address. By default, deduced from collectionId */
   collectionSalt?: string;

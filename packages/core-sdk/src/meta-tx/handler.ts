@@ -472,7 +472,7 @@ export async function signMetaTxCreateOffer(
   return signMetaTx({
     ...args,
     functionName:
-      "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool,uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256)",
+      "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256)",
     functionSignature: encodeCreateOffer(args.createOfferArgs)
   });
 }
@@ -504,7 +504,7 @@ export async function signMetaTxCreateOfferBatch(
   return signMetaTx({
     ...args,
     functionName:
-      "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool,uint256)[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],uint256[],uint256[])",
+      "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[])[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],uint256[],uint256[],uint256[])",
     functionSignature: encodeCreateOfferBatch(args.createOffersArgs)
   });
 }
@@ -809,7 +809,7 @@ export async function signMetaTxCreateOfferWithCondition(
   return signMetaTx({
     ...args,
     functionName:
-      "createOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool,uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256)",
+      "createOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256)",
     functionSignature: encodeCreateOfferWithCondition(
       args.offerToCreate,
       args.condition

@@ -3,12 +3,15 @@ import {
   utils,
   abis,
   OfferDatesStruct,
-  OfferDurationsStruct
+  OfferDurationsStruct,
+  PriceType,
+  RoyaltyInfo
 } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { getAddress } from "@ethersproject/address";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { CreateOfferArgs } from "./types";
+import { AddressZero } from "@ethersproject/constants";
 
 export const bosonOfferHandlerIface = new Interface(abis.IBosonOfferHandlerABI);
 
@@ -19,39 +22,69 @@ export function encodeCreateOffer(args: CreateOfferArgs) {
   );
 }
 
+export function encodeUpdateOfferRoyaltyRecipients(args: {
+  offerId: BigNumberish;
+  royaltyInfo: RoyaltyInfo;
+}) {
+  return bosonOfferHandlerIface.encodeFunctionData(
+    "updateOfferRoyaltyRecipients",
+    [args.offerId, args.royaltyInfo]
+  );
+}
+
+export function encodeUpdateOfferRoyaltyRecipientsBatch(args: {
+  offerIds: BigNumberish[];
+  royaltyInfo: RoyaltyInfo;
+}) {
+  return bosonOfferHandlerIface.encodeFunctionData(
+    "updateOfferRoyaltyRecipientsBatch",
+    [args.offerIds, args.royaltyInfo]
+  );
+}
+
 export function encodeCreateOfferBatch(argsBatch: CreateOfferArgs[]) {
   const argsTuples: [
     Partial<OfferStruct>,
     Partial<OfferDatesStruct>,
     Partial<OfferDurationsStruct>,
     BigNumberish,
+    BigNumberish,
     BigNumberish
-  ][] = argsBatch.map((args) => [
-    argsToOfferStruct(args),
-    argsToOfferDatesStruct(args),
-    argsToOfferDurationsStruct(args),
-    args.disputeResolverId,
-    args.agentId
-  ]);
-  const [offers, offerDates, offerDurations, disputeResolverIds, agentIds]: [
+  ][] = argsBatch.map((args) => createOfferArgsToStructs(args));
+  const [
+    offers,
+    offerDates,
+    offerDurations,
+    disputeResolverIds,
+    agentIds,
+    feeLimits
+  ]: [
     Partial<OfferStruct>[],
     Partial<OfferDatesStruct>[],
     Partial<OfferDurationsStruct>[],
     BigNumberish[],
+    BigNumberish[],
     BigNumberish[]
   ] = argsTuples.reduce(
     (acc, tuple) => {
-      const [offer, offerDates, offerDurations, disputeResolverId, agentId] =
-        tuple;
+      const [
+        offer,
+        offerDates,
+        offerDurations,
+        disputeResolverId,
+        agentId,
+        feeLimit
+      ] = tuple;
       return [
         [...acc[0], offer],
         [...acc[1], offerDates],
         [...acc[2], offerDurations],
         [...acc[3], disputeResolverId],
-        [...acc[4], agentId]
+        [...acc[4], agentId],
+        [...acc[5], feeLimit]
       ];
     },
-    [[], [], [], [], []]
+    [[], [], [], [], [], []]
   );
 
   return bosonOfferHandlerIface.encodeFunctionData("createOfferBatch", [
@@ -59,7 +92,8 @@ export function encodeCreateOfferBatch(argsBatch: CreateOfferArgs[]) {
     offerDates,
     offerDurations,
     disputeResolverIds,
-    agentIds
+    agentIds,
+    feeLimits
   ]);
 }
 
@@ -70,25 +104,49 @@ export function createOfferArgsToStructs(
   Partial<OfferDatesStruct>,
   Partial<OfferDurationsStruct>,
   BigNumberish,
+  BigNumberish,
   BigNumberish
 ] {
+  const feeLimit = args.feeLimit !== undefined ? args.feeLimit : args.price;
   return [
     argsToOfferStruct(args),
     argsToOfferDatesStruct(args),
     argsToOfferDurationsStruct(args),
     args.disputeResolverId,
-    args.agentId
+    args.agentId,
+    feeLimit
   ];
 }
 
 export function argsToOfferStruct(args: CreateOfferArgs): Partial<OfferStruct> {
   const { exchangeToken, ...restArgs } = args;
 
+  const priceType =
+    args.priceType !== undefined ? args.priceType : PriceType.Static;
+  const royaltyInfo =
+    args.royaltyInfo !== undefined
+      ? args.royaltyInfo
+      : [
+          {
+            recipients: [],
+            bps: []
+          }
+        ];
+
   return {
     id: "0",
     sellerId: "0",
     ...restArgs,
-    exchangeToken: getAddress(exchangeToken)
+    exchangeToken: getAddress(exchangeToken),
+    priceType,
+    royaltyInfo: royaltyInfo.map((royaltyInfoItem) => {
+      return {
+        ...royaltyInfoItem,
+        recipients: royaltyInfoItem.recipients.map((recipient) =>
+          getAddress(recipient)
+        )
+      };
+    })
   };
 }
 

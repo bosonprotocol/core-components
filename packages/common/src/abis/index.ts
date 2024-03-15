@@ -2,11 +2,12 @@
 
 import BiconomyForwarderABI from "./BiconomyForwarder.json";
 import ERC1155ABI from "./ERC1155.json";
+import ERC165ABI from "./ERC165.json";
 import ERC20ABI from "./ERC20.json";
 import ERC721EnumerableABI from "./ERC721Enumerable.json";
-import ERC165ABI from "./ERC165.json";
 import IBosonAccountHandlerABI from "./IBosonAccountHandler.json";
 import IBosonAccountHandlerLegacyABI from "./IBosonAccountHandlerLegacy.json";
+import IBosonConfigHandlerABI from "./IBosonConfigHandler.json";
 import IBosonDisputeHandlerABI from "./IBosonDisputeHandler.json";
 import IBosonExchangeHandlerABI from "./IBosonExchangeHandler.json";
 import IBosonFundsHandlerABI from "./IBosonFundsHandler.json";
@@ -14,6 +15,7 @@ import IBosonGroupHandlerABI from "./IBosonGroupHandler.json";
 import IBosonGroupHandlerLegacyABI from "./IBosonGroupHandlerLegacy.json";
 import IBosonMetaTransactionsHandlerABI from "./IBosonMetaTransactionsHandler.json";
 import IBosonOfferHandlerABI from "./IBosonOfferHandler.json";
+import IBosonOfferHandler230ABI from "./IBosonOfferHandler230.json";
 import IBosonOfferHandlerLegacyABI from "./IBosonOfferHandlerLegacy.json";
 import IBosonOrchestrationHandlerABI from "./IBosonOrchestrationHandler.json";
 import IBosonVoucherABI from "./IBosonVoucher.json";
@@ -24,11 +26,12 @@ import ProtocolDiamondABI from "./ProtocolDiamond.json";
 export {
   BiconomyForwarderABI,
   ERC1155ABI,
-  ERC20ABI,
   ERC165ABI,
+  ERC20ABI,
   ERC721EnumerableABI,
   IBosonAccountHandlerABI,
   IBosonAccountHandlerLegacyABI,
+  IBosonConfigHandlerABI,
   IBosonDisputeHandlerABI,
   IBosonExchangeHandlerABI,
   IBosonFundsHandlerABI,
@@ -36,6 +39,7 @@ export {
   IBosonGroupHandlerLegacyABI,
   IBosonMetaTransactionsHandlerABI,
   IBosonOfferHandlerABI,
+  IBosonOfferHandler230ABI,
   IBosonOfferHandlerLegacyABI,
   IBosonOrchestrationHandlerABI,
   IBosonVoucherABI,

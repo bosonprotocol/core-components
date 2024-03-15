@@ -7,6 +7,7 @@ import { CreateSellerArgs } from "../accounts/types";
 import { CreateOfferArgs } from "../offers/types";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { conditionArgsToStructs } from "../groups/interface";
+import { PremintParametersStruct } from "@bosonprotocol/common/src";
 
 export const bosonOrchestrationHandlerIface = new Interface(
   abis.IBosonOrchestrationHandlerABI
@@ -29,7 +30,8 @@ export function encodeCreateSellerAndOffer(
       offerArgs[3], // disputeResolverId
       sellerArgs.authTokenStruct,
       sellerArgs.voucherInitValues,
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }
@@ -47,7 +49,8 @@ export function encodeCreateOfferWithCondition(
       offerArgs[2], // offerDurations
       offerArgs[3], // disputeResolverId
       conditionArgsToStructs(condition),
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }
@@ -71,14 +74,15 @@ export function encodeCreateSellerAndOfferWithCondition(
       conditionArgsToStructs(condition),
       sellerArgs.authTokenStruct,
       sellerArgs.voucherInitValues,
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }
 
 export function encodeCreatePremintedOfferAddToGroup(
   offer: CreateOfferArgs,
-  reservedRangeLength: BigNumberish,
+  premintParameters: PremintParametersStruct,
   groupId: BigNumberish
 ) {
   const offerArgs = createOfferArgsToStructs(offer);
@@ -90,16 +94,17 @@ export function encodeCreatePremintedOfferAddToGroup(
       offerArgs[1], // offerDates
       offerArgs[2], // offerDurations
       offerArgs[3], // disputeResolverId
-      reservedRangeLength,
+      premintParameters,
       groupId,
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }
 
 export function encodeCreatePremintedOfferWithCondition(
   offer: CreateOfferArgs,
-  reservedRangeLength: BigNumberish,
+  premintParameters: PremintParametersStruct,
   condition: ConditionStruct
 ) {
   const offerArgs = createOfferArgsToStructs(offer);
@@ -110,9 +115,10 @@ export function encodeCreatePremintedOfferWithCondition(
       offerArgs[1], // offerDates
       offerArgs[2], // offerDurations
       offerArgs[3], // disputeResolverId
-      reservedRangeLength,
+      premintParameters,
       conditionArgsToStructs(condition),
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }
@@ -121,7 +127,7 @@ export function encodeCreateSellerAndPremintedOffer(
   seller: CreateSellerArgs,
   collectionSalt: string,
   offer: CreateOfferArgs,
-  reservedRangeLength: BigNumberish
+  premintParameters: PremintParametersStruct
 ) {
   const sellerArgs = createSellerArgsToStruct(seller, collectionSalt);
   const offerArgs = createOfferArgsToStructs(offer);
@@ -133,10 +139,11 @@ export function encodeCreateSellerAndPremintedOffer(
       offerArgs[1], // offerDates
       offerArgs[2], // offerDurations
       offerArgs[3], // disputeResolverId
-      reservedRangeLength,
+      premintParameters,
       sellerArgs.authTokenStruct,
       sellerArgs.voucherInitValues,
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }
@@ -145,7 +152,7 @@ export function encodeCreateSellerAndPremintedOfferWithCondition(
   seller: CreateSellerArgs,
   collectionSalt: string,
   offer: CreateOfferArgs,
-  reservedRangeLength: BigNumberish,
+  premintParameters: PremintParametersStruct,
   condition: ConditionStruct
 ) {
   const sellerArgs = createSellerArgsToStruct(seller, collectionSalt);
@@ -158,11 +165,12 @@ export function encodeCreateSellerAndPremintedOfferWithCondition(
       offerArgs[1], // offerDates
       offerArgs[2], // offerDurations
       offerArgs[3], // disputeResolverId
-      reservedRangeLength,
+      premintParameters,
       conditionArgsToStructs(condition),
       sellerArgs.authTokenStruct,
       sellerArgs.voucherInitValues,
-      offerArgs[4] // agentId
+      offerArgs[4], // agentId
+      offerArgs[5] // feeLimit
     ]
   );
 }

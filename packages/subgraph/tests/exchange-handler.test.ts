@@ -1,4 +1,4 @@
-import { Exchange } from "./../generated/schema";
+import { Exchange, Offer } from "./../generated/schema";
 import {
   beforeEach,
   test,
@@ -7,7 +7,7 @@ import {
   mockIpfsFile
 } from "matchstick-as/assembly/index";
 import { BigInt } from "@graphprotocol/graph-ts";
-import { Offer, BaseMetadataEntity } from "../generated/schema";
+import { BaseMetadataEntity } from "../generated/schema";
 import {
   handleBuyerCommittedEvent,
   handleConditionalCommitAuthorizedEvent,
@@ -47,7 +47,6 @@ beforeEach(() => {
 test("handle BuyerCommittedEvent", () => {
   const metadataHash = "QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB";
   mockIpfsFile(metadataHash, "tests/metadata/base.json");
-
   const offerId = 1;
   const buyerId = 2;
   const exchangeId = 3;
@@ -56,6 +55,7 @@ test("handle BuyerCommittedEvent", () => {
   // note: mockOffer() does not work in this test, no idea why
   offer.createdAt = BigInt.fromI32(0);
   offer.price = BigInt.fromI32(100);
+  offer.priceType = i8(0);
   offer.sellerDeposit = BigInt.fromI32(5);
   offer.protocolFee = BigInt.fromI32(1);
   offer.agentFee = BigInt.fromI32(0);

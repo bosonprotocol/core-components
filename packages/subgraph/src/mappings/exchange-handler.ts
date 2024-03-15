@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
   BuyerCommitted,
   VoucherCanceled,
@@ -29,7 +29,6 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   }
 
   const offer = Offer.load(exchangeFromEvent.offerId.toString());
-
   if (offer) {
     offer.quantityAvailable = offer.quantityAvailable.minus(BigInt.fromI32(1));
     offer.numberOfCommits = offer.numberOfCommits.plus(BigInt.fromI32(1));
@@ -39,6 +38,10 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
 
     exchange.seller = offer.seller;
     exchange.disputeResolver = offer.disputeResolver;
+  } else {
+    log.warning("Unable to find Offer with id '{}'", [
+      exchangeFromEvent.offerId.toString()
+    ]);
   }
 
   exchange.buyer = exchangeFromEvent.buyerId.toString();

@@ -620,4 +620,64 @@ export class AccountsMixin extends BaseCoreSDK {
   ): Promise<subgraph.OfferCollectionFieldsFragment[]> {
     return accounts.subgraph.getOfferCollections(this._subgraphUrl, queryVars);
   }
+
+  public async addRoyaltyRecipients(
+    sellerId: BigNumberish,
+    royaltyRecipients: accounts.RoyaltyRecipientInfo[],
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ) {
+    return accounts.handler.addRoyaltyRecipients({
+      sellerId,
+      royaltyRecipients,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  public async updateRoyaltyRecipients(
+    sellerId: BigNumberish,
+    royaltyRecipientIds: BigNumberish[],
+    royaltyRecipients: accounts.RoyaltyRecipientInfo[],
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ) {
+    return accounts.handler.updateRoyaltyRecipients({
+      sellerId,
+      royaltyRecipientIds,
+      royaltyRecipients,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  public async removeRoyaltyRecipients(
+    sellerId: BigNumberish,
+    royaltyRecipientIds: BigNumberish[],
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ) {
+    return accounts.handler.removeRoyaltyRecipients({
+      sellerId,
+      royaltyRecipientIds,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  public async getRoyaltyRecipients(
+    sellerId: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ) {
+    return accounts.handler.getRoyaltyRecipients({
+      sellerId,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
 }

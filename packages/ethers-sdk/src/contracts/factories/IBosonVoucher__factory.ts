@@ -120,19 +120,6 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "uint256",
-        name: "royaltyPercentage",
-        type: "uint256",
-      },
-    ],
-    name: "RoyaltyPercentageChanged",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: true,
         internalType: "address",
         name: "from",
@@ -161,12 +148,6 @@ const _abi = [
         indexed: true,
         internalType: "uint256",
         name: "sellerId",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "royaltyPercentage",
         type: "uint256",
       },
       {
@@ -388,19 +369,6 @@ const _abi = [
         internalType: "struct IBosonVoucher.Range",
         name: "range",
         type: "tuple",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getRoyaltyPercentage",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -698,19 +666,6 @@ const _abi = [
       },
     ],
     name: "setContractURI",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_newRoyaltyPercentage",
-        type: "uint256",
-      },
-    ],
-    name: "setRoyaltyPercentage",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

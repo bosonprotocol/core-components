@@ -10,18 +10,22 @@ import {
   handleOfferCreatedEvent,
   handleOfferCreatedEventLegacy,
   handleOfferExtendedEvent,
+  handleOfferRoyaltyInfoUpdatedEvent,
   handleOfferVoidedEvent,
   handleRangeReservedEvent
 } from "../src/mappings/offer-handler";
 import {
+  RoyaltyInfo,
   createOfferCreatedEvent,
   createOfferCreatedEventLegacy,
   createOfferExtendedEvent,
+  createOfferRoyaltyInfoUpdatedEvent,
   createOfferVoidedEvent,
   createRangeReservedEvent,
   createSeller,
   mockExchangeTokenContractCalls
 } from "./mocks";
+import { Offer } from "../generated/schema";
 
 const exchangeTokenAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const exchangeTokenDecimals = 18;
@@ -36,6 +40,7 @@ const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
 const sellerMetadataHash = "QmZffs1Uv6pmf4649UpMqinDord9QBerJaWcwRgdenAto1";
 const price = 1;
+const priceType = i8(0);
 const sellerDeposit = 1;
 const protocolFee = 1;
 const agentFee = 1;
@@ -55,6 +60,10 @@ const disputeBuyerEscalationDeposit = 1;
 const collectionIndex = 0;
 const agentId = 1;
 const executedBy = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
+const royaltyInfo: RoyaltyInfo = new RoyaltyInfo(
+  ["0x0000000000000000000000000000000000000000"],
+  [0]
+);
 
 const offerCreatedEvent = createOfferCreatedEvent(
   offerId,
@@ -77,12 +86,14 @@ const offerCreatedEvent = createOfferCreatedEvent(
   disputeEscalationResponsePeriod,
   disputeFeeAmount,
   disputeBuyerEscalationDeposit,
+  priceType,
   "ipfs://" + metadataHash,
   metadataHash,
   false,
   collectionIndex,
   agentId,
-  executedBy
+  executedBy,
+  royaltyInfo
 );
 
 const offerCreatedEventLegacy = createOfferCreatedEventLegacy(
@@ -244,10 +255,19 @@ test("handleOfferExtendedEvent", () => {
   handleOfferCreatedEvent(offerCreatedEvent);
   assert.fieldEquals("Offer", "1", "validUntilDate", validUntilDate.toString());
 
-  const offerExtendedEvent = createOfferExtendedEvent(offerId, sellerId, validUntilDate + 1000, executedBy);
+  const offerExtendedEvent = createOfferExtendedEvent(
+    offerId,
+    sellerId,
+    validUntilDate + 1000,
+    executedBy
+  );
   handleOfferExtendedEvent(offerExtendedEvent);
-  assert.fieldEquals("Offer", "1", "validUntilDate", (validUntilDate + 1000).toString());
-  
+  assert.fieldEquals(
+    "Offer",
+    "1",
+    "validUntilDate",
+    (validUntilDate + 1000).toString()
+  );
 });
 
 test("handleRangeReservedEvent", () => {
@@ -270,12 +290,24 @@ test("handleRangeReservedEvent", () => {
 
   const start = 12;
   const end = 24;
-  const rangeReservedEvent = createRangeReservedEvent(offerId, sellerId, start, end, sellerAddress, executedBy);
+  const rangeReservedEvent = createRangeReservedEvent(
+    offerId,
+    sellerId,
+    start,
+    end,
+    sellerAddress,
+    executedBy
+  );
   handleRangeReservedEvent(rangeReservedEvent);
   const rangeId = getRangeId(offerId.toString());
   assert.fieldEquals("RangeEntity", rangeId, "start", start.toString());
   assert.fieldEquals("RangeEntity", rangeId, "end", end.toString());
-  assert.fieldEquals("RangeEntity", rangeId, "owner", sellerAddress.toLowerCase());
+  assert.fieldEquals(
+    "RangeEntity",
+    rangeId,
+    "owner",
+    sellerAddress.toLowerCase()
+  );
   assert.fieldEquals("RangeEntity", rangeId, "minted", "0");
 });
 
@@ -308,4 +340,55 @@ test("handleOfferCreatedEventLegacy", () => {
     "name",
     exchangeTokenName
   );
+});
+
+test("handleOfferRoyaltyInfoUpdatedEvent", () => {
+  mockExchangeTokenContractCalls(
+    exchangeTokenAddress,
+    exchangeTokenDecimals,
+    exchangeTokenName,
+    exchangeTokenSymbol
+  );
+  mockIpfsFile(metadataHash, "tests/metadata/base.json");
+  createSeller(
+    1,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
+  );
+  handleOfferCreatedEvent(offerCreatedEvent);
+  let offer = Offer.load(offerId.toString()) as Offer;
+  assert.assertNotNull(offer);
+  const royaltyInfos1 = offer.royaltyInfos.load();
+  assert.assertTrue(royaltyInfos1.length == 1);
+
+  const newRoyaltyInfo: RoyaltyInfo = new RoyaltyInfo(
+    [
+      "0x0000000000000000000000000000000000000000",
+      "0x0123456789012345678901234567890123456789"
+    ],
+    [10, 20]
+  );
+
+  const offerRoyaltyInfoUpdatedEvent = createOfferRoyaltyInfoUpdatedEvent(
+    offerId,
+    sellerId,
+    newRoyaltyInfo,
+    executedBy
+  );
+  handleOfferRoyaltyInfoUpdatedEvent(offerRoyaltyInfoUpdatedEvent);
+  offer = Offer.load(offerId.toString()) as Offer;
+  assert.assertNotNull(offer);
+  const royaltyInfos2 = offer.royaltyInfos.load();
+  assert.assertTrue(royaltyInfos2.length == 2);
+  const royaltyInfo1 = royaltyInfos2[0];
+  assert.assertNotNull(royaltyInfo1);
+  const recipients1 = royaltyInfo1.recipients as string[];
+  assert.assertNotNull(recipients1);
+  const royaltyInfo2 = royaltyInfos2[1];
+  assert.assertNotNull(royaltyInfo2);
+  const recipients2 = royaltyInfo2.recipients as string[];
+  assert.assertNotNull(recipients2);
+  assert.assertTrue(recipients1.length + recipients2.length == 3);
 });

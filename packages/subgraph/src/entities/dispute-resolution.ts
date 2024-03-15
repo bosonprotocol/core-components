@@ -2,6 +2,7 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { OfferCreatedDisputeResolutionTermsStruct } from "../../generated/BosonOfferHandler/IBosonOfferHandler";
 import { OfferCreatedDisputeResolutionTermsStruct as OfferCreatedDisputeResolutionTermsStructLegacy } from "../../generated/BosonOfferHandlerLegacy/IBosonOfferHandlerLegacy";
+import { OfferCreatedDisputeResolutionTermsStruct as OfferCreatedDisputeResolutionTermsStruct230 } from "../../generated/BosonOfferHandler230/IBosonOfferHandler230";
 import { IBosonAccountHandler } from "../../generated/BosonAccountHandler/IBosonAccountHandler";
 import {
   DisputeResolutionTermsEntity,
@@ -19,6 +20,34 @@ export function getDisputeResolutionTermsId(
 
 export function saveDisputeResolutionTerms(
   disputeResolutionTerms: OfferCreatedDisputeResolutionTermsStruct,
+  offerId: string
+): string | null {
+  const disputeResolutionTermsId = getDisputeResolutionTermsId(
+    disputeResolutionTerms.disputeResolverId.toString(),
+    offerId
+  );
+
+  let terms = DisputeResolutionTermsEntity.load(disputeResolutionTermsId);
+
+  if (!terms) {
+    terms = new DisputeResolutionTermsEntity(disputeResolutionTermsId);
+  }
+
+  terms.escalationResponsePeriod =
+    disputeResolutionTerms.escalationResponsePeriod;
+  terms.buyerEscalationDeposit = disputeResolutionTerms.buyerEscalationDeposit;
+  terms.disputeResolverId = disputeResolutionTerms.disputeResolverId;
+  terms.disputeResolver = disputeResolutionTerms.disputeResolverId.toString();
+  terms.offer = offerId;
+  terms.feeAmount = disputeResolutionTerms.feeAmount;
+  terms.offer = offerId;
+  terms.save();
+
+  return disputeResolutionTermsId;
+}
+
+export function saveDisputeResolutionTerms230(
+  disputeResolutionTerms: OfferCreatedDisputeResolutionTermsStruct230,
   offerId: string
 ): string | null {
   const disputeResolutionTermsId = getDisputeResolutionTermsId(

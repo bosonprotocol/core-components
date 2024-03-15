@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { ITokenInfo } from "./../utils/tokenInfoManager";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
-import { utils } from "@bosonprotocol/common";
+import { PriceType, utils } from "@bosonprotocol/common";
 import Mustache from "mustache";
 import { formatUnits } from "@ethersproject/units";
 
@@ -11,6 +11,7 @@ import {
   MetadataType,
   ProductV1MetadataEntity
 } from "../subgraph";
+import { AddressZero } from "@ethersproject/constants";
 
 export type AdditionalOfferMetadata = {
   sellerContactMethod: string;
@@ -178,7 +179,15 @@ function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
         offerDataSubGraph.voucherRedeemableUntilDate,
       disputePeriodDurationInMS: offerDataSubGraph.disputePeriodDuration,
       resolutionPeriodDurationInMS: offerDataSubGraph.resolutionPeriodDuration,
-      exchangeToken: offerDataSubGraph.exchangeToken.address
+      exchangeToken: offerDataSubGraph.exchangeToken.address,
+      feeLimit: offerDataSubGraph.price, // feeLimit is never stored on-chain. By default, set it to offer price
+      priceType: PriceType.Static,
+      royaltyInfo: [
+        {
+          recipients: [AddressZero], // AddressZero means Seller's treasury account
+          bps: ["0"] // Values should be greater or equal than Seller's minimum royalty amount
+        }
+      ]
     },
     offerMetadata: {
       sellerContactMethod: (

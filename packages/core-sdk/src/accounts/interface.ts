@@ -1,6 +1,6 @@
 import { Interface } from "@ethersproject/abi";
 import { formatBytes32String } from "@ethersproject/strings";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import {
   CreateSellerArgs,
   CreateDisputeResolverArgs,
@@ -16,7 +16,8 @@ import {
   SellerUpdateFields,
   OptInToDisputeResolverUpdateArgs,
   DisputeResolverUpdateFields,
-  CreateCollectionArgs
+  CreateCollectionArgs,
+  RoyaltyRecipientInfo
 } from "./types";
 import { AddressZero } from "@ethersproject/constants";
 import { INITIAL_COLLECTION_ID } from "./handler";
@@ -146,7 +147,16 @@ export function createSellerArgsToStruct(
   args: CreateSellerArgs,
   collectionSalt: string
 ): {
-  sellerStruct: Partial<SellerStruct>;
+  sellerStruct: Pick<
+    SellerStruct,
+    | "id"
+    | "assistant"
+    | "admin"
+    | "clerk"
+    | "treasury"
+    | "active"
+    | "metadataUri"
+  >;
   authTokenStruct: AuthTokenStruct;
   voucherInitValues: VoucherInitValuesStruct;
 } {
@@ -175,7 +185,7 @@ export function createCollectionArgsToStruct(args: CreateCollectionArgs): {
   externalId: string;
   voucherInitValues: VoucherInitValuesStruct;
 } {
-  const { collectionId, contractUri, royaltyPercentage } = args;
+  const { collectionId, contractUri } = args;
   const collectionSalt =
     args.collectionSalt ||
     formatBytes32String(collectionId || INITIAL_COLLECTION_ID);
@@ -183,7 +193,7 @@ export function createCollectionArgsToStruct(args: CreateCollectionArgs): {
     externalId: collectionId,
     voucherInitValues: {
       contractURI: contractUri,
-      royaltyPercentage,
+      royaltyPercentage: "0", // useless after protocol v2.4.0
       collectionSalt
     }
   };
@@ -205,7 +215,10 @@ function argsToSellerStruct(args: {
   admin: string;
   treasury: string;
   metadataUri: string;
-}): Partial<SellerStruct> {
+}): Pick<
+  SellerStruct,
+  "id" | "assistant" | "admin" | "clerk" | "treasury" | "active" | "metadataUri"
+> {
   return {
     // NOTE: It doesn't matter which values we set for `id` and `active` here
     // as they will be overridden by the contract. But to conform to the struct
@@ -272,4 +285,51 @@ export function decodeCalculateCollectionAddress(result: string): {
       result
     );
   return { collectionAddress, isAvailable };
+}
+
+export function encodeAddRoyaltyRecipients(args: {
+  sellerId: BigNumberish;
+  royaltyRecipients: RoyaltyRecipientInfo[];
+}) {
+  return bosonAccountHandlerIface.encodeFunctionData("addRoyaltyRecipients", [
+    args.sellerId,
+    args.royaltyRecipients
+  ]);
+}
+
+export function encodeUpdateRoyaltyRecipients(args: {
+  sellerId: BigNumberish;
+  royaltyRecipientIds: BigNumberish[];
+  royaltyRecipients: RoyaltyRecipientInfo[];
+}) {
+  return bosonAccountHandlerIface.encodeFunctionData(
+    "updateRoyaltyRecipients",
+    [args.sellerId, args.royaltyRecipientIds, args.royaltyRecipients]
+  );
+}
+
+export function encodeRemoveRoyaltyRecipients(args: {
+  sellerId: BigNumberish;
+  royaltyRecipientIds: BigNumberish[];
+}) {
+  return bosonAccountHandlerIface.encodeFunctionData(
+    "removeRoyaltyRecipients",
+    [args.sellerId, args.royaltyRecipientIds]
+  );
+}
+
+export function encodeGetRoyaltyRecipients(args: { sellerId: BigNumberish }) {
+  return bosonAccountHandlerIface.encodeFunctionData("getRoyaltyRecipients", [
+    args.sellerId
+  ]);
+}
+
+export function decodeGetRoyaltyRecipients(
+  result: string
+): RoyaltyRecipientInfo[] {
+  const [royaltyRecipients] = bosonAccountHandlerIface.decodeFunctionResult(
+    "getRoyaltyRecipients",
+    result
+  );
+  return royaltyRecipients;
 }

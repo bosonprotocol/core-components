@@ -27,6 +27,9 @@ export interface ERC1155Interface extends utils.Interface {
     "safeTransferFrom(address,address,uint256,uint256,bytes)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
+    "uri(uint256)": FunctionFragment;
+    "name()": FunctionFragment;
+    "symbol()": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -57,6 +60,9 @@ export interface ERC1155Interface extends utils.Interface {
     functionFragment: "supportsInterface",
     values: [BytesLike]
   ): string;
+  encodeFunctionData(functionFragment: "uri", values: [BigNumberish]): string;
+  encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
@@ -83,6 +89,9 @@ export interface ERC1155Interface extends utils.Interface {
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "uri", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
 
   events: {
     "ApprovalForAll(address,address,bool)": EventFragment;
@@ -202,6 +211,12 @@ export interface ERC1155 extends BaseContract {
       _interfaceID: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    uri(id: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
+
+    name(overrides?: CallOverrides): Promise<[string]>;
+
+    symbol(overrides?: CallOverrides): Promise<[string]>;
   };
 
   balanceOf(
@@ -251,6 +266,12 @@ export interface ERC1155 extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  uri(id: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+  name(overrides?: CallOverrides): Promise<string>;
+
+  symbol(overrides?: CallOverrides): Promise<string>;
+
   callStatic: {
     balanceOf(
       _owner: string,
@@ -298,6 +319,12 @@ export interface ERC1155 extends BaseContract {
       _interfaceID: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    uri(id: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+    name(overrides?: CallOverrides): Promise<string>;
+
+    symbol(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -390,6 +417,12 @@ export interface ERC1155 extends BaseContract {
       _interfaceID: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    uri(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    name(overrides?: CallOverrides): Promise<BigNumber>;
+
+    symbol(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -439,5 +472,14 @@ export interface ERC1155 extends BaseContract {
       _interfaceID: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    uri(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

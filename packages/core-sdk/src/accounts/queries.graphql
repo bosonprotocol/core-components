@@ -380,7 +380,20 @@ fragment BaseSellerFields on Seller {
   voucherCloneAddress
   active
   contractURI
-  royaltyPercentage
+  royaltyRecipients {
+    id
+    recipient {
+      id
+      wallet
+      royalties {
+        bps
+        offer {
+          id
+        }
+      }
+    }
+    minRoyaltyPercentage
+  }
   metadataUri
   metadata {
     id

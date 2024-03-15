@@ -3,6 +3,7 @@ import { BigNumberish } from "@ethersproject/bignumber";
 import { handler } from ".";
 import { offers, accounts } from "..";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
+import { PremintParametersStruct } from "@bosonprotocol/common/src";
 
 export class OrchestrationMixin extends BaseCoreSDK {
   /**
@@ -66,7 +67,7 @@ export class OrchestrationMixin extends BaseCoreSDK {
    */
   public async createPremintedOfferAddToGroup(
     offerToCreate: offers.CreateOfferArgs,
-    reservedRangeLength: BigNumberish,
+    premintParameters: PremintParametersStruct,
     groupId: BigNumberish,
     overrides: Partial<{
       contractAddress: string;
@@ -74,7 +75,7 @@ export class OrchestrationMixin extends BaseCoreSDK {
   ): Promise<TransactionResponse> {
     return handler.createPremintedOfferAddToGroup({
       offerToCreate,
-      reservedRangeLength,
+      premintParameters,
       groupId,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
       web3Lib: this._web3Lib,
@@ -95,7 +96,7 @@ export class OrchestrationMixin extends BaseCoreSDK {
   public async createSellerAndPremintedOffer(
     sellerToCreate: accounts.CreateSellerArgs,
     offerToCreate: offers.CreateOfferArgs,
-    reservedRangeLength: BigNumberish,
+    premintParameters: PremintParametersStruct,
     overrides: Partial<{
       contractAddress: string;
     }> = {}
@@ -103,7 +104,7 @@ export class OrchestrationMixin extends BaseCoreSDK {
     return handler.createSellerAndPremintedOffer({
       sellerToCreate,
       offerToCreate,
-      reservedRangeLength,
+      premintParameters,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
       web3Lib: this._web3Lib,
       metadataStorage: this._metadataStorage,
@@ -121,7 +122,7 @@ export class OrchestrationMixin extends BaseCoreSDK {
    */
   public async createPremintedOfferWithCondition(
     offerToCreate: offers.CreateOfferArgs,
-    reservedRangeLength: BigNumberish,
+    premintParameters: PremintParametersStruct,
     condition: ConditionStruct,
     overrides: Partial<{
       contractAddress: string;
@@ -129,7 +130,7 @@ export class OrchestrationMixin extends BaseCoreSDK {
   ): Promise<TransactionResponse> {
     return handler.createPremintedOfferWithCondition({
       offerToCreate,
-      reservedRangeLength,
+      premintParameters,
       condition,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
       web3Lib: this._web3Lib,
@@ -151,7 +152,7 @@ export class OrchestrationMixin extends BaseCoreSDK {
   public async createSellerAndPremintedOfferWithCondition(
     sellerToCreate: accounts.CreateSellerArgs,
     offerToCreate: offers.CreateOfferArgs,
-    reservedRangeLength: BigNumberish,
+    premintParameters: PremintParametersStruct,
     condition: ConditionStruct,
     overrides: Partial<{
       contractAddress: string;
@@ -160,7 +161,7 @@ export class OrchestrationMixin extends BaseCoreSDK {
     return handler.createSellerAndPremintedOfferWithCondition({
       sellerToCreate,
       offerToCreate,
-      reservedRangeLength,
+      premintParameters,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
       web3Lib: this._web3Lib,
       metadataStorage: this._metadataStorage,

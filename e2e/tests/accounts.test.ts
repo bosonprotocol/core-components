@@ -566,12 +566,12 @@ describe("CoreSDK - accounts", () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
         seedWallet3
       );
-      const before = await coreSDK.getSellers();
+      const before = await coreSDK.getSellers({ sellersFirst: 1000 });
       const seller = await createSeller(coreSDK, fundedWallet.address);
       expect(seller).toBeTruthy();
       let exist = before.some((s) => s.id === seller.id);
       expect(exist).toBe(false);
-      const after = await coreSDK.getSellers();
+      const after = await coreSDK.getSellers({ sellersFirst: 1000 });
       expect(after.length).toBeGreaterThan(before.length);
       exist = after.some((s) => s.id === seller.id);
       expect(exist).toBe(true);

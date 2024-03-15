@@ -87,6 +87,16 @@ export declare namespace BosonTypes {
     feeAmount: BigNumber;
   };
 
+  export type RoyaltyRecipientInfoStruct = {
+    wallet: string;
+    minRoyaltyPercentage: BigNumberish;
+  };
+
+  export type RoyaltyRecipientInfoStructOutput = [string, BigNumber] & {
+    wallet: string;
+    minRoyaltyPercentage: BigNumber;
+  };
+
   export type SellerStruct = {
     id: BigNumberish;
     assistant: string;
@@ -137,6 +147,13 @@ export declare namespace BosonTypes {
     collectionSalt: string;
   };
 
+  export type RoyaltyRecipientStruct = { id: BigNumberish; wallet: string };
+
+  export type RoyaltyRecipientStructOutput = [BigNumber, string] & {
+    id: BigNumber;
+    wallet: string;
+  };
+
   export type CollectionStruct = {
     collectionAddress: string;
     externalId: string;
@@ -152,6 +169,7 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
   contractName: "IBosonAccountHandler";
   functions: {
     "addFeesToDisputeResolver(uint256,(address,string,uint256)[])": FunctionFragment;
+    "addRoyaltyRecipients(uint256,(address,uint256)[])": FunctionFragment;
     "addSellersToAllowList(uint256,uint256[])": FunctionFragment;
     "areSellersAllowed(uint256,uint256[])": FunctionFragment;
     "calculateCollectionAddress(uint256,bytes32)": FunctionFragment;
@@ -165,18 +183,23 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     "getDisputeResolver(uint256)": FunctionFragment;
     "getDisputeResolverByAddress(address)": FunctionFragment;
     "getNextAccountId()": FunctionFragment;
+    "getRoyaltyRecipients(uint256)": FunctionFragment;
     "getSeller(uint256)": FunctionFragment;
     "getSellerByAddress(address)": FunctionFragment;
     "getSellerByAuthToken((uint256,uint8))": FunctionFragment;
+    "getSellersCollectionCount(uint256)": FunctionFragment;
     "getSellersCollections(uint256)": FunctionFragment;
+    "getSellersCollectionsPaginated(uint256,uint256,uint256)": FunctionFragment;
     "isSellerSaltAvailable(address,bytes32)": FunctionFragment;
     "optInToDisputeResolverUpdate(uint256,uint8[])": FunctionFragment;
     "optInToSellerUpdate(uint256,uint8[])": FunctionFragment;
     "removeFeesFromDisputeResolver(uint256,address[])": FunctionFragment;
+    "removeRoyaltyRecipients(uint256,uint256[])": FunctionFragment;
     "removeSellersFromAllowList(uint256,uint256[])": FunctionFragment;
     "updateAgent((uint256,uint256,address,bool))": FunctionFragment;
     "updateBuyer((uint256,address,bool))": FunctionFragment;
     "updateDisputeResolver((uint256,uint256,address,address,address,address,string,bool))": FunctionFragment;
+    "updateRoyaltyRecipients(uint256,uint256[],(address,uint256)[])": FunctionFragment;
     "updateSeller((uint256,address,address,address,address,bool,string),(uint256,uint8))": FunctionFragment;
     "updateSellerSalt(uint256,bytes32)": FunctionFragment;
   };
@@ -184,6 +207,10 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "addFeesToDisputeResolver",
     values: [BigNumberish, BosonTypes.DisputeResolverFeeStruct[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "addRoyaltyRecipients",
+    values: [BigNumberish, BosonTypes.RoyaltyRecipientInfoStruct[]]
   ): string;
   encodeFunctionData(
     functionFragment: "addSellersToAllowList",
@@ -246,6 +273,10 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "getRoyaltyRecipients",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getSeller",
     values: [BigNumberish]
   ): string;
@@ -258,8 +289,16 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     values: [BosonTypes.AuthTokenStruct]
   ): string;
   encodeFunctionData(
+    functionFragment: "getSellersCollectionCount",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getSellersCollections",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getSellersCollectionsPaginated",
+    values: [BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "isSellerSaltAvailable",
@@ -278,6 +317,10 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     values: [BigNumberish, string[]]
   ): string;
   encodeFunctionData(
+    functionFragment: "removeRoyaltyRecipients",
+    values: [BigNumberish, BigNumberish[]]
+  ): string;
+  encodeFunctionData(
     functionFragment: "removeSellersFromAllowList",
     values: [BigNumberish, BigNumberish[]]
   ): string;
@@ -294,6 +337,14 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     values: [BosonTypes.DisputeResolverStruct]
   ): string;
   encodeFunctionData(
+    functionFragment: "updateRoyaltyRecipients",
+    values: [
+      BigNumberish,
+      BigNumberish[],
+      BosonTypes.RoyaltyRecipientInfoStruct[]
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "updateSeller",
     values: [BosonTypes.SellerStruct, BosonTypes.AuthTokenStruct]
   ): string;
@@ -304,6 +355,10 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "addFeesToDisputeResolver",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "addRoyaltyRecipients",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -352,6 +407,10 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     functionFragment: "getNextAccountId",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getRoyaltyRecipients",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getSeller", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getSellerByAddress",
@@ -362,7 +421,15 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getSellersCollectionCount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getSellersCollections",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getSellersCollectionsPaginated",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -382,6 +449,10 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "removeRoyaltyRecipients",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "removeSellersFromAllowList",
     data: BytesLike
   ): Result;
@@ -395,6 +466,10 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "updateDisputeResolver",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateRoyaltyRecipients",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -419,6 +494,7 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     "DisputeResolverFeesRemoved(uint256,address[],address)": EventFragment;
     "DisputeResolverUpdateApplied(uint256,tuple,tuple,address)": EventFragment;
     "DisputeResolverUpdatePending(uint256,tuple,address)": EventFragment;
+    "RoyaltyRecipientsChanged(uint256,tuple[],address)": EventFragment;
     "SellerCreated(uint256,tuple,address,tuple,address)": EventFragment;
     "SellerUpdateApplied(uint256,tuple,tuple,tuple,tuple,address)": EventFragment;
     "SellerUpdatePending(uint256,tuple,tuple,address)": EventFragment;
@@ -440,6 +516,7 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
   getEvent(
     nameOrSignatureOrTopic: "DisputeResolverUpdatePending"
   ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RoyaltyRecipientsChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SellerCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SellerUpdateApplied"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SellerUpdatePending"): EventFragment;
@@ -601,6 +678,18 @@ export type DisputeResolverUpdatePendingEvent = TypedEvent<
 export type DisputeResolverUpdatePendingEventFilter =
   TypedEventFilter<DisputeResolverUpdatePendingEvent>;
 
+export type RoyaltyRecipientsChangedEvent = TypedEvent<
+  [BigNumber, BosonTypes.RoyaltyRecipientInfoStructOutput[], string],
+  {
+    sellerId: BigNumber;
+    royaltyRecipients: BosonTypes.RoyaltyRecipientInfoStructOutput[];
+    executedBy: string;
+  }
+>;
+
+export type RoyaltyRecipientsChangedEventFilter =
+  TypedEventFilter<RoyaltyRecipientsChangedEvent>;
+
 export type SellerCreatedEvent = TypedEvent<
   [
     BigNumber,
@@ -691,6 +780,12 @@ export interface IBosonAccountHandler extends BaseContract {
     addFeesToDisputeResolver(
       _disputeResolverId: BigNumberish,
       _disputeResolverFees: BosonTypes.DisputeResolverFeeStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    addRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      _royaltyRecipients: BosonTypes.RoyaltyRecipientInfoStruct[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -802,6 +897,15 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { nextAccountId: BigNumber }>;
 
+    getRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [BosonTypes.RoyaltyRecipientStructOutput[]] & {
+        royaltyRecipients: BosonTypes.RoyaltyRecipientStructOutput[];
+      }
+    >;
+
     getSeller(
       _sellerId: BigNumberish,
       overrides?: CallOverrides
@@ -847,8 +951,25 @@ export interface IBosonAccountHandler extends BaseContract {
       }
     >;
 
+    getSellersCollectionCount(
+      _sellerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { collectionCount: BigNumber }>;
+
     getSellersCollections(
       _sellerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, BosonTypes.CollectionStructOutput[]] & {
+        defaultVoucherAddress: string;
+        additionalCollections: BosonTypes.CollectionStructOutput[];
+      }
+    >;
+
+    getSellersCollectionsPaginated(
+      _sellerId: BigNumberish,
+      _limit: BigNumberish,
+      _offset: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
       [string, BosonTypes.CollectionStructOutput[]] & {
@@ -881,6 +1002,12 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    removeRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      _royaltyRecipientIds: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     removeSellersFromAllowList(
       _disputeResolverId: BigNumberish,
       _sellerAllowList: BigNumberish[],
@@ -902,6 +1029,13 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    updateRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      _royaltyRecipientIds: BigNumberish[],
+      _royaltyRecipients: BosonTypes.RoyaltyRecipientInfoStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     updateSeller(
       _seller: BosonTypes.SellerStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -918,6 +1052,12 @@ export interface IBosonAccountHandler extends BaseContract {
   addFeesToDisputeResolver(
     _disputeResolverId: BigNumberish,
     _disputeResolverFees: BosonTypes.DisputeResolverFeeStruct[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  addRoyaltyRecipients(
+    _sellerId: BigNumberish,
+    _royaltyRecipients: BosonTypes.RoyaltyRecipientInfoStruct[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1027,6 +1167,11 @@ export interface IBosonAccountHandler extends BaseContract {
 
   getNextAccountId(overrides?: CallOverrides): Promise<BigNumber>;
 
+  getRoyaltyRecipients(
+    _sellerId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BosonTypes.RoyaltyRecipientStructOutput[]>;
+
   getSeller(
     _sellerId: BigNumberish,
     overrides?: CallOverrides
@@ -1072,8 +1217,25 @@ export interface IBosonAccountHandler extends BaseContract {
     }
   >;
 
+  getSellersCollectionCount(
+    _sellerId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   getSellersCollections(
     _sellerId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, BosonTypes.CollectionStructOutput[]] & {
+      defaultVoucherAddress: string;
+      additionalCollections: BosonTypes.CollectionStructOutput[];
+    }
+  >;
+
+  getSellersCollectionsPaginated(
+    _sellerId: BigNumberish,
+    _limit: BigNumberish,
+    _offset: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
     [string, BosonTypes.CollectionStructOutput[]] & {
@@ -1106,6 +1268,12 @@ export interface IBosonAccountHandler extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  removeRoyaltyRecipients(
+    _sellerId: BigNumberish,
+    _royaltyRecipientIds: BigNumberish[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   removeSellersFromAllowList(
     _disputeResolverId: BigNumberish,
     _sellerAllowList: BigNumberish[],
@@ -1127,6 +1295,13 @@ export interface IBosonAccountHandler extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  updateRoyaltyRecipients(
+    _sellerId: BigNumberish,
+    _royaltyRecipientIds: BigNumberish[],
+    _royaltyRecipients: BosonTypes.RoyaltyRecipientInfoStruct[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   updateSeller(
     _seller: BosonTypes.SellerStruct,
     _authToken: BosonTypes.AuthTokenStruct,
@@ -1143,6 +1318,12 @@ export interface IBosonAccountHandler extends BaseContract {
     addFeesToDisputeResolver(
       _disputeResolverId: BigNumberish,
       _disputeResolverFees: BosonTypes.DisputeResolverFeeStruct[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    addRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      _royaltyRecipients: BosonTypes.RoyaltyRecipientInfoStruct[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1252,6 +1433,11 @@ export interface IBosonAccountHandler extends BaseContract {
 
     getNextAccountId(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BosonTypes.RoyaltyRecipientStructOutput[]>;
+
     getSeller(
       _sellerId: BigNumberish,
       overrides?: CallOverrides
@@ -1297,8 +1483,25 @@ export interface IBosonAccountHandler extends BaseContract {
       }
     >;
 
+    getSellersCollectionCount(
+      _sellerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getSellersCollections(
       _sellerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, BosonTypes.CollectionStructOutput[]] & {
+        defaultVoucherAddress: string;
+        additionalCollections: BosonTypes.CollectionStructOutput[];
+      }
+    >;
+
+    getSellersCollectionsPaginated(
+      _sellerId: BigNumberish,
+      _limit: BigNumberish,
+      _offset: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
       [string, BosonTypes.CollectionStructOutput[]] & {
@@ -1331,6 +1534,12 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    removeRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      _royaltyRecipientIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     removeSellersFromAllowList(
       _disputeResolverId: BigNumberish,
       _sellerAllowList: BigNumberish[],
@@ -1349,6 +1558,13 @@ export interface IBosonAccountHandler extends BaseContract {
 
     updateDisputeResolver(
       _disputeResolver: BosonTypes.DisputeResolverStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      _royaltyRecipientIds: BigNumberish[],
+      _royaltyRecipients: BosonTypes.RoyaltyRecipientInfoStruct[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1508,6 +1724,17 @@ export interface IBosonAccountHandler extends BaseContract {
       executedBy?: string | null
     ): DisputeResolverUpdatePendingEventFilter;
 
+    "RoyaltyRecipientsChanged(uint256,tuple[],address)"(
+      sellerId?: BigNumberish | null,
+      royaltyRecipients?: null,
+      executedBy?: string | null
+    ): RoyaltyRecipientsChangedEventFilter;
+    RoyaltyRecipientsChanged(
+      sellerId?: BigNumberish | null,
+      royaltyRecipients?: null,
+      executedBy?: string | null
+    ): RoyaltyRecipientsChangedEventFilter;
+
     "SellerCreated(uint256,tuple,address,tuple,address)"(
       sellerId?: BigNumberish | null,
       seller?: null,
@@ -1558,6 +1785,12 @@ export interface IBosonAccountHandler extends BaseContract {
     addFeesToDisputeResolver(
       _disputeResolverId: BigNumberish,
       _disputeResolverFees: BosonTypes.DisputeResolverFeeStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    addRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      _royaltyRecipients: BosonTypes.RoyaltyRecipientInfoStruct[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1631,6 +1864,11 @@ export interface IBosonAccountHandler extends BaseContract {
 
     getNextAccountId(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getSeller(
       _sellerId: BigNumberish,
       overrides?: CallOverrides
@@ -1646,8 +1884,20 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getSellersCollectionCount(
+      _sellerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getSellersCollections(
       _sellerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getSellersCollectionsPaginated(
+      _sellerId: BigNumberish,
+      _limit: BigNumberish,
+      _offset: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1675,6 +1925,12 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    removeRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      _royaltyRecipientIds: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     removeSellersFromAllowList(
       _disputeResolverId: BigNumberish,
       _sellerAllowList: BigNumberish[],
@@ -1696,6 +1952,13 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    updateRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      _royaltyRecipientIds: BigNumberish[],
+      _royaltyRecipients: BosonTypes.RoyaltyRecipientInfoStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     updateSeller(
       _seller: BosonTypes.SellerStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -1713,6 +1976,12 @@ export interface IBosonAccountHandler extends BaseContract {
     addFeesToDisputeResolver(
       _disputeResolverId: BigNumberish,
       _disputeResolverFees: BosonTypes.DisputeResolverFeeStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    addRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      _royaltyRecipients: BosonTypes.RoyaltyRecipientInfoStruct[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1786,6 +2055,11 @@ export interface IBosonAccountHandler extends BaseContract {
 
     getNextAccountId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    getRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getSeller(
       _sellerId: BigNumberish,
       overrides?: CallOverrides
@@ -1801,8 +2075,20 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getSellersCollectionCount(
+      _sellerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getSellersCollections(
       _sellerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getSellersCollectionsPaginated(
+      _sellerId: BigNumberish,
+      _limit: BigNumberish,
+      _offset: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1830,6 +2116,12 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    removeRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      _royaltyRecipientIds: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     removeSellersFromAllowList(
       _disputeResolverId: BigNumberish,
       _sellerAllowList: BigNumberish[],
@@ -1848,6 +2140,13 @@ export interface IBosonAccountHandler extends BaseContract {
 
     updateDisputeResolver(
       _disputeResolver: BosonTypes.DisputeResolverStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateRoyaltyRecipients(
+      _sellerId: BigNumberish,
+      _royaltyRecipientIds: BigNumberish[],
+      _royaltyRecipients: BosonTypes.RoyaltyRecipientInfoStruct[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

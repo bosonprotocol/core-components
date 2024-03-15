@@ -22,7 +22,12 @@ import {
   encodeIsSellerSaltAvailable,
   decodeIsSellerSaltAvailable,
   encodeCalculateCollectionAddress,
-  decodeCalculateCollectionAddress
+  decodeCalculateCollectionAddress,
+  encodeAddRoyaltyRecipients,
+  encodeUpdateRoyaltyRecipients,
+  encodeGetRoyaltyRecipients,
+  decodeGetRoyaltyRecipients,
+  encodeRemoveRoyaltyRecipients
 } from "./interface";
 import { getDisputeResolverById } from "./subgraph";
 import {
@@ -33,7 +38,8 @@ import {
   DisputeResolverUpdates,
   OptInToSellerUpdateArgs,
   OptInToDisputeResolverUpdateArgs,
-  CreateCollectionArgs
+  CreateCollectionArgs,
+  RoyaltyRecipientInfo
 } from "./types";
 import { storeMetadataOnTheGraph } from "../offers/storage";
 
@@ -290,4 +296,53 @@ export async function calculateCollectionAddress(args: {
     data: encodeCalculateCollectionAddress(args.sellerId, collectionSalt)
   });
   return decodeCalculateCollectionAddress(result);
+}
+
+export async function addRoyaltyRecipients(args: {
+  sellerId: BigNumberish;
+  royaltyRecipients: RoyaltyRecipientInfo[];
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeAddRoyaltyRecipients(args)
+  });
+}
+
+export async function updateRoyaltyRecipients(args: {
+  sellerId: BigNumberish;
+  royaltyRecipientIds: BigNumberish[];
+  royaltyRecipients: RoyaltyRecipientInfo[];
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeUpdateRoyaltyRecipients(args)
+  });
+}
+
+export async function removeRoyaltyRecipients(args: {
+  sellerId: BigNumberish;
+  royaltyRecipientIds: BigNumberish[];
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeRemoveRoyaltyRecipients(args)
+  });
+}
+
+export async function getRoyaltyRecipients(args: {
+  sellerId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<RoyaltyRecipientInfo[]> {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: encodeGetRoyaltyRecipients(args)
+  });
+  return decodeGetRoyaltyRecipients(result);
 }
