@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography } from "../../../../ui/Typography";
 import ReactComponent from "../../../../../assets/redeemeum.svg";
+import { SvgImage } from "../../../../ui/SvgImage";
 
 export const DetailDisputeResolver = {
   name: "Dispute resolver",
@@ -16,8 +17,6 @@ export const DetailDisputeResolver = {
     </>
   ),
   value: () => {
-    /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
-    /* @ts-ignore  */
-    return <ReactComponent width="100" height="18" />;
+    return <SvgImage src={ReactComponent} width="100" height="18" />;
   }
 };

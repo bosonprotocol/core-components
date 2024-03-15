@@ -5,6 +5,7 @@ import React from "react";
 import styled from "styled-components";
 import { MissingImageLogo } from "./AssetLogo";
 import { useAssetLogoSource } from "./useAssetLogoSource";
+import { SvgImage } from "../ui/SvgImage";
 
 const UnknownContract = styled(UnknownStatus)``;
 
@@ -168,7 +169,5 @@ function getLogo({
       />
     );
   }
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  return <UnknownContract width={size} height={size} />;
+  return <SvgImage src={UnknownContract} width={size} height={size} />;
 }

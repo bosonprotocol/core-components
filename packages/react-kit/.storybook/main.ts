@@ -81,7 +81,6 @@ const config: StorybookConfig = {
     return config;
   },
   env: (config) => {
-    console.log("main storybook", config, process.env);
     return {
       ...config
     };
