@@ -22,6 +22,7 @@ import { PhygitalProduct } from "./PhygitalProduct";
 import { TokenGatedItem } from "./TokenGatedItem";
 import { DetailViewProps } from "./types";
 import { useGetOfferDetailData } from "./useGetOfferDetailData";
+import { SvgImage } from "../../../../ui/SvgImage";
 
 const colors = theme.colors.light;
 
@@ -198,7 +199,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
           <>
             <Break />
             <Grid justifyContent="center" alignItems="center">
-              <BlackLogo />
+              <SvgImage src={BlackLogo} />
             </Grid>
           </>
         )}

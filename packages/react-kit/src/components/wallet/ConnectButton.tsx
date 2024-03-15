@@ -14,6 +14,7 @@ import { useIsMagicLoggedIn } from "../../hooks";
 import { useAccount, useChainId } from "../../hooks/connection/connection";
 import { useDisconnect } from "../../hooks/connection/useDisconnect";
 import { MagicLoginButton } from "../magicLink/Login";
+import { SvgImage } from "../ui/SvgImage";
 
 const InnerContext = createContext<{
   isMagicLoggedIn: boolean | undefined;
@@ -44,7 +45,9 @@ const InnerProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const StyledMetamaskLogo = styled(MetamaskLogo).attrs({ id: "metamask-logo" })`
+const StyledMetamaskLogo = styled(SvgImage).attrs({
+  id: "metamask-logo"
+})`
   height: 15px;
   width: 16px;
   &#metamask-logo path {
@@ -139,7 +142,9 @@ export default function ConnectButton({
                             }}
                           >
                             Connect Wallet
-                            {!isLteXS && <StyledMetamaskLogo />}
+                            {!isLteXS && (
+                              <StyledMetamaskLogo src={MetamaskLogo} />
+                            )}
                           </Button>
                         </>
                       );
