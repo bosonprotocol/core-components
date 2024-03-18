@@ -25,8 +25,7 @@ import { useProvider } from "../../../hooks/connection/connection";
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   ConvertionRateProviderProps &
-  Omit<WalletConnectionProviderProps, "children" | "envName"> &
-  Pick<UpdatersProps, "provider"> & {
+  Omit<WalletConnectionProviderProps, "children" | "envName"> & {
     children: ReactNode;
     withReduxProvider: boolean;
   };
@@ -62,7 +61,6 @@ export const CommitWidgetReduxUpdaters = ({
 export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> = ({
   children,
   withReduxProvider,
-  provider,
   ...props
 }) => {
   const isWindowVisible = useIsWindowVisible();
@@ -82,15 +80,15 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> = ({
   const WithUpdaters = useCallback(
     ({ children: updatersChildren }: { children: ReactNode }) => {
       return withReduxProvider ? (
-        <Updaters isWindowVisible={isWindowVisible} provider={provider}>
+        <UpdatersWrapper isWindowVisible={isWindowVisible}>
           {updatersChildren}
-        </Updaters>
+        </UpdatersWrapper>
       ) : (
         <>{updatersChildren}</>
       );
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },
-    [withReduxProvider, isWindowVisible, provider]
+    [withReduxProvider, isWindowVisible]
   );
   return (
     <WithReduxProvider>
@@ -120,3 +118,18 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> = ({
     </WithReduxProvider>
   );
 };
+
+function UpdatersWrapper({
+  children,
+  isWindowVisible
+}: {
+  children: ReactNode;
+  isWindowVisible: boolean;
+}) {
+  const provider = useProvider();
+  return (
+    <Updaters isWindowVisible={isWindowVisible} provider={provider}>
+      {children}
+    </Updaters>
+  );
+}

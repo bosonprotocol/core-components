@@ -47,10 +47,10 @@ export function CommitWidget(props: CommitWidgetProps) {
     // @ts-ignore
     [props.lookAndFeel, props.modalMargin]
   );
-  const provider = useProvider();
+
   return (
     <Container>
-      <CommitWidgetProviders {...props} withReduxProvider provider={provider}>
+      <CommitWidgetProviders {...props} withReduxProvider>
         <GlobalStyle />
         <CommitModalWithOffer {...props} hideModal={props.closeWidgetClick} />
       </CommitWidgetProviders>
