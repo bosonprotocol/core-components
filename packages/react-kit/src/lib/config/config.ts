@@ -9,12 +9,11 @@ if (!magicLinkKey) {
   );
 }
 const infuraKey =
-  process.env.STORYBOOK_INFURA_PROJECT_SECRET ||
-  process.env.INFURA_PROJECT_SECRET ||
-  process.env.REACT_APP_INFURA_IPFS_PROJECT_SECRET;
+  process.env.STORYBOOK_REACT_APP_INFURA_KEY ||
+  process.env.REACT_APP_INFURA_KEY;
 if (!infuraKey) {
   throw new Error(
-    "STORYBOOK_INFURA_PROJECT_SECRET/INFURA_PROJECT_SECRET/REACT_APP_INFURA_IPFS_PROJECT_SECRET is not defined"
+    "STORYBOOK_REACT_APP_INFURA_KEY/REACT_APP_INFURA_KEY is not defined"
   );
 }
 
