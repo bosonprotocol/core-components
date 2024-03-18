@@ -32,10 +32,10 @@ export type ConfigContextProps = {
   withExternalConnectionProps?: boolean;
 };
 
-export const Context = createContext<ConfigContextProps | null>(null);
+export const ConfigContext = createContext<ConfigContextProps | null>(null);
 
 export const useConfigContext = () => {
-  const contextValue = useContext(Context);
+  const contextValue = useContext(ConfigContext);
   if (!contextValue) {
     throw new Error(
       "You need to use ConfigProvider before using useConfigContext"

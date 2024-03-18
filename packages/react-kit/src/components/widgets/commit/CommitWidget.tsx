@@ -8,6 +8,7 @@ import {
 } from "./CommitWidgetProviders";
 import GlobalStyle from "../../styles/GlobalStyle";
 import { CSSProperties } from "styled-components";
+import { useProvider } from "../../../hooks/connection/connection";
 type CommitProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
   trigger?: ComponentType<{ onClick: () => unknown }> | undefined;
@@ -31,7 +32,8 @@ type CommitProps = {
     lookAndFeel: "regular" | "modal";
     modalMargin?: CSSProperties["margin"];
   };
-export type CommitWidgetProps = CommitProps & CommitWidgetProvidersProps;
+export type CommitWidgetProps = CommitProps &
+  Omit<CommitWidgetProvidersProps, "withReduxProvider" | "provider">;
 export function CommitWidget(props: CommitWidgetProps) {
   const Container = useCallback(
     ({ children }: { children: ReactNode }) => {
@@ -45,9 +47,10 @@ export function CommitWidget(props: CommitWidgetProps) {
     // @ts-ignore
     [props.lookAndFeel, props.modalMargin]
   );
+
   return (
     <Container>
-      <CommitWidgetProviders {...props}>
+      <CommitWidgetProviders {...props} withReduxProvider>
         <GlobalStyle />
         <CommitModalWithOffer {...props} hideModal={props.closeWidgetClick} />
       </CommitWidgetProviders>

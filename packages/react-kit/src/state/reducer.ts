@@ -16,10 +16,10 @@ const appReducer = combineReducers({
 export type AppState = ReturnType<typeof appReducer>;
 
 const persistConfig: PersistConfig<AppState> = {
-  key: "interface",
+  key: "CC",
   version: 0, // see migrations.ts for more details about this version
   storage: localForage.createInstance({
-    name: "redux"
+    name: "redux-cc"
   }),
   migrate: customCreateMigrate(migrations, { debug: false }),
   whitelist: Object.keys(persistedReducers),

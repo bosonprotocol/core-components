@@ -1,10 +1,11 @@
 import React, { ReactNode } from "react";
-import { ListsUpdater } from "./lists/updater";
+import { ListsUpdater, ListsUpdaterProps } from "./lists/updater";
 
-export const Updaters = ({ children }: { children: ReactNode }) => {
+export type UpdatersProps = ListsUpdaterProps & { children?: ReactNode };
+export const Updaters = ({ children, ...rest }: UpdatersProps) => {
   return (
     <>
-      <ListsUpdater />
+      <ListsUpdater {...rest} />
       {children}
     </>
   );

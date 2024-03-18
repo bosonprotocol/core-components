@@ -8,12 +8,15 @@ import {
   CommitDetailViewWithProviderProps
 } from "./CommitDetailViewWithProvider";
 import { ResetStylesForNonWidgets } from "../../../../styles/ResetStylesForNonWidgets";
+export {
+  CommitWidgetReduxProvider,
+  CommitWidgetReduxUpdaters
+} from "../../../../widgets/commit/CommitWidgetProviders";
 
 export type ExternalCommitDetailViewProps =
   CommitDetailViewWithProviderProps & {
     providerProps: Omit<CommitWidgetProvidersProps, "children">;
   };
-
 export const ExternalCommitDetailView: React.FC<
   ExternalCommitDetailViewProps
 > = (props) => {

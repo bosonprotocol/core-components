@@ -10,15 +10,19 @@ import { useAllLists } from "../../state/lists/hooks";
 
 import { acceptListUpdate } from "./actions";
 import { shouldAcceptVersionUpdate } from "./utils";
-import { useProvider } from "../../hooks/connection/connection";
-import useIsWindowVisible from "../../hooks/uniswap/useIsWindowVisible";
 import { useInterval } from "../../hooks/uniswap/useInterval";
 import { useFetchListCallback } from "../../hooks/uniswap/useFetchListCallback";
+import { providers } from "ethers";
 
-export function ListsUpdater(): null {
-  const provider = useProvider();
+export type ListsUpdaterProps = {
+  isWindowVisible: boolean;
+  provider: providers.FallbackProvider | providers.JsonRpcProvider;
+};
+export function ListsUpdater({
+  isWindowVisible,
+  provider
+}: ListsUpdaterProps): null {
   const dispatch = useAppDispatch();
-  const isWindowVisible = useIsWindowVisible();
 
   // get all loaded lists, and the active urls
   const lists = useAllLists();
