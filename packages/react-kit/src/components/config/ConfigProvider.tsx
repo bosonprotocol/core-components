@@ -1,6 +1,6 @@
 import React, { ReactNode, useMemo } from "react";
 import { isTruthy } from "../../types/helpers";
-import { Context, ConfigContextProps } from "./ConfigContext";
+import { ConfigContext, ConfigContextProps } from "./ConfigContext";
 import { useEnvContext } from "../environment/EnvironmentContext";
 import { getEnvConfigById, getEnvConfigs } from "@bosonprotocol/core-sdk";
 import {
@@ -60,7 +60,7 @@ function InnerConfigProvider({ children, ...rest }: ConfigProviderProps) {
     (config) => config.chainId as number
   );
   return (
-    <Context.Provider
+    <ConfigContext.Provider
       value={{
         ...rest,
         config: envConfig,
@@ -86,6 +86,6 @@ function InnerConfigProvider({ children, ...rest }: ConfigProviderProps) {
       }}
     >
       {children}
-    </Context.Provider>
+    </ConfigContext.Provider>
   );
 }
