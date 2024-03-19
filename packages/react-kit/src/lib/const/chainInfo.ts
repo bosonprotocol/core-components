@@ -71,6 +71,15 @@ const CHAIN_INFO: ChainInfoMap = {
     logoUrl: ethereumLogoUrl,
     nativeCurrency: { name: "Görli Ether", symbol: "görETH", decimals: 18 }
   },
+  [ChainId.SEPOLIA]: {
+    networkType: NetworkType.L1,
+    docs: "https://docs.uniswap.org/",
+    explorer: "https://sepolia.etherscan.io/",
+    infoLink: "https://info.uniswap.org/#/",
+    label: "Sepolia",
+    logoUrl: ethereumLogoUrl,
+    nativeCurrency: { name: "Sepolia Ether", symbol: "sETH", decimals: 18 }
+  },
   [ChainId.POLYGON]: {
     networkType: NetworkType.L1,
     blockWaitMsBeforeWarning: ms(`10m`),

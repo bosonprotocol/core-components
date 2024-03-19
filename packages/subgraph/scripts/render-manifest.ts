@@ -39,6 +39,10 @@ const envNameToConfig: Record<
     "testing-5-0": {
       network: "goerli",
       startBlock: 9757131 // goerli, block number when protocol was deployed https://goerli.etherscan.io/tx/0x3c51e116a6a1849936e6bd45fcee78017259ce86a93601e5e7c77cbdc25b6f38
+    },
+    "testing-11155111-0": {
+      network: "sepolia",
+      startBlock: 5517165 // sepolia, block number when protocol was deployed https://sepolia.etherscan.io/tx/0x755c74e6c8717d4385d65b22ddf46b885030cd4289ed072a58d26efeab1b77c1
     }
   },
   staging: {
@@ -49,6 +53,10 @@ const envNameToConfig: Record<
     "staging-5-0": {
       network: "goerli",
       startBlock: 9756834 // goerli, block number when protocol was deployed https://goerli.etherscan.io/tx/0x7d4b731fc8b9fe77999f46a52891f2bd13651666bb9a15d7044b33bddd52b355
+    },
+    "staging-11155111-0": {
+      network: "sepolia",
+      startBlock: 5519001 // TODO: change it
     }
   },
   production: {

@@ -5,6 +5,7 @@ export const chainIdToInfo = new Map<ChainId, ProtocolConfig["nativeCoin"]>([
   [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [1, { decimals: "18", name: "Ether", symbol: "ETH" }],
   [5, { decimals: "18", name: "GTH", symbol: "GTH" }],
+  [11155111, { decimals: "18", name: "sETH", symbol: "sETH" }],
   [31337, { decimals: "18", name: "Ether", symbol: "ETH" }]
 ]);
 
@@ -37,6 +38,15 @@ export const chainIdToGraphTx = new Map<
         return `https://goerli.etherscan.io/address/${txHash}`;
       }
       return `https://goerli.etherscan.io/tx/${txHash}`;
+    }
+  ],
+  [
+    11155111,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://sepolia.etherscan.io/address/${txHash}`;
+      }
+      return `https://sepolia.etherscan.io/tx/${txHash}`;
     }
   ],
   [
@@ -169,6 +179,41 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
         symbol: "USDT",
         name: "Tether USD",
         address: "0xfad6367E97217cC51b4cd838Cc086831f81d38C2",
+        decimals: "6"
+      }
+    ]
+  ],
+  [
+    11155111,
+    [
+      {
+        symbol: "ETH",
+        name: "ETH",
+        address: "0x0000000000000000000000000000000000000000",
+        decimals: "18"
+      },
+      {
+        symbol: "BOSON",
+        name: "Boson Token (PoS)",
+        address: "0xffffffffffffffffffffffffffffffffffffffff", // TODO: change it
+        decimals: "18"
+      },
+      {
+        symbol: "USDC",
+        name: "USD Coin",
+        address: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+        decimals: "6"
+      },
+      {
+        symbol: "DAI",
+        name: "Dai Stablecoin",
+        address: "0x3e622317f8C93f7328350cF0B56d9eD4C620C5d6",
+        decimals: "18"
+      },
+      {
+        symbol: "USDT",
+        name: "Tether USD",
+        address: "0xaA8E23Fb1079EA71e0a56F48a2aA51851D8433D0",
         decimals: "6"
       }
     ]
