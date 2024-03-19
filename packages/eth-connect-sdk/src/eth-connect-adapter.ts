@@ -21,6 +21,7 @@ export class EthConnectAdapter implements Web3LibAdapter {
   private _requestManager: RequestManager;
   private _requestManagerSigner: RequestManager;
   private _externalFeatures: ExternalFeatures;
+  uuid: string;
 
   private static receiptData = new Map<string, { from: string; to: string }>();
 
@@ -30,6 +31,7 @@ export class EthConnectAdapter implements Web3LibAdapter {
     requestManagerSigner?: RequestManager
   ) {
     this._requestManager = requestManager;
+    this.uuid = crypto.randomUUID();
     this._requestManagerSigner = requestManagerSigner || requestManager;
     this._externalFeatures = externalFeatures;
   }

@@ -149,11 +149,13 @@ const defaultMockedReturnValues: MockedWeb3LibReturnValues = {
 
 export class MockWeb3LibAdapter implements Web3LibAdapter {
   private _returnValues: MockedWeb3LibReturnValues;
+  uuid: string;
 
   sendTransactionArgs: Array<TransactionRequest> = [];
   getTransactionReceiptArgs: Array<string> = [];
 
   constructor(returnValues: Partial<MockedWeb3LibReturnValues> = {}) {
+    this.uuid = crypto.randomUUID();
     this._returnValues = {
       ...defaultMockedReturnValues,
       ...returnValues
