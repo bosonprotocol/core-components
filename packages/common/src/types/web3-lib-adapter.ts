@@ -31,6 +31,7 @@ export type TransactionReceipt = {
 };
 
 export interface Web3LibAdapter {
+  uuid: string;
   getSignerAddress(): Promise<string>;
   isSignerContract(): Promise<boolean>;
   getChainId(): Promise<number>;

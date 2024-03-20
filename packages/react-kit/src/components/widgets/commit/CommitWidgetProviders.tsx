@@ -21,6 +21,7 @@ import store from "../../../state";
 import { ReduxCCDummyContext } from "../../../state/reduxContext";
 import { useIsWindowVisible } from "../../../hooks/uniswap/useIsWindowVisible";
 import { useProvider } from "../../../hooks/connection/connection";
+import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
@@ -30,13 +31,6 @@ export type CommitWidgetProvidersProps = IpfsProviderProps &
     withReduxProvider: boolean;
   };
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false
-    }
-  }
-});
 const { infuraKey, magicLinkKey } = CONFIG;
 export const CommitWidgetReduxProvider = ({
   children
@@ -58,47 +52,43 @@ export const CommitWidgetReduxUpdaters = ({
   return <Updaters {...rest}>{children}</Updaters>;
 };
 
-export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> = ({
-  children,
-  withReduxProvider,
-  ...props
-}) => {
-  const isWindowVisible = useIsWindowVisible();
-  const WithReduxProvider = useCallback(
-    ({ children: providersChildren }: { children: ReactNode }) => {
-      return withReduxProvider ? (
-        <CommitWidgetReduxProvider>
-          {providersChildren}
-        </CommitWidgetReduxProvider>
-      ) : (
-        <>{providersChildren}</>
-      );
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [withReduxProvider]
-  );
-  const WithUpdaters = useCallback(
-    ({ children: updatersChildren }: { children: ReactNode }) => {
-      return withReduxProvider ? (
-        <UpdatersWrapper isWindowVisible={isWindowVisible}>
-          {updatersChildren}
-        </UpdatersWrapper>
-      ) : (
-        <>{updatersChildren}</>
-      );
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [withReduxProvider, isWindowVisible]
-  );
-  return (
-    <WithReduxProvider>
-      <ConfigProvider
-        magicLinkKey={magicLinkKey}
-        infuraKey={infuraKey}
-        {...props}
-      >
-        <MagicProvider>
-          <QueryClientProvider client={queryClient}>
+export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
+  withQueryClientProvider(({ children, withReduxProvider, ...props }) => {
+    const isWindowVisible = useIsWindowVisible();
+    const WithReduxProvider = useCallback(
+      ({ children: providersChildren }: { children: ReactNode }) => {
+        return withReduxProvider ? (
+          <CommitWidgetReduxProvider>
+            {providersChildren}
+          </CommitWidgetReduxProvider>
+        ) : (
+          <>{providersChildren}</>
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      },
+      [withReduxProvider]
+    );
+    const WithUpdaters = useCallback(
+      ({ children: updatersChildren }: { children: ReactNode }) => {
+        return withReduxProvider ? (
+          <UpdatersWrapper isWindowVisible={isWindowVisible}>
+            {updatersChildren}
+          </UpdatersWrapper>
+        ) : (
+          <>{updatersChildren}</>
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      },
+      [withReduxProvider, isWindowVisible]
+    );
+    return (
+      <WithReduxProvider>
+        <ConfigProvider
+          magicLinkKey={magicLinkKey}
+          infuraKey={infuraKey}
+          {...props}
+        >
+          <MagicProvider>
             <WalletConnectionProvider
               walletConnectProjectId={props.walletConnectProjectId}
             >
@@ -112,12 +102,11 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> = ({
                 </ChatProvider>
               </WithUpdaters>
             </WalletConnectionProvider>
-          </QueryClientProvider>
-        </MagicProvider>
-      </ConfigProvider>
-    </WithReduxProvider>
-  );
-};
+          </MagicProvider>
+        </ConfigProvider>
+      </WithReduxProvider>
+    );
+  });
 
 function UpdatersWrapper({
   children,

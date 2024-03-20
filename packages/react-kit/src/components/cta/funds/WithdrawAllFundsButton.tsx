@@ -4,6 +4,7 @@ import { CtaButtonProps } from "../common/types";
 import { CtaButton } from "../common/CtaButton";
 import { TransactionReceipt } from "@bosonprotocol/common";
 import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
+import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 
 type AdditionalProps = {
   accountId: string;
@@ -14,29 +15,31 @@ type SuccessPayload = TransactionReceipt;
 export type IWithdrawAllFundsButton = AdditionalProps &
   CtaButtonProps<SuccessPayload>;
 
-export const WithdrawAllFundsButton = ({
-  accountId,
-  variant = "primaryFill",
-  ...restProps
-}: IWithdrawAllFundsButton) => {
-  const coreSdk = useCoreSdkOverrides({
-    coreSdkConfig: restProps.coreSdkConfig
-  });
-  const actions = [
-    // Withdraw all funds
-    {
-      writeContractFn: () => coreSdk.withdrawAllAvailableFunds(accountId)
-    }
-    // TODO: signMetaTxWithdrawAllFunds
-  ];
+export const WithdrawAllFundsButton = withQueryClientProvider(
+  ({
+    accountId,
+    variant = "primaryFill",
+    ...restProps
+  }: IWithdrawAllFundsButton) => {
+    const coreSdk = useCoreSdkOverrides({
+      coreSdkConfig: restProps.coreSdkConfig
+    });
+    const actions = [
+      // Withdraw all funds
+      {
+        writeContractFn: () => coreSdk.withdrawAllAvailableFunds(accountId)
+      }
+      // TODO: signMetaTxWithdrawAllFunds
+    ];
 
-  return (
-    <CtaButton
-      variant={variant}
-      defaultLabel="Withdraw all funds"
-      successPayload={(receipt) => receipt}
-      actions={actions}
-      {...restProps}
-    />
-  );
-};
+    return (
+      <CtaButton
+        variant={variant}
+        defaultLabel="Withdraw all funds"
+        successPayload={(receipt) => receipt}
+        actions={actions}
+        {...restProps}
+      />
+    );
+  }
+);
