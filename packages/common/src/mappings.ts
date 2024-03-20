@@ -195,7 +195,7 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
       {
         symbol: "BOSON",
         name: "Boson Token (PoS)",
-        address: "0xffffffffffffffffffffffffffffffffffffffff", // TODO: change it
+        address: "0x791Bf9Da3DEF5D7Cd3A7a748e56720Cd119D53AC",
         decimals: "18"
       },
       {

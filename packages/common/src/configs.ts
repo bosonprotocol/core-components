@@ -99,7 +99,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "testing-11155111-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-11155111-0/sellers/blacklist.json",
-      defaultDisputeResolverId: "1", // TODO: to be confirmed
+      defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(11155111),
       nativeCoin: chainIdToInfo.get(11155111),
       getTxExplorerUrl: chainIdToGraphTx.get(11155111),
