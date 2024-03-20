@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
 import { CONFIG } from "../../../lib/config/config";
 import ChatProvider from "../../chat/ChatProvider/ChatProvider";
 import {
@@ -21,6 +20,7 @@ import ConvertionRateProvider, {
 import { CommonWidgetTypes } from "../types";
 import { RedemptionContextProps } from "./provider/RedemptionContext";
 import { RedemptionProvider } from "./provider/RedemptionProvider";
+import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 
 export type RedemptionWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
@@ -33,32 +33,23 @@ export type RedemptionWidgetProvidersProps = IpfsProviderProps &
     children: ReactNode;
   };
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false
-    }
-  }
-});
 const { infuraKey, magicLinkKey } = CONFIG;
 
-export const RedemptionWidgetProviders: React.FC<
-  RedemptionWidgetProvidersProps
-> = ({ children, ...props }) => {
-  const parentOrigin = getParentWindowOrigin();
-  return (
-    <ConfigProvider
-      magicLinkKey={magicLinkKey}
-      infuraKey={infuraKey}
-      {...props}
-    >
-      <GlobalStyle />
-      <SignerProvider
-        parentOrigin={parentOrigin}
-        withExternalSigner={props.withExternalSigner}
+export const RedemptionWidgetProviders: React.FC<RedemptionWidgetProvidersProps> =
+  withQueryClientProvider(({ children, ...props }) => {
+    const parentOrigin = getParentWindowOrigin();
+    return (
+      <ConfigProvider
+        magicLinkKey={magicLinkKey}
+        infuraKey={infuraKey}
+        {...props}
       >
-        <MagicProvider>
-          <QueryClientProvider client={queryClient}>
+        <GlobalStyle />
+        <SignerProvider
+          parentOrigin={parentOrigin}
+          withExternalSigner={props.withExternalSigner}
+        >
+          <MagicProvider>
             <WalletConnectionProvider
               walletConnectProjectId={props.walletConnectProjectId}
             >
@@ -74,9 +65,8 @@ export const RedemptionWidgetProviders: React.FC<
                 </IpfsProvider>
               </ChatProvider>
             </WalletConnectionProvider>
-          </QueryClientProvider>
-        </MagicProvider>
-      </SignerProvider>
-    </ConfigProvider>
-  );
-};
+          </MagicProvider>
+        </SignerProvider>
+      </ConfigProvider>
+    );
+  });

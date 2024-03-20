@@ -3,7 +3,6 @@ import isBetween from "dayjs/plugin/isBetween";
 
 import { ethers } from "ethers";
 import React, { useEffect, useMemo, useRef } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
 import styled from "styled-components";
 import { useAccount } from "../../../hooks/connection/connection";
 import { useDisconnect } from "../../../hooks/connection/useDisconnect";
@@ -33,6 +32,7 @@ import useFunds from "./useFunds";
 import { useOffersBacked } from "./useOffersBacked";
 import { useSellerDeposit } from "./useSellerDeposit";
 import { useSellerRoles } from "./useSellerRoles";
+import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 dayjs.extend(isBetween);
 
 const StyledConnectButton = styled(ConnectButton)`
@@ -146,14 +146,6 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
 }
 
 const Component = WithSellerData(Finance);
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false
-    }
-  }
-});
-
 type FinanceWidgetProps = {
   walletConnectProjectId: string;
 } & Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
@@ -182,18 +174,16 @@ export function FinanceWidget(props: FinanceWidgetProps) {
           <WalletConnectionProvider
             walletConnectProjectId={walletConnectProjectId}
           >
-            <QueryClientProvider client={queryClient}>
-              <ConvertionRateProvider>
-                <ModalProvider>
-                  {!withExternalSigner && (
-                    <Grid justifyContent="flex-end">
-                      <StyledConnectButton showChangeWallet />
-                    </Grid>
-                  )}
-                  <Component sellerId={sellerId ?? undefined} />
-                </ModalProvider>
-              </ConvertionRateProvider>
-            </QueryClientProvider>
+            <ConvertionRateProvider>
+              <ModalProvider>
+                {!withExternalSigner && (
+                  <Grid justifyContent="flex-end">
+                    <StyledConnectButton showChangeWallet />
+                  </Grid>
+                )}
+                <Component sellerId={sellerId ?? undefined} />
+              </ModalProvider>
+            </ConvertionRateProvider>
           </WalletConnectionProvider>
         </MagicProvider>
       </SignerProvider>
@@ -201,4 +191,4 @@ export function FinanceWidget(props: FinanceWidgetProps) {
   );
 }
 
-export default FinanceWidget;
+export default withQueryClientProvider(FinanceWidget);
