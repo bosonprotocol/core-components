@@ -90,7 +90,7 @@ export const useCallSignerFromIframe = ({
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               result = await signer[signerFn]?.(args[0], args[1]);
-            } else {
+            } else if (fn !== "uuid") {
               result = await ethersSigner?.[fn]?.(args[0], args[1]);
             }
             if (

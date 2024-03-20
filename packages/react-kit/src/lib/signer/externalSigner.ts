@@ -53,6 +53,7 @@ const getExternalWeb3LibAdapterListener = ({
   parentOrigin: string;
 }): Web3LibAdapter => {
   return {
+    uuid: crypto.randomUUID(),
     getSignerAddress: (): Promise<string> => {
       return getDefaultHandleSignerFunction<string>({
         parentOrigin,

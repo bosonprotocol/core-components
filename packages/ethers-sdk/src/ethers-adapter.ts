@@ -30,10 +30,11 @@ export type Provider =
 export class EthersAdapter implements Web3LibAdapter {
   private _signer: Signer;
   private _provider: Provider;
+  uuid: string;
 
   constructor(provider: Provider, signer?: Signer) {
     this._provider = provider;
-
+    this.uuid = crypto.randomUUID();
     this._signer = signer
       ? signer.connect(this._provider)
       : this._provider.getSigner();

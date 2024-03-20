@@ -4,6 +4,7 @@ import { BigNumberish } from "ethers";
 import { CtaButtonProps } from "../common/types";
 import { CtaButton } from "../common/CtaButton";
 import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
+import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 
 type AdditionalProps = {
   exchangeId: BigNumberish;
@@ -16,33 +17,35 @@ type SuccessPayload = {
 export type IEscalateDisputeButton = AdditionalProps &
   CtaButtonProps<SuccessPayload>;
 
-export const EscalateDisputeButton = ({
-  variant = "secondaryFill",
-  exchangeId,
-  ...restProps
-}: IEscalateDisputeButton) => {
-  const coreSdk = useCoreSdkOverrides({
-    coreSdkConfig: restProps.coreSdkConfig
-  });
+export const EscalateDisputeButton = withQueryClientProvider(
+  ({
+    variant = "secondaryFill",
+    exchangeId,
+    ...restProps
+  }: IEscalateDisputeButton) => {
+    const coreSdk = useCoreSdkOverrides({
+      coreSdkConfig: restProps.coreSdkConfig
+    });
 
-  const actions = [
-    {
-      writeContractFn: () => coreSdk.escalateDispute(exchangeId),
-      signMetaTxFn: () =>
-        coreSdk.signMetaTxEscalateDispute({
-          exchangeId,
-          nonce: Date.now()
-        })
-    }
-  ];
+    const actions = [
+      {
+        writeContractFn: () => coreSdk.escalateDispute(exchangeId),
+        signMetaTxFn: () =>
+          coreSdk.signMetaTxEscalateDispute({
+            exchangeId,
+            nonce: Date.now()
+          })
+      }
+    ];
 
-  return (
-    <CtaButton
-      variant={variant}
-      defaultLabel="Escalate"
-      successPayload={{ exchangeId }}
-      actions={actions}
-      {...restProps}
-    />
-  );
-};
+    return (
+      <CtaButton
+        variant={variant}
+        defaultLabel="Escalate"
+        successPayload={{ exchangeId }}
+        actions={actions}
+        {...restProps}
+      />
+    );
+  }
+);

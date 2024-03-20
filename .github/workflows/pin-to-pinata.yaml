@@ -34,7 +34,7 @@ jobs:
         env:
           PINATA_JWT: ${{ secrets.PINATA_JWT }}
           INFURA_PROJECT_ID: ${{ secrets.INFURA_PROJECT_ID }}
-          STORYBOOK_REACT_APP_INFURA_KEY: ${{ secrets.STORYBOOK_REACT_APP_INFURA_KEY }}
+          INFURA_PROJECT_SECRET: ${{ secrets.INFURA_PROJECT_SECRET }}
         run: |
           echo "Pin for testing/mumbai env..."
           npm run pin-to-pinata -- \
@@ -42,7 +42,7 @@ jobs:
             -c testing-80001-0 \
             -fd ${{ env.FROM_DATE }} \
             -p ${{ env.PINATA_JWT }} \
-            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.STORYBOOK_REACT_APP_INFURA_KEY }}
+            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
 
           echo "Pin for testing/goerli env..."
           npm run pin-to-pinata -- \
@@ -50,7 +50,7 @@ jobs:
             -c testing-5-0 \
             -fd ${{ env.FROM_DATE }} \
             -p ${{ env.PINATA_JWT }} \
-            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.STORYBOOK_REACT_APP_INFURA_KEY }}
+            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
 
           echo "Pin for testing/sepolia env..."
           npm run pin-to-pinata -- \
@@ -66,7 +66,7 @@ jobs:
             -c staging-80001-0 \
             -fd ${{ env.FROM_DATE }} \
             -p ${{ env.PINATA_JWT }} \
-            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.STORYBOOK_REACT_APP_INFURA_KEY }}
+            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
 
           echo "Pin for staging/goerli env..."
           npm run pin-to-pinata -- \
@@ -74,7 +74,7 @@ jobs:
             -c staging-5-0 \
             -fd ${{ env.FROM_DATE }} \
             -p ${{ env.PINATA_JWT }} \
-            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.STORYBOOK_REACT_APP_INFURA_KEY }}
+            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
 
           echo "Pin for staging/sepolia env..."
           npm run pin-to-pinata -- \
@@ -90,7 +90,7 @@ jobs:
             -c production-137-0 \
             -fd ${{ env.FROM_DATE }} \
             -p ${{ env.PINATA_JWT }} \
-            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.STORYBOOK_REACT_APP_INFURA_KEY }}
+            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
 
           echo "Pin for production/ethereum env..."
           npm run pin-to-pinata -- \
@@ -98,4 +98,4 @@ jobs:
             -c production-1-0 \
             -fd ${{ env.FROM_DATE }} \
             -p ${{ env.PINATA_JWT }} \
-            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.STORYBOOK_REACT_APP_INFURA_KEY }}
+            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
