@@ -35,3 +35,5 @@ jobs:
         run: cd ./packages/subgraph && npm run deploy:testing
       - name: Deploy subgraph to goerli
         run: cd ./packages/subgraph && npm run deploy:testing:goerli
+      - name: Deploy subgraph to sepolia
+        run: cd ./packages/subgraph && npm run deploy:testing:sepolia

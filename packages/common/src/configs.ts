@@ -92,6 +92,30 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       },
       metaTx: undefined,
       lens: undefined
+    },
+    {
+      envName: "testing",
+      chainId: 11155111,
+      configId: "testing-11155111-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-11155111-0/sellers/blacklist.json",
+      defaultDisputeResolverId: "1",
+      defaultTokens: chainIdToDefaultTokens.get(11155111),
+      nativeCoin: chainIdToInfo.get(11155111),
+      getTxExplorerUrl: chainIdToGraphTx.get(11155111),
+      subgraphUrl:
+        "https://api.thegraph.com/subgraphs/name/bosonprotocol/sepolia-testing",
+      jsonRpcUrl:
+        "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
+        protocolDiamond: "0x76051fc05ab42d912a737d59a8711f1446712630",
+        forwarder: "0xffffffffffffffffffffffffffffffffffffffff" // https://docs-gasless.biconomy.io/misc/contract-addresses
+      },
+      metaTx: undefined,
+      lens: undefined
     }
   ],
   staging: [
@@ -143,6 +167,30 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
         protocolDiamond: "0xf9719c7e641964D83cC50ea2d4d0D4e6C300d50E",
         forwarder: "0xE041608922d06a4F26C0d4c27d8bCD01daf1f792" // https://docs-gasless.biconomy.io/misc/contract-addresses
+      },
+      metaTx: undefined,
+      lens: undefined
+    },
+    {
+      envName: "staging",
+      chainId: 11155111,
+      configId: "staging-11155111-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-11155111-0/sellers/blacklist.json",
+      defaultDisputeResolverId: "1", // TODO: to be confirmed
+      defaultTokens: chainIdToDefaultTokens.get(11155111),
+      nativeCoin: chainIdToInfo.get(11155111),
+      getTxExplorerUrl: chainIdToGraphTx.get(11155111),
+      subgraphUrl:
+        "https://api.thegraph.com/subgraphs/name/bosonprotocol/sepolia-staging",
+      jsonRpcUrl:
+        "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
+        protocolDiamond: "0xffffffffffffffffffffffffffffffffffffffff", // TODO: change it
+        forwarder: "0xffffffffffffffffffffffffffffffffffffffff" // https://docs-gasless.biconomy.io/misc/contract-addresses
       },
       metaTx: undefined,
       lens: undefined
