@@ -52,10 +52,26 @@ async function main() {
     if (Object.keys(funcSigs).length === 0) {
       funcSigs = undefined;
     }
-    if (eventSigs || funcSigs) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let errorSigs: any = {};
+    Object.keys(iface.errors).forEach((error) => {
+      const sigHash = iface.getSighash(error);
+      if (
+        !opts ||
+        opts.search === "" ||
+        sigHash.toLowerCase().startsWith(opts.search.toLowerCase())
+      ) {
+        errorSigs[error] = sigHash;
+      }
+    });
+    if (Object.keys(errorSigs).length === 0) {
+      errorSigs = undefined;
+    }
+    if (eventSigs || funcSigs || errorSigs) {
       signatures[abi] = {
         events: eventSigs,
-        functions: funcSigs
+        functions: funcSigs,
+        errors: errorSigs
       };
     }
   });
@@ -73,6 +89,12 @@ async function main() {
         const functions = abi["functions"];
         Object.keys(functions).forEach((func) => {
           csvData.push([abiKey, "function", functions[func], func]);
+        });
+      }
+      if (abi["errors"]) {
+        const errors = abi["errors"];
+        Object.keys(errors).forEach((error) => {
+          csvData.push([abiKey, "error", errors[error], error]);
         });
       }
     });
