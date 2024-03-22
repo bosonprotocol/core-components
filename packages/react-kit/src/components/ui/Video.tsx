@@ -1,11 +1,13 @@
-import { VideoCamera as VideoIcon, VideoCameraSlash } from "phosphor-react";
+import { VideoCameraSlash, VideoCamera as VideoIcon } from "phosphor-react";
 import React, {
+  ElementRef,
   ReactElement,
   ReactNode,
+  VideoHTMLAttributes,
   useEffect,
   useMemo,
-  useState,
-  VideoHTMLAttributes
+  useRef,
+  useState
 } from "react";
 import styled, { css } from "styled-components";
 import { useIpfsStorage } from "../../hooks/useIpfsStorage";
@@ -13,10 +15,16 @@ import { fetchIpfsBase64Media } from "../../lib/base64/base64";
 import { theme } from "../../theme";
 import { Loading } from "../Loading";
 
-import { buttonText } from "./styles";
+import { MuteButton } from "./MuteButton";
 import { Typography } from "./Typography";
+import { buttonText } from "./styles";
 import { zIndex } from "./zIndex";
 const colors = theme.colors.light;
+const StyledMuteButton = styled(MuteButton)`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+`;
 const VideoWrapper = styled.div<{ $hasOnClick?: boolean }>`
   overflow: hidden;
   position: relative;
@@ -157,7 +165,22 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
     }
     return videoSrc || "";
   }, [videoSrc]);
-
+  const videoRef = useRef<ElementRef<"video">>(null);
+  const [muted, setMuted] = useState<boolean>(!!videoProps?.muted);
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = muted;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [videoRef.current?.defaultMuted]);
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.autoplay = false;
+      videoRef.current.pause();
+      videoRef.current.muted = muted;
+      videoRef.current.play();
+    }
+  }, [muted]);
   if (!isLoaded && !isError) {
     if (ComponentWhileLoading) {
       return <ComponentWhileLoading />;
@@ -198,11 +221,18 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
     >
       {children || ""}
       {videoSrc && (
-        <VideoHtml
-          data-testid={dataTestId}
-          {...videoProps}
-          src={mp4Src || ""}
-        />
+        <>
+          <StyledMuteButton
+            muted={muted}
+            onClick={() => setMuted((prev) => !prev)}
+          />
+          <VideoHtml
+            ref={videoRef}
+            data-testid={dataTestId}
+            {...videoProps}
+            src={mp4Src || ""}
+          />
+        </>
       )}
     </VideoWrapper>
   );
