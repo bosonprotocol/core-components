@@ -2,6 +2,7 @@ import { ChainId, Lens, ProtocolConfig, Token } from "./types";
 
 export const chainIdToInfo = new Map<ChainId, ProtocolConfig["nativeCoin"]>([
   [80001, { decimals: "18", name: "Matic", symbol: "MATIC" }],
+  [80002, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [1, { decimals: "18", name: "Ether", symbol: "ETH" }],
   [5, { decimals: "18", name: "GTH", symbol: "GTH" }],
@@ -20,6 +21,15 @@ export const chainIdToGraphTx = new Map<
         return `https://mumbai.polygonscan.com/address/${txHash}`;
       }
       return `https://mumbai.polygonscan.com/tx/${txHash}`;
+    }
+  ],
+  [
+    80002,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://www.oklink.com/amoy/address/${txHash}`;
+      }
+      return `https://www.oklink.com/amoy/tx/${txHash}`;
     }
   ],
   [
@@ -144,6 +154,47 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
         symbol: "USDT",
         name: "Tether USD",
         address: "0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832",
+        decimals: "6"
+      }
+    ]
+  ],
+  [
+    80002,
+    [
+      {
+        symbol: "MATIC",
+        name: "MATIC",
+        address: "0x0000000000000000000000000000000000000000",
+        decimals: "18"
+      },
+      {
+        symbol: "WETH",
+        name: "Wrapped Ether",
+        address: "0x????????????????????????????????????????", // TODO: to be defined
+        decimals: "18"
+      },
+      {
+        symbol: "BOSON",
+        name: "Boson Token (PoS)",
+        address: "0x????????????????????????????????????????", // TODO: to be defined
+        decimals: "18"
+      },
+      {
+        symbol: "USDC",
+        name: "Mumbai USD Coin",
+        address: "0x????????????????????????????????????????", // TODO: to be defined
+        decimals: "6"
+      },
+      {
+        symbol: "DAI",
+        name: "DAI",
+        address: "0x????????????????????????????????????????", // TODO: to be defined
+        decimals: "18"
+      },
+      {
+        symbol: "USDT",
+        name: "Tether USD",
+        address: "0x????????????????????????????????????????", // TODO: to be defined
         decimals: "6"
       }
     ]

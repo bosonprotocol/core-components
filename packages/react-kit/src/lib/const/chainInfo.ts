@@ -46,6 +46,8 @@ interface L2ChainInfo extends BaseChainInfo {
   readonly defaultListUrl: string;
 }
 
+const ChainId_POLYGON_AMOY = 80002; // TODO: upgrade @uniswap/sdk-core when featuring Amoy
+
 type ChainInfoMap = {
   readonly [chainId: number]: L1ChainInfo | L2ChainInfo;
 } & {
@@ -105,6 +107,21 @@ const CHAIN_INFO: ChainInfoMap = {
     nativeCurrency: {
       name: "Polygon Mumbai Matic",
       symbol: "mMATIC",
+      decimals: 18
+    }
+  },
+  [ChainId_POLYGON_AMOY]: {
+    networkType: NetworkType.L1,
+    blockWaitMsBeforeWarning: ms(`10m`),
+    bridge: "https://wallet.polygon.technology/polygon/bridge/deposit",
+    docs: "https://polygon.io/",
+    explorer: "https://mumbai.polygonscan.com/",
+    infoLink: "https://info.uniswap.org/#/polygon/",
+    label: "Polygon Amoy",
+    logoUrl: polygonMaticLogo,
+    nativeCurrency: {
+      name: "Polygon Amoy Matic",
+      symbol: "aMATIC",
       decimals: 18
     }
   }

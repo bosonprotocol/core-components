@@ -71,6 +71,34 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
     },
     {
       envName: "testing",
+      chainId: 80002,
+      configId: "testing-80002-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-80002-0/sellers/blacklist.json",
+      defaultDisputeResolverId: "1", // TODO: to be confirmed
+      defaultTokens: chainIdToDefaultTokens.get(80002),
+      nativeCoin: chainIdToInfo.get(80002),
+      getTxExplorerUrl: chainIdToGraphTx.get(80002),
+      subgraphUrl:
+        "https://api.thegraph.com/subgraphs/name/bosonprotocol/amoy-testing",
+      jsonRpcUrl:
+        "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        protocolDiamond: "0x????????????????????????????????????????", // TODO: to be defined
+        forwarder: "0x????????????????????????????????????????" // TODO: to be defined
+      },
+      metaTx: {
+        relayerUrl: "https://api.biconomy.io",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: {
+        ...(chainIdToLensInfo.has(80002) && chainIdToLensInfo.get(80002))
+      }
+    },
+    {
+      envName: "testing",
       chainId: 5,
       configId: "testing-5-0",
       sellersBlackList:
@@ -145,6 +173,34 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       },
       lens: {
         ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
+      }
+    },
+    {
+      envName: "staging",
+      chainId: 80002,
+      configId: "staging-80002-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-80002-0/sellers/blacklist.json",
+      defaultDisputeResolverId: "1", // TODO: to be confirmed
+      defaultTokens: chainIdToDefaultTokens.get(80002),
+      nativeCoin: chainIdToInfo.get(80002),
+      getTxExplorerUrl: chainIdToGraphTx.get(80002),
+      subgraphUrl:
+        "https://api.thegraph.com/subgraphs/name/bosonprotocol/amoy-staging",
+      jsonRpcUrl:
+        "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        protocolDiamond: "0x????????????????????????????????????????", // TODO: to be defined
+        forwarder: "0x????????????????????????????????????????" // TODO: to be defined
+      },
+      metaTx: {
+        relayerUrl: "https://api.biconomy.io",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: {
+        ...(chainIdToLensInfo.has(80002) && chainIdToLensInfo.get(80002))
       }
     },
     {

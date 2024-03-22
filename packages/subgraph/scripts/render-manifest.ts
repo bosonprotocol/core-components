@@ -36,6 +36,10 @@ const envNameToConfig: Record<
       network: "mumbai",
       startBlock: 35370695 // mumbai, this is NOT the block number when the protocol was deployed (manual override as there was an error in the subgraph)
     },
+    "testing-80002-0": {
+      network: "amoy", // TO BE CONFIRMED
+      startBlock: 4958511 // TODO: change it
+    },
     "testing-5-0": {
       network: "goerli",
       startBlock: 9757131 // goerli, block number when protocol was deployed https://goerli.etherscan.io/tx/0x3c51e116a6a1849936e6bd45fcee78017259ce86a93601e5e7c77cbdc25b6f38
@@ -49,6 +53,10 @@ const envNameToConfig: Record<
     "staging-80001-0": {
       network: "mumbai",
       startBlock: 28566747 // mumbai, block number when protocol was deployed
+    },
+    "staging-80002-0": {
+      network: "amoy", // TO BE CONFIRMED
+      startBlock: 4958511 // TODO: change it
     },
     "staging-5-0": {
       network: "goerli",
