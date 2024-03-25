@@ -96,6 +96,7 @@ interface IVideo {
   showPlaceholderText?: boolean;
   noPreload?: boolean;
   videoProps?: VideoHTMLAttributes<HTMLElement>;
+  withMuteButton?: boolean;
   componentWhileLoading?: () => ReactElement;
 }
 const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
@@ -105,6 +106,7 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
   showPlaceholderText = true,
   noPreload = false,
   videoProps,
+  withMuteButton,
   componentWhileLoading: ComponentWhileLoading,
   ...rest
 }) => {
@@ -222,10 +224,12 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
       {children || ""}
       {videoSrc && (
         <>
-          <StyledMuteButton
-            muted={muted}
-            onClick={() => setMuted((prev) => !prev)}
-          />
+          {withMuteButton && (
+            <StyledMuteButton
+              muted={muted}
+              onClick={() => setMuted((prev) => !prev)}
+            />
+          )}
           <VideoHtml
             ref={videoRef}
             data-testid={dataTestId}
