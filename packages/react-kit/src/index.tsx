@@ -54,6 +54,7 @@ export * from "./components/modal/components/Redeem/DetailView/ExternalExchangeD
 export * from "./components/ui/Grid";
 export * from "./components/ui/GridContainer";
 export * from "./components/ui/Typography";
+export * from "./components/ui/MuteButton";
 export * from "./lib/magicLink/logout";
 export * from "./lib/magicLink/provider";
 export * from "./lib/const/networks";
