@@ -294,6 +294,7 @@ export default function DetailSlider({
                       style={{ cursor: "pointer" }}
                       dataTestId="offerAnimationUrl"
                       videoProps={{ muted: true, loop: true, autoPlay: true }}
+                      withMuteButton
                     />
                   )}
                 </>
