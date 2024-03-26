@@ -19,11 +19,13 @@ export default {
   }
 } as ComponentMeta<typeof VoidButton>;
 
-const Template: ComponentStory<typeof VoidButton> = (args) => {
+const Template: ComponentStory<typeof VoidButton> = (
+  args: Parameters<typeof VoidButton>[0]
+) => {
   const provider = hooks.useProvider();
 
   return (
-    <CtaButtonWrapper>
+    <CtaButtonWrapper configId={args.coreSdkConfig.configId}>
       <VoidButton
         {...args}
         coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}

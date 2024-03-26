@@ -19,12 +19,14 @@ export default {
   }
 } as ComponentMeta<typeof CommitButton>;
 
-const Template: ComponentStory<typeof CommitButton> = (args) => {
+const Template: ComponentStory<typeof CommitButton> = (
+  args: Parameters<typeof CommitButton>[0]
+) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const provider = hooks.useProvider();
 
   return (
-    <CtaButtonWrapper>
+    <CtaButtonWrapper configId={args.coreSdkConfig.configId}>
       <CommitButton
         {...args}
         coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}

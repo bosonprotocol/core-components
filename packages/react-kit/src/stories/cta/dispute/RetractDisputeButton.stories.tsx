@@ -18,11 +18,13 @@ export default {
   }
 } as ComponentMeta<typeof RetractDisputeButton>;
 
-const Template: ComponentStory<typeof RetractDisputeButton> = (args) => {
+const Template: ComponentStory<typeof RetractDisputeButton> = (
+  args: Parameters<typeof RetractDisputeButton>[0]
+) => {
   const provider = hooks.useProvider();
 
   return (
-    <CtaButtonWrapper>
+    <CtaButtonWrapper configId={args.coreSdkConfig.configId}>
       <RetractDisputeButton
         {...args}
         coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
