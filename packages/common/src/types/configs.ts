@@ -35,9 +35,11 @@ export type ChainId = typeof chains[keyof typeof chains];
 export type ConfigId =
   | "local-31337-0"
   | "testing-80001-0"
+  | "testing-80002-0"
   | "testing-5-0"
   | "testing-11155111-0"
   | "staging-80001-0"
+  | "staging-80002-0"
   | "staging-5-0"
   | "staging-11155111-0"
   | "production-137-0"
