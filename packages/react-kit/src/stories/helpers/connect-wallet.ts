@@ -10,19 +10,26 @@ export const [metaMask, hooks] = initializeConnector<MetaMask>((actions) => {
 
 export const connectWallet = async (chainId?: string) => {
   try {
+    const currentChainId = window.ethereum
+      ? Number(
+          await (window.ethereum as any)?.request({ method: "eth_chainId" })
+        )
+      : undefined;
     if (
       chainId &&
       window.ethereum &&
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      window.ethereum.networkVersion !== chainId
+      currentChainId !== Number(chainId)
     ) {
       try {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         await window.ethereum.request({
           method: "wallet_switchEthereumChain",
-          params: [{ chainId: utils.hexStripZeros(utils.hexlify(chainId)) }]
+          params: [
+            { chainId: utils.hexStripZeros(utils.hexlify(Number(chainId))) }
+          ]
         });
       } catch (err) {
         console.error("Network changed rejected", err);
