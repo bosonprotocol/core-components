@@ -91,7 +91,7 @@ export const CommitButton = withQueryClientProvider(
     return (
       <CtaButton
         variant={variant}
-        defaultLabel="Commit"
+        defaultLabel="Commit to Buy"
         successPayload={(receipt) => ({
           exchangeId: coreSdk.getCommittedExchangeIdFromLogs(
             receipt.logs
