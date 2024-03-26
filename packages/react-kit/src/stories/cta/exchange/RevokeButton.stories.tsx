@@ -18,11 +18,13 @@ export default {
   }
 } as ComponentMeta<typeof RevokeButton>;
 
-const Template: ComponentStory<typeof RevokeButton> = (args) => {
+const Template: ComponentStory<typeof RevokeButton> = (
+  args: Parameters<typeof RevokeButton>[0]
+) => {
   const provider = hooks.useProvider();
 
   return (
-    <CtaButtonWrapper>
+    <CtaButtonWrapper configId={args.coreSdkConfig.configId}>
       <RevokeButton
         {...args}
         coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}

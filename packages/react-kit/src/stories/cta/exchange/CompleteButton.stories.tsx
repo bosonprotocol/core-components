@@ -18,11 +18,13 @@ export default {
   }
 } as ComponentMeta<typeof CompleteButton>;
 
-const Template: ComponentStory<typeof CompleteButton> = (args) => {
+const Template: ComponentStory<typeof CompleteButton> = (
+  args: Parameters<typeof CompleteButton>[0]
+) => {
   const provider = hooks.useProvider();
 
   return (
-    <CtaButtonWrapper>
+    <CtaButtonWrapper configId={args.coreSdkConfig.configId}>
       <CompleteButton
         {...args}
         coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}

@@ -18,11 +18,13 @@ export default {
   }
 } as ComponentMeta<typeof ExpireButton>;
 
-const Template: ComponentStory<typeof ExpireButton> = (args) => {
+const Template: ComponentStory<typeof ExpireButton> = (
+  args: Parameters<typeof ExpireButton>[0]
+) => {
   const provider = hooks.useProvider();
 
   return (
-    <CtaButtonWrapper>
+    <CtaButtonWrapper configId={args.coreSdkConfig.configId}>
       <ExpireButton
         {...args}
         coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
