@@ -4,6 +4,7 @@ export * from "./offers";
 export * from "./accounts";
 export * from "./groups";
 export * from "./vouchers";
+export * from "./errors";
 
 import {
   AnyMetadata as _AnyMetadata,

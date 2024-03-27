@@ -404,11 +404,11 @@ export function handleRangeReservedEvent(event: RangeReserved): void {
 
     if (!rangeEntity) {
       rangeEntity = new RangeEntity(rangeId);
+      rangeEntity.minted = BigInt.zero();
     }
     rangeEntity.start = event.params.startExchangeId;
     rangeEntity.end = event.params.endExchangeId;
     rangeEntity.owner = event.params.owner;
-    rangeEntity.minted = BigInt.zero();
     rangeEntity.save();
 
     const rangeLength = rangeEntity.end

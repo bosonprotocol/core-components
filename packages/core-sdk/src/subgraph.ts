@@ -693,7 +693,6 @@ export enum BaseMetadataEntity_OrderBy {
   SELLER__AUTHTOKENID = "seller__authTokenId",
   SELLER__AUTHTOKENTYPE = "seller__authTokenType",
   SELLER__CLERK = "seller__clerk",
-  SELLER__CONTRACTURI = "seller__contractURI",
   SELLER__ID = "seller__id",
   SELLER__METADATAURI = "seller__metadataUri",
   SELLER__SELLERID = "seller__sellerId",
@@ -1237,7 +1236,6 @@ export enum BundleMetadataEntity_OrderBy {
   SELLER__AUTHTOKENID = "seller__authTokenId",
   SELLER__AUTHTOKENTYPE = "seller__authTokenType",
   SELLER__CLERK = "seller__clerk",
-  SELLER__CONTRACTURI = "seller__contractURI",
   SELLER__ID = "seller__id",
   SELLER__METADATAURI = "seller__metadataUri",
   SELLER__SELLERID = "seller__sellerId",
@@ -1322,6 +1320,76 @@ export enum Buyer_OrderBy {
   ID = "id",
   LOGS = "logs",
   WALLET = "wallet"
+}
+
+/**
+ * Collection Contract
+ *
+ */
+export type CollectionContract = {
+  __typename?: "CollectionContract";
+  address: Scalars["Bytes"]["output"];
+  collection: OfferCollection;
+  contractUri: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+};
+
+export type CollectionContract_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  address?: InputMaybe<Scalars["Bytes"]["input"]>;
+  address_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  address_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  address_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  address_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  address_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  address_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  address_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  address_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  address_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  and?: InputMaybe<Array<InputMaybe<CollectionContract_Filter>>>;
+  collection_?: InputMaybe<OfferCollection_Filter>;
+  contractUri?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_contains?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_gt?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_gte?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  contractUri_lt?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_lte?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_not?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_not_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_not_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_not_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_not_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  contractUri_not_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  contractUri_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  id?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_lte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  or?: InputMaybe<Array<InputMaybe<CollectionContract_Filter>>>;
+};
+
+export enum CollectionContract_OrderBy {
+  ADDRESS = "address",
+  COLLECTION = "collection",
+  COLLECTION__COLLECTIONINDEX = "collection__collectionIndex",
+  COLLECTION__EXTERNALID = "collection__externalId",
+  COLLECTION__EXTERNALIDHASH = "collection__externalIdHash",
+  COLLECTION__ID = "collection__id",
+  COLLECTION__SELLERID = "collection__sellerId",
+  CONTRACTURI = "contractUri",
+  ID = "id"
 }
 
 /**
@@ -2434,7 +2502,6 @@ export enum Dispute_OrderBy {
   SELLER__AUTHTOKENID = "seller__authTokenId",
   SELLER__AUTHTOKENTYPE = "seller__authTokenType",
   SELLER__CLERK = "seller__clerk",
-  SELLER__CONTRACTURI = "seller__contractURI",
   SELLER__ID = "seller__id",
   SELLER__METADATAURI = "seller__metadataUri",
   SELLER__SELLERID = "seller__sellerId",
@@ -3150,7 +3217,6 @@ export enum Exchange_OrderBy {
   SELLER__AUTHTOKENID = "seller__authTokenId",
   SELLER__AUTHTOKENTYPE = "seller__authTokenType",
   SELLER__CLERK = "seller__clerk",
-  SELLER__CONTRACTURI = "seller__contractURI",
   SELLER__ID = "seller__id",
   SELLER__METADATAURI = "seller__metadataUri",
   SELLER__SELLERID = "seller__sellerId",
@@ -4043,7 +4109,6 @@ export enum MetadataInterface_OrderBy {
   SELLER__AUTHTOKENID = "seller__authTokenId",
   SELLER__AUTHTOKENTYPE = "seller__authTokenType",
   SELLER__CLERK = "seller__clerk",
-  SELLER__CONTRACTURI = "seller__contractURI",
   SELLER__ID = "seller__id",
   SELLER__METADATAURI = "seller__metadataUri",
   SELLER__SELLERID = "seller__sellerId",
@@ -4649,7 +4714,7 @@ export type OfferRoyaltyInfosArgs = {
  */
 export type OfferCollection = {
   __typename?: "OfferCollection";
-  collectionAddress: Scalars["Bytes"]["output"];
+  collectionContract: CollectionContract;
   collectionIndex: Scalars["BigInt"]["output"];
   externalId: Scalars["String"]["output"];
   externalIdHash: Scalars["Bytes"]["output"];
@@ -4676,16 +4741,35 @@ export type OfferCollection_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<OfferCollection_Filter>>>;
-  collectionAddress?: InputMaybe<Scalars["Bytes"]["input"]>;
-  collectionAddress_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
-  collectionAddress_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
-  collectionAddress_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
-  collectionAddress_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
-  collectionAddress_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
-  collectionAddress_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
-  collectionAddress_not?: InputMaybe<Scalars["Bytes"]["input"]>;
-  collectionAddress_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
-  collectionAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  collectionContract?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_?: InputMaybe<CollectionContract_Filter>;
+  collectionContract_contains?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_gt?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_gte?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  collectionContract_lt?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_lte?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_not?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_not_contains_nocase?: InputMaybe<
+    Scalars["String"]["input"]
+  >;
+  collectionContract_not_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]["input"]
+  >;
+  collectionContract_not_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  collectionContract_not_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]["input"]
+  >;
+  collectionContract_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  collectionContract_starts_with_nocase?: InputMaybe<
+    Scalars["String"]["input"]
+  >;
   collectionIndex?: InputMaybe<Scalars["BigInt"]["input"]>;
   collectionIndex_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
   collectionIndex_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
@@ -4787,7 +4871,10 @@ export type OfferCollection_Filter = {
 };
 
 export enum OfferCollection_OrderBy {
-  COLLECTIONADDRESS = "collectionAddress",
+  COLLECTIONCONTRACT = "collectionContract",
+  COLLECTIONCONTRACT__ADDRESS = "collectionContract__address",
+  COLLECTIONCONTRACT__CONTRACTURI = "collectionContract__contractUri",
+  COLLECTIONCONTRACT__ID = "collectionContract__id",
   COLLECTIONINDEX = "collectionIndex",
   EXTERNALID = "externalId",
   EXTERNALIDHASH = "externalIdHash",
@@ -4808,7 +4895,6 @@ export enum OfferCollection_OrderBy {
   SELLER__AUTHTOKENID = "seller__authTokenId",
   SELLER__AUTHTOKENTYPE = "seller__authTokenType",
   SELLER__CLERK = "seller__clerk",
-  SELLER__CONTRACTURI = "seller__contractURI",
   SELLER__ID = "seller__id",
   SELLER__METADATAURI = "seller__metadataUri",
   SELLER__SELLERID = "seller__sellerId",
@@ -5405,7 +5491,6 @@ export enum Offer_OrderBy {
   BUYERCANCELPENALTY = "buyerCancelPenalty",
   COLLECTION = "collection",
   COLLECTIONINDEX = "collectionIndex",
-  COLLECTION__COLLECTIONADDRESS = "collection__collectionAddress",
   COLLECTION__COLLECTIONINDEX = "collection__collectionIndex",
   COLLECTION__EXTERNALID = "collection__externalId",
   COLLECTION__EXTERNALIDHASH = "collection__externalIdHash",
@@ -5491,7 +5576,6 @@ export enum Offer_OrderBy {
   SELLER__AUTHTOKENID = "seller__authTokenId",
   SELLER__AUTHTOKENTYPE = "seller__authTokenType",
   SELLER__CLERK = "seller__clerk",
-  SELLER__CONTRACTURI = "seller__contractURI",
   SELLER__ID = "seller__id",
   SELLER__METADATAURI = "seller__metadataUri",
   SELLER__SELLERID = "seller__sellerId",
@@ -5734,7 +5818,6 @@ export enum PendingSeller_OrderBy {
   SELLER__AUTHTOKENID = "seller__authTokenId",
   SELLER__AUTHTOKENTYPE = "seller__authTokenType",
   SELLER__CLERK = "seller__clerk",
-  SELLER__CONTRACTURI = "seller__contractURI",
   SELLER__ID = "seller__id",
   SELLER__METADATAURI = "seller__metadataUri",
   SELLER__SELLERID = "seller__sellerId",
@@ -7208,7 +7291,6 @@ export enum ProductV1MetadataEntity_OrderBy {
   SELLER__AUTHTOKENID = "seller__authTokenId",
   SELLER__AUTHTOKENTYPE = "seller__authTokenType",
   SELLER__CLERK = "seller__clerk",
-  SELLER__CONTRACTURI = "seller__contractURI",
   SELLER__ID = "seller__id",
   SELLER__METADATAURI = "seller__metadataUri",
   SELLER__SELLERID = "seller__sellerId",
@@ -9772,7 +9854,6 @@ export enum ProductV1Seller_OrderBy {
   SELLER__AUTHTOKENID = "seller__authTokenId",
   SELLER__AUTHTOKENTYPE = "seller__authTokenType",
   SELLER__CLERK = "seller__clerk",
-  SELLER__CONTRACTURI = "seller__contractURI",
   SELLER__ID = "seller__id",
   SELLER__METADATAURI = "seller__metadataUri",
   SELLER__SELLERID = "seller__sellerId",
@@ -10229,6 +10310,8 @@ export type Query = {
   bundleMetadataEntity?: Maybe<BundleMetadataEntity>;
   buyer?: Maybe<Buyer>;
   buyers: Array<Buyer>;
+  collectionContract?: Maybe<CollectionContract>;
+  collectionContracts: Array<CollectionContract>;
   conditionEntities: Array<ConditionEntity>;
   conditionEntity?: Maybe<ConditionEntity>;
   conditionalCommitAuthorizedEventLog?: Maybe<ConditionalCommitAuthorizedEventLog>;
@@ -10430,6 +10513,22 @@ export type QueryBuyersArgs = {
   skip?: InputMaybe<Scalars["Int"]["input"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Buyer_Filter>;
+};
+
+export type QueryCollectionContractArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryCollectionContractsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<CollectionContract_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<CollectionContract_Filter>;
 };
 
 export type QueryConditionEntitiesArgs = {
@@ -11686,7 +11785,6 @@ export enum RoyaltyRecipientXSeller_OrderBy {
   SELLER__AUTHTOKENID = "seller__authTokenId",
   SELLER__AUTHTOKENTYPE = "seller__authTokenType",
   SELLER__CLERK = "seller__clerk",
-  SELLER__CONTRACTURI = "seller__contractURI",
   SELLER__ID = "seller__id",
   SELLER__METADATAURI = "seller__metadataUri",
   SELLER__SELLERID = "seller__sellerId",
@@ -12036,7 +12134,6 @@ export type Seller = Account & {
   authTokenType: Scalars["Int"]["output"];
   clerk: Scalars["Bytes"]["output"];
   collections: Array<OfferCollection>;
-  contractURI: Scalars["String"]["output"];
   exchanges: Array<Exchange>;
   funds: Array<FundsEntity>;
   id: Scalars["ID"]["output"];
@@ -12705,26 +12802,6 @@ export type Seller_Filter = {
   clerk_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
   clerk_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
   collections_?: InputMaybe<OfferCollection_Filter>;
-  contractURI?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_contains?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_ends_with?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_gt?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_gte?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
-  contractURI_lt?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_lte?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_not?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_not_contains?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_not_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_not_ends_with?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_not_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_not_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
-  contractURI_not_starts_with?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_starts_with?: InputMaybe<Scalars["String"]["input"]>;
-  contractURI_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
   exchanges_?: InputMaybe<Exchange_Filter>;
   funds_?: InputMaybe<FundsEntity_Filter>;
   id?: InputMaybe<Scalars["ID"]["input"]>;
@@ -12819,7 +12896,6 @@ export enum Seller_OrderBy {
   AUTHTOKENTYPE = "authTokenType",
   CLERK = "clerk",
   COLLECTIONS = "collections",
-  CONTRACTURI = "contractURI",
   EXCHANGES = "exchanges",
   FUNDS = "funds",
   ID = "id",
@@ -12865,6 +12941,8 @@ export type Subscription = {
   bundleMetadataEntity?: Maybe<BundleMetadataEntity>;
   buyer?: Maybe<Buyer>;
   buyers: Array<Buyer>;
+  collectionContract?: Maybe<CollectionContract>;
+  collectionContracts: Array<CollectionContract>;
   conditionEntities: Array<ConditionEntity>;
   conditionEntity?: Maybe<ConditionEntity>;
   conditionalCommitAuthorizedEventLog?: Maybe<ConditionalCommitAuthorizedEventLog>;
@@ -13066,6 +13144,22 @@ export type SubscriptionBuyersArgs = {
   skip?: InputMaybe<Scalars["Int"]["input"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Buyer_Filter>;
+};
+
+export type SubscriptionCollectionContractArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionCollectionContractsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<CollectionContract_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<CollectionContract_Filter>;
 };
 
 export type SubscriptionConditionEntitiesArgs = {
@@ -14278,16 +14372,19 @@ export type GetSellerByIdQueryQuery = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     collections: Array<{
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -14412,7 +14509,6 @@ export type GetSellerByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -14492,9 +14588,13 @@ export type GetSellerByIdQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -14628,7 +14728,6 @@ export type GetSellerByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -14863,7 +14962,6 @@ export type GetSellerByIdQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -15241,7 +15339,6 @@ export type GetSellerByIdQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -15382,7 +15479,6 @@ export type GetSellerByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -15545,7 +15641,6 @@ export type GetSellerByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -15811,16 +15906,19 @@ export type GetSellersQueryQuery = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     collections: Array<{
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -15945,7 +16043,6 @@ export type GetSellersQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -16025,9 +16122,13 @@ export type GetSellersQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -16161,7 +16262,6 @@ export type GetSellersQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -16396,7 +16496,6 @@ export type GetSellersQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -16774,7 +16873,6 @@ export type GetSellersQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -16915,7 +17013,6 @@ export type GetSellersQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -17078,7 +17175,6 @@ export type GetSellersQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -17388,7 +17484,6 @@ export type GetBuyerByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -17636,7 +17731,6 @@ export type GetBuyersQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -17911,7 +18005,6 @@ export type GetDisputeResolverByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -17991,9 +18084,13 @@ export type GetDisputeResolverByIdQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -18127,7 +18224,6 @@ export type GetDisputeResolverByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -18362,7 +18458,6 @@ export type GetDisputeResolverByIdQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -18740,7 +18835,6 @@ export type GetDisputeResolverByIdQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -18881,7 +18975,6 @@ export type GetDisputeResolverByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -19216,7 +19309,6 @@ export type GetDisputeResolversQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -19296,9 +19388,13 @@ export type GetDisputeResolversQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -19432,7 +19528,6 @@ export type GetDisputeResolversQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -19667,7 +19762,6 @@ export type GetDisputeResolversQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -20045,7 +20139,6 @@ export type GetDisputeResolversQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -20186,7 +20279,6 @@ export type GetDisputeResolversQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -20438,7 +20530,6 @@ export type GetOfferCollectionsQueryQuery = {
     id: string;
     sellerId: string;
     collectionIndex: string;
-    collectionAddress: string;
     externalIdHash: string;
     externalId: string;
     seller: {
@@ -20452,7 +20543,6 @@ export type GetOfferCollectionsQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -20618,7 +20708,6 @@ export type GetOfferCollectionsQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -20698,9 +20787,13 @@ export type GetOfferCollectionsQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -20834,7 +20927,6 @@ export type GetOfferCollectionsQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -21069,7 +21161,6 @@ export type GetOfferCollectionsQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -21447,7 +21538,6 @@ export type GetOfferCollectionsQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -21588,7 +21678,6 @@ export type GetOfferCollectionsQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -21705,6 +21794,11 @@ export type GetOfferCollectionsQueryQuery = {
         owner: string;
       } | null;
     }>;
+    collectionContract: {
+      __typename?: "CollectionContract";
+      address: string;
+      contractUri: string;
+    };
     metadata?: {
       __typename?: "NftContractMetadata";
       id: string;
@@ -21739,7 +21833,6 @@ export type OfferCollectionFieldsFragment = {
   id: string;
   sellerId: string;
   collectionIndex: string;
-  collectionAddress: string;
   externalIdHash: string;
   externalId: string;
   seller: {
@@ -21753,7 +21846,6 @@ export type OfferCollectionFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
       __typename?: "RoyaltyRecipientXSeller";
@@ -21919,7 +22011,6 @@ export type OfferCollectionFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -21999,9 +22090,13 @@ export type OfferCollectionFieldsFragment = {
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -22135,7 +22230,6 @@ export type OfferCollectionFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -22368,7 +22462,6 @@ export type OfferCollectionFieldsFragment = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -22736,7 +22829,6 @@ export type OfferCollectionFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -22877,7 +22969,6 @@ export type OfferCollectionFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -22994,6 +23085,11 @@ export type OfferCollectionFieldsFragment = {
       owner: string;
     } | null;
   }>;
+  collectionContract: {
+    __typename?: "CollectionContract";
+    address: string;
+    contractUri: string;
+  };
   metadata?: {
     __typename?: "NftContractMetadata";
     id: string;
@@ -23011,9 +23107,13 @@ export type BaseOfferCollectionFieldsFragment = {
   id: string;
   sellerId: string;
   collectionIndex: string;
-  collectionAddress: string;
   externalIdHash: string;
   externalId: string;
+  collectionContract: {
+    __typename?: "CollectionContract";
+    address: string;
+    contractUri: string;
+  };
   metadata?: {
     __typename?: "NftContractMetadata";
     id: string;
@@ -23037,16 +23137,19 @@ export type SellerFieldsFragment = {
   authTokenType: number;
   voucherCloneAddress: string;
   active: boolean;
-  contractURI: string;
   metadataUri: string;
   collections: Array<{
     __typename?: "OfferCollection";
     id: string;
     sellerId: string;
     collectionIndex: string;
-    collectionAddress: string;
     externalIdHash: string;
     externalId: string;
+    collectionContract: {
+      __typename?: "CollectionContract";
+      address: string;
+      contractUri: string;
+    };
     metadata?: {
       __typename?: "NftContractMetadata";
       id: string;
@@ -23171,7 +23274,6 @@ export type SellerFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -23251,9 +23353,13 @@ export type SellerFieldsFragment = {
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -23387,7 +23493,6 @@ export type SellerFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -23620,7 +23725,6 @@ export type SellerFieldsFragment = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -23988,7 +24092,6 @@ export type SellerFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -24129,7 +24232,6 @@ export type SellerFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -24292,7 +24394,6 @@ export type SellerFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -24572,7 +24673,6 @@ export type BaseSellerFieldsFragment = {
   authTokenType: number;
   voucherCloneAddress: string;
   active: boolean;
-  contractURI: string;
   metadataUri: string;
   royaltyRecipients?: Array<{
     __typename?: "RoyaltyRecipientXSeller";
@@ -24729,7 +24829,6 @@ export type BuyerFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -24992,7 +25091,6 @@ export type DisputeResolverFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -25072,9 +25170,13 @@ export type DisputeResolverFieldsFragment = {
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -25208,7 +25310,6 @@ export type DisputeResolverFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -25441,7 +25542,6 @@ export type DisputeResolverFieldsFragment = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -25809,7 +25909,6 @@ export type DisputeResolverFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -25950,7 +26049,6 @@ export type DisputeResolverFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -26301,7 +26399,6 @@ export type GetDisputeByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -26388,7 +26485,6 @@ export type GetDisputeByIdQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -26542,7 +26638,6 @@ export type GetDisputesQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -26629,7 +26724,6 @@ export type GetDisputesQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -26773,7 +26867,6 @@ export type DisputeFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -26860,7 +26953,6 @@ export type DisputeFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
       __typename?: "RoyaltyRecipientXSeller";
@@ -27075,7 +27167,6 @@ export type GetExchangeTokenByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -27155,9 +27246,13 @@ export type GetExchangeTokenByIdQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -27291,7 +27386,6 @@ export type GetExchangeTokenByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -27526,7 +27620,6 @@ export type GetExchangeTokenByIdQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -27904,7 +27997,6 @@ export type GetExchangeTokenByIdQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -28045,7 +28137,6 @@ export type GetExchangeTokenByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -28291,7 +28382,6 @@ export type GetExchangeTokensQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -28371,9 +28461,13 @@ export type GetExchangeTokensQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -28507,7 +28601,6 @@ export type GetExchangeTokensQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -28742,7 +28835,6 @@ export type GetExchangeTokensQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -29120,7 +29212,6 @@ export type GetExchangeTokensQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -29261,7 +29352,6 @@ export type GetExchangeTokensQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -29485,7 +29575,6 @@ export type ExchangeTokenFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -29565,9 +29654,13 @@ export type ExchangeTokenFieldsFragment = {
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -29701,7 +29794,6 @@ export type ExchangeTokenFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -29934,7 +30026,6 @@ export type ExchangeTokenFieldsFragment = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -30302,7 +30393,6 @@ export type ExchangeTokenFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -30443,7 +30533,6 @@ export type ExchangeTokenFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -30850,7 +30939,6 @@ export type GetExchangeByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -30930,9 +31018,13 @@ export type GetExchangeByIdQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -31066,7 +31158,6 @@ export type GetExchangeByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -31301,7 +31392,6 @@ export type GetExchangeByIdQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -31679,7 +31769,6 @@ export type GetExchangeByIdQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -31820,7 +31909,6 @@ export type GetExchangeByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -31969,7 +32057,6 @@ export type GetExchangeByIdQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -32162,7 +32249,6 @@ export type GetExchangesQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -32242,9 +32328,13 @@ export type GetExchangesQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -32378,7 +32468,6 @@ export type GetExchangesQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -32613,7 +32702,6 @@ export type GetExchangesQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -32991,7 +33079,6 @@ export type GetExchangesQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -33132,7 +33219,6 @@ export type GetExchangesQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -33281,7 +33367,6 @@ export type GetExchangesQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -33464,7 +33549,6 @@ export type ExchangeFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -33544,9 +33628,13 @@ export type ExchangeFieldsFragment = {
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -33680,7 +33768,6 @@ export type ExchangeFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -33913,7 +34000,6 @@ export type ExchangeFieldsFragment = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -34281,7 +34367,6 @@ export type ExchangeFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -34422,7 +34507,6 @@ export type ExchangeFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -34566,7 +34650,6 @@ export type ExchangeFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
       __typename?: "RoyaltyRecipientXSeller";
@@ -34684,7 +34767,6 @@ export type BaseExchangeFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
       __typename?: "RoyaltyRecipientXSeller";
@@ -35005,7 +35087,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -35085,9 +35166,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -35221,7 +35306,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -35456,7 +35540,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -35834,7 +35917,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -35975,7 +36057,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -36103,7 +36184,6 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -36322,7 +36402,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -36402,9 +36481,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -36538,7 +36621,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -36773,7 +36855,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -37151,7 +37232,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -37292,7 +37372,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -37420,7 +37499,6 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -37629,7 +37707,6 @@ export type BaseMetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -37709,9 +37786,13 @@ export type BaseMetadataEntityFieldsFragment = {
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -37845,7 +37926,6 @@ export type BaseMetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -38078,7 +38158,6 @@ export type BaseMetadataEntityFieldsFragment = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -38446,7 +38525,6 @@ export type BaseMetadataEntityFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -38587,7 +38665,6 @@ export type BaseMetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -38715,7 +38792,6 @@ export type BaseMetadataEntityFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
       __typename?: "RoyaltyRecipientXSeller";
@@ -38923,7 +38999,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -39003,9 +39078,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -39139,7 +39218,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -39372,7 +39450,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -39740,7 +39817,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -39881,7 +39957,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -40009,7 +40084,6 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
       __typename?: "RoyaltyRecipientXSeller";
@@ -40213,7 +40287,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -40352,7 +40425,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -40432,9 +40504,13 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -40568,7 +40644,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -40803,7 +40878,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -41181,7 +41255,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -41322,7 +41395,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -41450,7 +41522,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -41569,7 +41640,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -41804,7 +41874,6 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -42104,7 +42173,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -42243,7 +42311,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -42323,9 +42390,13 @@ export type GetBundleMetadataEntitiesQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -42459,7 +42530,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -42694,7 +42764,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -43072,7 +43141,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -43213,7 +43281,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -43341,7 +43408,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -43460,7 +43526,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -43695,7 +43760,6 @@ export type GetBundleMetadataEntitiesQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -43985,7 +44049,6 @@ export type BundleMetadataEntityFieldsFragment = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -44124,7 +44187,6 @@ export type BundleMetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -44204,9 +44266,13 @@ export type BundleMetadataEntityFieldsFragment = {
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -44340,7 +44406,6 @@ export type BundleMetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -44573,7 +44638,6 @@ export type BundleMetadataEntityFieldsFragment = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -44941,7 +45005,6 @@ export type BundleMetadataEntityFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -45082,7 +45145,6 @@ export type BundleMetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -45210,7 +45272,6 @@ export type BundleMetadataEntityFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
       __typename?: "RoyaltyRecipientXSeller";
@@ -45329,7 +45390,6 @@ export type BundleMetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -45564,7 +45624,6 @@ export type BundleMetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -45853,7 +45912,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -45992,7 +46050,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -46072,9 +46129,13 @@ export type BaseBundleMetadataEntityFieldsFragment = {
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -46208,7 +46269,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -46441,7 +46501,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -46809,7 +46868,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -46950,7 +47008,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -47078,7 +47135,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
       __typename?: "RoyaltyRecipientXSeller";
@@ -47197,7 +47253,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -47432,7 +47487,6 @@ export type BaseBundleMetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -47755,7 +47809,6 @@ export type GetProductV1ProductsQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -47977,7 +48030,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
-            contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
               __typename?: "RoyaltyRecipientXSeller";
@@ -48116,7 +48168,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -48196,9 +48247,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           id: string;
           sellerId: string;
           collectionIndex: string;
-          collectionAddress: string;
           externalIdHash: string;
           externalId: string;
+          collectionContract: {
+            __typename?: "CollectionContract";
+            address: string;
+            contractUri: string;
+          };
           metadata?: {
             __typename?: "NftContractMetadata";
             id: string;
@@ -48332,7 +48387,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -48567,7 +48621,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                           authTokenType: number;
                           voucherCloneAddress: string;
                           active: boolean;
-                          contractURI: string;
                           metadataUri: string;
                           royaltyRecipients?: Array<{
                             __typename?: "RoyaltyRecipientXSeller";
@@ -48945,7 +48998,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     authTokenType: number;
                     voucherCloneAddress: string;
                     active: boolean;
-                    contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
                       __typename?: "RoyaltyRecipientXSeller";
@@ -49086,7 +49138,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -49317,7 +49368,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -49456,7 +49506,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
-            contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
               __typename?: "RoyaltyRecipientXSeller";
@@ -49536,9 +49585,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             id: string;
             sellerId: string;
             collectionIndex: string;
-            collectionAddress: string;
             externalIdHash: string;
             externalId: string;
+            collectionContract: {
+              __typename?: "CollectionContract";
+              address: string;
+              contractUri: string;
+            };
             metadata?: {
               __typename?: "NftContractMetadata";
               id: string;
@@ -49672,7 +49725,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     authTokenType: number;
                     voucherCloneAddress: string;
                     active: boolean;
-                    contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
                       __typename?: "RoyaltyRecipientXSeller";
@@ -49907,7 +49959,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                             authTokenType: number;
                             voucherCloneAddress: string;
                             active: boolean;
-                            contractURI: string;
                             metadataUri: string;
                             royaltyRecipients?: Array<{
                               __typename?: "RoyaltyRecipientXSeller";
@@ -50285,7 +50336,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -50426,7 +50476,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     authTokenType: number;
                     voucherCloneAddress: string;
                     active: boolean;
-                    contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
                       __typename?: "RoyaltyRecipientXSeller";
@@ -50554,7 +50603,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -50673,7 +50721,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
-            contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
               __typename?: "RoyaltyRecipientXSeller";
@@ -50912,7 +50959,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     authTokenType: number;
                     voucherCloneAddress: string;
                     active: boolean;
-                    contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
                       __typename?: "RoyaltyRecipientXSeller";
@@ -51182,7 +51228,6 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -51404,7 +51449,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
-            contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
               __typename?: "RoyaltyRecipientXSeller";
@@ -51543,7 +51587,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -51623,9 +51666,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           id: string;
           sellerId: string;
           collectionIndex: string;
-          collectionAddress: string;
           externalIdHash: string;
           externalId: string;
+          collectionContract: {
+            __typename?: "CollectionContract";
+            address: string;
+            contractUri: string;
+          };
           metadata?: {
             __typename?: "NftContractMetadata";
             id: string;
@@ -51759,7 +51806,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -51994,7 +52040,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                           authTokenType: number;
                           voucherCloneAddress: string;
                           active: boolean;
-                          contractURI: string;
                           metadataUri: string;
                           royaltyRecipients?: Array<{
                             __typename?: "RoyaltyRecipientXSeller";
@@ -52372,7 +52417,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     authTokenType: number;
                     voucherCloneAddress: string;
                     active: boolean;
-                    contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
                       __typename?: "RoyaltyRecipientXSeller";
@@ -52513,7 +52557,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -52744,7 +52787,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -52883,7 +52925,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
-            contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
               __typename?: "RoyaltyRecipientXSeller";
@@ -52963,9 +53004,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             id: string;
             sellerId: string;
             collectionIndex: string;
-            collectionAddress: string;
             externalIdHash: string;
             externalId: string;
+            collectionContract: {
+              __typename?: "CollectionContract";
+              address: string;
+              contractUri: string;
+            };
             metadata?: {
               __typename?: "NftContractMetadata";
               id: string;
@@ -53099,7 +53144,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     authTokenType: number;
                     voucherCloneAddress: string;
                     active: boolean;
-                    contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
                       __typename?: "RoyaltyRecipientXSeller";
@@ -53334,7 +53378,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                             authTokenType: number;
                             voucherCloneAddress: string;
                             active: boolean;
-                            contractURI: string;
                             metadataUri: string;
                             royaltyRecipients?: Array<{
                               __typename?: "RoyaltyRecipientXSeller";
@@ -53712,7 +53755,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -53853,7 +53895,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     authTokenType: number;
                     voucherCloneAddress: string;
                     active: boolean;
-                    contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
                       __typename?: "RoyaltyRecipientXSeller";
@@ -53981,7 +54022,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -54100,7 +54140,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
-            contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
               __typename?: "RoyaltyRecipientXSeller";
@@ -54339,7 +54378,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     authTokenType: number;
                     voucherCloneAddress: string;
                     active: boolean;
-                    contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
                       __typename?: "RoyaltyRecipientXSeller";
@@ -54609,7 +54647,6 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -54845,7 +54882,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -54984,7 +55020,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -55064,9 +55099,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -55200,7 +55239,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -55435,7 +55473,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -55813,7 +55850,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -55954,7 +55990,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -56082,7 +56117,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -56280,7 +56314,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -56421,7 +56454,6 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -56627,7 +56659,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -56766,7 +56797,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -56846,9 +56876,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -56982,7 +57016,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -57217,7 +57250,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -57595,7 +57627,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -57736,7 +57767,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -57864,7 +57894,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -58062,7 +58091,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -58203,7 +58231,6 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -58399,7 +58426,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -58538,7 +58564,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -58618,9 +58643,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -58754,7 +58783,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -58987,7 +59015,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -59355,7 +59382,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -59496,7 +59522,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -59624,7 +59649,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
       __typename?: "RoyaltyRecipientXSeller";
@@ -59822,7 +59846,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -59963,7 +59986,6 @@ export type ProductV1MetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -60158,7 +60180,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -60297,7 +60318,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -60377,9 +60397,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -60513,7 +60537,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -60746,7 +60769,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -61114,7 +61136,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -61255,7 +61276,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -61383,7 +61403,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
       __typename?: "RoyaltyRecipientXSeller";
@@ -61581,7 +61600,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -61722,7 +61740,6 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -61933,7 +61950,6 @@ export type BaseProductV1ProductFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -62144,7 +62160,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -62283,7 +62298,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -62363,9 +62377,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -62499,7 +62517,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -62734,7 +62751,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -63112,7 +63128,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -63253,7 +63268,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -63484,7 +63498,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
-            contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
               __typename?: "RoyaltyRecipientXSeller";
@@ -63623,7 +63636,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -63703,9 +63715,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           id: string;
           sellerId: string;
           collectionIndex: string;
-          collectionAddress: string;
           externalIdHash: string;
           externalId: string;
+          collectionContract: {
+            __typename?: "CollectionContract";
+            address: string;
+            contractUri: string;
+          };
           metadata?: {
             __typename?: "NftContractMetadata";
             id: string;
@@ -63839,7 +63855,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -64074,7 +64089,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                           authTokenType: number;
                           voucherCloneAddress: string;
                           active: boolean;
-                          contractURI: string;
                           metadataUri: string;
                           royaltyRecipients?: Array<{
                             __typename?: "RoyaltyRecipientXSeller";
@@ -64452,7 +64466,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     authTokenType: number;
                     voucherCloneAddress: string;
                     active: boolean;
-                    contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
                       __typename?: "RoyaltyRecipientXSeller";
@@ -64593,7 +64606,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -64721,7 +64733,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -64840,7 +64851,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -65079,7 +65089,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -65349,7 +65358,6 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -65560,7 +65568,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -65699,7 +65706,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -65779,9 +65785,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         id: string;
         sellerId: string;
         collectionIndex: string;
-        collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        collectionContract: {
+          __typename?: "CollectionContract";
+          address: string;
+          contractUri: string;
+        };
         metadata?: {
           __typename?: "NftContractMetadata";
           id: string;
@@ -65915,7 +65925,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -66150,7 +66159,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                         authTokenType: number;
                         voucherCloneAddress: string;
                         active: boolean;
-                        contractURI: string;
                         metadataUri: string;
                         royaltyRecipients?: Array<{
                           __typename?: "RoyaltyRecipientXSeller";
@@ -66528,7 +66536,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -66669,7 +66676,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -66900,7 +66906,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
-            contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
               __typename?: "RoyaltyRecipientXSeller";
@@ -67039,7 +67044,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -67119,9 +67123,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           id: string;
           sellerId: string;
           collectionIndex: string;
-          collectionAddress: string;
           externalIdHash: string;
           externalId: string;
+          collectionContract: {
+            __typename?: "CollectionContract";
+            address: string;
+            contractUri: string;
+          };
           metadata?: {
             __typename?: "NftContractMetadata";
             id: string;
@@ -67255,7 +67263,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -67490,7 +67497,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                           authTokenType: number;
                           voucherCloneAddress: string;
                           active: boolean;
-                          contractURI: string;
                           metadataUri: string;
                           royaltyRecipients?: Array<{
                             __typename?: "RoyaltyRecipientXSeller";
@@ -67868,7 +67874,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     authTokenType: number;
                     voucherCloneAddress: string;
                     active: boolean;
-                    contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
                       __typename?: "RoyaltyRecipientXSeller";
@@ -68009,7 +68014,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -68137,7 +68141,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -68256,7 +68259,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           authTokenType: number;
           voucherCloneAddress: string;
           active: boolean;
-          contractURI: string;
           metadataUri: string;
           royaltyRecipients?: Array<{
             __typename?: "RoyaltyRecipientXSeller";
@@ -68495,7 +68497,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   authTokenType: number;
                   voucherCloneAddress: string;
                   active: boolean;
-                  contractURI: string;
                   metadataUri: string;
                   royaltyRecipients?: Array<{
                     __typename?: "RoyaltyRecipientXSeller";
@@ -68765,7 +68766,6 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -68948,7 +68948,6 @@ export type BaseProductV1SellerFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
       __typename?: "RoyaltyRecipientXSeller";
@@ -69193,7 +69192,6 @@ export type GetOfferByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -69332,7 +69330,6 @@ export type GetOfferByIdQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -69412,9 +69409,13 @@ export type GetOfferByIdQueryQuery = {
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -69548,7 +69549,6 @@ export type GetOfferByIdQueryQuery = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -69781,7 +69781,6 @@ export type GetOfferByIdQueryQuery = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -70149,7 +70148,6 @@ export type GetOfferByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -70290,7 +70288,6 @@ export type GetOfferByIdQueryQuery = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -70499,7 +70496,6 @@ export type GetOffersQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
-        contractURI: string;
         metadataUri: string;
         royaltyRecipients?: Array<{
           __typename?: "RoyaltyRecipientXSeller";
@@ -70638,7 +70634,6 @@ export type GetOffersQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -70718,9 +70713,13 @@ export type GetOffersQueryQuery = {
       id: string;
       sellerId: string;
       collectionIndex: string;
-      collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      collectionContract: {
+        __typename?: "CollectionContract";
+        address: string;
+        contractUri: string;
+      };
       metadata?: {
         __typename?: "NftContractMetadata";
         id: string;
@@ -70854,7 +70853,6 @@ export type GetOffersQueryQuery = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -71087,7 +71085,6 @@ export type GetOffersQueryQuery = {
                       authTokenType: number;
                       voucherCloneAddress: string;
                       active: boolean;
-                      contractURI: string;
                       metadataUri: string;
                       royaltyRecipients?: Array<{
                         __typename?: "RoyaltyRecipientXSeller";
@@ -71455,7 +71452,6 @@ export type GetOffersQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
-                contractURI: string;
                 metadataUri: string;
                 royaltyRecipients?: Array<{
                   __typename?: "RoyaltyRecipientXSeller";
@@ -71596,7 +71592,6 @@ export type GetOffersQueryQuery = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -71897,7 +71892,6 @@ export type OfferFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
-      contractURI: string;
       metadataUri: string;
       royaltyRecipients?: Array<{
         __typename?: "RoyaltyRecipientXSeller";
@@ -72036,7 +72030,6 @@ export type OfferFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
       __typename?: "RoyaltyRecipientXSeller";
@@ -72116,9 +72109,13 @@ export type OfferFieldsFragment = {
     id: string;
     sellerId: string;
     collectionIndex: string;
-    collectionAddress: string;
     externalIdHash: string;
     externalId: string;
+    collectionContract: {
+      __typename?: "CollectionContract";
+      address: string;
+      contractUri: string;
+    };
     metadata?: {
       __typename?: "NftContractMetadata";
       id: string;
@@ -72252,7 +72249,6 @@ export type OfferFieldsFragment = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
-            contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
               __typename?: "RoyaltyRecipientXSeller";
@@ -72485,7 +72481,6 @@ export type OfferFieldsFragment = {
                     authTokenType: number;
                     voucherCloneAddress: string;
                     active: boolean;
-                    contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
                       __typename?: "RoyaltyRecipientXSeller";
@@ -72853,7 +72848,6 @@ export type OfferFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -72994,7 +72988,6 @@ export type OfferFieldsFragment = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
-            contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
               __typename?: "RoyaltyRecipientXSeller";
@@ -73203,7 +73196,6 @@ export type BaseOfferFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
-    contractURI: string;
     metadataUri: string;
     royaltyRecipients?: Array<{
       __typename?: "RoyaltyRecipientXSeller";
@@ -73283,9 +73275,13 @@ export type BaseOfferFieldsFragment = {
     id: string;
     sellerId: string;
     collectionIndex: string;
-    collectionAddress: string;
     externalIdHash: string;
     externalId: string;
+    collectionContract: {
+      __typename?: "CollectionContract";
+      address: string;
+      contractUri: string;
+    };
     metadata?: {
       __typename?: "NftContractMetadata";
       id: string;
@@ -73419,7 +73415,6 @@ export type BaseOfferFieldsFragment = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
-            contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
               __typename?: "RoyaltyRecipientXSeller";
@@ -73652,7 +73647,6 @@ export type BaseOfferFieldsFragment = {
                     authTokenType: number;
                     voucherCloneAddress: string;
                     active: boolean;
-                    contractURI: string;
                     metadataUri: string;
                     royaltyRecipients?: Array<{
                       __typename?: "RoyaltyRecipientXSeller";
@@ -74020,7 +74014,6 @@ export type BaseOfferFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
-              contractURI: string;
               metadataUri: string;
               royaltyRecipients?: Array<{
                 __typename?: "RoyaltyRecipientXSeller";
@@ -74161,7 +74154,6 @@ export type BaseOfferFieldsFragment = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
-            contractURI: string;
             metadataUri: string;
             royaltyRecipients?: Array<{
               __typename?: "RoyaltyRecipientXSeller";
@@ -74292,7 +74284,10 @@ export const BaseOfferCollectionFieldsFragmentDoc = gql`
     id
     sellerId
     collectionIndex
-    collectionAddress
+    collectionContract {
+      address
+      contractUri
+    }
     externalIdHash
     externalId
     metadata {
@@ -74364,7 +74359,6 @@ export const BaseSellerFieldsFragmentDoc = gql`
     authTokenType
     voucherCloneAddress
     active
-    contractURI
     royaltyRecipients {
       id
       recipient {

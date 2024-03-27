@@ -27,15 +27,62 @@ describe("core-sdk-set-contract-uri", () => {
 
     expect(createdOffer).toBeTruthy();
     expect(createdOffer.seller).toBeTruthy();
-    expect(createdOffer.seller.contractURI).not.toBe(newContractURI);
+    const seller = await coreSDK.getSellerById(createdOffer.seller.id);
+    expect(seller.collections.length).toEqual(1);
+    expect(seller.collections[0].collectionContract.contractUri).not.toEqual(
+      newContractURI
+    );
 
-    const tx = await coreSDK.setContractURI(newContractURI);
+    const collectionIndex = 0;
+    const tx = await coreSDK.setContractURI(newContractURI, collectionIndex);
     await tx.wait();
 
     await waitForGraphNodeIndexing(tx);
     const sellerWithNewContractURI = await coreSDK.getSellerById(
       createdOffer.seller.id
     );
-    expect(sellerWithNewContractURI.contractURI).toEqual(newContractURI);
+    expect(
+      sellerWithNewContractURI.collections[0].collectionContract.contractUri
+    ).toEqual(newContractURI);
+  });
+
+  test("Set contract URI - Not existing seller", async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+    const [seller] = await coreSDK.getSellersByAddress(fundedWallet.address);
+    expect(seller).not.toBeTruthy();
+
+    const newContractURI = "ipfs://testNewContractURI";
+    const collectionIndex = 0;
+    await expect(
+      coreSDK.setContractURI(newContractURI, collectionIndex)
+    ).rejects.toThrow(/No seller found for wallet/);
+  });
+
+  test("Set contract URI - Not existing collection", async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+    const newContractURI = "ipfs://testNewContractURI";
+    const createdOffer = await createSellerAndOffer(
+      coreSDK,
+      fundedWallet.address
+    );
+
+    expect(createdOffer).toBeTruthy();
+    expect(createdOffer.seller).toBeTruthy();
+    const seller = await coreSDK.getSellerById(createdOffer.seller.id);
+    expect(seller.collections.length).toEqual(1);
+    expect(seller.collections[0].collectionContract.contractUri).not.toEqual(
+      newContractURI
+    );
+
+    const collectionIndex = 1;
+    await expect(
+      coreSDK.setContractURI(newContractURI, collectionIndex)
+    ).rejects.toThrow(
+      `Collection with index ${collectionIndex} not found for seller with id ${seller.id}`
+    );
   });
 });

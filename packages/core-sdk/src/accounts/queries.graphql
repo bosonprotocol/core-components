@@ -266,7 +266,10 @@ fragment BaseOfferCollectionFields on OfferCollection {
   id
   sellerId
   collectionIndex
-  collectionAddress
+  collectionContract {
+    address
+    contractUri
+  }
   externalIdHash
   externalId
   metadata {
@@ -379,7 +382,6 @@ fragment BaseSellerFields on Seller {
   authTokenType
   voucherCloneAddress
   active
-  contractURI
   royaltyRecipients {
     id
     recipient {

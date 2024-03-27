@@ -1,7 +1,7 @@
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import * as subgraph from "../subgraph";
 import { TransactionResponse, Log } from "@bosonprotocol/common";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { getValueFromLogs } from "../utils/logs";
 import {
   commitToOffer,
@@ -207,5 +207,22 @@ export class ExchangesMixin extends BaseCoreSDK {
       exchangeId,
       subgraphUrl: this._subgraphUrl
     });
+  }
+
+  public getExchangeTokenId(
+    exchangeId: BigNumberish,
+    offerId: BigNumberish
+  ): BigNumber {
+    // Since v2.2.1, tokenId = exchangeId | offerId << 128
+    return BigNumber.from(offerId).shl(128).add(exchangeId);
+  }
+
+  public parseTokenId(tokenId: BigNumberish): {
+    offerId: BigNumber;
+    exchangeId: BigNumber;
+  } {
+    const offerId = BigNumber.from(tokenId).shr(128);
+    const exchangeId = BigNumber.from(tokenId).mask(128);
+    return { offerId, exchangeId };
   }
 }

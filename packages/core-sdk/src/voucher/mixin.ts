@@ -1,6 +1,6 @@
 import { TransactionResponse } from "@bosonprotocol/common";
 import { Range } from "@bosonprotocol/common/src/types";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { handler } from ".";
 import { accounts } from "..";
 import { getOfferById } from "../offers/subgraph";
@@ -170,18 +170,27 @@ export class VoucherMixin extends BaseCoreSDK {
 
   public async setContractURI(
     contractURI: string,
-    overrides: Partial<{
-      contractAddress: string;
-    }> = {}
+    collectionIndex: BigNumberish
   ): Promise<TransactionResponse> {
     const sellerAddress = await this._web3Lib.getSignerAddress();
     const seller = await accounts.subgraph.getSellerByAddress(
       this._subgraphUrl,
       sellerAddress
     );
+    if (!seller) {
+      throw new Error(`No seller found for wallet ${sellerAddress}`);
+    }
+    const collection = seller.collections.find((coll) =>
+      BigNumber.from(coll.collectionIndex).eq(collectionIndex)
+    );
+    if (!collection) {
+      throw new Error(
+        `Collection with index ${collectionIndex} not found for seller with id ${seller.id}`
+      );
+    }
     return handler.setContractURI({
       contractURI,
-      contractAddress: overrides.contractAddress || seller.voucherCloneAddress,
+      contractAddress: collection.collectionContract.address,
       web3Lib: this._web3Lib
     });
   }
