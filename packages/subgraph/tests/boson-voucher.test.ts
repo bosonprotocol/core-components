@@ -17,13 +17,13 @@ test("handle ContractURIChanged", () => {
   handleContractURIChanged(contractURIChanged1);
   assert.fieldEquals(
     "CollectionContract",
-    voucherAddress.toString(),
+    voucherAddress.toHexString(),
     "address",
     "0x0123456789012345678901234567890123456789"
   );
   assert.fieldEquals(
     "CollectionContract",
-    voucherAddress.toString(),
+    voucherAddress.toHexString(),
     "contractUri",
     "oriUri"
   );
@@ -34,7 +34,7 @@ test("handle ContractURIChanged", () => {
   handleContractURIChanged(contractURIChanged2);
   assert.fieldEquals(
     "CollectionContract",
-    voucherAddress.toString(),
+    voucherAddress.toHexString(),
     "contractUri",
     "newUri"
   );
