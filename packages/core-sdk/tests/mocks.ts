@@ -85,7 +85,6 @@ export function mockRawOfferFromSubgraph(
     collection: {
       id: "1-collection-0",
       collectionContract: {
-        id: ZERO_ADDRESS,
         address: ZERO_ADDRESS,
         contractUri: "ipfs://seller-contract-uri"
       },

@@ -8,7 +8,7 @@ import { getRangeId } from "./offer-handler";
 
 export function handleContractURIChanged(event: ContractURIChanged): void {
   const newContractURI = event.params.contractURI;
-  const collectionContractId = event.address.toString();
+  const collectionContractId = event.address.toHexString();
   let collectionContract = CollectionContract.load(collectionContractId);
   if (!collectionContract) {
     collectionContract = new CollectionContract(collectionContractId);

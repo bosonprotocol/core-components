@@ -38,7 +38,8 @@ async function main() {
   console.log(
     `Updating seller's voucher on env ${envName} on chain ${chainId}...`
   );
-  const txResponse = await coreSDK.setContractURI(contractURI);
+  const collectionIndex = 0;
+  const txResponse = await coreSDK.setContractURI(contractURI, collectionIndex);
   await txResponse.wait();
   console.log(`Tx hash: ${txResponse.hash}`);
 

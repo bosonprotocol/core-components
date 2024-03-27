@@ -94,8 +94,11 @@ export function handleSellerCreatedEventWithoutMetadataUri(
   const externalIdHash = crypto.keccak256(Bytes.fromUTF8(externalId));
   // save original collection
   const collectionId = getOfferCollectionId(sellerId, "0");
-  const collectionContractId = event.params.voucherCloneAddress.toString();
-  saveCollectionContract(collectionContractId, collectionMetadataUri);
+  const collectionContractId = event.params.voucherCloneAddress.toHexString();
+  saveCollectionContract(
+    event.params.voucherCloneAddress,
+    collectionMetadataUri
+  );
   saveCollectionMetadata(
     collectionId,
     collectionMetadataUri,
@@ -154,8 +157,11 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   const externalIdHash = crypto.keccak256(Bytes.fromUTF8(externalId));
   // save original collection
   const collectionId = getOfferCollectionId(sellerId, "0");
-  const collectionContractId = event.params.voucherCloneAddress.toString();
-  saveCollectionContract(collectionContractId, collectionMetadataUri);
+  const collectionContractId = event.params.voucherCloneAddress.toHexString();
+  saveCollectionContract(
+    event.params.voucherCloneAddress,
+    collectionMetadataUri
+  );
   saveCollectionMetadata(
     collectionId,
     collectionMetadataUri,
@@ -600,14 +606,15 @@ export function getOfferCollectionId(
 }
 
 export function saveCollectionContract(
-  contractAddress: string,
+  contractAddress: Address,
   contractUri: string
 ): void {
-  let collectionContract = CollectionContract.load(contractAddress);
+  const collectionContractId = contractAddress.toHexString();
+  let collectionContract = CollectionContract.load(collectionContractId);
 
   if (!collectionContract) {
-    collectionContract = new CollectionContract(contractAddress);
-    collectionContract.address = Bytes.fromHexString(contractAddress);
+    collectionContract = new CollectionContract(collectionContractId);
+    collectionContract.address = contractAddress;
   }
   collectionContract.contractUri = contractUri;
 
@@ -671,8 +678,8 @@ export function handleCollectionCreatedEvent(event: CollectionCreated): void {
     event.params.collectionAddress
   );
   const collectionMetadataUri = bosonVoucherContract.contractURI();
-  const collectionContractId = event.params.collectionAddress.toString();
-  saveCollectionContract(collectionContractId, collectionMetadataUri);
+  const collectionContractId = event.params.collectionAddress.toHexString();
+  saveCollectionContract(event.params.collectionAddress, collectionMetadataUri);
   saveCollectionMetadata(
     offerCollectionId,
     collectionMetadataUri,
