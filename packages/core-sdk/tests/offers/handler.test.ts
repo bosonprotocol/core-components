@@ -128,7 +128,6 @@ describe("#voidOffer()", () => {
             ],
             voucherCloneAddress: "0x0000111122223333444455556666777788889999",
             active: true,
-            contractURI: "ipfs://seller-contract-uri",
             metadataUri: sellerMetadataUri
           }
         })
@@ -179,7 +178,6 @@ describe("#voidOffer()", () => {
             ],
             voucherCloneAddress: "0x0000111122223333444455556666777788889999",
             active: true,
-            contractURI: "ipfs://seller-contract-uri",
             metadataUri: sellerMetadataUri
           }
         })
@@ -276,7 +274,6 @@ describe("#voidOfferBatch()", () => {
               ],
               voucherCloneAddress: "0x0000111122223333444455556666777788889999",
               active: true,
-              contractURI: "ipfs://seller-contract-uri",
               metadataUri: sellerMetadataUri
             }
           })
@@ -330,7 +327,6 @@ describe("#voidOfferBatch()", () => {
               ],
               voucherCloneAddress: "0x0000111122223333444455556666777788889999",
               active: true,
-              contractURI: "ipfs://seller-contract-uri",
               metadataUri: sellerMetadataUri
             }
           })

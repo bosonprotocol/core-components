@@ -81,6 +81,7 @@ import {
   GroupUpdated
 } from "../generated/BosonGroupHandler/IBosonGroupHandler";
 import { getDisputeResolutionTermsId } from "../src/entities/dispute-resolution";
+import { ContractURIChanged, VouchersPreMinted } from "../generated/BosonAccountHandler/IBosonVoucher";
 
 export class RoyaltyInfo {
   recipients: string[];
@@ -1343,7 +1344,6 @@ export function mockSeller(sellerId: string): Seller {
   );
   seller.authTokenType = 0;
   seller.authTokenId = BigInt.fromI32(0);
-  seller.contractURI = "ipfs://sellerContractUri";
   seller.metadataUri = "ipfs://sellerMetadataUri";
   seller.save();
   return seller;
@@ -1742,4 +1742,48 @@ export function createOfferRoyaltyInfoUpdatedEvent(
   offerRoyaltyInfoUpdated.parameters.push(executedByParam);
 
   return offerRoyaltyInfoUpdated;
+}
+
+export function createVouchersPreMinted(
+  offerId: i32,
+  startId: i32,
+  endId: i32
+): VouchersPreMinted {
+  const vouchersPreMinted = changetype<VouchersPreMinted>(newMockEvent());
+  vouchersPreMinted.parameters = [];
+  const offerIdParam = new ethereum.EventParam(
+    "offerId",
+    ethereum.Value.fromI32(offerId)
+  );
+  const startIdParam = new ethereum.EventParam(
+    "startId",
+    ethereum.Value.fromI32(startId)
+  );
+  const endIdParam = new ethereum.EventParam(
+    "endId",
+    ethereum.Value.fromI32(endId)
+  );
+
+  vouchersPreMinted.parameters.push(offerIdParam);
+  vouchersPreMinted.parameters.push(startIdParam);
+  vouchersPreMinted.parameters.push(endIdParam);
+
+  return vouchersPreMinted;
+}
+
+export function createContractURIChanged(
+  contractAddress: Address,
+  contractURI: string
+): ContractURIChanged {
+  const contractURIChanged = changetype<ContractURIChanged>(newMockEvent());
+  contractURIChanged.parameters = [];
+  contractURIChanged.address = contractAddress;
+  const contractURIParam = new ethereum.EventParam(
+    "contractURI",
+    ethereum.Value.fromString(contractURI)
+  );
+
+  contractURIChanged.parameters.push(contractURIParam);
+
+  return contractURIChanged;
 }
