@@ -6,6 +6,7 @@ export { default as ThemedButton, IButton } from "./components/ui/ThemedButton";
 export * from "./components/ui/zIndex";
 export * from "./components/ui/buttonSize";
 export * from "./components/buttons/Button";
+export * from "./components/buttons/CommitButtonView";
 export * from "./components/cta/exchange/BatchCompleteButton";
 export * from "./components/cta/exchange/CancelButton";
 export * from "./components/cta/exchange/CompleteButton";
