@@ -10,7 +10,8 @@ export type ButtonProps = IButton & {
     | "secondaryInverted" // Dispute - Refuse, ProgressBar Cancel, Back to home page, Remove variant, Batch void, Void
     | "accentFill" // cookie
     | "accentInverted" // Dispute - Copy email, Upload File, Header Sell/Seller Hub, Create Product Draft - Start Fresh, ...
-    | "accentInvertedNoBorder";
+    | "accentInvertedNoBorder"
+    | null;
   loading?: boolean;
 };
 
