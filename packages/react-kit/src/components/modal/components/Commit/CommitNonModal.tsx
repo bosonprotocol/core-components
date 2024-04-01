@@ -121,9 +121,9 @@ function CommitNonModal({
     setStep((prev) => {
       const { previousStep } = prev;
       const currentStep = previousStep.length
-        ? (previousStep.pop() as CommitStep)
+        ? (previousStep[previousStep.length - 1] as CommitStep)
         : prev.currentStep;
-      const previousWithoutLast = previousStep;
+      const previousWithoutLast = previousStep.slice(0, -1);
       return {
         previousStep: previousWithoutLast,
         currentStep: currentStep

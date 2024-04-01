@@ -18,7 +18,9 @@ export function PurchaseOverviewView({ onBackClick }: Props) {
           <Grid style={{ flex: "1" }}>
             {onBackClick && (
               <ArrowLeft
-                onClick={onBackClick}
+                onClick={() => {
+                  onBackClick();
+                }}
                 size={32}
                 style={{ cursor: "pointer" }}
               />
@@ -30,7 +32,6 @@ export function PurchaseOverviewView({ onBackClick }: Props) {
         }
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, onBackClick]);
   return <PurchaseOverview />;
 }
