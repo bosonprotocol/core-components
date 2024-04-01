@@ -9,6 +9,7 @@ import { useBreakpoints } from "../../../hooks/useBreakpoints";
 
 const colors = theme.colors.light;
 const Wrapper = styled.div<{ $flexWrap: string }>`
+  box-sizing: border-box;
   container-type: inline-size;
   position: relative;
   width: 100%;

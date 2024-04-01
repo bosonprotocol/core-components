@@ -207,7 +207,7 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
     outline: {
       color: colors.black,
       borderColor: colors.border,
-      borderWidth: 1,
+      borderWidth: 2,
       hover: {
         background: colors.border,
         color: "var(--accent)"
@@ -240,7 +240,7 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
     },
     blankSecondaryOutline: {
       color: "var(--accent)",
-      borderWidth: 1,
+      borderWidth: 2,
       borderColor: colors.secondary,
       hover: {
         borderColor: colors.secondary,
@@ -250,7 +250,7 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
     },
     blankOutline: {
       color: colors.black,
-      borderWidth: 1,
+      borderWidth: 2,
       hover: {
         borderColor: colors.secondary,
         background: colors.border,
@@ -260,7 +260,7 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
     white: {
       color: colors.black,
       background: colors.white,
-      borderWidth: 1,
+      borderWidth: 2,
       borderColor: colors.border,
       hover: {
         color: colors.white,
@@ -270,7 +270,7 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
     black: {
       color: colors.white,
       background: colors.black,
-      borderWidth: 1,
+      borderWidth: 2,
       borderColor: colors.black,
       hover: {
         color: colors.black,

@@ -7,7 +7,7 @@ import { Grid } from "../../../../ui/Grid";
 
 const colors = theme.colors.light;
 type Props = {
-  onBackClick: () => void;
+  onBackClick?: () => void;
 };
 export function PurchaseOverviewView({ onBackClick }: Props) {
   const dispatch = useNonModalContext();
@@ -16,11 +16,13 @@ export function PurchaseOverviewView({ onBackClick }: Props) {
       payload: {
         headerComponent: (
           <Grid style={{ flex: "1" }}>
-            <ArrowLeft
-              onClick={onBackClick}
-              size={32}
-              style={{ cursor: "pointer" }}
-            />
+            {onBackClick && (
+              <ArrowLeft
+                onClick={onBackClick}
+                size={32}
+                style={{ cursor: "pointer" }}
+              />
+            )}
           </Grid>
         ),
         contentStyle: {
