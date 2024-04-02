@@ -207,7 +207,7 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
     outline: {
       color: colors.black,
       borderColor: colors.border,
-      borderWidth: 1,
+      borderWidth: 2,
       hover: {
         background: colors.border,
         color: "var(--accent)"
@@ -222,7 +222,6 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
     },
     blank: {
       color: `${colors.black}4d`,
-      padding: "0.75rem 0.5rem",
       hover: {
         color: colors.black
       },
@@ -233,7 +232,6 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
     },
     blankSecondary: {
       color: "var(--accent)",
-      padding: "0.75rem 0.5rem",
       hover: {
         borderColor: colors.secondary,
         background: colors.border,
@@ -242,7 +240,7 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
     },
     blankSecondaryOutline: {
       color: "var(--accent)",
-      borderWidth: 1,
+      borderWidth: 2,
       borderColor: colors.secondary,
       hover: {
         borderColor: colors.secondary,
@@ -252,8 +250,7 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
     },
     blankOutline: {
       color: colors.black,
-      padding: "1rem 2rem",
-      borderWidth: 1,
+      borderWidth: 2,
       hover: {
         borderColor: colors.secondary,
         background: colors.border,
@@ -263,12 +260,21 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
     white: {
       color: colors.black,
       background: colors.white,
-      padding: "1rem",
-      borderWidth: 1,
+      borderWidth: 2,
       borderColor: colors.border,
       hover: {
         color: colors.white,
         background: colors.black
+      }
+    },
+    black: {
+      color: colors.white,
+      background: colors.black,
+      borderWidth: 2,
+      borderColor: colors.black,
+      hover: {
+        color: colors.black,
+        background: colors.white
       }
     },
     warning: {

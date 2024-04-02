@@ -14,7 +14,7 @@ export const button = css`
   align-items: center;
   padding: 1rem 1.5px;
   gap: 0.5rem;
-  margin: 1px;
+  margin: 0;
   position: relative;
   overflow: hidden;
   box-shadow: 0px 0px 0px #000000;

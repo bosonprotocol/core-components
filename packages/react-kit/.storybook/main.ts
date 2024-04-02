@@ -42,41 +42,39 @@ const config: StorybookConfig = {
         Buffer: ["buffer", "Buffer"]
       })
     );
-
-    // This modifies the existing image rule to exclude `.svg` files
-    // since we handle those with `@svgr/webpack`.
-    const imageRule = config.module?.rules?.find((rule) => {
-      if (typeof rule !== "string" && rule.test instanceof RegExp) {
-        return rule.test.test(".svg");
-      }
-    });
-    if (typeof imageRule !== "string" && imageRule) {
-      imageRule.exclude = /\.svg$/;
-    }
-
-    config.module?.rules?.push({
-      test: /\.svg$/,
-      use: [
-        {
-          loader: "@svgr/webpack",
-          options: {
-            svgoConfig: {
-              plugins: [
-                {
-                  name: "preset-default",
-                  params: {
-                    overrides: {
-                      // disable plugins
-                      removeViewBox: false
+    if (config.module) {
+      config.module.rules = config.module.rules?.map((rule) => {
+        // @ts-ignore
+        return "test" in rule && rule.test.test(".svg")
+          ? // @ts-ignore
+            { ...rule, exclude: /assets.+\.svg$/ }
+          : rule;
+      });
+      config.module.rules?.unshift({
+        test: /\.svg$/,
+        // use: ["@svgr/webpack"]
+        use: [
+          {
+            loader: "@svgr/webpack",
+            options: {
+              svgoConfig: {
+                plugins: [
+                  {
+                    name: "preset-default",
+                    params: {
+                      overrides: {
+                        // disable plugins
+                        removeViewBox: false
+                      }
                     }
                   }
-                }
-              ]
+                ]
+              }
             }
           }
-        }
-      ]
-    });
+        ]
+      });
+    }
     config.plugins = config.plugins?.filter((plugin) => !!plugin);
     return config;
   },
