@@ -8,7 +8,6 @@ import {
   ensureCreatedSeller,
   ensureMintedAndAllowedTokens,
   MOCK_ERC20_ADDRESS,
-  waitForGraphNodeIndexing,
   seedWallet19,
   createOffer,
   initSellerAndBuyerSDKs,
@@ -233,7 +232,7 @@ describe("core-sdk-funds", () => {
       await (await buyerCoreSDK.redeemVoucher(ex4.id)).wait();
       await (await buyerCoreSDK.completeExchange(ex4.id)).wait();
       const receipt = await (await sellerCoreSDK.revokeVoucher(ex5.id)).wait();
-      await waitForGraphNodeIndexing(receipt);
+      await sellerCoreSDK.waitForGraphNodeIndexing(receipt);
 
       const sellerFundsAfter = await sellerCoreSDK.getFunds({
         fundsFilter: {
@@ -307,7 +306,7 @@ async function depositFunds(args: {
   );
   await depositFundsTxResponse.wait();
 
-  await waitForGraphNodeIndexing(depositFundsTxResponse);
+  await args.coreSDK.waitForGraphNodeIndexing(depositFundsTxResponse);
 
   const funds = await args.coreSDK.getFunds({
     fundsFilter: {
@@ -335,7 +334,7 @@ async function withdrawFunds(args: {
     args.amountsInEth.map((amount) => utils.parseEther(amount))
   );
   await withdrawResponse.wait();
-  await waitForGraphNodeIndexing(withdrawResponse);
+  await args.coreSDK.waitForGraphNodeIndexing(withdrawResponse);
 
   const funds = await args.coreSDK.getFunds({
     fundsFilter: {

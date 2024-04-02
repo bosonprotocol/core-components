@@ -72,6 +72,7 @@
     "eslint-plugin-tsdoc": "^0.2.16",
     "form-data": "^4.0.0",
     "graphql": "^16.8.1",
+    "ipfs-utils": "^9.0.14",
     "lerna": "^5.5.1",
     "prettier": "^2.6.2",
     "run-script-os": "^1.1.6",

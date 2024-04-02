@@ -14,8 +14,7 @@ import {
   MOCK_ERC1155_ADDRESS,
   MOCK_SEAPORT_ADDRESS,
   seedWallet14,
-  seedWallet15,
-  waitForGraphNodeIndexing
+  seedWallet15
 } from "./utils";
 
 import { ExchangeState } from "../../packages/core-sdk/src/subgraph";
@@ -52,7 +51,7 @@ describe("core-sdk-premint", () => {
     const receipt = await (
       await coreSDK.reserveRange(offerId, range, "seller")
     ).wait();
-    await waitForGraphNodeIndexing(receipt);
+    await coreSDK.waitForGraphNodeIndexing(receipt);
 
     const offerReserveRange = await coreSDK.getOfferById(offerId);
     expect(Number(offerReserveRange.quantityAvailable)).toBe(
@@ -96,7 +95,7 @@ describe("core-sdk-premint", () => {
     const resultRange = await sellerCoreSDK.getRangeByOfferId(offerId);
     expect(Number(resultRange.length.toString())).toBe(range);
 
-    await waitForGraphNodeIndexing(receipt);
+    await sellerCoreSDK.waitForGraphNodeIndexing(receipt);
     const offer = await sellerCoreSDK.getOfferById(offerId);
     expect(offer.range).toBeTruthy();
 
@@ -110,7 +109,7 @@ describe("core-sdk-premint", () => {
       await sellerCoreSDK.transferFrom(offerId, buyerWallet.address, tokenId)
     ) // this will call commitToPreMintedOffer and create an exchange
       .wait();
-    await waitForGraphNodeIndexing(receipt2);
+    await sellerCoreSDK.waitForGraphNodeIndexing(receipt2);
     const exchange = await sellerCoreSDK.getExchangeById(exchangeId);
     expect(exchange.state).toBe(ExchangeState.COMMITTED);
   });
@@ -141,7 +140,7 @@ describe("core-sdk-premint", () => {
     const resultRange = await sellerCoreSDK.getRangeByOfferId(offerId);
     expect(Number(resultRange.length.toString())).toBe(range);
 
-    await waitForGraphNodeIndexing(receipt);
+    await sellerCoreSDK.waitForGraphNodeIndexing(receipt);
     const offer = await sellerCoreSDK.getOfferById(offerId);
     expect(offer.range).toBeTruthy();
 
@@ -158,14 +157,14 @@ describe("core-sdk-premint", () => {
       )
     ) // this will call commitToPreMintedOffer and create an exchange
       .wait();
-    await waitForGraphNodeIndexing(receipt2);
+    await sellerCoreSDK.waitForGraphNodeIndexing(receipt2);
 
     await (await buyerCoreSDK.redeemVoucher(exchangeId)).wait();
 
     const receipt3 = await (
       await buyerCoreSDK.raiseAndEscalateDispute(exchangeId)
     ).wait();
-    await waitForGraphNodeIndexing(receipt3);
+    await buyerCoreSDK.waitForGraphNodeIndexing(receipt3);
 
     const escalatedExchange = await sellerCoreSDK.getExchangeById(exchangeId);
     expect(escalatedExchange?.dispute?.id).toBeTruthy();
@@ -199,7 +198,7 @@ describe("core-sdk-premint", () => {
       const resultRange = await coreSDK.getRangeByOfferId(offerId);
       expect(Number(resultRange.length.toString())).toBe(range);
 
-      await waitForGraphNodeIndexing(receipt);
+      await coreSDK.waitForGraphNodeIndexing(receipt);
       const offer = await coreSDK.getOfferById(offerId);
       expect(offer.range).toBeTruthy();
 

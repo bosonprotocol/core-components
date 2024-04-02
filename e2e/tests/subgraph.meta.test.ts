@@ -1,4 +1,4 @@
-import { getSubgraphBlockNumber, waitForGraphNodeIndexing } from "./utils";
+import { getSubgraphBlockNumber, initCoreSDKWithWallet } from "./utils";
 import {
   TransactionResponse,
   TransactionReceipt
@@ -14,7 +14,8 @@ describe("subgraph meta", () => {
   test("wait for a given blockNumber", async () => {
     let currentBlock = await getSubgraphBlockNumber();
     const target = currentBlock + 2;
-    await waitForGraphNodeIndexing(target);
+    const coreSDK = initCoreSDKWithWallet(undefined);
+    await coreSDK.waitForGraphNodeIndexing(target);
     currentBlock = await getSubgraphBlockNumber();
     expect(currentBlock).toBeGreaterThanOrEqual(target);
   });
@@ -30,7 +31,8 @@ describe("subgraph meta", () => {
         });
       }
     } as TransactionResponse;
-    await waitForGraphNodeIndexing(txResponse);
+    const coreSDK = initCoreSDKWithWallet(undefined);
+    await coreSDK.waitForGraphNodeIndexing(txResponse);
     currentBlock = await getSubgraphBlockNumber();
     expect(currentBlock).toBeGreaterThanOrEqual(target);
   });
@@ -40,7 +42,8 @@ describe("subgraph meta", () => {
     const txReceipt = {
       blockNumber: target
     } as TransactionReceipt;
-    await waitForGraphNodeIndexing(txReceipt);
+    const coreSDK = initCoreSDKWithWallet(undefined);
+    await coreSDK.waitForGraphNodeIndexing(txReceipt);
     currentBlock = await getSubgraphBlockNumber();
     expect(currentBlock).toBeGreaterThanOrEqual(target);
   });

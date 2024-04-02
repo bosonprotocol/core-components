@@ -1,13 +1,7 @@
-import { BigNumber, Wallet } from "ethers";
-import { CoreSDK } from "../../packages/core-sdk/src";
-
 import {
-  createOffer,
   createSellerAndOffer,
-  ensureCreatedSeller,
   initCoreSDKWithFundedWallet,
-  seedWallet18,
-  waitForGraphNodeIndexing
+  seedWallet18
 } from "./utils";
 
 jest.setTimeout(60_000);
@@ -37,7 +31,7 @@ describe("core-sdk-set-contract-uri", () => {
     const tx = await coreSDK.setContractURI(newContractURI, collectionIndex);
     await tx.wait();
 
-    await waitForGraphNodeIndexing(tx);
+    await coreSDK.waitForGraphNodeIndexing(tx);
     const sellerWithNewContractURI = await coreSDK.getSellerById(
       createdOffer.seller.id
     );
