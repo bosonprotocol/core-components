@@ -8,6 +8,7 @@ import { Grid } from "../ui/Grid";
 
 const Wrapper = styled.div`
   width: fit-content;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
