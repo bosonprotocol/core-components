@@ -31,7 +31,6 @@ export class ErrorMixin extends BaseCoreSDK {
     if (this._errorsMap.size === 0) {
       Object.keys(abis).forEach((abi) => {
         const iface = new Interface(abis[abi]);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Object.keys(iface.errors).forEach((error) => {
           const sigHash = iface.getSighash(error);
           this._errorsMap.set(
