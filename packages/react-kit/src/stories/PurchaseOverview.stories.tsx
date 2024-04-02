@@ -24,5 +24,6 @@ export const Base: ComponentStory<typeof PurchaseOverview> = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Base.args = {
   hideModal: () => console.log("hideModal"),
-  lookAndFeel: "modal"
+  lookAndFeel: "modal",
+  modalMargin: "2%"
 };
