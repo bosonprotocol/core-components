@@ -42,6 +42,19 @@ test.each(errorHashes)("decode error %p", (errorHash) => {
   expect(decodedError["decoded"]).toEqual(fragment?.name);
 });
 
+test("decode error with originalError", () => {
+  const errorHash = errorHashes[0];
+  const fragment = errorsMap.get(errorHash);
+  expect(fragment).toBeTruthy();
+  const error = {
+    dummy: "dummy",
+    data: { dummy: "dummy", originalError: buildError(errorHash) }
+  };
+  const decodedError = coreSDK.parseError(error);
+  expect(decodedError["decoded"]).toBeTruthy();
+  expect(decodedError["decoded"]).toEqual(fragment?.name);
+});
+
 test("decode unknown error code", () => {
   const random = Math.floor(Math.random() * 4); // random integer between 0 and 3
   const unknownErrorHash = "0xabcdef01";
