@@ -11,7 +11,7 @@ export async function storeMetadataItems(args: {
       const offerMetadata = await args.metadataStorage?.getMetadata(
         offerToCreate.metadataUri
       );
-      if (offerMetadata.type === "BUNDLE") {
+      if (offerMetadata?.type === "BUNDLE") {
         await Promise.all(
           offerMetadata.items.map((item) => {
             return storeMetadataOnTheGraph({

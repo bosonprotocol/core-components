@@ -612,11 +612,21 @@ type OfferCollection @entity {
   seller: Seller!
   sellerId: BigInt!
   collectionIndex: BigInt!
-  collectionAddress: Bytes!
+  collectionContract: CollectionContract!
   externalIdHash: Bytes!
   externalId: String!
   offers: [Offer!]! @derivedFrom(field: "collection")
   metadata: NftContractMetadata
+}
+
+"""
+Collection Contract
+"""
+type CollectionContract @entity {
+  id: ID!
+  address: Bytes!
+  contractUri: String!
+  collection: OfferCollection! @derivedFrom(field: "collectionContract")
 }
 
 """
@@ -700,7 +710,6 @@ type Seller implements Account @entity {
   authTokenId: BigInt!
   authTokenType: Int!
   logs: [EventLog!]! @derivedFrom(field: "account")
-  contractURI: String!
   "Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100%"
   royaltyRecipients: [RoyaltyRecipientXSeller!] @derivedFrom(field: "seller")
   pendingSeller: PendingSeller @derivedFrom(field: "seller")

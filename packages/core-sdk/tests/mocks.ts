@@ -58,7 +58,6 @@ export function mockRawSellerFromSubgraph(
         minRoyaltyPercentage: "0"
       }
     ],
-    contractURI: "ipfs://seller-contract-uri",
     funds: [],
     offers: [],
     collections: [],
@@ -85,7 +84,10 @@ export function mockRawOfferFromSubgraph(
     collectionIndex: "0",
     collection: {
       id: "1-collection-0",
-      collectionAddress: ZERO_ADDRESS,
+      collectionContract: {
+        address: ZERO_ADDRESS,
+        contractUri: "ipfs://seller-contract-uri"
+      },
       collectionIndex: "0",
       externalId: "initial",
       externalIdHash: "0x00",
@@ -143,7 +145,6 @@ export function mockRawOfferFromSubgraph(
       authTokenType: 0,
       voucherCloneAddress: ZERO_ADDRESS,
       active: true,
-      contractURI: "ipfs://seller-contract-uri",
       metadataUri: sellerMetadataUri,
       royaltyRecipients: [
         {
@@ -246,7 +247,6 @@ export function mockRawExchangeFromSubgraph(
       authTokenType: 0,
       voucherCloneAddress: ZERO_ADDRESS,
       active: true,
-      contractURI: "ipfs://seller-contract-uri",
       metadataUri: sellerMetadataUri,
       royaltyRecipients: [
         {

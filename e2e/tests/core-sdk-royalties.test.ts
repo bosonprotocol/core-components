@@ -8,9 +8,7 @@ import {
   initCoreSDKWithFundedWallet,
   initCoreSDKWithWallet,
   prepareMultiVariantOffers,
-  seedWallet23,
-  wait,
-  waitForGraphNodeIndexing
+  seedWallet23
 } from "./utils";
 import { productV1 } from "@bosonprotocol/metadata/src";
 
@@ -100,7 +98,7 @@ describe("Seller royalties recipients", () => {
         };
       })
     );
-    await waitForGraphNodeIndexing(tx);
+    await coreSDK.waitForGraphNodeIndexing(tx);
     seller = await coreSDK.getSellerById(seller.id);
     expect(seller).toBeTruthy();
     expect(seller.royaltyRecipients).toBeTruthy();
@@ -141,7 +139,7 @@ describe("Seller royalties recipients", () => {
         };
       })
     );
-    await waitForGraphNodeIndexing(tx_2);
+    await coreSDK.waitForGraphNodeIndexing(tx_2);
     seller = await coreSDK.getSellerById(seller.id);
     expect(seller).toBeTruthy();
     expect(seller.royaltyRecipients).toBeTruthy();
@@ -281,7 +279,7 @@ describe("Seller royalties recipients", () => {
         };
       })
     );
-    await waitForGraphNodeIndexing(tx);
+    await coreSDK.waitForGraphNodeIndexing(tx);
     seller = await coreSDK.getSellerById(seller.id);
     expect(seller).toBeTruthy();
     let royaltyRecipients = seller.royaltyRecipients;
@@ -322,7 +320,7 @@ describe("Seller royalties recipients", () => {
         };
       })
     );
-    await waitForGraphNodeIndexing(tx_2);
+    await coreSDK.waitForGraphNodeIndexing(tx_2);
     seller = await coreSDK.getSellerById(seller.id);
     expect(seller).toBeTruthy();
     royaltyRecipients = seller.royaltyRecipients;
@@ -416,7 +414,7 @@ describe("Seller royalties recipients", () => {
         };
       })
     );
-    await waitForGraphNodeIndexing(tx);
+    await coreSDK.waitForGraphNodeIndexing(tx);
     seller = await coreSDK.getSellerById(seller.id);
     expect(seller).toBeTruthy();
     let royaltyRecipients = seller.royaltyRecipients;
@@ -442,7 +440,7 @@ describe("Seller royalties recipients", () => {
     const tx_2 = await coreSDK.removeRoyaltyRecipients(seller.id, [
       recipient2Index
     ]);
-    await waitForGraphNodeIndexing(tx_2);
+    await coreSDK.waitForGraphNodeIndexing(tx_2);
     seller = await coreSDK.getSellerById(seller.id);
     expect(seller).toBeTruthy();
     royaltyRecipients = seller.royaltyRecipients;
@@ -655,7 +653,7 @@ describe.only("Offer royalties recipients", () => {
       createdOffer.id,
       newRoyaltyInfo
     );
-    await waitForGraphNodeIndexing(tx2);
+    await coreSDK.waitForGraphNodeIndexing(tx2);
     const offer = await coreSDK.getOfferById(createdOffer.id);
     expect(offer.royaltyInfos).toBeTruthy();
     expect(offer.royaltyInfos.length).toEqual(2);
@@ -701,7 +699,7 @@ describe.only("Offer royalties recipients", () => {
       [createdOffer.id],
       newRoyaltyInfo
     );
-    await waitForGraphNodeIndexing(tx2);
+    await coreSDK.waitForGraphNodeIndexing(tx2);
     const offer = await coreSDK.getOfferById(createdOffer.id);
     expect(offer.royaltyInfos).toBeTruthy();
     expect(offer.royaltyInfos.length).toEqual(2);
@@ -775,7 +773,7 @@ describe.only("Offer royalties recipients", () => {
       createdOffers.map((offer) => offer.id),
       newRoyaltyInfo
     );
-    await waitForGraphNodeIndexing(tx2);
+    await coreSDK.waitForGraphNodeIndexing(tx2);
     createdOffers.forEach(async (createdOffer) => {
       const offer = await coreSDK.getOfferById(createdOffer.id);
       expect(offer.royaltyInfos).toBeTruthy();

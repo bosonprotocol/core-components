@@ -244,7 +244,7 @@ export async function initCoreSDKWithFundedWallet(seedWallet: Wallet) {
   return { coreSDK, fundedWallet };
 }
 
-export function initCoreSDKWithWallet(wallet: Wallet) {
+export function initCoreSDKWithWallet(wallet: Wallet | undefined) {
   const envName = "local";
   const configId = "local-31337-0";
   const defaultConfig = getFirstEnvConfig(envName);
@@ -269,46 +269,6 @@ export function initCoreSDKWithWallet(wallet: Wallet) {
       apiIds
     }
   });
-}
-
-export async function waitForGraphNodeIndexing(
-  blockNumberOrTransaction?: number | TransactionResponse | TransactionReceipt
-) {
-  let blockToWaitFor = 0;
-  if (typeof blockNumberOrTransaction === "number") {
-    blockToWaitFor = blockNumberOrTransaction;
-  } else if (blockNumberOrTransaction?.["blockNumber"]) {
-    blockToWaitFor = (blockNumberOrTransaction as TransactionReceipt)
-      .blockNumber;
-  } else if (blockNumberOrTransaction?.["wait"]) {
-    const txReceipt = await (
-      blockNumberOrTransaction as TransactionResponse
-    ).wait();
-    blockToWaitFor = txReceipt.blockNumber;
-  }
-  if (blockToWaitFor > 0) {
-    let currentBlock = await getSubgraphBlockNumber();
-    let oldCurrentBlock = currentBlock;
-    let sameBlockNumber = 0;
-    const MAX_SAME_BLOCK = 20;
-    while (currentBlock < blockToWaitFor) {
-      await wait(200);
-      currentBlock = await getSubgraphBlockNumber();
-      if (currentBlock === oldCurrentBlock) {
-        if (sameBlockNumber++ >= MAX_SAME_BLOCK) {
-          // Seems that the subgraph does not update its current block
-          console.error(
-            `Seems that the subgraph does not update its current block after ${currentBlock}`
-          );
-          await wait(1_000);
-          return;
-        }
-      }
-      oldCurrentBlock = currentBlock;
-    }
-    return;
-  }
-  await wait(3_000);
 }
 
 export async function wait(ms: number) {
@@ -350,7 +310,7 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
       metadataUri: sellerMetadataUri
     });
     await tx.wait();
-    await waitForGraphNodeIndexing(tx);
+    await sellerCoreSDK.waitForGraphNodeIndexing(tx);
     sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
   }
 
@@ -429,7 +389,7 @@ export async function createDisputeResolver(
     throw new Error("Failed to create dispute resolver");
   }
 
-  await waitForGraphNodeIndexing(receipt);
+  await drCoreSDK.waitForGraphNodeIndexing(receipt);
 
   const disputeResolver = await drCoreSDK.getDisputeResolverById(
     disputeResolverId
@@ -465,7 +425,7 @@ export async function createOffer(
     createOfferTxReceipt.logs
   );
 
-  await waitForGraphNodeIndexing(createOfferTxReceipt);
+  await coreSDK.waitForGraphNodeIndexing(createOfferTxReceipt);
   const offer = await coreSDK.getOfferById(createdOfferId as string);
 
   return offer;
@@ -493,14 +453,14 @@ export async function createOffer2(
     createOfferTxReceipt.logs
   );
 
-  await waitForGraphNodeIndexing(createOfferTxReceipt);
+  await coreSDK.waitForGraphNodeIndexing(createOfferTxReceipt);
 
   return await coreSDK.getOfferById(createdOfferId as string);
 }
 
 export async function voidOfferBatch(coreSDK: CoreSDK, offerIds: string[]) {
   const tx = await coreSDK.voidOfferBatch(offerIds);
-  await waitForGraphNodeIndexing(tx);
+  await coreSDK.waitForGraphNodeIndexing(tx);
 }
 
 export async function createOfferWithCondition(
@@ -533,7 +493,7 @@ export async function createOfferWithCondition(
     createOfferTxReceipt.logs
   );
 
-  await waitForGraphNodeIndexing(createOfferTxReceipt);
+  await coreSDK.waitForGraphNodeIndexing(createOfferTxReceipt);
   const offer = await coreSDK.getOfferById(createdOfferId as string);
 
   return offer;
@@ -571,7 +531,7 @@ export async function createPremintedOfferWithCondition(
     createOfferTxReceipt.logs
   );
 
-  await waitForGraphNodeIndexing(createOfferTxReceipt);
+  await coreSDK.waitForGraphNodeIndexing(createOfferTxReceipt);
   const offer = await coreSDK.getOfferById(createdOfferId as string);
 
   return offer;
@@ -620,7 +580,7 @@ export async function createPremintedOfferAddToGroup(
     createOfferTxReceipt.logs
   );
 
-  await waitForGraphNodeIndexing(createOfferTxReceipt);
+  await coreSDK.waitForGraphNodeIndexing(createOfferTxReceipt);
   const offer = await coreSDK.getOfferById(createdOfferId as string);
 
   return { offer, groupId };
@@ -680,7 +640,7 @@ export async function createSellerAndPremintedOffer(
   if (createdOfferId === null) {
     throw new Error("Failed to create seller adn preminted offer");
   }
-  await waitForGraphNodeIndexing(txReceipt);
+  await coreSDK.waitForGraphNodeIndexing(txReceipt);
   const offer = await coreSDK.getOfferById(createdOfferId as string);
 
   return offer;
@@ -742,7 +702,7 @@ export async function createSellerAndPremintedOfferWithCondition(
   if (createdOfferId === null) {
     throw new Error("Failed to create seller adn preminted offer");
   }
-  await waitForGraphNodeIndexing(txReceipt);
+  await coreSDK.waitForGraphNodeIndexing(txReceipt);
   const offer = await coreSDK.getOfferById(createdOfferId as string);
 
   return offer;
@@ -795,7 +755,7 @@ export async function createSellerAndOfferWithCondition(
   if (createdOfferId === null) {
     throw new Error("Failed to create offer with condition");
   }
-  await waitForGraphNodeIndexing(createOfferTxReceipt);
+  await coreSDK.waitForGraphNodeIndexing(createOfferTxReceipt);
   const offer = await coreSDK.getOfferById(createdOfferId);
 
   return offer;
@@ -831,7 +791,7 @@ export async function createSeller(
     createSellerTxReceipt.logs
   );
 
-  await waitForGraphNodeIndexing(createSellerTxReceipt);
+  await coreSDK.waitForGraphNodeIndexing(createSellerTxReceipt);
   if (createdSellerId === null) {
     throw new Error("Failed to create seller");
   }
@@ -873,7 +833,7 @@ export async function updateSeller(
     (max, receipt) => Math.max(max, receipt.blockNumber),
     0
   );
-  await waitForGraphNodeIndexing(maxBlockNum);
+  await coreSDK.waitForGraphNodeIndexing(maxBlockNum);
   const updatedSeller = await coreSDK.getSellerById(seller.id as string);
   return updatedSeller;
 }
@@ -923,7 +883,7 @@ export async function updateSellerMetaTx(
     (max, receipt) => Math.max(max, receipt.blockNumber),
     0
   );
-  await waitForGraphNodeIndexing(maxBlockNum);
+  await coreSDK.waitForGraphNodeIndexing(maxBlockNum);
   const updatedSeller = await coreSDK.getSellerById(seller.id as string);
   return updatedSeller;
 }
@@ -984,7 +944,7 @@ export async function createSellerAndOffer(
   if (createdOfferId === null) {
     throw new Error("Failed to create offer");
   }
-  await waitForGraphNodeIndexing(createOfferTxReceipt);
+  await coreSDK.waitForGraphNodeIndexing(createOfferTxReceipt);
   const offer = await coreSDK.getOfferById(createdOfferId);
 
   return offer;
@@ -1090,7 +1050,7 @@ export async function commitToOffer(args: {
   if (!exchangeId) {
     throw new Error("exchangeId is not defined");
   }
-  await waitForGraphNodeIndexing(commitToOfferTxReceipt);
+  await args.buyerCoreSDK.waitForGraphNodeIndexing(commitToOfferTxReceipt);
   const exchange = await args.buyerCoreSDK.getExchangeById(exchangeId);
   return exchange;
 }
@@ -1264,7 +1224,7 @@ export async function createOfferBatch(
 
   expect(createdOfferIds.length).toEqual(offersArgs.length);
 
-  await waitForGraphNodeIndexing(createOfferTxReceipt);
+  await coreSDK.waitForGraphNodeIndexing(createOfferTxReceipt);
   const offerPromises = createdOfferIds.map((createdOfferId) =>
     coreSDK.getOfferById(createdOfferId as string)
   );

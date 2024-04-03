@@ -1,10 +1,8 @@
-import { subgraph } from "../../packages/core-sdk/src";
 import { EventType } from "../../packages/core-sdk/src/subgraph";
 import {
   createSellerAndOffer,
   initCoreSDKWithFundedWallet,
-  seedWallet13,
-  waitForGraphNodeIndexing
+  seedWallet13
 } from "./utils";
 
 jest.setTimeout(60_000);
@@ -39,7 +37,7 @@ describe("fundsEventLogs", () => {
     expect(eventLogs.length).toEqual(0);
     const tx = await coreSDK.commitToOffer(createdOffer.id);
     await tx.wait();
-    await waitForGraphNodeIndexing(tx);
+    await coreSDK.waitForGraphNodeIndexing(tx);
     funds = await coreSDK.getFunds({
       fundsFilter: {
         account: createdOffer.seller.id,

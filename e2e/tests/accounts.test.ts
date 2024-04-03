@@ -9,7 +9,6 @@ import { utils, constants } from "ethers";
 import {
   initCoreSDKWithFundedWallet,
   ensureCreatedSeller,
-  waitForGraphNodeIndexing,
   createDisputeResolver,
   deployerWallet,
   seedWallet3,
@@ -95,7 +94,7 @@ describe("CoreSDK - accounts", () => {
           escalationResponsePeriodInMS: 123_000
         })
       ).wait();
-      await waitForGraphNodeIndexing(receipt);
+      await coreSDK.waitForGraphNodeIndexing(receipt);
 
       const disputeResolverAfterUpdate = await coreSDK.getDisputeResolverById(
         disputeResolverBeforeUpdate.id
@@ -126,7 +125,7 @@ describe("CoreSDK - accounts", () => {
         }
       });
       await txOptIn.wait();
-      await waitForGraphNodeIndexing(txOptIn);
+      await coreSDK2.waitForGraphNodeIndexing(txOptIn);
       const disputeResolverAfterOptIn = await coreSDK.getDisputeResolverById(
         disputeResolverBeforeUpdate.id
       );
@@ -165,7 +164,7 @@ describe("CoreSDK - accounts", () => {
       const receipt = await (
         await coreSDK.addFeesToDisputeResolver(disputeResolver.id, [secondFee])
       ).wait();
-      await waitForGraphNodeIndexing(receipt);
+      await coreSDK.waitForGraphNodeIndexing(receipt);
 
       const disputeResolverAfterUpdate = await coreSDK.getDisputeResolverById(
         disputeResolver.id
@@ -219,7 +218,7 @@ describe("CoreSDK - accounts", () => {
           [ethDisputeResolutionFee.tokenAddress]
         )
       ).wait();
-      await waitForGraphNodeIndexing(receipt);
+      await coreSDK.waitForGraphNodeIndexing(receipt);
 
       const disputeResolverAfterUpdate = await coreSDK.getDisputeResolverById(
         disputeResolverBeforeUpdate.id
@@ -256,7 +255,7 @@ describe("CoreSDK - accounts", () => {
           seller.id
         ])
       ).wait();
-      await waitForGraphNodeIndexing(receipt);
+      await coreSDK.waitForGraphNodeIndexing(receipt);
 
       const disputeResolverAfterUpdate = await coreSDK.getDisputeResolverById(
         disputeResolver.id
@@ -290,7 +289,7 @@ describe("CoreSDK - accounts", () => {
           [seller.id]
         )
       ).wait();
-      await waitForGraphNodeIndexing(receipt);
+      await coreSDK.waitForGraphNodeIndexing(receipt);
 
       const disputeResolverAfterUpdate = await coreSDK.getDisputeResolverById(
         disputeResolverBeforeUpdate.id
@@ -529,7 +528,7 @@ describe("CoreSDK - accounts", () => {
         }
       });
       await optInTx.wait();
-      await waitForGraphNodeIndexing(optInTx);
+      await coreSDK2.waitForGraphNodeIndexing(optInTx);
       seller = await coreSDK.getSellerById(seller.id as string);
       expect(seller).toBeTruthy();
       expect(seller.assistant).toEqual(randomWallet.address.toLowerCase());

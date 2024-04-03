@@ -3,7 +3,8 @@ import {
   MetadataStorage,
   MetaTxConfig,
   ContractAddresses,
-  Lens
+  Lens,
+  ErrorFragment
 } from "@bosonprotocol/common";
 import { TokenInfoManager } from "../utils/tokenInfoManager";
 
@@ -16,6 +17,8 @@ export class BaseCoreSDK {
   protected _protocolDiamond: string;
   protected _chainId: number;
   protected _tokenInfoManager: TokenInfoManager;
+
+  protected _errorsMap = new Map<string, ErrorFragment>();
 
   protected _metaTxConfig?: Partial<MetaTxConfig>;
   protected _lens?: Lens;

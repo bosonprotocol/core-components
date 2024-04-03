@@ -21,7 +21,6 @@ import {
   resolveDateValidity,
   seedWallet10,
   wait,
-  waitForGraphNodeIndexing,
   serializeVariant
 } from "./utils";
 import { SEC_PER_DAY } from "../../packages/common/src/utils/timestamp";
@@ -529,7 +528,7 @@ describe("Multi-variant offers tests", () => {
     // Commit to the offer
     const commitTx = await coreSDK.commitToOffer(offer?.id as string);
     await commitTx.wait();
-    await waitForGraphNodeIndexing(commitTx);
+    await coreSDK.waitForGraphNodeIndexing(commitTx);
 
     const productWithVariants = await coreSDK.getProductWithVariants(
       offer?.seller.id as string,
@@ -712,7 +711,7 @@ describe("Multi-variant offers tests", () => {
       // Void the offer1
       const voidTx = await coreSDK.voidOffer(offers[0].id);
       await voidTx.wait();
-      await waitForGraphNodeIndexing(voidTx);
+      await coreSDK.waitForGraphNodeIndexing(voidTx);
 
       // Check the notVoidedVariants for product1 only includes the offer2
       let allProductsWithVariants =
@@ -729,7 +728,7 @@ describe("Multi-variant offers tests", () => {
         offers[3].id
       ]);
       await batchVoidTx.wait();
-      await waitForGraphNodeIndexing(batchVoidTx);
+      await coreSDK.waitForGraphNodeIndexing(batchVoidTx);
 
       // Check the notVoidedVariants for product2 do not include any offer
       allProductsWithVariants =
