@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/browser";
 import React from "react";
 
-import { BigNumber } from "ethers";
+import { BigNumber, utils } from "ethers";
 import { useState } from "react";
 
 import { subgraph } from "@bosonprotocol/core-sdk";
@@ -15,7 +15,7 @@ import {
   extractUserFriendlyError,
   getHasUserRejectedTx
 } from "../../../../lib/errors/transactions";
-import { getNumberWithoutDecimals } from "../../../../lib/numbers/numbers";
+import { getNumberWithDecimals, getNumberWithoutDecimals } from "../../../../lib/numbers/numbers";
 import { poll } from "../../../../lib/promises/promises";
 import { DepositFundsButton } from "../../../cta/funds/DepositFundsButton";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
@@ -75,6 +75,9 @@ export default function FinanceDeposit({
 
   const tokenStep = 10 ** -Number(tokenDecimals);
   const step = 0.01;
+  const balanceWithDecimals = dataBalance
+    ? getNumberWithDecimals(dataBalance, tokenDecimals)
+    : Number.MAX_SAFE_INTEGER;
 
   const handleChangeDepositAmount = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -84,7 +87,7 @@ export default function FinanceDeposit({
     const value = e.target.valueAsNumber || 0;
     setIsDepositInvalid(false);
     setDepositError(null);
-    if (value < tokenStep || value > Number.MAX_SAFE_INTEGER) {
+    if (value < tokenStep || value > balanceWithDecimals) {
       setIsDepositInvalid(true);
     }
     setAmountToDeposit(valueStr);
