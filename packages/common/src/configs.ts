@@ -71,30 +71,6 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
     },
     {
       envName: "testing",
-      chainId: 5,
-      configId: "testing-5-0",
-      sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-5-0/sellers/blacklist.json",
-      defaultDisputeResolverId: "1",
-      defaultTokens: chainIdToDefaultTokens.get(5),
-      nativeCoin: chainIdToInfo.get(5),
-      getTxExplorerUrl: chainIdToGraphTx.get(5),
-      subgraphUrl:
-        "https://api.thegraph.com/subgraphs/name/bosonprotocol/goerli-testing",
-      jsonRpcUrl:
-        "https://goerli.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
-      contracts: {
-        // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
-        protocolDiamond: "0x76051FC05Ab42D912a737d59a8711f1446712630",
-        forwarder: "0xE041608922d06a4F26C0d4c27d8bCD01daf1f792" // https://docs-gasless.biconomy.io/misc/contract-addresses
-      },
-      metaTx: undefined,
-      lens: undefined
-    },
-    {
-      envName: "testing",
       chainId: 11155111,
       configId: "testing-11155111-0",
       sellersBlackList:
@@ -111,7 +87,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
-        protocolDiamond: "0x76051fc05ab42d912a737d59a8711f1446712630",
+        protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
         forwarder: "0xffffffffffffffffffffffffffffffffffffffff" // https://docs-gasless.biconomy.io/misc/contract-addresses
       },
       metaTx: undefined,
@@ -149,35 +125,11 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
     },
     {
       envName: "staging",
-      chainId: 5,
-      configId: "staging-5-0",
-      sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-5-0/sellers/blacklist.json",
-      defaultDisputeResolverId: "1",
-      defaultTokens: chainIdToDefaultTokens.get(5),
-      nativeCoin: chainIdToInfo.get(5),
-      getTxExplorerUrl: chainIdToGraphTx.get(5),
-      subgraphUrl:
-        "https://api.thegraph.com/subgraphs/name/bosonprotocol/goerli-staging",
-      jsonRpcUrl:
-        "https://goerli.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
-      contracts: {
-        // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
-        protocolDiamond: "0xf9719c7e641964D83cC50ea2d4d0D4e6C300d50E",
-        forwarder: "0xE041608922d06a4F26C0d4c27d8bCD01daf1f792" // https://docs-gasless.biconomy.io/misc/contract-addresses
-      },
-      metaTx: undefined,
-      lens: undefined
-    },
-    {
-      envName: "staging",
       chainId: 11155111,
       configId: "staging-11155111-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-11155111-0/sellers/blacklist.json",
-      defaultDisputeResolverId: "1", // TODO: to be confirmed
+      defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(11155111),
       nativeCoin: chainIdToInfo.get(11155111),
       getTxExplorerUrl: chainIdToGraphTx.get(11155111),
@@ -189,7 +141,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
-        protocolDiamond: "0xffffffffffffffffffffffffffffffffffffffff", // TODO: change it
+        protocolDiamond: "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
         forwarder: "0xffffffffffffffffffffffffffffffffffffffff" // https://docs-gasless.biconomy.io/misc/contract-addresses
       },
       metaTx: undefined,

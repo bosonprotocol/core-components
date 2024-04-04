@@ -22,8 +22,8 @@ export const CHAIN_IDS_TO_NAMES = {
  */
 export const L1_CHAIN_IDS = [
   ChainId.MAINNET,
-  ChainId.GOERLI,
-  // ChainId.SEPOLIA,
+  // ChainId.GOERLI,
+  ChainId.SEPOLIA,
   ChainId.POLYGON,
   ChainId.POLYGON_MUMBAI
   // LocalChainId
