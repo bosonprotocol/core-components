@@ -11,7 +11,7 @@ export const getNumberWithDecimals = (
   value: string,
   decimals: string
 ): number => {
-  return utils.formatUnits(value, decimals);
+  return Number(utils.formatUnits(value, decimals));
 };
 
 /**
