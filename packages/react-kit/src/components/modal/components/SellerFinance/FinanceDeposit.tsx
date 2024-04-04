@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/browser";
 import React from "react";
 
-import { BigNumber, utils } from "ethers";
+import { BigNumber } from "ethers";
 import { useState } from "react";
 
 import { subgraph } from "@bosonprotocol/core-sdk";
@@ -15,7 +15,10 @@ import {
   extractUserFriendlyError,
   getHasUserRejectedTx
 } from "../../../../lib/errors/transactions";
-import { getNumberWithDecimals, getNumberWithoutDecimals } from "../../../../lib/numbers/numbers";
+import {
+  getNumberWithDecimals,
+  getNumberWithoutDecimals
+} from "../../../../lib/numbers/numbers";
 import { poll } from "../../../../lib/promises/promises";
 import { DepositFundsButton } from "../../../cta/funds/DepositFundsButton";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
