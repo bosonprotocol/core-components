@@ -4,7 +4,6 @@ export const chainIdToInfo = new Map<ChainId, ProtocolConfig["nativeCoin"]>([
   [80001, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [1, { decimals: "18", name: "Ether", symbol: "ETH" }],
-  [5, { decimals: "18", name: "GTH", symbol: "GTH" }],
   [11155111, { decimals: "18", name: "sETH", symbol: "sETH" }],
   [31337, { decimals: "18", name: "Ether", symbol: "ETH" }]
 ]);
@@ -29,15 +28,6 @@ export const chainIdToGraphTx = new Map<
         return `https://polygonscan.com/address/${txHash}`;
       }
       return `https://polygonscan.com/tx/${txHash}`;
-    }
-  ],
-  [
-    5,
-    (txHash = "", isAddress = false) => {
-      if (isAddress) {
-        return `https://goerli.etherscan.io/address/${txHash}`;
-      }
-      return `https://goerli.etherscan.io/tx/${txHash}`;
     }
   ],
   [
@@ -149,41 +139,6 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
     ]
   ],
   [
-    5,
-    [
-      {
-        symbol: "ETH",
-        name: "ETH",
-        address: "0x0000000000000000000000000000000000000000",
-        decimals: "18"
-      },
-      {
-        symbol: "BOSON",
-        name: "Boson Token (PoS)",
-        address: "0xe3c811abbd19fbb9fe324eb0f30f32d1f6d20c95",
-        decimals: "18"
-      },
-      {
-        symbol: "USDC",
-        name: "USD Coin",
-        address: "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
-        decimals: "6"
-      },
-      {
-        symbol: "DAI",
-        name: "Dai Stablecoin",
-        address: "0x11fE4B6AE13d2a6055C8D9cF65c55bac32B5d844",
-        decimals: "18"
-      },
-      {
-        symbol: "USDT",
-        name: "Tether USD",
-        address: "0xfad6367E97217cC51b4cd838Cc086831f81d38C2",
-        decimals: "6"
-      }
-    ]
-  ],
-  [
     11155111,
     [
       {
@@ -201,7 +156,7 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
       {
         symbol: "USDC",
         name: "USD Coin",
-        address: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+        address: "0x6f14C02Fc1F78322cFd7d707aB90f18baD3B54f5",
         decimals: "6"
       },
       {

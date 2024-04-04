@@ -12,11 +12,6 @@ const openSeaUrlMap = new Map([
           `https://testnets.opensea.io/assets/mumbai/${contractAddress}/${tokenId}`
       ],
       [
-        "testing-5-0",
-        (tokenId: string, contractAddress: string) =>
-          `https://testnets.opensea.io/assets/goerli/${contractAddress}/${tokenId}`
-      ],
-      [
         "testing-11155111-0",
         (tokenId: string, contractAddress: string) =>
           `https://testnets.opensea.io/assets/sepolia/${contractAddress}/${tokenId}`
@@ -30,11 +25,6 @@ const openSeaUrlMap = new Map([
         "staging-80001-0",
         (tokenId: string, contractAddress: string) =>
           `https://testnets.opensea.io/assets/mumbai/${contractAddress}/${tokenId}`
-      ],
-      [
-        "staging-5-0",
-        (tokenId: string, contractAddress: string) =>
-          `https://testnets.opensea.io/assets/goerli/${contractAddress}/${tokenId}`
       ],
       [
         "staging-11155111-0",
