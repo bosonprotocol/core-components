@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 
-import FinanceWidget from "../../components/widgets/finance/FinanceWidget";
+import { FinanceWidget } from "../../components/widgets/finance/FinanceWidget";
 import { EnvironmentType, getEnvConfigs } from "@bosonprotocol/core-sdk";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {

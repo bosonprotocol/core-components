@@ -11,6 +11,9 @@ export class ErrorMixin extends BaseCoreSDK {
     if (this.isValidError(error)) {
       return this.decodeError(error["data"]);
     }
+    if (error["data"] && error["data"]["originalError"]) {
+      return this.recurseParseError(error["data"]["originalError"]);
+    }
     if (error["error"]) {
       return this.recurseParseError(error["error"]);
     }
