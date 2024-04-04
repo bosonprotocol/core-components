@@ -79,7 +79,7 @@ export default function FinanceDeposit({
   const tokenStep = 10 ** -Number(tokenDecimals);
   const step = 0.01;
   const balanceWithDecimals = dataBalance
-    ? getNumberWithDecimals(dataBalance, tokenDecimals)
+    ? getNumberWithDecimals(dataBalance.toString(), tokenDecimals)
     : Number.MAX_SAFE_INTEGER;
 
   const handleChangeDepositAmount = (
