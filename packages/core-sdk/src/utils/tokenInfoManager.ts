@@ -20,24 +20,6 @@ export const NATIVE_TOKENS: { [key: number]: ITokenInfo } = {
     decimals: 18,
     symbol: "ETH"
   },
-  3: {
-    // Ethereum Ropsten
-    name: "Ether",
-    decimals: 18,
-    symbol: "ETH"
-  },
-  4: {
-    // Ethereum Rinkeby
-    name: "Ether",
-    decimals: 18,
-    symbol: "ETH"
-  },
-  5: {
-    // Ethereum Goerli
-    name: "Ether",
-    decimals: 18,
-    symbol: "ETH"
-  },
   11155111: {
     // Ethereum Sepolia
     name: "Ether",
