@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.26.1...@bosonprotocol/common@1.27.0) (2024-04-05)
+
+
+### Bug Fixes
+
+* race condition in useSignerAddress and add uuid to web3lib adapters ([#685](https://github.com/bosonprotocol/core-components/issues/685)) ([f8e37e9](https://github.com/bosonprotocol/core-components/commit/f8e37e9dda6730c720817e093ae1a5d906b4f472))
+
+
+### Features
+
+* upgrade protocol 2.4.0 + royalties management ([#674](https://github.com/bosonprotocol/core-components/issues/674)) ([00fe7b5](https://github.com/bosonprotocol/core-components/commit/00fe7b58c309bf5280a0451ec69d74fd59293767))
+
+
+
+
+
 ## [1.26.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.26.0...@bosonprotocol/common@1.26.1) (2024-03-08)
 
 **Note:** Version bump only for package @bosonprotocol/common

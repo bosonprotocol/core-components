@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.40.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.39.1...@bosonprotocol/core-sdk@1.40.0) (2024-04-05)
+
+
+### Bug Fixes
+
+* finance widget is not loading ([#705](https://github.com/bosonprotocol/core-components/issues/705)) ([98681d2](https://github.com/bosonprotocol/core-components/commit/98681d253d7643f90d8d84b5a4d7b29cb47f705d))
+* race condition in useSignerAddress and add uuid to web3lib adapters ([#685](https://github.com/bosonprotocol/core-components/issues/685)) ([f8e37e9](https://github.com/bosonprotocol/core-components/commit/f8e37e9dda6730c720817e093ae1a5d906b4f472))
+* render Contractual Agreement fails on Sepolia network ([#704](https://github.com/bosonprotocol/core-components/issues/704)) ([a93ab3c](https://github.com/bosonprotocol/core-components/commit/a93ab3cf3386ddc341da9102d29eddcd3bdc5788))
+
+
+### Features
+
+* upgrade protocol 2.4.0 + royalties management ([#674](https://github.com/bosonprotocol/core-components/issues/674)) ([00fe7b5](https://github.com/bosonprotocol/core-components/commit/00fe7b58c309bf5280a0451ec69d74fd59293767))
+
+
+
+
+
 ## [1.39.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.39.0...@bosonprotocol/core-sdk@1.39.1) (2024-03-13)
 
 **Note:** Version bump only for package @bosonprotocol/core-sdk

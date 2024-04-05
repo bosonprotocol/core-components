@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.29.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.28.1...@bosonprotocol/react-kit@0.29.0) (2024-04-05)
+
+
+### Bug Fixes
+
+* connection to metamask for all ctas in storybook ([#696](https://github.com/bosonprotocol/core-components/issues/696)) ([3c9c236](https://github.com/bosonprotocol/core-components/commit/3c9c2361d2f83c646a505d73bd605d39b54cce6f))
+* env names ([#681](https://github.com/bosonprotocol/core-components/issues/681)) ([fc972d2](https://github.com/bosonprotocol/core-components/commit/fc972d2a83cca5a88d995a87fb768046d0a471b0))
+* finance widget is not loading ([#705](https://github.com/bosonprotocol/core-components/issues/705)) ([98681d2](https://github.com/bosonprotocol/core-components/commit/98681d253d7643f90d8d84b5a4d7b29cb47f705d))
+* force the infuraKey for the web3 provider to be different from t… ([#683](https://github.com/bosonprotocol/core-components/issues/683)) ([cc35d57](https://github.com/bosonprotocol/core-components/commit/cc35d57ae64496c83db502d501622a12d6e2d57c))
+* images when used in dapp ([#682](https://github.com/bosonprotocol/core-components/issues/682)) ([46c2912](https://github.com/bosonprotocol/core-components/commit/46c291223065f4165203f5bc0a7e0afddc6c9410))
+* race condition in useSignerAddress and add uuid to web3lib adapters ([#685](https://github.com/bosonprotocol/core-components/issues/685)) ([f8e37e9](https://github.com/bosonprotocol/core-components/commit/f8e37e9dda6730c720817e093ae1a5d906b4f472))
+* rounded values may be wrong ([#707](https://github.com/bosonprotocol/core-components/issues/707)) ([75a85e2](https://github.com/bosonprotocol/core-components/commit/75a85e2f8871eec60f9ca2f9956a14ba4544121c))
+* unexpected blank page after committing to a product ([#684](https://github.com/bosonprotocol/core-components/issues/684)) ([f571d28](https://github.com/bosonprotocol/core-components/commit/f571d28609544497d2c2c19f132b6792df025d06))
+
+
+### Features
+
+* add mute button to videos ([#691](https://github.com/bosonprotocol/core-components/issues/691)) ([fb181fd](https://github.com/bosonprotocol/core-components/commit/fb181fd137df2141e3bc67a51c596e7c42121783))
+* export purchase overview modal and commit button view (with no functionality) ([#699](https://github.com/bosonprotocol/core-components/issues/699)) ([648a15b](https://github.com/bosonprotocol/core-components/commit/648a15bccb40a8a66fb4f2ecfa95128bec282a68))
+* make mute button optional ([#693](https://github.com/bosonprotocol/core-components/issues/693)) ([848883c](https://github.com/bosonprotocol/core-components/commit/848883c521d4a068c6a060714d154c35ce4541ac))
+* upgrade protocol 2.4.0 + royalties management ([#674](https://github.com/bosonprotocol/core-components/issues/674)) ([00fe7b5](https://github.com/bosonprotocol/core-components/commit/00fe7b58c309bf5280a0451ec69d74fd59293767))
+
+
+
+
+
 ## [0.28.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.28.0...@bosonprotocol/react-kit@0.28.1) (2024-03-13)
 
 
