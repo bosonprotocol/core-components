@@ -37,8 +37,8 @@ const envNameToConfig: Record<
       startBlock: 35370695 // mumbai, this is NOT the block number when the protocol was deployed (manual override as there was an error in the subgraph)
     },
     "testing-80002-0": {
-      network: "amoy", // TO BE CONFIRMED
-      startBlock: 4958511 // TODO: change it
+      network: "amoy",
+      startBlock: 5608358 // amoy, block number when protocol was deployed https://www.oklink.com/amoy/tx/0x4c5fa4ecdaef460d53e14302b4acc99a51379f13c1c435e4d7faca6e09bf6ab0
     },
     "testing-5-0": {
       network: "goerli",
