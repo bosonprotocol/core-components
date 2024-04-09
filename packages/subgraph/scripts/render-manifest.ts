@@ -55,8 +55,8 @@ const envNameToConfig: Record<
       startBlock: 28566747 // mumbai, block number when protocol was deployed
     },
     "staging-80002-0": {
-      network: "amoy", // TO BE CONFIRMED
-      startBlock: 4958511 // TODO: change it
+      network: "amoy",
+      startBlock: 5646249 // amoy, block number when protocol was deployed https://www.oklink.com/amoy/tx/0xecce702cd69df29088b3a69e24feb62787bda7d9fcf7f0694ccd22d29e98c326
     },
     "staging-5-0": {
       network: "goerli",
