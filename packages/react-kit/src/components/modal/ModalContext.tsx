@@ -24,11 +24,10 @@ export type Store = {
   > | null;
   theme?: "light" | "dark";
 };
-export type GenericModalProps<T extends keyof typeof MODAL_TYPES> = Parameters<
-  typeof MODAL_COMPONENTS[T]
->[0] extends Record<string, never>
-  ? ModalProps & Record<string, never>
-  : ModalProps & Parameters<typeof MODAL_COMPONENTS[T]>[0];
+export type GenericModalProps<T extends keyof typeof MODAL_TYPES> =
+  Parameters<(typeof MODAL_COMPONENTS)[T]>[0] extends Record<string, never>
+    ? ModalProps & Record<string, never>
+    : ModalProps & Parameters<(typeof MODAL_COMPONENTS)[T]>[0];
 
 export interface ModalContextType {
   showModal: <T extends keyof typeof MODAL_TYPES>(

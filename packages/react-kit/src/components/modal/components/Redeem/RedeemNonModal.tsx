@@ -257,14 +257,14 @@ const getInitialStep = (
   return showRedemptionOverview
     ? ActiveStep.STEPS_OVERVIEW
     : widgetAction === RedemptionWidgetAction.SELECT_EXCHANGE
-    ? ActiveStep.MY_ITEMS
-    : widgetAction === RedemptionWidgetAction.REDEEM_FORM
-    ? ActiveStep.REDEEM_FORM
-    : widgetAction === RedemptionWidgetAction.CANCEL_FORM
-    ? ActiveStep.CANCELLATION_VIEW
-    : widgetAction === RedemptionWidgetAction.EXCHANGE_DETAILS
-    ? ActiveStep.EXCHANGE_VIEW
-    : ActiveStep.REDEEM_FORM_CONFIRMATION;
+      ? ActiveStep.MY_ITEMS
+      : widgetAction === RedemptionWidgetAction.REDEEM_FORM
+        ? ActiveStep.REDEEM_FORM
+        : widgetAction === RedemptionWidgetAction.CANCEL_FORM
+          ? ActiveStep.CANCELLATION_VIEW
+          : widgetAction === RedemptionWidgetAction.EXCHANGE_DETAILS
+            ? ActiveStep.EXCHANGE_VIEW
+            : ActiveStep.REDEEM_FORM_CONFIRMATION;
 };
 const getPreviousSteps = (
   widgetAction: RedemptionWidgetAction,

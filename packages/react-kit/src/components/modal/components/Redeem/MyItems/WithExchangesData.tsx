@@ -52,8 +52,8 @@ export function WithExchangesData(
         ? sellerIds.filter((s) => sellerCurationList?.includes(s))
         : sellerIds
       : enableCurationLists
-      ? sellerCurationList
-      : undefined;
+        ? sellerCurationList
+        : undefined;
     const committedExchanges = useExchanges(
       {
         ...orderProps,

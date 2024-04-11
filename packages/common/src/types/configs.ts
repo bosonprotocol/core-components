@@ -30,7 +30,7 @@ export type Lens = LensContracts & {
   apiLink?: string;
 };
 
-export type ChainId = typeof chains[keyof typeof chains];
+export type ChainId = (typeof chains)[keyof typeof chains];
 
 export type ConfigId =
   | "local-31337-0"

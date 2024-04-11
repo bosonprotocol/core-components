@@ -111,7 +111,7 @@ export const DetailViewWithProvider: React.FC<
             )
           : "",
         [swapQueryParameters.exactField]: Field.OUTPUT.toLowerCase()
-      } as const),
+      }) as const,
     [
       minNeededBalance,
       offer.exchangeToken.address,
