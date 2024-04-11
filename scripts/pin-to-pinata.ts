@@ -153,9 +153,8 @@ async function main() {
         createdAt_lte: toTimestampSec
       }
     };
-    const { offers: paginatedOffers } = await subgraphSdk.getOffersMediaQuery(
-      queryVars
-    );
+    const { offers: paginatedOffers } =
+      await subgraphSdk.getOffersMediaQuery(queryVars);
 
     offersToProcess = [...offersToProcess, ...paginatedOffers];
 
