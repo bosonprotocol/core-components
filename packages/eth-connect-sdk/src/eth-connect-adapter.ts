@@ -160,9 +160,8 @@ export class EthConnectAdapter implements Web3LibAdapter {
     // Note: usage of requestManager.eth_getTransactionByHash is prohibited by DCL kernel
 
     // Use standard requestManager to fetch blockchain information
-    const txReceipt = await this._requestManager.eth_getTransactionReceipt(
-      txHash
-    );
+    const txReceipt =
+      await this._requestManager.eth_getTransactionReceipt(txHash);
     return {
       from: txObject?.from,
       to: txObject?.to,

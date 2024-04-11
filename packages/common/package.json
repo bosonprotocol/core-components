@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "tsc --watch --preserveWatchOutput",
     "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
+    "lint:fix": "npm run lint -- --fix",
     "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
     "test": "jest",
     "clean": "rimraf dist coverage .turbo node_modules"

@@ -36,7 +36,11 @@ describe("#fromDefaultConfig()", () => {
     expect(() =>
       CoreSDK.fromDefaultConfig({
         web3Lib: new MockWeb3LibAdapter()
-      } as unknown as { envName: EnvironmentType; web3Lib: Web3LibAdapter; configId: ConfigId })
+      } as unknown as {
+        envName: EnvironmentType;
+        web3Lib: Web3LibAdapter;
+        configId: ConfigId;
+      })
     ).toThrow();
   });
 });

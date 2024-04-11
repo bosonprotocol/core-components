@@ -74,6 +74,7 @@
   },
   "scripts": {
     "lint": "eslint --ignore-path ../../.gitignore --ext .jsx,.tsx .",
+    "lint:fix": "npm run lint -- --fix",
     "eject": "react-scripts eject",
     "clean": "rimraf build coverage .turbo node_modules",
     "storybook": "storybook dev -p 6006",

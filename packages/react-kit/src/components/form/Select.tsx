@@ -42,8 +42,8 @@ const customStyles = (error: any) => ({
       border: state.isFocused
         ? `1px solid ${colors.secondary}`
         : !checkIfValueIsEmpty(error)
-        ? `1px solid ${colors.orange}`
-        : `1px solid ${colors.border}`,
+          ? `1px solid ${colors.orange}`
+          : `1px solid ${colors.border}`,
       ...before
     };
   },
@@ -87,8 +87,8 @@ export default function SelectComponent({
     meta.error && meta.touched && !errorMessage
       ? meta.error
       : meta.error && meta.touched && errorMessage
-      ? errorMessage
-      : "";
+        ? errorMessage
+        : "";
 
   const displayError =
     typeof displayErrorMessage === typeof "string" &&
