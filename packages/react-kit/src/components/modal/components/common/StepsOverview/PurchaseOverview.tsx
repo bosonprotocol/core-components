@@ -13,6 +13,12 @@ import { CommitStep } from "./style";
 import styled from "styled-components";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
 
+const Wrapper = styled.div`
+  p {
+    text-wrap: pretty;
+  }
+`;
+
 const CommitStepWrapper = styled.div`
   overflow: hidden;
   margin: 1rem 0;
@@ -53,20 +59,34 @@ const COMMIT_STEPS = [
   }
 ];
 
-export default function PurchaseOverview() {
+export function PurchaseOverview() {
   const { isLteXS } = useBreakpoints();
 
   return (
-    <>
+    <Wrapper>
       <Grid flexDirection="column" alignItems="flex-start">
-        <Typography tag="h4" style={{ margin: 0 }}>
-          <b>How does the purchase process work?</b>
-        </Typography>
-        <Typography tag="p">
-          When Committing to Buy, the item price will be transferred into escrow
-          and you will receive a redeemable NFT (rNFT) that can be exchanged for
-          the real-world item it represents.
-        </Typography>
+        <Grid flexDirection="column" alignItems="flex-start">
+          <Typography tag="h4" style={{ margin: 0 }}>
+            <b>Your purchase is protected by Boson</b>
+          </Typography>
+          <Typography tag="p">
+            Boson is Web3's decentralized commerce layer and enables the
+            tokenization, transfer and trade of any physical thing as a
+            redeemable NFT. <br />
+            As a buyer, when you transact with Boson you can be certain you will
+            either receive the item, or your money back
+          </Typography>
+        </Grid>
+        <Grid flexDirection="column" alignItems="flex-start">
+          <Typography tag="h4" style={{ margin: 0 }}>
+            <b>How does the purchase process work?</b>
+          </Typography>
+          <Typography tag="p">
+            When Committing to Buy, the item price will be transferred into
+            escrow and you will receive a redeemable NFT (rNFT) that can be
+            exchanged for the real-world item it represents.
+          </Typography>
+        </Grid>
       </Grid>
       <CommitStepWrapper>
         {COMMIT_STEPS.map(({ icon: Icon, header, description }, key) => (
@@ -101,6 +121,6 @@ export default function PurchaseOverview() {
           </div>
         </Grid>
       </ModalBackground>
-    </>
+    </Wrapper>
   );
 }

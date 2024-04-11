@@ -31,7 +31,7 @@ export const PurchaseOverview: React.FC<PurchaseOverviewProps> = ({
     <Wrapper>
       <NonModal
         hideModal={hideModal}
-        footerComponent={<BosonFooter />}
+        footerComponent={null}
         contentStyle={{
           background: colors.white
         }}
