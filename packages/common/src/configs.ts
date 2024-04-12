@@ -87,7 +87,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
-        protocolDiamond: "0x76051fc05ab42d912a737d59a8711f1446712630",
+        protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
         forwarder: "0xbdeA59c8801658561a16fF58D68FC2b198DE4E93" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L10
       },
       metaTx: undefined,
