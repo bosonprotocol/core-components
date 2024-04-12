@@ -12,11 +12,33 @@ import { useConfigContext } from "../config/ConfigContext";
 
 function getChain(
   chainId: number
-): [typeof wagmiChains[keyof typeof wagmiChains]] {
+): [(typeof wagmiChains)[keyof typeof wagmiChains]] {
   const chain = Object.values(wagmiChains).find(
     (chain) => chain.id === chainId
   );
   if (!chain) {
+    if (chainId === 80002) {
+      // Amoy config, from https://github.com/wevm/viem/pull/1787
+      return [
+        {
+          id: 80_002,
+          name: "Polygon Amoy",
+          nativeCurrency: { name: "MATIC", symbol: "MATIC", decimals: 18 },
+          rpcUrls: {
+            default: {
+              http: ["https://rpc-amoy.polygon.technology"]
+            }
+          },
+          blockExplorers: {
+            default: {
+              name: "OK LINK",
+              url: "https://www.oklink.com/amoy"
+            }
+          },
+          testnet: true
+        } as unknown as (typeof wagmiChains)[keyof typeof wagmiChains] // Force casting
+      ];
+    }
     throw new Error(`Cannot find a chain with id ${chainId} in wagmiChains`);
   }
   return [chain];

@@ -33,7 +33,7 @@ const envNameToConfig: Record<
   },
   testing: {
     "testing-80002-0": {
-      network: "amoy",
+      network: "polygon-amoy",
       startBlock: 5608358 // amoy, block number when protocol was deployed https://www.oklink.com/amoy/tx/0x4c5fa4ecdaef460d53e14302b4acc99a51379f13c1c435e4d7faca6e09bf6ab0
     },
     "testing-11155111-0": {
@@ -43,7 +43,7 @@ const envNameToConfig: Record<
   },
   staging: {
     "staging-80002-0": {
-      network: "amoy",
+      network: "polygon-amoy",
       startBlock: 5646249 // amoy, block number when protocol was deployed https://www.oklink.com/amoy/tx/0xecce702cd69df29088b3a69e24feb62787bda7d9fcf7f0694ccd22d29e98c326
     },
     "staging-11155111-0": {

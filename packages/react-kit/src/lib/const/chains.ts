@@ -1,12 +1,11 @@
 import { ChainId } from "@uniswap/sdk-core";
-import { ChainId_POLYGON_AMOY } from "./chainInfo";
 export const CHAIN_IDS_TO_NAMES = {
   [ChainId.MAINNET]: "mainnet",
   [ChainId.GOERLI]: "goerli",
   [ChainId.SEPOLIA]: "sepolia",
   [ChainId.POLYGON]: "polygon",
   [ChainId.POLYGON_MUMBAI]: "polygon_mumbai",
-  [ChainId_POLYGON_AMOY]: "polygon_amoy",
+  80002: "polygon_amoy",
   [ChainId.CELO]: "celo",
   [ChainId.CELO_ALFAJORES]: "celo_alfajores",
   [ChainId.ARBITRUM_ONE]: "arbitrum",
@@ -28,7 +27,7 @@ export const L1_CHAIN_IDS = [
   ChainId.SEPOLIA,
   ChainId.POLYGON,
   ChainId.POLYGON_MUMBAI,
-  ChainId_POLYGON_AMOY
+  80002
   // LocalChainId
   // ChainId.CELO,
   // ChainId.CELO_ALFAJORES
