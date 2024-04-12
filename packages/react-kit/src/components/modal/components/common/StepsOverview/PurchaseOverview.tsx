@@ -35,9 +35,9 @@ const CommitStepWrapper = styled.div`
 const COMMIT_STEPS = [
   {
     icon: ShoppingCart,
-    header: "Commit",
+    header: "Commit to Buy",
     description:
-      "Commit to an Offer to receive a Redeemable NFT (rNFT) that can be exchanged for the real-world item it represents"
+      "Commit to buy an offer to receive a Redeemable NFT (rNFT) that can be exchanged for the real-world item it represents"
   },
   {
     icon: CurrencyCircleDollar,
@@ -63,9 +63,9 @@ export default function PurchaseOverview() {
           <b>How does the purchase process work?</b>
         </Typography>
         <Typography tag="p">
-          When Committing, the item price will be transferred into escrow and
-          you will receive a redeemable NFT (rNFT) that can be exchanged for the
-          real-world item it represents.
+          When Committing to Buy, the item price will be transferred into escrow
+          and you will receive a redeemable NFT (rNFT) that can be exchanged for
+          the real-world item it represents.
         </Typography>
       </Grid>
       <CommitStepWrapper>

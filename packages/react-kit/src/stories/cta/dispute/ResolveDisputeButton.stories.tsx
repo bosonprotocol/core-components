@@ -18,11 +18,13 @@ export default {
   }
 } as ComponentMeta<typeof ResolveDisputeButton>;
 
-const Template: ComponentStory<typeof ResolveDisputeButton> = (args) => {
+const Template: ComponentStory<typeof ResolveDisputeButton> = (
+  args: Parameters<typeof ResolveDisputeButton>[0]
+) => {
   const provider = hooks.useProvider();
 
   return (
-    <CtaButtonWrapper>
+    <CtaButtonWrapper configId={args.coreSdkConfig.configId}>
       <ResolveDisputeButton
         {...args}
         coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}

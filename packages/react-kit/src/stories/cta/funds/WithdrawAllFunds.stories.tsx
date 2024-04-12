@@ -19,12 +19,14 @@ export default {
   }
 } as ComponentMeta<typeof WithdrawAllFundsButton>;
 
-const Template: ComponentStory<typeof WithdrawAllFundsButton> = (args) => {
+const Template: ComponentStory<typeof WithdrawAllFundsButton> = (
+  args: Parameters<typeof WithdrawAllFundsButton>[0]
+) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const provider = hooks.useProvider();
 
   return (
-    <CtaButtonWrapper>
+    <CtaButtonWrapper configId={args.coreSdkConfig.configId}>
       <WithdrawAllFundsButton
         {...args}
         coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}

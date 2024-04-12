@@ -31,7 +31,7 @@ export type OfferFullDescriptionProps = OnClickBuyOrSwapHandler & {
   includeGeneralProductDataTab: boolean;
   exchange: Exchange | null;
   className?: string;
-  defaultSelectedTabId?: typeof ids[number];
+  defaultSelectedTabId?: (typeof ids)[number];
 } & Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick"> &
   Pick<TabsProps, "withFullViewportWidth">;
 

@@ -236,9 +236,8 @@ export default function ExpireVoucher({
               const [, { exchangeId }] = args;
               await poll(
                 async () => {
-                  const expiredExchange = await coreSDK.getExchangeById(
-                    exchangeId
-                  );
+                  const expiredExchange =
+                    await coreSDK.getExchangeById(exchangeId);
                   return expiredExchange.expired;
                 },
                 (expired) => {

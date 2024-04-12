@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/eth-connect-sdk",
-  "version": "1.6.3-alpha.7",
+  "version": "1.6.4-alpha.0",
   "description": "Implementation of the Web3LibAdapter interface and contract abstractions targeting eth-connect for the Boson Protocol.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "tsc --build tsconfig.cjs.json --watch --preserveWatchOutput ",
     "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
+    "lint:fix": "npm run lint -- --fix",
     "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
     "test": "jest",
     "clean": "rimraf dist coverage .turbo node_modules"
@@ -30,7 +31,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@bosonprotocol/common": "^1.27.0-alpha.7"
+    "@bosonprotocol/common": "^1.27.1-alpha.0"
   },
   "devDependencies": {
     "eslint": "^8.10.0",

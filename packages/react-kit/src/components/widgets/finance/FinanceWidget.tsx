@@ -7,32 +7,20 @@ import styled from "styled-components";
 import { useAccount } from "../../../hooks/connection/connection";
 import { useDisconnect } from "../../../hooks/connection/useDisconnect";
 import { useCurrentSellers } from "../../../hooks/useCurrentSellers";
-import { CONFIG } from "../../../lib/config/config";
-import {
-  ConfigProvider,
-  ConfigProviderProps
-} from "../../config/ConfigProvider";
-import { MagicProvider } from "../../magicLink/MagicProvider";
-import ModalProvider from "../../modal/ModalProvider";
-import { SignerProvider } from "../../signer/SignerProvider";
-import GlobalStyle from "../../styles/GlobalStyle";
 import { Grid } from "../../ui/Grid";
 import Loading from "../../ui/loading/Loading";
 import ConnectButton from "../../wallet/ConnectButton";
-import WalletConnectionProvider from "../../wallet/WalletConnectionProvider";
-import { getParentWindowOrigin } from "../common";
-import { CommonWidgetTypes } from "../types";
 import Finance, { Props } from "./Finance";
-import ConvertionRateProvider, {
-  ConvertionRateProviderProps
-} from "./convertion-rate/ConvertionRateProvider";
 import { useConvertionRate } from "./convertion-rate/useConvertionRate";
 import { useExchangeTokens } from "./exchange-tokens/useExchangeTokens";
 import useFunds from "./useFunds";
 import { useOffersBacked } from "./useOffersBacked";
 import { useSellerDeposit } from "./useSellerDeposit";
 import { useSellerRoles } from "./useSellerRoles";
-import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
+import {
+  FinanceWidgetProviders,
+  FinanceWidgetProvidersProps
+} from "./FinanceWidgetProviders";
 dayjs.extend(isBetween);
 
 const StyledConnectButton = styled(ConnectButton)`
@@ -146,49 +134,20 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
 }
 
 const Component = WithSellerData(Finance);
-type FinanceWidgetProps = {
-  walletConnectProjectId: string;
-} & Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
-  CommonWidgetTypes &
-  ConvertionRateProviderProps & {
-    sellerId: string | null | undefined;
-  };
-
-const { infuraKey, magicLinkKey } = CONFIG;
+type FinanceWidgetProps = FinanceWidgetProvidersProps & {
+  sellerId: string | null | undefined;
+};
 
 export function FinanceWidget(props: FinanceWidgetProps) {
-  const parentOrigin = getParentWindowOrigin();
-  const { walletConnectProjectId, sellerId, withExternalSigner } = props;
+  const { sellerId, withExternalSigner } = props;
   return (
-    <ConfigProvider
-      magicLinkKey={magicLinkKey}
-      infuraKey={infuraKey}
-      {...props}
-    >
-      <GlobalStyle />
-      <SignerProvider
-        parentOrigin={parentOrigin}
-        withExternalSigner={withExternalSigner}
-      >
-        <MagicProvider>
-          <WalletConnectionProvider
-            walletConnectProjectId={walletConnectProjectId}
-          >
-            <ConvertionRateProvider>
-              <ModalProvider>
-                {!withExternalSigner && (
-                  <Grid justifyContent="flex-end">
-                    <StyledConnectButton showChangeWallet />
-                  </Grid>
-                )}
-                <Component sellerId={sellerId ?? undefined} />
-              </ModalProvider>
-            </ConvertionRateProvider>
-          </WalletConnectionProvider>
-        </MagicProvider>
-      </SignerProvider>
-    </ConfigProvider>
+    <FinanceWidgetProviders {...props}>
+      {!withExternalSigner && (
+        <Grid justifyContent="flex-end">
+          <StyledConnectButton showChangeWallet />
+        </Grid>
+      )}
+      <Component sellerId={sellerId ?? undefined} />
+    </FinanceWidgetProviders>
   );
 }
-
-export default withQueryClientProvider(FinanceWidget);

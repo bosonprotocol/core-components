@@ -32,39 +32,23 @@ const envNameToConfig: Record<
     }
   },
   testing: {
-    "testing-80001-0": {
-      network: "mumbai",
-      startBlock: 35370695 // mumbai, this is NOT the block number when the protocol was deployed (manual override as there was an error in the subgraph)
-    },
     "testing-80002-0": {
       network: "amoy",
       startBlock: 5608358 // amoy, block number when protocol was deployed https://www.oklink.com/amoy/tx/0x4c5fa4ecdaef460d53e14302b4acc99a51379f13c1c435e4d7faca6e09bf6ab0
     },
-    "testing-5-0": {
-      network: "goerli",
-      startBlock: 9757131 // goerli, block number when protocol was deployed https://goerli.etherscan.io/tx/0x3c51e116a6a1849936e6bd45fcee78017259ce86a93601e5e7c77cbdc25b6f38
-    },
     "testing-11155111-0": {
       network: "sepolia",
-      startBlock: 5517165 // sepolia, block number when protocol was deployed https://sepolia.etherscan.io/tx/0x755c74e6c8717d4385d65b22ddf46b885030cd4289ed072a58d26efeab1b77c1
+      startBlock: 5583820 // sepolia, block number when protocol was deployed https://sepolia.etherscan.io/tx/0xef725682e82611d0f4b39707a2f3fa869fbfbbd10d85a4f0eb0ae6dddac59d40
     }
   },
   staging: {
-    "staging-80001-0": {
-      network: "mumbai",
-      startBlock: 28566747 // mumbai, block number when protocol was deployed
-    },
     "staging-80002-0": {
       network: "amoy",
       startBlock: 5646249 // amoy, block number when protocol was deployed https://www.oklink.com/amoy/tx/0xecce702cd69df29088b3a69e24feb62787bda7d9fcf7f0694ccd22d29e98c326
     },
-    "staging-5-0": {
-      network: "goerli",
-      startBlock: 9756834 // goerli, block number when protocol was deployed https://goerli.etherscan.io/tx/0x7d4b731fc8b9fe77999f46a52891f2bd13651666bb9a15d7044b33bddd52b355
-    },
     "staging-11155111-0": {
       network: "sepolia",
-      startBlock: 5519001 // TODO: change it
+      startBlock: 5612422 // sepolia, block number when protocol was deployed https://sepolia.etherscan.io/tx/0x2f2469e88a68433794e77fd5aba9629c9dad7c61f4b0bb45f2a57fc3e65ca1f1
     }
   },
   production: {

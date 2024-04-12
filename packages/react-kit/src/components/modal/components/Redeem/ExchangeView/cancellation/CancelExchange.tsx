@@ -233,9 +233,8 @@ export function CancelExchange({
               const [, { exchangeId }] = args;
               await poll(
                 async () => {
-                  const canceledExchange = await coreSDK.getExchangeById(
-                    exchangeId
-                  );
+                  const canceledExchange =
+                    await coreSDK.getExchangeById(exchangeId);
                   return canceledExchange.cancelledDate;
                 },
                 (cancelledDate) => {

@@ -360,7 +360,9 @@ export function useCurrentSellers(
       resultByAddress.data
         ? resultByAddress.data.sellers.map((seller) => seller.id)
         : sellerAddressType === "SELLER_IDS"
-        ? [sellerAddress]
+        ? Array.isArray(sellerAddress)
+          ? sellerAddress
+          : [sellerAddress]
         : []
     ).filter((sellerId) => !!sellerId) as string[];
   }, [resultByAddress.data, sellerAddress, sellerAddressType]);

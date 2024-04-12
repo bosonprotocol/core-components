@@ -68,9 +68,8 @@ export const CommitButton = withQueryClientProvider(
           if (exchangeToken === AddressZero) {
             return false;
           }
-          const currentAllowance = await coreSdk.getProtocolAllowance(
-            exchangeToken
-          );
+          const currentAllowance =
+            await coreSdk.getProtocolAllowance(exchangeToken);
           return BigNumber.from(currentAllowance).lt(price);
         }
       },
@@ -91,7 +90,7 @@ export const CommitButton = withQueryClientProvider(
     return (
       <CtaButton
         variant={variant}
-        defaultLabel="Commit"
+        defaultLabel="Commit to Buy"
         successPayload={(receipt) => ({
           exchangeId: coreSdk.getCommittedExchangeIdFromLogs(
             receipt.logs

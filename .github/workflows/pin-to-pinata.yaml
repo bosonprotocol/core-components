@@ -36,26 +36,10 @@ jobs:
           INFURA_PROJECT_ID: ${{ secrets.INFURA_PROJECT_ID }}
           INFURA_PROJECT_SECRET: ${{ secrets.INFURA_PROJECT_SECRET }}
         run: |
-          echo "Pin for testing/mumbai env..."
-          npm run pin-to-pinata -- \
-            -e testing \
-            -c testing-80001-0 \
-            -fd ${{ env.FROM_DATE }} \
-            -p ${{ env.PINATA_JWT }} \
-            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
-
           echo "Pin for testing/amoy env..."
           npm run pin-to-pinata -- \
             -e testing \
             -c testing-80002-0 \
-            -fd ${{ env.FROM_DATE }} \
-            -p ${{ env.PINATA_JWT }} \
-            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
-
-          echo "Pin for testing/goerli env..."
-          npm run pin-to-pinata -- \
-            -e testing \
-            -c testing-5-0 \
             -fd ${{ env.FROM_DATE }} \
             -p ${{ env.PINATA_JWT }} \
             -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
@@ -68,26 +52,10 @@ jobs:
             -p ${{ env.PINATA_JWT }} \
             -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
 
-          echo "Pin for staging/mumbai env..."
-          npm run pin-to-pinata -- \
-            -e staging \
-            -c staging-80001-0 \
-            -fd ${{ env.FROM_DATE }} \
-            -p ${{ env.PINATA_JWT }} \
-            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
-
           echo "Pin for staging/amoy env..."
           npm run pin-to-pinata -- \
             -e staging \
             -c staging-80002-0 \
-            -fd ${{ env.FROM_DATE }} \
-            -p ${{ env.PINATA_JWT }} \
-            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
-
-          echo "Pin for staging/goerli env..."
-          npm run pin-to-pinata -- \
-            -e staging \
-            -c staging-5-0 \
             -fd ${{ env.FROM_DATE }} \
             -p ${{ env.PINATA_JWT }} \
             -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}

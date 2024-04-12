@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.13.2...@bosonprotocol/ethers-sdk@1.14.0) (2024-04-05)
+
+
+### Bug Fixes
+
+* race condition in useSignerAddress and add uuid to web3lib adapters ([#685](https://github.com/bosonprotocol/core-components/issues/685)) ([f8e37e9](https://github.com/bosonprotocol/core-components/commit/f8e37e9dda6730c720817e093ae1a5d906b4f472))
+
+
+### Features
+
+* upgrade protocol 2.4.0 + royalties management ([#674](https://github.com/bosonprotocol/core-components/issues/674)) ([00fe7b5](https://github.com/bosonprotocol/core-components/commit/00fe7b58c309bf5280a0451ec69d74fd59293767))
+
+
+
+
+
 ## [1.13.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.13.1...@bosonprotocol/ethers-sdk@1.13.2) (2024-03-13)
 
 **Note:** Version bump only for package @bosonprotocol/ethers-sdk

@@ -46,8 +46,8 @@ export default function SelectTime({
       period
         ? [date?.isToday() ? dayjs().format("HH") : "00", "23"]
         : date?.isToday()
-        ? dayjs().format("HH")
-        : "00",
+          ? dayjs().format("HH")
+          : "00",
     [period, date]
   );
   const DEFAULT_MINUTE = useMemo(
@@ -55,8 +55,8 @@ export default function SelectTime({
       period
         ? [date?.isToday() ? dayjs().add(5, "minute").format("mm") : "00", "59"]
         : date?.isToday()
-        ? dayjs().add(5, "minute").format("mm")
-        : "00",
+          ? dayjs().add(5, "minute").format("mm")
+          : "00",
     [period, date]
   );
   const DEFAULT_TIME = useMemo(() => (period ? ["00", "00"] : "00"), [period]);

@@ -5,7 +5,6 @@ export const chainIdToInfo = new Map<ChainId, ProtocolConfig["nativeCoin"]>([
   [80002, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [1, { decimals: "18", name: "Ether", symbol: "ETH" }],
-  [5, { decimals: "18", name: "GTH", symbol: "GTH" }],
   [11155111, { decimals: "18", name: "sETH", symbol: "sETH" }],
   [31337, { decimals: "18", name: "Ether", symbol: "ETH" }]
 ]);
@@ -14,15 +13,6 @@ export const chainIdToGraphTx = new Map<
   ChainId,
   (txHash?: string, isAddress?: boolean) => string
 >([
-  [
-    80001,
-    (txHash = "", isAddress = false) => {
-      if (isAddress) {
-        return `https://mumbai.polygonscan.com/address/${txHash}`;
-      }
-      return `https://mumbai.polygonscan.com/tx/${txHash}`;
-    }
-  ],
   [
     80002,
     (txHash = "", isAddress = false) => {
@@ -39,15 +29,6 @@ export const chainIdToGraphTx = new Map<
         return `https://polygonscan.com/address/${txHash}`;
       }
       return `https://polygonscan.com/tx/${txHash}`;
-    }
-  ],
-  [
-    5,
-    (txHash = "", isAddress = false) => {
-      if (isAddress) {
-        return `https://goerli.etherscan.io/address/${txHash}`;
-      }
-      return `https://goerli.etherscan.io/tx/${txHash}`;
     }
   ],
   [
@@ -73,18 +54,6 @@ export const chainIdToGraphTx = new Map<
 
 // https://docs.lens.xyz/docs/deployed-contract-addresses
 export const chainIdToLensInfo = new Map<ChainId, Lens>([
-  [
-    80001,
-    {
-      LENS_HUB_CONTRACT: "0x60Ae865ee4C725cd04353b5AAb364553f56ceF82",
-      LENS_PERIPHERY_CONTRACT: "0xD5037d72877808cdE7F669563e9389930AF404E8",
-      LENS_PROFILES_CONTRACT_ADDRESS:
-        "0x60ae865ee4c725cd04353b5aab364553f56cef82",
-      LENS_PROFILES_CONTRACT_PARTIAL_ABI:
-        '[{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event","signature":"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"}]',
-      apiLink: "https://api-mumbai.lens.dev/"
-    }
-  ],
   [
     137,
     {
@@ -118,47 +87,6 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
     ]
   ],
   [
-    80001,
-    [
-      {
-        symbol: "MATIC",
-        name: "MATIC",
-        address: "0x0000000000000000000000000000000000000000",
-        decimals: "18"
-      },
-      {
-        symbol: "WETH",
-        name: "Wrapped Ether",
-        address: "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa",
-        decimals: "18"
-      },
-      {
-        symbol: "BOSON",
-        name: "Boson Token (PoS)",
-        address: "0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0",
-        decimals: "18"
-      },
-      {
-        symbol: "USDC",
-        name: "Mumbai USD Coin",
-        address: "0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747",
-        decimals: "6"
-      },
-      {
-        symbol: "DAI",
-        name: "DAI",
-        address: "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
-        decimals: "18"
-      },
-      {
-        symbol: "USDT",
-        name: "Tether USD",
-        address: "0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832",
-        decimals: "6"
-      }
-    ]
-  ],
-  [
     80002,
     [
       {
@@ -176,7 +104,7 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
       {
         symbol: "BOSON",
         name: "Boson Token (PoS)",
-        address: "0x????????????????????????????????????????", // TODO: to be defined
+        address: "0x94e32c4bfcA1D3fe08B6F8252ABB47A5B14AC2bD",
         decimals: "18"
       },
       {
@@ -195,41 +123,6 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
         symbol: "USDT",
         name: "Tether USD",
         address: "0x????????????????????????????????????????", // TODO: to be defined
-        decimals: "6"
-      }
-    ]
-  ],
-  [
-    5,
-    [
-      {
-        symbol: "ETH",
-        name: "ETH",
-        address: "0x0000000000000000000000000000000000000000",
-        decimals: "18"
-      },
-      {
-        symbol: "BOSON",
-        name: "Boson Token (PoS)",
-        address: "0xe3c811abbd19fbb9fe324eb0f30f32d1f6d20c95",
-        decimals: "18"
-      },
-      {
-        symbol: "USDC",
-        name: "USD Coin",
-        address: "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
-        decimals: "6"
-      },
-      {
-        symbol: "DAI",
-        name: "Dai Stablecoin",
-        address: "0x11fE4B6AE13d2a6055C8D9cF65c55bac32B5d844",
-        decimals: "18"
-      },
-      {
-        symbol: "USDT",
-        name: "Tether USD",
-        address: "0xfad6367E97217cC51b4cd838Cc086831f81d38C2",
         decimals: "6"
       }
     ]
@@ -252,7 +145,7 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
       {
         symbol: "USDC",
         name: "USD Coin",
-        address: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+        address: "0x6f14C02Fc1F78322cFd7d707aB90f18baD3B54f5",
         decimals: "6"
       },
       {

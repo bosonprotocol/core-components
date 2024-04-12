@@ -117,7 +117,6 @@ const GlobalStyle = createGlobalStyle<
     margin: 0;
     padding: 0;
 
-    background-color: var(--primaryBgColor);
     color: var(--textColor);
 
     font-family: ${(props) => props.$fontFamily || "Plus Jakarta Sans"};

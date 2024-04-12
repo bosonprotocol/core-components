@@ -7,8 +7,7 @@ import {
   initCoreSDKWithFundedWallet,
   publishNftContractMetadata,
   seedWallet20,
-  updateSeller,
-  waitForGraphNodeIndexing
+  updateSeller
 } from "./utils";
 import { Wallet } from "ethers";
 
@@ -104,7 +103,7 @@ describe("Offer collections", () => {
       collectionId: customCollectionId
     });
     await tx.wait();
-    await waitForGraphNodeIndexing(tx);
+    await coreSDK_A.waitForGraphNodeIndexing(tx);
     const collections = await coreSDK_A.getOfferCollections({
       offerCollectionsFilter: {
         sellerId: seller.id
@@ -125,7 +124,7 @@ describe("Offer collections", () => {
       collectionId: customCollectionId
     });
     await tx.wait();
-    await waitForGraphNodeIndexing(tx);
+    await coreSDK_A.waitForGraphNodeIndexing(tx);
     const collections = await coreSDK_A.getOfferCollections({
       offerCollectionsFilter: {
         sellerId: seller.id
@@ -229,7 +228,7 @@ describe("Offer collections", () => {
       collectionId: maxLengthId
     });
     await tx.wait();
-    await waitForGraphNodeIndexing(tx);
+    await coreSDK_A.waitForGraphNodeIndexing(tx);
     const collections = await coreSDK_A.getOfferCollections({
       offerCollectionsFilter: {
         sellerId: seller.id
@@ -287,7 +286,7 @@ describe("Offer collections", () => {
       collectionId: collectionMetadata2.name
     });
     await tx.wait();
-    await waitForGraphNodeIndexing(tx);
+    await coreSDK.waitForGraphNodeIndexing(tx);
     const collections = await coreSDK.getOfferCollections({
       offerCollectionsFilter: {
         sellerId: seller.id

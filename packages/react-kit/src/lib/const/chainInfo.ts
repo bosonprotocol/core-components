@@ -64,15 +64,6 @@ const CHAIN_INFO: ChainInfoMap = {
     logoUrl: ethereumLogoUrl,
     nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 }
   },
-  [ChainId.GOERLI]: {
-    networkType: NetworkType.L1,
-    docs: "https://docs.uniswap.org/",
-    explorer: "https://goerli.etherscan.io/",
-    infoLink: "https://info.uniswap.org/#/",
-    label: "Görli",
-    logoUrl: ethereumLogoUrl,
-    nativeCurrency: { name: "Görli Ether", symbol: "görETH", decimals: 18 }
-  },
   [ChainId.SEPOLIA]: {
     networkType: NetworkType.L1,
     docs: "https://docs.uniswap.org/",

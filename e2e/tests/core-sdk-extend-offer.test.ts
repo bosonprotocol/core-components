@@ -5,8 +5,7 @@ import {
   createSellerAndOffer,
   ensureCreatedSeller,
   initCoreSDKWithFundedWallet,
-  seedWallet16,
-  waitForGraphNodeIndexing
+  seedWallet16
 } from "./utils";
 
 jest.setTimeout(60_000);
@@ -33,7 +32,7 @@ describe("core-sdk-extend-offer", () => {
     const tx = await coreSDK.extendOffer(offerId, newValidUntil.toString());
     await tx.wait();
 
-    await waitForGraphNodeIndexing(tx);
+    await coreSDK.waitForGraphNodeIndexing(tx);
     const offer = await coreSDK.getOfferById(offerId);
     expect(offer.validUntilDate).toEqual(newValidUntil.toString());
   });
@@ -55,7 +54,7 @@ describe("core-sdk-extend-offer", () => {
     );
     await tx.wait();
 
-    await waitForGraphNodeIndexing(tx);
+    await coreSDK.waitForGraphNodeIndexing(tx);
     const offer1 = await coreSDK.getOfferById(createdOffer1.id);
     expect(offer1.validUntilDate).toEqual(newValidUntil.toString());
     const offer2 = await coreSDK.getOfferById(createdOffer2.id);

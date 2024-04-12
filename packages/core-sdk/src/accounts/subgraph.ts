@@ -168,9 +168,8 @@ export async function getDisputeResolvers(
   queryVars: GetDisputeResolversQueryQueryVariables = {}
 ): Promise<DisputeResolverFieldsFragment[]> {
   const sdk = getSubgraphSdk(subgraphUrl);
-  const { disputeResolvers = [] } = await sdk.getDisputeResolversQuery(
-    queryVars
-  );
+  const { disputeResolvers = [] } =
+    await sdk.getDisputeResolversQuery(queryVars);
   return disputeResolvers;
 }
 
@@ -179,9 +178,8 @@ export async function getOfferCollections(
   queryVars: GetOfferCollectionsQueryQueryVariables = {}
 ): Promise<OfferCollectionFieldsFragment[]> {
   const sdk = getSubgraphSdk(subgraphUrl);
-  const { offerCollections = [] } = await sdk.getOfferCollectionsQuery(
-    queryVars
-  );
+  const { offerCollections = [] } =
+    await sdk.getOfferCollectionsQuery(queryVars);
   return offerCollections;
 }
 

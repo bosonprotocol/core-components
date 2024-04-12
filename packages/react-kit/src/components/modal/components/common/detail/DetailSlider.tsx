@@ -125,8 +125,8 @@ export default function DetailSlider({
     outerShowArrows === false
       ? false
       : sumMediaFiles !== 1 && (sliderOptions.perView ?? 1) === 1
-      ? true
-      : sumMediaFiles > (sliderOptions.perView ?? 1);
+        ? true
+        : sumMediaFiles > (sliderOptions.perView ?? 1);
   const draggable = showArrows;
   useEffect(() => {
     if (mediaFiles.length !== 0 && ref.current !== null) {
@@ -294,6 +294,7 @@ export default function DetailSlider({
                       style={{ cursor: "pointer" }}
                       dataTestId="offerAnimationUrl"
                       videoProps={{ muted: true, loop: true, autoPlay: true }}
+                      withMuteButton
                     />
                   )}
                 </>

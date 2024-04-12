@@ -18,11 +18,13 @@ export default {
   }
 } as ComponentMeta<typeof ExtendDisputeTimeoutButton>;
 
-const Template: ComponentStory<typeof ExtendDisputeTimeoutButton> = (args) => {
+const Template: ComponentStory<typeof ExtendDisputeTimeoutButton> = (
+  args: Parameters<typeof ExtendDisputeTimeoutButton>[0]
+) => {
   const provider = hooks.useProvider();
 
   return (
-    <CtaButtonWrapper>
+    <CtaButtonWrapper configId={args.coreSdkConfig.configId}>
       <ExtendDisputeTimeoutButton
         {...args}
         coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}

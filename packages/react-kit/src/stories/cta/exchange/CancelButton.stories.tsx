@@ -18,11 +18,13 @@ export default {
   }
 } as ComponentMeta<typeof CancelButton>;
 
-const Template: ComponentStory<typeof CancelButton> = (args) => {
+const Template: ComponentStory<typeof CancelButton> = (
+  args: Parameters<typeof CancelButton>[0]
+) => {
   const provider = hooks.useProvider();
 
   return (
-    <CtaButtonWrapper>
+    <CtaButtonWrapper configId={args.coreSdkConfig.configId}>
       <CancelButton
         {...args}
         coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}

@@ -135,9 +135,14 @@ export function useCtaClickHandler<T>({
         onSuccess?.(receipt as providers.TransactionReceipt, payload);
       }
     } catch (error) {
-      onError?.(error as Error, {
-        txResponse: txResponse as providers.TransactionResponse
-      });
+      onError?.(
+        typeof error === "object"
+          ? (coreSdk.parseError(error as object) as Error)
+          : (error as Error),
+        {
+          txResponse: txResponse as providers.TransactionResponse
+        }
+      );
     } finally {
       setIsLoading(false);
     }

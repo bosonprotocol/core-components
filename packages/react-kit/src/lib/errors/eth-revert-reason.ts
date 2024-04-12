@@ -45,7 +45,7 @@ async function validateInputPreProvider(txHash: string, network: string) {
   ) {
     throw new Error("Invalid transaction hash");
   }
-  const networks = ["mainnet", "kovan", "goerli", "ropsten", "rinkeby"];
+  const networks = ["mainnet", "sepolia"];
   if (!networks.includes(network)) {
     throw new Error("Not a valid network");
   }
