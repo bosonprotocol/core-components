@@ -2,9 +2,9 @@ import { TransactionResponse } from "@bosonprotocol/common";
 import { Range } from "@bosonprotocol/common/src/types";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { handler } from ".";
-import { accounts } from "..";
+import { accounts, erc721 } from "..";
 import { getOfferById } from "../offers/subgraph";
-import { encodeValidate, Order as SeaportOrder } from "../seaport/handler";
+import { encodeValidate, Order as SeaportOrder } from "../seaport/interface";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 
 export class VoucherMixin extends BaseCoreSDK {
@@ -163,6 +163,25 @@ export class VoucherMixin extends BaseCoreSDK {
     return handler.setApprovalForAllToContract({
       operator,
       approved,
+      contractAddress: overrides.contractAddress || seller.voucherCloneAddress,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async approveProtocolForAll(
+    overrides: Partial<{
+      operator: string;
+      contractAddress: string;
+    }> = {}
+  ) {
+    const sellerAddress = await this._web3Lib.getSignerAddress();
+    const seller = await accounts.subgraph.getSellerByAddress(
+      this._subgraphUrl,
+      sellerAddress
+    );
+    return erc721.handler.setApprovalForAll({
+      operator: overrides.operator || this._protocolDiamond,
+      approved: true,
       contractAddress: overrides.contractAddress || seller.voucherCloneAddress,
       web3Lib: this._web3Lib
     });

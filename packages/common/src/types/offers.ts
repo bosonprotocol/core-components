@@ -73,3 +73,17 @@ export type PremintParametersStruct = {
   reservedRangeLength: BigNumberish;
   to: string;
 };
+
+export enum Side {
+  Ask = 0,
+  Bid = 1,
+  Wrapper = 2
+}
+
+export type PriceDiscoveryStruct = {
+  price: BigNumberish;
+  side: Side;
+  priceDiscoveryContract: string;
+  conduit: string;
+  priceDiscoveryData: string;
+};

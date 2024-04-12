@@ -3,7 +3,7 @@ import { BigNumberish } from "@ethersproject/bignumber";
 import { Wallet, BigNumber, constants } from "ethers";
 import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
-import { encodeValidate } from "../../packages/core-sdk/src/seaport/handler";
+import { encodeValidate } from "../../packages/core-sdk/src/seaport/interface";
 
 import {
   initCoreSDKWithWallet,

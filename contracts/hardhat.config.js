@@ -187,7 +187,9 @@ module.exports = {
       "MockNativeMetaTransaction",
       "IBosonGroupHandler",
       "MockForwarder",
-      "IBosonConfigHandler"
+      "IBosonConfigHandler",
+      "IBosonPriceDiscoveryHandler",
+      "Seaport"
     ]
   }
 };

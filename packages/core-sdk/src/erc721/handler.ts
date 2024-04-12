@@ -95,3 +95,18 @@ export async function tokenOfOwnerByIndex(args: {
   );
   return String(tokenId);
 }
+
+export async function setApprovalForAll(args: {
+  contractAddress: string;
+  operator: string;
+  approved: boolean;
+  web3Lib: Web3LibAdapter;
+}) {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: erc721Iface.encodeFunctionData("setApprovalForAll", [
+      args.operator,
+      args.approved
+    ])
+  });
+}
