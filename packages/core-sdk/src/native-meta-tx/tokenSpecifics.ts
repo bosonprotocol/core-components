@@ -12,6 +12,7 @@ const _tokenSpecifics: Record<number, Record<string, TokenSpecifics>> = {
       ERC712_VERSION: "2" // On MUMBAI, ERC712_VERSION is different than on Polygon
     }
   }
+  // TODO: check on Amoy
 };
 
 /** Returns the configuration items that are specific to some tokens on some chain */

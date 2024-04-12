@@ -27,7 +27,7 @@ beforeEach(() => {
   coreSDK = CoreSDK.fromDefaultConfig({
     web3Lib: new MockWeb3LibAdapter(),
     envName: "testing",
-    configId: "testing-80001-0"
+    configId: "testing-80002-0"
   });
   expect(coreSDK).toBeInstanceOf(CoreSDK);
 });

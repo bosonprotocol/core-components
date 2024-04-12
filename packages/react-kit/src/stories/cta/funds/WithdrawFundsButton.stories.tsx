@@ -47,7 +47,7 @@ export const WithMetaTx: ComponentStory<typeof WithdrawFundsButton> =
 
 Simple.args = {
   coreSdkConfig: {
-    configId: "testing-80001-0",
+    configId: "testing-80002-0",
     envName: "testing"
   },
   accountId: "42",
@@ -86,7 +86,7 @@ Simple.args = {
 
 WithStep.args = {
   coreSdkConfig: {
-    configId: "testing-80001-0",
+    configId: "testing-80002-0",
     envName: "testing"
   },
   tokensToWithdraw: [
@@ -117,7 +117,7 @@ WithStep.args = {
 
 WithMetaTx.args = {
   coreSdkConfig: {
-    configId: "testing-80001-0",
+    configId: "testing-80002-0",
     envName: "testing",
     metaTx: {
       relayerUrl: "https://api.biconomy.io",

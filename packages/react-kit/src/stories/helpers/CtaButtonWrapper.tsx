@@ -43,7 +43,7 @@ export const CtaButtonWrapper = ({
   children: ReactNode;
   configId: ConfigId;
 }) => {
-  const chainId = configId?.split("-")[1] || "80001";
+  const chainId = configId?.split("-")[1] || "80002";
   return (
     <WithWeb3ReactProvider>
       <WithMetamask chainId={chainId}>{children}</WithMetamask>

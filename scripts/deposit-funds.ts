@@ -34,7 +34,7 @@ program
   .description("Deposit funds.")
   .requiredOption("-k, --key <privateKey>", "Private Key.", validPrivateKey)
   .requiredOption("-e , --env <envName>", "Environment.")
-  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80002-0")
   .requiredOption("-s, --sellerId <sellerId>", "Seller ID.", validBigNumber)
   .requiredOption("-v, --value <value>", "Value.", validBigNumber)
   .option("-t, --token <token>", "Token Address.", validAddress)
@@ -43,7 +43,7 @@ program
 async function main() {
   const opts = program.opts();
   const { key: privateKey, env: envName, sellerId, value, token } = opts;
-  const configId = opts.configId || "testing-80001-0";
+  const configId = opts.configId || "testing-80002-0";
   const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const chainId = defaultConfig.chainId;
   const wallet = new Wallet(privateKey);

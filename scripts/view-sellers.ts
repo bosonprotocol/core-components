@@ -9,7 +9,7 @@ import { getEnvConfigById } from "@bosonprotocol/common/src/configs";
 
 async function main() {
   const envName: EnvironmentType = "staging";
-  const configId: ConfigId = "staging-80001-0";
+  const configId: ConfigId = "staging-80002-0";
   const defaultConfig = getEnvConfigById(envName, configId);
   const web3Provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
 
