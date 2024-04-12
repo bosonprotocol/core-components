@@ -6,15 +6,15 @@ import {
   Wallet as WalletV6,
   JsonRpcProvider as JsonRpcProviderV6
 } from "ethers-v6";
-import { EthersAdapter } from "../packages/ethers-sdk/src";
-import { CoreSDK } from "../packages/core-sdk/src";
+import { EthersAdapter } from "../../packages/ethers-sdk/src";
+import { CoreSDK } from "../../packages/core-sdk/src";
 import { API_BASE_TESTNET } from "opensea-js/lib/constants";
 import {
   AdvancedOrder,
   CriteriaResolver,
   Fulfillment,
   encodeMatchAdvancedOrders
-} from "../packages/core-sdk/src/seaport/interface";
+} from "../../packages/core-sdk/src/seaport/interface";
 
 program
   .description("Fulfil an Order on Opensea.")
@@ -25,7 +25,7 @@ program
   .argument("<TOKEN_ID>", "tokenId of the token to be listed")
   .requiredOption("-k, --apiKey <OPENSEA_API_KEY>", "Opensea API Key")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80002-0")
   .parse(process.argv);
 
 const WETH_ADDRESS = "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa";
@@ -36,7 +36,7 @@ async function main() {
   const opts = program.opts();
   const OPENSEA_API_KEY = opts.openseaApiKey;
   const envName = opts.env || "testing";
-  const configId = opts.configId || "testing-80001-0";
+  const configId = opts.configId || "testing-80002-0";
   const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const chainId = defaultConfig.chainId;
   const provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
