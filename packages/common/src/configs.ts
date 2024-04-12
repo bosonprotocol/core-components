@@ -47,12 +47,12 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "testing-80002-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-80002-0/sellers/blacklist.json",
-      defaultDisputeResolverId: "1", // TODO: to be confirmed
+      defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(80002),
       nativeCoin: chainIdToInfo.get(80002),
       getTxExplorerUrl: chainIdToGraphTx.get(80002),
       subgraphUrl:
-        "https://api.thegraph.com/subgraphs/name/bosonprotocol/amoy-testing",
+        "https://api.studio.thegraph.com/query/71250/llx-amoy-testing/v0.0.1",
       jsonRpcUrl:
         "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
@@ -101,12 +101,12 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "staging-80002-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-80002-0/sellers/blacklist.json",
-      defaultDisputeResolverId: "1", // TODO: to be confirmed
+      defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(80002),
       nativeCoin: chainIdToInfo.get(80002),
       getTxExplorerUrl: chainIdToGraphTx.get(80002),
       subgraphUrl:
-        "https://api.thegraph.com/subgraphs/name/bosonprotocol/amoy-staging",
+        "https://api.studio.thegraph.com/query/71250/llx-amoy-staging/v0.0.1",
       jsonRpcUrl:
         "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
