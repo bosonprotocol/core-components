@@ -11,7 +11,7 @@ const _tokenSpecifics: Record<number, Record<string, TokenSpecifics>> = {
       // USDC Token
       ERC712_VERSION: "2" // On MUMBAI, ERC712_VERSION is different than on Polygon
     }
-  },
+  }
   // TODO: check on Amoy
 };
 
