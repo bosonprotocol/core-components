@@ -68,9 +68,8 @@ export const CommitButton = withQueryClientProvider(
           if (exchangeToken === AddressZero) {
             return false;
           }
-          const currentAllowance = await coreSdk.getProtocolAllowance(
-            exchangeToken
-          );
+          const currentAllowance =
+            await coreSdk.getProtocolAllowance(exchangeToken);
           return BigNumber.from(currentAllowance).lt(price);
         }
       },

@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/common",
-  "version": "1.27.0",
+  "version": "1.27.1-alpha.0",
   "description": "Common configs, types, interfaces and utilities shared by the core components of the Boson Protocol.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "tsc --watch --preserveWatchOutput",
     "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
+    "lint:fix": "npm run lint -- --fix",
     "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
     "test": "jest",
     "clean": "rimraf dist coverage .turbo node_modules"
@@ -37,7 +38,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@bosonprotocol/metadata": "^1.16.0",
+    "@bosonprotocol/metadata": "^1.16.1-alpha.0",
     "@ethersproject/abi": "^5.5.0",
     "@ethersproject/address": "^5.5.0",
     "@ethersproject/bignumber": "^5.5.0",

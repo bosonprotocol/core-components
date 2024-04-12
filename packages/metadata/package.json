@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/metadata",
-  "version": "1.16.0",
+  "version": "1.16.1-alpha.0",
   "description": "Offer metadata schemas, types and tools of the Boson Protocol.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "tsc --watch --preserveWatchOutput",
     "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
+    "lint:fix": "npm run lint -- --fix",
     "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
     "test": "jest",
     "clean": "rimraf dist coverage .turbo node_modules"

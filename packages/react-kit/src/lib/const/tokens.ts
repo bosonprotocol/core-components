@@ -411,6 +411,13 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
       "WMATIC",
       "Wrapped MATIC"
     ),
+    80002: new Token(
+      80002,
+      "0x52eF3d68BaB452a294342DC3e5f464d7f610f72E",
+      18,
+      "WMATIC",
+      "Wrapped MATIC"
+    ),
     [ChainId.CELO]: new Token(
       ChainId.CELO,
       "0x471ece3750da237f93b8e339c536989b8978a438",
@@ -458,10 +465,16 @@ function getCeloNativeCurrency(chainId: number) {
   }
 }
 
+type NewType = 80002;
+
 export function isMatic(
   chainId: number
-): chainId is ChainId.POLYGON | ChainId.POLYGON_MUMBAI {
-  return chainId === ChainId.POLYGON_MUMBAI || chainId === ChainId.POLYGON;
+): chainId is ChainId.POLYGON | ChainId.POLYGON_MUMBAI | NewType {
+  return (
+    chainId === ChainId.POLYGON_MUMBAI ||
+    chainId === ChainId.POLYGON ||
+    chainId === 80002
+  );
 }
 
 class MaticNativeCurrency extends NativeCurrency {

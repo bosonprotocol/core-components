@@ -120,18 +120,18 @@ describe("#validateMetadata()", () => {
               }
             }
           : (data as any).exchangePolicy
-          ? {
-              ...productV1ValidFullOffer,
-              ...data,
-              exchangePolicy: {
-                ...productV1ValidFullOffer.exchangePolicy,
-                ...(data as any).exchangePolicy
+            ? {
+                ...productV1ValidFullOffer,
+                ...data,
+                exchangePolicy: {
+                  ...productV1ValidFullOffer.exchangePolicy,
+                  ...(data as any).exchangePolicy
+                }
               }
-            }
-          : {
-              ...productV1ValidFullOffer,
-              ...data
-            };
+            : {
+                ...productV1ValidFullOffer,
+                ...data
+              };
         const result = expect(() =>
           validateMetadata(product as any as AnyMetadata)
         );
@@ -222,18 +222,18 @@ describe("#validateMetadata()", () => {
               }
             }
           : (data as any).exchangePolicy
-          ? {
-              ...productV1ValidFullOffer,
-              ...data,
-              exchangePolicy: {
-                ...productV1ValidFullOffer.exchangePolicy,
-                ...(data as any).exchangePolicy
+            ? {
+                ...productV1ValidFullOffer,
+                ...data,
+                exchangePolicy: {
+                  ...productV1ValidFullOffer.exchangePolicy,
+                  ...(data as any).exchangePolicy
+                }
               }
-            }
-          : {
-              ...productV1ValidFullOffer,
-              ...data
-            };
+            : {
+                ...productV1ValidFullOffer,
+                ...data
+              };
         const result = expect(() =>
           validateMetadata(product as any as AnyMetadata)
         );

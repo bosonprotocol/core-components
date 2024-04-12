@@ -71,6 +71,10 @@ export const FALLBACK_URLS = {
     "https://rpc-mumbai.maticvigil.com",
     "https://matic-testnet-archive-rpc.bwarelabs.com"
   ],
+  80002: [
+    // "Safe" URLs
+    "https://rpc-amoy.polygon.technology"
+  ],
   [ChainId.ARBITRUM_ONE]: [
     // "Safe" URLs
     "https://arb1.arbitrum.io/rpc",
@@ -174,6 +178,10 @@ export const getRpcUrls = (infuraKey: string) => ({
   [ChainId.POLYGON_MUMBAI]: [
     `https://polygon-mumbai.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.POLYGON_MUMBAI]
+  ],
+  80002: [ // AMOY
+    `https://polygon-amoy.infura.io/v3/${infuraKey}`,
+    ...FALLBACK_URLS[80002]
   ],
   [ChainId.CELO]: FALLBACK_URLS[ChainId.CELO],
   [ChainId.CELO_ALFAJORES]: FALLBACK_URLS[ChainId.CELO_ALFAJORES],

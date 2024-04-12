@@ -17,7 +17,7 @@ describe("#fromDefaultConfig()", () => {
     const coreSDK = CoreSDK.fromDefaultConfig({
       web3Lib: new MockWeb3LibAdapter(),
       envName: "testing",
-      configId: "testing-80001-0"
+      configId: "testing-80002-0"
     });
     expect(coreSDK).toBeInstanceOf(CoreSDK);
   });
@@ -27,7 +27,7 @@ describe("#fromDefaultConfig()", () => {
       CoreSDK.fromDefaultConfig({
         web3Lib: new MockWeb3LibAdapter(),
         envName: "unknown" as EnvironmentType,
-        configId: "testing-80001-0"
+        configId: "testing-80002-0"
       })
     ).toThrow();
   });
@@ -36,7 +36,11 @@ describe("#fromDefaultConfig()", () => {
     expect(() =>
       CoreSDK.fromDefaultConfig({
         web3Lib: new MockWeb3LibAdapter()
-      } as unknown as { envName: EnvironmentType; web3Lib: Web3LibAdapter; configId: ConfigId })
+      } as unknown as {
+        envName: EnvironmentType;
+        web3Lib: Web3LibAdapter;
+        configId: ConfigId;
+      })
     ).toThrow();
   });
 });

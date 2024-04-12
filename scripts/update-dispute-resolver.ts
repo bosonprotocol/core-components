@@ -10,7 +10,7 @@ program
   .description("Updates a dispute resolver.")
   .argument("<DR_ADMIN_PK>", "Private key of the DR admin account.")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80002-0")
   .option(
     "--addFees <...FEES>",
     "Comma-separated list of dispute resolution fee tuples with the format: <TOKEN_ADDRESS>/<TOKEN_NAME>/<FEE_AMOUNT>"
@@ -31,7 +31,7 @@ async function main() {
 
   const opts = program.opts();
   const envName = (opts.env as EnvironmentType) || "testing";
-  const configId = opts.configId || "testing-80001-0";
+  const configId = opts.configId || "testing-80002-0";
   const defaultConfig = getEnvConfigById(envName, configId);
   const addFees = opts.addFees
     ? (opts.addFees as string)

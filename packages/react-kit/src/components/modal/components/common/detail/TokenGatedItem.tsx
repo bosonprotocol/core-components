@@ -216,16 +216,16 @@ export const TokenGatedItem = ({
       !chainId || !condition
         ? null
         : condition.tokenAddress === ethers.constants.AddressZero
-        ? nativeOnChain(chainId)
-        : erc20TokenInfo
-        ? new Token(
-            chainId,
-            condition.tokenAddress,
-            Number(erc20TokenInfo.decimals),
-            erc20TokenInfo.symbol,
-            erc20TokenInfo.name
-          )
-        : null,
+          ? nativeOnChain(chainId)
+          : erc20TokenInfo
+            ? new Token(
+                chainId,
+                condition.tokenAddress,
+                Number(erc20TokenInfo.decimals),
+                erc20TokenInfo.symbol,
+                erc20TokenInfo.name
+              )
+            : null,
     [chainId, condition, erc20TokenInfo]
   );
 

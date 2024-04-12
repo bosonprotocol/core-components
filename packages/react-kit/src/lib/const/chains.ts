@@ -5,6 +5,7 @@ export const CHAIN_IDS_TO_NAMES = {
   [ChainId.SEPOLIA]: "sepolia",
   [ChainId.POLYGON]: "polygon",
   [ChainId.POLYGON_MUMBAI]: "polygon_mumbai",
+  80002: "polygon_amoy",
   [ChainId.CELO]: "celo",
   [ChainId.CELO_ALFAJORES]: "celo_alfajores",
   [ChainId.ARBITRUM_ONE]: "arbitrum",
@@ -25,7 +26,8 @@ export const L1_CHAIN_IDS = [
   // ChainId.GOERLI,
   ChainId.SEPOLIA,
   ChainId.POLYGON,
-  ChainId.POLYGON_MUMBAI
+  ChainId.POLYGON_MUMBAI,
+  80002
   // LocalChainId
   // ChainId.CELO,
   // ChainId.CELO_ALFAJORES

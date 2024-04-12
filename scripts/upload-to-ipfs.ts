@@ -9,7 +9,7 @@ program
   .description("Upload to IPFS.")
   .argument("<FILEPATH>", "File to upload.")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80002-0")
   .option(
     "--infura <INFURA_PROJECT_ID>/<INFURA_PROJECT_SECRET>",
     "ProjectId and Secret required to address Infura IPFS gateway"

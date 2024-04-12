@@ -30,7 +30,7 @@ export const WithExtraInfo: ComponentStory<typeof RedeemButton> = Template.bind(
 
 Simple.args = {
   coreSdkConfig: {
-    configId: "testing-80001-0",
+    configId: "testing-80002-0",
     envName: "testing"
   },
   exchangeId: "92",
@@ -56,7 +56,7 @@ Simple.args = {
 WithBiconomy.args = {
   ...Simple.args,
   coreSdkConfig: {
-    configId: "staging-80001-0",
+    configId: "staging-80002-0",
     envName: "staging",
     metaTx: {
       apiKey: "vYoPWofBr.e4f3e2f9-69e5-4076-8ce1-3b8e0916e02c"
@@ -67,7 +67,7 @@ WithBiconomy.args = {
 
 WithExtraInfo.args = {
   coreSdkConfig: {
-    configId: "testing-80001-0",
+    configId: "testing-80002-0",
     envName: "testing",
     web3Provider: undefined
   },

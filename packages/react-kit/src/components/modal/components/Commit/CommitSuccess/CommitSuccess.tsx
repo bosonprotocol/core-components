@@ -113,7 +113,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                     }}
                   >
                     View on{" "}
-                    {[80001, 137].includes(config.chainId)
+                    {[80002, 137].includes(config.chainId)
                       ? "Polygonscan"
                       : "Etherscan"}{" "}
                     <ArrowSquareUpRight

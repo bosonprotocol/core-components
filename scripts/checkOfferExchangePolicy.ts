@@ -18,7 +18,7 @@ program
   .description("Check Exchange policy of an Offer.")
   .argument("<OFFER_ID>", "Id of the offer to check")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80002-0")
   .parse(process.argv);
 
 async function main() {
@@ -26,7 +26,7 @@ async function main() {
 
   const opts = program.opts();
   const envName = opts.env || "testing";
-  const configId = opts.configId || "testing-80001-0";
+  const configId = opts.configId || "testing-80002-0";
   const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
 
   const coreSDK = CoreSDK.fromDefaultConfig({

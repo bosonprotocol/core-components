@@ -5,8 +5,8 @@ Official [subgraph](https://api.thegraph.com/subgraphs/name/bosonprotocol/polygo
 | Env          | Network   | Endpoint                                                                                     |
 | ------------ | --------- | -------------------------------------------------------------------------------------------- |
 | `production` | `polygon` | [`https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon`](https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon)                                                                                        |
-| `testing`*    | `mumbai` | [`https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-testing`](https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-testing) |
-| `staging`*    | `mumbai`  | [`https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-staging`](https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-staging)                              |
+| `testing`*    | `amoy` | [`https://api.thegraph.com/subgraphs/name/bosonprotocol/amoy-testing`](https://api.thegraph.com/subgraphs/name/bosonprotocol/amoy-testing) |
+| `staging`*    | `amoy`  | [`https://api.thegraph.com/subgraphs/name/bosonprotocol/amoy-staging`](https://api.thegraph.com/subgraphs/name/bosonprotocol/amoy-staging)                              |
 
 
 \* The `testing` and `staging` subgraphs are used for development purposes.

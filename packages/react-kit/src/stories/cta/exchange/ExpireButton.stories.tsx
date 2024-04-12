@@ -40,7 +40,7 @@ export const WithExtraInfo: ComponentStory<typeof ExpireButton> = Template.bind(
 
 Simple.args = {
   coreSdkConfig: {
-    configId: "testing-80001-0",
+    configId: "testing-80002-0",
     envName: "testing"
   },
   exchangeId: "28",
@@ -64,7 +64,7 @@ Simple.args = {
 
 WithExtraInfo.args = {
   coreSdkConfig: {
-    configId: "testing-80001-0",
+    configId: "testing-80002-0",
     envName: "testing"
   },
   exchangeId: "28",
