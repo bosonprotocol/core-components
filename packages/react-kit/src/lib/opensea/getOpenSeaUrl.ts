@@ -4,7 +4,7 @@ import { getExchangeTokenId } from "../utils/exchange";
 
 const openSeaUrlMap = new Map([
   [
-    "testing", // Mumbai
+    "testing", // testnets
     new Map([
       [
         "testing-80002-0",
@@ -19,7 +19,7 @@ const openSeaUrlMap = new Map([
     ])
   ],
   [
-    "staging", // Mumbai
+    "staging", // testnets
     new Map([
       [
         "staging-80002-0",

@@ -32,8 +32,8 @@ export const NATIVE_TOKENS: { [key: number]: ITokenInfo } = {
     decimals: 18,
     symbol: "MATIC"
   },
-  80001: {
-    // Polygon Mumbai
+  80002: {
+    // Polygon Amoy
     name: "MATIC",
     decimals: 18,
     symbol: "MATIC"

@@ -1,7 +1,6 @@
 import { ChainId, Lens, ProtocolConfig, Token } from "./types";
 
 export const chainIdToInfo = new Map<ChainId, ProtocolConfig["nativeCoin"]>([
-  [80001, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [80002, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [1, { decimals: "18", name: "Ether", symbol: "ETH" }],
@@ -109,7 +108,7 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
       },
       {
         symbol: "USDC",
-        name: "Mumbai USD Coin",
+        name: "Amoy USD Coin",
         address: "0x????????????????????????????????????????", // TODO: to be defined
         decimals: "6"
       },

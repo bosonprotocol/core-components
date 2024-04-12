@@ -17,7 +17,7 @@ describe("#fromDefaultConfig()", () => {
     const coreSDK = CoreSDK.fromDefaultConfig({
       web3Lib: new MockWeb3LibAdapter(),
       envName: "testing",
-      configId: "testing-80001-0"
+      configId: "testing-80002-0"
     });
     expect(coreSDK).toBeInstanceOf(CoreSDK);
   });
@@ -27,7 +27,7 @@ describe("#fromDefaultConfig()", () => {
       CoreSDK.fromDefaultConfig({
         web3Lib: new MockWeb3LibAdapter(),
         envName: "unknown" as EnvironmentType,
-        configId: "testing-80001-0"
+        configId: "testing-80002-0"
       })
     ).toThrow();
   });
