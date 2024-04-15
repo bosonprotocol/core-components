@@ -35,7 +35,8 @@ async function main() {
   if (offerDataJson["voucherRedeemableFromDateInMS"] === undefined) {
     offerDataJson["voucherRedeemableFromDateInMS"] = Date.now();
   }
-  const WETH_ADDRESS = "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa";
+  // const WETH_ADDRESS = "0x52eF3d68BaB452a294342DC3e5f464d7f610f72E"; // Amoy
+  const WETH_ADDRESS = "0x7b79995e5f793a07bc00c21412e50ecae098e7f9"; // Sepolia
 
   console.log(`Create Offer with Data ${JSON.stringify(offerDataJson)}`);
   console.log("defaultConfig", defaultConfig);
@@ -74,7 +75,7 @@ async function main() {
     "seller"
   );
   console.log(`Tx hash: ${txResponse1.hash}`);
-  await txResponse1.wait();
+  await txResponse1.wait(3);
   console.log(`Premint ${offerDataJson.quantityAvailable} vouchers.`);
   txResponse1 = await coreSDK.preMint(offerId, offerDataJson.quantityAvailable);
   console.log(`Tx hash: ${txResponse1.hash}`);
