@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.27.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.27.0...@bosonprotocol/common@1.27.1) (2024-04-15)
+
+
+### Bug Fixes
+
+* sepolia testing protocol contract change ([#714](https://github.com/bosonprotocol/core-components/issues/714)) ([9114222](https://github.com/bosonprotocol/core-components/commit/9114222ccb62297cb6b371d2d7b437e47fc0c24f))
+
+
+
+
+
 # [1.27.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.26.1...@bosonprotocol/common@1.27.0) (2024-04-05)
 
 
