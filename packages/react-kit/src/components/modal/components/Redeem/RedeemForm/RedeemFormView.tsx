@@ -5,6 +5,7 @@ import { Exchange } from "../../../../../types/exchange";
 import { theme } from "../../../../../theme";
 import { useAccount } from "../../../../../hooks/connection/connection";
 import { RedeemHeader } from "../RedeemHeader";
+import { BosonFooter } from "../../common/BosonFooter";
 
 const colors = theme.colors.light;
 
@@ -29,7 +30,8 @@ export default function RedeemFormView({
         headerComponent: RedeemHeader,
         contentStyle: {
           background: colors.white
-        }
+        },
+        footerComponent: <BosonFooter />
       }
     });
   }, [dispatch]);

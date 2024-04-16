@@ -64,39 +64,6 @@ export function PurchaseOverview() {
 
   return (
     <Wrapper>
-      <Grid flexDirection="column" alignItems="flex-start">
-        <Grid flexDirection="column" alignItems="flex-start">
-          <Typography tag="h4" style={{ margin: 0 }}>
-            <b>Your purchase is protected by Boson</b>
-          </Typography>
-          <Typography tag="p">
-            Boson is Web3's decentralized commerce layer and enables the
-            tokenization, transfer and trade of any physical thing as a
-            redeemable NFT. <br />
-            As a buyer, when you transact with Boson you can be certain you will
-            either receive the item, or your money back
-          </Typography>
-        </Grid>
-        <Grid flexDirection="column" alignItems="flex-start">
-          <Typography tag="h4" style={{ margin: 0 }}>
-            <b>How does the purchase process work?</b>
-          </Typography>
-          <Typography tag="p">
-            When Committing to Buy, the item price will be transferred into
-            escrow and you will receive a redeemable NFT (rNFT) that can be
-            exchanged for the real-world item it represents.
-          </Typography>
-        </Grid>
-      </Grid>
-      <CommitStepWrapper>
-        {COMMIT_STEPS.map(({ icon: Icon, header, description }, key) => (
-          <CommitStep key={`commit_step_${key}`}>
-            <Icon size={24} />
-            <Typography tag="h6">{header}</Typography>
-            <Typography tag="p">{description}</Typography>
-          </CommitStep>
-        ))}
-      </CommitStepWrapper>
       <ModalBackground>
         <Grid flexDirection={isLteXS ? "column" : "row"}>
           <div>
@@ -121,6 +88,27 @@ export function PurchaseOverview() {
           </div>
         </Grid>
       </ModalBackground>
+      <Grid flexDirection="column" alignItems="flex-start">
+        <Grid flexDirection="column" alignItems="flex-start">
+          <Typography tag="h4" style={{ margin: 0 }}>
+            <b>How does the purchase process work?</b>
+          </Typography>
+          <Typography tag="p">
+            When Committing to Buy, the item price will be transferred into
+            escrow and you will receive a redeemable NFT (rNFT) that can be
+            exchanged for the real-world item it represents.
+          </Typography>
+        </Grid>
+      </Grid>
+      <CommitStepWrapper>
+        {COMMIT_STEPS.map(({ icon: Icon, header, description }, key) => (
+          <CommitStep key={`commit_step_${key}`}>
+            <Icon size={24} />
+            <Typography tag="h6">{header}</Typography>
+            <Typography tag="p">{description}</Typography>
+          </CommitStep>
+        ))}
+      </CommitStepWrapper>
     </Wrapper>
   );
 }

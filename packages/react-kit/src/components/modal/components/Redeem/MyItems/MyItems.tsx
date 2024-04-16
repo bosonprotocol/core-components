@@ -11,6 +11,7 @@ import { GridContainer } from "../../../../ui/GridContainer";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { useAccount } from "../../../../../hooks/connection/connection";
+import { BosonFooter } from "../../common/BosonFooter";
 
 const colors = theme.colors.light;
 
@@ -50,7 +51,8 @@ export function MyItems({
         ),
         contentStyle: {
           background: colors.lightGrey
-        }
+        },
+        footerComponent: <BosonFooter />
       }
     });
   }, [dispatch]);

@@ -173,7 +173,10 @@ type Action = {
   payload: State;
 };
 
-type State = Pick<NonModalProps, "headerComponent" | "contentStyle">;
+type State = Pick<
+  NonModalProps,
+  "headerComponent" | "contentStyle" | "footerComponent"
+>;
 
 const reducer = (state: State, action: Action): State => {
   const { payload } = action;
@@ -212,7 +215,7 @@ export default function NonModal({
   children,
   hideModal,
   headerComponent,
-  footerComponent: FooterComponent,
+  footerComponent,
   size = "auto",
   maxWidths = null,
   theme = "light",
@@ -226,11 +229,18 @@ export default function NonModal({
       hideModal();
     }
   };
-  const [{ headerComponent: HeaderComponent, contentStyle }, dispatch] =
-    useReducer(reducer, {
-      headerComponent,
-      contentStyle: _contentStyle
-    });
+  const [
+    {
+      headerComponent: HeaderComponent,
+      footerComponent: FooterComponent,
+      contentStyle
+    },
+    dispatch
+  ] = useReducer(reducer, {
+    headerComponent,
+    footerComponent,
+    contentStyle: _contentStyle
+  });
   const Container = useMemo(() => {
     return ({ children }: { children: ReactNode }) => {
       return lookAndFeel === "modal" ? (

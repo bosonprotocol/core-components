@@ -17,6 +17,7 @@ import { GridContainer } from "../../../../ui/GridContainer";
 import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { RedeemHeader } from "../RedeemHeader";
+import { BosonFooter } from "../../common/BosonFooter";
 
 const colors = theme.colors.light;
 
@@ -72,7 +73,8 @@ export function RedeemSuccess({
         ),
         contentStyle: {
           background: colors.lightGrey
-        }
+        },
+        footerComponent: <BosonFooter />
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -16,7 +16,7 @@ export function PurchaseOverviewView({ onBackClick }: Props) {
     dispatch({
       payload: {
         headerComponent: (
-          <Grid style={{ flex: "1" }}>
+          <Grid style={{ flex: "1" }} justifyContent="flex-start" gap="1rem">
             {onBackClick && (
               <ArrowLeft
                 onClick={() => {
@@ -26,12 +26,19 @@ export function PurchaseOverviewView({ onBackClick }: Props) {
                 style={{ cursor: "pointer", minWidth: "32px" }}
               />
             )}
-            <BosonFooter />
+            <BosonFooter
+              gridProps={{ justifyContent: "flex-start" }}
+              svgImageProps={{
+                width: undefined,
+                style: { width: "min-content" }
+              }}
+            />
           </Grid>
         ),
         contentStyle: {
           background: colors.white
-        }
+        },
+        footerComponent: null
       }
     });
   }, [dispatch, onBackClick]);
