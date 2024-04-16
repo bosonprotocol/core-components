@@ -37,7 +37,7 @@ import {
   useRedemptionContext
 } from "../../../widgets/redemption/provider/RedemptionContext";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
-import { BosonFooter } from "../common/BosonFooter";
+import { BosonLogo } from "../common/BosonLogo";
 import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
 import StepsOverview from "../common/StepsOverview/StepsOverview";
 import { ExchangeFullDescriptionView } from "./ExchangeView/ExchangeFullDescriptionView/ExchangeFullDescriptionView";
@@ -240,7 +240,7 @@ export function PublicRedeemNonModal({
           Redeem your item
         </Typography>
       }
-      footerComponent={<BosonFooter />}
+      footerComponent={<BosonLogo />}
       showConnectButton={!props.withExternalSigner}
       contentStyle={{
         background: colors.white

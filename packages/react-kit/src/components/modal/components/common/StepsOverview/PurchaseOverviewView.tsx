@@ -1,9 +1,10 @@
 import { ArrowLeft } from "phosphor-react";
 import React, { useEffect } from "react";
-import PurchaseOverview from "./PurchaseOverview";
+import { PurchaseOverviewInner } from "./PurchaseOverview";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { theme } from "../../../../../theme";
 import { Grid } from "../../../../ui/Grid";
+import { BosonLogo } from "../BosonLogo";
 
 const colors = theme.colors.light;
 type Props = {
@@ -15,23 +16,31 @@ export function PurchaseOverviewView({ onBackClick }: Props) {
     dispatch({
       payload: {
         headerComponent: (
-          <Grid style={{ flex: "1" }}>
+          <Grid style={{ flex: "1" }} justifyContent="flex-start" gap="1rem">
             {onBackClick && (
               <ArrowLeft
                 onClick={() => {
                   onBackClick();
                 }}
                 size={32}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", minWidth: "32px" }}
               />
             )}
+            <BosonLogo
+              gridProps={{ justifyContent: "flex-start" }}
+              svgImageProps={{
+                width: undefined,
+                style: { width: "min-content" }
+              }}
+            />
           </Grid>
         ),
         contentStyle: {
           background: colors.white
-        }
+        },
+        footerComponent: null
       }
     });
   }, [dispatch, onBackClick]);
-  return <PurchaseOverview />;
+  return <PurchaseOverviewInner />;
 }

@@ -13,6 +13,12 @@ import { CommitStep } from "./style";
 import styled from "styled-components";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
 
+const Wrapper = styled.div`
+  p {
+    text-wrap: pretty;
+  }
+`;
+
 const CommitStepWrapper = styled.div`
   overflow: hidden;
   margin: 1rem 0;
@@ -53,30 +59,11 @@ const COMMIT_STEPS = [
   }
 ];
 
-export default function PurchaseOverview() {
+export function PurchaseOverviewInner() {
   const { isLteXS } = useBreakpoints();
 
   return (
-    <>
-      <Grid flexDirection="column" alignItems="flex-start">
-        <Typography tag="h4" style={{ margin: 0 }}>
-          <b>How does the purchase process work?</b>
-        </Typography>
-        <Typography tag="p">
-          When Committing to Buy, the item price will be transferred into escrow
-          and you will receive a redeemable NFT (rNFT) that can be exchanged for
-          the real-world item it represents.
-        </Typography>
-      </Grid>
-      <CommitStepWrapper>
-        {COMMIT_STEPS.map(({ icon: Icon, header, description }, key) => (
-          <CommitStep key={`commit_step_${key}`}>
-            <Icon size={24} />
-            <Typography tag="h6">{header}</Typography>
-            <Typography tag="p">{description}</Typography>
-          </CommitStep>
-        ))}
-      </CommitStepWrapper>
+    <Wrapper>
       <ModalBackground>
         <Grid flexDirection={isLteXS ? "column" : "row"}>
           <div>
@@ -101,6 +88,27 @@ export default function PurchaseOverview() {
           </div>
         </Grid>
       </ModalBackground>
-    </>
+      <Grid flexDirection="column" alignItems="flex-start">
+        <Grid flexDirection="column" alignItems="flex-start">
+          <Typography tag="h4" style={{ margin: 0 }}>
+            <b>How does the purchase process work?</b>
+          </Typography>
+          <Typography tag="p">
+            When Committing to Buy, the item price will be transferred into
+            escrow and you will receive a redeemable NFT (rNFT) that can be
+            exchanged for the real-world item it represents.
+          </Typography>
+        </Grid>
+      </Grid>
+      <CommitStepWrapper>
+        {COMMIT_STEPS.map(({ icon: Icon, header, description }, key) => (
+          <CommitStep key={`commit_step_${key}`}>
+            <Icon size={24} />
+            <Typography tag="h6">{header}</Typography>
+            <Typography tag="p">{description}</Typography>
+          </CommitStep>
+        ))}
+      </CommitStepWrapper>
+    </Wrapper>
   );
 }

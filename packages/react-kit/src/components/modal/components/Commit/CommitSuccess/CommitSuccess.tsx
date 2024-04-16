@@ -18,6 +18,7 @@ import { Typography } from "../../../../ui/Typography";
 import Loading from "../../../../ui/loading/Loading";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { CardCTA } from "./CardCTA";
+import { BosonLogo } from "../../common/BosonLogo";
 
 const colors = theme.colors.light;
 
@@ -58,7 +59,8 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
         ),
         contentStyle: {
           background: colors.white
-        }
+        },
+        footerComponent: <BosonLogo />
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

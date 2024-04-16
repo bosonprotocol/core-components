@@ -6,6 +6,7 @@ import { Exchange } from "../../../../../types/exchange";
 import License from "../../../../license/License";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { theme } from "../../../../../theme";
+import { BosonLogo } from "../../common/BosonLogo";
 
 const colors = theme.colors.light;
 interface Props {
@@ -30,7 +31,8 @@ export function LicenseAgreementView({ onBackClick, offer }: Props) {
         ),
         contentStyle: {
           background: colors.white
-        }
+        },
+        footerComponent: <BosonLogo />
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

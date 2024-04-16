@@ -138,7 +138,7 @@ export const LearnMore = styled.a`
 
 export const ModalBackground = styled.div`
   overflow: hidden;
-  margin: 2rem -2rem -2rem -2rem;
+  margin: -2rem -2rem 2rem -2rem;
   padding: 2rem;
   background-color: ${colors.black};
   background-image: url(${frameImage});

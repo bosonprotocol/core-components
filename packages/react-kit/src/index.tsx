@@ -51,6 +51,7 @@ export * from "./components/magicLink/UserContext";
 export * from "./components/modal/components/common/OfferFullDescription/ExternalOfferFullDescription";
 export * from "./components/modal/components/common/detail/useGetOfferDetailData";
 export * from "./components/modal/components/PurchaseOverview/PurchaseOverview";
+export * from "./components/modal/components/common/StepsOverview/PurchaseOverview";
 export * from "./components/modal/components/Commit/DetailView/ExternalCommitDetailView";
 export * from "./components/modal/components/Redeem/DetailView/ExternalExchangeDetailView";
 export * from "./components/ui/Grid";

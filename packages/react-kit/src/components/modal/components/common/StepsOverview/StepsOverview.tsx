@@ -9,6 +9,7 @@ import { breakpoint } from "../../../../../lib/ui/breakpoint";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { theme } from "../../../../../theme";
 import { RedeemHeader } from "../../Redeem/RedeemHeader";
+import { BosonLogo } from "../BosonLogo";
 
 const colors = theme.colors.light;
 const CommitStepWrapper = styled.div`
@@ -53,7 +54,8 @@ export default function StepsOverview({ onNextClick }: Props) {
         headerComponent: RedeemHeader,
         contentStyle: {
           background: colors.white
-        }
+        },
+        footerComponent: <BosonLogo />
       }
     });
   }, [dispatch]);
