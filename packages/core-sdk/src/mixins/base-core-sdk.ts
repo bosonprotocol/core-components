@@ -96,7 +96,7 @@ export class BaseCoreSDK {
 // Doc: https://www.typescriptlang.org/docs/handbook/mixins.html#alternative-pattern
 export function applyMixins(
   derivedCtor: typeof BaseCoreSDK,
-  constructors: typeof BaseCoreSDK[]
+  constructors: (typeof BaseCoreSDK)[]
 ) {
   constructors.forEach((baseCtor) => {
     Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {

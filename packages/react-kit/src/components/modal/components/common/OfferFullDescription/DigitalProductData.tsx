@@ -102,12 +102,12 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
                             attribute.value as keyof typeof digitalTypeMappingDisplay
                           ]
                         : digitalNftTypeMapping[
-                            attribute.value as keyof typeof digitalNftTypeMapping
-                          ]
-                        ? digitalNftTypeMapping[
-                            attribute.value as keyof typeof digitalNftTypeMapping
-                          ]
-                        : attribute.value}
+                              attribute.value as keyof typeof digitalNftTypeMapping
+                            ]
+                          ? digitalNftTypeMapping[
+                              attribute.value as keyof typeof digitalNftTypeMapping
+                            ]
+                          : attribute.value}
                     </Typography>
                   )
                 })),

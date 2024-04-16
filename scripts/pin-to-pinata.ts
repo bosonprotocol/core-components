@@ -94,7 +94,7 @@ program
     "End timestamp in milliseconds of offer creation. Can be used to only process a subset of offer images."
   )
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80002-0")
   .parse(process.argv);
 
 async function main() {
@@ -105,7 +105,7 @@ async function main() {
     fromDate,
     toDate,
     list,
-    configId = "testing-80001-0"
+    configId = "testing-80002-0"
   } = program.opts();
   const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const ipfsStorage = new BaseIpfsStorage({
@@ -153,9 +153,8 @@ async function main() {
         createdAt_lte: toTimestampSec
       }
     };
-    const { offers: paginatedOffers } = await subgraphSdk.getOffersMediaQuery(
-      queryVars
-    );
+    const { offers: paginatedOffers } =
+      await subgraphSdk.getOffersMediaQuery(queryVars);
 
     offersToProcess = [...offersToProcess, ...paginatedOffers];
 

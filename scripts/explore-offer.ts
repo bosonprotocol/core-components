@@ -27,7 +27,7 @@ program
   .description("Explore an on-chain Offer.")
   .argument("<OFFER_ID>", "Id of the Offer")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80002-0")
   .option("--export <FILEPATH>", "Export offer data to a JSON file")
   .option(
     "--infura <INFURA_PROJECT_ID>/<INFURA_PROJECT_SECRET>",
@@ -40,7 +40,7 @@ async function main() {
 
   const opts = program.opts();
   const envName = opts.env || "testing";
-  const configId = opts.configId || "testing-80001-0";
+  const configId = opts.configId || "testing-80002-0";
   const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const chainId = defaultConfig.chainId;
   const web3Provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);

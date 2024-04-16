@@ -406,13 +406,13 @@ export class MetaTxMixin extends BaseCoreSDK {
     contractAddress: string,
     metaTxParams: {
       request: Parameters<
-        typeof handler["relayBiconomyMetaTransaction"]
+        (typeof handler)["relayBiconomyMetaTransaction"]
       >[0]["metaTx"]["params"]["request"];
       domainSeparator: Parameters<
-        typeof handler["relayBiconomyMetaTransaction"]
+        (typeof handler)["relayBiconomyMetaTransaction"]
       >[0]["metaTx"]["params"]["domainSeparator"];
       signature: Parameters<
-        typeof handler["relayBiconomyMetaTransaction"]
+        (typeof handler)["relayBiconomyMetaTransaction"]
       >[0]["metaTx"]["params"]["signature"];
     },
     overrides: Partial<{

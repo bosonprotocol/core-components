@@ -41,7 +41,7 @@ export const WithExtraInfo: ComponentStory<typeof UpdateSellerButton> =
 
 Simple.args = {
   coreSdkConfig: {
-    configId: "testing-80001-0",
+    configId: "testing-80002-0",
     envName: "testing",
     web3Provider: undefined
   },
@@ -76,7 +76,7 @@ Simple.args = {
 
 WithExtraInfo.args = {
   coreSdkConfig: {
-    configId: "testing-80001-0",
+    configId: "testing-80002-0",
     envName: "testing",
     web3Provider: undefined
   },

@@ -16,7 +16,7 @@ program
     "Private key of Admin address of dispute resolver. Same address will be used for clerk, treasury and assistant."
   )
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80002-0")
   .option(
     "-esc, --escalation-period <PERIOD_IN_MS>",
     "Escalation response period in milliseconds."
@@ -54,7 +54,7 @@ async function main() {
   const assistant = disputeResolverAdminWallet.address;
   const treasury = disputeResolverAdminWallet.address;
   const envName = (opts.env as EnvironmentType) || "testing";
-  const configId = opts.configId || "testing-80001-0";
+  const configId = opts.configId || "testing-80002-0";
   const defaultConfig = getEnvConfigById(envName, configId);
   const chainId = defaultConfig.chainId;
   const metadataUri = opts.metadata;

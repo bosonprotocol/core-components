@@ -43,30 +43,30 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
   testing: [
     {
       envName: "testing",
-      chainId: 80001,
-      configId: "testing-80001-0",
+      chainId: 80002,
+      configId: "testing-80002-0",
       sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-80001-0/sellers/blacklist.json",
-      defaultDisputeResolverId: "13",
-      defaultTokens: chainIdToDefaultTokens.get(80001),
-      nativeCoin: chainIdToInfo.get(80001),
-      getTxExplorerUrl: chainIdToGraphTx.get(80001),
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-80002-0/sellers/blacklist.json",
+      defaultDisputeResolverId: "1",
+      defaultTokens: chainIdToDefaultTokens.get(80002),
+      nativeCoin: chainIdToInfo.get(80002),
+      getTxExplorerUrl: chainIdToGraphTx.get(80002),
       subgraphUrl:
-        "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-testing",
+        "https://api.studio.thegraph.com/query/71250/llx-amoy-testing/v0.0.1",
       jsonRpcUrl:
-        "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+        "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        protocolDiamond: "0x76051FC05Ab42D912a737d59a8711f1446712630",
-        forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7" // https://docs-gasless.biconomy.io/misc/contract-addresses
+        protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
+        forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
       },
       metaTx: {
         relayerUrl: "https://api.biconomy.io",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: {
-        ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
+        ...(chainIdToLensInfo.has(80002) && chainIdToLensInfo.get(80002))
       }
     },
     {
@@ -88,7 +88,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
         protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
-        forwarder: "0xffffffffffffffffffffffffffffffffffffffff" // https://docs-gasless.biconomy.io/misc/contract-addresses
+        forwarder: "0xbdeA59c8801658561a16fF58D68FC2b198DE4E93" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L10
       },
       metaTx: undefined,
       lens: undefined
@@ -97,30 +97,30 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
   staging: [
     {
       envName: "staging",
-      chainId: 80001,
-      configId: "staging-80001-0",
+      chainId: 80002,
+      configId: "staging-80002-0",
       sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-80001-0/sellers/blacklist.json",
-      defaultDisputeResolverId: "2",
-      defaultTokens: chainIdToDefaultTokens.get(80001),
-      nativeCoin: chainIdToInfo.get(80001),
-      getTxExplorerUrl: chainIdToGraphTx.get(80001),
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-80002-0/sellers/blacklist.json",
+      defaultDisputeResolverId: "1",
+      defaultTokens: chainIdToDefaultTokens.get(80002),
+      nativeCoin: chainIdToInfo.get(80002),
+      getTxExplorerUrl: chainIdToGraphTx.get(80002),
       subgraphUrl:
-        "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-staging",
+        "https://api.studio.thegraph.com/query/71250/llx-amoy-staging/v0.0.1",
       jsonRpcUrl:
-        "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+        "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        protocolDiamond: "0xf9719c7e641964D83cC50ea2d4d0D4e6C300d50E",
-        forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7"
+        protocolDiamond: "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
+        forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
       },
       metaTx: {
         relayerUrl: "https://api.biconomy.io",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: {
-        ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
+        ...(chainIdToLensInfo.has(80002) && chainIdToLensInfo.get(80002))
       }
     },
     {
@@ -142,7 +142,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
         protocolDiamond: "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
-        forwarder: "0xffffffffffffffffffffffffffffffffffffffff" // https://docs-gasless.biconomy.io/misc/contract-addresses
+        forwarder: "0xbdeA59c8801658561a16fF58D68FC2b198DE4E93" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L10
       },
       metaTx: undefined,
       lens: undefined
