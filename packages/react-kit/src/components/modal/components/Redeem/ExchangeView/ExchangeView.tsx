@@ -22,7 +22,7 @@ import { SellerAndDescription } from "../../common/detail/SellerAndDescription";
 import { SlickSlider, initialSettings } from "../../common/detail/SlickSlider";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
 import { getOfferVariations } from "../../../../../lib/offer/getOfferVariations";
-import { BosonFooter } from "../../common/BosonFooter";
+import { BosonLogo } from "../../common/BosonLogo";
 
 const colors = theme.colors.light;
 
@@ -146,7 +146,7 @@ export function ExchangeView({
         contentStyle: {
           background: colors.lightGrey
         },
-        footerComponent: <BosonFooter />
+        footerComponent: <BosonLogo />
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

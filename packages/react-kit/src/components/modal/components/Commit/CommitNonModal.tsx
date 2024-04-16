@@ -6,7 +6,7 @@ import { Exchange } from "../../../../types/exchange";
 import { VariantV1 } from "../../../../types/variants";
 import Loading from "../../../ui/loading/Loading";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
-import { BosonFooter } from "../common/BosonFooter";
+import { BosonLogo } from "../common/BosonLogo";
 import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
 import {
   DetailContextProps,
@@ -52,7 +52,7 @@ export function CommitWrapper({ hideModal, ...props }: CommitNonModalProps) {
   return (
     <NonModal
       hideModal={hideModal}
-      footerComponent={<BosonFooter />}
+      footerComponent={<BosonLogo />}
       contentStyle={{
         background: colors.white
       }}

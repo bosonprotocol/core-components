@@ -59,7 +59,7 @@ const COMMIT_STEPS = [
   }
 ];
 
-export function PurchaseOverview() {
+export function PurchaseOverviewInner() {
   const { isLteXS } = useBreakpoints();
 
   return (

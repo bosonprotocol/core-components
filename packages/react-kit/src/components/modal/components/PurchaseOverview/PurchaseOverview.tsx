@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback } from "react";
 import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
 import NonModal from "../../nonModal/NonModal";
-import { BosonFooter } from "../common/BosonFooter";
+import { BosonLogo } from "../common/BosonLogo";
 import { theme } from "../../../../theme";
 import { CSSProperties } from "styled-components";
 const colors = theme.colors.light;

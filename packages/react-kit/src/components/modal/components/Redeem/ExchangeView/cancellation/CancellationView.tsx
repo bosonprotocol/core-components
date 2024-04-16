@@ -11,7 +11,7 @@ import {
   RedemptionWidgetAction,
   useRedemptionContext
 } from "../../../../../widgets/redemption/provider/RedemptionContext";
-import { BosonFooter } from "../../../common/BosonFooter";
+import { BosonLogo } from "../../../common/BosonLogo";
 
 const colors = theme.colors.light;
 export interface CancellationViewProps {
@@ -52,7 +52,7 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
         contentStyle: {
           background: colors.white
         },
-        footerComponent: <BosonFooter />
+        footerComponent: <BosonLogo />
       }
     });
   }, [dispatch, isCancelModeOnly, onBackClick]);

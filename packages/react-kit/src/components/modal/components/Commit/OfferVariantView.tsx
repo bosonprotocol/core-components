@@ -25,7 +25,7 @@ import { CommitDetailViewWithProvider } from "./DetailView/CommitDetailViewWithP
 import { DetailContextProps } from "../common/detail/DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../common/detail/useGetOfferDetailData";
-import { BosonFooter } from "../common/BosonFooter";
+import { BosonLogo } from "../common/BosonLogo";
 
 const colors = theme.colors.light;
 const ImageWrapper = styled.div`
@@ -121,7 +121,7 @@ export function OfferVariantView({
         contentStyle: {
           background: isCommitting ? colors.white : colors.lightGrey
         },
-        footerComponent: <BosonFooter />
+        footerComponent: <BosonLogo />
       }
     });
   }, [dispatch, isCommitting]);

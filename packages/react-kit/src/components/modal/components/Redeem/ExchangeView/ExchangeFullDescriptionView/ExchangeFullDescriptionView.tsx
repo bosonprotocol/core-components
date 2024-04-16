@@ -8,7 +8,7 @@ import { useNonModalContext } from "../../../../nonModal/NonModal";
 import { theme } from "../../../../../../theme";
 import { OnClickBuyOrSwapHandler } from "../../../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../../../common/detail/useGetOfferDetailData";
-import { BosonFooter } from "../../../common/BosonFooter";
+import { BosonLogo } from "../../../common/BosonLogo";
 
 const colors = theme.colors.light;
 interface Props
@@ -44,7 +44,7 @@ export function ExchangeFullDescriptionView({
           background: colors.white,
           padding: 0
         },
-        footerComponent: <BosonFooter />
+        footerComponent: <BosonLogo />
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

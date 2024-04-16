@@ -8,7 +8,7 @@ import { ArrowLeft } from "phosphor-react";
 import { Typography } from "../../../../ui/Typography";
 import { OnClickBuyOrSwapHandler } from "../../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
-import { BosonFooter } from "../../common/BosonFooter";
+import { BosonLogo } from "../../common/BosonLogo";
 
 const colors = theme.colors.light;
 type Props = OnClickBuyOrSwapHandler & {
@@ -40,7 +40,7 @@ export function OfferFullDescriptionView({
           background: colors.white,
           padding: 0
         },
-        footerComponent: <BosonFooter />
+        footerComponent: <BosonLogo />
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -5,7 +5,7 @@ import ExpireVoucher, { ExpireVoucherProps } from "./ExpireVoucher";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
 import { theme } from "../../../../../../theme";
 import { Grid } from "../../../../../ui/Grid";
-import { BosonFooter } from "../../../common/BosonFooter";
+import { BosonLogo } from "../../../common/BosonLogo";
 
 const colors = theme.colors.light;
 export interface ExpireVoucherViewProps {
@@ -36,7 +36,7 @@ export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
         contentStyle: {
           background: colors.white
         },
-        footerComponent: <BosonFooter />
+        footerComponent: <BosonLogo />
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

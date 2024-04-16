@@ -6,7 +6,7 @@ import ContractualAgreement from "../../../../contractualAgreement/ContractualAg
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { theme } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
-import { BosonFooter } from "../../common/BosonFooter";
+import { BosonLogo } from "../../common/BosonLogo";
 
 const colors = theme.colors.light;
 interface Props {
@@ -33,7 +33,7 @@ export function ContractualAgreementView({ onBackClick, offer }: Props) {
         contentStyle: {
           background: colors.white
         },
-        footerComponent: <BosonFooter />
+        footerComponent: <BosonLogo />
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

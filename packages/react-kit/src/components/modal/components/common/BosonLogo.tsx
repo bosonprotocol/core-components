@@ -3,7 +3,7 @@ import ReactComponent from "../../../../assets/logo.svg";
 import { Grid, GridProps } from "../../../ui/Grid";
 import { SvgImage, SvgImageProps } from "../../../ui/SvgImage";
 
-export function BosonFooter({
+export function BosonLogo({
   gridProps,
   svgImageProps
 }: {
