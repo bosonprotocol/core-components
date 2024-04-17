@@ -5,15 +5,6 @@ import styled, { CSSProperties, css } from "styled-components";
 import { IButton } from "../ui/ThemedButton";
 import { SvgImage } from "../ui/SvgImage";
 import { Grid } from "../ui/Grid";
-
-const Wrapper = styled.div`
-  width: fit-content;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const StyledButton = styled(Button)<{
   $color: CommitButtonViewProps["color"];
   $shape: CommitButtonViewProps["shape"];
@@ -32,10 +23,38 @@ const StyledButton = styled(Button)<{
     return "";
   }}
   svg * {
+    fill: black;
+  }
+  &:not(:disabled) svg * {
     fill: ${({ $color }) => ($color === "black" ? "white" : "black")};
   }
   &:hover:not(:disabled) * {
     fill: ${({ $color }) => ($color === "black" ? "black" : "white")};
+  }
+`;
+const Tagline = styled.div`
+  margin-top: 3px;
+  color: black;
+  text-shadow:
+    0.07em 0 white,
+    0 0.07em white,
+    -0.07em 0 white,
+    0 -0.07em white,
+    -0.07em -0.07em white,
+    -0.07em 0.07em white,
+    0.07em -0.07em white,
+    0.07em 0.07em white;
+`;
+
+const Wrapper = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  ${StyledButton} {
+    transition: background 150ms ease-in-out;
   }
 `;
 
@@ -47,10 +66,8 @@ export type CommitButtonViewProps = {
   minHeight?: CSSProperties["minHeight"];
   color?: "green" | "black" | "white";
   shape?: "sharp" | "rounded" | "pill";
-} & (
-  | { onTaglineClick: MouseEventHandler<HTMLDivElement>; tagline: true }
-  | { onTaglineClick?: undefined; tagline?: false }
-);
+  onTaglineClick?: MouseEventHandler<HTMLDivElement>;
+};
 
 const colorToVariant = {
   green: "bosonPrimary",
@@ -70,7 +87,6 @@ export const CommitButtonView = forwardRef<
       minHeight,
       layout = "horizontal",
       color = "green",
-      tagline = true,
       onTaglineClick,
       shape = "sharp"
     },
@@ -103,15 +119,14 @@ export const CommitButtonView = forwardRef<
             />
           </Grid>
         </StyledButton>
-        {tagline && (
-          <div
-            role="button"
-            onClick={onTaglineClick}
-            style={{ cursor: "pointer" }}
-          >
-            What is a physical NFT?
-          </div>
-        )}
+
+        <Tagline
+          role="button"
+          onClick={onTaglineClick}
+          style={{ cursor: "pointer" }}
+        >
+          What is a physical NFT?
+        </Tagline>
       </Wrapper>
     );
   }

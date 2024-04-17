@@ -38,7 +38,6 @@ Base.args = {
   minWidth: "200px",
   minHeight: "300px",
   layout: "horizontal",
-  tagline: true,
   color: "green",
   shape: "sharp"
 };
