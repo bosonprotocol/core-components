@@ -34,6 +34,7 @@ const StyledButton = styled(Button)<{
 `;
 const Tagline = styled.div`
   margin-top: 3px;
+  cursor: pointer;
   color: black;
   text-shadow:
     0.07em 0 white,
@@ -120,11 +121,7 @@ export const CommitButtonView = forwardRef<
           </Grid>
         </StyledButton>
 
-        <Tagline
-          role="button"
-          onClick={onTaglineClick}
-          style={{ cursor: "pointer" }}
-        >
+        <Tagline role="button" onClick={onTaglineClick}>
           What is a physical NFT?
         </Tagline>
       </Wrapper>
