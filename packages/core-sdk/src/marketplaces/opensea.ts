@@ -153,11 +153,16 @@ export class OpenSeaMarketplace extends Marketplace {
       listing.offerer
     );
     const order = await executeAllActions();
+    const protocolAddress = listing.protocolAddress || this._contracts.seaport;
+    if (!protocolAddress) {
+      throw new Error(
+        `Seaport protocol address must be specified in Lsiting or CoreSDK config`
+      );
+    }
 
     const osOrder = await this._handler.api.postOrder(order, {
       protocol: "seaport",
-      protocolAddress:
-        listing.protocolAddress || "0x0000000000000000000000000000000000000000",
+      protocolAddress,
       side: OrderSide.BID
     });
     return this.convertOsOrder(osOrder);
