@@ -1,9 +1,9 @@
-import { Wallet } from "ethers";
 import { getEnvConfigs, EnvironmentType } from "@bosonprotocol/common";
 import { config as dotenvConfig } from "dotenv";
 import fs from "fs";
 import { resolve } from "path";
 import { parse } from "ts-command-line-args";
+import { ZeroAddress } from "ethers-v6";
 
 // if ./.env file exists, read it
 const envFile = resolve(__dirname, "./../.env");
@@ -68,6 +68,9 @@ export type Config = {
   PROTOCOL: string;
   ERC20: string;
   FORWARDER: string;
+  SEAPORT_ADDRESS: string;
+  OPENSEA_FEE_RECIPIENT: string;
+  OPENSEA_FEE_PERCENTAGE: number;
 };
 
 let config: Config;
@@ -84,7 +87,11 @@ export function getConfig(): Config {
         args.rpcNode || process.env.RPC_NODE || defaultConfig.jsonRpcUrl,
       PROTOCOL: defaultConfig.contracts.protocolDiamond,
       ERC20: defaultConfig.contracts.testErc20,
-      FORWARDER: defaultConfig.contracts.forwarder
+      FORWARDER: defaultConfig.contracts.forwarder,
+      SEAPORT_ADDRESS:
+        process.env.SEAPORT_ADDRESS || defaultConfig.contracts.seaport,
+      OPENSEA_FEE_RECIPIENT: process.env.OPENSEA_FEE_RECIPIENT || ZeroAddress,
+      OPENSEA_FEE_PERCENTAGE: Number(process.env.OPENSEA_FEE_PERCENTAGE) || 2.5
     };
   }
   return config;

@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:16-alpine
+FROM --platform=linux/amd64 node:20-alpine
 
 RUN apk --no-cache add --virtual .builds-deps build-base python3 git
 
@@ -18,4 +18,8 @@ RUN npm run build
 WORKDIR /home/node/core-components/e2e/opensea-api-mock
 EXPOSE 3334
 ENV PORT 3334
+ENV CHAIN_ID 31337
+ENV ENV_NAME local
+ENV OPENSEA_FEE_RECIPIENT 0x1111122222333334444455555666667777788888
+ENV OPENSEA_FEE_PERCENTAGE 2.5
 CMD ["npm", "run", "start"]

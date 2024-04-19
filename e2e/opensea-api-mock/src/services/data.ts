@@ -1,22 +1,11 @@
-import {
-  FulfillmentDataResponse,
-  OrderSide,
-  OrderType,
-  SerializedOrderV2
-} from "opensea-js";
+import { OrderSide, OrderType, SerializedOrderV2 } from "opensea-js";
 import { OrderInfo, PostOrderBody } from "./opensea";
-import { getOpenseaSdk } from "../utils/openseaSdk";
-import {
-  CROSS_CHAIN_SEAPORT_V1_6_ADDRESS,
-  ItemType
-} from "@opensea/seaport-js/lib/constants";
-import { OrderComponents } from "@opensea/seaport-js/lib/types";
-import { BigNumber } from "ethers";
 import { logger } from "../utils/logger";
+import { getConfig } from "../config";
 
 const OPENSEA_URL = "https://testnets.opensea.io";
-const OPENSEA_FEE_RECIPIENT = "0x0000a26b00c1f0df003000390027140000faa719";
-const OPENSEA_FEE_PERCENTAGE = 2.5;
+
+const config = getConfig();
 
 export function getCollectionId(chain: string, assetContractAddress: string) {
   return `${chain}-${assetContractAddress}`.toLowerCase();
@@ -92,8 +81,8 @@ export function getCollection(slug: string) {
     editors: ["collection_editor"],
     fees: [
       {
-        fee: OPENSEA_FEE_PERCENTAGE,
-        recipient: OPENSEA_FEE_RECIPIENT,
+        fee: config.OPENSEA_FEE_PERCENTAGE,
+        recipient: config.OPENSEA_FEE_RECIPIENT,
         required: true
       }
     ],
@@ -144,7 +133,7 @@ export function buildOrderV2(
       },
       signature: postOrderBody.signature
     },
-    protocol_address: CROSS_CHAIN_SEAPORT_V1_6_ADDRESS,
+    protocol_address: config.SEAPORT_ADDRESS,
     current_price: currentPrice,
     maker: {
       user: 485765,
@@ -268,7 +257,7 @@ export function buildFulfillmentData(
         function:
           "matchAdvancedOrders(((address,address,(uint8,address,uint256,uint256,uint256)[],(uint8,address,uint256,uint256,uint256,address)[],uint8,uint256,uint256,bytes32,uint256,bytes32,uint256),uint120,uint120,bytes,bytes)[],(uint256,uint8,uint256,uint256,bytes32[])[],((uint256,uint256)[],(uint256,uint256)[])[],address)",
         chain: chainId,
-        to: "0x0000000000000068f116a894984e2db1123eb395",
+        to: protocolAddress,
         value: 0,
         input_data: {
           orders: [

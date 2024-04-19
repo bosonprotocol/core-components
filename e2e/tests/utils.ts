@@ -3,8 +3,7 @@ import { AddressZero } from "@ethersproject/constants";
 import {
   ConditionStruct,
   CreateSellerArgs,
-  TransactionResponse,
-  TransactionReceipt
+  TransactionResponse
 } from "../../packages/common/src/index";
 import {
   providers,
@@ -14,6 +13,10 @@ import {
   BigNumber,
   BigNumberish
 } from "ethers";
+import {
+  Wallet as WalletV6,
+  JsonRpcProvider as JsonRpcProviderV6
+} from "ethers-v6";
 import {
   CoreSDK,
   getEnvConfigs,
@@ -64,7 +67,8 @@ import {
   ACCOUNT_20,
   ACCOUNT_21,
   ACCOUNT_22,
-  ACCOUNT_23
+  ACCOUNT_23,
+  ACCOUNT_24
 } from "../../contracts/accounts";
 import {
   MOCK_ERC1155_ABI,
@@ -77,6 +81,8 @@ import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 import { sortObjKeys } from "../../packages/ipfs-storage/src/utils";
 import productV1ValidMinimalOffer from "../../scripts/assets/offer_1.metadata.json";
 import bundleMetadataMinimal from "../../packages/metadata/tests/bundle/valid/minimal.json";
+import { Chain, OpenSeaSDK } from "opensea-js";
+import { Seaport } from "@opensea/seaport-js";
 
 export type DeepPartial<T> = T extends object
   ? {
@@ -106,6 +112,9 @@ export const MOCK_FORWARDER_ADDRESS =
 export const MOCK_SEAPORT_ADDRESS =
   (getFirstEnvConfig("local").contracts.seaport as string) ||
   "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF";
+
+export const OPENSEA_FEE_RECIPIENT =
+  "0x1111122222333334444455555666667777788888";
 
 export const metadata = {
   name: "name",
@@ -199,6 +208,8 @@ export const seedWallet21 = new Wallet(ACCOUNT_21.privateKey, provider);
 export const seedWallet22 = new Wallet(ACCOUNT_22.privateKey, provider);
 // seedWallets used by core-sdk-royalties.test.ts
 export const seedWallet23 = new Wallet(ACCOUNT_23.privateKey, provider);
+// seedWallets used by opensea-price-discovery.test.ts
+export const seedWallet24 = new Wallet(ACCOUNT_24.privateKey, provider);
 
 export const mockErc20Contract = new Contract(
   MOCK_ERC20_ADDRESS,
@@ -391,9 +402,8 @@ export async function createDisputeResolver(
 
   await drCoreSDK.waitForGraphNodeIndexing(receipt);
 
-  const disputeResolver = await drCoreSDK.getDisputeResolverById(
-    disputeResolverId
-  );
+  const disputeResolver =
+    await drCoreSDK.getDisputeResolverById(disputeResolverId);
 
   return {
     disputeResolverId,
@@ -1352,4 +1362,45 @@ export function serializeVariant(variant: productV1.ProductV1Variant): string {
     a.type.localeCompare(b.type)
   );
   return JSON.stringify(orderedTable).toLowerCase();
+}
+
+export function createOpenseaSdk(privateKey: string): OpenSeaSDK {
+  const providerV6 = new JsonRpcProviderV6(defaultConfig.jsonRpcUrl);
+  const walletV6: WalletV6 = new WalletV6(privateKey, providerV6);
+  const OPENSEA_API_KEY = ""; // local mock does'nt need any
+  const openseaUrl = "http://localhost:3334";
+  const openseaSdk = new OpenSeaSDK(
+    walletV6 as any,
+    {
+      chain: "hardhat" as Chain, // force cast
+      apiKey: OPENSEA_API_KEY,
+      apiBaseUrl: openseaUrl
+    },
+    (line) => console.info(`SEPOLIA OS: ${line}`)
+  );
+  (openseaSdk.api as any).apiBaseUrl = openseaUrl; // << force the API URL to allow using local mock
+  // Force the seaport contract
+  openseaSdk.seaport_v1_6 = new Seaport(walletV6 as any, {
+    overrides: {
+      seaportVersion: "1.6",
+      contractAddress: defaultConfig.contracts.seaport || MOCK_SEAPORT_ADDRESS
+    }
+  });
+  return openseaSdk;
+}
+
+export async function approveIfNeeded(
+  operator: string,
+  nftContract: string,
+  coreSDK: CoreSDK
+) {
+  const isApprovedForAll = await coreSDK.isApprovedForAll(operator, {
+    contractAddress: nftContract
+  });
+  if (!isApprovedForAll) {
+    const approveTx = await coreSDK.approveProtocolForAll({
+      operator: operator
+    });
+    await approveTx.wait();
+  }
 }

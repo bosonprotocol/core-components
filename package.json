@@ -5,7 +5,8 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "e2e/meta-tx-gateway"
+    "e2e/meta-tx-gateway",
+    "e2e/opensea-api-mock"
   ],
   "scripts": {
     "dev": "turbo run dev --parallel --no-cache",
@@ -67,6 +68,7 @@
     "@graphql-codegen/typescript": "^4.0.6",
     "@graphql-codegen/typescript-graphql-request": "^6.2.0",
     "@graphql-codegen/typescript-operations": "^4.2.0",
+    "@opensea/seaport-js": "^4.0.0",
     "@types/jest": "^29.5.4",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
@@ -80,7 +82,7 @@
     "graphql": "^16.8.1",
     "ipfs-utils": "^9.0.14",
     "lerna": "^5.5.1",
-    "opensea-js": "^7.1.2",
+    "opensea-js": "^7.1.5",
     "prettier": "^3.2.5",
     "run-script-os": "^1.1.6",
     "ts-jest": "29.1.1",
@@ -89,6 +91,7 @@
     "typescript-coverage-report": "^0.8.0"
   },
   "overrides": {
+    "node-fetch": "2.6.13",
     "autoprefixer": "10.4.5",
     "typescript": "^5.1.6",
     "is-ipfs": "0.6.3"

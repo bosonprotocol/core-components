@@ -24,11 +24,12 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       ipfsMetadataUrl: "http://127.0.0.1:5001",
       contracts: {
         protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-        testErc20: "0x95401dc811bb5740090279Ba06cfA8fcF6113778", // Foreign20 contract
-        testErc721: "0x998abeb3E57409262aE5b751f60747921B33613E", // Foreign721 contract
-        testErc1155: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49", // Foreign1155 contract
+        priceDiscoveryClient: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+        testErc20: "0x998abeb3E57409262aE5b751f60747921B33613E", // Foreign20 contract
+        testErc721: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49", // Foreign721 contract
+        testErc1155: "0x4826533B4897376654Bb4d4AD88B7faFD0C98528", // Foreign1155 contract
         forwarder: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0", // MockForwarder contract
-        seaport: "0x99bbA657f2BbC93c02D617f8bA121cB8Fc104Acf" // MockSeaport contract
+        seaport: "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF" // MockSeaport contract
       },
       metaTx: {
         relayerUrl: "http://localhost:8888",
@@ -59,6 +60,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
+        priceDiscoveryClient: "0xFFcd4c407B60B0d4351945484F9354d2C9E34EA1",
         forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
       },
       metaTx: {
@@ -88,6 +90,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
         protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
+        priceDiscoveryClient: "0x789d8727b9ae0A8546489232EB55b6fBE86b21Ac",
         forwarder: "0xbdeA59c8801658561a16fF58D68FC2b198DE4E93" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L10
       },
       metaTx: undefined,
@@ -113,6 +116,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         protocolDiamond: "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
+        priceDiscoveryClient: "0xbDD129B5034a65bd1F2872Df3F62C6dE1308352E",
         forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
       },
       metaTx: {
@@ -142,6 +146,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
         protocolDiamond: "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
+        priceDiscoveryClient: "0x9F3dAAA2D7B39C7ad4f375e095357012296e69B8",
         forwarder: "0xbdeA59c8801658561a16fF58D68FC2b198DE4E93" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L10
       },
       metaTx: undefined,
@@ -167,6 +172,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+        priceDiscoveryClient: "0xb60cf39Fb18e5111174f346d0f39521ef6531fD4",
         forwarder: "0xf0511f123164602042ab2bCF02111fA5D3Fe97CD"
       },
       metaTx: {
@@ -195,6 +201,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+        priceDiscoveryClient: "0xb60cf39Fb18e5111174f346d0f39521ef6531fD4",
         forwarder: "0x84a0856b038eaAd1cC7E297cF34A7e72685A8693" // https://docs-gasless.biconomy.io/misc/contract-addresses
       },
       metaTx: undefined,

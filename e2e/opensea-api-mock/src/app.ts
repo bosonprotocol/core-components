@@ -48,5 +48,8 @@ export function startApp(): Server {
     logger.info(`ChainId: ${config.CHAIN_ID}`);
     logger.info(`RpcNode: ${config.RPC_NODE}`);
     logger.info(`Forwarder: ${config.FORWARDER}`);
+    logger.info(`Seaport Address: ${config.SEAPORT_ADDRESS}`);
+    logger.info(`OpenSea Fee Recipient: ${config.OPENSEA_FEE_RECIPIENT}`);
+    logger.info(`OpenSea Fee Percentage: ${config.OPENSEA_FEE_PERCENTAGE}`);
   });
 }

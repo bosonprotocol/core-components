@@ -1,24 +1,19 @@
-import { OrderSide, ProtocolData } from "opensea-js";
+import {
+  Chain,
+  OpenSeaPaymentToken,
+  OrderSide,
+  ProtocolData
+} from "opensea-js";
 import { logger } from "./../utils/logger";
 import * as data from "./data";
 import { getOpenseaSdk } from "../utils/openseaSdk";
 import {
   ConsiderationItem,
   OfferItem,
-  OrderComponents,
   OrderParameters
 } from "@opensea/seaport-js/lib/types";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { BigNumber } from "ethers";
-
-// export type PostOrderBody = {
-//   signature: string;
-//   protocol_address: string;
-//   parameters: {
-//     offer: unknown[];
-//     consideration: unknown[];
-//   };
-// };
 
 export type PostOrderBody = ProtocolData;
 
@@ -225,8 +220,36 @@ function getChainId(chain: string): number {
     case "mumbai": {
       return 80001;
     }
+    case "amoy": {
+      return 80002;
+    }
+    case "sepolia": {
+      return 11155111;
+    }
+    case "polygon": {
+      return 137;
+    }
+    case "mainnet": {
+      return 1;
+    }
+    case "hardhat": {
+      return 31337;
+    }
     default: {
       throw new Error(`Unable to get chainId for chain '${chain}'`);
     }
   }
+}
+
+export function getPaymentToken(
+  chain: string,
+  token: string
+): OpenSeaPaymentToken {
+  return {
+    name: "TEMP",
+    symbol: "TEMP",
+    decimals: 18,
+    address: token,
+    chain: chain as Chain
+  };
 }

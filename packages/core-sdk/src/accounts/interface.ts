@@ -1,6 +1,6 @@
 import { Interface } from "@ethersproject/abi";
 import { formatBytes32String } from "@ethersproject/strings";
-import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
+import { BigNumberish } from "@ethersproject/bignumber";
 import {
   CreateSellerArgs,
   CreateDisputeResolverArgs,

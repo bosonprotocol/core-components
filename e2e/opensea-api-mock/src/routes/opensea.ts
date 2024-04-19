@@ -30,3 +30,8 @@ openseaV2.post(
   body("fulfiller.address").isString(),
   openseaController.postFulfillmentData
 );
+
+openseaV2.get(
+  "/chain/:chain/payment_token/:token",
+  openseaController.getPaymentToken
+);

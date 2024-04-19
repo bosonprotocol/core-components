@@ -3,6 +3,7 @@ import type { chains } from "../chains";
 
 export type ContractAddresses = {
   protocolDiamond: string;
+  priceDiscoveryClient: string;
   testErc721?: string;
   testErc20?: string;
   testErc1155?: string;

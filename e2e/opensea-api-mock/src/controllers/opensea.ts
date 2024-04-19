@@ -131,3 +131,23 @@ export async function postFulfillmentData(
     next(error);
   }
 }
+
+export async function getPaymentToken(
+  req: Request<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    Record<string, unknown>
+  >,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const response = await openseaService.getPaymentToken(
+      req.params["chain"] as string,
+      req.params["token"] as string
+    );
+    return res.send(response);
+  } catch (error) {
+    next(error);
+  }
+}
