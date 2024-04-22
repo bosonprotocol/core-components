@@ -27,6 +27,8 @@ import { ERC165Mixin } from "./erc165/mixin";
 import { ProtocolConfigMixin } from "./protocol-config/mixin";
 import { ErrorMixin } from "./errors/mixin";
 import { SubgraphMixin } from "./subgraph/mixin";
+import { PriceDiscoveryMixin } from "./price-discovery/mixin";
+import { MarketplaceMixin } from "./marketplaces/mixin";
 
 export class CoreSDK extends BaseCoreSDK {
   /**
@@ -149,7 +151,9 @@ export interface CoreSDK
     ERC165Mixin,
     ProtocolConfigMixin,
     ErrorMixin,
-    SubgraphMixin {}
+    SubgraphMixin,
+    PriceDiscoveryMixin,
+    MarketplaceMixin {}
 applyMixins(CoreSDK, [
   MetadataMixin,
   AccountsMixin,
@@ -169,5 +173,7 @@ applyMixins(CoreSDK, [
   ERC165Mixin,
   ProtocolConfigMixin,
   ErrorMixin,
-  SubgraphMixin
+  SubgraphMixin,
+  PriceDiscoveryMixin,
+  MarketplaceMixin
 ]);

@@ -11,7 +11,9 @@ import {
   completeExchange,
   completeExchangeBatch,
   expireVoucher,
-  commitToConditionalOffer
+  commitToConditionalOffer,
+  getExchangeTokenId,
+  parseTokenId
 } from "./handler";
 import { getExchangeById, getExchanges } from "./subgraph";
 import { bosonExchangeHandlerIface } from "./interface";
@@ -213,16 +215,13 @@ export class ExchangesMixin extends BaseCoreSDK {
     exchangeId: BigNumberish,
     offerId: BigNumberish
   ): BigNumber {
-    // Since v2.2.1, tokenId = exchangeId | offerId << 128
-    return BigNumber.from(offerId).shl(128).add(exchangeId);
+    return getExchangeTokenId(exchangeId, offerId);
   }
 
   public parseTokenId(tokenId: BigNumberish): {
     offerId: BigNumber;
     exchangeId: BigNumber;
   } {
-    const offerId = BigNumber.from(tokenId).shr(128);
-    const exchangeId = BigNumber.from(tokenId).mask(128);
-    return { offerId, exchangeId };
+    return parseTokenId(tokenId);
   }
 }

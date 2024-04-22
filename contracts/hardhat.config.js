@@ -111,6 +111,12 @@ module.exports = {
         }
       },
       {
+        version: "0.8.24", // required for seaport 1.6
+        settings: {
+          evmVersion: "cancun"
+        }
+      },
+      {
         version: "0.8.17",
         settings: {
           optimizer: {
@@ -187,7 +193,9 @@ module.exports = {
       "MockNativeMetaTransaction",
       "IBosonGroupHandler",
       "MockForwarder",
-      "IBosonConfigHandler"
+      "IBosonConfigHandler",
+      "IBosonPriceDiscoveryHandler",
+      "Seaport"
     ]
   }
 };

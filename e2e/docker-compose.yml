@@ -18,9 +18,25 @@ services:
       - host.docker.internal:host-gateway
     command: ["sh", "-c", "sleep 3 && npm run start"]
 
+  opensea-api-mock:
+    build:
+      context: ../.
+      dockerfile: ./e2e/opensea-api-mock/Dockerfile
+    user: "node:node"
+    image: opensea-api-mock:202404191626
+    ports:
+      - "3334:3334"
+    environment:
+      - ENV_NAME=local
+      - RPC_NODE=http://host.docker.internal:8545
+    depends_on:
+      - hardhat-node
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
   hardhat-node:
     build: ../contracts
-    image: hardhat-node:324d8ca92c3727fe2957e3bf6ea9307f5e14a936_0
+    image: hardhat-node:174ae30fcdee39fa7048a2dfb3ac00e9d22445d5_0
     ports:
       - "8545:8545"
     volumes:

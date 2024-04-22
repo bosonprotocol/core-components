@@ -1,4 +1,4 @@
-import { BigNumberish } from "@ethersproject/bignumber";
+import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import { Web3LibAdapter, TransactionResponse } from "@bosonprotocol/common";
 import {
@@ -26,7 +26,7 @@ type BaseExchangeHandlerArgs = {
   web3Lib: Web3LibAdapter;
 };
 
-function checkOfferIsCommittable(
+export function checkOfferIsCommittable(
   offerId: BigNumberish,
   offer: OfferFieldsFragment
 ) {
@@ -338,4 +338,21 @@ function assertCompletableExchange(
       );
     }
   }
+}
+
+export function getExchangeTokenId(
+  exchangeId: BigNumberish,
+  offerId: BigNumberish
+): BigNumber {
+  // Since v2.2.1, tokenId = exchangeId | offerId << 128
+  return BigNumber.from(offerId).shl(128).add(exchangeId);
+}
+
+export function parseTokenId(tokenId: BigNumberish): {
+  offerId: BigNumber;
+  exchangeId: BigNumber;
+} {
+  const offerId = BigNumber.from(tokenId).shr(128);
+  const exchangeId = BigNumber.from(tokenId).mask(128);
+  return { offerId, exchangeId };
 }
