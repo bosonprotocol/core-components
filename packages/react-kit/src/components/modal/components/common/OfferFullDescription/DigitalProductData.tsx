@@ -10,8 +10,10 @@ import { Typography } from "../../../../ui/Typography";
 import DetailTable from "../detail/DetailTable";
 import { SlickSlider, initialSettings } from "../detail/SlickSlider";
 import {
+  buyerTransferInfoMapping,
   digitalNftTypeMapping,
-  digitalTypeMappingDisplay
+  digitalTypeMappingDisplay,
+  ercTokenMapping
 } from "../../../../../lib/bundle/const";
 
 const StyledDetailsSummary = styled(DetailsSummary)`
@@ -117,7 +119,7 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
                         name: "Token IDs",
                         value: (
                           <Typography tag="p">
-                            {nftItem.tokenIdRange?.max}-
+                            {nftItem.tokenIdRange?.min}-
                             {nftItem.tokenIdRange?.max}
                           </Typography>
                         )
@@ -126,7 +128,23 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
                   : []),
                 ...(nftItem.terms || []).map((term) => ({
                   name: term.displayKey || term.key,
-                  value: <Typography tag="p">{term.value}</Typography>
+                  value: (
+                    <Typography tag="p">
+                      {buyerTransferInfoMapping[
+                        term.value as keyof typeof buyerTransferInfoMapping
+                      ]
+                        ? buyerTransferInfoMapping[
+                            term.value as keyof typeof buyerTransferInfoMapping
+                          ]
+                        : ercTokenMapping[
+                              term.value as keyof typeof ercTokenMapping
+                            ]
+                          ? ercTokenMapping[
+                              term.value as keyof typeof ercTokenMapping
+                            ]
+                          : term.value}
+                    </Typography>
+                  )
                 }))
               ]}
               inheritColor={false}
