@@ -218,6 +218,12 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
         decimals: "18"
       },
       {
+        symbol: "WETH",
+        name: "Wrapped Ether",
+        address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+        decimals: "18"
+      },
+      {
         symbol: "BOSON",
         name: "Boson Token",
         address: "0xC477D038d5420C6A9e0b031712f61c5120090de9",

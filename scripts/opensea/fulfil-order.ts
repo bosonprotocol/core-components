@@ -1,4 +1,4 @@
-import { Chain, OpenSeaSDK, OrderSide } from "opensea-js";
+import { OpenSeaSDK } from "opensea-js";
 import { EnvironmentType, Side, getEnvConfigById } from "@bosonprotocol/common";
 import { program } from "commander";
 import { providers, Wallet } from "ethers";
@@ -6,15 +6,11 @@ import {
   Wallet as WalletV6,
   JsonRpcProvider as JsonRpcProviderV6
 } from "ethers-v6";
-import { EthersAdapter } from "../packages/ethers-sdk/src";
-import { CoreSDK } from "../packages/core-sdk/src";
+import { EthersAdapter } from "../../packages/ethers-sdk/src";
+import { CoreSDK } from "../../packages/core-sdk/src";
 import { API_BASE_TESTNET } from "opensea-js/lib/constants";
-import {
-  AdvancedOrder,
-  CriteriaResolver,
-  Fulfillment,
-  encodeMatchAdvancedOrders
-} from "../packages/core-sdk/src/seaport/interface";
+import { getOpenSeaChain } from "./utils";
+import { MarketplaceType } from "../../packages/core-sdk/src/marketplaces/types";
 
 program
   .description("Fulfil an Order on Opensea.")
@@ -28,7 +24,7 @@ program
   .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80002-0")
   .parse(process.argv);
 
-const WETH_ADDRESS = "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa";
+const OPENSEA_FEE_RECIPIENT = "0x0000a26b00c1F0DF003000390027140000fAa719"; // On Real OpenSea
 
 async function main() {
   const [sellerPrivateKey, tokenId] = program.args;
@@ -43,88 +39,77 @@ async function main() {
   const providerV6 = new JsonRpcProviderV6(defaultConfig.jsonRpcUrl);
   const sellerWallet = new Wallet(sellerPrivateKey);
   const sellerWalletV6: WalletV6 = new WalletV6(sellerPrivateKey, providerV6);
-  const coreSDK = CoreSDK.fromDefaultConfig({
+  const coreSDKSeller = CoreSDK.fromDefaultConfig({
     web3Lib: new EthersAdapter(provider, sellerWallet),
     envName,
     configId
   });
-  const { offerId, exchangeId } = coreSDK.parseTokenId(tokenId);
+  const WETH_ADDRESS = (defaultConfig.defaultTokens || []).find(
+    (t) => t.symbol === "WETH"
+  )?.address;
+
+  const { offerId, exchangeId } = coreSDKSeller.parseTokenId(tokenId);
   console.log({
     offerId: offerId.toString(),
     exchangeId: exchangeId.toString()
   });
-  // const openseaUrl = API_BASE_TESTNET;
-  const openseaUrl = "http://localhost:3334";
-  const openseaSdk = new OpenSeaSDK(
-    sellerWalletV6 as any,
-    {
-      chain: Chain.Mumbai,
-      apiKey: OPENSEA_API_KEY,
-      apiBaseUrl: openseaUrl
-    },
-    (line) => console.info(`MUMBAI OS: ${line}`)
+  const openseaUrl = API_BASE_TESTNET;
+  const openseaSdkSeller = coreSDKSeller.marketplace(
+    MarketplaceType.OPENSEA,
+    new OpenSeaSDK(
+      sellerWalletV6 as any,
+      {
+        chain: getOpenSeaChain(chainId),
+        apiKey: OPENSEA_API_KEY,
+        apiBaseUrl: openseaUrl
+      },
+      (line) => console.info(`SEPOLIA OS: ${line}`)
+    ),
+    OPENSEA_FEE_RECIPIENT
   );
-  (openseaSdk.api as any).apiBaseUrl = openseaUrl; // << force the API URL to allow using local mock
-  const offer = await coreSDK.getOfferById(offerId);
-  console.log("offer", offer);
+  const offer = await coreSDKSeller.getOfferById(offerId);
+  if (
+    !!WETH_ADDRESS &&
+    offer.exchangeToken.address.toLowerCase() !== WETH_ADDRESS?.toLowerCase()
+  ) {
+    throw new Error(
+      `Exchange Token must be Wrapped Native Currency ${WETH_ADDRESS} for Price Discovery offers (Opensea req)`
+    );
+  }
   const nftContract = offer.collection.collectionContract.address;
   console.log(`fulfil order for token ${tokenId} on contract ${nftContract}`);
-  const order = await openseaSdk.api.getOrder({
-    assetContractAddress: nftContract,
-    tokenId,
-    side: OrderSide.BID
-  });
-  if (!order || !order.orderHash) {
-    return;
-  }
-  console.log("ORDER", order);
-  console.log("OFFER", order.protocolData.parameters.offer);
-  console.log("CONSIDERATION", order.protocolData.parameters.consideration);
-  console.log("TAKER", JSON.stringify(order.takerFees));
-  const BOSON_PD_CLIENT = "0x74874fF29597b6e01E16475b7BB9D6dC954d0411";
-  const BOSON_PROTOCOL = "0x76051FC05Ab42D912a737d59a8711f1446712630";
-  const OPENSEA_CONDUIT = "0x1e0049783f008a0085193e00003d00cd54003c71";
-
-  const ffd = await openseaSdk.api.generateFulfillmentData(
-    BOSON_PD_CLIENT, // the address of the PriceDiscoveryClient contract, which will call the fulfilment method
-    order.orderHash,
-    order.protocolAddress,
-    order.side
+  const order = await openseaSdkSeller.getOrder(
+    {
+      contract: nftContract,
+      tokenId
+    },
+    Side.Bid
   );
-  console.log("FFD", ffd);
-  console.log("FFD.orders", ffd.fulfillment_data.orders);
-  const inputData = ffd.fulfillment_data.transaction.input_data as unknown as {
-    orders: AdvancedOrder[];
-    criteriaResolvers: CriteriaResolver[];
-    fulfillments: Fulfillment[];
-    recipient: string;
-  };
-  console.log("FFD_input", JSON.stringify(inputData));
+  if (!order || !order.orderHash) {
+    throw new Error(
+      `No Order found for token ${tokenId} on contract ${nftContract}`
+    );
+  }
+  console.log("ORDER TO BE FULFILLED", order);
+  const priceDiscoveryStruct = await openseaSdkSeller.generateFulfilmentData({
+    contract: nftContract,
+    tokenId
+  });
+
+  const BOSON_PROTOCOL = defaultConfig.contracts.protocolDiamond;
+
+  console.log(
+    `Seller creates a fulfillment order for token ${tokenId} on contract ${nftContract}`
+  );
 
   const buyerAddress = order.maker.address;
-  const price = inputData.orders[1].parameters.consideration[0].startAmount;
-  const side = Side.Bid; // ?
-  const priceDiscoveryContract = order.protocolAddress;
-  const conduit = OPENSEA_CONDUIT;
-  const priceDiscoveryData = encodeMatchAdvancedOrders(
-    inputData.orders,
-    inputData.criteriaResolvers,
-    inputData.fulfillments,
-    inputData.recipient
-  );
-  await approveIfNeeded(BOSON_PROTOCOL, nftContract, coreSDK);
-  const commitTx = await coreSDK.commitToPriceDiscoveryOffer(
+  await approveIfNeeded(BOSON_PROTOCOL, nftContract, coreSDKSeller);
+  const commitTx = await coreSDKSeller.commitToPriceDiscoveryOffer(
     buyerAddress,
     tokenId,
-    {
-      price,
-      side,
-      priceDiscoveryContract,
-      conduit,
-      priceDiscoveryData
-    }
+    priceDiscoveryStruct
   );
-  console.log("commit tx", commitTx.hash);
+  console.log("commitToPriceDiscoveryOffer tx submitted ...", commitTx.hash);
   await commitTx.wait();
 }
 

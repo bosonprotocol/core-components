@@ -35,13 +35,14 @@ async function main() {
   if (offerDataJson["voucherRedeemableFromDateInMS"] === undefined) {
     offerDataJson["voucherRedeemableFromDateInMS"] = Date.now();
   }
-  // const WETH_ADDRESS = "0x52eF3d68BaB452a294342DC3e5f464d7f610f72E"; // Amoy
-  const WETH_ADDRESS = "0x7b79995e5f793a07bc00c21412e50ecae098e7f9"; // Sepolia
+  const WETH_ADDRESS = (defaultConfig.defaultTokens || []).find(
+    (t) => t.symbol === "WETH"
+  )?.address;
 
   console.log(`Create Offer with Data ${JSON.stringify(offerDataJson)}`);
   console.log("defaultConfig", defaultConfig);
   if (
-    offerDataJson.exchangeToken.toLowerCase() !== WETH_ADDRESS.toLowerCase()
+    offerDataJson.exchangeToken.toLowerCase() !== WETH_ADDRESS?.toLowerCase()
   ) {
     throw new Error(
       `Exchange Token must be Wrapped Native Currency ${WETH_ADDRESS} for Price Discovery offers (Opensea req)`

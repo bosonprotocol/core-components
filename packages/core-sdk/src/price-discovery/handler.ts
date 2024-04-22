@@ -23,10 +23,6 @@ export async function commitToPriceDiscoveryOffer(args: {
   }
   const offer = await getOfferById(args.subgraphUrl, offerId);
 
-  // is Offer committable condition is different from classic
-  //  usecase (for instance quantityAvailable can be 0, as the rNFT are already preminted)
-  // await exchanges.checkOfferIsCommittable(offerId, offer);
-
   // TODO: do we need to check allowance?
 
   return args.web3Lib.sendTransaction({

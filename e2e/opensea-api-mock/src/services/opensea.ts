@@ -152,10 +152,10 @@ function extractOrderInfo(
   );
   const nftAsk = parameters.offer.find((c) => c.itemType === ItemType.ERC721);
   if (side === OrderSide.BID && !nftBid) {
-    logger.warn(`NFT not found in order consideration`);
+    throw new Error(`NFT not found in order consideration`);
   }
   if (side === OrderSide.ASK && !nftAsk) {
-    logger.warn(`NFT not found in order offer`);
+    throw new Error(`NFT not found in order offer`);
   }
   if (!side) {
     if (nftBid && !nftAsk) {
@@ -163,11 +163,11 @@ function extractOrderInfo(
     } else if (!nftBid && nftAsk) {
       side = OrderSide.ASK;
     } else if (nftBid && nftAsk) {
-      logger.warn(
+      throw new Error(
         `NFT found in both consideration and offer. Unable to detect the order side`
       );
     } else {
-      logger.warn(
+      throw new Error(
         `No NFT found in consideration or offer. Unable to detect the order side`
       );
     }
