@@ -4,12 +4,12 @@ import "tippy.js/themes/light-border.css";
 
 import Tippy, { TippyProps } from "@tippyjs/react";
 import { IconWeight, Question } from "phosphor-react";
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 
 import { theme } from "../../theme";
 
-export interface TooltipProps extends TippyProps {
+export interface TooltipProps extends Omit<TippyProps, "children"> {
   content: React.ReactNode;
   interactive?: boolean;
   size?: number;
@@ -37,6 +37,7 @@ export interface TooltipProps extends TippyProps {
     | "click"
     | "focusin"
     | "manual";
+  children?: ReactNode;
 }
 
 const Button = styled.button`

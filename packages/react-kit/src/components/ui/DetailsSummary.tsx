@@ -78,7 +78,7 @@ export const DetailsSummary: React.FC<DetailsSummaryProps> = ({
   children,
   className,
   initiallyOpen,
-  isOpen,
+  isOpen = initiallyOpen,
   onSetOpen,
   icon,
   $paddingSides = "2rem"

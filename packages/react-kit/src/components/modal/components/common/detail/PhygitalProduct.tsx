@@ -14,6 +14,8 @@ import ThemedButton from "../../../../ui/ThemedButton";
 import { Typography } from "../../../../ui/Typography";
 import Video from "../../../../ui/Video";
 import { theme } from "../../../../../theme";
+import { Tooltip } from "../../../../tooltip/Tooltip";
+import { formatAddress } from "../../../../../lib/address/address";
 const colors = theme.colors.light;
 const imageSize = "2.5rem";
 
@@ -83,7 +85,7 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
         <Grid as="ul" flexDirection="column" gap="1rem" padding="0">
           {bundleItems?.map((bundleItem, index) => {
             let quantity = 1;
-            let name: string;
+            let name: string | ReactNode;
             let contract: string | undefined | null;
             let imageSrc: string | undefined | null;
             let videoSrc: string | undefined | null;
@@ -101,6 +103,21 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
                 erc1155Names?.[index] ||
                 "Untitled";
               contract = bundleItem.contract;
+              if (name === contract && typeof name === "string" && contract) {
+                name = (
+                  <Tooltip
+                    content={contract}
+                    maxWidth="none"
+                    interactive
+                    hideOnClick={false}
+                    wrap={false}
+                  >
+                    <span style={{ wordBreak: "keep-all" }}>
+                      {formatAddress(contract)}
+                    </span>
+                  </Tooltip>
+                );
+              }
               imageSrc = ercImages?.[index] || bundleItem.image;
               videoSrc = bundleItem.animationUrl;
               rangeText =
@@ -151,7 +168,11 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
                   </MediaWrapper>
                 ) : null}
                 <div>{quantity}x</div>
-                <Grid flexDirection="column" alignItems="flex-start">
+                <Grid
+                  flexDirection="column"
+                  alignItems="flex-start"
+                  style={{ wordBreak: "break-all" }}
+                >
                   {name} {rangeText}
                 </Grid>
                 {contract && (

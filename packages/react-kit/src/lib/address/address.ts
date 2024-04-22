@@ -1,5 +1,12 @@
 import { getAddress } from "@ethersproject/address";
-
+export function formatAddress(address: string): string {
+  if (!address) {
+    return address;
+  }
+  return `${address.substring(0, 5)}...${address.substring(
+    address.length - 4
+  )}`;
+}
 // returns the checksummed address if the address is valid, otherwise returns false
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isAddress(value: any): string | false {
