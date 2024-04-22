@@ -1367,7 +1367,7 @@ export function serializeVariant(variant: productV1.ProductV1Variant): string {
 export function createOpenseaSdk(privateKey: string): OpenSeaSDK {
   const providerV6 = new JsonRpcProviderV6(defaultConfig.jsonRpcUrl);
   const walletV6: WalletV6 = new WalletV6(privateKey, providerV6);
-  const OPENSEA_API_KEY = ""; // local mock does'nt need any
+  const OPENSEA_API_KEY = ""; // local mock doesn't need any
   const openseaUrl = "http://localhost:3334";
   const openseaSdk = new OpenSeaSDK(
     walletV6 as any,
