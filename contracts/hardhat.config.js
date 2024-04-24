@@ -204,7 +204,9 @@ module.exports = {
       "MockForwarder",
       "IBosonConfigHandler",
       "IBosonPriceDiscoveryHandler",
-      "Seaport"
+      "Seaport",
+      "OpenSeaWrapper",
+      "OpenSeaWrapperFactory"
     ]
   }
 };

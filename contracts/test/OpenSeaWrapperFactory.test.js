@@ -59,8 +59,8 @@ describe("OpenSeaWrapperFactory", () => {
       openSeaWrapperAddress
     );
     expect(!!openSeaWrapper).to.be.true;
-    // const iERC721InterfaceId = "0x80ac58cd";
-    // expect(await openSeaWrapper.supportsInterface(iERC721InterfaceId)).to.be
-    //   .true;
+    const iERC721InterfaceId = "0x80ac58cd";
+    expect(await openSeaWrapper.supportsInterface(iERC721InterfaceId)).to.be
+      .true;
   });
 });
