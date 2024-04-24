@@ -62,7 +62,16 @@ subtask(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS, async (_, { config }) => {
     }
   );
   console.log("Add submodulesContracts:", submodulesContracts);
-  return [...contracts, ...submodulesContracts].map(path.normalize);
+  const otherContracts_path = path.join(
+    config.paths.root,
+    "other-contracts",
+    "**",
+    "*.sol"
+  );
+  const otherContracts = await glob(otherContracts_path.replace(/\\/g, "/")); // Windows support
+  return [...contracts, ...submodulesContracts, ...otherContracts].map(
+    path.normalize
+  );
 });
 
 const accountsFromEnv = process.env.DEPLOYER_PK
@@ -90,7 +99,7 @@ module.exports = {
           },
           outputSelection: {
             "*": {
-              "*": ["evm.bytecode.object", "evm.deployedBytecode*"],
+              "*": ["evm.bytecode.object", "evm.deployedBytecode*"]
             }
           }
         },
