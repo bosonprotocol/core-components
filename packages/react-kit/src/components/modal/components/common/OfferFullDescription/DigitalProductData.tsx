@@ -3,7 +3,6 @@ import React from "react";
 import styled from "styled-components";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
 import { Offer } from "../../../../../types/offer";
-import { NftItemIcon } from "../../../../nftItem/NftItemIcon";
 import { DetailsSummary } from "../../../../ui/DetailsSummary";
 import { Grid } from "../../../../ui/Grid";
 import { Typography } from "../../../../ui/Typography";
@@ -15,6 +14,12 @@ import {
   digitalTypeMappingDisplay,
   ercTokenMapping
 } from "../../../../../lib/bundle/const";
+import { useBundleItemsImages } from "../../../../../hooks/bundles/useBundleItemsImages";
+import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
+import { isNftItem } from "../../../../../lib/bundle/filter";
+import { isTruthy } from "../../../../../types/helpers";
+import Video from "../../../../ui/Video";
+import IpfsImage from "../../../../ui/IpfsImage";
 
 const StyledDetailsSummary = styled(DetailsSummary)`
   .icon-wrapper {
@@ -38,7 +43,12 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
   offer,
   imagesToShow
 }) => {
-  const { nftItems } = getOfferDetails(offer);
+  const { bundleItems } = getOfferDetails(offer);
+  const { images } = useBundleItemsImages({
+    bundleItems,
+    coreSDK: useCoreSDKWithContext()
+  });
+
   return (
     <Grid
       flexDirection="column"
@@ -47,121 +57,155 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
       justifyContent="space-between"
     >
       <Typography tag="h3">Digital product data</Typography>
-      {nftItems?.map((nftItem, index) => {
-        const nftMedia = [
-          ...(nftItem.image
-            ? [{ url: nftItem.image, type: "image" } as const]
-            : []),
-          ...(nftItem.animationUrl
-            ? [
-                {
-                  url: nftItem.animationUrl,
-                  type: "video"
-                } as const
-              ]
-            : [])
-        ];
-        const icon = <NftItemIcon nftItem={nftItem} />;
-        return (
-          <StyledDetailsSummary
-            key={nftItem.id}
-            icon={icon ? <MediaWrapper>{icon}</MediaWrapper> : null}
-            summaryText={nftItem.name || nftItem.contract || ""}
-            initiallyOpen={index === 0}
-          >
-            <DetailTable
-              align={false}
-              noBorder
-              data={[
-                ...(nftItem.contract
-                  ? [
-                      {
-                        name: "Contract address",
-                        value: (
-                          <Typography tag="p">{nftItem.contract}</Typography>
-                        )
-                      }
-                    ]
-                  : []),
-                ...(nftItem.description
-                  ? [
-                      {
-                        name: "Description",
-                        value: (
-                          <Typography tag="p">{nftItem.description}</Typography>
-                        )
-                      }
-                    ]
-                  : []),
-                ...(nftItem.attributes || []).map((attribute) => ({
-                  name: attribute.displayType || attribute.traitType,
-                  value: (
-                    <Typography tag="p">
-                      {digitalTypeMappingDisplay[
-                        attribute.value as keyof typeof digitalTypeMappingDisplay
+      {bundleItems
+        ?.map((bundleItem, index) => {
+          if (!isNftItem(bundleItem)) {
+            return null;
+          }
+          const nftItem = bundleItem;
+          const nftMedia = [
+            ...(nftItem.image
+              ? [{ url: nftItem.image, type: "image" } as const]
+              : []),
+            ...(nftItem.animationUrl
+              ? [
+                  {
+                    url: nftItem.animationUrl,
+                    type: "video"
+                  } as const
+                ]
+              : [])
+          ];
+          const imageSrc = images?.[index];
+          const videoSrc = bundleItem.animationUrl;
+          const icon = videoSrc ? (
+            <MediaWrapper>
+              <Video src={videoSrc} />
+            </MediaWrapper>
+          ) : imageSrc ? (
+            <MediaWrapper>
+              <IpfsImage
+                src={imageSrc}
+                overrides={{ ipfsGateway: "https://ipfs.io/ipfs" }}
+              />
+            </MediaWrapper>
+          ) : null;
+          return (
+            <StyledDetailsSummary
+              key={nftItem.id}
+              icon={icon ? <MediaWrapper>{icon}</MediaWrapper> : null}
+              summaryText={nftItem.name || nftItem.contract || ""}
+              initiallyOpen={index === 0}
+            >
+              <DetailTable
+                align={false}
+                noBorder
+                data={[
+                  ...(nftItem.contract
+                    ? [
+                        {
+                          name: "Contract address",
+                          value: (
+                            <Typography tag="p">{nftItem.contract}</Typography>
+                          )
+                        }
                       ]
-                        ? digitalTypeMappingDisplay[
-                            attribute.value as keyof typeof digitalTypeMappingDisplay
-                          ]
-                        : digitalNftTypeMapping[
-                              attribute.value as keyof typeof digitalNftTypeMapping
-                            ]
-                          ? digitalNftTypeMapping[
-                              attribute.value as keyof typeof digitalNftTypeMapping
-                            ]
-                          : attribute.value}
-                    </Typography>
-                  )
-                })),
-                ...(nftItem.tokenIdRange?.min && nftItem.tokenIdRange.max
-                  ? [
-                      {
-                        name: "Token IDs",
-                        value: (
-                          <Typography tag="p">
-                            {nftItem.tokenIdRange?.min}-
-                            {nftItem.tokenIdRange?.max}
-                          </Typography>
-                        )
-                      }
-                    ]
-                  : []),
-                ...(nftItem.terms || []).map((term) => ({
-                  name: term.displayKey || term.key,
-                  value: (
-                    <Typography tag="p">
-                      {buyerTransferInfoMapping[
-                        term.value as keyof typeof buyerTransferInfoMapping
+                    : []),
+                  ...(nftItem.description
+                    ? [
+                        {
+                          name: "Description",
+                          value: (
+                            <Typography tag="p">
+                              {nftItem.description}
+                            </Typography>
+                          )
+                        }
                       ]
-                        ? buyerTransferInfoMapping[
-                            term.value as keyof typeof buyerTransferInfoMapping
-                          ]
-                        : ercTokenMapping[
-                              term.value as keyof typeof ercTokenMapping
+                    : []),
+                  ...(nftItem.attributes || []).map((attribute) => ({
+                    name: attribute.displayType || attribute.traitType,
+                    value: (
+                      <Typography tag="p">
+                        {digitalTypeMappingDisplay[
+                          attribute.value as keyof typeof digitalTypeMappingDisplay
+                        ]
+                          ? digitalTypeMappingDisplay[
+                              attribute.value as keyof typeof digitalTypeMappingDisplay
                             ]
-                          ? ercTokenMapping[
-                              term.value as keyof typeof ercTokenMapping
+                          : digitalNftTypeMapping[
+                                attribute.value as keyof typeof digitalNftTypeMapping
+                              ]
+                            ? digitalNftTypeMapping[
+                                attribute.value as keyof typeof digitalNftTypeMapping
+                              ]
+                            : attribute.value}
+                      </Typography>
+                    )
+                  })),
+                  ...(nftItem.tokenIdRange?.min && nftItem.tokenIdRange.max
+                    ? [
+                        {
+                          name:
+                            nftItem.tokenIdRange?.min ===
+                            nftItem.tokenIdRange?.max
+                              ? "Token ID"
+                              : "Token IDs",
+                          value:
+                            nftItem.tokenIdRange?.min ===
+                            nftItem.tokenIdRange?.max ? (
+                              <Typography tag="p">
+                                {nftItem.tokenIdRange?.min}
+                              </Typography>
+                            ) : (
+                              <Typography tag="p">
+                                {nftItem.tokenIdRange?.min}-
+                                {nftItem.tokenIdRange?.max}
+                              </Typography>
+                            )
+                        }
+                      ]
+                    : []),
+                  ...(nftItem.terms || []).map((term) => ({
+                    name: term.displayKey || term.key,
+                    value: (
+                      <Typography tag="p">
+                        {buyerTransferInfoMapping[
+                          term.value as keyof typeof buyerTransferInfoMapping
+                        ]
+                          ? buyerTransferInfoMapping[
+                              term.value as keyof typeof buyerTransferInfoMapping
                             ]
-                          : term.value}
-                    </Typography>
-                  )
-                }))
-              ]}
-              inheritColor={false}
-            />
-            {!!nftMedia.length && (
-              <div style={{ width: "100%", padding: "0 2rem 1.5rem 2rem" }}>
-                <SlickSlider
-                  settings={{ ...initialSettings, slidesToShow: imagesToShow }}
-                  mediaFiles={nftMedia}
-                  alignLeft
-                  imageOptimizationOpts={{ height: 500 }}
-                />
-              </div>
-            )}
-          </StyledDetailsSummary>
-        );
-      })}
+                          : ercTokenMapping[
+                                term.value as keyof typeof ercTokenMapping
+                              ]
+                            ? ercTokenMapping[
+                                term.value as keyof typeof ercTokenMapping
+                              ]
+                            : term.value}
+                      </Typography>
+                    )
+                  }))
+                ]}
+                inheritColor={false}
+              />
+              {!!nftMedia.length && (
+                <div style={{ width: "100%", padding: "0 2rem 1.5rem 2rem" }}>
+                  <SlickSlider
+                    settings={{
+                      ...initialSettings,
+                      slidesToShow: imagesToShow
+                    }}
+                    mediaFiles={nftMedia}
+                    alignLeft
+                    imageOptimizationOpts={{ height: 500 }}
+                  />
+                </div>
+              )}
+            </StyledDetailsSummary>
+          );
+        })
+        .filter(isTruthy)}
     </Grid>
   );
 };

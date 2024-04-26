@@ -1,21 +1,21 @@
 import { ArrowSquareUpRight } from "phosphor-react";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
-import { useGetTokenUriImage } from "../../../../../hooks";
+import { useBundleItemsImages } from "../../../../../hooks/bundles/useBundleItemsImages";
 import { useErc1155Name } from "../../../../../hooks/contracts/erc1155/useErc1155Name";
 import { useErc721Name } from "../../../../../hooks/contracts/erc721/useErc721Name";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
+import { formatAddress } from "../../../../../lib/address/address";
 import { isNftItem, isProductV1Item } from "../../../../../lib/bundle/filter";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
+import { theme } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
+import { Tooltip } from "../../../../tooltip/Tooltip";
 import { Grid } from "../../../../ui/Grid";
 import IpfsImage from "../../../../ui/IpfsImage";
 import ThemedButton from "../../../../ui/ThemedButton";
 import { Typography } from "../../../../ui/Typography";
 import Video from "../../../../ui/Video";
-import { theme } from "../../../../../theme";
-import { Tooltip } from "../../../../tooltip/Tooltip";
-import { formatAddress } from "../../../../../lib/address/address";
 const colors = theme.colors.light;
 const imageSize = "2.5rem";
 
@@ -52,27 +52,7 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
     },
     { enabled: !!contracts?.length, coreSDK }
   );
-  const { data: ercImages } = useGetTokenUriImage(
-    {
-      tokenIds: bundleItems?.map((bundleItem) => {
-        if (isNftItem(bundleItem)) {
-          return (
-            bundleItem.tokenIdRange?.min ??
-            bundleItem.tokenIdRange?.max ??
-            bundleItem.tokenId
-          );
-        }
-        return null;
-      }),
-      tokenUris: bundleItems?.map((bundleItem) => {
-        if (isNftItem(bundleItem)) {
-          return bundleItem.metadataUri;
-        }
-        return null;
-      })
-    },
-    { enabled: !!bundleItems?.length }
-  );
+  const { images } = useBundleItemsImages({ bundleItems, coreSDK });
   return (
     <Grid flexDirection="column" alignItems="flex-start" gap="1rem">
       <Typography>
@@ -118,7 +98,7 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
                   </Tooltip>
                 );
               }
-              imageSrc = ercImages?.[index] || bundleItem.image;
+              imageSrc = images?.[index];
               videoSrc = bundleItem.animationUrl;
               rangeText =
                 bundleItem.tokenIdRange?.min ||
@@ -158,13 +138,16 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
                   color: colors.darkGrey
                 }}
               >
-                {imageSrc ? (
-                  <MediaWrapper>
-                    <IpfsImage src={imageSrc} />
-                  </MediaWrapper>
-                ) : videoSrc ? (
+                {videoSrc ? (
                   <MediaWrapper>
                     <Video src={videoSrc} />
+                  </MediaWrapper>
+                ) : imageSrc ? (
+                  <MediaWrapper>
+                    <IpfsImage
+                      src={imageSrc}
+                      overrides={{ ipfsGateway: "https://ipfs.io/ipfs" }}
+                    />
                   </MediaWrapper>
                 ) : null}
                 <div>{quantity}x</div>

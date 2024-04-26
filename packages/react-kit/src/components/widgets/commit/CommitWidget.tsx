@@ -8,7 +8,7 @@ import {
 } from "./CommitWidgetProviders";
 import GlobalStyle from "../../styles/GlobalStyle";
 import { CSSProperties } from "styled-components";
-import { useProvider } from "../../../hooks/connection/connection";
+
 type CommitProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
   trigger?: ComponentType<{ onClick: () => unknown }> | undefined;

@@ -264,7 +264,7 @@ export const CommitBundle: ComponentStory<typeof CommitWidget> = Template.bind(
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitBundle.args = {
   envName,
-  configId: envConfig[0].configId,
+  configId: envConfig[1].configId,
   walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
   dateFormat: "YYYY/MM/DD",
   defaultCurrencySymbol: "$",
@@ -278,9 +278,9 @@ CommitBundle.args = {
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
-  bundleUuid: "efc1ca63-c816-4636-bb09-0202ed5e75c3",
+  bundleUuid: "e637fb4-32b2-dd-c0ba-e178826513a3",
   productUuid: undefined,
-  sellerId: "138",
+  sellerId: "5",
   metaTx: {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
     apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
