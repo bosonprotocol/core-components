@@ -14,7 +14,8 @@ export class MarketplaceMixin extends BaseCoreSDK {
           type,
           handler as OpenSeaSDKHandler,
           this._contracts,
-          feeRecipient
+          feeRecipient,
+          this._web3Lib
         );
       }
       default:

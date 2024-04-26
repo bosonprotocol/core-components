@@ -36,9 +36,8 @@ describe("Seller royalties recipients", () => {
     maxRoyaltyPercentage = await coreSDK.getMaxRoyaltyPercentage();
   });
   test("default royalties for a seller", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const seller = await createSeller(coreSDK, fundedWallet.address);
     expect(seller).toBeTruthy();
     expect(seller.royaltyRecipients).toBeTruthy();
@@ -49,9 +48,8 @@ describe("Seller royalties recipients", () => {
     expect(seller.royaltyRecipients?.[0].minRoyaltyPercentage).toEqual("0");
   });
   test("custom royalties for a seller - non-zero percentage for treasury", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const treasuryPercentage = "100"; // 1%
     expect(Number(treasuryPercentage)).toBeLessThan(maxRoyaltyPercentage);
     const seller = await createSeller(coreSDK, fundedWallet.address, {
@@ -70,9 +68,8 @@ describe("Seller royalties recipients", () => {
     );
   });
   test("custom royalties for a seller - add other recipients", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const treasuryPercentage = "100"; // 1%
     expect(Number(treasuryPercentage)).toBeLessThan(maxRoyaltyPercentage);
     let seller = await createSeller(coreSDK, fundedWallet.address, {
@@ -162,9 +159,8 @@ describe("Seller royalties recipients", () => {
     ).toEqual(recipientsPercentage_2[1]);
   });
   test("custom royalties for a seller - update other recipients - check onchain", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const treasuryPercentage = "100"; // 1%
     expect(Number(treasuryPercentage)).toBeLessThan(maxRoyaltyPercentage);
     const seller = await createSeller(coreSDK, fundedWallet.address, {
@@ -255,9 +251,8 @@ describe("Seller royalties recipients", () => {
     ).toEqual(recipientsPercentage_2[1]);
   });
   test("custom royalties for a seller - update other recipients - check subgraph", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const treasuryPercentage = "100"; // 1%
     expect(Number(treasuryPercentage)).toBeLessThan(maxRoyaltyPercentage);
     let seller = await createSeller(coreSDK, fundedWallet.address, {
@@ -342,9 +337,8 @@ describe("Seller royalties recipients", () => {
     ).toEqual(recipientsPercentage_2[1]);
   });
   test("custom royalties for a seller - remove other recipients - check onchain", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const treasuryPercentage = "100"; // 1%
     expect(Number(treasuryPercentage)).toBeLessThan(maxRoyaltyPercentage);
     const seller = await createSeller(coreSDK, fundedWallet.address, {
@@ -390,9 +384,8 @@ describe("Seller royalties recipients", () => {
     expect(royaltyRecipients.some(walletIs_onchain(recipients[1]))).toBe(false);
   });
   test("custom royalties for a seller - remove other recipients - check subgraph", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const treasuryPercentage = "100"; // 1%
     expect(Number(treasuryPercentage)).toBeLessThan(maxRoyaltyPercentage);
     let seller = await createSeller(coreSDK, fundedWallet.address, {
@@ -455,11 +448,10 @@ describe("Seller royalties recipients", () => {
   });
 });
 
-describe.only("Offer royalties recipients", () => {
+describe("Offer royalties recipients", () => {
   test("royalties #1 zero royalties by default", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const createdOffer = await createSellerAndOffer(
       coreSDK,
       fundedWallet.address
@@ -470,9 +462,8 @@ describe.only("Offer royalties recipients", () => {
     expect(createdOffer.royaltyInfos[0].recipients?.length).toEqual(0);
   });
   test("royalties #2 zero minimum - set treasury royalty for offer", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     await createSeller(coreSDK, fundedWallet.address);
     const treasuryPercentage = "100"; // 1%
     const createdOffer = await createOffer(coreSDK, {
@@ -498,9 +489,8 @@ describe.only("Offer royalties recipients", () => {
     );
   });
   test("royalties #3 offer requires at least the minimum royalty percentage", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     // Set a >0 minimum royalty percentage for the seller
     const minTreasuryPercentage = "100"; // 1%
     await createSeller(coreSDK, fundedWallet.address, {
@@ -553,9 +543,8 @@ describe.only("Offer royalties recipients", () => {
         );
       };
     };
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const seller = await createSeller(coreSDK, fundedWallet.address);
     const recipients = [
       Wallet.createRandom().address.toLowerCase(),
@@ -603,9 +592,8 @@ describe.only("Offer royalties recipients", () => {
     ).toBe(false);
   });
   test("royalties #5 positive minimum royalty and offer with no royalties", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     // Set a >0 minimum royalty percentage for the seller
     const minTreasuryPercentage = "100"; // 1%
     await createSeller(coreSDK, fundedWallet.address, {
@@ -621,9 +609,8 @@ describe.only("Offer royalties recipients", () => {
     expect(createdOffer.royaltyInfos[0].recipients?.length).toEqual(0);
   });
   test("updateOfferRoyaltyRecipients()", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const createdOffer = await createSellerAndOffer(
       coreSDK,
       fundedWallet.address
@@ -667,9 +654,8 @@ describe.only("Offer royalties recipients", () => {
     );
   });
   test("updateOfferRoyaltyRecipientsBatch() - only 1 offer", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const createdOffer = await createSellerAndOffer(
       coreSDK,
       fundedWallet.address
@@ -713,9 +699,8 @@ describe.only("Offer royalties recipients", () => {
     );
   });
   test("updateOfferRoyaltyRecipientsBatch() - 3 offers", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const seller = await createSeller(coreSDK, fundedWallet.address);
     const productVariations: productV1.ProductV1Variant[] = [
       [

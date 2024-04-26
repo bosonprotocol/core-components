@@ -1,6 +1,6 @@
 import fs from "fs";
 import { execSync } from "child_process";
-import prettier from "prettier";
+import * as prettier from "prettier";
 
 async function main() {
   console.log("Compiling contracts...");
@@ -40,7 +40,10 @@ async function main() {
   );
   fs.writeFileSync(
     `${process.cwd()}/packages/common/src/abis/index.ts`,
-    prettier.format(indexFileContent, prettierConfig || {})
+    await prettier.format(indexFileContent, {
+      ...prettierConfig,
+      parser: "typescript"
+    })
   );
 }
 

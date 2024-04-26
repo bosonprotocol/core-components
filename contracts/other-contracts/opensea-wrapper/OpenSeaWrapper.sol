@@ -368,6 +368,7 @@ contract OpenSeaWrapper is BosonTypes, Ownable, ERC721 {
     }
 
     function finalizeAuction(uint256 _tokenId, SeaportInterface.AdvancedOrder calldata _buyerOrder) external {
+        require(msg.sender == unwrapperAddress, "OpenSeaWrapper: Only unwrapperAddress can finalize auction");
         address wrappedVoucherOwner = ownerOf(_tokenId); // tokenId can be taken from buyer order
 
         // Get exchange token and balance

@@ -27,7 +27,9 @@ async function deployWrappers(
     feeAmount,
     feeRecipient,
     conduitKey,
-    conduit
+    conduitKey === ethers.ZeroHash
+      ? seaport // Ensure the approval will be given to the seaport contract when NO_CONDUIT is defined
+      : conduit
   );
   await openSeaWrapperFactory.waitForDeployment();
   return { openSeaWrapperFactory };
