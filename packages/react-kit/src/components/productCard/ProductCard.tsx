@@ -63,8 +63,8 @@ const Wrapper = ({
   }
   return <>{children}</>;
 };
-export const PhygitalLabel = () => {
-  return <TopLeftRibbon data-text="Phygital" />;
+export const PhygitalLabel = ({ ...rest }) => {
+  return <TopLeftRibbon {...rest} data-text="Phygital" />;
 };
 export const ProductCard = (props: IProductCard) => {
   const {
