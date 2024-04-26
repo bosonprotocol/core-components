@@ -10,12 +10,12 @@ import React, {
   useState
 } from "react";
 import styled from "styled-components";
-import { useErc1155Uri } from "../../../../../hooks/contracts/erc1155/useErc1155Uri";
+import { useErc1155Uris } from "../../../../../hooks/contracts/erc1155/useErc1155Uris";
 import { useErc20ExchangeTokenInfo } from "../../../../../hooks/contracts/erc20/useErc20ExchangeTokenInfo";
-import { useErc721TokenUri } from "../../../../../hooks/contracts/erc721/useErc721TokenUri";
+import { useErc721TokenUris } from "../../../../../hooks/contracts/erc721/useErc721TokenUris";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { nativeOnChain } from "../../../../../lib/const/tokens";
-import { useGetTokenUriImage } from "../../../../../hooks/contracts/useGetTokenUriImage";
+import { useGetTokenUriImages } from "../../../../../hooks/contracts/useGetTokenUriImages";
 import { theme } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useConfigContext } from "../../../../config/ConfigContext";
@@ -185,10 +185,15 @@ export const TokenGatedItem = ({
       coreSDK
     }
   );
-  const { data: erc721TokenUri } = useErc721TokenUri(
+  const pairsContractTokens = [
     {
       contractAddress: condition?.tokenAddress,
       tokenIds: [condition?.minTokenId]
+    }
+  ];
+  const { data: erc721TokenUri } = useErc721TokenUris(
+    {
+      pairsContractTokens
     },
     {
       enabled:
@@ -198,10 +203,9 @@ export const TokenGatedItem = ({
       coreSDK
     }
   );
-  const { data: erc1155Uri } = useErc1155Uri(
+  const { data: erc1155Uri } = useErc1155Uris(
     {
-      contractAddress: condition?.tokenAddress,
-      tokenIds: [condition?.minTokenId]
+      pairsContractTokens
     },
     {
       enabled:
@@ -230,17 +234,25 @@ export const TokenGatedItem = ({
   );
 
   const tokenIdForImage = condition?.minTokenId;
-  const { data: erc721Image } = useGetTokenUriImage(
+  const { data: erc721Image } = useGetTokenUriImages(
     {
-      tokenUris: erc721TokenUri,
-      tokenIds: [tokenIdForImage]
+      pairsTokenUrisIds: [
+        {
+          tokenUris: erc721TokenUri?.[0],
+          tokenIds: [tokenIdForImage]
+        }
+      ]
     },
     { enabled: !!(erc721TokenUri && erc721TokenUri[0] && tokenIdForImage) }
   );
-  const { data: erc1155Image } = useGetTokenUriImage(
+  const { data: erc1155Image } = useGetTokenUriImages(
     {
-      tokenUris: erc1155Uri,
-      tokenIds: [tokenIdForImage]
+      pairsTokenUrisIds: [
+        {
+          tokenUris: erc1155Uri?.[0],
+          tokenIds: [tokenIdForImage]
+        }
+      ]
     },
     { enabled: !!(erc1155Uri && erc1155Uri[0] && tokenIdForImage) }
   );
@@ -255,9 +267,9 @@ export const TokenGatedItem = ({
             currencies={[currency]}
           />
         ) : erc721Image ? (
-          <ErcImage src={erc721Image[0]} alt="erc721" />
+          <ErcImage src={erc721Image[0][0]} alt="erc721" />
         ) : erc1155Image ? (
-          <ErcImage src={erc1155Image[0]} alt="erc1155" />
+          <ErcImage src={erc1155Image[0][0]} alt="erc1155" />
         ) : null}
       </>
     );

@@ -1,5 +1,5 @@
 import { CameraSlash, Image as ImageIcon } from "phosphor-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { buttonText } from "./styles";
@@ -82,6 +82,9 @@ interface IImage {
   withLoading?: boolean;
   optimizationOpts?: Partial<ImageOptimizationOpts>;
   onSetStatus?: (status: LoadingStatus) => void;
+  overrides?: {
+    ipfsGateway?: string;
+  };
 }
 const IpfsImage: React.FC<IImage & React.HTMLAttributes<HTMLDivElement>> = ({
   src,
@@ -92,6 +95,7 @@ const IpfsImage: React.FC<IImage & React.HTMLAttributes<HTMLDivElement>> = ({
   withLoading = true,
   optimizationOpts,
   onSetStatus,
+  overrides,
   ...rest
 }) => {
   const { ipfsGateway } = useIpfsContext();
@@ -103,10 +107,21 @@ const IpfsImage: React.FC<IImage & React.HTMLAttributes<HTMLDivElement>> = ({
     onSetStatus?.(innerStatus);
   };
   const [currentSrc, setCurrentSrc] = useState<string>(
-    getImageUrl(src, ipfsGateway, optimizationOpts)
+    getImageUrl(src, overrides?.ipfsGateway || ipfsGateway, optimizationOpts)
   );
   const [didOriginalSrcFail, setDidOriginalSrcFail] = useState<boolean>(false);
-
+  useEffect(() => {
+    if (src === currentSrc) {
+      return;
+    }
+    // reset all if src changes
+    setStatus(withLoading ? "loading" : "success");
+    setCurrentSrc(
+      getImageUrl(src, overrides?.ipfsGateway || ipfsGateway, optimizationOpts)
+    );
+    setDidOriginalSrcFail(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [src]);
   const isError = status === "error";
   const isLoading = status === "loading";
   const isSuccess = status === "success";

@@ -13,6 +13,45 @@ export const ProductCardLabelWrapper = styled.div`
   z-index: 1;
 `;
 
+export const TopLeftRibbon = styled.div`
+  --d: 6px; /* folded part */
+  position: relative;
+  z-index: 1;
+  &:before {
+    content: attr(data-text);
+    font-size: var(--f);
+    font-weight: 600;
+    /* I : position & coloration */
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(0%, 125%) rotate(-45deg);
+    transform-origin: bottom left;
+    padding: 5px 35px calc(var(--d) + 5px);
+    color: ${({ theme }) => theme?.colors?.light.white};
+    background: linear-gradient(rgba(0, 0, 0, 0.5) 0 0) bottom/100% var(--d)
+      no-repeat ${({ theme }) => theme?.colors?.light.secondary};
+    /* II : clipping */
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% 100%,
+      calc(100% - var(--d)) calc(100% - var(--d)),
+      var(--d) calc(100% - var(--d)),
+      0 100%
+    );
+    /* III : masking */
+    -webkit-mask:
+      linear-gradient(135deg, transparent calc(50% - var(--d) * 0.707), #fff 0)
+        bottom left,
+      linear-gradient(-135deg, transparent calc(50% - var(--d) * 0.707), #fff 0)
+        bottom right;
+    -webkit-mask-size: 300vmax 300vmax;
+    -webkit-mask-composite: destination-in;
+    mask-composite: intersect;
+  }
+`;
+
 export const ProductCardCreator = styled.div`
   display: flex;
   flex-direction: column;
@@ -130,8 +169,10 @@ export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
       ? css`
           transition: all 300ms ease-in-out;
           &:hover {
-            box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.05),
-              4px 4px 4px rgba(0, 0, 0, 0.05), 8px 8px 8px rgba(0, 0, 0, 0.05),
+            box-shadow:
+              0px 0px 0px rgba(0, 0, 0, 0.05),
+              4px 4px 4px rgba(0, 0, 0, 0.05),
+              8px 8px 8px rgba(0, 0, 0, 0.05),
               16px 16px 16px rgba(0, 0, 0, 0.05);
 
             [data-image-wrapper] {

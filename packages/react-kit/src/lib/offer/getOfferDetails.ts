@@ -76,10 +76,10 @@ export const getOfferDetails = (
     | undefined = isProductV1(offer)
     ? (offer.metadata as ProductV1Sub)
     : isBundle(offer)
-    ? (offer.metadata?.items?.find((item) => isProductV1Item(item)) as
-        | ProductV1Subitem
-        | undefined)
-    : undefined;
+      ? (offer.metadata?.items?.find((item) => isProductV1Item(item)) as
+          | ProductV1Subitem
+          | undefined)
+      : undefined;
   const name =
     productV1ItemMetadataEntity?.product?.title ||
     offer.metadata?.name ||

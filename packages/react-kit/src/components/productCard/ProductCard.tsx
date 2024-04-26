@@ -11,6 +11,7 @@ import {
   ProductCardBottomContent,
   ProductCardCreator,
   ProductCardCreatorAvatar,
+  TopLeftRibbon,
   ProductCardCreatorName,
   ProductCardData,
   ProductCardImageWrapper,
@@ -63,7 +64,7 @@ const Wrapper = ({
   return <>{children}</>;
 };
 export const PhygitalLabel = () => {
-  return <ProductCardLabelWrapper>Phygital</ProductCardLabelWrapper>;
+  return <TopLeftRibbon data-text="Phygital" />;
 };
 export const ProductCard = (props: IProductCard) => {
   const {

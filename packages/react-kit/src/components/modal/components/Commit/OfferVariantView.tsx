@@ -26,6 +26,7 @@ import { DetailContextProps } from "../common/detail/DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../common/detail/useGetOfferDetailData";
 import { BosonLogo } from "../common/BosonLogo";
+import { PhygitalLabel } from "../../../productCard/ProductCard";
 
 const colors = theme.colors.light;
 const ImageWrapper = styled.div`
@@ -36,6 +37,7 @@ const ImageWrapper = styled.div`
   ${breakpoint.s} {
     max-width: 35rem !important;
   }
+  overflow: hidden;
 `;
 
 const ImageAndSellerIdContainer = styled(Grid)`
@@ -173,6 +175,7 @@ export function OfferVariantView({
         >
           <ImageAndSellerIdContainer flexDirection="column" flex={1}>
             <ImageWrapper>
+              <PhygitalLabel />
               {mediaFiles.length && (
                 <DetailSlider
                   mediaFiles={mediaFiles}
