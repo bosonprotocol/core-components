@@ -56,6 +56,8 @@ import {
   DetailContextProps,
   DetailViewProvider
 } from "../common/detail/DetailViewProvider";
+import { getHasBuyerTransferInfos } from "../../../../lib/offer/filter";
+import { BuyerTransferInfo } from "../../../../lib/bundle/const";
 
 const colors = theme.colors.light;
 const UlWithWordBreak = styled.ul`
@@ -328,6 +330,11 @@ function RedeemNonModal({
   const emailPreference =
     exchange?.seller.metadata?.contactPreference ===
     ContactPreference.XMTP_AND_EMAIL;
+  const requestBuyerAddress = exchange?.offer
+    ? getHasBuyerTransferInfos(exchange.offer, [
+        BuyerTransferInfo.walletAddress
+      ])
+    : false;
   const validationSchema = useMemo(() => {
     return Yup.object({
       [FormModel.formFields.name.name]: Yup.string()
@@ -356,11 +363,21 @@ function RedeemNonModal({
             .required(FormModel.formFields.email.requiredErrorMessage)
             .email(FormModel.formFields.email.mustBeEmail)
         : Yup.string().trim().email(FormModel.formFields.email.mustBeEmail),
+      [FormModel.formFields.walletAddress.name]: requestBuyerAddress
+        ? Yup.string()
+            .trim()
+            .required(FormModel.formFields.walletAddress.requiredErrorMessage)
+            .test(
+              "mustBeAddress",
+              FormModel.formFields.walletAddress.mustBeWalletAddress,
+              (value) => (value ? ethers.utils.isAddress(value) : true)
+            )
+        : Yup.string().trim(),
       [FormModel.formFields.phone.name]: Yup.string()
         .trim()
         .required(FormModel.formFields.phone.requiredErrorMessage)
     });
-  }, [emailPreference]);
+  }, [emailPreference, requestBuyerAddress]);
   type FormType = Yup.InferType<typeof validationSchema>;
   const [{ currentStep }, setStep] = useState<{
     previousStep: ActiveStep[];
@@ -495,6 +512,7 @@ function RedeemNonModal({
             [FormModel.formFields.zip.name]: "",
             [FormModel.formFields.country.name]: "",
             [FormModel.formFields.email.name]: "",
+            [FormModel.formFields.walletAddress.name]: "",
             [FormModel.formFields.phone.name]: ""
           }
         }
@@ -509,6 +527,7 @@ function RedeemNonModal({
             !errors[FormModel.formFields.zip.name] &&
             !errors[FormModel.formFields.country.name] &&
             !errors[FormModel.formFields.email.name] &&
+            !errors[FormModel.formFields.walletAddress.name] &&
             !errors[FormModel.formFields.phone.name];
 
           return (

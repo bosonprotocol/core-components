@@ -1,14 +1,18 @@
 import React from "react";
+import type { Country as CountryCode } from "react-phone-number-input";
 import { useBreakpoints } from "../../../../../hooks/useBreakpoints";
+import { BuyerTransferInfo } from "../../../../../lib/bundle/const";
+import { getHasBuyerTransferInfos } from "../../../../../lib/offer/filter";
+import { Exchange } from "../../../../../types/exchange";
 import { Button } from "../../../../buttons/Button";
+import { CountrySelect } from "../../../../form/CountrySelect";
 import Input from "../../../../form/Input";
 import Phone from "../../../../form/Phone";
 import { Grid } from "../../../../ui/Grid";
 import { Typography } from "../../../../ui/Typography";
 import { FormModel } from "../RedeemFormModel";
-import { CountrySelect } from "../../../../form/CountrySelect";
-import type { Country as CountryCode } from "react-phone-number-input";
 interface Props {
+  exchange: Exchange | null;
   isValid: boolean;
   onNextClick: () => void;
   onBackClick: () => void;
@@ -55,11 +59,17 @@ const fatfMemberCountries: CountryCode[] = [
 ];
 
 export default function RedeemForm({
+  exchange,
   isValid,
   onNextClick,
   onBackClick
 }: Props) {
   const { isLteXS } = useBreakpoints();
+  const requestBuyerAddress = exchange?.offer
+    ? getHasBuyerTransferInfos(exchange.offer, [
+        BuyerTransferInfo.walletAddress
+      ])
+    : false;
   return (
     <>
       <Typography
@@ -142,6 +152,14 @@ export default function RedeemForm({
             placeholder={FormModel.formFields.email.placeholder}
           />
         </Grid>
+        {requestBuyerAddress && (
+          <Grid flexDirection="column" alignItems="flex-start">
+            <Input
+              name={FormModel.formFields.walletAddress.name}
+              placeholder={FormModel.formFields.walletAddress.placeholder}
+            />
+          </Grid>
+        )}
         <Grid flexDirection="column" alignItems="flex-start">
           <Phone
             name={FormModel.formFields.phone.name}

@@ -36,6 +36,12 @@ export const FormModel = {
       placeholder: "Email",
       mustBeEmail: "This is not an e-mail"
     },
+    walletAddress: {
+      name: "walletAddress",
+      requiredErrorMessage: "This field is required",
+      placeholder: "WalletAddress",
+      mustBeWalletAddress: "This is not a wallet address"
+    },
     phone: {
       name: "phone",
       requiredErrorMessage: "This field is required",
@@ -44,4 +50,4 @@ export const FormModel = {
   }
 } as const;
 
-export type FormType = Record<keyof typeof FormModel["formFields"], string>;
+export type FormType = Record<keyof (typeof FormModel)["formFields"], string>;
