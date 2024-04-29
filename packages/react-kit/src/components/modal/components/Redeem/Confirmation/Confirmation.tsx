@@ -134,6 +134,9 @@ export default function Confirmation({
   const [zipField] = useField(FormModel.formFields.zip.name);
   const [countryField] = useField(FormModel.formFields.country.name);
   const [emailField] = useField(FormModel.formFields.email.name);
+  const [walletAddressField] = useField(
+    FormModel.formFields.walletAddress.name
+  );
   const [phoneField] = useField(FormModel.formFields.phone.name);
   const redemptionInfo = {
     exchangeId,
@@ -249,7 +252,8 @@ ${FormModel.formFields.state.placeholder}: ${message.deliveryDetails.state}
 ${FormModel.formFields.zip.placeholder}: ${message.deliveryDetails.zip}
 ${FormModel.formFields.country.placeholder}: ${message.deliveryDetails.country}
 ${FormModel.formFields.email.placeholder}: ${message.deliveryDetails.email}
-${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
+${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}
+${FormModel.formFields.walletAddress.placeholder}: ${message.deliveryDetails.walletAddress}`;
 
       const newMessage = {
         threadId: {
@@ -300,6 +304,7 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
           <div>{zipField.value}</div>
           <div>{countryField.value}</div>
           <div>{emailField.value}</div>
+          <div>{walletAddressField.value}</div>
           <div>{phoneField.value}</div>
         </Grid>
         <Grid flexDirection="row" flexBasis="0">

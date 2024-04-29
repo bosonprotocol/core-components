@@ -45,6 +45,7 @@ export default function RedeemFormView({
         <p>Invalid exchange state.</p>
       ) : (
         <RedeemForm
+          exchange={exchange}
           isValid={isValid}
           onNextClick={onNextClick}
           onBackClick={onBackClick}
