@@ -38,7 +38,7 @@ contract OpenSeaWrapperFactory {
     }
 
     function create(address _voucherContract) external returns (address) {
-        // Check no wrapper exist for this voucher contract
+        // Check no wrapper exists for this voucher contract
         require(wrappers[_voucherContract] == address(0), "Voucher is already wrapped");
         // Check the sender is the seller's assistant or admin wallet
         uint256 sellerId = IBosonVoucher(_voucherContract).getSellerId();
@@ -57,7 +57,7 @@ contract OpenSeaWrapperFactory {
             openSeaConduitKey,
             openSeaConduit
         );
-        // Store the wrapper to avoid to create another for the same voucher contract
+        // Store the wrapper to avoid creating another for the same voucher contract
         wrappers[_voucherContract] = address(wrapper);
         return address(wrapper);
     }
