@@ -89,30 +89,41 @@ export const getOfferDetails = (
   const animationUrl = getOfferAnimationUrl(offer);
   const shippingInfo = {
     returnPeriodInDays:
-      productV1ItemMetadataEntity?.shipping?.returnPeriodInDays,
+      productV1ItemMetadataEntity?.shipping?.returnPeriodInDays ||
+      isProductV1(offer)
+        ? (offer.metadata as ProductV1Sub).shipping?.returnPeriodInDays
+        : undefined,
     shippingTable:
-      productV1ItemMetadataEntity?.shipping?.supportedJurisdictions?.map(
-        (jurisdiction: any) => ({
-          name: jurisdiction.label,
-          value: jurisdiction.deliveryTime
-        })
-      ) || []
+      (productV1ItemMetadataEntity?.shipping || isProductV1(offer)
+        ? (offer.metadata as ProductV1Sub).shipping
+        : undefined
+      )?.supportedJurisdictions?.map((jurisdiction: any) => ({
+        name: jurisdiction.label,
+        value: jurisdiction.deliveryTime
+      })) || []
   };
   const description =
     productV1ItemMetadataEntity?.product?.description ||
     offer.metadata?.description ||
     "";
-  const artist = productV1ItemMetadataEntity?.productV1Seller || null;
+  const artist =
+    productV1ItemMetadataEntity?.productV1Seller || isProductV1(offer)
+      ? (offer.metadata as ProductV1Sub).productV1Seller
+      : null;
   const artistDescription =
     artist?.description ||
     productV1ItemMetadataEntity?.product.productV1Seller?.description ||
     "";
   const images =
-    productV1ItemMetadataEntity?.product?.visuals_images?.map(
-      ({ url }: { url: string }) => url
-    ) || [];
+    (productV1ItemMetadataEntity?.product || isProductV1(offer)
+      ? (offer.metadata as ProductV1Sub).product
+      : undefined
+    )?.visuals_images?.map(({ url }: { url: string }) => url) || [];
   const variantsImages =
-    productV1ItemMetadataEntity?.productOverrides?.visuals_images?.map(
+    (productV1ItemMetadataEntity || isProductV1(offer)
+      ? (offer.metadata as ProductV1Sub)
+      : undefined
+    )?.productOverrides?.visuals_images?.map(
       ({ url }: { url: string }) => url
     ) || [];
   const bundleItems = isBundle(offer) ? offer.metadata.items : undefined;
