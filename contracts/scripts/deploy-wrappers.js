@@ -1,13 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const hre = require("hardhat");
-const ethers = hre.ethers;
-
-const OPENSEA_CONFIG = {
-  feeAmount: 250,
-  feeRecipient: "0x1111122222333334444455555666667777788888",
-  conduitKey: ethers.ZeroHash, // = NO_CONDUIT
-  conduit: ethers.ZeroAddress
-};
+const { deployWrappersTask } = require("./tasks/deployWrappers");
 
 async function deployWrappers(
   protocolAddress,
@@ -15,24 +8,13 @@ async function deployWrappers(
   unwrapperAddress,
   seaport
 ) {
-  const { feeAmount, feeRecipient, conduitKey, conduit } = OPENSEA_CONFIG;
-  const OpenSeaWrapperFactory = await ethers.getContractFactory(
-    "OpenSeaWrapperFactory"
-  );
-  const openSeaWrapperFactory = await OpenSeaWrapperFactory.deploy(
+  return deployWrappersTask(
+    hre,
     protocolAddress,
     wethAddress,
     unwrapperAddress,
-    seaport,
-    feeAmount,
-    feeRecipient,
-    conduitKey,
-    conduitKey === ethers.ZeroHash
-      ? seaport // Ensure the approval will be given to the seaport contract when NO_CONDUIT is defined
-      : conduit
+    seaport
   );
-  await openSeaWrapperFactory.waitForDeployment();
-  return { openSeaWrapperFactory };
 }
 
 exports.deployWrappers = deployWrappers;
