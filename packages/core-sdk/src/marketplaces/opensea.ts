@@ -46,6 +46,7 @@ import {
   AdvancedOrder,
   Fulfillment
 } from "../seaport/interface";
+import { ownerOf as erc721OwnerOf } from "../erc721/handler";
 
 export type OpenSeaListing = {
   asset: AssetWithTokenId;
@@ -341,7 +342,7 @@ export class OpenSeaMarketplace extends Marketplace {
         const tx = await this._wrapperFactory.create({
           voucherContract: contractAddress
         });
-        tx.wait();
+        await tx.wait();
         wrapperAddress = await this._wrapperFactory.getWrapper({
           voucherContract: contractAddress
         });
@@ -351,6 +352,37 @@ export class OpenSeaMarketplace extends Marketplace {
       this._wrappersMap.set(contractAddress, wrapper);
     }
     return wrapper;
+  }
+
+  public async isVoucherWrapped(
+    contractAddress: string,
+    tokenId: string
+  ): Promise<{ wrapped: boolean; wrapper?: string }> {
+    let wrapper = this._wrappersMap.get(contractAddress);
+    if (!wrapper) {
+      // Does the wrapper exist on chain?
+      const wrapperAddress = await this._wrapperFactory.getWrapper({
+        voucherContract: contractAddress
+      });
+      if (!wrapperAddress) {
+        // Wrapper contract doesn't exist
+        return { wrapped: false };
+      }
+      wrapper = new OpenSeaWrapper(wrapperAddress, this._web3Lib);
+      // cache the wrapper for next time
+      this._wrappersMap.set(contractAddress, wrapper);
+    }
+    try {
+      await erc721OwnerOf({
+        contractAddress: wrapper.address,
+        tokenId,
+        web3Lib: this._web3Lib
+      });
+    } catch (e) {
+      // Wrapper contract exists, however the token is not wrapped
+      return { wrapped: false, wrapper: wrapper.address };
+    }
+    return { wrapped: true, wrapper: wrapper.address };
   }
 
   public async wrapVouchers(contract: string, tokenIds: string[]) {

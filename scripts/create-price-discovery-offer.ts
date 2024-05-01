@@ -13,16 +13,17 @@ program
     "Private key of the Seller account (assistant role)."
   )
   .argument("<OFFER_DATA>", "JSON file with the Offer parameters")
-  .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80002-0")
+  .option("-e, --env <ENV_NAME>", "Target environment")
+  .option("-c, --configId <CONFIG_ID>", "Config id")
   .parse(process.argv);
 
 async function main() {
   const [sellerPrivateKey, offerDataJsonFile] = program.args;
 
   const opts = program.opts();
-  const envName = opts.env || "testing";
-  const configId = opts.configId || "testing-80002-0";
+  const envName = opts.env || process.env.ENV_NAME || "testing";
+  const configId =
+    opts.configId || process.env.ENV_CONFIG_ID || "testing-80002-0";
   const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const chainId = defaultConfig.chainId;
   const rawData = fs.readFileSync(offerDataJsonFile);

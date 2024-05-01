@@ -93,6 +93,10 @@ export abstract class Marketplace {
     contract: string;
     tokenId: string;
   }): Promise<TransactionResponse>;
+  public abstract isVoucherWrapped(
+    contractAddress: string,
+    tokenId: string
+  ): Promise<{ wrapped: boolean; wrapper?: string }>;
   public abstract getOrCreateVouchersWrapper(
     contractAddress: string
   ): Promise<Wrapper>;
