@@ -2,8 +2,6 @@
 pragma solidity 0.8.22;
 
 import { OpenSeaWrapper } from './OpenSeaWrapper.sol';
-import { IBosonVoucher } from '../../protocol-contracts/contracts/interfaces/clients/IBosonVoucher.sol';
-import { IBosonSellerHandler } from '../../protocol-contracts/contracts/interfaces/handlers/IBosonSellerHandler.sol';
 import { BosonTypes } from "../../protocol-contracts/contracts/domain/BosonTypes.sol";
 
 contract OpenSeaWrapperFactory {
@@ -40,11 +38,6 @@ contract OpenSeaWrapperFactory {
     function create(address _voucherContract) external returns (address) {
         // Check no wrapper exists for this voucher contract
         require(wrappers[_voucherContract] == address(0), "Voucher is already wrapped");
-        // Check the sender is the seller's assistant or admin wallet
-        uint256 sellerId = IBosonVoucher(_voucherContract).getSellerId();
-        (bool exists, BosonTypes.Seller memory seller, BosonTypes.AuthToken memory authToken)
-         = IBosonSellerHandler(protocolAddress).getSeller(sellerId);
-        require(seller.assistant == msg.sender || seller.admin == msg.sender, "Unauthorized");
         // Create the wrapper
         OpenSeaWrapper wrapper = new OpenSeaWrapper(
             _voucherContract,

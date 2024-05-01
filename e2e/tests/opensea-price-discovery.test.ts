@@ -55,7 +55,7 @@ describe("Opensea Price Discovery", () => {
     offerId = offer.id;
 
     // Reserve range
-    (
+    await (
       await sellerCoreSDK.reserveRange(
         offerId,
         offer.quantityAvailable,
@@ -289,7 +289,7 @@ describe("Opensea Price Discovery", () => {
         listing.asset.tokenId,
         fulfilmentData
       );
-      txCommit.wait();
+      await txCommit.wait();
       // Check the token has been transferred to the buyer
       owner = await sellerCoreSDK.erc721OwnerOf({
         contractAddress: listing.asset.contract,
@@ -515,7 +515,7 @@ describe("Opensea Price Discovery", () => {
         listing.asset.tokenId,
         fulfilmentData
       );
-      txCommit.wait();
+      await txCommit.wait();
       // Check the voucher has been transferred to the buyer
       owner = await sellerCoreSDK.erc721OwnerOf({
         contractAddress: voucherContract,

@@ -25,7 +25,7 @@ describe("OpenSeaWrapperFactory", () => {
       metadataUri: ""
     };
     const tx = await mockBosonSellerHandler.setSeller(seller);
-    tx.wait();
+    await tx.wait();
     const mockBosonVoucher = await deployMockBosonVoucher(seller.id);
     return { sellerWallet, mockBosonVoucher };
   };

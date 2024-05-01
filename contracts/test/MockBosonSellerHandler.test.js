@@ -24,7 +24,7 @@ describe("MockBosonSellerHandler", () => {
         metadataUri: ""
       };
       const tx = await mockBosonSellerHandler.setSeller(seller);
-      tx.wait();
+      await tx.wait();
     }
     for (let sellerId = 1; sellerId < 3; sellerId++) {
       const [, readSeller] = await mockBosonSellerHandler.getSeller(sellerId);
@@ -82,7 +82,7 @@ describe("MockBosonSellerHandler", () => {
     };
     const mockBosonSellerHandler = await deployMockBosonSellerHandler();
     const tx = await mockBosonSellerHandler.setSeller(seller);
-    tx.wait();
+    await tx.wait();
     await expect(mockBosonSellerHandler.getSeller("2")).to.revertedWith(
       "Seller not found"
     );
