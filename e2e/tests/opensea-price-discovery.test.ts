@@ -307,12 +307,31 @@ describe("Opensea Price Discovery", () => {
     });
   });
 
-  describe("Seller - Use wrappers for per-minted vouchers", () => {
+  describe("Seller - Use wrappers for pre-minted vouchers", () => {
     test("Seller wraps vouchers", async () => {
       const voucherContract = offer.collection.collectionContract.address;
+      {
+        const { wrapped, wrapper: wrapperAddress } =
+          await openseaSdkSeller.isVoucherWrapped(
+            voucherContract,
+            tokenIds[0].toString()
+          );
+        expect(wrapped).toBe(false);
+        expect(wrapperAddress).toBeFalsy();
+      }
       const wrapper =
         await openseaSdkSeller.getOrCreateVouchersWrapper(voucherContract);
       for (const tokenId of tokenIds) {
+        const { wrapped, wrapper: wrapperAddress } =
+          await openseaSdkSeller.isVoucherWrapped(
+            voucherContract,
+            tokenId.toString()
+          );
+        expect(wrapped).toBe(false);
+        expect(wrapperAddress).toBeTruthy();
+        expect(wrapperAddress?.toLowerCase()).toEqual(
+          wrapper.address.toLowerCase()
+        );
         // Before wrapping, the voucher is owned by the Seller
         const tokenOwner = await sellerCoreSDK.erc721OwnerOf({
           contractAddress: voucherContract,
@@ -329,6 +348,16 @@ describe("Opensea Price Discovery", () => {
         tokenIds.map((bn) => bn.toString())
       );
       for (const tokenId of tokenIds) {
+        const { wrapped, wrapper: wrapperAddress } =
+          await openseaSdkSeller.isVoucherWrapped(
+            voucherContract,
+            tokenId.toString()
+          );
+        expect(wrapped).toBe(true);
+        expect(wrapperAddress).toBeTruthy();
+        expect(wrapperAddress?.toLowerCase()).toEqual(
+          wrapper.address.toLowerCase()
+        );
         // The new owner of the real token is now the wrapper contract
         const tokenOwner = await sellerCoreSDK.erc721OwnerOf({
           contractAddress: voucherContract,

@@ -108,7 +108,8 @@ async function main() {
       decimals: Number(offer.exchangeToken.decimals)
     },
     auction: false,
-    protocolAddress: defaultConfig.contracts.seaport || CROSS_CHAIN_SEAPORT_V1_6_ADDRESS,
+    protocolAddress:
+      defaultConfig.contracts.seaport || CROSS_CHAIN_SEAPORT_V1_6_ADDRESS,
     zone
   };
   if (wrapped) {
