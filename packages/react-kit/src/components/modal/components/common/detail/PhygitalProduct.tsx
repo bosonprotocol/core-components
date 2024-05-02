@@ -174,14 +174,13 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
               >
                 {videoSrc ? (
                   <MediaWrapper>
-                    <Video src={videoSrc} data-video-src={videoSrc} />
+                    <Video src={videoSrc} />
                   </MediaWrapper>
                 ) : imageSrc ? (
                   <MediaWrapper>
                     <IpfsImage
                       src={imageSrc}
                       overrides={{ ipfsGateway: "https://ipfs.io/ipfs" }}
-                      data-image-src={imageSrc}
                     />
                   </MediaWrapper>
                 ) : (
