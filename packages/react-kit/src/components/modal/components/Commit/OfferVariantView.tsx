@@ -176,7 +176,7 @@ export function OfferVariantView({
           <ImageAndSellerIdContainer flexDirection="column" flex={1}>
             <ImageWrapper>
               <PhygitalLabel />
-              {mediaFiles.length && (
+              {!!mediaFiles.length && (
                 <DetailSlider
                   mediaFiles={mediaFiles}
                   sliderOptions={sliderOptions}

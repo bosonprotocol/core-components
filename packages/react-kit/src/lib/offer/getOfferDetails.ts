@@ -107,22 +107,25 @@ export const getOfferDetails = (
     offer.metadata?.description ||
     "";
   const artist =
-    productV1ItemMetadataEntity?.productV1Seller || isProductV1(offer)
+    productV1ItemMetadataEntity?.productV1Seller ||
+    (isProductV1(offer)
       ? (offer.metadata as ProductV1Sub).productV1Seller
-      : null;
+      : null);
   const artistDescription =
     artist?.description ||
     productV1ItemMetadataEntity?.product.productV1Seller?.description ||
     "";
   const images =
-    (productV1ItemMetadataEntity?.product || isProductV1(offer)
-      ? (offer.metadata as ProductV1Sub).product
-      : undefined
+    (
+      productV1ItemMetadataEntity?.product ||
+      (isProductV1(offer)
+        ? (offer.metadata as ProductV1Sub).product
+        : undefined)
     )?.visuals_images?.map(({ url }: { url: string }) => url) || [];
   const variantsImages =
-    (productV1ItemMetadataEntity || isProductV1(offer)
-      ? (offer.metadata as ProductV1Sub)
-      : undefined
+    (
+      productV1ItemMetadataEntity ||
+      (isProductV1(offer) ? (offer.metadata as ProductV1Sub) : undefined)
     )?.productOverrides?.visuals_images?.map(
       ({ url }: { url: string }) => url
     ) || [];
