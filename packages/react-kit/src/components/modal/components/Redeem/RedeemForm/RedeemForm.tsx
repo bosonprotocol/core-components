@@ -16,6 +16,7 @@ interface Props {
   isValid: boolean;
   onNextClick: () => void;
   onBackClick: () => void;
+  setConnectedWalletAddress: () => void;
 }
 
 // https://www.fatf-gafi.org/en/countries.html
@@ -62,7 +63,8 @@ export default function RedeemForm({
   exchange,
   isValid,
   onNextClick,
-  onBackClick
+  onBackClick,
+  setConnectedWalletAddress
 }: Props) {
   const { isLteXS } = useBreakpoints();
   const requestBuyerAddress = exchange?.offer
@@ -153,11 +155,20 @@ export default function RedeemForm({
           />
         </Grid>
         {requestBuyerAddress && (
-          <Grid flexDirection="column" alignItems="flex-start">
-            <Input
-              name={FormModel.formFields.walletAddress.name}
-              placeholder={FormModel.formFields.walletAddress.placeholder}
-            />
+          <Grid gap="1rem">
+            <Grid flexDirection="column" alignItems="flex-start">
+              <Input
+                name={FormModel.formFields.walletAddress.name}
+                placeholder={FormModel.formFields.walletAddress.placeholder}
+              />
+            </Grid>
+            <Button
+              variant="secondaryFill"
+              onClick={() => setConnectedWalletAddress()}
+              style={{ whiteSpace: "nowrap" }}
+            >
+              Use my wallet address
+            </Button>
           </Grid>
         )}
         <Grid flexDirection="column" alignItems="flex-start">

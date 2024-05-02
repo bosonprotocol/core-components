@@ -39,7 +39,7 @@ export const FormModel = {
     walletAddress: {
       name: "walletAddress",
       requiredErrorMessage: "This field is required",
-      placeholder: "WalletAddress",
+      placeholder: "Wallet Address: Required to receive the digital item/s",
       mustBeWalletAddress: "This is not a wallet address"
     },
     phone: {
