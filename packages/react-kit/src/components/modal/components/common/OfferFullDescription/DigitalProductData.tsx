@@ -33,6 +33,9 @@ const StyledDetailsSummary = styled(DetailsSummary)`
 const MediaWrapper = styled.div`
   width: 100%;
   height: 100%;
+  .loading-container {
+    padding-top: 100%;
+  }
 `;
 type DigitalProductDataProps = {
   offer: Offer;
@@ -89,7 +92,9 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
                 overrides={{ ipfsGateway: "https://ipfs.io/ipfs" }}
               />
             </MediaWrapper>
-          ) : null;
+          ) : (
+            <MediaWrapper></MediaWrapper>
+          );
           return (
             <StyledDetailsSummary
               key={nftItem.id}

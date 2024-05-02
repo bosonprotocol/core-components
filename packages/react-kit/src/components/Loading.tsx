@@ -10,7 +10,7 @@ const loadingAnimation = keyframes`
  100% { transform: rotate(360deg); }
 `;
 
-const LoadingStyle = styled.span`
+const LoadingStyle = styled.span.attrs({ className: "loading" })`
   width: 25px;
   height: 25px;
   border: 5px solid #fff;
