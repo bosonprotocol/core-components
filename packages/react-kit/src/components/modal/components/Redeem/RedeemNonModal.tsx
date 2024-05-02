@@ -518,7 +518,7 @@ function RedeemNonModal({
         }
         validateOnMount
       >
-        {({ errors }) => {
+        {({ errors, setFieldValue }) => {
           const isRedeemFormOK =
             !errors[FormModel.formFields.name.name] &&
             !errors[FormModel.formFields.streetNameAndNumber.name] &&
@@ -665,6 +665,14 @@ function RedeemNonModal({
                     setActiveStep(ActiveStep.REDEEM_FORM_CONFIRMATION)
                   }
                   isValid={isRedeemFormOK}
+                  setConnectedWalletAddress={() => {
+                    if (address) {
+                      setFieldValue(
+                        FormModel.formFields.walletAddress.name,
+                        address
+                      );
+                    }
+                  }}
                 />
               ) : currentStep === ActiveStep.EXCHANGE_POLICY ? (
                 <RedeemOfferPolicyView
