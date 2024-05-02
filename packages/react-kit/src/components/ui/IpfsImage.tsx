@@ -128,7 +128,7 @@ const IpfsImage: React.FC<IImage & React.HTMLAttributes<HTMLDivElement>> = ({
 
   return (
     <>
-      <ImageWrapper {...rest} $hide={!isLoading}>
+      <ImageWrapper {...rest} $hide={!isLoading} className="loading-container">
         <ImagePlaceholder>
           <Typography tag="div">
             <Loading />
