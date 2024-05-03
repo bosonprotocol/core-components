@@ -31,12 +31,13 @@ const MediaWrapper = styled.div`
   }
 `;
 const Pill = styled.div`
-  border: 3px solid ${({ theme }) => theme?.colors?.light.accent};
   background: white;
   white-space: nowrap;
   min-width: 9ch;
   box-sizing: content-box;
-  text-align: center;
+  text-align: start;
+  font-size: 0.7rem;
+  color: ${({ theme }) => theme?.colors?.light.secondary};
 `;
 const ActionText = ({ children }: { children: ReactNode }) => {
   return <span style={{ fontSize: "0.75rem" }}>{children}</span>;
@@ -187,7 +188,7 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
                   <MediaWrapper></MediaWrapper>
                 )}
                 {pill}
-                <div>{quantity}x</div>
+                {quantity > 1 && <div>{quantity}x</div>}
                 <Grid
                   flexDirection="column"
                   alignItems="flex-start"
