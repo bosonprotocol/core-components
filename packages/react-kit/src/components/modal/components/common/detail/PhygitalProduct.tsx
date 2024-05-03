@@ -31,7 +31,6 @@ const MediaWrapper = styled.div`
   }
 `;
 const Pill = styled.div`
-  /* border: 3px solid ${({ theme }) => theme?.colors?.light.accent}; */
   background: white;
   white-space: nowrap;
   min-width: 9ch;
