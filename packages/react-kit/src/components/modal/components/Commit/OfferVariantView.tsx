@@ -27,6 +27,7 @@ import { OnClickBuyOrSwapHandler } from "../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../common/detail/useGetOfferDetailData";
 import { BosonLogo } from "../common/BosonLogo";
 import { PhygitalLabel } from "../../../productCard/ProductCard";
+import { useIsPhygital } from "../../../../hooks/offer/useIsPhygital";
 
 const colors = theme.colors.light;
 const ImageWrapper = styled.div`
@@ -150,6 +151,7 @@ export function OfferVariantView({
         : imgs
     ) as { url: string; type: "image" | "video" }[];
   }, [allImages, animationUrl]);
+  const isPhygital = useIsPhygital({ offer });
   return (
     <>
       {isCommitting ? (
@@ -175,7 +177,7 @@ export function OfferVariantView({
         >
           <ImageAndSellerIdContainer flexDirection="column" flex={1}>
             <ImageWrapper>
-              <PhygitalLabel />
+              {isPhygital && <PhygitalLabel />}
               {!!mediaFiles.length && (
                 <DetailSlider
                   mediaFiles={mediaFiles}
