@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.27.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.27.1...@bosonprotocol/common@1.27.2) (2024-05-13)
+
+
+### Bug Fixes
+
+* phygitals ([#729](https://github.com/bosonprotocol/core-components/issues/729)) ([c7c0531](https://github.com/bosonprotocol/core-components/commit/c7c0531802f8621b5757111e3b5abb9b06e20bbd))
+
+
+
+
+
 ## [1.27.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.27.0...@bosonprotocol/common@1.27.1) (2024-04-15)
 
 
