@@ -390,6 +390,21 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "TStoreAlreadyActivated",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TStoreNotSupported",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TloadTestContractDeploymentFailed",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -740,6 +755,13 @@
     ],
     "name": "OrdersMatched",
     "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "__activateTstore",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "inputs": [
@@ -1720,7 +1742,7 @@
           }
         ],
         "internalType": "struct BasicOrderParameters",
-        "name": "parameters",
+        "name": "",
         "type": "tuple"
       }
     ],
@@ -1843,7 +1865,7 @@
           }
         ],
         "internalType": "struct BasicOrderParameters",
-        "name": "parameters",
+        "name": "",
         "type": "tuple"
       }
     ],
