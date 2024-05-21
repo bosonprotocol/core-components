@@ -17,6 +17,13 @@ export function getIpfsGatewayUrl(
   }
   const { gateway } = opts;
   try {
+    try {
+      CID.parse(uri);
+      const cid = uri;
+      return `${gateway}/${cid}`.replace(/([^:]\/)\/+/g, "$1");
+    } catch {
+      // if uri it's not the cid only, then continue as expected and ignore this error
+    }
     const url = new URL(
       uri.startsWith("ipfs://") ? uri.replace("ipfs://", "https://") : uri
     );
