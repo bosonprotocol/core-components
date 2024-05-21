@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.30.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.30.0...@bosonprotocol/react-kit@0.30.1) (2024-05-21)
+
+
+### Bug Fixes
+
+* ipfs logic for when uri is just cid ([#736](https://github.com/bosonprotocol/core-components/issues/736)) ([54ce588](https://github.com/bosonprotocol/core-components/commit/54ce5889cc9b65c660924337c076c8a0d4db46da))
+
+
+
+
+
 # [0.30.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.29.1...@bosonprotocol/react-kit@0.30.0) (2024-05-13)
 
 
