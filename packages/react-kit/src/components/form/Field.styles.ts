@@ -18,9 +18,9 @@ export const FieldInput = styled.input<{ error?: any }>`
   padding: 1rem;
   gap: 0.5rem;
 
-  background: ${colors.lightGrey};
-  border: 1px solid ${colors.border};
-  border-radius: 0;
+  background: ${(props) => props.theme.background || "transparent"};
+  border: 1px solid ${(props) => props.theme.borderColor || colors.border};
+  border-radius: ${(props) => props.theme.borderRadius || 0}px;
   outline: none;
   font-family: "Plus Jakarta Sans";
 
@@ -29,7 +29,8 @@ export const FieldInput = styled.input<{ error?: any }>`
   &:not(:disabled) {
     &:focus,
     &:hover {
-      border: 1px solid var(--secondary);
+      border: 1px solid
+        ${(props) => props.theme.hover.borderColor || colors.lightGrey};
     }
   }
 
@@ -39,38 +40,37 @@ export const FieldInput = styled.input<{ error?: any }>`
   }
 
   ${({ error }) =>
-    !checkIfValueIsEmpty(error)
-      ? css`
-          border: 1px solid ${colors.orange};
-          &:not(:disabled) {
-            &:hover {
-              border: 1px solid ${colors.orange};
-            }
-          }
-          &:not(:disabled) {
-            &:focus {
-              border: 1px solid var(--secondary);
-            }
-          }
-          &::placeholder {
-            color: ${colors.orange};
-            opacity: 1;
-          }
-          &:-ms-input-placeholder {
-            color: ${colors.orange};
-          }
-          &::-ms-input-placeholder {
-            color: ${colors.orange};
-          }
-        `
-      : css`
-          &:not(:disabled) {
-            &:focus,
-            &:hover {
-              border: 1px solid var(--secondary);
-            }
-          }
-        `}
+    !checkIfValueIsEmpty(error) &&
+    css`
+      border: 1px solid
+        ${(props) => props.theme.error.borderColor || colors.orange};
+      &:not(:disabled) {
+        &:hover {
+          border: 1px solid
+            ${(props) => props.theme.error.hover.borderColor || colors.orange};
+        }
+      }
+      &:not(:disabled) {
+        &:focus {
+          border: 1px solid
+            ${(props) =>
+              props.theme.error.focus.borderColor || colors.lightGrey};
+        }
+      }
+      &::placeholder {
+        color: ${(props) =>
+          props.theme.error.placeholder.color || colors.orange};
+        opacity: 1;
+      }
+      &:-ms-input-placeholder {
+        color: ${(props) =>
+          props.theme.error.placeholder.color || colors.orange};
+      }
+      &::-ms-input-placeholder {
+        color: ${(props) =>
+          props.theme.error.placeholder.color || colors.orange};
+      }
+    `};
 `;
 
 export const FileUploadWrapper = styled.div<{ choosen: any; error: any }>`

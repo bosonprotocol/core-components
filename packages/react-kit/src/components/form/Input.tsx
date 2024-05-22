@@ -1,25 +1,28 @@
 import React from "react";
-import { useField, useFormikContext } from "formik";
-
-import Error from "./Error";
-import { FieldInput } from "./Field.styles";
-import type { InputProps } from "./types";
-
-export default function Input({ name, ...props }: InputProps) {
-  const { status } = useFormikContext();
-  const [field, meta] = useField(name);
-  const errorText = meta.error || status?.[name];
-  const errorMessage = errorText && meta.touched ? errorText : "";
-  const displayError =
-    typeof errorMessage === typeof "string" && errorMessage !== "";
-
-  return (
-    <>
-      <FieldInput error={errorMessage} {...field} {...props} />
-      <Error
-        display={!props.hideError && displayError}
-        message={errorMessage}
-      />
-    </>
-  );
+import { theme } from "../../theme";
+import { BaseInput, BaseInputProps } from "./BaseInput";
+const colors = theme.colors.light;
+const bosonTheme = {
+  background: colors.lightGrey,
+  borderColor: colors.border,
+  borderRadius: 0,
+  hover: {
+    borderColor: colors.lightGrey
+  },
+  error: {
+    borderColor: colors.orange,
+    hover: {
+      borderColor: colors.orange
+    },
+    focus: {
+      borderColor: colors.orange
+    },
+    placeholder: {
+      color: colors.orange
+    }
+  }
+} satisfies BaseInputProps["theme"];
+export type InputProps = Omit<BaseInputProps, "theme">;
+export default function Input(props: Omit<BaseInputProps, "theme">) {
+  return <BaseInput {...props} theme={bosonTheme} />;
 }

@@ -1,103 +1,10 @@
-import React, { ButtonHTMLAttributes, forwardRef, Fragment } from "react";
-import styled, { css, ThemeProvider } from "styled-components";
+import React, { ButtonHTMLAttributes, forwardRef } from "react";
 
-import { zIndex } from "./zIndex";
-import { Tooltip } from "../tooltip/Tooltip";
-import * as Styles from "./styles";
-import { Typography } from "./Typography";
 import { theme } from "../../theme";
-import { Loading } from "../Loading";
+import { BaseButton } from "../buttons/BaseButton";
 import { ButtonSize } from "./buttonSize";
 
 const colors = theme.colors.light;
-
-const BaseButton = styled.button<{
-  size: IButton["size"];
-  fill: IButton["fill"];
-}>`
-  ${() => Styles.button};
-  ${(props) => Styles[props.size as keyof typeof Styles]}
-  border-style: solid;
-  border-color: ${(props) => props.theme.borderColor || "transparent"};
-  border-width: ${(props) => props.theme.borderWidth || 0}px;
-  color: ${(props) => props.theme.color || "#000000"};
-  background-color: ${(props) => props.theme.background || "transparent"};
-  svg {
-    stroke: ${(props) => props.theme.color || "#000000"};
-  }
-  ${(props) =>
-    props.fill
-      ? css`
-          width: 100%;
-        `
-      : ""};
-  ${(props) =>
-    props.theme.hover &&
-    css`
-      &:hover:not(:disabled) {
-        background-color: ${props.theme.hover.background};
-        ${props.theme.hover.color &&
-        css`
-          color: ${props.theme.hover.color} !important;
-          svg {
-            fill: ${props.theme.hover.color} !important;
-            line {
-              stroke: ${props.theme.hover.color} !important;
-            }
-            polyline {
-              stroke: ${props.theme.hover.color} !important;
-            }
-            path {
-              stroke: ${props.theme.hover.color} !important;
-            }
-          }
-        `};
-        ${props.theme.hover.borderColor &&
-        css`
-          border-color: ${props.theme.hover.borderColor};
-        `};
-      }
-    `}
-  ${(props) =>
-    props.theme.padding
-      ? css`
-          padding: ${props.theme.padding} !important;
-        `
-      : ""}
-
-  ${(props) =>
-    props.theme.disabled
-      ? css`
-          &:disabled {
-            background-color: ${props.theme.disabled.background ||
-            "transparent"};
-            color: ${props.theme.disabled.color || colors.darkGrey};
-            border-color: transparent;
-            cursor: not-allowed;
-            opacity: 0.5;
-          }
-        `
-      : css`
-          &:disabled {
-            background-color: ${colors.lightGrey};
-            color: ${colors.darkGrey};
-            border-color: transparent;
-            cursor: not-allowed;
-            opacity: 0.5;
-          }
-        `};
-`;
-
-const ChildWrapperButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  position: relative;
-  z-index: ${zIndex.Button};
-
-  ${() => Styles.buttonText};
-`;
 
 const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
   return {
@@ -325,57 +232,13 @@ export type IButton = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const ThemedButton = forwardRef<HTMLButtonElement, IButton>(
-  (
-    {
-      children,
-      onClick,
-      size = "regular",
-      themeVal = "primary",
-      type = "button",
-      step = 0,
-      fill = false,
-      isLoading = false,
-      tooltip = "",
-      withBosonStyle = false,
-      ...rest
-    },
-    ref
-  ) => {
-    const Wrapper = tooltip !== "" && rest?.disabled ? Tooltip : Fragment;
-    const wrapperParams =
-      tooltip !== "" && rest?.disabled ? { wrap: false, content: tooltip } : {};
+  ({ themeVal = "primary", withBosonStyle = false, ...rest }, ref) => {
     return (
-      <>
-        {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-        {/* @ts-ignore */}
-        <ThemeProvider theme={allThemes({ withBosonStyle })[themeVal]}>
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-ignore */}
-          <Wrapper {...wrapperParams}>
-            <BaseButton
-              onClick={onClick}
-              type={type}
-              size={size}
-              fill={fill ? fill : undefined}
-              {...rest}
-              ref={ref}
-            >
-              {isLoading ? (
-                <Loading />
-              ) : (
-                <ChildWrapperButton data-child-wrapper-button>
-                  {children}
-                  {step !== 0 && (
-                    <Typography>
-                      <small>Step {step}</small>
-                    </Typography>
-                  )}
-                </ChildWrapperButton>
-              )}
-            </BaseButton>
-          </Wrapper>
-        </ThemeProvider>
-      </>
+      <BaseButton
+        {...rest}
+        ref={ref}
+        theme={allThemes({ withBosonStyle })[themeVal]}
+      />
     );
   }
 );
