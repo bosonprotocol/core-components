@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.31.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.30.1...@bosonprotocol/react-kit@0.31.0) (2024-05-22)
+
+
+### Bug Fixes
+
+* modal inner scroll ([#739](https://github.com/bosonprotocol/core-components/issues/739)) ([7259677](https://github.com/bosonprotocol/core-components/commit/7259677c9b4745a9128527c971bddeb72b8f3813))
+
+
+### Features
+
+* make modal content scrollable ([#737](https://github.com/bosonprotocol/core-components/issues/737)) ([f3cc99a](https://github.com/bosonprotocol/core-components/commit/f3cc99a8b024b7068ba777c2b04361e976f5115f))
+
+
+
+
+
 ## [0.30.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.30.0...@bosonprotocol/react-kit@0.30.1) (2024-05-21)
 
 
