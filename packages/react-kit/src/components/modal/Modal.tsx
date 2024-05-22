@@ -19,10 +19,6 @@ const Root = styled.div`
   left: 0;
   right: 0;
   z-index: ${zIndex.Modal};
-  max-height: 100vh;
-  max-width: 100vw;
-  overflow-y: auto;
-  overflow-x: hidden;
 `;
 
 const RootBG = styled.div`
@@ -92,6 +88,10 @@ const Wrapper = styled.div<{
   $themeVal: Props["theme"];
   $maxWidths: Props["maxWidths"];
 }>`
+  display: flex;
+  flex-direction: column;
+  max-height: 96vh;
+  overflow: auto;
   position: relative;
   z-index: ${zIndex.Modal};
   color: ${({ $themeVal }) => {
@@ -173,7 +173,7 @@ const Wrapper = styled.div<{
   }
   ${({ $size }) =>
     $size === "fullscreen" &&
-    `
+    css`
       min-height: 100vh;
     `};
 `;
@@ -206,11 +206,10 @@ const Close = styled(X)`
   }
 `;
 
-const Content = styled.div<{
-  $modalType: ModalType;
-  $size: Props["size"];
-}>`
+const Content = styled.div`
   padding: 2rem;
+  flex: 1;
+  overflow-y: auto;
 `;
 
 interface Props {
@@ -272,9 +271,7 @@ export default function Modal({
             )}
           </HeaderWithTitle>
         )}
-        <Content $size={size} $modalType={modalType} style={contentStyle}>
-          {children}
-        </Content>
+        <Content style={contentStyle}>{children}</Content>
         {FooterComponent && <FooterWrapper>{FooterComponent}</FooterWrapper>}
       </Wrapper>
       <RootBG
