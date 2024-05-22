@@ -1,9 +1,9 @@
-import React, { ReactNode, useCallback } from "react";
-import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
-import NonModal from "../../nonModal/NonModal";
-import { BosonLogo } from "../common/BosonLogo";
-import { theme } from "../../../../theme";
+import React from "react";
 import { CSSProperties } from "styled-components";
+import { theme } from "../../../../theme";
+import { MarginContainer } from "../../../widgets/MarginContainer";
+import NonModal from "../../nonModal/NonModal";
+import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
 const colors = theme.colors.light;
 
 export type PurchaseOverviewProps = {
@@ -17,18 +17,8 @@ export const PurchaseOverview: React.FC<PurchaseOverviewProps> = ({
   hideModal,
   modalMargin
 }) => {
-  const Wrapper = useCallback(
-    ({ children }: { children: ReactNode }) => {
-      return lookAndFeel === "regular" ? (
-        <>{children}</>
-      ) : (
-        <div style={{ margin: modalMargin }}>{children}</div>
-      );
-    },
-    [lookAndFeel, modalMargin]
-  );
   return (
-    <Wrapper>
+    <MarginContainer lookAndFeel={lookAndFeel} modalMargin={modalMargin}>
       <NonModal
         hideModal={hideModal}
         footerComponent={null}
@@ -40,6 +30,6 @@ export const PurchaseOverview: React.FC<PurchaseOverviewProps> = ({
       >
         <PurchaseOverviewView />
       </NonModal>
-    </Wrapper>
+    </MarginContainer>
   );
 };
