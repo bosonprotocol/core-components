@@ -104,6 +104,7 @@ export const DigitalProductData: React.FC<DigitalProductDataProps> = ({
             >
               <DetailTable
                 align={false}
+                textAlign="right"
                 noBorder
                 data={[
                   ...(nftItem.contract
