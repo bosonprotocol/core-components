@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.31.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.31.0...@bosonprotocol/react-kit@0.31.1) (2024-05-23)
+
+
+### Bug Fixes
+
+* alignment digital product data ([#740](https://github.com/bosonprotocol/core-components/issues/740)) ([a326fb0](https://github.com/bosonprotocol/core-components/commit/a326fb0ddbe9022d169a547e9cc4937825336104))
+
+
+
+
+
 # [0.31.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.30.1...@bosonprotocol/react-kit@0.31.0) (2024-05-22)
 
 
