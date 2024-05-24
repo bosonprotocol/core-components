@@ -43,8 +43,8 @@ Commit.args = {
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
   bundleUuid: "",
-  productUuid: "086b32-3fcd-00d1-0624-67513e85415c", // with size variations
-  sellerId: "138",
+  productUuid: "f4bb0f8-2f2c-d151-2801-0d3c6250461", // with size variations
+  sellerId: "4",
   metaTx: {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
     apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string

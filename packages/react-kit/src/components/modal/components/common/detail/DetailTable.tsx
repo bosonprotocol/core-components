@@ -4,6 +4,7 @@ import { Grid } from "../../../../ui/Grid";
 import { Typography } from "../../../../ui/Typography";
 import { Table } from "./Detail.style";
 import { Instance } from "tippy.js";
+import { CSSProperties } from "styled-components";
 
 export interface Data {
   hide?: boolean | undefined;
@@ -16,6 +17,7 @@ export interface Data {
 
 interface Props {
   align?: boolean;
+  textAlign?: CSSProperties["textAlign"];
   data: Readonly<Array<Data>>;
   noBorder?: boolean;
   inheritColor?: boolean;
@@ -24,6 +26,7 @@ interface Props {
 }
 
 export default function DetailTable({
+  textAlign,
   align,
   data,
   noBorder = false,
@@ -83,7 +86,10 @@ export default function DetailTable({
                     </Grid>
                   </td>
                   <td>
-                    <Grid justifyContent={align ? "flex-start" : "flex-end"}>
+                    <Grid
+                      justifyContent={align ? "flex-start" : "flex-end"}
+                      style={{ textAlign }}
+                    >
                       {d.value}
                     </Grid>
                   </td>

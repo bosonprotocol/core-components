@@ -23,6 +23,7 @@ const Root = styled.div`
   left: 0;
   right: 0;
   z-index: ${zIndex.Modal};
+  max-height: inherit;
 `;
 
 const RootBG = styled.div`
@@ -93,8 +94,7 @@ const Wrapper = styled.div<{
 }>`
   display: flex;
   flex-direction: column;
-  max-height: 96vh;
-  overflow: auto;
+  max-height: inherit;
   position: relative;
   z-index: ${zIndex.Modal};
   color: ${({ $themeVal }) => {
