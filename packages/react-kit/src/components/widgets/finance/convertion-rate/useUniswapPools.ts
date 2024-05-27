@@ -103,7 +103,7 @@ export function useUniswapPools({ tokens }: Props) {
   const isDev =
     process.env.NODE_ENV === "development" ||
     // @ts-expect-error import.meta.env only exists in vite environments
-    import.meta?.env.NODE_ENV === "development";
+    import.meta?.env?.DEV;
   const queries = generateQuery(tokensWithoutBoson, false);
   const swapQueries = generateQuery(tokensWithoutBoson, true);
 

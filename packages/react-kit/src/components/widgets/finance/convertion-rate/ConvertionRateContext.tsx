@@ -38,7 +38,7 @@ export const initalState: ConvertionRateContextType = {
     rates:
       process.env.NODE_ENV === "development" ||
       // @ts-expect-error import.meta.env only exists in vite environments
-      import.meta?.env.NODE_ENV === "development"
+      import.meta?.env?.DEV
         ? MOCK_RATES
         : getItemFromStorage("convertionRates", null),
     fixed: 20,
