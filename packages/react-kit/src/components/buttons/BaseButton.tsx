@@ -18,13 +18,13 @@ const ButtonWithThemeProps = styled.button<{
   ${() => Styles.button};
   ${(props) => Styles[props.size as keyof typeof Styles]}
   border-style: solid;
-  border-color: ${(props) => props.theme.borderColor || "transparent"};
-  border-width: ${(props) => props.theme.borderWidth || 0}px;
-  border-radius: ${(props) => props.theme.borderRadius || 0}px;
-  color: ${(props) => props.theme.color || "#000000"};
-  background-color: ${(props) => props.theme.background || "transparent"};
+  border-color: ${(props) => props.theme?.borderColor || "transparent"};
+  border-width: ${(props) => props.theme?.borderWidth || 0}px;
+  border-radius: ${(props) => props.theme?.borderRadius || 0}px;
+  color: ${(props) => props.theme?.color || "#000000"};
+  background-color: ${(props) => props.theme?.background || "transparent"};
   svg {
-    stroke: ${(props) => props.theme.color || "#000000"};
+    stroke: ${(props) => props.theme?.color || "#000000"};
   }
   ${(props) =>
     props.fill
@@ -33,46 +33,46 @@ const ButtonWithThemeProps = styled.button<{
         `
       : ""};
   ${(props) =>
-    props.theme.hover &&
+    props.theme?.hover &&
     css`
       &:hover:not(:disabled) {
-        background-color: ${props.theme.hover.background};
-        ${props.theme.hover.color &&
+        background-color: ${props.theme?.hover?.background};
+        ${props.theme?.hover?.color &&
         css`
-          color: ${props.theme.hover.color} !important;
+          color: ${props.theme?.hover?.color} !important;
           svg {
-            fill: ${props.theme.hover.color} !important;
+            fill: ${props.theme?.hover?.color} !important;
             line {
-              stroke: ${props.theme.hover.color} !important;
+              stroke: ${props.theme?.hover?.color} !important;
             }
             polyline {
-              stroke: ${props.theme.hover.color} !important;
+              stroke: ${props.theme?.hover?.color} !important;
             }
             path {
-              stroke: ${props.theme.hover.color} !important;
+              stroke: ${props.theme?.hover?.color} !important;
             }
           }
         `};
-        ${props.theme.hover.borderColor &&
+        ${props.theme?.hover?.borderColor &&
         css`
-          border-color: ${props.theme.hover.borderColor};
+          border-color: ${props.theme?.hover?.borderColor};
         `};
       }
     `}
   ${(props) =>
-    props.theme.padding
+    props.theme?.padding
       ? css`
           padding: ${props.theme.padding} !important;
         `
       : ""}
 
   ${(props) =>
-    props.theme.disabled
+    props.theme?.disabled
       ? css`
           &:disabled {
-            background-color: ${props.theme.disabled.background ||
+            background-color: ${props.theme.disabled?.background ||
             "transparent"};
-            color: ${props.theme.disabled.color || colors.darkGrey};
+            color: ${props.theme.disabled?.color || colors.darkGrey};
             border-color: transparent;
             cursor: not-allowed;
             opacity: 0.5;
