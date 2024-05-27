@@ -41,24 +41,24 @@ const ButtonWithThemeProps = styled.button<{
     props.theme?.hover &&
     css`
       &:hover:not(:disabled) {
-        background-color: ${props.theme?.hover?.background};
-        ${props.theme?.hover?.color &&
+        background-color: ${props.theme?.hover.background};
+        ${props.theme?.hover.color &&
         css`
-          color: ${props.theme?.hover?.color} !important;
+          color: ${props.theme.hover.color} !important;
           svg {
-            fill: ${props.theme?.hover?.color} !important;
+            fill: ${props.theme.hover.color} !important;
             line {
-              stroke: ${props.theme?.hover?.color} !important;
+              stroke: ${props.theme.hover.color} !important;
             }
             polyline {
-              stroke: ${props.theme?.hover?.color} !important;
+              stroke: ${props.theme.hover.color} !important;
             }
             path {
-              stroke: ${props.theme?.hover?.color} !important;
+              stroke: ${props.theme.hover.color} !important;
             }
           }
         `};
-        ${props.theme?.hover?.borderColor &&
+        ${props.theme?.hover.borderColor &&
         css`
           border-color: ${props.theme.hover.borderColor};
         `};
