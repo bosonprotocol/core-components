@@ -1,4 +1,9 @@
-import React, { ButtonHTMLAttributes, forwardRef, Fragment } from "react";
+import React, {
+  ButtonHTMLAttributes,
+  forwardRef,
+  ReactNode,
+  useCallback
+} from "react";
 import styled, { css, DefaultTheme, ThemeProvider } from "styled-components";
 
 import { zIndex } from "../ui/zIndex";
@@ -55,7 +60,7 @@ const ButtonWithThemeProps = styled.button<{
         `};
         ${props.theme?.hover?.borderColor &&
         css`
-          border-color: ${props.theme?.hover?.borderColor};
+          border-color: ${props.theme.hover.borderColor};
         `};
       }
     `}
@@ -130,20 +135,23 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
     },
     ref
   ) => {
-    let Wrapper, wrapperParams;
-    if (tooltip !== "" && rest?.disabled) {
-      Wrapper = Tooltip;
-      wrapperParams = { wrap: false, content: tooltip };
-    } else {
-      Wrapper = Fragment;
-      wrapperParams = {};
-    }
+    const Wrapper = useCallback(
+      ({ children }: { children: ReactNode }) => {
+        if (tooltip !== "" && rest?.disabled) {
+          return (
+            <Tooltip wrap={false} content={tooltip}>
+              {children}
+            </Tooltip>
+          );
+        }
+        return <>{children}</>;
+      },
+      [rest?.disabled, tooltip]
+    );
     return (
       <>
         <ThemeProvider theme={theme}>
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-ignore */}
-          <Wrapper {...wrapperParams}>
+          <Wrapper>
             <ButtonWithThemeProps
               onClick={onClick}
               type={type}
