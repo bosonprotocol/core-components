@@ -47,7 +47,7 @@ export default {
       );
     }
   ] satisfies Meta<typeof Input>["decorators"]
-};
+} satisfies Meta<typeof Input>;
 
 export const Simple = {
   args: {
