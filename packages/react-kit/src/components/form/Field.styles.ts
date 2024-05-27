@@ -57,9 +57,9 @@ export const FieldInput = styled.input<{
   padding: 1rem;
   gap: 0.5rem;
 
-  background: ${(props) => props.theme.background || "transparent"};
-  border: 1px solid ${(props) => props.theme.borderColor || colors.border};
-  border-radius: ${(props) => props.theme.borderRadius || 0}px;
+  background: ${(props) => props.theme?.background || "transparent"};
+  border: 1px solid ${(props) => props.theme?.borderColor || colors.border};
+  border-radius: ${(props) => props.theme?.borderRadius || 0}px;
   outline: none;
   font-family: "Plus Jakarta Sans";
 
@@ -69,8 +69,8 @@ export const FieldInput = styled.input<{
     &:focus,
     &:hover {
       border: 1px solid
-        ${(props) => props.theme.hover.borderColor || colors.lightGrey};
-      caret-color: ${(props) => props.theme.focus.caretColor || "initial"};
+        ${(props) => props.theme?.hover?.borderColor || colors.lightGrey};
+      caret-color: ${(props) => props.theme?.focus?.caretColor || "initial"};
     }
   }
 
@@ -83,34 +83,35 @@ export const FieldInput = styled.input<{
     !checkIfValueIsEmpty($error) &&
     css`
       border: 1px solid
-        ${(props) => props.theme.error.borderColor || colors.orange};
+        ${(props) => props.theme?.error?.borderColor || colors.orange};
       &:not(:disabled) {
         &:hover {
           border: 1px solid
-            ${(props) => props.theme.error.hover.borderColor || colors.orange};
+            ${(props) =>
+              props.theme?.error?.hover?.borderColor || colors.orange};
         }
       }
       &:not(:disabled) {
         &:focus {
           border: 1px solid
             ${(props) =>
-              props.theme.error.focus.borderColor || colors.lightGrey};
+              props.theme?.error?.focus?.borderColor || colors.lightGrey};
           caret-color: ${(props) =>
-            props.theme.error.focus.caretColor || colors.orange};
+            props.theme?.error?.focus?.caretColor || colors.orange};
         }
       }
       &::placeholder {
         color: ${(props) =>
-          props.theme.error.placeholder.color || colors.orange};
+          props.theme?.error?.placeholder?.color || colors.orange};
         opacity: 1;
       }
       &:-ms-input-placeholder {
         color: ${(props) =>
-          props.theme.error.placeholder.color || colors.orange};
+          props.theme?.error?.placeholder?.color || colors.orange};
       }
       &::-ms-input-placeholder {
         color: ${(props) =>
-          props.theme.error.placeholder.color || colors.orange};
+          props.theme?.error?.placeholder?.color || colors.orange};
       }
     `};
 `;

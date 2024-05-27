@@ -26,7 +26,21 @@ const bosonTheme = {
     }
   }
 } satisfies BaseInputProps["theme"];
-export type InputProps = Omit<BaseInputProps, "theme">;
-export default function Input(props: Omit<BaseInputProps, "theme">) {
-  return <BaseInput {...props} theme={bosonTheme} />;
+const clearButtonTheme = {
+  fill: "#cccccc",
+  stroke: "#cccccc",
+  hover: {
+    fill: "#999999",
+    stroke: "#999999"
+  }
+} satisfies BaseInputProps["clearButtonTheme"];
+export type InputProps = Omit<BaseInputProps, "theme" | "clearButtonTheme">;
+export default function Input(props: InputProps) {
+  return (
+    <BaseInput
+      {...props}
+      theme={bosonTheme}
+      clearButtonTheme={clearButtonTheme}
+    />
+  );
 }
