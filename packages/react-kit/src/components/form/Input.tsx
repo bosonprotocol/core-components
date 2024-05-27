@@ -6,6 +6,9 @@ const bosonTheme = {
   background: colors.lightGrey,
   borderColor: colors.border,
   borderRadius: 0,
+  focus: {
+    caretColor: "initial"
+  },
   hover: {
     borderColor: colors.lightGrey
   },
@@ -15,7 +18,8 @@ const bosonTheme = {
       borderColor: colors.orange
     },
     focus: {
-      borderColor: colors.orange
+      borderColor: colors.orange,
+      caretColor: colors.orange
     },
     placeholder: {
       color: colors.orange

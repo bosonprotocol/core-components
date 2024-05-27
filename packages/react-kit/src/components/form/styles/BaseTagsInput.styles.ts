@@ -1,22 +1,31 @@
-import styled from "styled-components";
+import styled, { CSSProperties, css } from "styled-components";
 import { theme } from "../../../theme";
 
 const colors = theme.colors.light;
 
-export const TagContainer = styled.div`
+export const TagContainer = styled.div<{
+  $gap: CSSProperties["gap"];
+  $paddingLeft?: CSSProperties["paddingLeft"];
+}>`
   position: relative;
   width: 100%;
   border-radius: 3px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.5em;
+  gap: ${({ $gap }) => $gap};
+  box-sizing: border-box;
+  ${({ $paddingLeft }) =>
+    $paddingLeft &&
+    css`
+      padding-left: ${$paddingLeft};
+    `};
 `;
 
 export const Helper = styled.div`
   position: absolute;
   right: 0.5rem;
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   font-weight: 600;
   opacity: 0.5;
   pointer-events: none;
@@ -29,6 +38,11 @@ export const TagWrapper = styled.div`
   background-color: ${colors.lightGrey};
   display: inline-block;
   padding: 0.5em 0.75em;
+  margin-top: 1rem;
+  border-radius: ${(props) => props.theme.borderRadius || 0}px;
+  .text {
+    word-break: break-word;
+  }
 `;
 
 export const Close = styled.span`

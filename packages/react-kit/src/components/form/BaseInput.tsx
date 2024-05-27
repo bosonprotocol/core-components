@@ -2,34 +2,20 @@ import React from "react";
 import { useField, useFormikContext } from "formik";
 
 import Error from "./Error";
-import { FieldInput } from "./Field.styles";
+import { FieldInput, InputTheme } from "./Field.styles";
 import type { InputProps as CommonInputProps } from "./types";
-import { CSSProperties, ThemeProvider } from "styled-components";
 
 export type BaseInputProps = CommonInputProps & {
-  theme: {
-    background: CSSProperties["backgroundColor"];
-    borderColor: CSSProperties["borderColor"];
-    borderRadius: CSSProperties["borderRadius"];
-    hover: {
-      borderColor: CSSProperties["borderColor"];
-    };
-    error: {
-      borderColor: CSSProperties["borderColor"];
-      hover: {
-        borderColor: CSSProperties["borderColor"];
-      };
-      focus: {
-        borderColor: CSSProperties["borderColor"];
-      };
-      placeholder: {
-        color: CSSProperties["color"];
-      };
-    };
-  };
+  heightSize?: "large" | "regular" | "small";
+  theme?: InputTheme;
 };
 
-export function BaseInput({ name, theme, ...props }: BaseInputProps) {
+export function BaseInput({
+  name,
+  theme,
+  heightSize,
+  ...props
+}: BaseInputProps) {
   const { status } = useFormikContext();
   const [field, meta] = useField(name);
   const errorText = meta.error || status?.[name];
@@ -38,12 +24,18 @@ export function BaseInput({ name, theme, ...props }: BaseInputProps) {
     typeof errorMessage === typeof "string" && errorMessage !== "";
 
   return (
-    <ThemeProvider theme={theme}>
-      <FieldInput error={errorMessage} {...field} {...props} />
+    <>
+      <FieldInput
+        theme={theme}
+        $error={errorMessage}
+        {...field}
+        {...props}
+        $heightSize={heightSize}
+      />
       <Error
         display={!props.hideError && displayError}
         message={errorMessage}
       />
-    </ThemeProvider>
+    </>
   );
 }
