@@ -1,7 +1,9 @@
 import type { TokenList } from "@uniswap/token-lists";
 import type { ValidateFunction } from "ajv";
-import validatorImportList from "./__generated__/validateTokenList";
-import validateTokens from "./__generated__/validateTokens";
+// import validateTokens from "./__generated__/validateTokens";
+const importValidateTokens = import("./__generated__/validateTokens");
+// import validatorImportList from "./__generated__/validateTokenList";
+const importValidatorImportList = import("./__generated__/validateTokenList");
 
 enum ValidationSchema {
   LIST = "list",
@@ -30,13 +32,15 @@ async function validate(
       // validatorImport = await import(
       //   "lib/uniswap/__generated__/validateTokenList"
       // );
-      validatorImport = validatorImportList;
+      // validatorImport = validatorImportList;
+      validatorImport = await importValidatorImportList;
       break;
     case ValidationSchema.TOKENS:
       // validatorImport = await import(
       //   "lib/uniswap/__generated__/validateTokens"
       // );
-      validatorImport = validateTokens;
+      // validatorImport = validateTokens;
+      validatorImport = await importValidateTokens;
       break;
     default:
       throw new Error("No validation function specified for token list schema");
@@ -45,8 +49,8 @@ async function validate(
     import("ajv")
     // validatorImport
   ]);
-  // const validator = validatorModule.default as ValidateFunction;
-  const validator = validatorImport as ValidateFunction;
+  const validator = validatorImport.default as ValidateFunction;
+  // const validator = validatorImport as ValidateFunction;
   if (validator?.(data)) {
     return data;
   }

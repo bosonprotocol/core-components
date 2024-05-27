@@ -3,8 +3,9 @@ import { utils } from "ethers";
 import { useEffect, useState } from "react";
 import { Offer } from "../../types/offer";
 import { useCoreSDKWithContext } from "../core-sdk/useCoreSdkWithContext";
-import { BosonSnapshotGate__factory } from "./BosonSnapshotGate/typechain";
+// import { BosonSnapshotGate__factory } from "./BosonSnapshotGate/typechain";
 import { useAccount, useSigner } from "../connection/connection";
+const importedTypechain = import("./BosonSnapshotGate/typechain");
 
 interface Props {
   commitProxyAddress?: string | undefined;
@@ -32,10 +33,9 @@ export default function useCheckTokenGatedOffer({
         }
 
         try {
-          const proxyContract = BosonSnapshotGate__factory.connect(
-            commitProxyAddress,
-            signer
-          );
+          const proxyContract = (
+            await importedTypechain
+          ).BosonSnapshotGate__factory.connect(commitProxyAddress, signer);
           const [owned, used] = await proxyContract.checkSnapshot(
             condition.minTokenId,
             utils.getAddress(address)

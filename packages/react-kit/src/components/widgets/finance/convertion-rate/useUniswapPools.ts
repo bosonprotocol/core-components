@@ -100,7 +100,10 @@ export interface IPool {
 
 export function useUniswapPools({ tokens }: Props) {
   const tokensWithoutBoson = tokens?.filter((t) => t.symbol !== "BOSON") || [];
-  const isDev = process.env.NODE_ENV === "development";
+  const isDev =
+    process.env.NODE_ENV === "development" ||
+    // @ts-expect-error import.meta.env only exists in vite environments
+    import.meta?.env?.DEV;
   const queries = generateQuery(tokensWithoutBoson, false);
   const swapQueries = generateQuery(tokensWithoutBoson, true);
 

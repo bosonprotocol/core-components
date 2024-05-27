@@ -179,7 +179,8 @@ export const getRpcUrls = (infuraKey: string) => ({
     `https://polygon-mumbai.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.POLYGON_MUMBAI]
   ],
-  80002: [ // AMOY
+  80002: [
+    // AMOY
     `https://polygon-amoy.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[80002]
   ],
