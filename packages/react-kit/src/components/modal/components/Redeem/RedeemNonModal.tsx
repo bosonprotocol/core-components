@@ -58,6 +58,7 @@ import {
 } from "../common/detail/DetailViewProvider";
 import { getHasBuyerTransferInfos } from "../../../../lib/offer/filter";
 import { BuyerTransferInfo } from "../../../../lib/bundle/const";
+import { getEnvVar } from "../../../../lib/env/getEnvVar";
 
 const colors = theme.colors.light;
 const UlWithWordBreak = styled.ul`
@@ -482,8 +483,9 @@ function RedeemNonModal({
   if (jsx) {
     return jsx;
   }
-  const mockedDeliveryAddress = process.env.REACT_APP_DELIVERY_ADDRESS_MOCK
-    ? JSON.parse(process.env.REACT_APP_DELIVERY_ADDRESS_MOCK)
+  const deliveryAddressVar = getEnvVar("REACT_APP_DELIVERY_ADDRESS_MOCK");
+  const mockedDeliveryAddress = deliveryAddressVar
+    ? JSON.parse(deliveryAddressVar)
     : undefined;
 
   const handleRaiseDispute = (exchangeId: string | undefined) => {
