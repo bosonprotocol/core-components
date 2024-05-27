@@ -248,7 +248,7 @@ export default function Phone({ name, ...props }: InputProps) {
       </PhoneWrapper>
       <FieldInput
         type="hidden"
-        error={errorMessage}
+        $error={errorMessage}
         disabled
         {...field}
         {...props}

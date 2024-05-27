@@ -1,25 +1,46 @@
 import React from "react";
-import { useField, useFormikContext } from "formik";
-
-import Error from "./Error";
-import { FieldInput } from "./Field.styles";
-import type { InputProps } from "./types";
-
-export default function Input({ name, ...props }: InputProps) {
-  const { status } = useFormikContext();
-  const [field, meta] = useField(name);
-  const errorText = meta.error || status?.[name];
-  const errorMessage = errorText && meta.touched ? errorText : "";
-  const displayError =
-    typeof errorMessage === typeof "string" && errorMessage !== "";
-
+import { theme } from "../../theme";
+import { BaseInput, BaseInputProps } from "./BaseInput";
+const colors = theme.colors.light;
+const bosonTheme = {
+  background: colors.lightGrey,
+  borderColor: colors.border,
+  borderRadius: 0,
+  focus: {
+    caretColor: "initial"
+  },
+  hover: {
+    borderColor: colors.lightGrey
+  },
+  error: {
+    borderColor: colors.orange,
+    hover: {
+      borderColor: colors.orange
+    },
+    focus: {
+      borderColor: colors.orange,
+      caretColor: colors.orange
+    },
+    placeholder: {
+      color: colors.orange
+    }
+  }
+} satisfies BaseInputProps["theme"];
+const clearButtonTheme = {
+  fill: "#cccccc",
+  stroke: "#cccccc",
+  hover: {
+    fill: "#999999",
+    stroke: "#999999"
+  }
+} satisfies BaseInputProps["clearButtonTheme"];
+export type InputProps = Omit<BaseInputProps, "theme" | "clearButtonTheme">;
+export default function Input(props: InputProps) {
   return (
-    <>
-      <FieldInput error={errorMessage} {...field} {...props} />
-      <Error
-        display={!props.hideError && displayError}
-        message={errorMessage}
-      />
-    </>
+    <BaseInput
+      {...props}
+      theme={bosonTheme}
+      clearButtonTheme={clearButtonTheme}
+    />
   );
 }
