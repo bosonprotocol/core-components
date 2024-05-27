@@ -1,7 +1,6 @@
 import { Offer } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { gql, request } from "graphql-request";
 import { useQuery } from "react-query";
-import { getEnvVar } from "../../../../lib/env/getEnvVar";
 
 const UNISWAP_API_URL =
   "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3";
@@ -101,7 +100,10 @@ export interface IPool {
 
 export function useUniswapPools({ tokens }: Props) {
   const tokensWithoutBoson = tokens?.filter((t) => t.symbol !== "BOSON") || [];
-  const isDev = getEnvVar("NODE_ENV") === "development";
+  const isDev =
+    process.env.NODE_ENV === "development" ||
+    // @ts-expect-error import.meta.env only exists in vite environments
+    import.meta?.env.NODE_ENV === "development";
   const queries = generateQuery(tokensWithoutBoson, false);
   const swapQueries = generateQuery(tokensWithoutBoson, true);
 

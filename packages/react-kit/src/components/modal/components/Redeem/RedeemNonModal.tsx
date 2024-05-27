@@ -58,7 +58,6 @@ import {
 } from "../common/detail/DetailViewProvider";
 import { getHasBuyerTransferInfos } from "../../../../lib/offer/filter";
 import { BuyerTransferInfo } from "../../../../lib/bundle/const";
-import { getEnvVar } from "../../../../lib/env/getEnvVar";
 
 const colors = theme.colors.light;
 const UlWithWordBreak = styled.ul`
@@ -483,7 +482,10 @@ function RedeemNonModal({
   if (jsx) {
     return jsx;
   }
-  const deliveryAddressVar = getEnvVar("REACT_APP_DELIVERY_ADDRESS_MOCK");
+  const deliveryAddressVar =
+    process.env.REACT_APP_DELIVERY_ADDRESS_MOCK ||
+    // @ts-expect-error import.meta.env only exists in vite environments
+    import.meta?.env.REACT_APP_DELIVERY_ADDRESS_MOCK;
   const mockedDeliveryAddress = deliveryAddressVar
     ? JSON.parse(deliveryAddressVar)
     : undefined;
