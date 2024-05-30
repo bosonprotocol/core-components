@@ -4,6 +4,7 @@ import { Signer } from "ethers";
 
 export type ConfigContextProps = {
   config: ProtocolConfig;
+  setEnvConfig: React.Dispatch<React.SetStateAction<ProtocolConfig>>;
   dateFormat: string;
   shortDateFormat: string;
   defaultCurrency: {
@@ -30,6 +31,7 @@ export type ConfigContextProps = {
   externalConnectedAccount?: string;
   externalConnectedSigner?: Signer;
   withExternalConnectionProps?: boolean;
+  withWeb3React: boolean;
 };
 
 export const ConfigContext = createContext<ConfigContextProps | null>(null);

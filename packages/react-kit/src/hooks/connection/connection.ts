@@ -123,10 +123,10 @@ export function useSigner(): Signer | undefined {
     return externalConnectedSigner
       ? externalConnectedSigner
       : externalSigner
-      ? externalSigner
-      : isMagicLoggedIn
-      ? magicProvider?.getSigner()
-      : wagmiSigner;
+        ? externalSigner
+        : isMagicLoggedIn
+          ? magicProvider?.getSigner()
+          : wagmiSigner;
   }, [
     externalConnectedSigner,
     externalSigner,

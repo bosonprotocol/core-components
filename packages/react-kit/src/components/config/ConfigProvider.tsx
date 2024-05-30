@@ -1,12 +1,27 @@
-import React, { ReactNode, useMemo } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { isTruthy } from "../../types/helpers";
-import { ConfigContext, ConfigContextProps } from "./ConfigContext";
+import {
+  ConfigContext,
+  ConfigContextProps,
+  useConfigContext
+} from "./ConfigContext";
 import { useEnvContext } from "../environment/EnvironmentContext";
-import { getEnvConfigById, getEnvConfigs } from "@bosonprotocol/core-sdk";
+import {
+  ProtocolConfig,
+  getEnvConfigById,
+  getEnvConfigs
+} from "@bosonprotocol/core-sdk";
 import {
   EnvironmentProvider,
   EnvironmentProviderProps
 } from "../environment/EnvironmentProvider";
+import { useChainId } from "../../hooks/connection/connection";
+import { getEnvConfigsFilteredByEnv } from "../../lib/config/getConfigsByChainId";
+import { MagicProvider } from "../magicLink/MagicProvider";
+import WalletConnectionProvider, {
+  WalletConnectionProviderProps
+} from "../wallet/WalletConnectionProvider";
+import { withQueryClientProvider } from "../queryClient/withQueryClientProvider";
 
 export type ConfigProviderProps = Omit<
   ConfigContextProps,
@@ -21,25 +36,59 @@ export type ConfigProviderProps = Omit<
   defaultCurrencySymbol: string;
   sellerCurationListBetweenCommas?: string;
   offerCurationListBetweenCommas?: string;
-} & EnvironmentProviderProps;
-export function ConfigProvider({ children, ...rest }: ConfigProviderProps) {
+  withWeb3React: boolean;
+} & EnvironmentProviderProps &
+  WalletConnectionProviderProps;
+export function ConfigProvider({
+  children,
+  walletConnectProjectId,
+  ...rest
+}: ConfigProviderProps) {
   return (
     <EnvironmentProvider
       envName={rest.envName}
       configId={rest.configId}
       metaTx={rest.metaTx}
     >
-      <InnerConfigProvider {...rest}>{children}</InnerConfigProvider>
+      <InnerConfigProvider {...rest}>
+        <MagicProvider>
+          <WalletConnectionProvider
+            walletConnectProjectId={walletConnectProjectId}
+          >
+            <SyncCurrentConfigId>{children}</SyncCurrentConfigId>
+          </WalletConnectionProvider>
+        </MagicProvider>
+      </InnerConfigProvider>
     </EnvironmentProvider>
   );
 }
 
-function InnerConfigProvider({ children, ...rest }: ConfigProviderProps) {
+const SyncCurrentConfigId = withQueryClientProvider(function ({
+  children
+}: Pick<ConfigProviderProps, "children">) {
+  const chainId = useChainId();
+  const { setEnvConfig, config } = useConfigContext();
+  useEffect(() => {
+    const newEnvConfig = getEnvConfigsFilteredByEnv(config.envName).find(
+      (envConfig) => envConfig.chainId === chainId
+    );
+    if (newEnvConfig) {
+      setEnvConfig(newEnvConfig);
+    }
+  }, [chainId, config.envName, setEnvConfig]);
+  return <>{children}</>;
+});
+
+function InnerConfigProvider({
+  children,
+  ...rest
+}: Omit<ConfigProviderProps, "walletConnectProjectId">) {
   const { envName, configId } = useEnvContext();
-  const envConfig = useMemo(
+  const defaultEnvConfig = useMemo(
     () => getEnvConfigById(envName, configId),
     [envName, configId]
   );
+  const [envConfig, setEnvConfig] = useState<ProtocolConfig>(defaultEnvConfig);
   const sellerCurationList = useMemo(
     () =>
       rest.sellerCurationListBetweenCommas
@@ -63,6 +112,7 @@ function InnerConfigProvider({ children, ...rest }: ConfigProviderProps) {
     <ConfigContext.Provider
       value={{
         ...rest,
+        setEnvConfig,
         config: envConfig,
         sellerCurationList,
         offerCurationList,

@@ -4,7 +4,7 @@ import { useUser } from "./UserContext";
 import { useMagic } from "../../hooks";
 import { Button } from "../buttons/Button";
 import { Spinner } from "../ui/loading/Spinner";
-type MagicLoginButtonProps = {
+export type MagicLoginButtonProps = {
   buttonProps: Omit<Parameters<typeof Button>[0], "onClick" | "disabled">;
 };
 export const MagicLoginButton = ({ buttonProps }: MagicLoginButtonProps) => {

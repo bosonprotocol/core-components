@@ -20,12 +20,12 @@ const InnerContext = createContext<{
   isMagicLoggedIn: boolean | undefined;
   chainId: number | undefined;
   globalAccount: string | undefined;
-  disconnect: () => void;
+  disconnect: ReturnType<typeof useDisconnect>;
 }>({
   isMagicLoggedIn: undefined,
   chainId: undefined,
   globalAccount: undefined,
-  disconnect: () => null
+  disconnect: () => Promise.resolve()
 });
 const InnerProvider = ({ children }: { children: ReactNode }) => {
   const isMagicLoggedIn = useIsMagicLoggedIn();
@@ -72,6 +72,7 @@ const iconProps = {
     cursor: "pointer"
   } as const
 } as const;
+
 export default function ConnectButton({
   navigationBarPosition = "",
   showAddress = true,
@@ -223,12 +224,23 @@ export default function ConnectButton({
                           {showAddress && account?.displayName}
                         </ThemedButton>
                         {isLteS ? (
-                          <SignOut {...iconProps} onClick={disconnect} />
+                          <SignOut
+                            {...iconProps}
+                            onClick={() =>
+                              disconnect({
+                                isUserDisconnecting: true
+                              })
+                            }
+                          />
                         ) : (
                           <ThemedButton
                             themeVal="outline"
                             size={isLteXS ? "small" : "regular"}
-                            onClick={disconnect}
+                            onClick={() =>
+                              disconnect({
+                                isUserDisconnecting: true
+                              })
+                            }
                           >
                             Disconnect
                           </ThemedButton>

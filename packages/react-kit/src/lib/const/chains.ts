@@ -1,11 +1,28 @@
-import { ChainId } from "@uniswap/sdk-core";
+import {
+  ChainId,
+  SUPPORTED_CHAINS as _SUPPORTED_CHAINS
+} from "@uniswap/sdk-core";
+import { getEnvConfigsFilteredByEnv } from "../config/getConfigsByChainId";
+import { EnvironmentType } from "@bosonprotocol/core-sdk";
+
+export const LocalChainId = 31337;
+export const ChainId_POLYGON_AMOY = 80002;
+
+export const UniWalletSupportedChains = [
+  ChainId.MAINNET,
+  // ChainId.ARBITRUM_ONE,
+  // ChainId.OPTIMISM,
+  ChainId.POLYGON
+  // ChainId.BASE
+];
+
 export const CHAIN_IDS_TO_NAMES = {
   [ChainId.MAINNET]: "mainnet",
   [ChainId.GOERLI]: "goerli",
   [ChainId.SEPOLIA]: "sepolia",
   [ChainId.POLYGON]: "polygon",
   [ChainId.POLYGON_MUMBAI]: "polygon_mumbai",
-  80002: "polygon_amoy",
+  [ChainId_POLYGON_AMOY]: "polygon_amoy",
   [ChainId.CELO]: "celo",
   [ChainId.CELO_ALFAJORES]: "celo_alfajores",
   [ChainId.ARBITRUM_ONE]: "arbitrum",
@@ -15,9 +32,73 @@ export const CHAIN_IDS_TO_NAMES = {
   [ChainId.BNB]: "bnb",
   [ChainId.AVALANCHE]: "avalanche",
   [ChainId.BASE]: "base",
-  [ChainId.BASE_GOERLI]: "base_goerli"
-  // [LocalChainId]: "local"
+  [ChainId.BASE_GOERLI]: "base_goerli",
+  [LocalChainId]: "local"
 } as const;
+
+export const CHAIN_IDS_TO_FRIENDLY_NAMES = {
+  [ChainId.MAINNET]: "Mainnet",
+  [ChainId.GOERLI]: "Goerli",
+  [ChainId.SEPOLIA]: "Sepolia",
+  [ChainId.POLYGON]: "Polygon",
+  [ChainId.POLYGON_MUMBAI]: "Polygon Mumbai",
+  [ChainId_POLYGON_AMOY]: "Polygon Amoy",
+  [ChainId.CELO]: "Celo",
+  [ChainId.CELO_ALFAJORES]: "Celo Alfajores",
+  [ChainId.ARBITRUM_ONE]: "Arbitrum",
+  [ChainId.ARBITRUM_GOERLI]: "Arbitrum Goerli",
+  [ChainId.OPTIMISM]: "Optimism",
+  [ChainId.OPTIMISM_GOERLI]: "Optimism Goerli",
+  [ChainId.BNB]: "Bnb",
+  [ChainId.AVALANCHE]: "Avalanche",
+  [ChainId.BASE]: "Base",
+  [ChainId.BASE_GOERLI]: "Base Goerli",
+  [LocalChainId]: "Local Hardhat"
+} as const;
+
+const SUPPORTED_CHAINS = [
+  LocalChainId,
+  ChainId_POLYGON_AMOY,
+  ..._SUPPORTED_CHAINS
+] as const;
+export declare type SupportedChainsType = (typeof SUPPORTED_CHAINS)[number];
+
+export function isSupportedChain(props: {
+  chainId: number | null | undefined | ChainId;
+  envName: EnvironmentType;
+  featureFlags?: Record<number, boolean>;
+}): props is { chainId: SupportedChainsType; envName: EnvironmentType } {
+  const { chainId, envName, featureFlags } = props;
+  if (featureFlags && chainId && chainId in featureFlags) {
+    return featureFlags[chainId];
+  }
+  // Include ChainIds in this array if they are not supported by the UX yet, but are already in the SDK.
+  const NOT_YET_UX_SUPPORTED_CHAIN_IDS: number[] = [];
+  const envChainIds = getEnvConfigsFilteredByEnv(envName);
+  const ACTUALLY_SUPPORTED_CHAINS = SUPPORTED_CHAINS.filter((chainId) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return envChainIds.includes(chainId as any);
+  });
+  return (
+    !!chainId &&
+    ACTUALLY_SUPPORTED_CHAINS.indexOf(chainId) !== -1 &&
+    NOT_YET_UX_SUPPORTED_CHAIN_IDS.indexOf(chainId) === -1 &&
+    !!CHAIN_IDS_TO_NAMES[chainId as keyof typeof CHAIN_IDS_TO_NAMES]
+  );
+}
+
+export const TESTNET_CHAIN_IDS = [
+  ChainId.GOERLI,
+  // ChainId.SEPOLIA,
+  ChainId.POLYGON_MUMBAI,
+  80002,
+  LocalChainId
+  // ChainId.ARBITRUM_GOERLI,
+  // ChainId.OPTIMISM_GOERLI,
+  // ChainId.CELO_ALFAJORES
+  // ChainId.BASE_GOERLI
+] as const;
+
 /**
  * All the chain IDs that are running the Ethereum protocol.
  */
@@ -27,7 +108,7 @@ export const L1_CHAIN_IDS = [
   ChainId.SEPOLIA,
   ChainId.POLYGON,
   ChainId.POLYGON_MUMBAI,
-  80002
+  ChainId_POLYGON_AMOY
   // LocalChainId
   // ChainId.CELO,
   // ChainId.CELO_ALFAJORES
@@ -35,7 +116,7 @@ export const L1_CHAIN_IDS = [
   // ChainId.AVALANCHE
 ] as const;
 
-export type SupportedL1ChainId = typeof L1_CHAIN_IDS[number];
+export type SupportedL1ChainId = (typeof L1_CHAIN_IDS)[number];
 
 /**
  * Controls some L2 specific behavior, e.g. slippage tolerance, special UI behavior.
@@ -50,7 +131,40 @@ export const L2_CHAIN_IDS = [
   // ChainId.BASE_GOERLI
 ] as const;
 
-export type SupportedL2ChainId = typeof L2_CHAIN_IDS[number];
+export type SupportedL2ChainId = (typeof L2_CHAIN_IDS)[number];
+
+/**
+ * Get the priority of a chainId based on its relevance to the user.
+ * @param {ChainId} chainId - The chainId to determine the priority for.
+ * @returns {number} The priority of the chainId, the lower the priority, the earlier it should be displayed, with base of MAINNET=0.
+ */
+export function getChainPriority(chainId: number): number {
+  switch (chainId) {
+    case ChainId.MAINNET:
+    case ChainId.GOERLI:
+    case ChainId.SEPOLIA:
+      return 0;
+    case ChainId.POLYGON:
+    case ChainId.POLYGON_MUMBAI:
+    case 80002:
+      return 1;
+    // case ChainId.ARBITRUM_ONE:
+    // case ChainId.ARBITRUM_GOERLI:
+    //   return 2;
+    // case ChainId.OPTIMISM:
+    // case ChainId.OPTIMISM_GOERLI:
+    //   return 3;
+    // case ChainId.BNB:
+    //   return 4;
+    // case ChainId.AVALANCHE:
+    //   return 5;
+    // case ChainId.CELO:
+    // case ChainId.CELO_ALFAJORES:
+    //   return 6;
+    default:
+      return 7;
+  }
+}
 
 export function isUniswapXSupportedChain(chainId: number) {
   return chainId === ChainId.MAINNET;
