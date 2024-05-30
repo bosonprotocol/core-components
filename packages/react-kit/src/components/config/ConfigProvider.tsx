@@ -37,6 +37,7 @@ export type ConfigProviderProps = Omit<
   sellerCurationListBetweenCommas?: string;
   offerCurationListBetweenCommas?: string;
   withWeb3React: boolean;
+  withCustomReduxContext: boolean;
 } & EnvironmentProviderProps &
   WalletConnectionProviderProps;
 export function ConfigProvider({

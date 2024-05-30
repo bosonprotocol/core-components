@@ -32,6 +32,7 @@ export type ConfigContextProps = {
   externalConnectedSigner?: Signer;
   withExternalConnectionProps?: boolean;
   withWeb3React: boolean;
+  withCustomReduxContext: boolean;
 };
 
 export const ConfigContext = createContext<ConfigContextProps | null>(null);

@@ -46,7 +46,7 @@ export function Web3Provider({
   ...rest
 }: Web3ProviderProps) {
   return (
-    <ReduxProvider>
+    <ReduxProvider withCustomContext={configProps.withCustomReduxContext}>
       <ConfigProvider {...configProps}>
         <BlockNumberProvider>
           <ConnectionsProvider {...rest}>

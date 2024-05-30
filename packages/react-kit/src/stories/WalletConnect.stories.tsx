@@ -10,7 +10,6 @@ import {
   Web3Provider
 } from "../index";
 import { HashRouter, Route, Routes } from "react-router-dom";
-import { ReduxProvider } from "../components/widgets/ReduxProvider";
 
 const Component = () => {
   return (
@@ -20,72 +19,71 @@ const Component = () => {
           path="/"
           element={
             <header>
-              <ReduxProvider withCustomContext={false}>
-                <Web3Provider
-                  infuraKey="123"
-                  defaultChainId={80002}
-                  walletConnectProjectId="123"
-                  configProps={{
-                    buyerSellerAgreementTemplate: "",
-                    configId: "testing-80002-0",
-                    contactSellerForExchangeUrl: "",
-                    dateFormat: "",
-                    defaultCurrencySymbol: "",
-                    defaultCurrencyTicker: "",
-                    envName: "testing",
-                    fairExchangePolicyRules: "",
-                    infuraKey: "321",
-                    licenseTemplate: "",
-                    magicLinkKey: "magicLinkKey",
-                    minimumDisputePeriodInDays: 1234,
-                    minimumDisputeResolutionPeriodDays: 123444,
-                    setEnvConfig: () => null,
-                    shortDateFormat: "",
-                    walletConnectProjectId: "123123123",
-                    withWeb3React: true,
-                    commitProxyAddress: "23412",
-                    enableCurationLists: true,
-                    externalConnectedAccount: "externalConnectedAccount",
-                    externalConnectedChainId: 123,
-                    externalConnectedSigner: undefined,
-                    metaTx: undefined,
-                    offerCurationListBetweenCommas: undefined,
-                    openseaLinkToOriginalMainnetCollection: undefined,
-                    sellerCurationListBetweenCommas: undefined,
-                    usePendingTransactions: undefined,
-                    withExternalConnectionProps: undefined,
-                    withOwnProducts: undefined,
-                    children: null
-                  }}
-                >
-                  <ChainSelector leftAlign={true} />
-                  <ConnectButton />
-                  <Portal>
-                    <AccountDrawer
-                      buyCryptoColor="#ff7b00"
-                      disconnectBackgroundColor="#9b05ff"
-                      disconnectColor="#00f7ff31"
-                      onUserDisconnect={() => {
-                        console.log("on user disconnect");
-                      }}
-                      walletModalProps={{
-                        connections: [],
-                        isSupportedChain: () => true,
-                        magicLoginButtonProps: {
-                          buttonProps: {}
-                        },
-                        optionProps: {
-                          backgroundColor: "#ffee00",
-                          headerTextColor: "#1eff00",
-                          hoverFocusBackgroundColor: "#e89f0e",
-                          hoverTextColor: "#ff0000"
-                        },
-                        PrivacyPolicy: () => <div>privacy policy</div>
-                      }}
-                    />
-                  </Portal>
-                </Web3Provider>
-              </ReduxProvider>
+              <Web3Provider
+                infuraKey="123"
+                defaultChainId={80002}
+                walletConnectProjectId="123"
+                configProps={{
+                  buyerSellerAgreementTemplate: "",
+                  configId: "testing-80002-0",
+                  contactSellerForExchangeUrl: "",
+                  dateFormat: "",
+                  defaultCurrencySymbol: "",
+                  defaultCurrencyTicker: "",
+                  envName: "testing",
+                  fairExchangePolicyRules: "",
+                  infuraKey: "321",
+                  licenseTemplate: "",
+                  magicLinkKey: "magicLinkKey",
+                  minimumDisputePeriodInDays: 1234,
+                  minimumDisputeResolutionPeriodDays: 123444,
+                  setEnvConfig: () => null,
+                  shortDateFormat: "",
+                  walletConnectProjectId: "123123123",
+                  withWeb3React: true,
+                  commitProxyAddress: "23412",
+                  enableCurationLists: true,
+                  externalConnectedAccount: "externalConnectedAccount",
+                  externalConnectedChainId: 123,
+                  externalConnectedSigner: undefined,
+                  metaTx: undefined,
+                  offerCurationListBetweenCommas: undefined,
+                  openseaLinkToOriginalMainnetCollection: undefined,
+                  sellerCurationListBetweenCommas: undefined,
+                  usePendingTransactions: undefined,
+                  withExternalConnectionProps: undefined,
+                  withOwnProducts: undefined,
+                  children: null,
+                  withCustomReduxContext: false
+                }}
+              >
+                <ChainSelector leftAlign={true} />
+                <ConnectButton />
+                <Portal>
+                  <AccountDrawer
+                    buyCryptoColor="#ff7b00"
+                    disconnectBackgroundColor="#9b05ff"
+                    disconnectColor="#00f7ff31"
+                    onUserDisconnect={() => {
+                      console.log("on user disconnect");
+                    }}
+                    walletModalProps={{
+                      connections: [],
+                      isSupportedChain: () => true,
+                      magicLoginButtonProps: {
+                        buttonProps: {}
+                      },
+                      optionProps: {
+                        backgroundColor: "#ffee00",
+                        headerTextColor: "#1eff00",
+                        hoverFocusBackgroundColor: "#e89f0e",
+                        hoverTextColor: "#ff0000"
+                      },
+                      PrivacyPolicy: () => <div>privacy policy</div>
+                    }}
+                  />
+                </Portal>
+              </Web3Provider>
             </header>
           }
         />
