@@ -7,7 +7,6 @@ import { Grid } from "../../ui/Grid";
 import { flexColumnNoWrap } from "../styles";
 import ConnectionErrorView from "./ConnectionErrorView";
 import { Option, OptionProps } from "./Option";
-import { Connection } from "../../connection/types";
 import {
   ActivationStatus,
   useActivationState
@@ -17,6 +16,8 @@ import { useChainId } from "../../../hooks/connection/connection";
 import { breakpoint } from "../../../lib/ui/breakpoint";
 import { AutoColumn } from "../../ui/column";
 import { useConnections } from "../../connection/ConnectionsProvider";
+import { isSupportedChain } from "../../../lib/const/chains";
+import { useConfigContext } from "../../config/ConfigContext";
 
 const Wrapper = styled.div`
   ${flexColumnNoWrap};
@@ -37,10 +38,8 @@ const OptionGrid = styled.div`
 `;
 
 export type WalletModalProps = {
-  isSupportedChain: (chainId: number | undefined | null) => boolean;
-  connections: Connection[];
   PrivacyPolicy: React.FC;
-  magicLoginButtonProps: MagicLoginButtonProps;
+  magicLoginButtonProps?: MagicLoginButtonProps;
   optionProps: Pick<
     OptionProps,
     | "headerTextColor"
@@ -50,13 +49,12 @@ export type WalletModalProps = {
   >;
 };
 export function WalletModal({
-  isSupportedChain,
-  connections,
   PrivacyPolicy,
   magicLoginButtonProps,
   optionProps
 }: WalletModalProps) {
   const chainId = useChainId();
+  const { config } = useConfigContext();
   const { connector } = useWeb3React();
   const connectionsObj = useConnections();
   const { activationState } = useActivationState();
@@ -65,7 +63,7 @@ export function WalletModal({
   useEffect(() => {
     if (
       chainId &&
-      isSupportedChain(chainId) &&
+      isSupportedChain({ chainId, envName: config.envName }) &&
       connector !== connectionsObj.networkConnection.connector
     ) {
       connectionsObj.networkConnection.connector.activate(chainId);
@@ -74,8 +72,9 @@ export function WalletModal({
     chainId,
     connectionsObj.networkConnection.connector,
     connector,
-    isSupportedChain
+    config.envName
   ]);
+  const connections = Object.values(connectionsObj);
   return (
     <Wrapper data-testid="wallet-modal">
       <Grid justifyContent="space-between" marginBottom="16px">

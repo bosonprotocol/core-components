@@ -4,7 +4,6 @@ import { Signer } from "ethers";
 
 export type ConfigContextProps = {
   config: ProtocolConfig;
-  setEnvConfig: React.Dispatch<React.SetStateAction<ProtocolConfig>>;
   dateFormat: string;
   shortDateFormat: string;
   defaultCurrency: {
@@ -35,7 +34,12 @@ export type ConfigContextProps = {
   withCustomReduxContext: boolean;
 };
 
-export const ConfigContext = createContext<ConfigContextProps | null>(null);
+export const ConfigContext = createContext<
+  | (ConfigContextProps & {
+      setEnvConfig: React.Dispatch<React.SetStateAction<ProtocolConfig>>;
+    })
+  | null
+>(null);
 
 export const useConfigContext = () => {
   const contextValue = useContext(ConfigContext);

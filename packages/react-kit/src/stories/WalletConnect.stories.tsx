@@ -4,10 +4,11 @@ import React from "react";
 import { Meta } from "@storybook/react";
 import {
   ChainSelector,
-  ConnectButton,
+  ConnectWallet,
   Portal,
   AccountDrawer,
-  Web3Provider
+  Web3Provider,
+  Grid
 } from "../index";
 import { HashRouter, Route, Routes } from "react-router-dom";
 
@@ -20,9 +21,6 @@ const Component = () => {
           element={
             <header>
               <Web3Provider
-                infuraKey="123"
-                defaultChainId={80002}
-                walletConnectProjectId="123"
                 configProps={{
                   buyerSellerAgreementTemplate: "",
                   configId: "testing-80002-0",
@@ -32,19 +30,18 @@ const Component = () => {
                   defaultCurrencyTicker: "",
                   envName: "testing",
                   fairExchangePolicyRules: "",
-                  infuraKey: "321",
+                  infuraKey: "abc",
                   licenseTemplate: "",
-                  magicLinkKey: "magicLinkKey",
+                  magicLinkKey: "def",
                   minimumDisputePeriodInDays: 1234,
                   minimumDisputeResolutionPeriodDays: 123444,
-                  setEnvConfig: () => null,
                   shortDateFormat: "",
-                  walletConnectProjectId: "123123123",
+                  walletConnectProjectId: "ghi",
                   withWeb3React: true,
-                  commitProxyAddress: "23412",
+                  commitProxyAddress: undefined,
                   enableCurationLists: true,
-                  externalConnectedAccount: "externalConnectedAccount",
-                  externalConnectedChainId: 123,
+                  externalConnectedAccount: undefined,
+                  externalConnectedChainId: undefined,
                   externalConnectedSigner: undefined,
                   metaTx: undefined,
                   offerCurationListBetweenCommas: undefined,
@@ -53,12 +50,16 @@ const Component = () => {
                   usePendingTransactions: undefined,
                   withExternalConnectionProps: undefined,
                   withOwnProducts: undefined,
-                  children: null,
                   withCustomReduxContext: false
                 }}
               >
-                <ChainSelector leftAlign={true} />
-                <ConnectButton />
+                <Grid>
+                  <ChainSelector leftAlign={true} />
+                  <ConnectWallet
+                    connectedButtonTextColor="#f48ca1"
+                    connectedToWrongChainButtonTextColor="#ff0000"
+                  />
+                </Grid>
                 <Portal>
                   <AccountDrawer
                     buyCryptoColor="#ff7b00"
@@ -68,11 +69,6 @@ const Component = () => {
                       console.log("on user disconnect");
                     }}
                     walletModalProps={{
-                      connections: [],
-                      isSupportedChain: () => true,
-                      magicLoginButtonProps: {
-                        buttonProps: {}
-                      },
                       optionProps: {
                         backgroundColor: "#ffee00",
                         headerTextColor: "#1eff00",

@@ -146,6 +146,7 @@ function Web3StatusInner({
       chainIdRef.current = chainId;
     }
   }, [chainId, account]);
+  console.log({ account, chainId, accountRef });
   const { isXXS } = useBreakpoints();
 
   const { connector } = useLast(useWeb3React(), ignoreWhileSwitchingChain);

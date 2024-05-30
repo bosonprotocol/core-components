@@ -17,9 +17,11 @@ import { useEthersProvider } from "../ethers/useEthersProvider";
 import { useQuery } from "react-query";
 import { useExternalSignerChainId } from "../../lib/signer/externalSigner";
 import { Signer } from "ethers";
+import { useWeb3ReactWrapper } from "../web3React/useWeb3ReactWrapper";
 
 export function useAccount() {
   let wagmiAccount: `0x${string}` | undefined, error: unknown;
+  const { account: web3ReactAccount } = useWeb3ReactWrapper() || {};
   const { withExternalConnectionProps, externalConnectedAccount } =
     useConfigContext();
   try {
@@ -40,9 +42,16 @@ export function useAccount() {
         externalConnectedAccount ??
         externalSignerAddress ??
         wagmiAccount ??
+        web3ReactAccount ??
         user
     }),
-    [wagmiAccount, user, externalSignerAddress, externalConnectedAccount]
+    [
+      wagmiAccount,
+      user,
+      web3ReactAccount,
+      externalSignerAddress,
+      externalConnectedAccount
+    ]
   );
   if (!withExternalConnectionProps && error) {
     throw error;
@@ -51,6 +60,7 @@ export function useAccount() {
 }
 
 export function useChainId(): number | undefined {
+  const { chainId: web3ReactChainId } = useWeb3ReactWrapper() || {};
   const { withExternalConnectionProps, externalConnectedChainId } =
     useConfigContext();
   const externalSigner = useExternalSigner();
@@ -72,6 +82,9 @@ export function useChainId(): number | undefined {
   }
   if (isMagicLoggedIn) {
     return magicChainId;
+  }
+  if (web3ReactChainId) {
+    return web3ReactChainId;
   }
   if (!withExternalConnectionProps && error) {
     throw error;

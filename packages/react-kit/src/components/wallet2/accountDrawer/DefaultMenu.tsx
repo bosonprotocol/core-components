@@ -8,7 +8,6 @@ import {
 } from "./AuthenticatedHeader";
 import { Column } from "../../ui/column";
 import { useAccount } from "../../../hooks/connection/connection";
-import { ErrorBoundary } from "react-error-boundary";
 
 const DefaultMenuWrap = styled(Column)`
   width: 100%;
@@ -21,7 +20,7 @@ export type DefaultMenuProps = Omit<AuthenticatedHeaderProps, "account"> & {
 export function DefaultMenu({ walletModalProps, ...rest }: DefaultMenuProps) {
   const { address: account } = useAccount();
   const isAuthenticated = !!account;
-
+  console.log({ account });
   return (
     <DefaultMenuWrap>
       {isAuthenticated ? (

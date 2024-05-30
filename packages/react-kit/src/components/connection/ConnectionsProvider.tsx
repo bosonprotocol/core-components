@@ -72,8 +72,8 @@ export function getConnection(
   c: Connector | ConnectionType,
   connectionObj: ConnectionsValue
 ) {
+  const connections = Object.values(connectionObj);
   if (c instanceof Connector) {
-    const connections = Object.values(connectionObj);
     const connection = connections.find(
       (connection) => connection.connector === c
     );

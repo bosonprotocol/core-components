@@ -1,3 +1,4 @@
+import { getChainIdFromConfigId } from "@bosonprotocol/common";
 import {
   useWeb3React,
   Web3ReactHooks,
@@ -11,7 +12,6 @@ import { useConnectedWallets } from "../../../state/wallets/hooks";
 import useEagerlyConnect from "../../../hooks/connection/useEagerlyConnect";
 import {
   ConnectionsProvider,
-  ConnectionsProviderProps,
   getConnection,
   useConnections
 } from "../../connection/ConnectionsProvider";
@@ -37,19 +37,24 @@ function InnerWeb3Provider({ children }: { children: ReactNode }) {
     </Web3ReactProvider>
   );
 }
-export type Web3ProviderProps = ConnectionsProviderProps & {
-  configProps: ConfigProviderProps;
+export type Web3ProviderProps = {
+  configProps: Omit<ConfigProviderProps, "children">;
+  children: ReactNode;
 };
-export function Web3Provider({
-  children,
-  configProps,
-  ...rest
-}: Web3ProviderProps) {
+export function Web3Provider({ children, configProps }: Web3ProviderProps) {
+  const defaultChainId = getChainIdFromConfigId(
+    configProps.envName,
+    configProps.configId
+  );
   return (
     <ReduxProvider withCustomContext={configProps.withCustomReduxContext}>
       <ConfigProvider {...configProps}>
         <BlockNumberProvider>
-          <ConnectionsProvider {...rest}>
+          <ConnectionsProvider
+            defaultChainId={defaultChainId}
+            infuraKey={configProps.infuraKey}
+            walletConnectProjectId={configProps.walletConnectProjectId}
+          >
             <InnerWeb3Provider>
               <FiatLinkProvider>{children}</FiatLinkProvider>
             </InnerWeb3Provider>

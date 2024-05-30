@@ -8,6 +8,7 @@ export * from "./components/ui/buttonSize";
 export * from "./components/buttons/Button";
 export * from "./components/buttons/BaseButton";
 export * from "./components/buttons/CommitButtonView";
+export * from "./components/buttons/BurgerButton";
 export * from "./components/cta/exchange/BatchCompleteButton";
 export * from "./components/cta/exchange/CancelButton";
 export * from "./components/cta/exchange/CompleteButton";

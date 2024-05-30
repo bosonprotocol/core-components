@@ -29,7 +29,6 @@ import {
   getConnection,
   useConnections
 } from "../../connection/ConnectionsProvider";
-import { useWeb3ReactWrapper } from "../../../hooks/web3React/useWeb3ReactWrapper";
 import { useWeb3React } from "@web3-react/core";
 const colors = theme.colors.light;
 const AuthenticatedHeaderWrapper = styled.div`

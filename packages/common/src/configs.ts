@@ -265,3 +265,29 @@ export function getEnvConfigById(
   }
   return config;
 }
+
+/**
+ * Retrieves the chainId value from the ProtocolConfig object based on the provided envName and configId.
+ * @param envName - local, testing, staging or production
+ * @param configId -  it should follow the following pattern `${envName}-${chainId}-${number}`
+ * @returns the chainId value of the ProtocolConfig object that matches the provided configId
+ */
+export function getChainIdFromConfigId(
+  envName: EnvironmentType,
+  configId: ProtocolConfig["configId"]
+) {
+  const configsInEnv = envConfigs[envName];
+  if (!configsInEnv) {
+    throw new Error(
+      `Could not find env for envName ${envName} and configId ${configId}`
+    );
+  }
+  for (const config of configsInEnv) {
+    if (config.configId === configId) {
+      return config.chainId;
+    }
+  }
+  throw new Error(
+    `Could not find config for envName ${envName} and configId ${configId}`
+  );
+}

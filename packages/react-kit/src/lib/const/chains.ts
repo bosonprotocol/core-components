@@ -74,7 +74,9 @@ export function isSupportedChain(props: {
   }
   // Include ChainIds in this array if they are not supported by the UX yet, but are already in the SDK.
   const NOT_YET_UX_SUPPORTED_CHAIN_IDS: number[] = [];
-  const envChainIds = getEnvConfigsFilteredByEnv(envName);
+  const envChainIds = getEnvConfigsFilteredByEnv(envName).map(
+    (envConf) => envConf.chainId
+  );
   const ACTUALLY_SUPPORTED_CHAINS = SUPPORTED_CHAINS.filter((chainId) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return envChainIds.includes(chainId as any);
