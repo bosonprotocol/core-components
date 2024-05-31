@@ -12,6 +12,7 @@ import {
 import { theme } from "../../../theme";
 import { breakpoint } from "../../../lib/ui/breakpoint";
 import { Spinner } from "../../ui/loading/Spinner";
+import { SvgImage } from "../../ui/SvgImage";
 
 const colors = theme.colors.light;
 const OptionCardLeft = styled.div`
@@ -138,7 +139,10 @@ export function Option({
       >
         <OptionCardLeft>
           <IconWrapper>
-            <img src={connection.getIcon?.(false)} alt={connection.getName()} />
+            <SvgImage
+              src={connection.getIcon?.(false)}
+              alt={connection.getName()}
+            />
           </IconWrapper>
           <HeaderText $color={color}>{connection.getName()}</HeaderText>
         </OptionCardLeft>
