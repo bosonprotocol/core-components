@@ -53,11 +53,13 @@ const IconWrapper = styled.div`
   ${flexColumnNoWrap};
   align-items: center;
   justify-content: center;
-  img {
+  img,
+  svg {
     border: 1px solid ${colors.border};
     border-radius: 12px;
   }
   & > img,
+  & > svg,
   span {
     height: 40px;
     width: 40px;
