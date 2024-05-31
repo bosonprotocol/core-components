@@ -136,7 +136,7 @@ export function useUserSlippageTolerance(): [
 
 /**
  *Returns user slippage tolerance, replacing the auto with a default value
- * @param defaultSlippageTolerance the value to replace auto with
+ * @param defaultSlippageTolerance - the value to replace auto with
  */
 export function useUserSlippageToleranceWithDefault(
   defaultSlippageTolerance: Percent
@@ -261,8 +261,8 @@ export function useUserDisabledUniswapX(): boolean {
 
 /**
  * Given two tokens return the liquidity token that represents its liquidity shares
- * @param tokenA one of the two tokens
- * @param tokenB the other token
+ * @param tokenA - one of the two tokens
+ * @param tokenB - the other token
  */
 export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
   if (tokenA.chainId !== tokenB.chainId)

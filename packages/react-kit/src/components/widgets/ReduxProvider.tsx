@@ -30,10 +30,10 @@ export const ReduxProvider = ({
   withCustomContext?: boolean;
 }) => {
   return (
-    // it doesnt matter what the initial value of the context is, hence the any cast
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Provider
       store={store}
+      // it doesnt matter what the initial value of the context is, hence the any cast
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       context={withCustomContext ? (ReduxCCDummyContext as any) : undefined}
     >
       {children}

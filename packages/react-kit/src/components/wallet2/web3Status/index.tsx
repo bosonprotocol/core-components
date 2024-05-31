@@ -1,34 +1,31 @@
-import React from "react";
 import { useWeb3React } from "@web3-react/core";
-import { memo, useCallback, useEffect, useRef } from "react";
+import React, { memo, useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import { flexRowNoWrap } from "../styles";
-import { breakpoint, breakpointNumbers } from "../../../lib/ui/breakpoint";
-import { Button } from "../../buttons/Button";
-import { useAccount, useChainId } from "../../../hooks/connection/connection";
-import { useLast } from "../../../hooks/useLast";
-import { useBreakpoints } from "../../../hooks/useBreakpoints";
-import { useENSName } from "../../../hooks/ens/useENSName";
-import StatusIcon from "../identicon/StatusIcon";
-import { formatAddress } from "../../../lib/address/address";
 import { useIsMagicLoggedIn } from "../../../hooks";
-import { useAccountDrawer } from "../accountDrawer";
-import { Grid } from "../../ui/Grid";
-import { Tooltip } from "../../tooltip/Tooltip";
-import ThemedButton from "../../ui/ThemedButton";
-import { CHAIN_IDS_TO_FRIENDLY_NAMES } from "../../../lib/const/chains";
-import { useAppSelector } from "../../../state/hooks";
-import {
-  getConnection,
-  useConnections
-} from "../../connection/ConnectionsProvider";
+import { useAccount, useChainId } from "../../../hooks/connection/connection";
+import { useENSName } from "../../../hooks/ens/useENSName";
+import { useBreakpoints } from "../../../hooks/useBreakpoints";
+import { useLast } from "../../../hooks/useLast";
+import { formatAddress } from "../../../lib/address/address";
 import {
   getConfigsByChainId,
   getEnvConfigsFilteredByEnv
 } from "../../../lib/config/getConfigsByChainId";
-import { useConfigContext } from "../../config/ConfigContext";
+import { CHAIN_IDS_TO_FRIENDLY_NAMES } from "../../../lib/const/chains";
+import { breakpoint, breakpointNumbers } from "../../../lib/ui/breakpoint";
+import { useAppSelector } from "../../../state/hooks";
 import { BaseButton, BaseButtonTheme } from "../../buttons/BaseButton";
+import { useConfigContext } from "../../config/ConfigContext";
+import {
+  getConnection,
+  useConnections
+} from "../../connection/ConnectionsProvider";
+import { Tooltip } from "../../tooltip/Tooltip";
+import { Grid } from "../../ui/Grid";
+import { useAccountDrawer } from "../accountDrawer";
+import StatusIcon from "../identicon/StatusIcon";
+import { flexRowNoWrap } from "../styles";
 
 const Web3StatusGeneric = styled.button`
   ${flexRowNoWrap};

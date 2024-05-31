@@ -1,35 +1,34 @@
-import React, {
-  Fragment,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState
-} from "react";
-import { isTruthy } from "../../types/helpers";
-import {
-  ConfigContext,
-  ConfigContextProps,
-  useConfigContext
-} from "./ConfigContext";
-import { useEnvContext } from "../environment/EnvironmentContext";
 import {
   ProtocolConfig,
   getEnvConfigById,
   getEnvConfigs
 } from "@bosonprotocol/core-sdk";
+import React, {
+  Fragment,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
+import { useChainId } from "../../hooks/connection/connection";
+import { getEnvConfigsFilteredByEnv } from "../../lib/config/getConfigsByChainId";
+import { isTruthy } from "../../types/helpers";
+import { useEnvContext } from "../environment/EnvironmentContext";
 import {
   EnvironmentProvider,
   EnvironmentProviderProps
 } from "../environment/EnvironmentProvider";
-import { useChainId } from "../../hooks/connection/connection";
-import { getEnvConfigsFilteredByEnv } from "../../lib/config/getConfigsByChainId";
 import { MagicProvider } from "../magicLink/MagicProvider";
+import { withQueryClientProvider } from "../queryClient/withQueryClientProvider";
 import WalletConnectionProvider, {
   WalletConnectionProviderProps
 } from "../wallet/WalletConnectionProvider";
-import { withQueryClientProvider } from "../queryClient/withQueryClientProvider";
 import { InnerWeb3Provider } from "../wallet2/web3Provider/InnerWeb3Provider";
+import {
+  ConfigContext,
+  ConfigContextProps,
+  useConfigContext
+} from "./ConfigContext";
 
 export type ConfigProviderProps = Omit<
   ConfigContextProps,

@@ -15,7 +15,6 @@ import {
   ProductCardCreatorName,
   ProductCardData,
   ProductCardImageWrapper,
-  ProductCardLabelWrapper,
   ProductCardPrice,
   ProductCardPriceWrapper,
   ProductCardTitle,
