@@ -51,15 +51,9 @@ export const FinanceWidgetProviders: React.FC<FinanceWidgetProvidersProps> =
             parentOrigin={parentOrigin}
             withExternalSigner={props.withExternalSigner}
           >
-            <MagicProvider>
-              <WalletConnectionProvider
-                walletConnectProjectId={props.walletConnectProjectId}
-              >
-                <ConvertionRateProvider>
-                  <ModalProvider>{children}</ModalProvider>
-                </ConvertionRateProvider>
-              </WalletConnectionProvider>
-            </MagicProvider>
+            <ConvertionRateProvider>
+              <ModalProvider>{children}</ModalProvider>
+            </ConvertionRateProvider>
           </SignerProvider>
         </ConfigProvider>
       </WithReduxProvider>

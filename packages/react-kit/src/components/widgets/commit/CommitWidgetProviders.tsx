@@ -67,21 +67,15 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
             withCustomReduxContext={withCustomReduxContext}
             {...props}
           >
-            <MagicProvider>
-              <WalletConnectionProvider
-                walletConnectProjectId={props.walletConnectProjectId}
-              >
-                <WithUpdaters>
-                  <ChatProvider>
-                    <IpfsProvider {...props}>
-                      <ConvertionRateProvider>
-                        <ModalProvider>{children}</ModalProvider>
-                      </ConvertionRateProvider>
-                    </IpfsProvider>
-                  </ChatProvider>
-                </WithUpdaters>
-              </WalletConnectionProvider>
-            </MagicProvider>
+            <WithUpdaters>
+              <ChatProvider>
+                <IpfsProvider {...props}>
+                  <ConvertionRateProvider>
+                    <ModalProvider>{children}</ModalProvider>
+                  </ConvertionRateProvider>
+                </IpfsProvider>
+              </ChatProvider>
+            </WithUpdaters>
           </ConfigProvider>
         </WithReduxProvider>
       );

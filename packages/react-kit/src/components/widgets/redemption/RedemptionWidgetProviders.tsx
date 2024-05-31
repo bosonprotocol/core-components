@@ -55,23 +55,17 @@ export const RedemptionWidgetProviders: React.FC<RedemptionWidgetProvidersProps>
             parentOrigin={parentOrigin}
             withExternalSigner={props.withExternalSigner}
           >
-            <MagicProvider>
-              <WalletConnectionProvider
-                walletConnectProjectId={props.walletConnectProjectId}
-              >
-                <ChatProvider>
-                  <IpfsProvider {...props}>
-                    <ConvertionRateProvider>
-                      <ModalProvider>
-                        <RedemptionProvider {...props}>
-                          {children}
-                        </RedemptionProvider>
-                      </ModalProvider>
-                    </ConvertionRateProvider>
-                  </IpfsProvider>
-                </ChatProvider>
-              </WalletConnectionProvider>
-            </MagicProvider>
+            <ChatProvider>
+              <IpfsProvider {...props}>
+                <ConvertionRateProvider>
+                  <ModalProvider>
+                    <RedemptionProvider {...props}>
+                      {children}
+                    </RedemptionProvider>
+                  </ModalProvider>
+                </ConvertionRateProvider>
+              </IpfsProvider>
+            </ChatProvider>
           </SignerProvider>
         </ConfigProvider>
       </WithReduxProvider>
