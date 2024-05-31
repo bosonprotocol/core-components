@@ -1,5 +1,4 @@
 import { fn } from "@storybook/test";
-import { Button } from "../components/buttons/Button";
 import React from "react";
 import { Meta } from "@storybook/react";
 import {
@@ -10,10 +9,14 @@ import {
   Web3Provider,
   Grid,
   bosonButtonThemes,
-  ConnectWalletProps
+  ConnectWalletProps,
+  getEnvConfigs,
+  EnvironmentType,
+  theme
 } from "../index";
 import { HashRouter, Route, Routes } from "react-router-dom";
-
+import { bosonButtonThemeKeys } from "../components/ui/ThemedButton";
+const colors = theme.colors.light;
 const successButtonTheme: ConnectWalletProps["successButtonTheme"] = {
   ...bosonButtonThemes({ withBosonStyle: false })["primary"],
   color: "inherit",
@@ -23,7 +26,41 @@ const errorButtonTheme = bosonButtonThemes({ withBosonStyle: false })[
   "orangeInverse"
 ];
 
-const Component = () => {
+const envName =
+  (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
+const envConfig = getEnvConfigs(envName);
+const configId = envConfig[0].configId;
+const Component = ({
+  chainSelectorBackgroundColor,
+  connectWalletSuccessButtonThemeKey,
+  connectWalletErrorButtonThemeKey,
+  accountDrawerBackgroundColor,
+  accountDrawerBuyCryptoColor,
+  accountDrawerBuyCryptoBackgroundColor,
+  accountDrawerDisconnectBackgroundColor,
+  accountDrawerDisconnectColor,
+  walletBackgroundColor,
+  walletColor,
+  walletHoverFocusBackgroundColor,
+  walletHoverColor,
+  magicLoginButtonThemeKey,
+  onUserDisconnect
+}: {
+  chainSelectorBackgroundColor: string | undefined;
+  connectWalletSuccessButtonThemeKey: string | undefined;
+  connectWalletErrorButtonThemeKey: string | undefined;
+  accountDrawerBackgroundColor: string | undefined;
+  accountDrawerBuyCryptoColor: string | undefined;
+  accountDrawerBuyCryptoBackgroundColor: string | undefined;
+  accountDrawerDisconnectBackgroundColor: string | undefined;
+  accountDrawerDisconnectColor: string | undefined;
+  walletBackgroundColor: string | undefined;
+  walletColor: string | undefined;
+  walletHoverFocusBackgroundColor: string | undefined;
+  walletHoverColor: string | undefined;
+  magicLoginButtonThemeKey: string | undefined;
+  onUserDisconnect: () => unknown;
+}) => {
   return (
     <HashRouter>
       <Routes>
@@ -34,12 +71,12 @@ const Component = () => {
               <Web3Provider
                 configProps={{
                   buyerSellerAgreementTemplate: "", // should not be necessary
-                  configId: "testing-80002-0",
+                  configId,
                   contactSellerForExchangeUrl: "", // should not be necessary
                   dateFormat: "", // should not be necessary
                   defaultCurrencySymbol: "", // should not be necessary
                   defaultCurrencyTicker: "", // should not be necessary
-                  envName: "testing",
+                  envName,
                   fairExchangePolicyRules: "", // should not be necessary
                   infuraKey: process.env.STORYBOOK_REACT_APP_INFURA_KEY || "",
                   licenseTemplate: "", // should not be necessary
@@ -69,32 +106,53 @@ const Component = () => {
                 <Grid>
                   <ChainSelector
                     leftAlign={true}
-                    backgroundColor="var(--buttonBgColor)"
+                    backgroundColor={chainSelectorBackgroundColor}
                   />
                   <ConnectWallet
-                    successButtonTheme={successButtonTheme}
-                    errorButtonTheme={errorButtonTheme}
+                    successButtonTheme={
+                      connectWalletSuccessButtonThemeKey
+                        ? bosonButtonThemes({ withBosonStyle: false })[
+                            connectWalletSuccessButtonThemeKey
+                          ]
+                        : successButtonTheme
+                    }
+                    errorButtonTheme={
+                      connectWalletErrorButtonThemeKey
+                        ? bosonButtonThemes({ withBosonStyle: false })[
+                            connectWalletErrorButtonThemeKey
+                          ]
+                        : errorButtonTheme
+                    }
                   />
                 </Grid>
                 <Portal>
                   <AccountDrawer
-                    backgroundColor="var(--primaryBgColor)"
-                    buyCryptoColor="#ff7b00"
-                    buyCryptoBackgroundColor="var(--buttonBgColor)"
-                    disconnectBackgroundColor="#9b05ff"
-                    disconnectColor="#0dff00"
-                    onUserDisconnect={() => {
-                      console.log("on user disconnect");
-                    }}
+                    backgroundColor={accountDrawerBackgroundColor}
+                    buyCryptoColor={accountDrawerBuyCryptoColor}
+                    buyCryptoBackgroundColor={
+                      accountDrawerBuyCryptoBackgroundColor
+                    }
+                    disconnectBackgroundColor={
+                      accountDrawerDisconnectBackgroundColor
+                    }
+                    disconnectColor={accountDrawerDisconnectColor}
+                    onUserDisconnect={onUserDisconnect}
                     walletModalProps={{
                       optionProps: {
-                        backgroundColor: "var(--secondaryBgColor)",
-                        color: "#ff00ea",
-                        hoverFocusBackgroundColor: "#e89f0e",
-                        hoverColor: "#ff0000"
+                        backgroundColor: walletBackgroundColor,
+                        color: walletColor,
+                        hoverFocusBackgroundColor:
+                          walletHoverFocusBackgroundColor,
+                        hoverColor: walletHoverColor
                       },
                       magicLoginButtonProps: {
-                        buttonProps: { theme: successButtonTheme }
+                        buttonProps: {
+                          theme: magicLoginButtonThemeKey
+                            ? bosonButtonThemes({ withBosonStyle: false })[
+                                magicLoginButtonThemeKey
+                              ]
+                            : successButtonTheme
+                        }
                       },
                       PrivacyPolicy: () => <div>privacy policy</div>
                     }}
@@ -119,35 +177,77 @@ export default {
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
-  args: { onClick: fn() },
+  args: { onUserDisconnect: fn() },
   argTypes: {
-    disabled: { control: "boolean" },
-    size: {
+    chainSelectorBackgroundColor: { control: "color" },
+    connectWalletSuccessButtonThemeKey: {
       control: "select",
-      options: ["small", "regular", "large"]
+      options: bosonButtonThemeKeys
     },
-    children: { control: "text" },
-    tooltip: { control: "text" }
+    connectWalletErrorButtonThemeKey: {
+      control: "select",
+      options: bosonButtonThemeKeys
+    },
+    accountDrawerBackgroundColor: { control: "color" },
+    accountDrawerBuyCryptoColor: { control: "color" },
+    accountDrawerBuyCryptoBackgroundColor: { control: "color" },
+    accountDrawerDisconnectBackgroundColor: { control: "color" },
+    accountDrawerDisconnectColor: { control: "color" },
+    walletBackgroundColor: { control: "color" },
+    walletColor: { control: "color" },
+    walletHoverFocusBackgroundColor: { control: "color" },
+    walletHoverColor: { control: "color" },
+    magicLoginButtonThemeKey: {
+      control: "select",
+      options: bosonButtonThemeKeys
+    }
   },
   decorators: [
     (Story) => {
       return <Story />;
     }
   ]
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof Component>;
 
 const BASE_ARGS = {
-  children: "Button Text",
-  size: "regular",
-  tooltip: "tooltip shown when disabled only"
+  PrivacyPolicy: () => <div>privacy policy</div>
 } as const;
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 export const BosonTheme = {
   args: {
     ...BASE_ARGS,
-    disabled: false,
-    loading: false,
-    variant: "primaryFill"
+    chainSelectorBackgroundColor: "var(--buttonBgColor)",
+    connectWalletSuccessButtonThemeKey: undefined,
+    connectWalletErrorButtonThemeKey: "orangeInverse",
+    accountDrawerBackgroundColor: "var(--primaryBgColor)",
+    accountDrawerBuyCryptoColor: colors.black,
+    accountDrawerBuyCryptoBackgroundColor: "var(--buttonBgColor)",
+    accountDrawerDisconnectBackgroundColor: colors.green,
+    accountDrawerDisconnectColor: colors.black,
+    walletBackgroundColor: "var(--secondaryBgColor)",
+    walletColor: colors.white,
+    walletHoverFocusBackgroundColor: colors.black,
+    walletHoverColor: colors.white,
+    magicLoginButtonThemeKey: undefined
+  }
+};
+
+export const CustomTheme = {
+  args: {
+    ...BASE_ARGS,
+    chainSelectorBackgroundColor: "#00e1ff",
+    connectWalletSuccessButtonThemeKey: "accentFill",
+    connectWalletErrorButtonThemeKey: "orangeInverse",
+    accountDrawerBackgroundColor: "#123123",
+    accountDrawerBuyCryptoColor: "#ff7b00",
+    accountDrawerBuyCryptoBackgroundColor: "#bf00ff",
+    accountDrawerDisconnectBackgroundColor: "#9b05ff",
+    accountDrawerDisconnectColor: "#0dff00",
+    walletBackgroundColor: "#ffd693",
+    walletColor: "#ff00ea",
+    walletHoverFocusBackgroundColor: "#e89f0e",
+    walletHoverColor: "#ff0000",
+    magicLoginButtonThemeKey: "#0f9a5b"
   }
 };

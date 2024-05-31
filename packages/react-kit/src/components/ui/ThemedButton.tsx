@@ -1,11 +1,34 @@
 import React, { ButtonHTMLAttributes, forwardRef } from "react";
 
 import { theme } from "../../theme";
-import { BaseButton } from "../buttons/BaseButton";
+import { BaseButton, BaseButtonTheme } from "../buttons/BaseButton";
 import { ButtonSize } from "./buttonSize";
 
 const colors = theme.colors.light;
 
+export const bosonButtonThemeKeys = [
+  "primary",
+  "bosonPrimary",
+  "secondary",
+  "bosonSecondary",
+  "secondaryInverted",
+  "accentInvertedNoBorder",
+  "accentInverted",
+  "orangeInverse",
+  "bosonSecondaryInverse",
+  "orange",
+  "outline",
+  "ghostSecondary",
+  "blank",
+  "blankSecondary",
+  "blankSecondaryOutline",
+  "blankOutline",
+  "white",
+  "black",
+  "warning",
+  "escalate",
+  "accentFill"
+] as const;
 export const bosonButtonThemes = ({
   withBosonStyle
 }: {
@@ -59,21 +82,17 @@ export const bosonButtonThemes = ({
     secondaryInverted: {
       background: "transparent",
       color: colors.secondary,
-      border: "none",
       hover: {
         background: colors.lightGrey,
-        color: colors.black,
-        border: "none"
+        color: colors.black
       }
     },
     accentInvertedNoBorder: {
       background: "transparent",
       color: colors.accent,
-      border: "none",
       hover: {
         background: colors.black,
-        color: colors.white,
-        border: "none"
+        color: colors.white
       }
     },
     accentInverted: {
@@ -84,8 +103,7 @@ export const bosonButtonThemes = ({
       hover: {
         background: colors.black,
         color: colors.white,
-        borderColor: colors.black,
-        border: "none"
+        borderColor: colors.black
       }
     },
     orangeInverse: {
@@ -219,7 +237,7 @@ export const bosonButtonThemes = ({
         borderColor: theme.colors.light.black
       }
     }
-  };
+  } satisfies Record<(typeof bosonButtonThemeKeys)[number], BaseButtonTheme>;
 };
 
 export type IButton = ButtonHTMLAttributes<HTMLButtonElement> & {
