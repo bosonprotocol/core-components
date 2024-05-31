@@ -96,7 +96,8 @@
     "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
     "copy-assets": "copyfiles -u 2 \"src/assets/**/*\" dist/esm/assets/ && copyfiles -u 2 \"src/assets/**/*\" dist/cjs/assets/",
     "postbuild": "npm run copy-assets",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "eslintConfig": {
     "extends": [

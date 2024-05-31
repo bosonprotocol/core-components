@@ -13,8 +13,8 @@ export function useCurationLists() {
       withOwnProducts === "all"
         ? false
         : ["mine", "custom"].includes(withOwnProducts || "")
-        ? true
-        : enableCurationLists,
+          ? true
+          : enableCurationLists,
     sellerCurationList: sellerCurationList,
     offerCurationList: offerCurationList
   };

@@ -46,8 +46,8 @@ export function useExchangeTokenBalance(
   const balance = isNativeCoin
     ? nativeBalances
     : erc20Balance
-    ? BigNumber.from(erc20Balance)
-    : undefined;
+      ? BigNumber.from(erc20Balance)
+      : undefined;
   return {
     balance,
     formatted: balance
@@ -58,8 +58,8 @@ export function useExchangeTokenBalance(
       const refetchedBalance = await (isErc20Enabled
         ? refetchErc20()
         : isNativeEnabled
-        ? refetchNative()
-        : null);
+          ? refetchNative()
+          : null);
       if (!refetchedBalance) {
         return null;
       }

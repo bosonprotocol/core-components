@@ -26,8 +26,8 @@ export default function useTransactionHistory({ exchangeId, tense }: Props) {
     }
   });
   const isPresent = tense === "present";
-  const dispute = disputes[0] as typeof disputes[0] | undefined;
-  const exchange = exchanges[0] as typeof exchanges[0] | undefined;
+  const dispute = disputes[0] as (typeof disputes)[0] | undefined;
+  const exchange = exchanges[0] as (typeof exchanges)[0] | undefined;
   const timesteps = useMemo(() => {
     const { committedDate, redeemedDate, cancelledDate, revokedDate } =
       exchange ?? {};
