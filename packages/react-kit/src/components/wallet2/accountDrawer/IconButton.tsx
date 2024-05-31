@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState
 } from "react";
-import styled, { css } from "styled-components";
+import styled, { CSSProperties, css } from "styled-components";
 import useResizeObserver from "use-resize-observer";
 import { Grid } from "../../ui/Grid";
 
@@ -24,9 +24,9 @@ const IconHoverText = styled.span`
 const getWidthTransition = () => `width ease-in-out 125ms`;
 
 const IconStyles = css<{
-  hideHorizontal?: boolean;
-  $color: string;
-  $backgroundColor: string;
+  $hideHorizontal?: boolean;
+  $color: CSSProperties["color"];
+  $backgroundColor: CSSProperties["backgroundColor"];
 }>`
   color: ${({ $color }) => $color};
   /* TODO: background-color: var(--buttonBgColor); */
@@ -39,7 +39,7 @@ const IconStyles = css<{
   position: relative;
   overflow: hidden;
   height: 32px;
-  width: ${({ hideHorizontal }) => (hideHorizontal ? "0px" : "32px")};
+  width: ${({ $hideHorizontal }) => ($hideHorizontal ? "0px" : "32px")};
   &:hover {
     background-color: color-mix(
       in srgb,
@@ -63,17 +63,17 @@ const IconStyles = css<{
 `;
 
 const IconBlockLink = styled.a<{
-  hideHorizontal?: boolean;
-  $color: string;
-  $backgroundColor: string;
+  $hideHorizontal?: boolean;
+  $color: CSSProperties["color"];
+  $backgroundColor: CSSProperties["backgroundColor"];
 }>`
   ${IconStyles};
 `;
 
 const IconBlockButton = styled.button<{
-  hideHorizontal?: boolean;
-  $color: string;
-  $backgroundColor: string;
+  $hideHorizontal?: boolean;
+  $color: CSSProperties["color"];
+  $backgroundColor: CSSProperties["backgroundColor"];
 }>`
   ${IconStyles};
   border: none;
@@ -103,7 +103,10 @@ type IconBlockProps = React.ComponentPropsWithoutRef<"a" | "button">;
 
 const IconBlock = forwardRef<
   HTMLAnchorElement | HTMLDivElement,
-  IconBlockProps & { color: string; backgroundColor: string }
+  IconBlockProps & {
+    color: CSSProperties["color"];
+    backgroundColor: CSSProperties["backgroundColor"];
+  }
 >(function IconBlock(props, ref) {
   const { color, backgroundColor } = props;
   if ("href" in props) {
@@ -136,8 +139,8 @@ type IconWithTextProps = (IconButtonProps | IconLinkProps) & {
   onShowConfirm?: (on: boolean) => void;
   dismissOnHoverOut?: boolean;
   dismissOnHoverDurationMs?: number;
-  color: string;
-  backgroundColor: string;
+  color: CSSProperties["color"];
+  backgroundColor: CSSProperties["backgroundColor"];
 };
 
 const TextWrapper = styled.div`

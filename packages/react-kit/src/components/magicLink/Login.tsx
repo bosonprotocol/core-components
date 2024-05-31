@@ -2,10 +2,10 @@ import React, { useState } from "react";
 
 import { useUser } from "./UserContext";
 import { useMagic } from "../../hooks";
-import { Button } from "../buttons/Button";
 import { Spinner } from "../ui/loading/Spinner";
+import { BaseButton } from "../buttons/BaseButton";
 export type MagicLoginButtonProps = {
-  buttonProps?: Omit<Parameters<typeof Button>[0], "onClick" | "disabled">;
+  buttonProps: Omit<Parameters<typeof BaseButton>[0], "onClick" | "disabled">;
 };
 export const MagicLoginButton = ({ buttonProps }: MagicLoginButtonProps) => {
   const magic = useMagic();
@@ -33,7 +33,7 @@ export const MagicLoginButton = ({ buttonProps }: MagicLoginButtonProps) => {
   };
 
   return (
-    <Button {...buttonProps} onClick={connect} disabled={disabled}>
+    <BaseButton {...buttonProps} onClick={connect} disabled={disabled}>
       {loading ? (
         <>
           Loading
@@ -42,6 +42,6 @@ export const MagicLoginButton = ({ buttonProps }: MagicLoginButtonProps) => {
       ) : (
         <>Login</>
       )}
-    </Button>
+    </BaseButton>
   );
 };

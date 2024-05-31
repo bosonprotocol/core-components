@@ -6,7 +6,7 @@ import {
   Warning as AlertTriangle
 } from "phosphor-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import styled, { css } from "styled-components";
+import styled, { CSSProperties, css } from "styled-components";
 
 import React from "react";
 import { ConnectionType } from "../../connection/types";
@@ -33,24 +33,32 @@ import { getEnvConfigsFilteredByEnv } from "../../../lib/config/getConfigsByChai
 import { useSelectChain } from "../../../hooks/connection/useSelectChain";
 import { ConfigId, ProtocolConfig } from "@bosonprotocol/core-sdk";
 
-const IconAndChevron = styled.div<{ $isOpen: boolean }>`
+const IconAndChevron = styled.div<{
+  $isOpen: boolean;
+  $backgroundColor: CSSProperties["backgroundColor"];
+}>`
   display: flex;
   align-items: center;
   height: 40px;
   gap: 8px;
   flex-direction: row;
-  ${({ $isOpen }) => css`
-    background: ${$isOpen ? css`var(--buttonBgColor)` : "none"};
+  ${({ $isOpen, $backgroundColor }) => css`
+    background: ${$isOpen ? $backgroundColor : "none"};
   `}
   border-radius: 8px;
   padding: 1px 6px;
   &:hover {
-    background: color-mix(in srgb, var(--buttonBgColor) 90%, black);
+    background: color-mix(
+      in srgb,
+      ${({ $backgroundColor }) => $backgroundColor} 90%,
+      black
+    );
   }
 `;
 
 export interface ChainSelectorProps {
   leftAlign?: boolean;
+  backgroundColor: CSSProperties["backgroundColor"];
 }
 
 function useWalletSupportedChains({
@@ -79,7 +87,10 @@ const chevronProps = {
   height: 20,
   width: 20
 };
-export const ChainSelector = ({ leftAlign }: ChainSelectorProps) => {
+export const ChainSelector = ({
+  leftAlign,
+  backgroundColor
+}: ChainSelectorProps) => {
   const { config } = useConfigContext();
   const NETWORK_SELECTOR_CHAINS = useMemo(
     () => getEnvConfigsFilteredByEnv(config.envName),
@@ -193,6 +204,7 @@ export const ChainSelector = ({ leftAlign }: ChainSelectorProps) => {
       >
         <IconAndChevron
           $isOpen={isOpen}
+          $backgroundColor={backgroundColor}
           data-testid="chain-selector"
           onClick={() => setIsOpen(!isOpen)}
         >

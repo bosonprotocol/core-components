@@ -6,7 +6,7 @@ export const useWeb3ReactWrapper = () => {
   try {
     return useWeb3React();
   } catch (error) {
-    if (!enabled) {
+    if (enabled) {
       throw error;
     }
   }

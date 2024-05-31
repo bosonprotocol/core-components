@@ -9,6 +9,7 @@ const colors = theme.colors.light;
 const LOGO_SIZE = 20;
 
 const Container = styled.button<{ disabled: boolean }>`
+  box-sizing: border-box;
   align-items: center;
   background: none;
   border: none;

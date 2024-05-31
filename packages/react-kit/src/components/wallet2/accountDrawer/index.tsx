@@ -3,7 +3,7 @@ import { useAtomValue, useUpdateAtom } from "jotai/utils";
 import { CaretDoubleRight } from "phosphor-react";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useGesture } from "react-use-gesture";
-import styled from "styled-components";
+import styled, { CSSProperties } from "styled-components";
 
 import { ClickableStyle, ScrollBarStyles } from "../styles";
 import { DefaultMenu, DefaultMenuProps } from "./DefaultMenu";
@@ -125,8 +125,11 @@ const Container = styled.div`
   z-index: ${zIndex.ConnectWallet};
 `;
 
-const AccountDrawerWrapper = styled.div<{ open: boolean }>`
-  margin-right: ${({ open }) => (open ? 0 : "-" + DRAWER_WIDTH)};
+const AccountDrawerWrapper = styled.div<{
+  $open: boolean;
+  $backgroundColor: CSSProperties["backgroundColor"];
+}>`
+  margin-right: ${({ $open }) => ($open ? 0 : "-" + DRAWER_WIDTH)};
   height: 100%;
   overflow: hidden;
 
@@ -134,8 +137,8 @@ const AccountDrawerWrapper = styled.div<{ open: boolean }>`
     z-index: ${zIndex.Modal};
     position: absolute;
     margin-right: 0;
-    top: ${({ open }) =>
-      open ? `calc(-1 * (100% - ${DRAWER_TOP_MARGIN_MOBILE_WEB}))` : 0};
+    top: ${({ $open }) =>
+      $open ? `calc(-1 * (100% - ${DRAWER_TOP_MARGIN_MOBILE_WEB}))` : 0};
 
     width: 100%;
     border-top-right-radius: 8px;
@@ -146,7 +149,7 @@ const AccountDrawerWrapper = styled.div<{ open: boolean }>`
   }
 
   @media screen and (min-width: 1440px) {
-    margin-right: ${({ open }) => (open ? 0 : `-${DRAWER_WIDTH_XL}`)};
+    margin-right: ${({ $open }) => ($open ? 0 : `-${DRAWER_WIDTH_XL}`)};
     width: ${DRAWER_WIDTH_XL};
   }
 
@@ -154,9 +157,7 @@ const AccountDrawerWrapper = styled.div<{ open: boolean }>`
   border-bottom-left-radius: 12px;
   width: ${DRAWER_WIDTH};
   font-size: 1rem;
-  background-color: var(--primaryBgColor);
-
-  border: 1px solid var(--primaryBgColor);
+  background-color: ${({ $backgroundColor }) => $backgroundColor};
 
   box-shadow:
     12px 16px 24px rgba(0, 0, 0, 0.24),
@@ -165,15 +166,19 @@ const AccountDrawerWrapper = styled.div<{ open: boolean }>`
   transition: margin-right 250ms;
 `;
 
-const CloseIcon = styled(CaretDoubleRight).attrs({ size: 24 })`
-  stroke: var(--primaryBgColor);
-`;
+const CloseIcon = styled(CaretDoubleRight).attrs({ size: 24 })``;
 
-const CloseDrawer = styled.div`
+const CloseDrawer = styled.div<{
+  $backgroundColor: CSSProperties["backgroundColor"];
+}>`
   ${ClickableStyle}
   opacity: 0.6;
   z-index: -1;
-  background-color: color-mix(in srgb, var(--primaryBgColor) 90%, black);
+  background-color: color-mix(
+    in srgb,
+    ${({ $backgroundColor }) => $backgroundColor} 90%,
+    black
+  );
   cursor: pointer;
   height: 100%;
   margin: 0 -8px 0 0;
@@ -192,9 +197,11 @@ const CloseDrawer = styled.div`
   }
 `;
 
-export type AccountDrawerProps = DefaultMenuProps;
+export type AccountDrawerProps = DefaultMenuProps & {
+  backgroundColor: CSSProperties["backgroundColor"];
+};
 export const AccountDrawer = memo(
-  ({ walletModalProps, ...rest }: AccountDrawerProps) => {
+  ({ walletModalProps, backgroundColor, ...rest }: AccountDrawerProps) => {
     const { isLteS: isMobile } = useBreakpoints();
     const [walletDrawerOpen, toggleWalletDrawer] = useAccountDrawer();
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -278,13 +285,15 @@ export const AccountDrawer = memo(
           <CloseDrawer
             onClick={toggleWalletDrawer}
             data-testid="close-account-drawer"
+            $backgroundColor={backgroundColor}
           >
             <CloseIcon />
           </CloseDrawer>
         )}
         <Scrim onClick={toggleWalletDrawer} open={walletDrawerOpen} />
         <AccountDrawerWrapper
-          open={walletDrawerOpen}
+          $open={walletDrawerOpen}
+          $backgroundColor={backgroundColor}
           {...(isMobile
             ? {
                 ...bind(),

@@ -20,7 +20,7 @@ export type DefaultMenuProps = Omit<AuthenticatedHeaderProps, "account"> & {
 export function DefaultMenu({ walletModalProps, ...rest }: DefaultMenuProps) {
   const { address: account } = useAccount();
   const isAuthenticated = !!account;
-  console.log({ account });
+
   return (
     <DefaultMenuWrap>
       {isAuthenticated ? (

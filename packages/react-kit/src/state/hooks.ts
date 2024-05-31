@@ -18,10 +18,10 @@ export const useAppDispatch = () => {
 };
 export const useAppSelector: TypedUseSelectorHook<
   ReturnType<typeof store.getState>
-> = () => {
+> = (arg0) => {
   const { withCustomReduxContext } = useConfigContext();
 
   return createSelectorHook(
     withCustomReduxContext ? (ReduxCCDummyContext as any) : undefined
-  );
+  )(arg0);
 };

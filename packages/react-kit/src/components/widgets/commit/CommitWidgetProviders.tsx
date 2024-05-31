@@ -15,7 +15,11 @@ import { withQueryClientProvider } from "../../queryClient/withQueryClientProvid
 import WalletConnectionProvider, {
   WalletConnectionProviderProps
 } from "../../wallet/WalletConnectionProvider";
-import { ReduxProvider } from "../ReduxProvider";
+import {
+  ReduxProvider,
+  WithReduxProvider,
+  WithReduxProviderProps
+} from "../ReduxProvider";
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "../finance/convertion-rate/ConvertionRateProvider";
@@ -23,9 +27,9 @@ import ConvertionRateProvider, {
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   ConvertionRateProviderProps &
-  Omit<WalletConnectionProviderProps, "children" | "envName"> & {
+  Omit<WalletConnectionProviderProps, "children" | "envName"> &
+  WithReduxProviderProps & {
     children: ReactNode;
-    withReduxProvider: boolean;
   };
 
 const { infuraKey, magicLinkKey } = CONFIG;
@@ -34,69 +38,72 @@ export const CommitWidgetReduxUpdaters = Updaters;
 export const CommitWidgetReduxProvider = ReduxProvider;
 
 export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
-  withQueryClientProvider(({ children, withReduxProvider, ...props }) => {
-    const isWindowVisible = useIsWindowVisible();
-    const WithReduxProvider = useCallback(
-      ({ children: providersChildren }: { children: ReactNode }) => {
-        return withReduxProvider ? (
-          <ReduxProvider>{providersChildren}</ReduxProvider>
-        ) : (
-          <>{providersChildren}</>
-        );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      },
-      [withReduxProvider]
-    );
-    const WithUpdaters = useCallback(
-      ({ children: updatersChildren }: { children: ReactNode }) => {
-        return withReduxProvider ? (
-          <UpdatersWrapper isWindowVisible={isWindowVisible}>
-            {updatersChildren}
-          </UpdatersWrapper>
-        ) : (
-          <>{updatersChildren}</>
-        );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      },
-      [withReduxProvider, isWindowVisible]
-    );
-    return (
-      <WithReduxProvider>
-        <ConfigProvider
-          magicLinkKey={magicLinkKey}
-          infuraKey={infuraKey}
-          {...props}
-        >
-          <MagicProvider>
-            <WalletConnectionProvider
-              walletConnectProjectId={props.walletConnectProjectId}
+  withQueryClientProvider(
+    ({ children, withReduxProvider, withCustomReduxContext, ...props }) => {
+      const isWindowVisible = useIsWindowVisible();
+      const WithUpdaters = useCallback(
+        ({ children: updatersChildren }: { children: ReactNode }) => {
+          return withReduxProvider ? (
+            <UpdatersWrapper
+              isWindowVisible={isWindowVisible}
+              withWeb3React={props.withWeb3React}
             >
-              <WithUpdaters>
-                <ChatProvider>
-                  <IpfsProvider {...props}>
-                    <ConvertionRateProvider>
-                      <ModalProvider>{children}</ModalProvider>
-                    </ConvertionRateProvider>
-                  </IpfsProvider>
-                </ChatProvider>
-              </WithUpdaters>
-            </WalletConnectionProvider>
-          </MagicProvider>
-        </ConfigProvider>
-      </WithReduxProvider>
-    );
-  });
+              {updatersChildren}
+            </UpdatersWrapper>
+          ) : (
+            <>{updatersChildren}</>
+          );
+        },
+        [withReduxProvider, isWindowVisible, props.withWeb3React]
+      );
+      return (
+        <WithReduxProvider
+          withCustomReduxContext={withCustomReduxContext}
+          withReduxProvider={withReduxProvider}
+        >
+          <ConfigProvider
+            magicLinkKey={magicLinkKey}
+            infuraKey={infuraKey}
+            withCustomReduxContext={withCustomReduxContext}
+            {...props}
+          >
+            <MagicProvider>
+              <WalletConnectionProvider
+                walletConnectProjectId={props.walletConnectProjectId}
+              >
+                <WithUpdaters>
+                  <ChatProvider>
+                    <IpfsProvider {...props}>
+                      <ConvertionRateProvider>
+                        <ModalProvider>{children}</ModalProvider>
+                      </ConvertionRateProvider>
+                    </IpfsProvider>
+                  </ChatProvider>
+                </WithUpdaters>
+              </WalletConnectionProvider>
+            </MagicProvider>
+          </ConfigProvider>
+        </WithReduxProvider>
+      );
+    }
+  );
 
 function UpdatersWrapper({
   children,
-  isWindowVisible
+  isWindowVisible,
+  withWeb3React
 }: {
   children: ReactNode;
   isWindowVisible: boolean;
+  withWeb3React: boolean;
 }) {
   const provider = useProvider();
   return (
-    <Updaters isWindowVisible={isWindowVisible} provider={provider}>
+    <Updaters
+      isWindowVisible={isWindowVisible}
+      provider={provider}
+      withWeb3React={withWeb3React}
+    >
       {children}
     </Updaters>
   );

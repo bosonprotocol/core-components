@@ -33,7 +33,7 @@ export function RedemptionWidget(props: RedemptionWidgetProps) {
     : undefined;
   return (
     <MarginContainer {...props}>
-      <RedemptionWidgetProviders {...props}>
+      <RedemptionWidgetProviders {...props} withReduxProvider>
         <RedeemModalWithExchange
           {...props}
           sellerIds={sellerIds}

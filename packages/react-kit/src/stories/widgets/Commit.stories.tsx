@@ -52,6 +52,7 @@ Commit.args = {
   closeWidgetClick: () => {
     console.log("closeWidgetClick()");
   },
+  withCustomReduxContext: false,
   // onAlreadyOwnOfferClick: () => { // optional
   //   console.log("onAlreadyOwnOfferClick");
   // },
@@ -91,6 +92,7 @@ CommitTokenGated_ERC20.args = {
   closeWidgetClick: () => {
     console.log("closeWidgetClick()");
   },
+  withCustomReduxContext: false,
   onAlreadyOwnOfferClick: () => {
     console.log("onAlreadyOwnOfferClick");
   },
@@ -131,6 +133,7 @@ CommitWithColorAndSizeVariations.args = {
   closeWidgetClick: () => {
     console.log("closeWidgetClick()");
   },
+  withCustomReduxContext: false,
   onAlreadyOwnOfferClick: () => {
     console.log("onAlreadyOwnOfferClick");
   },
@@ -170,6 +173,7 @@ CommitTokenGated_ERC721.args = {
   closeWidgetClick: () => {
     console.log("closeWidgetClick()");
   },
+  withCustomReduxContext: false,
   onAlreadyOwnOfferClick: () => {
     console.log("onAlreadyOwnOfferClick");
   },
@@ -209,6 +213,7 @@ CommitTokenGated_ERC721_2.args = {
   closeWidgetClick: () => {
     console.log("closeWidgetClick()");
   },
+  withCustomReduxContext: false,
   onAlreadyOwnOfferClick: () => {
     console.log("onAlreadyOwnOfferClick");
   },

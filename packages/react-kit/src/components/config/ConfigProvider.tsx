@@ -1,4 +1,11 @@
-import React, { ReactNode, useEffect, useMemo, useState } from "react";
+import React, {
+  Fragment,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 import { isTruthy } from "../../types/helpers";
 import {
   ConfigContext,
@@ -22,6 +29,7 @@ import WalletConnectionProvider, {
   WalletConnectionProviderProps
 } from "../wallet/WalletConnectionProvider";
 import { withQueryClientProvider } from "../queryClient/withQueryClientProvider";
+import { InnerWeb3Provider } from "../wallet2/web3Provider/InnerWeb3Provider";
 
 export type ConfigProviderProps = Omit<
   ConfigContextProps,
@@ -45,6 +53,9 @@ export function ConfigProvider({
   walletConnectProjectId,
   ...rest
 }: ConfigProviderProps) {
+  const Web3ProviderComponent = useMemo(() => {
+    return rest.withWeb3React ? InnerWeb3Provider : Fragment;
+  }, [rest.withWeb3React]);
   return (
     <EnvironmentProvider
       envName={rest.envName}
@@ -52,13 +63,15 @@ export function ConfigProvider({
       metaTx={rest.metaTx}
     >
       <InnerConfigProvider {...rest}>
-        <MagicProvider>
-          <WalletConnectionProvider
-            walletConnectProjectId={walletConnectProjectId}
-          >
-            <SyncCurrentConfigId>{children}</SyncCurrentConfigId>
-          </WalletConnectionProvider>
-        </MagicProvider>
+        <Web3ProviderComponent>
+          <MagicProvider>
+            <WalletConnectionProvider
+              walletConnectProjectId={walletConnectProjectId}
+            >
+              <SyncCurrentConfigId>{children}</SyncCurrentConfigId>
+            </WalletConnectionProvider>
+          </MagicProvider>
+        </Web3ProviderComponent>
       </InnerConfigProvider>
     </EnvironmentProvider>
   );

@@ -18,6 +18,7 @@ import WalletConnectionProvider, {
 import ModalProvider from "../../modal/ModalProvider";
 import { MagicProvider } from "../../magicLink/MagicProvider";
 import { getParentWindowOrigin } from "../common";
+import { WithReduxProvider, WithReduxProviderProps } from "../ReduxProvider";
 
 export type FinanceWidgetProvidersProps = Omit<
   WalletConnectionProviderProps,
@@ -25,7 +26,8 @@ export type FinanceWidgetProvidersProps = Omit<
 > &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   CommonWidgetTypes &
-  ConvertionRateProviderProps & {
+  ConvertionRateProviderProps &
+  WithReduxProviderProps & {
     children: ReactNode;
   };
 
@@ -35,26 +37,31 @@ export const FinanceWidgetProviders: React.FC<FinanceWidgetProvidersProps> =
   withQueryClientProvider(({ children, ...props }) => {
     const parentOrigin = getParentWindowOrigin();
     return (
-      <ConfigProvider
-        magicLinkKey={magicLinkKey}
-        infuraKey={infuraKey}
-        {...props}
+      <WithReduxProvider
+        withCustomReduxContext={props.withCustomReduxContext}
+        withReduxProvider={props.withReduxProvider}
       >
-        <GlobalStyle />
-        <SignerProvider
-          parentOrigin={parentOrigin}
-          withExternalSigner={props.withExternalSigner}
+        <ConfigProvider
+          magicLinkKey={magicLinkKey}
+          infuraKey={infuraKey}
+          {...props}
         >
-          <MagicProvider>
-            <WalletConnectionProvider
-              walletConnectProjectId={props.walletConnectProjectId}
-            >
-              <ConvertionRateProvider>
-                <ModalProvider>{children}</ModalProvider>
-              </ConvertionRateProvider>
-            </WalletConnectionProvider>
-          </MagicProvider>
-        </SignerProvider>
-      </ConfigProvider>
+          <GlobalStyle />
+          <SignerProvider
+            parentOrigin={parentOrigin}
+            withExternalSigner={props.withExternalSigner}
+          >
+            <MagicProvider>
+              <WalletConnectionProvider
+                walletConnectProjectId={props.walletConnectProjectId}
+              >
+                <ConvertionRateProvider>
+                  <ModalProvider>{children}</ModalProvider>
+                </ConvertionRateProvider>
+              </WalletConnectionProvider>
+            </MagicProvider>
+          </SignerProvider>
+        </ConfigProvider>
+      </WithReduxProvider>
     );
   });

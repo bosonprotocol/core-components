@@ -6,7 +6,7 @@ import styled from "styled-components";
 import MetamaskLogo from "../../assets/metamask-logo.svg";
 import FallbackAvatar from "../avatar/fallback-avatar";
 import { Button } from "../buttons/Button";
-import ThemedButton from "../ui/ThemedButton";
+import ThemedButton, { bosonButtonThemes } from "../ui/ThemedButton";
 import { useBreakpoints } from "../../hooks/useBreakpoints";
 import { saveItemInStorage } from "../widgets/finance/storage/useLocalStorage";
 import { SignOut, Wallet } from "phosphor-react";
@@ -123,7 +123,9 @@ export default function ConnectButton({
                           <MagicLoginButton
                             buttonProps={{
                               size: isLteXS ? "small" : "regular",
-                              variant: "primaryFill"
+                              theme: bosonButtonThemes({
+                                withBosonStyle: false
+                              })["primary"]
                             }}
                           />
                           <Button

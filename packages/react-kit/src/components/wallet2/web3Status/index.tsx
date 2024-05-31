@@ -28,6 +28,7 @@ import {
   getEnvConfigsFilteredByEnv
 } from "../../../lib/config/getConfigsByChainId";
 import { useConfigContext } from "../../config/ConfigContext";
+import { BaseButton, BaseButtonTheme } from "../../buttons/BaseButton";
 
 const Web3StatusGeneric = styled.button`
   ${flexRowNoWrap};
@@ -45,23 +46,31 @@ const Web3StatusGeneric = styled.button`
 `;
 
 const breakpointWhenConnectButtonOverflows = "1300px";
-const Web3StatusConnected = styled(Web3StatusGeneric)<{ $color: string }>`
+const Web3StatusConnected = styled(Web3StatusGeneric)<{
+  $color: string;
+  $backgroundColor: string;
+}>`
   border: 2px solid transparent;
   width: auto;
   font-weight: 500;
   color: ${({ $color }) => $color};
   &:hover,
   &:focus {
-    border: 2px solid color-mix(in srgb, var(--buttonBgColor) 90%, black);
+    border: 2px solid
+      color-mix(
+        in srgb,
+        ${({ $backgroundColor }) => $backgroundColor} 90%,
+        black
+      );
   }
   @media (min-width: ${breakpointNumbers.xs}px) and (max-width: ${breakpointNumbers.l -
     1}px) {
-    background-color: var(--buttonBgColor);
-    border: 2px solid var(--buttonBgColor);
+    background-color: ${({ $backgroundColor }) => $backgroundColor};
+    border: 2px solid ${({ $backgroundColor }) => $backgroundColor};
   }
   @media (min-width: ${breakpointWhenConnectButtonOverflows}) {
-    background-color: var(--buttonBgColor);
-    border: 2px solid var(--buttonBgColor);
+    background-color: ${({ $backgroundColor }) => $backgroundColor};
+    border: 2px solid ${({ $backgroundColor }) => $backgroundColor};
   }
   ${breakpoint.xxs} {
     border-radius: 8px;
@@ -104,11 +113,6 @@ const Text = styled.p`
   font-weight: 500;
 `;
 
-const StyledConnectButton = styled(Button)`
-  background-color: var(--buttonBgColor);
-  color: inherit;
-`;
-
 const getCommonWalletButtonProps = (isXXS: boolean) =>
   ({
     tabIndex: 0,
@@ -119,8 +123,8 @@ const getCommonWalletButtonProps = (isXXS: boolean) =>
   }) as const;
 function Web3StatusInner({
   showOnlyIcon,
-  connectedButtonTextColor,
-  connectedToWrongChainButtonTextColor
+  errorButtonTheme,
+  successButtonTheme
 }: ConnectWalletProps) {
   const switchingChain = useAppSelector(
     (state) => state.wallets.switchingChain
@@ -146,7 +150,7 @@ function Web3StatusInner({
       chainIdRef.current = chainId;
     }
   }, [chainId, account]);
-  console.log({ account, chainId, accountRef });
+
   const { isXXS } = useBreakpoints();
 
   const { connector } = useLast(useWeb3React(), ignoreWhileSwitchingChain);
@@ -177,7 +181,8 @@ function Web3StatusInner({
         disabled={Boolean(switchingChain)}
         data-testid="web3-status-connected"
         onClick={handleWalletDropdownClick}
-        $color={connectedToWrongChainButtonTextColor}
+        $color={successButtonTheme.color}
+        $backgroundColor={successButtonTheme.background}
       >
         <StatusIcon
           account={account}
@@ -214,27 +219,26 @@ function Web3StatusInner({
             </div>
           }
         >
-          <ThemedButton
+          <BaseButton
             {...getCommonWalletButtonProps(isXXS)}
             onClick={handleWalletDropdownClick}
-            themeVal="orangeInverse"
+            theme={errorButtonTheme}
           >
             Wrong network
-          </ThemedButton>
+          </BaseButton>
         </Tooltip>
       ) : (
-        <StyledConnectButton
+        <BaseButton
           onClick={handleWalletDropdownClick}
           data-testid="navbar-connect-wallet"
           {...getCommonWalletButtonProps(isXXS)}
-          variant="primaryFill"
+          theme={successButtonTheme}
           style={{
-            ...getCommonWalletButtonProps(isXXS).style,
-            color: connectedButtonTextColor
+            ...getCommonWalletButtonProps(isXXS).style
           }}
         >
           Connect Wallet
-        </StyledConnectButton>
+        </BaseButton>
       )}
     </Grid>
   );
@@ -242,8 +246,9 @@ function Web3StatusInner({
 
 export type ConnectWalletProps = {
   showOnlyIcon?: boolean;
-  connectedButtonTextColor: string;
-  connectedToWrongChainButtonTextColor: string;
+  errorButtonTheme: BaseButtonTheme;
+  successButtonTheme: Omit<BaseButtonTheme, "color" | "background"> &
+    Required<Pick<BaseButtonTheme, "color" | "background">>;
 };
 export const ConnectWallet = memo(function Web3Status(
   props: ConnectWalletProps

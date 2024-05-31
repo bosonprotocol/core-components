@@ -3,6 +3,25 @@ import store from "../../state";
 import { ReduxCCDummyContext } from "../../state/reduxContext";
 import { Provider } from "react-redux";
 
+export type WithReduxProviderProps = {
+  children: ReactNode;
+  withReduxProvider: boolean;
+  withCustomReduxContext: boolean;
+};
+export const WithReduxProvider = ({
+  children,
+  withReduxProvider,
+  withCustomReduxContext
+}: WithReduxProviderProps) => {
+  return withReduxProvider ? (
+    <ReduxProvider withCustomContext={withCustomReduxContext}>
+      {children}
+    </ReduxProvider>
+  ) : (
+    <>{children}</>
+  );
+};
+
 export const ReduxProvider = ({
   children,
   withCustomContext = true

@@ -6,7 +6,11 @@ import { ButtonSize } from "./buttonSize";
 
 const colors = theme.colors.light;
 
-const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
+export const bosonButtonThemes = ({
+  withBosonStyle
+}: {
+  withBosonStyle?: boolean;
+}) => {
   return {
     primary: {
       color: withBosonStyle ? colors.black : "var(--textColor)",
@@ -222,7 +226,7 @@ export type IButton = ButtonHTMLAttributes<HTMLButtonElement> & {
   children?: string | React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
   size?: "small" | "regular" | "large" | ButtonSize;
-  themeVal?: keyof ReturnType<typeof allThemes>;
+  themeVal?: keyof ReturnType<typeof bosonButtonThemes>;
   type?: "button" | "submit" | "reset" | undefined;
   fill?: boolean;
   step?: number;
@@ -237,7 +241,7 @@ const ThemedButton = forwardRef<HTMLButtonElement, IButton>(
       <BaseButton
         {...rest}
         ref={ref}
-        theme={allThemes({ withBosonStyle })[themeVal]}
+        theme={bosonButtonThemes({ withBosonStyle })[themeVal]}
       />
     );
   }

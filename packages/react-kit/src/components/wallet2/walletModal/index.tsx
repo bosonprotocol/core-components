@@ -39,13 +39,10 @@ const OptionGrid = styled.div`
 
 export type WalletModalProps = {
   PrivacyPolicy: React.FC;
-  magicLoginButtonProps?: MagicLoginButtonProps;
+  magicLoginButtonProps: MagicLoginButtonProps;
   optionProps: Pick<
     OptionProps,
-    | "headerTextColor"
-    | "hoverFocusBackgroundColor"
-    | "hoverTextColor"
-    | "backgroundColor"
+    "color" | "hoverFocusBackgroundColor" | "hoverColor" | "backgroundColor"
   >;
 };
 export function WalletModal({

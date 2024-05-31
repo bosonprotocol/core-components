@@ -141,7 +141,7 @@ type FinanceWidgetProps = FinanceWidgetProvidersProps & {
 export function FinanceWidget(props: FinanceWidgetProps) {
   const { sellerId, withExternalSigner } = props;
   return (
-    <FinanceWidgetProviders {...props}>
+    <FinanceWidgetProviders {...props} withReduxProvider>
       {!withExternalSigner && (
         <Grid justifyContent="flex-end">
           <StyledConnectButton showChangeWallet />

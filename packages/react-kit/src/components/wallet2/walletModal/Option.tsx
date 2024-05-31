@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled, { CSSProperties, css } from "styled-components";
 
 import { useToggleAccountDrawer } from "../accountDrawer";
 import { flexColumnNoWrap, flexRowNoWrap } from "../styles";
@@ -39,7 +39,7 @@ const OptionCardClickable = styled.button<{ selected: boolean }>`
     `};
 `;
 
-const HeaderText = styled.div<{ $color: string }>`
+const HeaderText = styled.div<{ $color: CSSProperties["color"] }>`
   ${flexRowNoWrap};
   align-items: center;
   justify-content: center;
@@ -68,9 +68,9 @@ const IconWrapper = styled.div`
 
 const Wrapper = styled.div<{
   disabled: boolean;
-  $hoverFocusBackgroundColor: string;
-  $hoverTextColor: string;
-  $backgroundColor: string;
+  $hoverFocusBackgroundColor: CSSProperties["backgroundColor"];
+  $hoverColor: CSSProperties["color"];
+  $backgroundColor: CSSProperties["backgroundColor"];
 }>`
   align-items: stretch;
   display: flex;
@@ -79,7 +79,6 @@ const Wrapper = styled.div<{
   position: relative;
   width: 100%;
 
-  /* background-color: var(--secondaryBgColor); */
   background-color: ${({ $backgroundColor }) => $backgroundColor};
 
   &:hover {
@@ -87,30 +86,30 @@ const Wrapper = styled.div<{
     background-color: ${({ disabled, $hoverFocusBackgroundColor }) =>
       !disabled && $hoverFocusBackgroundColor};
     ${HeaderText} {
-      color: ${({ disabled, $hoverTextColor }) => !disabled && $hoverTextColor};
+      color: ${({ disabled, $hoverColor }) => !disabled && $hoverColor};
     }
   }
   &:focus {
     background-color: ${({ disabled, $hoverFocusBackgroundColor }) =>
       !disabled && $hoverFocusBackgroundColor};
     ${HeaderText} {
-      color: ${({ disabled, $hoverTextColor }) => !disabled && $hoverTextColor};
+      color: ${({ disabled, $hoverColor }) => !disabled && $hoverColor};
     }
   }
 `;
 
 export interface OptionProps {
   connection: Connection;
-  headerTextColor: string;
-  hoverFocusBackgroundColor: string;
-  hoverTextColor: string;
-  backgroundColor: string;
+  color: CSSProperties["color"];
+  hoverFocusBackgroundColor: CSSProperties["backgroundColor"];
+  hoverColor: CSSProperties["color"];
+  backgroundColor: CSSProperties["backgroundColor"];
 }
 export function Option({
   connection,
-  headerTextColor,
+  color,
   hoverFocusBackgroundColor,
-  hoverTextColor,
+  hoverColor,
   backgroundColor
 }: OptionProps) {
   const { activationState, tryActivation } = useActivationState();
@@ -128,7 +127,7 @@ export function Option({
     <Wrapper
       disabled={isSomeOptionPending}
       $hoverFocusBackgroundColor={hoverFocusBackgroundColor}
-      $hoverTextColor={hoverTextColor}
+      $hoverColor={hoverColor}
       $backgroundColor={backgroundColor}
     >
       <OptionCardClickable
@@ -141,9 +140,7 @@ export function Option({
           <IconWrapper>
             <img src={connection.getIcon?.(false)} alt={connection.getName()} />
           </IconWrapper>
-          <HeaderText $color={headerTextColor}>
-            {connection.getName()}
-          </HeaderText>
+          <HeaderText $color={color}>{connection.getName()}</HeaderText>
         </OptionCardLeft>
         {isCurrentOptionPending && <Spinner />}
       </OptionCardClickable>

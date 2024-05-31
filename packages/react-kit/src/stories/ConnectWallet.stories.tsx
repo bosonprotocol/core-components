@@ -8,9 +8,20 @@ import {
   Portal,
   AccountDrawer,
   Web3Provider,
-  Grid
+  Grid,
+  bosonButtonThemes,
+  ConnectWalletProps
 } from "../index";
 import { HashRouter, Route, Routes } from "react-router-dom";
+
+const successButtonTheme: ConnectWalletProps["successButtonTheme"] = {
+  ...bosonButtonThemes({ withBosonStyle: false })["primary"],
+  color: "inherit",
+  background: "var(--buttonBgColor)"
+};
+const errorButtonTheme = bosonButtonThemes({ withBosonStyle: false })[
+  "orangeInverse"
+];
 
 const Component = () => {
   return (
@@ -22,58 +33,68 @@ const Component = () => {
             <header>
               <Web3Provider
                 configProps={{
-                  buyerSellerAgreementTemplate: "",
+                  buyerSellerAgreementTemplate: "", // should not be necessary
                   configId: "testing-80002-0",
-                  contactSellerForExchangeUrl: "",
-                  dateFormat: "",
-                  defaultCurrencySymbol: "",
-                  defaultCurrencyTicker: "",
+                  contactSellerForExchangeUrl: "", // should not be necessary
+                  dateFormat: "", // should not be necessary
+                  defaultCurrencySymbol: "", // should not be necessary
+                  defaultCurrencyTicker: "", // should not be necessary
                   envName: "testing",
-                  fairExchangePolicyRules: "",
-                  infuraKey: "abc",
-                  licenseTemplate: "",
-                  magicLinkKey: "def",
-                  minimumDisputePeriodInDays: 1234,
-                  minimumDisputeResolutionPeriodDays: 123444,
-                  shortDateFormat: "",
-                  walletConnectProjectId: "ghi",
+                  fairExchangePolicyRules: "", // should not be necessary
+                  infuraKey: process.env.STORYBOOK_REACT_APP_INFURA_KEY || "",
+                  licenseTemplate: "", // should not be necessary
+                  magicLinkKey:
+                    process.env.STORYBOOK_REACT_APP_MAGIC_API_KEY || "",
+                  minimumDisputePeriodInDays: 1234, // should not be necessary
+                  minimumDisputeResolutionPeriodDays: 123444, // should not be necessary
+                  shortDateFormat: "", // should not be necessary
+                  walletConnectProjectId:
+                    process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID || "",
                   withWeb3React: true,
-                  commitProxyAddress: undefined,
-                  enableCurationLists: true,
+                  commitProxyAddress: undefined, // should not be necessary
+                  enableCurationLists: true, // should not be necessary
                   externalConnectedAccount: undefined,
                   externalConnectedChainId: undefined,
                   externalConnectedSigner: undefined,
-                  metaTx: undefined,
-                  offerCurationListBetweenCommas: undefined,
-                  openseaLinkToOriginalMainnetCollection: undefined,
-                  sellerCurationListBetweenCommas: undefined,
-                  usePendingTransactions: undefined,
-                  withExternalConnectionProps: undefined,
-                  withOwnProducts: undefined,
+                  metaTx: undefined, // should not be necessary
+                  offerCurationListBetweenCommas: undefined, // should not be necessary
+                  openseaLinkToOriginalMainnetCollection: undefined, // should not be necessary
+                  sellerCurationListBetweenCommas: undefined, // should not be necessary
+                  usePendingTransactions: undefined, // should not be necessary
+                  withExternalConnectionProps: false,
+                  withOwnProducts: undefined, // should not be necessary
                   withCustomReduxContext: false
                 }}
               >
                 <Grid>
-                  <ChainSelector leftAlign={true} />
+                  <ChainSelector
+                    leftAlign={true}
+                    backgroundColor="var(--buttonBgColor)"
+                  />
                   <ConnectWallet
-                    connectedButtonTextColor="#f48ca1"
-                    connectedToWrongChainButtonTextColor="#ff0000"
+                    successButtonTheme={successButtonTheme}
+                    errorButtonTheme={errorButtonTheme}
                   />
                 </Grid>
                 <Portal>
                   <AccountDrawer
+                    backgroundColor="var(--primaryBgColor)"
                     buyCryptoColor="#ff7b00"
+                    buyCryptoBackgroundColor="var(--buttonBgColor)"
                     disconnectBackgroundColor="#9b05ff"
-                    disconnectColor="#00f7ff31"
+                    disconnectColor="#0dff00"
                     onUserDisconnect={() => {
                       console.log("on user disconnect");
                     }}
                     walletModalProps={{
                       optionProps: {
-                        backgroundColor: "#ffee00",
-                        headerTextColor: "#1eff00",
+                        backgroundColor: "var(--secondaryBgColor)",
+                        color: "#ff00ea",
                         hoverFocusBackgroundColor: "#e89f0e",
-                        hoverTextColor: "#ff0000"
+                        hoverColor: "#ff0000"
+                      },
+                      magicLoginButtonProps: {
+                        buttonProps: { theme: successButtonTheme }
                       },
                       PrivacyPolicy: () => <div>privacy policy</div>
                     }}
@@ -122,74 +143,11 @@ const BASE_ARGS = {
 } as const;
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-export const PrimaryFill = {
+export const BosonTheme = {
   args: {
     ...BASE_ARGS,
     disabled: false,
     loading: false,
-    variant: "primaryFill"
-  }
-};
-
-export const PrimaryInverted = {
-  args: {
-    ...BASE_ARGS,
-    disabled: false,
-    loading: false,
-    variant: "primaryInverted"
-  }
-};
-
-export const SecondaryFill = {
-  args: {
-    ...BASE_ARGS,
-    disabled: false,
-    loading: false,
-    variant: "secondaryFill"
-  }
-};
-
-export const SecondaryInverted = {
-  args: {
-    ...BASE_ARGS,
-    disabled: false,
-    loading: false,
-    variant: "secondaryInverted"
-  }
-};
-
-export const AccentFill = {
-  args: {
-    ...BASE_ARGS,
-    disabled: false,
-    loading: false,
-    variant: "accentFill"
-  }
-};
-
-export const AccentInverted = {
-  args: {
-    ...BASE_ARGS,
-    disabled: false,
-    loading: false,
-    variant: "accentInverted"
-  }
-};
-
-export const Disabled = {
-  args: {
-    ...BASE_ARGS,
-    disabled: true,
-    loading: false,
-    variant: "primaryFill"
-  }
-};
-
-export const Loading = {
-  args: {
-    ...BASE_ARGS,
-    disabled: false,
-    loading: true,
     variant: "primaryFill"
   }
 };

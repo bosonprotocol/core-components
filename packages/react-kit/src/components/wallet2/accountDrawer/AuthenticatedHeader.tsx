@@ -8,7 +8,7 @@ import {
   SignOut
 } from "phosphor-react";
 import React, { useCallback, useState } from "react";
-import styled from "styled-components";
+import styled, { CSSProperties } from "styled-components";
 
 import { Typography } from "../../ui/Typography";
 import StatusIcon from "../identicon/StatusIcon";
@@ -38,9 +38,12 @@ const AuthenticatedHeaderWrapper = styled.div`
   flex: 1;
 `;
 
-const HeaderButton = styled.button<{ $color: string }>`
+const HeaderButton = styled.button<{
+  $color: CSSProperties["color"];
+  $backgroundColor: CSSProperties["backgroundColor"];
+}>`
   color: ${({ $color }) => $color};
-  background-color: var(--buttonBgColor);
+  background-color: ${({ $backgroundColor }) => $backgroundColor};
   width: 100%;
   display: flex;
   justify-content: center;
@@ -62,7 +65,11 @@ const HeaderButton = styled.button<{ $color: string }>`
   line-height: 24px;
 
   &:hover:not(:disabled) {
-    background-color: color-mix(in srgb, var(--buttonBgColor) 90%, black);
+    background-color: color-mix(
+      in srgb,
+      ${({ $backgroundColor }) => $backgroundColor} 90%,
+      black
+    );
     transition: 125ms background-color ease-in;
   }
   &:disabled {
@@ -164,17 +171,19 @@ export function PortfolioArrow({
 }
 export type AuthenticatedHeaderProps = {
   account: string;
-  onUserDisconnect: () => unknown;
-  disconnectColor: string;
-  disconnectBackgroundColor: string;
-  buyCryptoColor: string;
+  onUserDisconnect?: () => unknown;
+  disconnectColor: CSSProperties["color"];
+  disconnectBackgroundColor: CSSProperties["backgroundColor"];
+  buyCryptoColor: CSSProperties["color"];
+  buyCryptoBackgroundColor: CSSProperties["backgroundColor"];
 };
 export function AuthenticatedHeader({
   account,
   onUserDisconnect,
   disconnectColor,
   disconnectBackgroundColor,
-  buyCryptoColor
+  buyCryptoColor,
+  buyCryptoBackgroundColor
 }: AuthenticatedHeaderProps) {
   const { connector } = useWeb3React();
   const { ENSName } = useENSName(account);
@@ -280,6 +289,7 @@ export function AuthenticatedHeader({
         <FiatLink>
           <HeaderButton
             $color={buyCryptoColor}
+            $backgroundColor={buyCryptoBackgroundColor}
             // onClick={handleBuyCryptoClick}
             // disabled={disableBuyCryptoButton}
             disabled={isFiatLoading}
