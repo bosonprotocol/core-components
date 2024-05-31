@@ -32,6 +32,7 @@ import { useConfigContext } from "../../config/ConfigContext";
 import { getEnvConfigsFilteredByEnv } from "../../../lib/config/getConfigsByChainId";
 import { useSelectChain } from "../../../hooks/connection/useSelectChain";
 import { ConfigId, ProtocolConfig } from "@bosonprotocol/core-sdk";
+import { SvgImage } from "../../ui/SvgImage";
 
 const IconAndChevron = styled.div<{
   $isOpen: boolean;
@@ -211,7 +212,7 @@ export const ChainSelector = ({
           {!isSupported ? (
             <AlertTriangle size={20} />
           ) : (
-            <img
+            <SvgImage
               src={info.logoUrl}
               alt={info.label}
               style={{

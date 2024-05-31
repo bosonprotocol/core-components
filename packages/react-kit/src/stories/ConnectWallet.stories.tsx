@@ -16,6 +16,7 @@ import {
 } from "../index";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { bosonButtonThemeKeys } from "../components/ui/ThemedButton";
+import { CSSProperties, createGlobalStyle } from "styled-components";
 const colors = theme.colors.light;
 const successButtonTheme: ConnectWalletProps["successButtonTheme"] = {
   ...bosonButtonThemes({ withBosonStyle: false })["primary"],
@@ -30,7 +31,13 @@ const envName =
   (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
 const envConfig = getEnvConfigs(envName);
 const configId = envConfig[0].configId;
+const ColorGlobalStyle = createGlobalStyle<{ color: CSSProperties["color"] }>`
+  html, body{
+    color: ${({ color }) => color};
+  }
+`;
 const Component = ({
+  textColor,
   chainSelectorBackgroundColor,
   connectWalletSuccessButtonThemeKey,
   connectWalletErrorButtonThemeKey,
@@ -46,6 +53,7 @@ const Component = ({
   magicLoginButtonThemeKey,
   onUserDisconnect
 }: {
+  textColor: string;
   chainSelectorBackgroundColor: string | undefined;
   connectWalletSuccessButtonThemeKey: string | undefined;
   connectWalletErrorButtonThemeKey: string | undefined;
@@ -68,6 +76,7 @@ const Component = ({
           path="/"
           element={
             <header>
+              <ColorGlobalStyle color={textColor} />
               <Web3Provider
                 configProps={{
                   buyerSellerAgreementTemplate: "", // should not be necessary
@@ -179,6 +188,7 @@ export default {
   tags: ["autodocs"],
   args: { onUserDisconnect: fn() },
   argTypes: {
+    textColor: { control: "color" },
     chainSelectorBackgroundColor: { control: "color" },
     connectWalletSuccessButtonThemeKey: {
       control: "select",
@@ -217,6 +227,7 @@ const BASE_ARGS = {
 export const BosonTheme = {
   args: {
     ...BASE_ARGS,
+    textColor: colors.black,
     chainSelectorBackgroundColor: "var(--buttonBgColor)",
     connectWalletSuccessButtonThemeKey: undefined,
     connectWalletErrorButtonThemeKey: "orangeInverse",
@@ -236,6 +247,7 @@ export const BosonTheme = {
 export const CustomTheme = {
   args: {
     ...BASE_ARGS,
+    textColor: colors.white,
     chainSelectorBackgroundColor: "#00e1ff",
     connectWalletSuccessButtonThemeKey: "accentFill",
     connectWalletErrorButtonThemeKey: "orangeInverse",

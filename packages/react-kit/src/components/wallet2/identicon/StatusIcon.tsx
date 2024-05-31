@@ -10,6 +10,7 @@ import useENSAvatar from "../../../hooks/ens/useENSAvatar";
 import { theme } from "../../../theme";
 import { Unicon } from "../unicon";
 import { useHasSocks } from "../../../hooks/uniswap/useSocksBalance";
+import { SvgImage } from "../../ui/SvgImage";
 const colors = theme.colors.light;
 const IconWrapper = styled.div<{ size?: number }>`
   position: relative;
@@ -46,7 +47,7 @@ const MiniIconContainer = styled.div<{ side: "left" | "right" }>`
   }
 `;
 
-const MiniImg = styled.img`
+const MiniImg = styled(SvgImage)`
   width: 16px;
   height: 16px;
 `;
