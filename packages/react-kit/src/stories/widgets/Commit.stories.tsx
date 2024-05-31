@@ -257,6 +257,7 @@ export const CommitBundle: ComponentStory<typeof CommitWidget> = Template.bind(
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitBundle.args = {
   ...BASE_ARGS,
+  configId: "testing-11155111-0",
   dateFormat: "YYYY/MM/DD",
   defaultCurrencySymbol: "$",
   defaultCurrencyTicker: "USD",
