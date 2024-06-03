@@ -6,13 +6,12 @@ import {
   ConfigProviderProps
 } from "../../config/ConfigProvider";
 import { IpfsProvider, IpfsProviderProps } from "../../ipfs/IpfsProvider";
-import { MagicProvider } from "../../magicLink/MagicProvider";
 import ModalProvider from "../../modal/ModalProvider";
+import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 import { SignerProvider } from "../../signer/SignerProvider";
 import GlobalStyle from "../../styles/GlobalStyle";
-import WalletConnectionProvider, {
-  WalletConnectionProviderProps
-} from "../../wallet/WalletConnectionProvider";
+import { WalletConnectionProviderProps } from "../../wallet/WalletConnectionProvider";
+import { WithReduxProvider, WithReduxProviderProps } from "../ReduxProvider";
 import { getParentWindowOrigin } from "../common";
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
@@ -20,14 +19,16 @@ import ConvertionRateProvider, {
 import { CommonWidgetTypes } from "../types";
 import { RedemptionContextProps } from "./provider/RedemptionContext";
 import { RedemptionProvider } from "./provider/RedemptionProvider";
-import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
+import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
 
 export type RedemptionWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   Omit<RedemptionContextProps, "setWidgetAction"> &
   ConvertionRateProviderProps &
   CommonWidgetTypes &
-  Omit<WalletConnectionProviderProps, "children" | "envName"> & {
+  Omit<WalletConnectionProviderProps, "children" | "envName"> &
+  BosonProviderProps &
+  WithReduxProviderProps & {
     signatures?: string[] | undefined | null; // signature1,signature2,signature3
   } & {
     children: ReactNode;
@@ -39,19 +40,20 @@ export const RedemptionWidgetProviders: React.FC<RedemptionWidgetProvidersProps>
   withQueryClientProvider(({ children, ...props }) => {
     const parentOrigin = getParentWindowOrigin();
     return (
-      <ConfigProvider
-        magicLinkKey={magicLinkKey}
-        infuraKey={infuraKey}
-        {...props}
+      <WithReduxProvider
+        withCustomReduxContext={props.withCustomReduxContext}
+        withReduxProvider={props.withReduxProvider}
       >
-        <GlobalStyle />
-        <SignerProvider
-          parentOrigin={parentOrigin}
-          withExternalSigner={props.withExternalSigner}
+        <ConfigProvider
+          magicLinkKey={magicLinkKey}
+          infuraKey={infuraKey}
+          {...props}
         >
-          <MagicProvider>
-            <WalletConnectionProvider
-              walletConnectProjectId={props.walletConnectProjectId}
+          <BosonProvider {...props}>
+            <GlobalStyle />
+            <SignerProvider
+              parentOrigin={parentOrigin}
+              withExternalSigner={props.withExternalSigner}
             >
               <ChatProvider>
                 <IpfsProvider {...props}>
@@ -64,9 +66,9 @@ export const RedemptionWidgetProviders: React.FC<RedemptionWidgetProvidersProps>
                   </ConvertionRateProvider>
                 </IpfsProvider>
               </ChatProvider>
-            </WalletConnectionProvider>
-          </MagicProvider>
-        </SignerProvider>
-      </ConfigProvider>
+            </SignerProvider>
+          </BosonProvider>
+        </ConfigProvider>
+      </WithReduxProvider>
     );
   });

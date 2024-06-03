@@ -24,12 +24,15 @@ const envName =
 const envConfig = getEnvConfigs(envName);
 
 export const Commit: ComponentStory<typeof CommitWidget> = Template.bind({});
-
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-Commit.args = {
+const BASE_ARGS = {
   envName,
   configId: envConfig[0].configId,
   walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  withCustomReduxContext: false
+} as const;
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+Commit.args = {
+  ...BASE_ARGS,
   dateFormat: "YYYY/MM/DD",
   defaultCurrencySymbol: "$",
   defaultCurrencyTicker: "USD",
@@ -66,9 +69,7 @@ export const CommitTokenGated_ERC20: ComponentStory<typeof CommitWidget> =
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitTokenGated_ERC20.args = {
-  envName,
-  configId: envConfig[0].configId,
-  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  ...BASE_ARGS,
   dateFormat: "YYYY/MM/DD",
   defaultCurrencySymbol: "$",
   defaultCurrencyTicker: "USD",
@@ -106,9 +107,7 @@ export const CommitWithColorAndSizeVariations: ComponentStory<
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitWithColorAndSizeVariations.args = {
-  envName,
-  configId: envConfig[0].configId,
-  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  ...BASE_ARGS,
   dateFormat: "YYYY/MM/DD",
   defaultCurrencySymbol: "$",
   defaultCurrencyTicker: "USD",
@@ -145,9 +144,7 @@ export const CommitTokenGated_ERC721: ComponentStory<typeof CommitWidget> =
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitTokenGated_ERC721.args = {
-  envName,
-  configId: envConfig[0].configId,
-  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  ...BASE_ARGS,
   dateFormat: "YYYY/MM/DD",
   defaultCurrencySymbol: "$",
   defaultCurrencyTicker: "USD",
@@ -184,9 +181,7 @@ export const CommitTokenGated_ERC721_2: ComponentStory<typeof CommitWidget> =
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitTokenGated_ERC721_2.args = {
-  envName,
-  configId: envConfig[0].configId,
-  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  ...BASE_ARGS,
   dateFormat: "YYYY/MM/DD",
   defaultCurrencySymbol: "$",
   defaultCurrencyTicker: "USD",
@@ -223,9 +218,7 @@ export const CommitTokenGated_ERC1155: ComponentStory<typeof CommitWidget> =
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitTokenGated_ERC1155.args = {
-  envName,
-  configId: envConfig[0].configId,
-  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  ...BASE_ARGS,
   dateFormat: "YYYY/MM/DD",
   defaultCurrencySymbol: "$",
   defaultCurrencyTicker: "USD",
@@ -263,9 +256,8 @@ export const CommitBundle: ComponentStory<typeof CommitWidget> = Template.bind(
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitBundle.args = {
-  envName,
-  configId: envConfig[1].configId,
-  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  ...BASE_ARGS,
+  configId: "testing-11155111-0",
   dateFormat: "YYYY/MM/DD",
   defaultCurrencySymbol: "$",
   defaultCurrencyTicker: "USD",

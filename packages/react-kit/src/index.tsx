@@ -2,12 +2,17 @@ export { AuthTokenType } from "@bosonprotocol/common";
 export * from "@bosonprotocol/core-sdk";
 export * from "@bosonprotocol/ethers-sdk";
 export * from "@bosonprotocol/ipfs-storage";
-export { default as ThemedButton, IButton } from "./components/ui/ThemedButton";
+export {
+  default as ThemedButton,
+  IButton,
+  bosonButtonThemes
+} from "./components/ui/ThemedButton";
 export * from "./components/ui/zIndex";
 export * from "./components/ui/buttonSize";
 export * from "./components/buttons/Button";
 export * from "./components/buttons/BaseButton";
 export * from "./components/buttons/CommitButtonView";
+export * from "./components/buttons/BurgerButton";
 export * from "./components/cta/exchange/BatchCompleteButton";
 export * from "./components/cta/exchange/CancelButton";
 export * from "./components/cta/exchange/CompleteButton";
@@ -68,3 +73,8 @@ export * from "./lib/offer/getIsOfferExpired";
 export * from "./lib/bundle/filter";
 export * from "./lib/bundle/const";
 export * from "./lib/offer/filter";
+export * from "./components/wallet2/selector/ChainSelector";
+export * from "./components/wallet2/web3Status/index";
+export * from "./components/wallet2/web3Provider/index";
+export * from "./components/wallet2/accountDrawer/index";
+export * from "./components/portal/Portal";

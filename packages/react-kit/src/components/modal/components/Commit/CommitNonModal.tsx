@@ -151,7 +151,7 @@ function CommitNonModal({
     forcedAccount.toLowerCase() !== address.toLowerCase()
   ) {
     // force disconnection as the current connected wallet is not the forced one
-    disconnect();
+    disconnect({ isUserDisconnecting: false });
   }
 
   if (!address && forcedAccount) {

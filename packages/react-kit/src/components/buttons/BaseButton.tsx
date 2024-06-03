@@ -4,7 +4,7 @@ import React, {
   ReactNode,
   useCallback
 } from "react";
-import styled, { css, DefaultTheme, ThemeProvider } from "styled-components";
+import styled, { css, CSSProperties } from "styled-components";
 
 import { zIndex } from "../ui/zIndex";
 import { Tooltip } from "../tooltip/Tooltip";
@@ -105,14 +105,30 @@ const ChildWrapperButton = styled.div`
   ${() => Styles.buttonText};
 `;
 
-type Theme = DefaultTheme;
+export type BaseButtonTheme = {
+  background?: CSSProperties["backgroundColor"];
+  borderColor?: CSSProperties["borderColor"];
+  borderRadius?: CSSProperties["borderRadius"];
+  borderWidth?: CSSProperties["borderWidth"];
+  color?: CSSProperties["color"];
+  padding?: CSSProperties["padding"];
+  hover?: {
+    background?: CSSProperties["backgroundColor"];
+    borderColor?: CSSProperties["borderColor"];
+    color?: CSSProperties["color"];
+  };
+  disabled?: {
+    background?: CSSProperties["backgroundColor"];
+    color?: CSSProperties["color"];
+  };
+};
 type ButtonSizeProp = "small" | "regular" | "large" | ButtonSize;
 
 export type BaseButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children?: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
   size?: ButtonSizeProp;
-  theme: Theme;
+  theme: BaseButtonTheme;
   fill?: boolean;
   step?: number;
   isLoading?: boolean;
@@ -150,31 +166,30 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
     );
     return (
       <>
-        <ThemeProvider theme={theme}>
-          <Wrapper>
-            <ButtonWithThemeProps
-              onClick={onClick}
-              type={type}
-              size={size}
-              fill={fill ? fill : undefined}
-              {...rest}
-              ref={ref}
-            >
-              {isLoading ? (
-                <Loading />
-              ) : (
-                <ChildWrapperButton data-child-wrapper-button>
-                  {children}
-                  {step !== 0 && (
-                    <Typography>
-                      <small>Step {step}</small>
-                    </Typography>
-                  )}
-                </ChildWrapperButton>
-              )}
-            </ButtonWithThemeProps>
-          </Wrapper>
-        </ThemeProvider>
+        <Wrapper>
+          <ButtonWithThemeProps
+            onClick={onClick}
+            type={type}
+            size={size}
+            fill={fill ? fill : undefined}
+            theme={theme}
+            {...rest}
+            ref={ref}
+          >
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <ChildWrapperButton data-child-wrapper-button>
+                {children}
+                {step !== 0 && (
+                  <Typography>
+                    <small>Step {step}</small>
+                  </Typography>
+                )}
+              </ChildWrapperButton>
+            )}
+          </ButtonWithThemeProps>
+        </Wrapper>
       </>
     );
   }

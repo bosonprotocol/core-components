@@ -122,8 +122,10 @@ export const ExchangeCardWrapper = styled.div<{
       ? css`
           transition: all 300ms ease-in-out;
           &:hover {
-            box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.05),
-              4px 4px 4px rgba(0, 0, 0, 0.05), 8px 8px 8px rgba(0, 0, 0, 0.05),
+            box-shadow:
+              0px 0px 0px rgba(0, 0, 0, 0.05),
+              4px 4px 4px rgba(0, 0, 0, 0.05),
+              8px 8px 8px rgba(0, 0, 0, 0.05),
               16px 16px 16px rgba(0, 0, 0, 0.05);
 
             [data-image-wrapper] {

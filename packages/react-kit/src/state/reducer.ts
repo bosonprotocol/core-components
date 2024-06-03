@@ -3,13 +3,19 @@ import localForage from "localforage";
 import { PersistConfig, persistReducer } from "redux-persist";
 
 import lists from "./lists/reducer";
-import { customCreateMigrate, migrations } from "./migrations";
 
+import { customCreateMigrate, migrations } from "./migrations";
+import user from "./user/reducer";
+import wallets from "./wallets/reducer";
+import multicall from "../lib/state/multicall";
 const persistedReducers = {
+  user,
   lists
 };
 
 const appReducer = combineReducers({
+  wallets,
+  multicall: multicall.reducer,
   ...persistedReducers
 });
 

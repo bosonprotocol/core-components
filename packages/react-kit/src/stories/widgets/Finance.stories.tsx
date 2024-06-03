@@ -34,7 +34,8 @@ Finance.args = {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
     apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
   },
-  withExternalSigner: false
+  withExternalSigner: false,
+  withCustomReduxContext: false
 };
 
 Finance.decorators = [(Story) => wrapper(Story)];

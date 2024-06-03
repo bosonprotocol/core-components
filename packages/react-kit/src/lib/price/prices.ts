@@ -32,8 +32,8 @@ export const useDisplayFloat = ({
             return currencySymbolIndex === -1
               ? value
               : currencySymbolIndex === 0
-              ? `${defaultCurrencySymbol} ${value}`
-              : `${value} ${defaultCurrencySymbol}`;
+                ? `${defaultCurrencySymbol} ${value}`
+                : `${value} ${defaultCurrencySymbol}`;
           };
           const valueToDisplay =
             parsedValue

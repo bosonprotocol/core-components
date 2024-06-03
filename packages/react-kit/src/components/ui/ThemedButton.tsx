@@ -1,12 +1,39 @@
 import React, { ButtonHTMLAttributes, forwardRef } from "react";
 
 import { theme } from "../../theme";
-import { BaseButton } from "../buttons/BaseButton";
+import { BaseButton, BaseButtonTheme } from "../buttons/BaseButton";
 import { ButtonSize } from "./buttonSize";
 
 const colors = theme.colors.light;
 
-const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
+export const bosonButtonThemeKeys = [
+  "primary",
+  "bosonPrimary",
+  "secondary",
+  "bosonSecondary",
+  "secondaryInverted",
+  "accentInvertedNoBorder",
+  "accentInverted",
+  "orangeInverse",
+  "bosonSecondaryInverse",
+  "orange",
+  "outline",
+  "ghostSecondary",
+  "blank",
+  "blankSecondary",
+  "blankSecondaryOutline",
+  "blankOutline",
+  "white",
+  "black",
+  "warning",
+  "escalate",
+  "accentFill"
+] as const;
+export const bosonButtonThemes = ({
+  withBosonStyle
+}: {
+  withBosonStyle?: boolean;
+}) => {
   return {
     primary: {
       color: withBosonStyle ? colors.black : "var(--textColor)",
@@ -55,21 +82,17 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
     secondaryInverted: {
       background: "transparent",
       color: colors.secondary,
-      border: "none",
       hover: {
         background: colors.lightGrey,
-        color: colors.black,
-        border: "none"
+        color: colors.black
       }
     },
     accentInvertedNoBorder: {
       background: "transparent",
       color: colors.accent,
-      border: "none",
       hover: {
         background: colors.black,
-        color: colors.white,
-        border: "none"
+        color: colors.white
       }
     },
     accentInverted: {
@@ -80,8 +103,7 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
       hover: {
         background: colors.black,
         color: colors.white,
-        borderColor: colors.black,
-        border: "none"
+        borderColor: colors.black
       }
     },
     orangeInverse: {
@@ -215,14 +237,14 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
         borderColor: theme.colors.light.black
       }
     }
-  };
+  } satisfies Record<(typeof bosonButtonThemeKeys)[number], BaseButtonTheme>;
 };
 
 export type IButton = ButtonHTMLAttributes<HTMLButtonElement> & {
   children?: string | React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
   size?: "small" | "regular" | "large" | ButtonSize;
-  themeVal?: keyof ReturnType<typeof allThemes>;
+  themeVal?: keyof ReturnType<typeof bosonButtonThemes>;
   type?: "button" | "submit" | "reset" | undefined;
   fill?: boolean;
   step?: number;
@@ -237,7 +259,7 @@ const ThemedButton = forwardRef<HTMLButtonElement, IButton>(
       <BaseButton
         {...rest}
         ref={ref}
-        theme={allThemes({ withBosonStyle })[themeVal]}
+        theme={bosonButtonThemes({ withBosonStyle })[themeVal]}
       />
     );
   }

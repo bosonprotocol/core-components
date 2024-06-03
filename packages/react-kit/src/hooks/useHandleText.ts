@@ -122,16 +122,16 @@ export function useHandleText(offer: Offer, dateFormat = "YYYY/MM/DD") {
       return !expiry.diff.withExpirationDate
         ? "Does not expire"
         : expiry.diff.isExpired
-        ? `Expired`
-        : expiry.diff.days <= 10
-        ? expiry.diff.days <= 0
-          ? `Expires ${expiry.diff.isToday ? "today" : "tomorrow"} at ${
-              expiry.diff.time
-            } UTC${utcValue}`
-          : `Expires in ${expiry.diff.days} ${
-              expiry.diff.days === 1 ? "day" : "days"
-            }`
-        : `Expires on ${expiry.date}`;
+          ? `Expired`
+          : expiry.diff.days <= 10
+            ? expiry.diff.days <= 0
+              ? `Expires ${expiry.diff.isToday ? "today" : "tomorrow"} at ${
+                  expiry.diff.time
+                } UTC${utcValue}`
+              : `Expires in ${expiry.diff.days} ${
+                  expiry.diff.days === 1 ? "day" : "days"
+                }`
+            : `Expires on ${expiry.date}`;
     } else if (optionVoided) {
       return "Voided";
     }

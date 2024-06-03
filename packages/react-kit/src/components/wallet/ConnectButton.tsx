@@ -6,7 +6,7 @@ import styled from "styled-components";
 import MetamaskLogo from "../../assets/metamask-logo.svg";
 import FallbackAvatar from "../avatar/fallback-avatar";
 import { Button } from "../buttons/Button";
-import ThemedButton from "../ui/ThemedButton";
+import ThemedButton, { bosonButtonThemes } from "../ui/ThemedButton";
 import { useBreakpoints } from "../../hooks/useBreakpoints";
 import { saveItemInStorage } from "../widgets/finance/storage/useLocalStorage";
 import { SignOut, Wallet } from "phosphor-react";
@@ -20,12 +20,12 @@ const InnerContext = createContext<{
   isMagicLoggedIn: boolean | undefined;
   chainId: number | undefined;
   globalAccount: string | undefined;
-  disconnect: () => void;
+  disconnect: ReturnType<typeof useDisconnect>;
 }>({
   isMagicLoggedIn: undefined,
   chainId: undefined,
   globalAccount: undefined,
-  disconnect: () => null
+  disconnect: () => Promise.resolve()
 });
 const InnerProvider = ({ children }: { children: ReactNode }) => {
   const isMagicLoggedIn = useIsMagicLoggedIn();
@@ -72,6 +72,7 @@ const iconProps = {
     cursor: "pointer"
   } as const
 } as const;
+
 export default function ConnectButton({
   navigationBarPosition = "",
   showAddress = true,
@@ -122,7 +123,9 @@ export default function ConnectButton({
                           <MagicLoginButton
                             buttonProps={{
                               size: isLteXS ? "small" : "regular",
-                              variant: "primaryFill"
+                              theme: bosonButtonThemes({
+                                withBosonStyle: false
+                              })["primary"]
                             }}
                           />
                           <Button
@@ -223,12 +226,23 @@ export default function ConnectButton({
                           {showAddress && account?.displayName}
                         </ThemedButton>
                         {isLteS ? (
-                          <SignOut {...iconProps} onClick={disconnect} />
+                          <SignOut
+                            {...iconProps}
+                            onClick={() =>
+                              disconnect({
+                                isUserDisconnecting: true
+                              })
+                            }
+                          />
                         ) : (
                           <ThemedButton
                             themeVal="outline"
                             size={isLteXS ? "small" : "regular"}
-                            onClick={disconnect}
+                            onClick={() =>
+                              disconnect({
+                                isUserDisconnecting: true
+                              })
+                            }
                           >
                             Disconnect
                           </ThemedButton>

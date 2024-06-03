@@ -99,7 +99,7 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
         `disconnect account because connected account (${address}) is not ${forcedAccount}`
       );
       // force disconnection as the current connected wallet is not the forced one
-      disconnect();
+      disconnect({ isUserDisconnecting: false });
     }
 
     if (forcedAccount && addressRef.current) {
@@ -141,7 +141,7 @@ type FinanceWidgetProps = FinanceWidgetProvidersProps & {
 export function FinanceWidget(props: FinanceWidgetProps) {
   const { sellerId, withExternalSigner } = props;
   return (
-    <FinanceWidgetProviders {...props}>
+    <FinanceWidgetProviders {...props} withReduxProvider>
       {!withExternalSigner && (
         <Grid justifyContent="flex-end">
           <StyledConnectButton showChangeWallet />

@@ -1,4 +1,4 @@
-import { useConfigContext } from "../components/config/ConfigContext";
+import { useBosonContext } from "../components/boson/BosonProvider";
 
 export function useCurationLists() {
   const {
@@ -6,15 +6,15 @@ export function useCurationLists() {
     sellerCurationList,
     offerCurationList,
     withOwnProducts
-  } = useConfigContext();
+  } = useBosonContext();
 
   return {
     enableCurationLists:
       withOwnProducts === "all"
         ? false
         : ["mine", "custom"].includes(withOwnProducts || "")
-        ? true
-        : enableCurationLists,
+          ? true
+          : enableCurationLists,
     sellerCurationList: sellerCurationList,
     offerCurationList: offerCurationList
   };
