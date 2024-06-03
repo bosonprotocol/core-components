@@ -5,6 +5,7 @@ import React from "react";
 import { Spinner } from "../../ui/loading/Spinner";
 import { theme } from "../../../theme";
 import { getChainInfo } from "../../../lib/const/chainInfo";
+import { SvgImage } from "../../ui/SvgImage";
 const colors = theme.colors.light;
 const LOGO_SIZE = 20;
 
@@ -54,7 +55,7 @@ const CaptionText = styled.div`
   grid-row: 2;
 `;
 
-const Logo = styled.img`
+const Logo = styled(SvgImage)`
   height: ${LOGO_SIZE}px;
   width: ${LOGO_SIZE}px;
   margin-right: 12px;

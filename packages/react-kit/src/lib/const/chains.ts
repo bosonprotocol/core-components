@@ -91,9 +91,9 @@ export function isSupportedChain(props: {
 
 export const TESTNET_CHAIN_IDS = [
   ChainId.GOERLI,
-  // ChainId.SEPOLIA,
+  ChainId.SEPOLIA,
   ChainId.POLYGON_MUMBAI,
-  80002,
+  ChainId_POLYGON_AMOY,
   LocalChainId
   // ChainId.ARBITRUM_GOERLI,
   // ChainId.OPTIMISM_GOERLI,

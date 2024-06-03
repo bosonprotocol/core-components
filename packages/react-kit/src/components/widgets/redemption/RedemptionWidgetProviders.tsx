@@ -6,13 +6,12 @@ import {
   ConfigProviderProps
 } from "../../config/ConfigProvider";
 import { IpfsProvider, IpfsProviderProps } from "../../ipfs/IpfsProvider";
-import { MagicProvider } from "../../magicLink/MagicProvider";
 import ModalProvider from "../../modal/ModalProvider";
+import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 import { SignerProvider } from "../../signer/SignerProvider";
 import GlobalStyle from "../../styles/GlobalStyle";
-import WalletConnectionProvider, {
-  WalletConnectionProviderProps
-} from "../../wallet/WalletConnectionProvider";
+import { WalletConnectionProviderProps } from "../../wallet/WalletConnectionProvider";
+import { WithReduxProvider, WithReduxProviderProps } from "../ReduxProvider";
 import { getParentWindowOrigin } from "../common";
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
@@ -20,8 +19,7 @@ import ConvertionRateProvider, {
 import { CommonWidgetTypes } from "../types";
 import { RedemptionContextProps } from "./provider/RedemptionContext";
 import { RedemptionProvider } from "./provider/RedemptionProvider";
-import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
-import { WithReduxProvider, WithReduxProviderProps } from "../ReduxProvider";
+import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
 
 export type RedemptionWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
@@ -29,6 +27,7 @@ export type RedemptionWidgetProvidersProps = IpfsProviderProps &
   ConvertionRateProviderProps &
   CommonWidgetTypes &
   Omit<WalletConnectionProviderProps, "children" | "envName"> &
+  BosonProviderProps &
   WithReduxProviderProps & {
     signatures?: string[] | undefined | null; // signature1,signature2,signature3
   } & {
@@ -50,23 +49,25 @@ export const RedemptionWidgetProviders: React.FC<RedemptionWidgetProvidersProps>
           infuraKey={infuraKey}
           {...props}
         >
-          <GlobalStyle />
-          <SignerProvider
-            parentOrigin={parentOrigin}
-            withExternalSigner={props.withExternalSigner}
-          >
-            <ChatProvider>
-              <IpfsProvider {...props}>
-                <ConvertionRateProvider>
-                  <ModalProvider>
-                    <RedemptionProvider {...props}>
-                      {children}
-                    </RedemptionProvider>
-                  </ModalProvider>
-                </ConvertionRateProvider>
-              </IpfsProvider>
-            </ChatProvider>
-          </SignerProvider>
+          <BosonProvider {...props}>
+            <GlobalStyle />
+            <SignerProvider
+              parentOrigin={parentOrigin}
+              withExternalSigner={props.withExternalSigner}
+            >
+              <ChatProvider>
+                <IpfsProvider {...props}>
+                  <ConvertionRateProvider>
+                    <ModalProvider>
+                      <RedemptionProvider {...props}>
+                        {children}
+                      </RedemptionProvider>
+                    </ModalProvider>
+                  </ConvertionRateProvider>
+                </IpfsProvider>
+              </ChatProvider>
+            </SignerProvider>
+          </BosonProvider>
         </ConfigProvider>
       </WithReduxProvider>
     );

@@ -32,17 +32,11 @@ import {
 
 export type ConfigProviderProps = Omit<
   ConfigContextProps,
-  | "config"
-  | "defaultCurrency"
-  | "sellerCurationList"
-  | "offerCurationList"
-  | "supportedChains"
+  "config" | "defaultCurrency" | "supportedChains"
 > & {
   children: ReactNode;
   defaultCurrencyTicker: string;
   defaultCurrencySymbol: string;
-  sellerCurationListBetweenCommas?: string;
-  offerCurationListBetweenCommas?: string;
   withWeb3React: boolean;
   withCustomReduxContext: boolean;
 } & EnvironmentProviderProps &
@@ -102,22 +96,7 @@ function InnerConfigProvider({
     [envName, configId]
   );
   const [envConfig, setEnvConfig] = useState<ProtocolConfig>(defaultEnvConfig);
-  const sellerCurationList = useMemo(
-    () =>
-      rest.sellerCurationListBetweenCommas
-        ?.split(",")
-        .map((item) => item.trim())
-        .filter(isTruthy),
-    [rest.sellerCurationListBetweenCommas]
-  );
-  const offerCurationList = useMemo(
-    () =>
-      rest.offerCurationListBetweenCommas
-        ?.split(",")
-        .map((item) => item.trim())
-        .filter(isTruthy),
-    [rest.offerCurationListBetweenCommas]
-  );
+
   const supportedChains = getEnvConfigs(envName).map(
     (config) => config.chainId as number
   );
@@ -127,24 +106,12 @@ function InnerConfigProvider({
         ...rest,
         setEnvConfig,
         config: envConfig,
-        sellerCurationList,
-        offerCurationList,
         defaultCurrency: {
           ticker: rest.defaultCurrencyTicker,
           symbol: rest.defaultCurrencySymbol
         },
-        fairExchangePolicyRules: rest.fairExchangePolicyRules,
         dateFormat: rest.dateFormat || "YYYY/MM/DD",
         shortDateFormat: rest.shortDateFormat || "MMM DD, YYYY",
-        minimumDisputePeriodInDays: rest.minimumDisputePeriodInDays || 30,
-        minimumDisputeResolutionPeriodDays:
-          rest.minimumDisputeResolutionPeriodDays || 15,
-        buyerSellerAgreementTemplate:
-          rest.buyerSellerAgreementTemplate ||
-          "ipfs://QmXxRznUVMkQMb6hLiojbiv9uDw22RcEpVk6Gr3YywihcJ",
-        licenseTemplate:
-          rest.licenseTemplate ||
-          "ipfs://QmeYsxxy4aDvC5ocMEDrBj5xjSKobnRNw9VDN8DBzqqdmj",
         supportedChains
       }}
     >

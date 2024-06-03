@@ -9,12 +9,9 @@ import {
   ConfigProviderProps
 } from "../../config/ConfigProvider";
 import { IpfsProvider, IpfsProviderProps } from "../../ipfs/IpfsProvider";
-import { MagicProvider } from "../../magicLink/MagicProvider";
 import ModalProvider from "../../modal/ModalProvider";
 import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
-import WalletConnectionProvider, {
-  WalletConnectionProviderProps
-} from "../../wallet/WalletConnectionProvider";
+import { WalletConnectionProviderProps } from "../../wallet/WalletConnectionProvider";
 import {
   ReduxProvider,
   WithReduxProvider,
@@ -23,11 +20,13 @@ import {
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "../finance/convertion-rate/ConvertionRateProvider";
+import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
 
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   ConvertionRateProviderProps &
   Omit<WalletConnectionProviderProps, "children" | "envName"> &
+  BosonProviderProps &
   WithReduxProviderProps & {
     children: ReactNode;
   };
@@ -67,15 +66,17 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
             withCustomReduxContext={withCustomReduxContext}
             {...props}
           >
-            <WithUpdaters>
-              <ChatProvider>
-                <IpfsProvider {...props}>
-                  <ConvertionRateProvider>
-                    <ModalProvider>{children}</ModalProvider>
-                  </ConvertionRateProvider>
-                </IpfsProvider>
-              </ChatProvider>
-            </WithUpdaters>
+            <BosonProvider {...props}>
+              <WithUpdaters>
+                <ChatProvider>
+                  <IpfsProvider {...props}>
+                    <ConvertionRateProvider>
+                      <ModalProvider>{children}</ModalProvider>
+                    </ConvertionRateProvider>
+                  </IpfsProvider>
+                </ChatProvider>
+              </WithUpdaters>
+            </BosonProvider>
           </ConfigProvider>
         </WithReduxProvider>
       );

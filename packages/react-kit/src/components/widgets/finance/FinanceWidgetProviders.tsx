@@ -1,24 +1,22 @@
 import React, { ReactNode } from "react";
-import { CONFIG } from "../../../lib/config/config";
-import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 import { Omit } from "utility-types";
-import { CommonWidgetTypes } from "../types";
-import { SignerProvider } from "../../signer/SignerProvider";
-import GlobalStyle from "../../styles/GlobalStyle";
+import { CONFIG } from "../../../lib/config/config";
 import {
   ConfigProvider,
   ConfigProviderProps
 } from "../../config/ConfigProvider";
+import ModalProvider from "../../modal/ModalProvider";
+import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
+import { SignerProvider } from "../../signer/SignerProvider";
+import GlobalStyle from "../../styles/GlobalStyle";
+import { WalletConnectionProviderProps } from "../../wallet/WalletConnectionProvider";
+import { WithReduxProvider, WithReduxProviderProps } from "../ReduxProvider";
+import { getParentWindowOrigin } from "../common";
+import { CommonWidgetTypes } from "../types";
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "./convertion-rate/ConvertionRateProvider";
-import WalletConnectionProvider, {
-  WalletConnectionProviderProps
-} from "../../wallet/WalletConnectionProvider";
-import ModalProvider from "../../modal/ModalProvider";
-import { MagicProvider } from "../../magicLink/MagicProvider";
-import { getParentWindowOrigin } from "../common";
-import { WithReduxProvider, WithReduxProviderProps } from "../ReduxProvider";
+import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
 
 export type FinanceWidgetProvidersProps = Omit<
   WalletConnectionProviderProps,
@@ -27,6 +25,7 @@ export type FinanceWidgetProvidersProps = Omit<
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   CommonWidgetTypes &
   ConvertionRateProviderProps &
+  BosonProviderProps &
   WithReduxProviderProps & {
     children: ReactNode;
   };
@@ -46,15 +45,17 @@ export const FinanceWidgetProviders: React.FC<FinanceWidgetProvidersProps> =
           infuraKey={infuraKey}
           {...props}
         >
-          <GlobalStyle />
-          <SignerProvider
-            parentOrigin={parentOrigin}
-            withExternalSigner={props.withExternalSigner}
-          >
-            <ConvertionRateProvider>
-              <ModalProvider>{children}</ModalProvider>
-            </ConvertionRateProvider>
-          </SignerProvider>
+          <BosonProvider {...props}>
+            <GlobalStyle />
+            <SignerProvider
+              parentOrigin={parentOrigin}
+              withExternalSigner={props.withExternalSigner}
+            >
+              <ConvertionRateProvider>
+                <ModalProvider>{children}</ModalProvider>
+              </ConvertionRateProvider>
+            </SignerProvider>
+          </BosonProvider>
         </ConfigProvider>
       </WithReduxProvider>
     );

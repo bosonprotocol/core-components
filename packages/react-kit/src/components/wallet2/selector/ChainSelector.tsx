@@ -111,7 +111,7 @@ export const ChainSelector = ({
     const { supported, unsupported } = NETWORK_SELECTOR_CHAINS.filter((cfg) => {
       return (
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        !TESTNET_CHAIN_IDS.includes(cfg.chainId as any)
+        TESTNET_CHAIN_IDS.includes(cfg.chainId as any)
       );
     })
       .sort(

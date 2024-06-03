@@ -10,18 +10,6 @@ export type ConfigContextProps = {
     ticker: "USD" | string;
     symbol: "$" | string;
   };
-  minimumDisputePeriodInDays: number;
-  minimumDisputeResolutionPeriodDays: number;
-  fairExchangePolicyRules: string;
-  commitProxyAddress?: string;
-  openseaLinkToOriginalMainnetCollection?: string;
-  enableCurationLists?: boolean;
-  sellerCurationList?: string[];
-  offerCurationList?: string[];
-  withOwnProducts?: "all" | "mine" | "custom";
-  buyerSellerAgreementTemplate: string;
-  licenseTemplate: string;
-  contactSellerForExchangeUrl: string;
   usePendingTransactions?: boolean;
   magicLinkKey: string;
   infuraKey: string;

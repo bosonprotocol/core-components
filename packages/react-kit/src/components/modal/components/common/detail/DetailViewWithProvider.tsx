@@ -16,6 +16,7 @@ import {
   useDetailViewContext
 } from "./DetailViewProvider";
 import { getIsOfferExpired } from "../../../../../lib/offer/getIsOfferExpired";
+import { useBosonContext } from "../../../../boson/BosonProvider";
 
 export type DetailViewWithProviderProps = ConsumerProps & {
   offer: Offer;
@@ -51,9 +52,10 @@ export const DetailViewWithProvider: React.FC<
     () => getIsOfferExpired({ offer }),
     [offer]
   );
+  const bosonConfig = useBosonContext();
   const config = useConfigContext();
 
-  const { commitProxyAddress } = config;
+  const { commitProxyAddress } = bosonConfig;
 
   const { isConditionMet } = useCheckTokenGatedOffer({
     commitProxyAddress,
@@ -67,7 +69,7 @@ export const DetailViewWithProvider: React.FC<
     defaultDisputeResolverId:
       config.config.defaultDisputeResolverId || "unknown",
     defaultTokens: config.config.defaultTokens ?? [], // TODO: check default tokens list
-    fairExchangePolicyRules: config.fairExchangePolicyRules
+    fairExchangePolicyRules: bosonConfig.fairExchangePolicyRules
   });
   const exchangePolicyCheckResultOfNonCreatedOffer = {
     isValid: true,

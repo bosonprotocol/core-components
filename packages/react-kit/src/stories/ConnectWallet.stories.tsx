@@ -79,36 +79,24 @@ const Component = ({
               <ColorGlobalStyle color={textColor} />
               <Web3Provider
                 configProps={{
-                  buyerSellerAgreementTemplate: "", // should not be necessary
                   configId,
-                  contactSellerForExchangeUrl: "", // should not be necessary
-                  dateFormat: "", // should not be necessary
-                  defaultCurrencySymbol: "", // should not be necessary
-                  defaultCurrencyTicker: "", // should not be necessary
+                  dateFormat: "",
+                  defaultCurrencySymbol: "",
+                  defaultCurrencyTicker: "",
                   envName,
-                  fairExchangePolicyRules: "", // should not be necessary
                   infuraKey: process.env.STORYBOOK_REACT_APP_INFURA_KEY || "",
-                  licenseTemplate: "", // should not be necessary
                   magicLinkKey:
                     process.env.STORYBOOK_REACT_APP_MAGIC_API_KEY || "",
-                  minimumDisputePeriodInDays: 1234, // should not be necessary
-                  minimumDisputeResolutionPeriodDays: 123444, // should not be necessary
-                  shortDateFormat: "", // should not be necessary
+                  shortDateFormat: "",
                   walletConnectProjectId:
                     process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID || "",
                   withWeb3React: true,
-                  commitProxyAddress: undefined, // should not be necessary
-                  enableCurationLists: true, // should not be necessary
                   externalConnectedAccount: undefined,
                   externalConnectedChainId: undefined,
                   externalConnectedSigner: undefined,
-                  metaTx: undefined, // should not be necessary
-                  offerCurationListBetweenCommas: undefined, // should not be necessary
-                  openseaLinkToOriginalMainnetCollection: undefined, // should not be necessary
-                  sellerCurationListBetweenCommas: undefined, // should not be necessary
-                  usePendingTransactions: undefined, // should not be necessary
+                  metaTx: undefined,
+                  usePendingTransactions: undefined,
                   withExternalConnectionProps: false,
-                  withOwnProducts: undefined, // should not be necessary
                   withCustomReduxContext: false
                 }}
               >
