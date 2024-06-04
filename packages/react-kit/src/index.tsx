@@ -9,6 +9,9 @@ export {
 } from "./components/ui/ThemedButton";
 export * from "./components/ui/zIndex";
 export * from "./components/ui/buttonSize";
+export * from "./components/scroll/ScrollToID";
+export * from "./components/scroll/ScrollToTop";
+export { useConfigContext } from "./components/config/ConfigContext";
 export * from "./components/buttons/Button";
 export * from "./components/buttons/BaseButton";
 export * from "./components/buttons/CommitButtonView";
@@ -78,3 +81,4 @@ export * from "./components/wallet2/web3Status/index";
 export * from "./components/wallet2/web3Provider/index";
 export * from "./components/wallet2/accountDrawer/index";
 export * from "./components/portal/Portal";
+export * from "./components/error/ErrorMessage";

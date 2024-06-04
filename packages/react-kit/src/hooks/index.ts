@@ -17,3 +17,4 @@ export * from "./contracts/erc721/useErc721OwnerOf";
 export * from "./contracts/erc1155/useErc1155Name";
 export * from "./contracts/erc1155/useErc1155Uris";
 export * from "./uniswap/useIsWindowVisible";
+export * from "./connection/connection";
