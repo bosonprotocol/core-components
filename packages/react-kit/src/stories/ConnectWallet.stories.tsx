@@ -282,7 +282,7 @@ export const CustomTheme = {
     walletColor: "#ff00ea",
     walletHoverFocusBackgroundColor: "#e89f0e",
     walletHoverColor: "#ff0000",
-    magicLoginButtonThemeKey: "#0f9a5b",
+    magicLoginButtonThemeKey: "orangeInverse",
     magicLoginButtonBorderRadiusPx: "50"
   }
 };
