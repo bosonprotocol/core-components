@@ -25,65 +25,8 @@ import { Tooltip } from "../../tooltip/Tooltip";
 import { Grid } from "../../ui/Grid";
 import { useAccountDrawer } from "../accountDrawer";
 import StatusIcon from "../identicon/StatusIcon";
-import { flexRowNoWrap } from "../styles";
-
-const Web3StatusGeneric = styled.button`
-  ${flexRowNoWrap};
-  width: 100%;
-  align-items: center;
-  padding: 0.5rem;
-  cursor: pointer;
-  user-select: none;
-
-  margin-right: 2px;
-  margin-left: 2px;
-  &:focus {
-    outline: none;
-  }
-`;
 
 const breakpointWhenConnectButtonOverflows = "1300px";
-const Web3StatusConnected = styled(Web3StatusGeneric)<{
-  $color: string;
-  $backgroundColor: string;
-}>`
-  border: 2px solid transparent;
-  width: auto;
-  font-weight: 500;
-  color: ${({ $color }) => $color};
-  &:hover,
-  &:focus {
-    border: 2px solid
-      color-mix(
-        in srgb,
-        ${({ $backgroundColor }) => $backgroundColor} 90%,
-        black
-      );
-  }
-  @media (min-width: ${breakpointNumbers.xs}px) and (max-width: ${breakpointNumbers.l -
-    1}px) {
-    background-color: ${({ $backgroundColor }) => $backgroundColor};
-    border: 2px solid ${({ $backgroundColor }) => $backgroundColor};
-  }
-  @media (min-width: ${breakpointWhenConnectButtonOverflows}) {
-    background-color: ${({ $backgroundColor }) => $backgroundColor};
-    border: 2px solid ${({ $backgroundColor }) => $backgroundColor};
-  }
-  ${breakpoint.xxs} {
-    border-radius: 8px;
-    margin: initial;
-    * {
-      margin: initial;
-    }
-  }
-  @media (min-width: ${breakpointNumbers.l}px) and (max-width: ${breakpointWhenConnectButtonOverflows}) {
-    border-radius: 8px;
-    margin: initial;
-    * {
-      margin: initial;
-    }
-  }
-`;
 
 const AddressAndChevronContainer = styled.div`
   display: flex;
@@ -174,12 +117,11 @@ function Web3StatusInner({
 
   if (!connectedToWrongChainId && account) {
     return (
-      <Web3StatusConnected
+      <BaseButton
         disabled={Boolean(switchingChain)}
         data-testid="web3-status-connected"
         onClick={handleWalletDropdownClick}
-        $color={successButtonTheme.color}
-        $backgroundColor={successButtonTheme.background}
+        theme={successButtonTheme}
       >
         <StatusIcon
           account={account}
@@ -191,7 +133,7 @@ function Web3StatusInner({
         <AddressAndChevronContainer>
           <Text>{ENSName || formatAddress(account)}</Text>
         </AddressAndChevronContainer>
-      </Web3StatusConnected>
+      </BaseButton>
     );
   }
 

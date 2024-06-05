@@ -98,7 +98,7 @@ const ChildWrapperButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: ${(props) => props.theme?.gap || "12px"};
   position: relative;
   z-index: ${zIndex.Button};
 
@@ -112,6 +112,7 @@ export type BaseButtonTheme = {
   borderWidth?: CSSProperties["borderWidth"];
   color?: CSSProperties["color"];
   padding?: CSSProperties["padding"];
+  gap?: CSSProperties["gap"];
   hover?: {
     background?: CSSProperties["backgroundColor"];
     borderColor?: CSSProperties["borderColor"];
@@ -179,7 +180,7 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
             {isLoading ? (
               <Loading />
             ) : (
-              <ChildWrapperButton data-child-wrapper-button>
+              <ChildWrapperButton data-child-wrapper-button theme={theme}>
                 {children}
                 {step !== 0 && (
                   <Typography>
