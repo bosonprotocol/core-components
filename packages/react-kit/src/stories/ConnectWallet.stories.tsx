@@ -49,6 +49,7 @@ const Component = ({
   accountDrawerDisconnectBorderRadius,
   accountDrawerDisconnectColor,
   walletBorderRadius,
+  walletIconBorderRadius,
   walletBackgroundColor,
   walletColor,
   walletHoverFocusBackgroundColor,
@@ -69,6 +70,7 @@ const Component = ({
   accountDrawerDisconnectBackgroundColor: string | undefined;
   accountDrawerDisconnectColor: string | undefined;
   walletBorderRadius: string | undefined;
+  walletIconBorderRadius: string | undefined;
   walletBackgroundColor: string | undefined;
   walletColor: string | undefined;
   walletHoverFocusBackgroundColor: string | undefined;
@@ -156,6 +158,7 @@ const Component = ({
                         backgroundColor: walletBackgroundColor,
                         color: walletColor,
                         borderRadius: walletBorderRadius,
+                        iconBorderRadius: walletIconBorderRadius,
                         hoverFocusBackgroundColor:
                           walletHoverFocusBackgroundColor,
                         hoverColor: walletHoverColor
@@ -250,6 +253,7 @@ export const BosonTheme = {
     accountDrawerDisconnectColor: colors.black,
     accountDrawerDisconnectBorderRadius: "0px",
     walletBorderRadius: "0px",
+    walletIconBorderRadius: "0px",
     walletBackgroundColor: "var(--secondaryBgColor)",
     walletColor: colors.white,
     walletHoverFocusBackgroundColor: colors.black,
@@ -272,7 +276,8 @@ export const CustomTheme = {
     accountDrawerDisconnectBorderRadius: "50px",
     accountDrawerDisconnectBackgroundColor: "#9b05ff",
     accountDrawerDisconnectColor: "#0dff00",
-    walletBorderRadius: "50px",
+    walletBorderRadius: "10px",
+    walletIconBorderRadius: "50px",
     walletBackgroundColor: "#ffd693",
     walletColor: "#ff00ea",
     walletHoverFocusBackgroundColor: "#e89f0e",

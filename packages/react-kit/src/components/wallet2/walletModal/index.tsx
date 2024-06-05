@@ -47,7 +47,7 @@ export type WalletModalProps = {
     | "hoverColor"
     | "backgroundColor"
     | "borderRadius"
-  >;
+  > & { iconBorderRadius: CSSProperties["borderRadius"] };
 };
 export function WalletModal({
   PrivacyPolicy,
@@ -94,6 +94,7 @@ export function WalletModal({
               .map((connection) => (
                 <Option
                   {...optionProps}
+                  borderRadius={optionProps.iconBorderRadius}
                   key={connection.getName()}
                   connection={connection}
                 />
