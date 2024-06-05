@@ -3,13 +3,14 @@ import { useProvider } from "../../../hooks/connection/connection";
 import { useIsWindowVisible } from "../../../hooks/uniswap/useIsWindowVisible";
 import { CONFIG } from "../../../lib/config/config";
 import { Updaters } from "../../../state/updaters";
+import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
 import ChatProvider from "../../chat/ChatProvider/ChatProvider";
 import {
   ConfigProvider,
   ConfigProviderProps
 } from "../../config/ConfigProvider";
 import { IpfsProvider, IpfsProviderProps } from "../../ipfs/IpfsProvider";
-import ModalProvider from "../../modal/ModalProvider";
+import { ModalProvider } from "../../modal/ModalProvider";
 import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 import { WalletConnectionProviderProps } from "../../wallet/WalletConnectionProvider";
 import {
@@ -20,7 +21,6 @@ import {
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "../finance/convertion-rate/ConvertionRateProvider";
-import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
 
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &

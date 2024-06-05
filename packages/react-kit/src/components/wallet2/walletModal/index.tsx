@@ -1,7 +1,7 @@
 import React from "react";
 import { useWeb3React } from "@web3-react/core";
 import { useEffect } from "react";
-import styled from "styled-components";
+import styled, { CSSProperties } from "styled-components";
 
 import { Grid } from "../../ui/Grid";
 import { flexColumnNoWrap } from "../styles";
@@ -26,11 +26,11 @@ const Wrapper = styled.div`
   flex: 1;
 `;
 
-const OptionGrid = styled.div`
+const OptionGrid = styled.div<{ $borderRadius: CSSProperties["borderRadius"] }>`
   width: 100%;
   display: grid;
   grid-gap: 2px;
-  border-radius: 12px;
+  border-radius: ${({ $borderRadius }) => $borderRadius};
   overflow: hidden;
   ${breakpoint.m} {
     grid-template-columns: 1fr;
@@ -42,8 +42,12 @@ export type WalletModalProps = {
   magicLoginButtonProps: MagicLoginButtonProps;
   optionProps: Pick<
     OptionProps,
-    "color" | "hoverFocusBackgroundColor" | "hoverColor" | "backgroundColor"
-  >;
+    | "color"
+    | "hoverFocusBackgroundColor"
+    | "hoverColor"
+    | "backgroundColor"
+    | "borderRadius"
+  > & { iconBorderRadius: CSSProperties["borderRadius"] };
 };
 export function WalletModal({
   PrivacyPolicy,
@@ -81,12 +85,16 @@ export function WalletModal({
         <ConnectionErrorView />
       ) : (
         <AutoColumn $gap="16px">
-          <OptionGrid data-testid="option-grid">
+          <OptionGrid
+            data-testid="option-grid"
+            $borderRadius={optionProps.borderRadius}
+          >
             {connections
               .filter((connection) => connection.shouldDisplay())
               .map((connection) => (
                 <Option
                   {...optionProps}
+                  borderRadius={optionProps.iconBorderRadius}
                   key={connection.getName()}
                   connection={connection}
                 />

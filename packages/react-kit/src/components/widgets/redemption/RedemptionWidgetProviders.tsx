@@ -6,7 +6,7 @@ import {
   ConfigProviderProps
 } from "../../config/ConfigProvider";
 import { IpfsProvider, IpfsProviderProps } from "../../ipfs/IpfsProvider";
-import ModalProvider from "../../modal/ModalProvider";
+import { ModalProvider } from "../../modal/ModalProvider";
 import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 import { SignerProvider } from "../../signer/SignerProvider";
 import GlobalStyle from "../../styles/GlobalStyle";

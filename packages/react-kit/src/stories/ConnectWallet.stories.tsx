@@ -39,34 +39,44 @@ const ColorGlobalStyle = createGlobalStyle<{ color: CSSProperties["color"] }>`
 const Component = ({
   textColor,
   chainSelectorBackgroundColor,
+  connectWalletBorderRadius,
   connectWalletSuccessButtonThemeKey,
   connectWalletErrorButtonThemeKey,
+  accountDrawerBuyCryptoBorderRadiusPx,
   accountDrawerBackgroundColor,
-  accountDrawerBuyCryptoColor,
-  accountDrawerBuyCryptoBackgroundColor,
+  accountDrawerBuyCryptoThemeKey,
   accountDrawerDisconnectBackgroundColor,
+  accountDrawerDisconnectBorderRadius,
   accountDrawerDisconnectColor,
+  walletBorderRadius,
+  walletIconBorderRadius,
   walletBackgroundColor,
   walletColor,
   walletHoverFocusBackgroundColor,
   walletHoverColor,
   magicLoginButtonThemeKey,
+  magicLoginButtonBorderRadiusPx,
   onUserDisconnect
 }: {
   textColor: string;
   chainSelectorBackgroundColor: string | undefined;
+  connectWalletBorderRadius: string | undefined;
   connectWalletSuccessButtonThemeKey: string | undefined;
   connectWalletErrorButtonThemeKey: string | undefined;
   accountDrawerBackgroundColor: string | undefined;
-  accountDrawerBuyCryptoColor: string | undefined;
-  accountDrawerBuyCryptoBackgroundColor: string | undefined;
+  accountDrawerBuyCryptoBorderRadiusPx: string | undefined;
+  accountDrawerBuyCryptoThemeKey: string | undefined;
+  accountDrawerDisconnectBorderRadius: string | undefined;
   accountDrawerDisconnectBackgroundColor: string | undefined;
   accountDrawerDisconnectColor: string | undefined;
+  walletBorderRadius: string | undefined;
+  walletIconBorderRadius: string | undefined;
   walletBackgroundColor: string | undefined;
   walletColor: string | undefined;
   walletHoverFocusBackgroundColor: string | undefined;
   walletHoverColor: string | undefined;
   magicLoginButtonThemeKey: string | undefined;
+  magicLoginButtonBorderRadiusPx: string | undefined;
   onUserDisconnect: () => unknown;
 }) => {
   return (
@@ -106,29 +116,38 @@ const Component = ({
                     backgroundColor={chainSelectorBackgroundColor}
                   />
                   <ConnectWallet
-                    successButtonTheme={
-                      connectWalletSuccessButtonThemeKey
+                    successButtonTheme={{
+                      ...(connectWalletSuccessButtonThemeKey
                         ? bosonButtonThemes({ withBosonStyle: false })[
                             connectWalletSuccessButtonThemeKey
                           ]
-                        : successButtonTheme
-                    }
-                    errorButtonTheme={
-                      connectWalletErrorButtonThemeKey
+                        : successButtonTheme),
+                      borderRadius: connectWalletBorderRadius,
+                      gap: "2px"
+                    }}
+                    errorButtonTheme={{
+                      ...(connectWalletErrorButtonThemeKey
                         ? bosonButtonThemes({ withBosonStyle: false })[
                             connectWalletErrorButtonThemeKey
                           ]
-                        : errorButtonTheme
-                    }
+                        : errorButtonTheme),
+                      borderRadius: connectWalletBorderRadius,
+                      gap: "2px"
+                    }}
                   />
                 </Grid>
                 <Portal>
                   <AccountDrawer
                     backgroundColor={accountDrawerBackgroundColor}
-                    buyCryptoColor={accountDrawerBuyCryptoColor}
-                    buyCryptoBackgroundColor={
-                      accountDrawerBuyCryptoBackgroundColor
-                    }
+                    buyCryptoTheme={{
+                      ...(accountDrawerBuyCryptoThemeKey
+                        ? bosonButtonThemes({ withBosonStyle: false })[
+                            accountDrawerBuyCryptoThemeKey
+                          ]
+                        : successButtonTheme),
+                      borderRadius: accountDrawerBuyCryptoBorderRadiusPx
+                    }}
+                    disconnectBorderRadius={accountDrawerDisconnectBorderRadius}
                     disconnectBackgroundColor={
                       accountDrawerDisconnectBackgroundColor
                     }
@@ -138,17 +157,22 @@ const Component = ({
                       optionProps: {
                         backgroundColor: walletBackgroundColor,
                         color: walletColor,
+                        borderRadius: walletBorderRadius,
+                        iconBorderRadius: walletIconBorderRadius,
                         hoverFocusBackgroundColor:
                           walletHoverFocusBackgroundColor,
                         hoverColor: walletHoverColor
                       },
                       magicLoginButtonProps: {
                         buttonProps: {
-                          theme: magicLoginButtonThemeKey
-                            ? bosonButtonThemes({ withBosonStyle: false })[
-                                magicLoginButtonThemeKey
-                              ]
-                            : successButtonTheme
+                          theme: {
+                            ...(magicLoginButtonThemeKey
+                              ? bosonButtonThemes({ withBosonStyle: false })[
+                                  magicLoginButtonThemeKey
+                                ]
+                              : successButtonTheme),
+                            borderRadius: magicLoginButtonBorderRadiusPx
+                          }
                         }
                       },
                       PrivacyPolicy: () => <div>privacy policy</div>
@@ -187,8 +211,10 @@ export default {
       options: bosonButtonThemeKeys
     },
     accountDrawerBackgroundColor: { control: "color" },
-    accountDrawerBuyCryptoColor: { control: "color" },
-    accountDrawerBuyCryptoBackgroundColor: { control: "color" },
+    accountDrawerBuyCryptoThemeKey: {
+      control: "select",
+      options: bosonButtonThemeKeys
+    },
     accountDrawerDisconnectBackgroundColor: { control: "color" },
     accountDrawerDisconnectColor: { control: "color" },
     walletBackgroundColor: { control: "color" },
@@ -217,13 +243,17 @@ export const BosonTheme = {
     ...BASE_ARGS,
     textColor: colors.black,
     chainSelectorBackgroundColor: "var(--buttonBgColor)",
+    connectWalletBorderRadius: undefined,
     connectWalletSuccessButtonThemeKey: undefined,
     connectWalletErrorButtonThemeKey: "orangeInverse",
+    accountDrawerBuyCryptoBorderRadiusPx: "0",
     accountDrawerBackgroundColor: "var(--primaryBgColor)",
-    accountDrawerBuyCryptoColor: colors.black,
-    accountDrawerBuyCryptoBackgroundColor: "var(--buttonBgColor)",
+    accountDrawerBuyCryptoThemeKey: undefined,
     accountDrawerDisconnectBackgroundColor: colors.green,
     accountDrawerDisconnectColor: colors.black,
+    accountDrawerDisconnectBorderRadius: "0px",
+    walletBorderRadius: "0px",
+    walletIconBorderRadius: "0px",
     walletBackgroundColor: "var(--secondaryBgColor)",
     walletColor: colors.white,
     walletHoverFocusBackgroundColor: colors.black,
@@ -237,17 +267,22 @@ export const CustomTheme = {
     ...BASE_ARGS,
     textColor: colors.white,
     chainSelectorBackgroundColor: "#00e1ff",
+    connectWalletBorderRadius: "50",
     connectWalletSuccessButtonThemeKey: "accentFill",
     connectWalletErrorButtonThemeKey: "orangeInverse",
+    accountDrawerBuyCryptoBorderRadiusPx: "50",
     accountDrawerBackgroundColor: "#123123",
-    accountDrawerBuyCryptoColor: "#ff7b00",
-    accountDrawerBuyCryptoBackgroundColor: "#bf00ff",
+    accountDrawerBuyCryptoThemeKey: "accentFill",
+    accountDrawerDisconnectBorderRadius: "50px",
     accountDrawerDisconnectBackgroundColor: "#9b05ff",
     accountDrawerDisconnectColor: "#0dff00",
+    walletBorderRadius: "10px",
+    walletIconBorderRadius: "50px",
     walletBackgroundColor: "#ffd693",
     walletColor: "#ff00ea",
     walletHoverFocusBackgroundColor: "#e89f0e",
     walletHoverColor: "#ff0000",
-    magicLoginButtonThemeKey: "#0f9a5b"
+    magicLoginButtonThemeKey: "orangeInverse",
+    magicLoginButtonBorderRadiusPx: "50"
   }
 };

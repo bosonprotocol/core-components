@@ -49,14 +49,16 @@ const HeaderText = styled.div<{ $color: CSSProperties["color"] }>`
   font-weight: 600;
   padding: 0 8px;
 `;
-const IconWrapper = styled.div`
+const IconWrapper = styled.div<{
+  $borderRadius: CSSProperties["borderRadius"];
+}>`
   ${flexColumnNoWrap};
   align-items: center;
   justify-content: center;
   img,
   svg {
     border: 1px solid ${colors.border};
-    border-radius: 12px;
+    border-radius: ${({ $borderRadius }) => $borderRadius};
   }
   & > img,
   & > svg,
@@ -107,13 +109,15 @@ export interface OptionProps {
   hoverFocusBackgroundColor: CSSProperties["backgroundColor"];
   hoverColor: CSSProperties["color"];
   backgroundColor: CSSProperties["backgroundColor"];
+  borderRadius: CSSProperties["borderRadius"];
 }
 export function Option({
   connection,
   color,
   hoverFocusBackgroundColor,
   hoverColor,
-  backgroundColor
+  backgroundColor,
+  borderRadius
 }: OptionProps) {
   const { activationState, tryActivation } = useActivationState();
   const toggleAccountDrawer = useToggleAccountDrawer();
@@ -140,7 +144,7 @@ export function Option({
         data-testid={`wallet-option-${connection.type}`}
       >
         <OptionCardLeft>
-          <IconWrapper>
+          <IconWrapper $borderRadius={borderRadius}>
             <SvgImage
               src={connection.getIcon?.(false)}
               alt={connection.getName()}

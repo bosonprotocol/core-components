@@ -27,12 +27,13 @@ const IconStyles = css<{
   $hideHorizontal?: boolean;
   $color: CSSProperties["color"];
   $backgroundColor: CSSProperties["backgroundColor"];
+  $borderRadius: CSSProperties["borderRadius"];
 }>`
   color: ${({ $color }) => $color};
   /* TODO: background-color: var(--buttonBgColor); */
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   transition: ${getWidthTransition};
-  border-radius: 12px;
+  border-radius: ${({ $borderRadius }) => $borderRadius || "12px"};
   display: flex;
   padding: 0;
   cursor: pointer;
@@ -66,6 +67,7 @@ const IconBlockLink = styled.a<{
   $hideHorizontal?: boolean;
   $color: CSSProperties["color"];
   $backgroundColor: CSSProperties["backgroundColor"];
+  $borderRadius: CSSProperties["borderRadius"];
 }>`
   ${IconStyles};
 `;
@@ -74,6 +76,7 @@ const IconBlockButton = styled.button<{
   $hideHorizontal?: boolean;
   $color: CSSProperties["color"];
   $backgroundColor: CSSProperties["backgroundColor"];
+  $borderRadius: CSSProperties["borderRadius"];
 }>`
   ${IconStyles};
   border: none;
@@ -106,15 +109,17 @@ const IconBlock = forwardRef<
   IconBlockProps & {
     color: CSSProperties["color"];
     backgroundColor: CSSProperties["backgroundColor"];
+    borderRadius: CSSProperties["borderRadius"];
   }
 >(function IconBlock(props, ref) {
-  const { color, backgroundColor } = props;
+  const { color, backgroundColor, borderRadius } = props;
   if ("href" in props) {
     return (
       <IconBlockLink
         ref={ref as React.ForwardedRef<HTMLAnchorElement>}
         $color={color}
         $backgroundColor={backgroundColor}
+        $borderRadius={borderRadius}
         {...props}
       />
     );
@@ -128,6 +133,7 @@ const IconBlock = forwardRef<
       ref={ref}
       $color={color}
       $backgroundColor={backgroundColor}
+      $borderRadius={borderRadius}
       {...props}
     />
   );
@@ -141,6 +147,7 @@ type IconWithTextProps = (IconButtonProps | IconLinkProps) & {
   dismissOnHoverDurationMs?: number;
   color: CSSProperties["color"];
   backgroundColor: CSSProperties["backgroundColor"];
+  borderRadius: CSSProperties["borderRadius"];
 };
 
 const TextWrapper = styled.div`
@@ -172,6 +179,7 @@ export const IconWithConfirmTextButton = ({
   dismissOnHoverDurationMs = 500,
   color,
   backgroundColor,
+  borderRadius,
   ...rest
 }: IconWithTextProps) => {
   const [showText, setShowTextWithoutCallback] = useState(false);
@@ -254,6 +262,7 @@ export const IconWithConfirmTextButton = ({
       }}
       color={color}
       backgroundColor={backgroundColor}
+      borderRadius={borderRadius}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore MouseEvent is valid, its a subset of the two mouse events,
       // even manually typing this all out more specifically it still gets mad about any casting for some reason

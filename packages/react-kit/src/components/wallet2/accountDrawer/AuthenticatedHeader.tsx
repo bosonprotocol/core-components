@@ -30,6 +30,7 @@ import {
   useConnections
 } from "../../connection/ConnectionsProvider";
 import { useWeb3React } from "@web3-react/core";
+import { BaseButton, BaseButtonTheme } from "../../buttons/BaseButton";
 const colors = theme.colors.light;
 const AuthenticatedHeaderWrapper = styled.div`
   padding: 20px 16px;
@@ -38,45 +39,6 @@ const AuthenticatedHeaderWrapper = styled.div`
   flex: 1;
 `;
 
-const HeaderButton = styled.button<{
-  $color: CSSProperties["color"];
-  $backgroundColor: CSSProperties["backgroundColor"];
-}>`
-  color: ${({ $color }) => $color};
-  background-color: ${({ $backgroundColor }) => $backgroundColor};
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  border-color: transparent;
-  border-radius: 12px;
-  border-style: solid;
-  border-width: 1px;
-  height: 40px;
-  margin-top: 8px;
-
-  position: relative;
-  z-index: 1;
-  letter-spacing: 0.5px;
-  font-style: normal;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 24px;
-
-  &:hover:not(:disabled) {
-    background-color: color-mix(
-      in srgb,
-      ${({ $backgroundColor }) => $backgroundColor} 90%,
-      black
-    );
-    transition: 125ms background-color ease-in;
-  }
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-`;
 const IconHoverText = styled.span`
   color: ${colors.white};
   position: absolute;
@@ -174,16 +136,16 @@ export type AuthenticatedHeaderProps = {
   onUserDisconnect?: () => unknown;
   disconnectColor: CSSProperties["color"];
   disconnectBackgroundColor: CSSProperties["backgroundColor"];
-  buyCryptoColor: CSSProperties["color"];
-  buyCryptoBackgroundColor: CSSProperties["backgroundColor"];
+  disconnectBorderRadius: CSSProperties["borderRadius"];
+  buyCryptoTheme: BaseButtonTheme;
 };
 export function AuthenticatedHeader({
   account,
   onUserDisconnect,
   disconnectColor,
   disconnectBackgroundColor,
-  buyCryptoColor,
-  buyCryptoBackgroundColor
+  disconnectBorderRadius,
+  buyCryptoTheme
 }: AuthenticatedHeaderProps) {
   const { connector } = useWeb3React();
   const { ENSName } = useENSName(account);
@@ -282,14 +244,15 @@ export function AuthenticatedHeader({
             dismissOnHoverOut
             color={disconnectColor}
             backgroundColor={disconnectBackgroundColor}
+            borderRadius={disconnectBorderRadius}
           />
         </IconContainer>
       </HeaderWrapper>
       <PortfolioDrawerContainer>
         <FiatLink>
-          <HeaderButton
-            $color={buyCryptoColor}
-            $backgroundColor={buyCryptoBackgroundColor}
+          <BaseButton
+            fill
+            theme={buyCryptoTheme}
             // onClick={handleBuyCryptoClick}
             // disabled={disableBuyCryptoButton}
             disabled={isFiatLoading}
@@ -307,7 +270,7 @@ export function AuthenticatedHeader({
                 Buy crypto
               </>
             )}
-          </HeaderButton>
+          </BaseButton>
         </FiatLink>
         {Boolean(!fiatOnrampAvailable && fiatOnrampAvailabilityChecked) && (
           <FiatOnrampNotAvailableText marginTop="8px">

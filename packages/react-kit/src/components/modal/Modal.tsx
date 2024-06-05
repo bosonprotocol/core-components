@@ -134,16 +134,8 @@ const Wrapper = styled.div<{
   }};
   ${({ $modalType }) => {
     switch ($modalType) {
-      case "PRODUCT_CREATE_SUCCESS":
-        return css`
-          max-width: 65.875rem;
-        `;
       case "FINANCE_WITHDRAW_MODAL":
       case "FINANCE_DEPOSIT_MODAL":
-      case "MANAGE_FUNDS_MODAL":
-      case "EXPIRE_VOUCHER_MODAL":
-      case "DISPUTE_RESOLUTION_DECIDE_MODAL":
-      case "DISPUTE_RESOLUTION_REFUSE_MODAL":
         return css`
           ${breakpoint.xs} {
             max-width: 31.25rem;
