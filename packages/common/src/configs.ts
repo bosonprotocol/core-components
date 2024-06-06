@@ -82,7 +82,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       nativeCoin: chainIdToInfo.get(11155111),
       getTxExplorerUrl: chainIdToGraphTx.get(11155111),
       subgraphUrl:
-        "https://api.thegraph.com/subgraphs/name/bosonprotocol/sepolia-testing",
+        "https://api.0xgraph.xyz/subgraphs/name/boson-llx-testing-sepolia",
       jsonRpcUrl:
         "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
