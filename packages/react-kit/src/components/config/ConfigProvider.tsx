@@ -12,7 +12,6 @@ import React, {
 } from "react";
 import { useChainId } from "../../hooks/connection/connection";
 import { getEnvConfigsFilteredByEnv } from "../../lib/config/getConfigsByChainId";
-import { isTruthy } from "../../types/helpers";
 import { useEnvContext } from "../environment/EnvironmentContext";
 import {
   EnvironmentProvider,
