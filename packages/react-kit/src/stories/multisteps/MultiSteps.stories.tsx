@@ -61,14 +61,12 @@ const BASE_ARGS = {
   stepDoneHoverCheckColor: colors.green
 } as const;
 
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
 export const BosonTheme = {
   args: {
     ...BASE_ARGS
   }
 };
 
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
 export const CustomTheme = {
   args: {
     ...BASE_ARGS,
