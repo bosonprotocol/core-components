@@ -45,7 +45,7 @@ const BASE_ARGS = {
   active: 1,
   data: [
     { name: "Create profile", steps: 2 },
-    { name: "Summary asd asd asd asd ", steps: 1 }
+    { name: "Summary of profile creation", steps: 1 }
   ],
   enabledArrowColor: colors.darkGrey,
   disabledArrowColor: colors.lightArrowColor,
