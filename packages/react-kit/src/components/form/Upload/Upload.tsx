@@ -5,7 +5,7 @@ import { loadAndSetMedia } from "../../../lib/base64/base64";
 import bytesToSize from "../../../lib/bytes/bytesToSize";
 import { theme } from "../../../theme";
 
-import Loading from "../../ui/loading/Loading";
+import Loading from "../../ui/loading/LoadingWrapper";
 import ThemedButton from "../../ui/ThemedButton";
 import { Typography } from "../../ui/Typography";
 import Error from "../Error";

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Loading } from "../Loading";
+import { Loading } from "../ui/loading/Loading";
 
 import {
   ImageContainer,

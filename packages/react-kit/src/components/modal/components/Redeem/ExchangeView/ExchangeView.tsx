@@ -10,7 +10,7 @@ import { VariantV1 } from "../../../../../types/variants";
 import { Grid } from "../../../../ui/Grid";
 import { GridContainer } from "../../../../ui/GridContainer";
 import { Typography } from "../../../../ui/Typography";
-import Loading from "../../../../ui/loading/Loading";
+import Loading from "../../../../ui/loading/LoadingWrapper";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { ExchangeDetailViewWithProvider } from "../DetailView/ExchangeDetailViewWithProvider";
 import { DetailContextProps } from "../../common/detail/DetailViewProvider";

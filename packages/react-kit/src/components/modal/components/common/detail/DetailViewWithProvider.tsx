@@ -9,7 +9,7 @@ import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
 import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
 import { Offer } from "../../../../../types/offer";
 import { useConfigContext } from "../../../../config/ConfigContext";
-import Loading from "../../../../ui/loading/Loading";
+import Loading from "../../../../ui/loading/LoadingWrapper";
 import {
   DetailContextProps,
   DetailViewProvider,

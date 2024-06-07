@@ -2,7 +2,7 @@ import { Formik } from "formik";
 import React, { useEffect } from "react";
 import { useBuyers } from "../../../../../hooks/useBuyers";
 import { Checkbox } from "../../../../form";
-import Loading from "../../../../ui/loading/Loading";
+import Loading from "../../../../ui/loading/LoadingWrapper";
 import Exchanges from "./Exchanges";
 import { ExchangesStates, WithExchangesData } from "./WithExchangesData";
 import { Exchange } from "../../../../../types/exchange";

@@ -9,7 +9,7 @@ import { ProgressStatus } from "../../lib/progress/progressStatus";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { useBosonContext } from "../boson/BosonProvider";
 import SimpleError from "../error/SimpleError";
-import Loading from "../ui/loading/Loading";
+import Loading from "../ui/loading/LoadingWrapper";
 
 interface ContractualAgreementProps {
   offerId: string | undefined;

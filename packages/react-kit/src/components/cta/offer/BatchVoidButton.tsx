@@ -4,7 +4,7 @@ import { BigNumberish, providers } from "ethers";
 import { Button } from "../../buttons/Button";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
-import { Loading } from "../../Loading";
+import { Loading } from "../../ui/loading/Loading";
 import { ButtonSize } from "../../ui/buttonSize";
 import { TransactionResponse } from "@bosonprotocol/common";
 import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
