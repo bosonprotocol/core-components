@@ -11,7 +11,7 @@ import { Tooltip } from "../tooltip/Tooltip";
 import * as Styles from "../ui/styles";
 import { Typography } from "../ui/Typography";
 import { theme } from "../../theme";
-import { Loading } from "../Loading";
+import { Loading } from "../ui/loading/Loading";
 import { ButtonSize } from "../ui/buttonSize";
 
 const colors = theme.colors.light;

@@ -8,7 +8,7 @@ import { useAccount } from "../../../hooks/connection/connection";
 import { useDisconnect } from "../../../hooks/connection/useDisconnect";
 import { useCurrentSellers } from "../../../hooks/useCurrentSellers";
 import { Grid } from "../../ui/Grid";
-import Loading from "../../ui/loading/Loading";
+import Loading from "../../ui/loading/LoadingWrapper";
 import ConnectButton from "../../wallet/ConnectButton";
 import Finance, { Props } from "./Finance";
 import { useConvertionRate } from "./convertion-rate/useConvertionRate";

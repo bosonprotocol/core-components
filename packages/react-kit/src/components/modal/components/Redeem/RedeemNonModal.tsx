@@ -28,7 +28,7 @@ import { useAccount } from "../../../../hooks/connection/connection";
 import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
 import { theme } from "../../../../theme";
 import { isTruthy } from "../../../../types/helpers";
-import { Loading } from "../../../Loading";
+import { Loading } from "../../../ui/loading/Loading";
 import { useConfigContext } from "../../../config/ConfigContext";
 import { Typography } from "../../../ui/Typography";
 import {

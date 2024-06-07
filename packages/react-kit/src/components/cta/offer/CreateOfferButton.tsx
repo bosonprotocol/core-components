@@ -4,7 +4,7 @@ import { providers } from "ethers";
 import { Button } from "../../buttons/Button";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
-import { Loading } from "../../Loading";
+import { Loading } from "../../ui/loading/Loading";
 import { offers, accounts } from "@bosonprotocol/core-sdk";
 import { TransactionResponse } from "@bosonprotocol/common";
 import { ButtonSize } from "../../ui/buttonSize";

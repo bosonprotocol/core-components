@@ -5,7 +5,7 @@ import { TransactionResponse } from "@bosonprotocol/common";
 import { Button } from "../../buttons/Button";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
-import { Loading } from "../../Loading";
+import { Loading } from "../../ui/loading/Loading";
 import { ButtonSize } from "../../ui/buttonSize";
 import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
 import { useMetaTx } from "../../../hooks/useMetaTx";

@@ -23,7 +23,7 @@ import { Typography } from "../../ui/Typography";
 import { theme } from "../../../theme";
 import { Button } from "../../buttons/Button";
 import PaginationPages from "../../pagination/PaginationPages";
-import Loading from "../../ui/loading/Loading";
+import Loading from "../../ui/loading/LoadingWrapper";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import {
   Currencies,

@@ -1,50 +1,42 @@
+import styled, { CSSProperties, keyframes } from "styled-components";
 import React from "react";
-import styled from "styled-components";
-import { theme } from "../../../theme";
 
-import { Grid } from "../Grid";
-const colors = theme.colors.light;
+export const Loading = ({
+  color,
+  size = 1.5625, // in rem = 25px
+  theme,
+  style
+}: {
+  color?: CSSProperties["color"];
+  size?: number;
+  theme?: { colors?: { light?: { accent: CSSProperties["color"] } } };
+  style?: CSSProperties;
+}) => {
+  return (
+    <LoadingStyle $color={color} $size={size} theme={theme} style={style} />
+  );
+};
 
-const LoadingPlaceholder = styled.div<{ size: number }>`
-  height: ${({ size }) => size}rem;
-  width: ${({ size }) => size}rem;
-  min-height: ${({ size }) => size}rem;
-  min-width: ${({ size }) => size}rem;
-  border: 5px solid ${colors.secondary};
+const loadingAnimation = keyframes`
+ 0% { transform: rotate(0deg); }
+ 100% { transform: rotate(360deg); }
+`;
+
+const LoadingStyle = styled.span.attrs({ className: "loading" })<{
+  $color?: CSSProperties["color"];
+  $size?: number;
+}>`
+  height: ${({ $size }) => $size}rem;
+  width: ${({ $size }) => $size}rem;
+  min-height: ${({ $size }) => $size}rem;
+  min-width: ${({ $size }) => $size}rem;
+  border: 5px solid
+    ${({ theme, $color }) =>
+      theme?.colors?.light?.accent || $color || "#000000"};
   border-bottom-color: transparent;
   border-radius: 50%;
   display: inline-block;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
-
-  @keyframes rotation {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
+  animation-name: ${loadingAnimation};
 `;
-
-interface ILoading {
-  size?: number;
-  wrapperStyle?: React.CSSProperties;
-  style?: React.CSSProperties;
-  [x: string]: unknown;
-}
-
-const Loading: React.FC<ILoading> = ({
-  style = {},
-  size = 5,
-  wrapperStyle,
-  ...props
-}) => {
-  return (
-    <Grid justifyContent="center" padding="5rem" style={wrapperStyle}>
-      <LoadingPlaceholder style={style} size={size} {...props} />
-    </Grid>
-  );
-};
-
-export default Loading;
