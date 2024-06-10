@@ -1,37 +1,42 @@
 import { Warning } from "phosphor-react";
 import React, { ReactNode } from "react";
-import styled from "styled-components";
+import styled, { CSSProperties } from "styled-components";
 
 import { theme } from "../../theme";
-import { Grid } from "../ui/Grid";
+import { Grid, GridProps } from "../ui/Grid";
 import { Typography } from "../ui/Typography";
 const colors = theme.colors.light;
 
-const StyledGrid = styled(Grid)`
-  background-color: ${colors.lightGrey};
+const StyledGrid = styled(Grid)<{
+  $background: CSSProperties["backgroundColor"];
+}>`
+  background-color: ${({ $background }) => $background};
 `;
 
-interface Props {
+export type SimpleProps = GridProps & {
   errorMessage?: string;
   children?: ReactNode;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [x: string]: any;
-}
+  backgroundColor?: CSSProperties["backgroundColor"];
+  warningColor?: CSSProperties["backgroundColor"];
+};
 
-export default function SimpleError({
+export function SimpleError({
   errorMessage,
   children,
+  backgroundColor = colors.lightGrey,
+  warningColor = colors.darkOrange,
   ...rest
-}: Props) {
+}: SimpleProps) {
   return (
     <StyledGrid
       justifyContent="flex-start"
       gap="0.5rem"
       margin="1.5rem 0 0 0"
       padding="1.5rem"
+      $background={backgroundColor}
       {...rest}
     >
-      <Warning color={colors.darkOrange} size={16} />
+      <Warning color={warningColor} size={16} />
       {children ? (
         children
       ) : (

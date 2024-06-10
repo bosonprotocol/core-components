@@ -17,11 +17,13 @@ export const SUPPORTED_FORMATS = [
   "image/jpg",
   "image/jpeg",
   "image/gif",
-  "image/png"
+  "image/png",
+  "image/webp"
 ];
-
 export interface WithUploadToIpfsProps {
-  saveToIpfs: (e: React.ChangeEvent<HTMLInputElement>) => FileProps[];
+  saveToIpfs: (
+    files: File[] | null
+  ) => Promise<false | FileProps[] | undefined>;
   loadMedia: (src: string) => string;
   removeFile: (src: string) => void;
 }
@@ -32,16 +34,16 @@ export function WithUploadToIpfs<P extends WithUploadToIpfsProps>(
     props: Omit<P & UploadProps, keyof WithUploadToIpfsProps>
   ) => {
     const withUpload = props?.withUpload || false;
-
+    const accept: string = props.accept
+      ? props.accept
+      : SUPPORTED_FORMATS.join(",");
     const { saveFile, loadMedia, removeFile } = useSaveImageToIpfs();
 
-    const saveToIpfs = useCallback(
-      async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!e.target.files) {
+    const saveToIpfs: WithUploadToIpfsProps["saveToIpfs"] = useCallback(
+      async (filesArray: File[] | null) => {
+        if (!filesArray) {
           return;
         }
-        const { files } = e.target;
-        const filesArray = Object.values(files);
         const filesErrors: string[] = [];
 
         for (const file of filesArray) {
@@ -105,12 +107,12 @@ export function WithUploadToIpfs<P extends WithUploadToIpfsProps>(
     const newProps = useMemo(
       () => ({
         maxSize: MAX_FILE_SIZE,
-        supportFormats: SUPPORTED_FORMATS,
+        accept,
         saveToIpfs,
         loadMedia,
         removeFile
       }),
-      [saveToIpfs, loadMedia, removeFile]
+      [saveToIpfs, loadMedia, removeFile, accept]
     );
 
     if (withUpload) {

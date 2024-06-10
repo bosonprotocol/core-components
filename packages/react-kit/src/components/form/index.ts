@@ -1,7 +1,7 @@
 export { default as Checkbox } from "./Checkbox";
 export { default as Datepicker } from "./Datepicker";
 export { default as Error } from "./Error";
-export { default as FormField } from "./FormField";
+export { FormField } from "./FormField";
 export * from "./BaseInput";
 export { default as Input, InputProps } from "./Input";
 export { default as Phone } from "./Phone";

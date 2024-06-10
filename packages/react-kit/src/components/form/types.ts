@@ -1,4 +1,7 @@
+import { ReactNode } from "react";
 import { SingleValue } from "react-select";
+import { CSSProperties } from "styled-components";
+import { ImageEditorModalProps } from "./Upload/ImageEditorModal/ImageEditorModal";
 
 export interface BaseProps {
   name: string;
@@ -28,12 +31,13 @@ export interface ErrorProps {
 
 export interface FormFieldProps {
   title: string;
+  titleIcon?: ReactNode;
   subTitle?: string | false;
   required?: boolean;
   tooltip?: string;
   children: React.ReactNode | string;
   style?: React.CSSProperties;
-  theme?: string;
+  copyIconColor?: CSSProperties["backgroundColor"];
   valueToCopy?:
     | string
     | {
@@ -86,7 +90,7 @@ export interface SelectProps extends BaseProps {
   label?: string;
 }
 
-export interface UploadProps extends BaseProps {
+export type UploadProps = BaseProps & {
   accept?: string;
   multiple?: boolean;
   trigger?: React.ReactNode | JSX.Element;
@@ -97,7 +101,18 @@ export interface UploadProps extends BaseProps {
   onLoadSinglePreviewImage?: (base64Uri: string) => void;
   withUpload?: boolean;
   onLoading?: (loading: boolean) => void;
-}
+  borderRadius?: number;
+  width?: number;
+  height?: number;
+  imgPreviewStyle?: Pick<CSSProperties, "objectFit">;
+} & (
+    | {
+        withEditor: true;
+        saveButtonTheme: ImageEditorModalProps["saveButtonTheme"];
+      }
+    | { withEditor: false; saveButtonTheme: undefined }
+  );
+
 export interface FileProps {
   src: string;
   name?: string; // for example: "redeemeum.png"

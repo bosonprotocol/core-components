@@ -16,7 +16,7 @@ import {
   IExpireButton
 } from "../../../../../cta/exchange/ExpireButton";
 import { useEnvContext } from "../../../../../environment/EnvironmentContext";
-import SimpleError from "../../../../../error/SimpleError";
+import { SimpleError } from "../../../../../error/SimpleError";
 import { Grid } from "../../../../../ui/Grid";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import { Typography } from "../../../../../ui/Typography";
