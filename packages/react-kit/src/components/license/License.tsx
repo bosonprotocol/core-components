@@ -7,7 +7,7 @@ import remarkGfm from "remark-gfm";
 import { useRenderTemplate } from "../../hooks/useRenderTemplate";
 import { ProgressStatus } from "../../lib/progress/progressStatus";
 import { useBosonContext } from "../boson/BosonProvider";
-import SimpleError from "../error/SimpleError";
+import { SimpleError } from "../error/SimpleError";
 import Loading from "../ui/loading/LoadingWrapper";
 
 interface Props {

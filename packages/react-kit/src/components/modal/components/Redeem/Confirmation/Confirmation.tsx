@@ -24,7 +24,7 @@ import {
   IRedeemButton
 } from "../../../../cta/exchange/RedeemButton";
 import { useEnvContext } from "../../../../environment/EnvironmentContext";
-import SimpleError from "../../../../error/SimpleError";
+import { SimpleError } from "../../../../error/SimpleError";
 import SuccessTransactionToast from "../../../../toasts/SuccessTransactionToast";
 import { Grid } from "../../../../ui/Grid";
 import { Spinner } from "../../../../ui/loading/Spinner";

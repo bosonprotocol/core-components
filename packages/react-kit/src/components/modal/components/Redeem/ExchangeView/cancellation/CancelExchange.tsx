@@ -18,7 +18,7 @@ import {
   ICancelButton
 } from "../../../../../cta/exchange/CancelButton";
 import { useEnvContext } from "../../../../../environment/EnvironmentContext";
-import SimpleError from "../../../../../error/SimpleError";
+import { SimpleError } from "../../../../../error/SimpleError";
 import SuccessTransactionToast from "../../../../../toasts/SuccessTransactionToast";
 import { Grid } from "../../../../../ui/Grid";
 import ThemedButton from "../../../../../ui/ThemedButton";

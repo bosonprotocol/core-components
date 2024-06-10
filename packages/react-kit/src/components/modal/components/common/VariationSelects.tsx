@@ -12,7 +12,7 @@ import { isNumeric } from "../../../../lib/numbers/numbers";
 import { theme } from "../../../../theme";
 import { isTruthy } from "../../../../types/helpers";
 import { VariantV1, Variation } from "../../../../types/variants";
-import SimpleError from "../../../error/SimpleError";
+import { SimpleError } from "../../../error/SimpleError";
 import { Select } from "../../../form";
 import { SelectDataProps } from "../../../form/types";
 import { Grid } from "../../../ui/Grid";
