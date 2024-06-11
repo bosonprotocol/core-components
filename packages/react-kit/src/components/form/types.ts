@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { SingleValue } from "react-select";
 import { CSSProperties } from "styled-components";
 import { ImageEditorModalProps } from "./Upload/ImageEditorModal/ImageEditorModal";
+import type { TextAreaTheme } from "./Field.styles";
 
 export interface BaseProps {
   name: string;
@@ -22,7 +23,7 @@ export interface CheckboxProps extends BaseProps {
 }
 
 export type TextareaProps = BaseProps &
-  React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+  React.TextareaHTMLAttributes<HTMLTextAreaElement> & { theme?: TextAreaTheme };
 
 export interface ErrorProps {
   display?: boolean;

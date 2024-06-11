@@ -84,3 +84,4 @@ export * from "./components/portal/Portal";
 export * from "./components/error/ErrorMessage";
 export * from "./components/error/SimpleError";
 export * from "./components/step/MultiSteps";
+export * from "./components/ipfs/IpfsProvider";
