@@ -24,6 +24,7 @@
     "packages/**/dist/**",
     "**/*.spec.ts",
     "**/*.test.ts",
+    "**/*.stories.*",
     "dist"
   ]
 }
