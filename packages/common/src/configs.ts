@@ -53,7 +53,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       nativeCoin: chainIdToInfo.get(80002),
       getTxExplorerUrl: chainIdToGraphTx.get(80002),
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/71250/llx-amoy-testing/v0.0.1",
+        "https://api.studio.thegraph.com/query/19713/boson-testing-amoy/v0.0.1",
       jsonRpcUrl:
         "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
@@ -82,7 +82,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       nativeCoin: chainIdToInfo.get(11155111),
       getTxExplorerUrl: chainIdToGraphTx.get(11155111),
       subgraphUrl:
-        "https://api.thegraph.com/subgraphs/name/bosonprotocol/sepolia-testing",
+        "https://api.studio.thegraph.com/query/19713/boson-testing-sepolia/v0.0.1",
       jsonRpcUrl:
         "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
@@ -109,7 +109,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       nativeCoin: chainIdToInfo.get(80002),
       getTxExplorerUrl: chainIdToGraphTx.get(80002),
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/71250/llx-amoy-staging/v0.0.1",
+        "https://api.studio.thegraph.com/query/19713/boson-staging-amoy/v0.0.1",
       jsonRpcUrl:
         "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
@@ -138,7 +138,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       nativeCoin: chainIdToInfo.get(11155111),
       getTxExplorerUrl: chainIdToGraphTx.get(11155111),
       subgraphUrl:
-        "https://api.thegraph.com/subgraphs/name/bosonprotocol/sepolia-staging",
+        "https://api.studio.thegraph.com/query/19713/boson-staging-sepolia/v0.0.1",
       jsonRpcUrl:
         "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
@@ -165,7 +165,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       nativeCoin: chainIdToInfo.get(137),
       getTxExplorerUrl: chainIdToGraphTx.get(137),
       subgraphUrl:
-        "https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon",
+        "https://api.studio.thegraph.com/query/19713/boson-polygon/v0.0.1",
       jsonRpcUrl:
         "https://polygon-mainnet.infura.io/v3/383117b55d614525b07f03b5979c5f19",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
@@ -194,7 +194,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       nativeCoin: chainIdToInfo.get(1),
       getTxExplorerUrl: chainIdToGraphTx.get(1),
       subgraphUrl:
-        "https://api.thegraph.com/subgraphs/name/bosonprotocol/ethereum",
+        "https://api.studio.thegraph.com/query/19713/boson-ethereum/v0.0.1",
       jsonRpcUrl:
         "https://mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
