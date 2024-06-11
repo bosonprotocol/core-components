@@ -29,7 +29,7 @@ jobs:
       - id: build
         run: npm run build -- --cache-dir=".turbo"
       - name: Authenticate The Graph CLI
-        run: npx graph auth --product hosted-service ${{ secrets.THE_GRAPH_ACCESS_TOKEN_STAGING }}
+        run: npx graph auth --studio ${{ secrets.THE_GRAPH_ACCESS_TOKEN_STAGING }}
       - name: Deploy subgraph to amoy
         run: cd ./packages/subgraph && npm run deploy:staging:amoy
       - name: Deploy subgraph to sepolia

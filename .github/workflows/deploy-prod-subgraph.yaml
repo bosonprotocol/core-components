@@ -34,7 +34,7 @@ jobs:
       - id: build
         run: npm run build -- --cache-dir=".turbo"
       - name: Authenticate The Graph CLI
-        run: npx graph auth --product hosted-service ${{ secrets.THE_GRAPH_ACCESS_TOKEN_PRODUCTION }}
+        run: npx graph auth --studio ${{ secrets.THE_GRAPH_ACCESS_TOKEN_PRODUCTION }}
       - name: Deploy subgraph to Polygon
         run: cd ./packages/subgraph && npm run deploy:production
       - name: Deploy subgraph to Ethereum
