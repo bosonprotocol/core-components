@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.32.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.31.1...@bosonprotocol/react-kit@0.32.0) (2024-06-11)
+
+
+### Bug Fixes
+
+* redeem modal ([#752](https://github.com/bosonprotocol/core-components/issues/752)) ([cc4b230](https://github.com/bosonprotocol/core-components/commit/cc4b230e9232ab446275597f53e605d1c9660e95))
+
+
+### Features
+
+* create multisteps component ([#750](https://github.com/bosonprotocol/core-components/issues/750)) ([a14ce87](https://github.com/bosonprotocol/core-components/commit/a14ce8706d43d2784acaea76e6c92d0750bd833d))
+* extract wallet components from interface ([#743](https://github.com/bosonprotocol/core-components/issues/743)) ([91d0aef](https://github.com/bosonprotocol/core-components/commit/91d0aeff23fb7b82d41c907b05b25c395422d3c0))
+* make components more generic ([#738](https://github.com/bosonprotocol/core-components/issues/738)) ([b1663cc](https://github.com/bosonprotocol/core-components/commit/b1663ccadfae8102f285e90842eb2f154bff34ea))
+* unify loading components ([#748](https://github.com/bosonprotocol/core-components/issues/748)) ([941f12f](https://github.com/bosonprotocol/core-components/commit/941f12f0718137041c6628e7d819524a939728a7))
+* update upload component with editor ([#751](https://github.com/bosonprotocol/core-components/issues/751)) ([3b58261](https://github.com/bosonprotocol/core-components/commit/3b582617b600cc09593f0e7044be19d0aaa5692a))
+
+
+
+
+
 ## [0.31.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.31.0...@bosonprotocol/react-kit@0.31.1) (2024-05-23)
 
 

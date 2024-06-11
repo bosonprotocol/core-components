@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.27.3...@bosonprotocol/common@1.28.0) (2024-06-11)
+
+
+### Features
+
+* extract wallet components from interface ([#743](https://github.com/bosonprotocol/core-components/issues/743)) ([91d0aef](https://github.com/bosonprotocol/core-components/commit/91d0aeff23fb7b82d41c907b05b25c395422d3c0))
+
+
+
+
+
 ## [1.27.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.27.2...@bosonprotocol/common@1.27.3) (2024-05-21)
 
 
