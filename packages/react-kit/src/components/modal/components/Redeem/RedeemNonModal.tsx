@@ -483,9 +483,11 @@ function RedeemNonModal({
     return jsx;
   }
   const deliveryAddressVar =
-    process?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK ||
-    // @ts-expect-error import.meta.env only exists in vite environments
-    import.meta?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK;
+    typeof process !== "undefined"
+      ? process?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK || // @ts-expect-error import.meta.env only exists in vite environments
+        import.meta?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK
+      : // @ts-expect-error import.meta.env only exists in vite environments
+        import.meta?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK;
   const mockedDeliveryAddress = deliveryAddressVar
     ? JSON.parse(deliveryAddressVar)
     : undefined;
