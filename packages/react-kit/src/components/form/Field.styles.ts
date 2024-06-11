@@ -115,7 +115,7 @@ export const FieldInput = styled.input<{
     `};
 `;
 
-export const FileUploadWrapper = styled.div<{ choosen: any; error: any }>`
+export const FileUploadWrapper = styled.div<{ error: any }>`
   position: relative;
   overflow: hidden;
   display: flex;

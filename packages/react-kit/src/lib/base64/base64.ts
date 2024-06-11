@@ -3,7 +3,7 @@ import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
 export async function fetchImageAsBase64(imageUrl: string) {
   const response = await fetch(imageUrl);
   const blob = await response.blob();
-  return blobToBase64(blob);
+  return { base64: await blobToBase64(blob), blob };
 }
 
 export function fromBase64ToBinary(base64: string): Buffer {

@@ -13,15 +13,16 @@ import type { FormFieldProps } from "./types";
 
 const colors = theme.colors.light;
 
-export default function FormField({
+export function FormField({
   title,
+  titleIcon,
   subTitle = false,
   required = false,
   tooltip,
   children,
   style = {},
-  theme = "",
-  valueToCopy
+  valueToCopy,
+  copyIconColor = colors.secondary
 }: FormFieldProps) {
   return (
     <FormFieldWrapper
@@ -59,10 +60,11 @@ export default function FormField({
                   }
                 }}
               >
-                <Copy size={24} color={colors.secondary} weight="light" />
+                <Copy size={24} color={copyIconColor} weight="light" />
               </CopyButton>
             )}
           </Typography>
+          {titleIcon}
           {tooltip && <Tooltip content={tooltip} size={16} />}
         </Grid>
         {subTitle && (

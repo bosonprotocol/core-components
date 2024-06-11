@@ -12,6 +12,7 @@ export type ModalProps = {
   contentStyle?: CSSProperties;
   closable?: boolean;
   onClose?: (data: unknown | undefined | null) => void;
+  hidden?: boolean;
 };
 export type ModalType = keyof typeof MODAL_TYPES | null;
 type ModalSize = "xxs" | "xs" | "s" | "m" | "l" | "xl";
@@ -25,9 +26,9 @@ export type Store = {
   theme?: "light" | "dark";
 };
 export type GenericModalProps<T extends keyof typeof MODAL_TYPES> =
-  Parameters<(typeof MODAL_COMPONENTS)[T]>[0] extends Record<string, never>
-    ? ModalProps & Record<string, never>
-    : ModalProps & Parameters<(typeof MODAL_COMPONENTS)[T]>[0];
+  Parameters<(typeof MODAL_COMPONENTS)[T]> extends [infer P, ...any[]]
+    ? ModalProps & P
+    : ModalProps;
 
 export interface ModalContextType {
   showModal: <T extends keyof typeof MODAL_TYPES>(
