@@ -8,7 +8,7 @@ import {
   Exchange_OrderBy,
   OrderDirection
 } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
-import Loading from "../../../../ui/loading/Loading";
+import Loading from "../../../../ui/loading/LoadingWrapper";
 import { Exchange } from "../../../../../types/exchange";
 import { useCurationLists } from "../../../../../hooks/useCurationLists";
 

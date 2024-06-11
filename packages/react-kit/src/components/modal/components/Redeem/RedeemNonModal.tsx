@@ -28,7 +28,7 @@ import { useAccount } from "../../../../hooks/connection/connection";
 import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
 import { theme } from "../../../../theme";
 import { isTruthy } from "../../../../types/helpers";
-import { Loading } from "../../../Loading";
+import { Loading } from "../../../ui/loading/Loading";
 import { useConfigContext } from "../../../config/ConfigContext";
 import { Typography } from "../../../ui/Typography";
 import {
@@ -483,9 +483,11 @@ function RedeemNonModal({
     return jsx;
   }
   const deliveryAddressVar =
-    process?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK ||
-    // @ts-expect-error import.meta.env only exists in vite environments
-    import.meta?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK;
+    typeof process !== "undefined"
+      ? process?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK || // @ts-expect-error import.meta.env only exists in vite environments
+        import.meta?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK
+      : // @ts-expect-error import.meta.env only exists in vite environments
+        import.meta?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK;
   const mockedDeliveryAddress = deliveryAddressVar
     ? JSON.parse(deliveryAddressVar)
     : undefined;

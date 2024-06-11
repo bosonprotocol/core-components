@@ -4,7 +4,7 @@ import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 import { theme } from "../../../../theme";
 import { Exchange } from "../../../../types/exchange";
 import { VariantV1 } from "../../../../types/variants";
-import Loading from "../../../ui/loading/Loading";
+import Loading from "../../../ui/loading/LoadingWrapper";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import { BosonLogo } from "../common/BosonLogo";
 import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";

@@ -8,7 +8,7 @@ import { useRenderTemplate } from "../../hooks/useRenderTemplate";
 import { ProgressStatus } from "../../lib/progress/progressStatus";
 import { useBosonContext } from "../boson/BosonProvider";
 import SimpleError from "../error/SimpleError";
-import Loading from "../ui/loading/Loading";
+import Loading from "../ui/loading/LoadingWrapper";
 
 interface Props {
   offerId: string | undefined;

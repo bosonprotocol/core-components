@@ -15,7 +15,7 @@ import { useConfigContext } from "../../../../config/ConfigContext";
 import { Grid } from "../../../../ui/Grid";
 import { GridContainer } from "../../../../ui/GridContainer";
 import { Typography } from "../../../../ui/Typography";
-import Loading from "../../../../ui/loading/Loading";
+import Loading from "../../../../ui/loading/LoadingWrapper";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { CardCTA } from "./CardCTA";
 import { BosonLogo } from "../../common/BosonLogo";

@@ -10,7 +10,7 @@ import {
 } from "../../lib/images/images";
 import { theme } from "../../theme";
 import { useIpfsContext } from "../ipfs/IpfsContext";
-import { Loading } from "../Loading";
+import { Loading } from "./loading/Loading";
 
 import { Typography } from "./Typography";
 import { zIndex } from "./zIndex";
