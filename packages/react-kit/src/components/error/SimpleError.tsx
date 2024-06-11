@@ -18,11 +18,7 @@ interface Props {
   [x: string]: any;
 }
 
-export default function SimpleError({
-  errorMessage,
-  children,
-  ...rest
-}: Props) {
+export function SimpleError({ errorMessage, children, ...rest }: Props) {
   return (
     <StyledGrid
       justifyContent="flex-start"
