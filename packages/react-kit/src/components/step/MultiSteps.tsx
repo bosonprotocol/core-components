@@ -1,5 +1,5 @@
 import { ArrowLeft, ArrowRight } from "phosphor-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Grid } from "../ui/Grid";
 import { Step, StepColorProps, StepState } from "./Step";
@@ -51,7 +51,7 @@ export function MultiSteps({
   useEffect(() => {
     setCurrent(active || 0);
   }, [active]);
-  const [stepWidth, setStepWidth] = useState<number>(50);
+  const stepWidthRef = useRef<number>(50);
   return (
     <Grid
       justifyContent="space-evenly"
@@ -60,8 +60,11 @@ export function MultiSteps({
         children?.forEach((child) => {
           const isVisible = child.checkVisibility({ checkVisibilityCSS: true });
           if (isVisible) {
-            if (child.clientWidth) {
-              setStepWidth(child.clientWidth);
+            if (
+              child.clientWidth &&
+              stepWidthRef.current !== child.clientWidth
+            ) {
+              stepWidthRef.current = child.clientWidth;
             }
           }
         });
@@ -83,8 +86,7 @@ export function MultiSteps({
       )}
       <div
         style={{
-          // width: `${stepWidthRef.current}px`
-          width: `${stepWidth}px`
+          width: `${stepWidthRef.current}px`
         }}
       />
       <MultiStepStyle
