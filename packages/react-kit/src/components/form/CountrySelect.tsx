@@ -68,6 +68,10 @@ const customStyles = {
           : theme.colors.unselectedOptionColor
     };
   },
+  menu: (provided) => ({
+    ...provided,
+    overflow: "hidden"
+  }),
   indicatorSeparator: () => ({
     display: "none"
   })

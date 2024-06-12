@@ -11,7 +11,23 @@ import { Formik } from "formik";
 
 const inputWithErrors = "With error";
 const inputName = "test";
-const countries: CountryCode[] = ["AR", "AU", "AT", "BE", "BR"];
+const countries: CountryCode[] = [
+  "AR",
+  "AU",
+  "AT",
+  "BE",
+  "BR",
+  "GR",
+  "HK",
+  "IS",
+  "IN",
+  "IE",
+  "IL",
+  "IT",
+  "JP",
+  "KR",
+  "LU"
+];
 const colors = theme.colors.light;
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
