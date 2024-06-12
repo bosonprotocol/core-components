@@ -87,7 +87,7 @@ function Upload({
   useEffect(() => {
     onFilesSelect?.(files);
     helpers.setValue(files);
-    console.log("useEffect", { files });
+
     if (!multiple && files && files?.length !== 0) {
       if (isImageOnly) {
         if (withUpload) {

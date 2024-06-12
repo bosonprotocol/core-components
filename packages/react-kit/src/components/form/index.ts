@@ -6,6 +6,7 @@ export * from "./BaseInput";
 export { default as Input, InputProps } from "./Input";
 export { default as Phone } from "./Phone";
 export { default as Select } from "./Select";
+export * from "./CountrySelect";
 export * from "./BaseTagsInput";
 export * from "./BaseTextArea";
 export { default as Upload } from "./Upload/Upload";
