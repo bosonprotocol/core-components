@@ -8,8 +8,7 @@ export type BaseTextAreaProps = TextareaProps;
 export function BaseTextArea({ name, theme, ...props }: TextareaProps) {
   const [field, meta] = useField(name);
   const errorMessage = meta.error && meta.touched ? meta.error : "";
-  const displayError =
-    typeof errorMessage === typeof "string" && errorMessage !== "";
+  const displayError = typeof errorMessage === "string" && errorMessage !== "";
   return (
     <>
       <FieldTextArea
