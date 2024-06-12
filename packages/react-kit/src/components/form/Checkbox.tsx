@@ -10,8 +10,7 @@ export default function Checkbox({ name, text, ...props }: CheckboxProps) {
   const [field, meta, helpers] = useField(name);
   const ref = useRef(field.value);
   const errorMessage = meta.error && meta.touched ? meta.error : "";
-  const displayError =
-    typeof errorMessage === typeof "string" && errorMessage !== "";
+  const displayError = typeof errorMessage === "string" && errorMessage !== "";
   const checkboxId = `checkbox-${name}`;
 
   useEffect(() => {
