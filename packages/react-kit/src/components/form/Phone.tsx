@@ -138,8 +138,7 @@ export default function Phone({ name, ...props }: InputProps) {
   const [field, meta, helpers] = useField(name);
   const errorText = meta.error || status?.[name];
   const errorMessage = errorText && meta.touched ? errorText : "";
-  const displayError =
-    typeof errorMessage === typeof "string" && errorMessage !== "";
+  const displayError = typeof errorMessage === "string" && errorMessage !== "";
 
   const handlePhoneChange = useCallback(
     (value: string) => {

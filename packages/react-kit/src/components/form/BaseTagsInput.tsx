@@ -35,8 +35,7 @@ export const BaseTagsInput = ({
   const tags = field.value || [];
 
   const errorMessage = meta.error && meta.touched ? meta.error : "";
-  const displayError =
-    typeof errorMessage === typeof "string" && errorMessage !== "";
+  const displayError = typeof errorMessage === "string" && errorMessage !== "";
 
   const handleBlur = () => {
     if (!meta.touched) {

@@ -32,7 +32,7 @@ export const BaseInput = forwardRef<HTMLInputElement, BaseInputProps>(
     const errorText = meta.error || status?.[name];
     const errorMessage = errorText && meta.touched ? errorText : "";
     const displayError =
-      typeof errorMessage === typeof "string" && errorMessage !== "";
+      typeof errorMessage === "string" && errorMessage !== "";
     const InputComponent = useMemo(() => {
       const displayClearButton = isClearable && !props.disabled;
       const inputProps = {

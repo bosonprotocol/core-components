@@ -85,3 +85,4 @@ export * from "./components/error/ErrorMessage";
 export * from "./components/error/SimpleError";
 export * from "./components/step/MultiSteps";
 export * from "./components/ipfs/IpfsProvider";
+export * from "./types/helpers";
