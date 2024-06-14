@@ -23,7 +23,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 });
 
 task("deploy-wrappers", "Deploy wrappers", async (taskArgs, hre) => {
-  const chainId = hre.network.config.chainId;
+  const { chainId } = await hre.ethers.provider.getNetwork();
   const {
     protocolAddress,
     priceDiscoveryClient: unwrapperAddress,
