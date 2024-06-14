@@ -7,7 +7,6 @@ import { BosonTypes } from "../../protocol-contracts/contracts/domain/BosonTypes
 contract OpenSeaWrapperFactory {
     address private protocolAddress;
     address private unwrapperAddress;
-    address private wethAddress;
     address private seaport;
     uint256 private openSeaFee;
     address payable openSeaRecipient;
@@ -17,7 +16,6 @@ contract OpenSeaWrapperFactory {
 
     constructor(
         address _protocolAddress,
-        address _wethAddress,
         address _unwrapperAddress,
         address _seaport,
         uint256 _openSeaFee,
@@ -26,7 +24,6 @@ contract OpenSeaWrapperFactory {
         address _openSeaConduit
     ) {
         protocolAddress = _protocolAddress;
-        wethAddress = _wethAddress;
         unwrapperAddress = _unwrapperAddress;
         seaport = _seaport;
         openSeaFee = _openSeaFee;
@@ -42,7 +39,6 @@ contract OpenSeaWrapperFactory {
         OpenSeaWrapper wrapper = new OpenSeaWrapper(
             _voucherContract,
             protocolAddress,
-            wethAddress,
             unwrapperAddress,
             seaport,
             openSeaFee,

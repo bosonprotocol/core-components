@@ -17,7 +17,6 @@ async function deployMockBosonSellerHandler() {
 }
 
 async function deployOpenSeaWrapperFactory(protocolAddress) {
-  const wethAddress = "0x2222222222222222222222222222222222222222";
   const unwrapperAddress = "0x3333333333333333333333333333333333333333";
   const seaport = "0x4444444444444444444444444444444444444444";
   const openSeaFee = "250";
@@ -30,7 +29,6 @@ async function deployOpenSeaWrapperFactory(protocolAddress) {
   );
   const openSeaWrapperFactory = await OpenSeaWrapperFactory.deploy(
     protocolAddress,
-    wethAddress,
     unwrapperAddress,
     seaport,
     openSeaFee,

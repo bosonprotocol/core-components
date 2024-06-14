@@ -1,7 +1,6 @@
 async function deployWrappersTask(
   hre,
   protocolAddress,
-  wethAddress,
   unwrapperAddress,
   seaport
 ) {
@@ -30,7 +29,6 @@ async function deployWrappersTask(
   );
   const openSeaWrapperFactory = await OpenSeaWrapperFactory.deploy(
     protocolAddress,
-    wethAddress,
     unwrapperAddress,
     seaport,
     feeAmount,

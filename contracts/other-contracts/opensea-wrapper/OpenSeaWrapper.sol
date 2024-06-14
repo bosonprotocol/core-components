@@ -216,7 +216,6 @@ contract OpenSeaWrapper is BosonTypes, Ownable, ERC721 {
     address private immutable factoryAddress;
     address private immutable protocolAddress;
     address private immutable unwrapperAddress;
-    address private immutable wethAddress;
     address private immutable seaport;
     uint256 private immutable openSeaFee;
     address payable immutable openSeaRecipient;
@@ -234,12 +233,10 @@ contract OpenSeaWrapper is BosonTypes, Ownable, ERC721 {
      *
      * @param _voucherAddress The address of the voucher that are wrapped by this contract.
      * @param _protocolAddress The address of the Boson Protocol.
-     * @param _wethAddress The address of the WETH token.
      */
     constructor(
         address _voucherAddress,
         address _protocolAddress,
-        address _wethAddress,
         address _unwrapperAddress,
         address _seaport,
         uint256 _openSeaFee,
@@ -249,7 +246,6 @@ contract OpenSeaWrapper is BosonTypes, Ownable, ERC721 {
     ) ERC721(getVoucherName(_voucherAddress), getVoucherSymbol(_voucherAddress)) {
         voucherAddress = _voucherAddress;
         protocolAddress = _protocolAddress;
-        wethAddress = _wethAddress;
         unwrapperAddress = _unwrapperAddress;
         seaport = _seaport;
         openSeaFee = _openSeaFee;
@@ -548,8 +544,6 @@ contract OpenSeaWrapper is BosonTypes, Ownable, ERC721 {
             (, BosonTypes.Offer memory offer, , , , ) = IBosonOfferHandler(protocolAddress).getOffer(offerId);
             exchangeToken = offer.exchangeToken;
 
-            // If exchange token is 0, it means native token is used. In that case, use WETH.
-            if (exchangeToken == address(0)) exchangeToken = wethAddress;
             cachedExchangeToken[_tokenId] = exchangeToken;
         }
 

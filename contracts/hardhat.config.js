@@ -26,14 +26,12 @@ task("deploy-wrappers", "Deploy wrappers", async (taskArgs, hre) => {
   const chainId = hre.network.config.chainId;
   const {
     protocolAddress,
-    wethAddress,
     priceDiscoveryClient: unwrapperAddress,
     seaport
   } = getWrapperConfig(chainId);
   const { openSeaWrapperFactory } = await deployWrappersTask(
     hre,
     protocolAddress,
-    wethAddress,
     unwrapperAddress,
     seaport
   );
@@ -254,7 +252,6 @@ function getWrapperConfig(chainId) {
       }
       return {
         protocolAddress: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
-        wethAddress: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
         priceDiscoveryClient: "0xb60cf39Fb18e5111174f346d0f39521ef6531fD4",
         seaport: "0x0000000000000068F116a894984e2DB1123eB395"
       };
@@ -268,7 +265,6 @@ function getWrapperConfig(chainId) {
       }
       return {
         protocolAddress: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
-        wethAddress: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
         priceDiscoveryClient: "0xb60cf39Fb18e5111174f346d0f39521ef6531fD4",
         seaport: "0x0000000000000068F116a894984e2DB1123eB395"
       };
@@ -289,7 +285,6 @@ function getWrapperConfig(chainId) {
       }
       return {
         protocolAddress,
-        wethAddress: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
         priceDiscoveryClient,
         seaport: "0x0000000000000068F116a894984e2DB1123eB395"
       };
@@ -310,7 +305,6 @@ function getWrapperConfig(chainId) {
       }
       return {
         protocolAddress,
-        wethAddress: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
         priceDiscoveryClient,
         seaport: "0x0000000000000068F116a894984e2DB1123eB395"
       };
@@ -324,7 +318,6 @@ function getWrapperConfig(chainId) {
       }
       return {
         protocolAddress: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-        wethAddress: "0x998abeb3E57409262aE5b751f60747921B33613E",
         priceDiscoveryClient: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
         seaport: "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF"
       };
