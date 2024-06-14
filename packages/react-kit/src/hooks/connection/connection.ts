@@ -16,7 +16,7 @@ import { useSignerAddress } from "../useSignerAddress";
 import { useEthersProvider } from "../ethers/useEthersProvider";
 import { useQuery } from "react-query";
 import { useExternalSignerChainId } from "../../lib/signer/externalSigner";
-import { Signer } from "ethers";
+import { Signer, providers } from "ethers";
 import { useWeb3ReactWrapper } from "../web3React/useWeb3ReactWrapper";
 
 export function useAccount() {
@@ -105,8 +105,11 @@ export function useIsConnectedToWrongChain(): boolean {
   return connectedToWrongChain;
 }
 
-export function useProvider() {
-  const { withExternalConnectionProps } = useConfigContext();
+export function useProvider():
+  | providers.JsonRpcProvider
+  | providers.FallbackProvider {
+  const { withExternalConnectionProps, withWeb3React } = useConfigContext();
+  const { provider: web3Provider } = useWeb3ReactWrapper() || {};
   let provider;
   let error: unknown;
   try {
@@ -116,12 +119,14 @@ export function useProvider() {
   }
   const magicProvider = useMagicProvider();
   const isMagicLoggedIn = useIsMagicLoggedIn();
-  if (!withExternalConnectionProps && error) {
+  if (!withExternalConnectionProps && error && !withWeb3React) {
     throw error;
   }
   return isMagicLoggedIn
-    ? magicProvider ?? provider
-    : provider ?? magicProvider;
+    ? magicProvider ?? web3Provider ?? provider
+    : withWeb3React
+      ? web3Provider ?? magicProvider ?? provider
+      : provider ?? magicProvider ?? web3Provider;
 }
 
 export function useSigner(): Signer | undefined {
@@ -140,6 +145,7 @@ export function useSigner(): Signer | undefined {
   const { externalSigner } = useExternalSigner() ?? {};
   const magicProvider = useMagicProvider();
   const isMagicLoggedIn = useIsMagicLoggedIn();
+  const { provider: web3Provider } = useWeb3ReactWrapper() || {};
 
   const signer = useMemo(() => {
     return externalConnectedSigner
@@ -148,13 +154,17 @@ export function useSigner(): Signer | undefined {
         ? externalSigner
         : isMagicLoggedIn
           ? magicProvider?.getSigner()
-          : wagmiSigner;
+          : withWeb3React
+            ? web3Provider?.getSigner()
+            : wagmiSigner;
   }, [
     externalConnectedSigner,
     externalSigner,
     wagmiSigner,
     magicProvider,
-    isMagicLoggedIn
+    isMagicLoggedIn,
+    web3Provider,
+    withWeb3React
   ]);
   if (!withExternalConnectionProps && error && !withWeb3React) {
     throw error;
