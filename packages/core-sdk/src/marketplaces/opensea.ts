@@ -259,6 +259,32 @@ export class OpenSeaMarketplace extends Marketplace {
     return this.convertOsOrder(osOrder);
   }
 
+  public async buildAdvancedOrder(asset: {
+    contract: string;
+    tokenId: string;
+  }): Promise<AdvancedOrder> {
+    // Asumption: we're fulfilling a Bid Order (don't know if it makes sense with an Ask order)
+    const osOrder = await this._handler.api.getOrder({
+      assetContractAddress: asset.contract,
+      tokenId: asset.tokenId,
+      side: OrderSide.BID
+    });
+    const ffd = await this._handler.api.generateFulfillmentData(
+      this._contracts.priceDiscoveryClient, // the address of the PriceDiscoveryClient contract, which will call the fulfilment method
+      osOrder.orderHash,
+      osOrder.protocolAddress,
+      osOrder.side
+    );
+    const inputData = ffd.fulfillment_data.transaction
+      .input_data as unknown as {
+      orders: AdvancedOrder[];
+      criteriaResolvers: CriteriaResolver[];
+      fulfillments: Fulfillment[];
+      recipient: string;
+    };
+    return inputData.orders[0];
+  }
+
   public async generateFulfilmentData(
     asset: {
       contract: string;

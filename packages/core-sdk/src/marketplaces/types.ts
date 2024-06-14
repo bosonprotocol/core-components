@@ -4,6 +4,7 @@ import {
   TransactionResponse
 } from "@bosonprotocol/common";
 import { OpenSeaSDKHandler } from "./opensea";
+import { AdvancedOrder } from "../seaport/interface";
 
 export type DefaultHandler = {
   // Just here as an example for other type of merketplace in the future
@@ -81,6 +82,10 @@ export abstract class Marketplace {
     },
     withWrapper?: boolean
   ): Promise<PriceDiscoveryStruct>;
+  public abstract buildAdvancedOrder(asset: {
+    contract: string;
+    tokenId: string;
+  }): Promise<AdvancedOrder>;
   public abstract wrapVouchers(
     contract: string,
     tokenIds: string[]
