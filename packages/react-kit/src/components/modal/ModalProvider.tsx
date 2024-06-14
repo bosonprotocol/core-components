@@ -56,8 +56,7 @@ const RenderModalComponent = ({
 interface Props {
   children: React.ReactNode;
 }
-export default function ModalProvider({ children }: Props) {
-  // const { pathname } = useLocation();
+export function ModalProvider({ children }: Props) {
   const [store, setStore] = useState(initalState.store);
 
   const showModal = useCallback(
@@ -100,6 +99,7 @@ export default function ModalProvider({ children }: Props) {
   }, []);
 
   // TODO: check if this is necessary
+  // const { pathname } = useLocation();
   // useEffect(() => {
   //   if (store.modalType !== null) {
   //     hideModal();

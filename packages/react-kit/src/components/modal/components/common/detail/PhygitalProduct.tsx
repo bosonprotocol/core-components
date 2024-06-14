@@ -1,21 +1,22 @@
 import { ArrowSquareUpRight } from "phosphor-react";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
-import { useGetTokenUriImage } from "../../../../../hooks";
+import { useBundleItemsImages } from "../../../../../hooks/bundles/useBundleItemsImages";
 import { useErc1155Name } from "../../../../../hooks/contracts/erc1155/useErc1155Name";
 import { useErc721Name } from "../../../../../hooks/contracts/erc721/useErc721Name";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
+import { formatAddress } from "../../../../../lib/address/address";
 import { isNftItem, isProductV1Item } from "../../../../../lib/bundle/filter";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
+import { theme } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
+import { Tooltip } from "../../../../tooltip/Tooltip";
 import { Grid } from "../../../../ui/Grid";
 import IpfsImage from "../../../../ui/IpfsImage";
 import ThemedButton from "../../../../ui/ThemedButton";
 import { Typography } from "../../../../ui/Typography";
 import Video from "../../../../ui/Video";
-import { theme } from "../../../../../theme";
-import { Tooltip } from "../../../../tooltip/Tooltip";
-import { formatAddress } from "../../../../../lib/address/address";
+import { digitalTypeMappingDisplay } from "../../../../../lib/bundle/const";
 const colors = theme.colors.light;
 const imageSize = "2.5rem";
 
@@ -25,6 +26,18 @@ const MediaWrapper = styled.div`
   height: ${imageSize};
   min-width: ${imageSize};
   overflow: hidden;
+  .loading-container {
+    padding-top: 100%;
+  }
+`;
+const Pill = styled.div`
+  background: white;
+  white-space: nowrap;
+  min-width: 9ch;
+  box-sizing: content-box;
+  text-align: start;
+  font-size: 0.7rem;
+  color: ${({ theme }) => theme?.colors?.light.secondary};
 `;
 const ActionText = ({ children }: { children: ReactNode }) => {
   return <span style={{ fontSize: "0.75rem" }}>{children}</span>;
@@ -52,27 +65,7 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
     },
     { enabled: !!contracts?.length, coreSDK }
   );
-  const { data: ercImages } = useGetTokenUriImage(
-    {
-      tokenIds: bundleItems?.map((bundleItem) => {
-        if (isNftItem(bundleItem)) {
-          return (
-            bundleItem.tokenIdRange?.min ??
-            bundleItem.tokenIdRange?.max ??
-            bundleItem.tokenId
-          );
-        }
-        return null;
-      }),
-      tokenUris: bundleItems?.map((bundleItem) => {
-        if (isNftItem(bundleItem)) {
-          return bundleItem.metadataUri;
-        }
-        return null;
-      })
-    },
-    { enabled: !!bundleItems?.length }
-  );
+  const { images } = useBundleItemsImages({ bundleItems, coreSDK });
   return (
     <Grid flexDirection="column" alignItems="flex-start" gap="1rem">
       <Typography>
@@ -90,11 +83,17 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
             let imageSrc: string | undefined | null;
             let videoSrc: string | undefined | null;
             let rangeText: JSX.Element | undefined | null;
+            let pill: ReactNode | undefined | null;
             if (isProductV1Item(bundleItem)) {
               quantity = 1;
               name = bundleItem.product.title;
-              imageSrc = bundleItem.product.visuals_images?.[0]?.url;
-              videoSrc = bundleItem.product.visuals_videos?.[0]?.url;
+              imageSrc =
+                bundleItem.productOverrides?.visuals_images?.[0]?.url ||
+                bundleItem.product.visuals_images?.[0]?.url;
+              videoSrc =
+                bundleItem.productOverrides?.visuals_videos?.[0]?.url ||
+                bundleItem.product.visuals_videos?.[0]?.url;
+              pill = <Pill>Physical</Pill>;
             } else if (isNftItem(bundleItem)) {
               quantity = bundleItem.quantity || 1;
               name =
@@ -118,7 +117,7 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
                   </Tooltip>
                 );
               }
-              imageSrc = ercImages?.[index] || bundleItem.image;
+              imageSrc = images?.[index];
               videoSrc = bundleItem.animationUrl;
               rangeText =
                 bundleItem.tokenIdRange?.min ||
@@ -141,6 +140,22 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
                       : `IDs: ${bundleItem.tokenIdRange?.min}-${bundleItem.tokenIdRange?.max}`}
                   </span>
                 ) : null;
+              const type = bundleItem.attributes?.find(
+                (attribute) => attribute.traitType === "type"
+              );
+              pill =
+                type &&
+                digitalTypeMappingDisplay[
+                  type.value as keyof typeof digitalTypeMappingDisplay
+                ] ? (
+                  <Pill>
+                    {
+                      digitalTypeMappingDisplay[
+                        type.value as keyof typeof digitalTypeMappingDisplay
+                      ]
+                    }
+                  </Pill>
+                ) : null;
             } else {
               name = "Unknown";
             }
@@ -158,16 +173,22 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
                   color: colors.darkGrey
                 }}
               >
-                {imageSrc ? (
-                  <MediaWrapper>
-                    <IpfsImage src={imageSrc} />
-                  </MediaWrapper>
-                ) : videoSrc ? (
+                {videoSrc ? (
                   <MediaWrapper>
                     <Video src={videoSrc} />
                   </MediaWrapper>
-                ) : null}
-                <div>{quantity}x</div>
+                ) : imageSrc ? (
+                  <MediaWrapper>
+                    <IpfsImage
+                      src={imageSrc}
+                      overrides={{ ipfsGateway: "https://ipfs.io/ipfs" }}
+                    />
+                  </MediaWrapper>
+                ) : (
+                  <MediaWrapper></MediaWrapper>
+                )}
+                {pill}
+                {quantity > 1 && <div>{quantity}x</div>}
                 <Grid
                   flexDirection="column"
                   alignItems="flex-start"
@@ -183,7 +204,7 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
                     style={{ flex: 0 }}
                   >
                     <ThemedButton size="regular" themeVal="blankSecondary">
-                      <ActionText>Buy</ActionText>{" "}
+                      <ActionText>Contract</ActionText>{" "}
                       <ArrowSquareUpRight size="16" />
                     </ThemedButton>
                   </a>

@@ -75,8 +75,8 @@ export const useCallSignerFromIframe = ({
             );
           }
         } else if (functionName) {
-          const fn: keyof typeof EthersAdapter["prototype"] = functionName;
-          const signerFn: keyof typeof Signer["prototype"] = functionName;
+          const fn: keyof (typeof EthersAdapter)["prototype"] = functionName;
+          const signerFn: keyof (typeof Signer)["prototype"] = functionName;
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const args: any[] = event.data.args ?? [];
 

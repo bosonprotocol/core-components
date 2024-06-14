@@ -11,6 +11,10 @@ import {
   OfferFullDescription,
   OfferFullDescriptionProps
 } from "./OfferFullDescription";
+import {
+  BosonProvider,
+  BosonProviderProps
+} from "../../../../boson/BosonProvider";
 
 export type ExternalOfferFullDescriptionProps = Omit<
   OfferFullDescriptionProps,
@@ -18,7 +22,8 @@ export type ExternalOfferFullDescriptionProps = Omit<
 > & {
   providerProps: Omit<ConfigProviderProps, "children"> &
     Omit<WalletConnectionProviderProps, "children" | "envName"> &
-    Omit<IpfsProviderProps, "children">;
+    Omit<IpfsProviderProps, "children"> &
+    BosonProviderProps;
   defaultSelectedOfferTabsIdTab?: OfferFullDescriptionProps["defaultSelectedTabId"];
 } & CommonWidgetTypes;
 
@@ -27,14 +32,16 @@ export const ExternalOfferFullDescription: React.FC<
 > = (props) => {
   return (
     <ConfigProvider {...props.providerProps}>
-      <IpfsProvider {...props.providerProps}>
-        <DetailViewWithProvider offer={props.offer}>
-          <OfferFullDescription
-            {...props}
-            defaultSelectedTabId={props.defaultSelectedOfferTabsIdTab}
-          />
-        </DetailViewWithProvider>
-      </IpfsProvider>
+      <BosonProvider {...props.providerProps}>
+        <IpfsProvider {...props.providerProps}>
+          <DetailViewWithProvider offer={props.offer}>
+            <OfferFullDescription
+              {...props}
+              defaultSelectedTabId={props.defaultSelectedOfferTabsIdTab}
+            />
+          </DetailViewWithProvider>
+        </IpfsProvider>
+      </BosonProvider>
     </ConfigProvider>
   );
 };

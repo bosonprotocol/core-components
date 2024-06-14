@@ -4,22 +4,7 @@ import { theme } from "../../theme";
 import { zIndex } from "../ui/zIndex";
 
 const colors = theme.colors.light;
-const GlobalStyle = createGlobalStyle<
-  Partial<{
-    $withBosonStyles: boolean;
-    $headerBgColor: string;
-    $headerTextColor: string;
-    $primaryBgColor: string;
-    $secondaryBgColor: string;
-    $accentColor: string;
-    $textColor: string;
-    $footerBgColor: string;
-    $footerTextColor: string;
-    $fontFamily: string;
-    $buttonBgColor: string;
-    $buttonTextColor: string;
-  }>
->`
+const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: barlow;
     src: url(src/assets/fonts/Barlow-Regular.ttf);
@@ -32,60 +17,19 @@ const GlobalStyle = createGlobalStyle<
   }
   :root {
     --l: 50%;
-    --headerBgColor: ${(props) =>
-      props.$headerBgColor && !props.$withBosonStyles
-        ? props.$headerBgColor
-        : colors.white};
-    --headerTextColor: ${(props) =>
-      props.$headerTextColor && !props.$withBosonStyles
-        ? props.$headerTextColor
-        : colors.darkGrey};
-    --primary: ${(props) =>
-      props.$primaryBgColor && !props.$withBosonStyles
-        ? props.$primaryBgColor
-        : colors.primary};
-    --secondary: ${(props) =>
-      props.$secondaryBgColor && !props.$withBosonStyles
-        ? props.$secondaryBgColor
-        : colors.lightGrey};
-    --accent: ${(props) =>
-      props.$accentColor && !props.$withBosonStyles
-        ? props.$accentColor
-        : colors.accent};
-    --accentNoDefault : ${(props) =>
-      props.$accentColor && !props.$withBosonStyles ? props.$accentColor : ""};
-    --accentDark: ${(props) =>
-      props.$accentColor && !props.$withBosonStyles
-        ? props.$accentColor
-        : colors.arsenic};
-    --textColor: ${(props) =>
-      props.$textColor && !props.$withBosonStyles
-        ? props.$textColor
-        : colors.black};
-    --primaryBgColor: ${(props) =>
-      props.$primaryBgColor && !props.$withBosonStyles
-        ? props.$primaryBgColor
-        : colors.primaryBgColor};
-    --secondaryBgColor: ${(props) =>
-      props.$secondaryBgColor && !props.$withBosonStyles
-        ? props.$secondaryBgColor
-        : colors.secondary};
-    --footerBgColor: ${(props) =>
-      props.$footerBgColor && !props.$withBosonStyles
-        ? props.$footerBgColor
-        : colors.black};
-    --footerTextColor: ${(props) =>
-      props.$footerTextColor && !props.$withBosonStyles
-        ? props.$footerTextColor
-        : colors.white};
-    --buttonBgColor: ${(props) =>
-      props.$buttonBgColor && !props.$withBosonStyles
-        ? props.$buttonBgColor
-        : colors.primary};
-    --buttonTextColor: ${(props) =>
-      props.$buttonTextColor && !props.$withBosonStyles
-        ? props.$buttonTextColor
-        : colors.black};
+    --headerBgColor: ${colors.white};
+    --headerTextColor: ${colors.darkGrey};
+    --primary: ${colors.primary};
+    --secondary: ${colors.lightGrey};
+    --accent: ${colors.accent};
+    --accentDark: ${colors.arsenic};
+    --textColor: ${colors.black};
+    --primaryBgColor: ${colors.primaryBgColor};
+    --secondaryBgColor: ${colors.secondary};
+    --footerBgColor: ${colors.black};
+    --footerTextColor: ${colors.white};
+    --buttonBgColor: ${colors.primary};
+    --buttonTextColor: ${colors.black};
 
     font-size: 0.75rem;
     ${breakpoint.xs} {
@@ -119,7 +63,7 @@ const GlobalStyle = createGlobalStyle<
 
     color: var(--textColor);
 
-    font-family: ${(props) => props.$fontFamily || "Plus Jakarta Sans"};
+    font-family: "Plus Jakarta Sans";
     font-style: normal;
 
     max-height: 100vh;

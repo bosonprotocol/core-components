@@ -1,14 +1,15 @@
-import React, { ComponentType, ReactNode, useCallback } from "react";
+import React, { ComponentType } from "react";
+import { CSSProperties } from "styled-components";
 import { ButtonProps } from "../../buttons/Button";
 import { CommitNonModalProps } from "../../modal/components/Commit/CommitNonModal";
+import GlobalStyle from "../../styles/GlobalStyle";
+import { MarginContainer } from "../MarginContainer";
 import { CommitModalWithOffer } from "./CommitModalWithOffer";
 import {
   CommitWidgetProviders,
   CommitWidgetProvidersProps
 } from "./CommitWidgetProviders";
-import GlobalStyle from "../../styles/GlobalStyle";
-import { CSSProperties } from "styled-components";
-import { useProvider } from "../../../hooks/connection/connection";
+
 type CommitProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
   trigger?: ComponentType<{ onClick: () => unknown }> | undefined;
@@ -34,26 +35,14 @@ type CommitProps = {
   };
 export type CommitWidgetProps = CommitProps &
   Omit<CommitWidgetProvidersProps, "withReduxProvider" | "provider">;
-export function CommitWidget(props: CommitWidgetProps) {
-  const Container = useCallback(
-    ({ children }: { children: ReactNode }) => {
-      return props.lookAndFeel === "regular" ? (
-        <>{children}</>
-      ) : (
-        <div style={{ margin: props.modalMargin }}>{children}</div>
-      );
-    },
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    [props.lookAndFeel, props.modalMargin]
-  );
 
+export function CommitWidget(props: CommitWidgetProps) {
   return (
-    <Container>
+    <MarginContainer {...props}>
       <CommitWidgetProviders {...props} withReduxProvider>
         <GlobalStyle />
         <CommitModalWithOffer {...props} hideModal={props.closeWidgetClick} />
       </CommitWidgetProviders>
-    </Container>
+    </MarginContainer>
   );
 }

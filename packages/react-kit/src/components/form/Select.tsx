@@ -91,8 +91,7 @@ export default function SelectComponent({
         : "";
 
   const displayError =
-    typeof displayErrorMessage === typeof "string" &&
-    displayErrorMessage !== "";
+    typeof displayErrorMessage === "string" && displayErrorMessage !== "";
 
   const handleChange = (option: SelectDataProps<string>) => {
     if (!meta.touched) {

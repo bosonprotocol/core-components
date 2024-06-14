@@ -10,18 +10,6 @@ export type ConfigContextProps = {
     ticker: "USD" | string;
     symbol: "$" | string;
   };
-  minimumDisputePeriodInDays: number;
-  minimumDisputeResolutionPeriodDays: number;
-  fairExchangePolicyRules: string;
-  commitProxyAddress?: string;
-  openseaLinkToOriginalMainnetCollection?: string;
-  enableCurationLists?: boolean;
-  sellerCurationList?: string[];
-  offerCurationList?: string[];
-  withOwnProducts?: "all" | "mine" | "custom";
-  buyerSellerAgreementTemplate: string;
-  licenseTemplate: string;
-  contactSellerForExchangeUrl: string;
   usePendingTransactions?: boolean;
   magicLinkKey: string;
   infuraKey: string;
@@ -30,9 +18,16 @@ export type ConfigContextProps = {
   externalConnectedAccount?: string;
   externalConnectedSigner?: Signer;
   withExternalConnectionProps?: boolean;
+  withWeb3React: boolean;
+  withCustomReduxContext?: boolean;
 };
 
-export const ConfigContext = createContext<ConfigContextProps | null>(null);
+export const ConfigContext = createContext<
+  | (ConfigContextProps & {
+      setEnvConfig: React.Dispatch<React.SetStateAction<ProtocolConfig>>;
+    })
+  | null
+>(null);
 
 export const useConfigContext = () => {
   const contextValue = useContext(ConfigContext);

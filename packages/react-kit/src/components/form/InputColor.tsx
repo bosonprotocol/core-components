@@ -39,8 +39,7 @@ const ColorPicker = styled(Input).attrs({
 export default function InputColor({ name, ...props }: InputColorProps) {
   const [field, meta] = useField<string>(name);
   const errorMessage = meta.error && meta.touched ? meta.error : "";
-  const displayError =
-    typeof errorMessage === typeof "string" && errorMessage !== "";
+  const displayError = typeof errorMessage === "string" && errorMessage !== "";
 
   return (
     <>

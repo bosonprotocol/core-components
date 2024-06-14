@@ -13,7 +13,7 @@ import styled, { css } from "styled-components";
 import { useIpfsStorage } from "../../hooks/useIpfsStorage";
 import { fetchIpfsBase64Media } from "../../lib/base64/base64";
 import { theme } from "../../theme";
-import { Loading } from "../Loading";
+import { Loading } from "./loading/Loading";
 
 import { MuteButton } from "./MuteButton";
 import { Typography } from "./Typography";

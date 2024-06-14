@@ -19,10 +19,7 @@ const Root = styled.div`
   left: 0;
   right: 0;
   z-index: ${zIndex.Modal};
-  max-height: 100vh;
-  max-width: 100vw;
-  overflow-y: auto;
-  overflow-x: hidden;
+  max-height: inherit;
 `;
 
 const RootBG = styled.div`
@@ -92,6 +89,9 @@ const Wrapper = styled.div<{
   $themeVal: Props["theme"];
   $maxWidths: Props["maxWidths"];
 }>`
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
   position: relative;
   z-index: ${zIndex.Modal};
   color: ${({ $themeVal }) => {
@@ -134,16 +134,8 @@ const Wrapper = styled.div<{
   }};
   ${({ $modalType }) => {
     switch ($modalType) {
-      case "PRODUCT_CREATE_SUCCESS":
-        return css`
-          max-width: 65.875rem;
-        `;
       case "FINANCE_WITHDRAW_MODAL":
       case "FINANCE_DEPOSIT_MODAL":
-      case "MANAGE_FUNDS_MODAL":
-      case "EXPIRE_VOUCHER_MODAL":
-      case "DISPUTE_RESOLUTION_DECIDE_MODAL":
-      case "DISPUTE_RESOLUTION_REFUSE_MODAL":
         return css`
           ${breakpoint.xs} {
             max-width: 31.25rem;
@@ -173,7 +165,7 @@ const Wrapper = styled.div<{
   }
   ${({ $size }) =>
     $size === "fullscreen" &&
-    `
+    css`
       min-height: 100vh;
     `};
 `;
@@ -206,11 +198,10 @@ const Close = styled(X)`
   }
 `;
 
-const Content = styled.div<{
-  $modalType: ModalType;
-  $size: Props["size"];
-}>`
+const Content = styled.div`
   padding: 2rem;
+  flex: 1;
+  overflow-y: auto;
 `;
 
 interface Props {
@@ -272,9 +263,7 @@ export default function Modal({
             )}
           </HeaderWithTitle>
         )}
-        <Content $size={size} $modalType={modalType} style={contentStyle}>
-          {children}
-        </Content>
+        <Content style={contentStyle}>{children}</Content>
         {FooterComponent && <FooterWrapper>{FooterComponent}</FooterWrapper>}
       </Wrapper>
       <RootBG

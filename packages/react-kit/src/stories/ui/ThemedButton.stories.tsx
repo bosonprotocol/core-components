@@ -1,75 +1,102 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
-import ThemedButton, { IButton } from "../../components/ui/ThemedButton";
-import React from "react";
+import { fn } from "@storybook/test";
 import { CaretDown } from "phosphor-react";
+import React from "react";
+import ThemedButton from "../../components/ui/ThemedButton";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Visual Components/UI/ThemedButton",
-  component: ThemedButton
-} as ComponentMeta<typeof ThemedButton>;
+  title: "Visual Components/Buttons/ThemedButton",
+  component: ThemedButton,
+  parameters: {
+    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
+    layout: "centered"
+  },
+  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
+  tags: ["autodocs"],
+  args: { onClick: fn() },
+  argTypes: {
+    disabled: { control: "boolean" },
+    size: {
+      control: "select",
+      options: ["small", "regular", "large"]
+    },
+    children: {
+      table: {
+        disable: true
+      }
+    },
+    onClick: {
+      table: {
+        disable: true
+      }
+    },
+    tooltip: { control: "text" }
+  },
+  decorators: [
+    (Story) => {
+      return <Story />;
+    }
+  ]
+} satisfies Meta<typeof ThemedButton>;
 
-const BASE_ARGS: Pick<IButton, "onClick" | "size" | "children"> = {
+const BASE_ARGS = {
   children: (
     <>
       Button Text <CaretDown size={16} />
     </>
   ),
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  onClick: () => {},
   size: "regular"
-};
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof ThemedButton> = (args) => (
-  <ThemedButton {...BASE_ARGS} {...args} />
-);
-
-export const Primary: ComponentStory<typeof ThemedButton> = Template.bind({});
-
-export const BosonPrimary: ComponentStory<typeof ThemedButton> = Template.bind(
-  {}
-);
-
-export const Secondary: ComponentStory<typeof ThemedButton> = Template.bind({});
-export const BosonSecondary: ComponentStory<typeof ThemedButton> =
-  Template.bind({});
-export const AccentFiil: ComponentStory<typeof ThemedButton> = Template.bind(
-  {}
-);
+} as const;
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Primary.args = {
-  disabled: false,
-  isLoading: false,
-  theme: "primary",
-  withBosonStyle: false
+export const Primary = {
+  args: {
+    ...BASE_ARGS,
+    disabled: false,
+    isLoading: false,
+    themeVal: "primary",
+    withBosonStyle: false
+  }
 };
 
-BosonPrimary.args = {
-  disabled: false,
-  isLoading: false,
-  theme: "bosonPrimary",
-  withBosonStyle: true
+export const BosonPrimary = {
+  args: {
+    ...BASE_ARGS,
+    disabled: false,
+    isLoading: false,
+    themeVal: "bosonPrimary",
+    withBosonStyle: true
+  }
 };
 
-Secondary.args = {
-  disabled: false,
-  isLoading: false,
-  theme: "secondary",
-  withBosonStyle: false
+export const Secondary = {
+  args: {
+    ...BASE_ARGS,
+    disabled: false,
+    isLoading: false,
+    themeVal: "secondary",
+    withBosonStyle: false
+  }
 };
 
-BosonSecondary.args = {
-  disabled: false,
-  isLoading: false,
-  theme: "secondary",
-  withBosonStyle: true
+export const BosonSecondary = {
+  args: {
+    ...BASE_ARGS,
+    disabled: false,
+    isLoading: false,
+    themeVal: "secondary",
+    withBosonStyle: true
+  }
 };
 
-AccentFiil.args = {
-  disabled: false,
-  isLoading: false,
-  theme: "accentFill",
-  withBosonStyle: true
+export const AccentFiil = {
+  args: {
+    ...BASE_ARGS,
+    disabled: false,
+    isLoading: false,
+    themeVal: "accentFill",
+    withBosonStyle: true
+  }
 };

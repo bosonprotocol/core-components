@@ -38,12 +38,13 @@ async function main() {
   const prettierConfig = await prettier.resolveConfig(
     `${process.cwd()}/.prettierrc`
   );
+  const formatted = await prettier.format(indexFileContent, {
+    ...prettierConfig,
+    parser: "typescript"
+  });
   fs.writeFileSync(
     `${process.cwd()}/packages/common/src/abis/index.ts`,
-    await prettier.format(indexFileContent, {
-      ...prettierConfig,
-      parser: "typescript"
-    })
+    formatted
   );
 }
 

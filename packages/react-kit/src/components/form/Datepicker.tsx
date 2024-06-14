@@ -15,8 +15,7 @@ export default function DatepickerComponent({
   const [field, meta, helpers] = useField(name);
 
   const errorMessage = meta.error && meta.touched ? meta.error : "";
-  const displayError =
-    typeof errorMessage === typeof "string" && errorMessage !== "";
+  const displayError = typeof errorMessage === "string" && errorMessage !== "";
 
   const handleChange = (date: Dayjs | Array<Dayjs | null>) => {
     if (!meta.touched) {

@@ -13,6 +13,7 @@ import {
 import DetailTable from "../modal/components/common/detail/DetailTable";
 import useCheckExchangePolicy from "../../hooks/useCheckExchangePolicy";
 import { useConfigContext } from "../config/ConfigContext";
+import { useBosonContext } from "../boson/BosonProvider";
 
 const colors = theme.colors.light;
 const NoPaddingButton = styled(ThemedButton)`
@@ -32,13 +33,14 @@ export default function OfferPolicyDetails({
   onLicenseAgreementClick
 }: OfferPolicyDetailsProps) {
   const config = useConfigContext();
+  const bosonConfig = useBosonContext();
 
   const exchangePolicyCheckResult = useCheckExchangePolicy({
     offerId: offerData.id,
     defaultDisputeResolverId:
       config.config.defaultDisputeResolverId || "unknown",
     defaultTokens: config.config.defaultTokens ?? [], // TODO: check default tokens list
-    fairExchangePolicyRules: config.fairExchangePolicyRules
+    fairExchangePolicyRules: bosonConfig.fairExchangePolicyRules
   });
   const isExchangePolicyValid =
     exchangePolicyCheckResult &&

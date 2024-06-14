@@ -4,15 +4,16 @@ import { GlobeHemisphereWest } from "phosphor-react";
 import React, { forwardRef, useState, useEffect } from "react";
 import type { Country as CountryCode } from "react-phone-number-input";
 import PhoneInput from "react-phone-number-input";
-import Select, { components } from "react-select";
-import styled from "styled-components";
+import Select, { GroupBase, StylesConfig, components } from "react-select";
+import styled, { CSSProperties } from "styled-components";
 import { zIndex } from "../ui/zIndex";
 import Error from "./Error";
 import type { InputProps } from "./types";
 import { SelectDataProps } from "./types";
-import { theme } from "../../theme";
+import { theme as importedTheme } from "../../theme";
+export type { Country as CountryCode } from "react-phone-number-input";
 
-const colors = theme.colors.light;
+const colors = importedTheme.colors.light;
 const customStyles = {
   control: (provided: any, state: any) => {
     const before = state.selectProps.label
@@ -24,45 +25,61 @@ const customStyles = {
           }
         }
       : null;
+    const { theme } = state;
     return {
       ...provided,
-      borderRadius: 0,
-      padding: "0.4rem 0.25rem",
+      borderRadius: theme.borderRadius,
+      height: theme.controlHeight,
+      alignContent: "center",
+      padding: "0.4rem 1rem",
       boxShadow: "none",
       ":hover": {
-        borderColor: colors.secondary,
+        borderColor: theme.colors.controlHoverBorderColor,
         borderWidth: "1px"
       },
-      background: colors.lightGrey,
+      background: theme.colors.controlBackground,
       border: state.isFocused
-        ? `1px solid ${colors.secondary}`
-        : `1px solid ${colors.border}`,
+        ? `1px solid ${theme.colors.controlFocusBorderColor}`
+        : `1px solid ${theme.colors.controlUnfocusedBorderColor}`,
       ...before
     };
   },
-  container: (provided: any, state: any) => ({
+  container: (provided: any, state: any) => {
+    return {
+      ...provided,
+      zIndex: state.isFocused ? zIndex.Select + 1 : zIndex.Select,
+      position: "relative",
+      width: "100%"
+    };
+  },
+  option: (provided: any, state: any) => {
+    const { theme } = state;
+    return {
+      ...provided,
+      cursor: state.isDisabled ? "not-allowed" : "pointer",
+      opacity: state.isDisabled ? "0.5" : "1",
+      background:
+        state.isOptionSelected || state.isSelected || state.isFocused
+          ? theme.colors.selectedOptionBackground
+          : theme.colors.unselectedOptionBackground,
+      color:
+        state.isOptionSelected || state.isSelected
+          ? theme.colors.selectedOptionColor
+          : theme.colors.unselectedOptionColor
+    };
+  },
+  menu: (provided) => ({
     ...provided,
-    zIndex: state.isFocused ? zIndex.Select + 1 : zIndex.Select,
-    position: "relative",
-    width: "100%"
-  }),
-  option: (provided: any, state: any) => ({
-    ...provided,
-    cursor: state.isDisabled ? "not-allowed" : "pointer",
-    opacity: state.isDisabled ? "0.5" : "1",
-    background:
-      state.isOptionSelected || state.isSelected || state.isFocused
-        ? colors.lightGrey
-        : colors.white,
-    color:
-      state.isOptionSelected || state.isSelected
-        ? colors.secondary
-        : colors.black
+    overflow: "hidden"
   }),
   indicatorSeparator: () => ({
     display: "none"
   })
-};
+} satisfies StylesConfig<
+  SelectDataProps<string>,
+  false,
+  GroupBase<SelectDataProps<string>>
+>;
 
 const ControlGrid = styled.div`
   display: flex;
@@ -92,13 +109,10 @@ const OptionGrid = styled.div`
 
 const PhoneWrapper = styled.div`
   width: 100%;
-  padding-bottom: 0.5rem;
   input {
     width: 100%;
     padding: 1rem;
     gap: 0.5rem;
-    background: ${colors.lightGrey};
-    border: 1px solid ${colors.border};
     border-radius: 0;
     outline: none;
     font-family: "Plus Jakarta Sans";
@@ -106,18 +120,34 @@ const PhoneWrapper = styled.div`
   }
 `;
 
-type Props = InputProps & {
+export type CountrySelectProps = InputProps & {
   countries?: CountryCode[];
+  theme?: Partial<{
+    controlHeight: CSSProperties["height"];
+    borderRadius: CSSProperties["borderRadius"];
+    controlHoverBorderColor: CSSProperties["borderColor"];
+    controlBackground: CSSProperties["background"];
+    controlFocusBorderColor: CSSProperties["borderColor"];
+    controlUnfocusedBorderColor: CSSProperties["borderColor"];
+    selectedOptionBackground: CSSProperties["background"];
+    unselectedOptionBackground: CSSProperties["background"];
+    selectedOptionColor: CSSProperties["color"];
+    unselectedOptionColor: CSSProperties["color"];
+  }>;
 };
 
-export function CountrySelect({ name, countries, ...props }: Props) {
+export function CountrySelect({
+  name,
+  countries,
+  theme: selectTheme,
+  ...rest
+}: CountrySelectProps) {
   const { status } = useFormikContext();
   const [initialized, setInitialized] = useState<boolean>(false);
   const [field, meta, helpers] = useField(name);
   const errorText = meta.error || status?.[name];
   const errorMessage = errorText && meta.touched ? errorText : "";
-  const displayError =
-    typeof errorMessage === typeof "string" && errorMessage !== "";
+  const displayError = typeof errorMessage === "string" && errorMessage !== "";
   const [phone, setPhone] = useState<string | undefined>(undefined);
   const [countryCode, setCountryCode] = useState<CountryCode | undefined>();
 
@@ -131,9 +161,6 @@ export function CountrySelect({ name, countries, ...props }: Props) {
   return (
     <>
       <PhoneWrapper>
-        {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
-          /* @ts-ignore */ }
         <PhoneInput
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           inputComponent={forwardRef((props, ref) => (
@@ -148,7 +175,37 @@ export function CountrySelect({ name, countries, ...props }: Props) {
             <>
               <div>
                 <Select
+                  {...rest}
                   {...props}
+                  isDisabled={rest.disabled}
+                  theme={(theme) => ({
+                    ...theme,
+                    controlHeight: selectTheme?.controlHeight,
+                    borderRadius: selectTheme?.borderRadius || 0,
+                    colors: {
+                      ...theme.colors,
+                      controlHoverBorderColor:
+                        selectTheme?.controlHoverBorderColor ||
+                        colors.secondary,
+                      controlBackground:
+                        selectTheme?.controlBackground || colors.lightGrey,
+                      controlFocusBorderColor:
+                        selectTheme?.controlFocusBorderColor ||
+                        colors.secondary,
+                      controlUnfocusedBorderColor:
+                        selectTheme?.controlUnfocusedBorderColor ||
+                        colors.border,
+                      selectedOptionBackground:
+                        selectTheme?.selectedOptionBackground ||
+                        colors.lightGrey,
+                      unselectedOptionBackground:
+                        selectTheme?.unselectedOptionBackground || colors.white,
+                      selectedOptionColor:
+                        selectTheme?.selectedOptionColor || colors.secondary,
+                      unselectedOptionColor:
+                        selectTheme?.unselectedOptionColor || colors.black
+                    }
+                  })}
                   styles={customStyles}
                   name="countrySelect"
                   value={(props?.options || []).find(
@@ -200,10 +257,7 @@ export function CountrySelect({ name, countries, ...props }: Props) {
           )}
         />
       </PhoneWrapper>
-      <Error
-        display={!props.hideError && displayError}
-        message={errorMessage}
-      />
+      <Error display={!rest.hideError && displayError} message={errorMessage} />
     </>
   );
 }

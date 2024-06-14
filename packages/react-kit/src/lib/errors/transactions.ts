@@ -39,8 +39,8 @@ export async function extractUserFriendlyError(
         endIndexWithoutSlash !== -1
         ? Math.min(endIndexSlash, endIndexWithoutSlash)
         : endIndexSlash !== -1 && endIndexSlash
-        ? endIndexSlash
-        : endIndexWithoutSlash
+          ? endIndexSlash
+          : endIndexWithoutSlash
     );
     return details ?? defaultError;
   } catch (error) {

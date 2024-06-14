@@ -16,9 +16,9 @@ export const chainIdToGraphTx = new Map<
     80002,
     (txHash = "", isAddress = false) => {
       if (isAddress) {
-        return `https://www.oklink.com/amoy/address/${txHash}`;
+        return `https://amoy.polygonscan.com/address/${txHash}`;
       }
-      return `https://www.oklink.com/amoy/tx/${txHash}`;
+      return `https://amoy.polygonscan.com/tx/${txHash}`;
     }
   ],
   [

@@ -28,7 +28,7 @@ import { useAccount } from "../../../../hooks/connection/connection";
 import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
 import { theme } from "../../../../theme";
 import { isTruthy } from "../../../../types/helpers";
-import { Loading } from "../../../Loading";
+import { Loading } from "../../../ui/loading/Loading";
 import { useConfigContext } from "../../../config/ConfigContext";
 import { Typography } from "../../../ui/Typography";
 import {
@@ -56,6 +56,8 @@ import {
   DetailContextProps,
   DetailViewProvider
 } from "../common/detail/DetailViewProvider";
+import { getHasBuyerTransferInfos } from "../../../../lib/offer/filter";
+import { BuyerTransferInfo } from "../../../../lib/bundle/const";
 
 const colors = theme.colors.light;
 const UlWithWordBreak = styled.ul`
@@ -328,6 +330,11 @@ function RedeemNonModal({
   const emailPreference =
     exchange?.seller.metadata?.contactPreference ===
     ContactPreference.XMTP_AND_EMAIL;
+  const requestBuyerAddress = exchange?.offer
+    ? getHasBuyerTransferInfos(exchange.offer, [
+        BuyerTransferInfo.walletAddress
+      ])
+    : false;
   const validationSchema = useMemo(() => {
     return Yup.object({
       [FormModel.formFields.name.name]: Yup.string()
@@ -356,11 +363,21 @@ function RedeemNonModal({
             .required(FormModel.formFields.email.requiredErrorMessage)
             .email(FormModel.formFields.email.mustBeEmail)
         : Yup.string().trim().email(FormModel.formFields.email.mustBeEmail),
+      [FormModel.formFields.walletAddress.name]: requestBuyerAddress
+        ? Yup.string()
+            .trim()
+            .required(FormModel.formFields.walletAddress.requiredErrorMessage)
+            .test(
+              "mustBeAddress",
+              FormModel.formFields.walletAddress.mustBeWalletAddress,
+              (value) => (value ? ethers.utils.isAddress(value) : true)
+            )
+        : Yup.string().trim(),
       [FormModel.formFields.phone.name]: Yup.string()
         .trim()
         .required(FormModel.formFields.phone.requiredErrorMessage)
     });
-  }, [emailPreference]);
+  }, [emailPreference, requestBuyerAddress]);
   type FormType = Yup.InferType<typeof validationSchema>;
   const [{ currentStep }, setStep] = useState<{
     previousStep: ActiveStep[];
@@ -465,8 +482,14 @@ function RedeemNonModal({
   if (jsx) {
     return jsx;
   }
-  const mockedDeliveryAddress = process.env.REACT_APP_DELIVERY_ADDRESS_MOCK
-    ? JSON.parse(process.env.REACT_APP_DELIVERY_ADDRESS_MOCK)
+  const deliveryAddressVar =
+    typeof process !== "undefined"
+      ? process?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK || // @ts-expect-error import.meta.env only exists in vite environments
+        import.meta?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK
+      : // @ts-expect-error import.meta.env only exists in vite environments
+        import.meta?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK;
+  const mockedDeliveryAddress = deliveryAddressVar
+    ? JSON.parse(deliveryAddressVar)
     : undefined;
 
   const handleRaiseDispute = (exchangeId: string | undefined) => {
@@ -495,12 +518,13 @@ function RedeemNonModal({
             [FormModel.formFields.zip.name]: "",
             [FormModel.formFields.country.name]: "",
             [FormModel.formFields.email.name]: "",
+            [FormModel.formFields.walletAddress.name]: "",
             [FormModel.formFields.phone.name]: ""
           }
         }
         validateOnMount
       >
-        {({ errors }) => {
+        {({ errors, setFieldValue }) => {
           const isRedeemFormOK =
             !errors[FormModel.formFields.name.name] &&
             !errors[FormModel.formFields.streetNameAndNumber.name] &&
@@ -509,6 +533,7 @@ function RedeemNonModal({
             !errors[FormModel.formFields.zip.name] &&
             !errors[FormModel.formFields.country.name] &&
             !errors[FormModel.formFields.email.name] &&
+            !errors[FormModel.formFields.walletAddress.name] &&
             !errors[FormModel.formFields.phone.name];
 
           return (
@@ -646,6 +671,14 @@ function RedeemNonModal({
                     setActiveStep(ActiveStep.REDEEM_FORM_CONFIRMATION)
                   }
                   isValid={isRedeemFormOK}
+                  setConnectedWalletAddress={() => {
+                    if (address) {
+                      setFieldValue(
+                        FormModel.formFields.walletAddress.name,
+                        address
+                      );
+                    }
+                  }}
                 />
               ) : currentStep === ActiveStep.EXCHANGE_POLICY ? (
                 <RedeemOfferPolicyView

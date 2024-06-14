@@ -8,6 +8,7 @@ import {
   RedemptionWidgetProvidersProps
 } from "./RedemptionWidgetProviders";
 import { CSSProperties } from "styled-components";
+import { MarginContainer } from "../MarginContainer";
 
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
@@ -15,6 +16,7 @@ type RedemptionProps = {
 } & Omit<RedeemNonModalProps, "exchange" | "hideModal" | "parentOrigin"> & {
     exchangeId?: string;
     closeWidgetClick?: () => void;
+    lookAndFeel: "regular" | "modal";
     modalMargin?: CSSProperties["margin"];
   };
 
@@ -30,8 +32,8 @@ export function RedemptionWidget(props: RedemptionWidgetProps) {
     ? props.signatures
     : undefined;
   return (
-    <div style={{ margin: props.modalMargin || "0" }}>
-      <RedemptionWidgetProviders {...props}>
+    <MarginContainer {...props}>
+      <RedemptionWidgetProviders {...props} withReduxProvider>
         <RedeemModalWithExchange
           {...props}
           sellerIds={sellerIds}
@@ -40,6 +42,6 @@ export function RedemptionWidget(props: RedemptionWidgetProps) {
           hideModal={props.closeWidgetClick}
         />
       </RedemptionWidgetProviders>
-    </div>
+    </MarginContainer>
   );
 }

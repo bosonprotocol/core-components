@@ -14,13 +14,15 @@ interface Props {
   isValid: boolean;
   onNextClick: () => void;
   onBackClick: () => void;
+  setConnectedWalletAddress: () => void;
 }
 
 export default function RedeemFormView({
   exchange,
   isValid,
   onNextClick,
-  onBackClick
+  onBackClick,
+  setConnectedWalletAddress
 }: Props) {
   const { address } = useAccount();
   const dispatch = useNonModalContext();
@@ -45,9 +47,11 @@ export default function RedeemFormView({
         <p>Invalid exchange state.</p>
       ) : (
         <RedeemForm
+          exchange={exchange}
           isValid={isValid}
           onNextClick={onNextClick}
           onBackClick={onBackClick}
+          setConnectedWalletAddress={setConnectedWalletAddress}
         />
       )}
     </>

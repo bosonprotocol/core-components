@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/browser";
 import { useField } from "formik";
 import { Image, Trash, VideoCamera } from "phosphor-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -5,7 +6,7 @@ import { loadAndSetMedia } from "../../../lib/base64/base64";
 import bytesToSize from "../../../lib/bytes/bytesToSize";
 import { theme } from "../../../theme";
 
-import Loading from "../../ui/loading/Loading";
+import Loading from "../../ui/loading/LoadingWrapper";
 import ThemedButton from "../../ui/ThemedButton";
 import { Typography } from "../../ui/Typography";
 import Error from "../Error";
@@ -19,6 +20,8 @@ import {
 import type { UploadFileType, UploadProps, FileProps } from "../types";
 import UploadedFiles from "./UploadedFiles";
 import { WithUploadToIpfs, WithUploadToIpfsProps } from "./WithUploadToIpfs";
+import { useModal } from "../../modal/useModal";
+import { ImageEditorModal } from "./ImageEditorModal/ImageEditorModal";
 const colors = theme.colors.light;
 
 function Upload({
@@ -33,11 +36,21 @@ function Upload({
   wrapperProps,
   onLoadSinglePreviewImage,
   withUpload,
+  withEditor,
   saveToIpfs,
   loadMedia,
   onLoading,
+  width,
+  height,
+  borderRadius,
+  imgPreviewStyle,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  removeFile,
+  saveButtonTheme,
   ...props
 }: UploadProps & WithUploadToIpfsProps) {
+  const { updateProps, store } = useModal();
+  const [showEditor, setShowEditor] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [preview, setPreview] = useState<string | null>();
   const [field, meta, helpers] = useField(name);
@@ -51,10 +64,10 @@ function Upload({
   );
 
   const errorMessage = meta.error && meta.touched ? meta.error : "";
-  const displayError =
-    typeof errorMessage === typeof "string" && errorMessage !== "";
+  const displayError = typeof errorMessage === "string" && errorMessage !== "";
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [nativeFiles, setNativeFiles] = useState<File[] | null>(null);
   const setFiles = useCallback(
     (value: unknown) => {
       helpers.setValue(value);
@@ -104,10 +117,17 @@ function Upload({
     }
     handleLoading(true);
     try {
-      const imagePreview: string = await loadMedia(fileSrc || "");
-      setPreview(imagePreview);
+      const imagePreview = await loadMedia(fileSrc || "");
+      if (imagePreview) {
+        setPreview(imagePreview);
+      } else {
+        console.warn(
+          `imagePreview ${imagePreview} is falsy in loadIpfsImagePreview`
+        );
+      }
     } catch (error) {
       console.error(error);
+      Sentry.captureException(error);
     } finally {
       handleLoading(false);
     }
@@ -120,11 +140,18 @@ function Upload({
     }
     try {
       handleLoading(true);
-      const imagePreview: string = await loadMedia(fileSrc || "");
-      setPreview(imagePreview);
-      onLoadSinglePreviewImage?.(imagePreview);
+      const imagePreview = await loadMedia(fileSrc || "");
+      if (imagePreview) {
+        setPreview(imagePreview);
+        onLoadSinglePreviewImage?.(imagePreview);
+      } else {
+        console.warn(
+          `imagePreview ${imagePreview} is falsy in loadIpfsImagePreview`
+        );
+      }
     } catch (error) {
       console.error(error);
+      Sentry.captureException(error);
     } finally {
       handleLoading(false);
     }
@@ -152,41 +179,83 @@ function Upload({
     setFiles(newArray);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!meta.touched) {
-      helpers.setTouched(true);
-    }
+  const handleChange = useCallback(
+    async (filesArray: File[] | null) => {
+      if (!meta.touched) {
+        helpers.setTouched(true);
+      }
 
-    if (!e.target.files) {
-      return;
-    }
-    const { files } = e.target;
-    const filesArray = Object.values(files);
-    for (const file of filesArray) {
-      if (maxSize) {
-        if (file.size > maxSize) {
-          const error = `File size cannot exceed more than ${bytesToSize(
-            maxSize
-          )}`;
-          // TODO: change to notification
-          console.error(error);
+      if (!filesArray) {
+        return;
+      }
+      for (const file of filesArray) {
+        if (maxSize) {
+          if (file.size > maxSize) {
+            const error = `File size cannot exceed more than ${bytesToSize(
+              maxSize
+            )}`;
+            // TODO: change to notification
+            console.error(error);
+          }
         }
       }
-    }
-    setFiles(filesArray);
-  };
-
-  const handleSave = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      handleLoading(true);
-      const files: FileProps[] = await saveToIpfs(e);
-      setFiles(files);
+      setFiles(filesArray);
     },
-    [saveToIpfs, setFiles, handleLoading]
+    [helpers, maxSize, meta.touched, setFiles]
   );
 
+  const handleSave = useCallback(
+    async (efiles: File[] | null) => {
+      if (!meta.touched) {
+        helpers.setTouched(true);
+      }
+      handleLoading(true);
+      const files = await saveToIpfs(efiles);
+      if (files) {
+        setFiles(files);
+      } else {
+        setFiles([]);
+        console.warn(
+          `There has been an error because 'files' ${files} is falsy in handleSave`
+        );
+      }
+      handleLoading(false);
+    },
+    [meta.touched, handleLoading, saveToIpfs, helpers, setFiles]
+  );
+  const saveFn = withUpload ? handleSave : handleChange;
+  const style = {
+    borderRadius: borderRadius ? `${borderRadius}%` : "",
+    width: width ? `100%` : ""
+  };
   return (
     <>
+      {withEditor && showEditor && (
+        <ImageEditorModal
+          saveButtonTheme={saveButtonTheme}
+          files={nativeFiles}
+          borderRadius={borderRadius}
+          width={width}
+          height={height}
+          hideModal={async (fileList) => {
+            if (fileList) {
+              await saveFn(fileList);
+            }
+
+            setShowEditor(false);
+            updateProps({
+              ...store,
+              modalType: store.modalType,
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              modalProps: {
+                ...store.modalProps,
+                hidden: false
+              }
+            });
+          }}
+        />
+      )}
       <FieldFileUploadWrapper {...wrapperProps} $disabled={!!disabled}>
         <FieldInput
           {...props}
@@ -194,7 +263,29 @@ function Upload({
           type="file"
           accept={accept}
           multiple={multiple}
-          onChange={withUpload ? handleSave : handleChange}
+          onChange={async (e) => {
+            const files = e.target.files
+              ? Object.values(e.target.files)
+              : e.target.files;
+
+            if (files && withEditor) {
+              setNativeFiles(files);
+              setShowEditor(true);
+              updateProps({
+                ...store,
+                modalType: store.modalType,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                modalProps: {
+                  ...store.modalProps,
+                  hidden: true
+                }
+              });
+            } else {
+              await saveFn(files);
+            }
+            e.target.value = ""; // allow user to select the same file again
+          }}
           ref={(ref) => {
             inputRef.current = ref;
           }}
@@ -206,10 +297,10 @@ function Upload({
           </ThemedButton>
         ) : (
           <FileUploadWrapper
-            choosen={files !== null}
             data-disabled={disabled}
             onClick={handleChooseFile}
             error={errorMessage}
+            style={style}
           >
             {isLoading ? (
               <Loading size={2} />
@@ -220,17 +311,22 @@ function Upload({
                     {isVideoOnly ? (
                       <VideoPreview
                         src={
-                          "data:video/mp4;base64," +
-                          preview?.substring(
-                            "data:application/octet-stream;base64,".length
-                          )
+                          preview?.startsWith("http")
+                            ? preview
+                            : "data:video/mp4;base64," +
+                              preview?.substring(
+                                "data:application/octet-stream;base64,".length
+                              )
                         }
                         autoPlay
                         muted
                         loop
                       />
                     ) : (
-                      <ImagePreview src={preview} />
+                      <ImagePreview
+                        style={{ ...imgPreviewStyle }}
+                        src={preview}
+                      />
                     )}
                   </>
                 ) : isVideoOnly ? (
@@ -248,7 +344,7 @@ function Upload({
           </FileUploadWrapper>
         )}
         {!disabled && field.value && field.value?.length !== 0 && preview && (
-          <div onClick={handleRemoveAllFiles} data-remove>
+          <div onClick={handleRemoveAllFiles} data-remove style={style}>
             <Trash size={24} color={colors.white} />
           </div>
         )}

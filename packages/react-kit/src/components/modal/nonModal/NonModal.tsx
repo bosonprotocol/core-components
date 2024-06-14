@@ -23,10 +23,7 @@ const Root = styled.div`
   left: 0;
   right: 0;
   z-index: ${zIndex.Modal};
-  max-height: 100vh;
-  max-width: 100vw;
-  overflow-y: auto;
-  overflow-x: hidden;
+  max-height: inherit;
 `;
 
 const RootBG = styled.div`
@@ -95,6 +92,9 @@ const Wrapper = styled.div<{
   $themeVal: NonModalProps["theme"];
   $maxWidths: NonModalProps["maxWidths"];
 }>`
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
   position: relative;
   z-index: ${zIndex.Modal};
   color: ${({ $themeVal }) => {
@@ -155,7 +155,7 @@ const Wrapper = styled.div<{
   }
   ${({ $size }) =>
     $size === "fullscreen" &&
-    `
+    css`
       min-height: 100vh;
     `};
 `;

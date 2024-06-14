@@ -1,17 +1,22 @@
 import React from "react";
+import type { Country as CountryCode } from "react-phone-number-input";
 import { useBreakpoints } from "../../../../../hooks/useBreakpoints";
+import { BuyerTransferInfo } from "../../../../../lib/bundle/const";
+import { getHasBuyerTransferInfos } from "../../../../../lib/offer/filter";
+import { Exchange } from "../../../../../types/exchange";
 import { Button } from "../../../../buttons/Button";
+import { CountrySelect } from "../../../../form/CountrySelect";
 import Input from "../../../../form/Input";
 import Phone from "../../../../form/Phone";
 import { Grid } from "../../../../ui/Grid";
 import { Typography } from "../../../../ui/Typography";
 import { FormModel } from "../RedeemFormModel";
-import { CountrySelect } from "../../../../form/CountrySelect";
-import type { Country as CountryCode } from "react-phone-number-input";
 interface Props {
+  exchange: Exchange | null;
   isValid: boolean;
   onNextClick: () => void;
   onBackClick: () => void;
+  setConnectedWalletAddress: () => void;
 }
 
 // https://www.fatf-gafi.org/en/countries.html
@@ -55,11 +60,18 @@ const fatfMemberCountries: CountryCode[] = [
 ];
 
 export default function RedeemForm({
+  exchange,
   isValid,
   onNextClick,
-  onBackClick
+  onBackClick,
+  setConnectedWalletAddress
 }: Props) {
   const { isLteXS } = useBreakpoints();
+  const requestBuyerAddress = exchange?.offer
+    ? getHasBuyerTransferInfos(exchange.offer, [
+        BuyerTransferInfo.walletAddress
+      ])
+    : false;
   return (
     <>
       <Typography
@@ -142,6 +154,23 @@ export default function RedeemForm({
             placeholder={FormModel.formFields.email.placeholder}
           />
         </Grid>
+        {requestBuyerAddress && (
+          <Grid gap="1rem">
+            <Grid flexDirection="column" alignItems="flex-start">
+              <Input
+                name={FormModel.formFields.walletAddress.name}
+                placeholder={FormModel.formFields.walletAddress.placeholder}
+              />
+            </Grid>
+            <Button
+              variant="secondaryFill"
+              onClick={() => setConnectedWalletAddress()}
+              style={{ whiteSpace: "nowrap" }}
+            >
+              Use my wallet address
+            </Button>
+          </Grid>
+        )}
         <Grid flexDirection="column" alignItems="flex-start">
           <Phone
             name={FormModel.formFields.phone.name}

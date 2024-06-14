@@ -86,10 +86,7 @@ export type TypographyProps = WrapperProps &
     className?: string;
   };
 
-export const Typography: React.FC<TypographyProps> = forwardRef<
-  HTMLDivElement,
-  TypographyProps
->(
+export const Typography = forwardRef<HTMLDivElement, TypographyProps>(
   (
     { tag = "div", children, style = {}, className, onClick, ...props },
     ref

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   createDispatchHook,
   createSelectorHook,
@@ -6,10 +7,21 @@ import {
 
 import store from "./index";
 import { ReduxCCDummyContext } from "./reduxContext";
+import { useConfigContext } from "../components/config/ConfigContext";
 
-const useDappDispatch = createDispatchHook(ReduxCCDummyContext as any);
-export const useAppDispatch = () => useDappDispatch<typeof store.dispatch>();
-const useDappSelector = createSelectorHook(ReduxCCDummyContext as any);
+export const useAppDispatch = () => {
+  const { withCustomReduxContext } = useConfigContext();
+  const useDappDispatch = createDispatchHook(
+    withCustomReduxContext ? (ReduxCCDummyContext as any) : undefined
+  );
+  return useDappDispatch<typeof store.dispatch>();
+};
 export const useAppSelector: TypedUseSelectorHook<
   ReturnType<typeof store.getState>
-> = useDappSelector;
+> = (arg0) => {
+  const { withCustomReduxContext } = useConfigContext();
+
+  return createSelectorHook(
+    withCustomReduxContext ? (ReduxCCDummyContext as any) : undefined
+  )(arg0);
+};

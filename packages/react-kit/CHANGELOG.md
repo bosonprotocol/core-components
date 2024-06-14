@@ -3,6 +3,89 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.32.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.31.1...@bosonprotocol/react-kit@0.32.0) (2024-06-11)
+
+
+### Bug Fixes
+
+* redeem modal ([#752](https://github.com/bosonprotocol/core-components/issues/752)) ([cc4b230](https://github.com/bosonprotocol/core-components/commit/cc4b230e9232ab446275597f53e605d1c9660e95))
+
+
+### Features
+
+* create multisteps component ([#750](https://github.com/bosonprotocol/core-components/issues/750)) ([a14ce87](https://github.com/bosonprotocol/core-components/commit/a14ce8706d43d2784acaea76e6c92d0750bd833d))
+* extract wallet components from interface ([#743](https://github.com/bosonprotocol/core-components/issues/743)) ([91d0aef](https://github.com/bosonprotocol/core-components/commit/91d0aeff23fb7b82d41c907b05b25c395422d3c0))
+* make components more generic ([#738](https://github.com/bosonprotocol/core-components/issues/738)) ([b1663cc](https://github.com/bosonprotocol/core-components/commit/b1663ccadfae8102f285e90842eb2f154bff34ea))
+* unify loading components ([#748](https://github.com/bosonprotocol/core-components/issues/748)) ([941f12f](https://github.com/bosonprotocol/core-components/commit/941f12f0718137041c6628e7d819524a939728a7))
+* update upload component with editor ([#751](https://github.com/bosonprotocol/core-components/issues/751)) ([3b58261](https://github.com/bosonprotocol/core-components/commit/3b582617b600cc09593f0e7044be19d0aaa5692a))
+
+
+
+
+
+## [0.31.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.31.0...@bosonprotocol/react-kit@0.31.1) (2024-05-23)
+
+
+### Bug Fixes
+
+* alignment digital product data ([#740](https://github.com/bosonprotocol/core-components/issues/740)) ([a326fb0](https://github.com/bosonprotocol/core-components/commit/a326fb0ddbe9022d169a547e9cc4937825336104))
+
+
+
+
+
+# [0.31.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.30.1...@bosonprotocol/react-kit@0.31.0) (2024-05-22)
+
+
+### Bug Fixes
+
+* modal inner scroll ([#739](https://github.com/bosonprotocol/core-components/issues/739)) ([7259677](https://github.com/bosonprotocol/core-components/commit/7259677c9b4745a9128527c971bddeb72b8f3813))
+
+
+### Features
+
+* make modal content scrollable ([#737](https://github.com/bosonprotocol/core-components/issues/737)) ([f3cc99a](https://github.com/bosonprotocol/core-components/commit/f3cc99a8b024b7068ba777c2b04361e976f5115f))
+
+
+
+
+
+## [0.30.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.30.0...@bosonprotocol/react-kit@0.30.1) (2024-05-21)
+
+
+### Bug Fixes
+
+* ipfs logic for when uri is just cid ([#736](https://github.com/bosonprotocol/core-components/issues/736)) ([54ce588](https://github.com/bosonprotocol/core-components/commit/54ce5889cc9b65c660924337c076c8a0d4db46da))
+
+
+
+
+
+# [0.30.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.29.1...@bosonprotocol/react-kit@0.30.0) (2024-05-13)
+
+
+### Bug Fixes
+
+* get offer details ([#726](https://github.com/bosonprotocol/core-components/issues/726)) ([80712b0](https://github.com/bosonprotocol/core-components/commit/80712b0adb87373f6b2029cdfbb757559ebde891))
+* minor issues phygitals ([#730](https://github.com/bosonprotocol/core-components/issues/730)) ([95c7724](https://github.com/bosonprotocol/core-components/commit/95c7724fb88d31873151dfaf917c57c7c572380e))
+* minor phygital issues ([#719](https://github.com/bosonprotocol/core-components/issues/719)) ([43669a4](https://github.com/bosonprotocol/core-components/commit/43669a45e8ae3f59c2bf2b1258cc088a4da27790))
+* phygital minor fixes ([#728](https://github.com/bosonprotocol/core-components/issues/728)) ([8a5d789](https://github.com/bosonprotocol/core-components/commit/8a5d7893f919f1e396d11dd7b67a3593146c33c6))
+* phygital ribbon to support extra props ([#723](https://github.com/bosonprotocol/core-components/issues/723)) ([9a6272c](https://github.com/bosonprotocol/core-components/commit/9a6272cbfb1bbdb8fd676b866f09285d8082573c))
+* phygitals ([#729](https://github.com/bosonprotocol/core-components/issues/729)) ([c7c0531](https://github.com/bosonprotocol/core-components/commit/c7c0531802f8621b5757111e3b5abb9b06e20bbd))
+* phygitals related code ([#722](https://github.com/bosonprotocol/core-components/issues/722)) ([f486b2a](https://github.com/bosonprotocol/core-components/commit/f486b2aa72239bb87ac7e80cb1b98c43950425a3))
+* typography props ([#731](https://github.com/bosonprotocol/core-components/issues/731)) ([02077a3](https://github.com/bosonprotocol/core-components/commit/02077a3fb6190055807a2db0df55459025122305))
+* when phygital label is displayed in offer variant view ([#733](https://github.com/bosonprotocol/core-components/issues/733)) ([45f6117](https://github.com/bosonprotocol/core-components/commit/45f6117b74ed9e0636317e83702c7a5b92647430))
+
+
+### Features
+
+* add buyer contract address in redeem form ([#724](https://github.com/bosonprotocol/core-components/issues/724)) ([f6b182a](https://github.com/bosonprotocol/core-components/commit/f6b182a532c6ea974c1f989e6cd8759e7e50471c))
+* add more content into purchase overview modal ([#710](https://github.com/bosonprotocol/core-components/issues/710)) ([24a5686](https://github.com/bosonprotocol/core-components/commit/24a5686e5b7ade99eef8f59fa0e2b1e68db5c78b))
+
+
+
+
+
 ## [0.29.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.29.0...@bosonprotocol/react-kit@0.29.1) (2024-04-15)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit

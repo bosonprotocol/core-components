@@ -1,23 +1,22 @@
 import React, { ReactNode } from "react";
-import { CONFIG } from "../../../lib/config/config";
-import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 import { Omit } from "utility-types";
-import { CommonWidgetTypes } from "../types";
-import { SignerProvider } from "../../signer/SignerProvider";
-import GlobalStyle from "../../styles/GlobalStyle";
+import { CONFIG } from "../../../lib/config/config";
 import {
   ConfigProvider,
   ConfigProviderProps
 } from "../../config/ConfigProvider";
+import { ModalProvider } from "../../modal/ModalProvider";
+import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
+import { SignerProvider } from "../../signer/SignerProvider";
+import GlobalStyle from "../../styles/GlobalStyle";
+import { WalletConnectionProviderProps } from "../../wallet/WalletConnectionProvider";
+import { WithReduxProvider, WithReduxProviderProps } from "../ReduxProvider";
+import { getParentWindowOrigin } from "../common";
+import { CommonWidgetTypes } from "../types";
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "./convertion-rate/ConvertionRateProvider";
-import WalletConnectionProvider, {
-  WalletConnectionProviderProps
-} from "../../wallet/WalletConnectionProvider";
-import ModalProvider from "../../modal/ModalProvider";
-import { MagicProvider } from "../../magicLink/MagicProvider";
-import { getParentWindowOrigin } from "../common";
+import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
 
 export type FinanceWidgetProvidersProps = Omit<
   WalletConnectionProviderProps,
@@ -25,7 +24,9 @@ export type FinanceWidgetProvidersProps = Omit<
 > &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   CommonWidgetTypes &
-  ConvertionRateProviderProps & {
+  ConvertionRateProviderProps &
+  BosonProviderProps &
+  WithReduxProviderProps & {
     children: ReactNode;
   };
 
@@ -35,26 +36,27 @@ export const FinanceWidgetProviders: React.FC<FinanceWidgetProvidersProps> =
   withQueryClientProvider(({ children, ...props }) => {
     const parentOrigin = getParentWindowOrigin();
     return (
-      <ConfigProvider
-        magicLinkKey={magicLinkKey}
-        infuraKey={infuraKey}
-        {...props}
+      <WithReduxProvider
+        withCustomReduxContext={props.withCustomReduxContext}
+        withReduxProvider={props.withReduxProvider}
       >
-        <GlobalStyle />
-        <SignerProvider
-          parentOrigin={parentOrigin}
-          withExternalSigner={props.withExternalSigner}
+        <ConfigProvider
+          magicLinkKey={magicLinkKey}
+          infuraKey={infuraKey}
+          {...props}
         >
-          <MagicProvider>
-            <WalletConnectionProvider
-              walletConnectProjectId={props.walletConnectProjectId}
+          <BosonProvider {...props}>
+            <GlobalStyle />
+            <SignerProvider
+              parentOrigin={parentOrigin}
+              withExternalSigner={props.withExternalSigner}
             >
               <ConvertionRateProvider>
                 <ModalProvider>{children}</ModalProvider>
               </ConvertionRateProvider>
-            </WalletConnectionProvider>
-          </MagicProvider>
-        </SignerProvider>
-      </ConfigProvider>
+            </SignerProvider>
+          </BosonProvider>
+        </ConfigProvider>
+      </WithReduxProvider>
     );
   });

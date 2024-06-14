@@ -11,10 +11,10 @@ import {
   ProductCardBottomContent,
   ProductCardCreator,
   ProductCardCreatorAvatar,
+  TopLeftRibbon,
   ProductCardCreatorName,
   ProductCardData,
   ProductCardImageWrapper,
-  ProductCardLabelWrapper,
   ProductCardPrice,
   ProductCardPriceWrapper,
   ProductCardTitle,
@@ -62,8 +62,8 @@ const Wrapper = ({
   }
   return <>{children}</>;
 };
-export const PhygitalLabel = () => {
-  return <ProductCardLabelWrapper>Phygital</ProductCardLabelWrapper>;
+export const PhygitalLabel = ({ ...rest }) => {
+  return <TopLeftRibbon {...rest} data-text="Phygital" />;
 };
 export const ProductCard = (props: IProductCard) => {
   const {

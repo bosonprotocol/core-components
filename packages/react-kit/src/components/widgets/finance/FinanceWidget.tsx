@@ -8,7 +8,7 @@ import { useAccount } from "../../../hooks/connection/connection";
 import { useDisconnect } from "../../../hooks/connection/useDisconnect";
 import { useCurrentSellers } from "../../../hooks/useCurrentSellers";
 import { Grid } from "../../ui/Grid";
-import Loading from "../../ui/loading/Loading";
+import Loading from "../../ui/loading/LoadingWrapper";
 import ConnectButton from "../../wallet/ConnectButton";
 import Finance, { Props } from "./Finance";
 import { useConvertionRate } from "./convertion-rate/useConvertionRate";
@@ -99,7 +99,7 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
         `disconnect account because connected account (${address}) is not ${forcedAccount}`
       );
       // force disconnection as the current connected wallet is not the forced one
-      disconnect();
+      disconnect({ isUserDisconnecting: false });
     }
 
     if (forcedAccount && addressRef.current) {
@@ -141,7 +141,7 @@ type FinanceWidgetProps = FinanceWidgetProvidersProps & {
 export function FinanceWidget(props: FinanceWidgetProps) {
   const { sellerId, withExternalSigner } = props;
   return (
-    <FinanceWidgetProviders {...props}>
+    <FinanceWidgetProviders {...props} withReduxProvider>
       {!withExternalSigner && (
         <Grid justifyContent="flex-end">
           <StyledConnectButton showChangeWallet />

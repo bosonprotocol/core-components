@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/subgraph",
-  "version": "1.33.1",
+  "version": "1.33.2",
   "dependencies": {
     "@graphprotocol/graph-cli": "0.68.5",
     "@graphprotocol/graph-ts": "0.33.0"
@@ -28,12 +28,12 @@
     "create:local": "graph create --node http://localhost:8020/ boson/corecomponents",
     "remove:local": "graph remove --node http://localhost:8020/ boson/corecomponents",
     "deploy:local": "npm run manifest:local && npm run create:local && graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 boson/corecomponents -l 0.0.1",
-    "deploy:testing:amoy": "npm run manifest:testing:amoy && graph deploy --studio --ipfs https://api.thegraph.com/ipfs/ -l v0.0.1 llx-amoy-testing",
-    "deploy:testing:sepolia": "npm run manifest:testing:sepolia && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/sepolia-testing",
-    "deploy:staging:amoy": "npm run manifest:staging:amoy && graph deploy --studio --ipfs https://api.thegraph.com/ipfs/ -l v0.0.1 llx-amoy-staging",
-    "deploy:staging:sepolia": "npm run manifest:staging:sepolia && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/sepolia-staging",
-    "deploy:production": "npm run manifest:production && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/polygon",
-    "deploy:production:ethereum": "npm run manifest:production:ethereum && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/ethereum",
+    "deploy:testing:amoy": "npm run manifest:testing:amoy && graph deploy --studio --ipfs https://api.thegraph.com/ipfs/ -l v0.0.1 boson-testing-amoy",
+    "deploy:testing:sepolia": "npm run manifest:testing:sepolia && graph deploy --studio --ipfs https://api.thegraph.com/ipfs/ -l v0.0.1 boson-testing-sepolia",
+    "deploy:staging:amoy": "npm run manifest:staging:amoy && graph deploy --studio --ipfs https://api.thegraph.com/ipfs/ -l v0.0.1 boson-staging-amoy",
+    "deploy:staging:sepolia": "npm run manifest:staging:sepolia && graph deploy --studio --ipfs https://api.thegraph.com/ipfs/ -l v0.0.1 boson-staging-sepolia",
+    "deploy:production": "npm run manifest:production && graph deploy --studio --ipfs https://api.thegraph.com/ipfs/ -l v0.0.1 boson-polygon",
+    "deploy:production:ethereum": "npm run manifest:production:ethereum && graph deploy --studio --ipfs https://api.thegraph.com/ipfs/ -l v0.0.1 boson-ethereum",
     "test": "npm run manifest:local && graph test"
   }
 }

@@ -27,3 +27,9 @@ export const ercTokenMapping = {
   erc721: "ERC721",
   erc1155: "ERC1155"
 } as const;
+
+export const BUYER_TRANSFER_INFO_KEY = "buyerTransferInfo";
+export enum BuyerTransferInfo {
+  "email" = "email",
+  "walletAddress" = "walletAddress"
+}
