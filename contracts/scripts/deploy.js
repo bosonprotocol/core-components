@@ -113,7 +113,6 @@ async function main() {
   // Deploy wrappers contracts
   const { openSeaWrapperFactory } = await deployWrappers(
     protocolDiamond,
-    foreign20Token, // act as WETH here
     priceDiscoveryClient,
     seaportAddress
   );
