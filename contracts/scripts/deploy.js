@@ -23,6 +23,7 @@ const {
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens.js");
 const { deploySeaport } = require("./deploy-seaport");
 const { ZeroAddress } = require("ethers");
+const { deployWrappers } = require("./deploy-wrappers.js");
 
 async function main() {
   const { addresses } = await deployAndMintMockNFTAuthTokens();
@@ -57,6 +58,9 @@ async function main() {
   const deployedContracts = JSON.parse(file.toString())["contracts"];
   const protocolDiamond = deployedContracts.find(
     (c) => c.name === "ProtocolDiamond"
+  )?.address;
+  const priceDiscoveryClient = deployedContracts.find(
+    (c) => c.name === "BosonPriceDiscoveryClient"
   )?.address;
   const accounts = await ethers.getSigners();
   const disputeResolverSigner = accounts[1];
@@ -104,8 +108,16 @@ async function main() {
   );
   // Deploy Seaport contract
   const mockSeaport = await deploySeaport();
+  const seaportAddress = await mockSeaport.getAddress();
+  console.log(`✅ Seaport Contract has been deployed at ${seaportAddress}`);
+  // Deploy wrappers contracts
+  const { openSeaWrapperFactory } = await deployWrappers(
+    protocolDiamond,
+    priceDiscoveryClient,
+    seaportAddress
+  );
   console.log(
-    `✅ Seaport Contract has been deployed at ${await mockSeaport.getAddress()}`
+    `✅ OpenSeaWrapperFactory Contract has been deployed at ${await openSeaWrapperFactory.getAddress()}`
   );
   // Set specific configuration values (needed for tests)
   const deployer = accounts[0];

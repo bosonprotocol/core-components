@@ -32,9 +32,8 @@ const buyerWallet = seedWallet15;
 
 describe("core-sdk-premint", () => {
   test("can reserveRange and then preMint some vouchers and there are still some left to preMint", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
 
     const createdOffer = await createSellerAndOffer(
       coreSDK,
@@ -177,9 +176,8 @@ describe("core-sdk-premint", () => {
   });
   describe("burnPremintedVouchers", () => {
     test("burnPremintedVouchers - after voiding offer there should be no available premints", async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
 
       const createdOffer = await createSellerAndOffer(
         coreSDK,
@@ -214,9 +212,8 @@ describe("core-sdk-premint", () => {
     });
   });
   test("can approve preminted tokens for contract", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
 
     const createdOffer = await createSellerAndOffer(
       coreSDK,
@@ -246,9 +243,8 @@ describe("core-sdk-premint", () => {
     expect(isApprovedForAllAfter).toEqual(true);
   });
   test("can call seaport via voucher contract to validate listing preminted tokens", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
 
     const createdOffer = await createSellerAndOffer(
       coreSDK,
@@ -322,9 +318,8 @@ describe("core-sdk-premint", () => {
 
 describe("orchestration", () => {
   test("#createPremintedOfferWithCondition()", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     await createSeller(coreSDK, fundedWallet.address);
 
     // Ensure the condition token is minted
@@ -364,9 +359,8 @@ describe("orchestration", () => {
     );
   });
   test("#createPremintedOfferAddToGroup()", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     await createSeller(coreSDK, fundedWallet.address);
 
     // Ensure the condition token is minted
@@ -404,9 +398,8 @@ describe("orchestration", () => {
     expect(offer.condition?.id).toEqual(groupId);
   });
   test("#createSellerAndPremintedOffer()", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const premintParameters = {
       reservedRangeLength: "5",
       to: fundedWallet.address
@@ -427,9 +420,8 @@ describe("orchestration", () => {
     );
   });
   test("#createSellerAndPremintedOfferWithCondition()", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     // Ensure the condition token is minted
     const tokenID = Date.now().toString();
     await ensureMintedERC1155(fundedWallet, tokenID, "5");

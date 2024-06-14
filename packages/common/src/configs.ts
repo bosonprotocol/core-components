@@ -29,7 +29,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         testErc721: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49", // Foreign721 contract
         testErc1155: "0x4826533B4897376654Bb4d4AD88B7faFD0C98528", // Foreign1155 contract
         forwarder: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0", // MockForwarder contract
-        seaport: "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF" // MockSeaport contract
+        seaport: "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF", // MockSeaport contract
+        openseaWrapper: "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf"
       },
       metaTx: {
         relayerUrl: "http://localhost:8888",
@@ -61,7 +62,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       contracts: {
         protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
         priceDiscoveryClient: "0xFFcd4c407B60B0d4351945484F9354d2C9E34EA1",
-        forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
+        forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0", // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
+        openseaWrapper: "0x6e9C25b48161A2aC6A854af3bc596d3190F0B5A3"
       },
       metaTx: {
         relayerUrl: "https://api.biconomy.io",
@@ -91,7 +93,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
         protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
         priceDiscoveryClient: "0x789d8727b9ae0A8546489232EB55b6fBE86b21Ac",
-        forwarder: "0xbdeA59c8801658561a16fF58D68FC2b198DE4E93" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L10
+        forwarder: "0xbdeA59c8801658561a16fF58D68FC2b198DE4E93", // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L10
+        openseaWrapper: "0xf4e888DfCBD71b08a3Aa5Cf15d5124Cfd7205433"
       },
       metaTx: undefined,
       lens: undefined
@@ -117,7 +120,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       contracts: {
         protocolDiamond: "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
         priceDiscoveryClient: "0xbDD129B5034a65bd1F2872Df3F62C6dE1308352E",
-        forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
+        forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0", // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
+        openseaWrapper: "0x6678663A66C228BA79C8B2ABB4b4D797C6215026"
       },
       metaTx: {
         relayerUrl: "https://api.biconomy.io",

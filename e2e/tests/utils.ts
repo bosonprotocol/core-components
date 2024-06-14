@@ -116,6 +116,10 @@ export const MOCK_SEAPORT_ADDRESS =
 export const OPENSEA_FEE_RECIPIENT =
   "0x1111122222333334444455555666667777788888";
 
+export const OPENSEA_WRAPPER_FACTORY =
+  (getFirstEnvConfig("local").contracts.openseaWrapper as string) ||
+  "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf";
+
 export const metadata = {
   name: "name",
   description: "description",

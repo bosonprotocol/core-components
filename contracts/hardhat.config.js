@@ -11,15 +11,33 @@ const { glob } = require("glob");
 const {
   TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS
 } = require("hardhat/builtin-tasks/task-names");
+const { deployWrappersTask } = require("./scripts/tasks/deployWrappers");
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
-
   for (const account of accounts) {
     console.log(account.address);
   }
+});
+
+task("deploy-wrappers", "Deploy wrappers", async (taskArgs, hre) => {
+  const { chainId } = await hre.ethers.provider.getNetwork();
+  const {
+    protocolAddress,
+    priceDiscoveryClient: unwrapperAddress,
+    seaport
+  } = getWrapperConfig(chainId);
+  const { openSeaWrapperFactory } = await deployWrappersTask(
+    hre,
+    protocolAddress,
+    unwrapperAddress,
+    seaport
+  );
+  console.log(
+    `✅ OpenSeaWrapperFactory Contract has been deployed at ${await openSeaWrapperFactory.getAddress()}`
+  );
 });
 
 // Allow to merge different sources folder in hardhat config
@@ -62,7 +80,16 @@ subtask(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS, async (_, { config }) => {
     }
   );
   console.log("Add submodulesContracts:", submodulesContracts);
-  return [...contracts, ...submodulesContracts].map(path.normalize);
+  const otherContracts_path = path.join(
+    config.paths.root,
+    "other-contracts",
+    "**",
+    "*.sol"
+  );
+  const otherContracts = await glob(otherContracts_path.replace(/\\/g, "/")); // Windows support
+  return [...contracts, ...submodulesContracts, ...otherContracts].map(
+    path.normalize
+  );
 });
 
 const accountsFromEnv = process.env.DEPLOYER_PK
@@ -90,7 +117,7 @@ module.exports = {
           },
           outputSelection: {
             "*": {
-              "*": ["evm.bytecode.object", "evm.deployedBytecode*"],
+              "*": ["evm.bytecode.object", "evm.deployedBytecode*"]
             }
           }
         },
@@ -157,17 +184,29 @@ module.exports = {
       accounts: accountsFromEnv,
       url: process.env.JSON_RPC_URL_BOSON || ""
     },
-    ropsten: {
+    amoy: {
       allowUnlimitedContractSize: true,
-      chainId: 3,
+      chainId: 80002,
       accounts: accountsFromEnv,
-      url: process.env.JSON_RPC_URL_ROPSTEN || ""
+      url: process.env.JSON_RPC_URL_AMOY || ""
     },
-    kovan: {
+    sepolia: {
       allowUnlimitedContractSize: true,
-      chainId: 42,
+      chainId: 11155111,
       accounts: accountsFromEnv,
-      url: process.env.JSON_RPC_URL_KOVAN || ""
+      url: process.env.JSON_RPC_URL_SEPOLIA || ""
+    },
+    mainnet: {
+      allowUnlimitedContractSize: true,
+      chainId: 1,
+      accounts: accountsFromEnv,
+      url: process.env.JSON_RPC_URL_MAINNET || ""
+    },
+    polygon: {
+      allowUnlimitedContractSize: true,
+      chainId: 137,
+      accounts: accountsFromEnv,
+      url: process.env.JSON_RPC_URL_POLYGON || ""
     }
   },
   etherscan: {
@@ -195,7 +234,93 @@ module.exports = {
       "MockForwarder",
       "IBosonConfigHandler",
       "IBosonPriceDiscoveryHandler",
-      "Seaport"
+      "Seaport",
+      "OpenSeaWrapper",
+      "OpenSeaWrapperFactory"
     ]
   }
 };
+
+function getWrapperConfig(chainId) {
+  switch (chainId) {
+    case 1: {
+      // Ethereum mainnet
+      if (process.env.ENV_NAME !== "production") {
+        throw new Error(
+          `Environment variable ENV_NAME should be 'production' (current value '${process.env.ENV_NAME}')`
+        );
+      }
+      return {
+        protocolAddress: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+        priceDiscoveryClient: "0xb60cf39Fb18e5111174f346d0f39521ef6531fD4",
+        seaport: "0x0000000000000068F116a894984e2DB1123eB395"
+      };
+    }
+    case 137: {
+      // Polygon
+      if (process.env.ENV_NAME !== "production") {
+        throw new Error(
+          `Environment variable ENV_NAME should be 'production' (current value '${process.env.ENV_NAME}')`
+        );
+      }
+      return {
+        protocolAddress: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+        priceDiscoveryClient: "0xb60cf39Fb18e5111174f346d0f39521ef6531fD4",
+        seaport: "0x0000000000000068F116a894984e2DB1123eB395"
+      };
+    }
+    case 11155111: {
+      let protocolAddress, priceDiscoveryClient;
+      // Sepolia
+      if (process.env.ENV_NAME === "testing") {
+        protocolAddress = "0x7de418a7ce94debd057c34ebac232e7027634ade";
+        priceDiscoveryClient = "0x789d8727b9ae0A8546489232EB55b6fBE86b21Ac";
+      } else if (process.env.ENV_NAME === "staging") {
+        protocolAddress = "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6";
+        priceDiscoveryClient = "0x9F3dAAA2D7B39C7ad4f375e095357012296e69B8";
+      } else {
+        throw new Error(
+          `Environment variable ENV_NAME should be 'testing' or 'staging' (current value '${process.env.ENV_NAME}')`
+        );
+      }
+      return {
+        protocolAddress,
+        priceDiscoveryClient,
+        seaport: "0x0000000000000068F116a894984e2DB1123eB395"
+      };
+    }
+    case 80002: {
+      let protocolAddress, priceDiscoveryClient;
+      // Amoy
+      if (process.env.ENV_NAME === "testing") {
+        protocolAddress = "0x7de418a7ce94debd057c34ebac232e7027634ade";
+        priceDiscoveryClient = "0xFFcd4c407B60B0d4351945484F9354d2C9E34EA1";
+      } else if (process.env.ENV_NAME === "staging") {
+        protocolAddress = "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6";
+        priceDiscoveryClient = "0xbDD129B5034a65bd1F2872Df3F62C6dE1308352E";
+      } else {
+        throw new Error(
+          `Environment variable ENV_NAME should be 'testing' or 'staging' (current value '${process.env.ENV_NAME}')`
+        );
+      }
+      return {
+        protocolAddress,
+        priceDiscoveryClient,
+        seaport: "0x0000000000000068F116a894984e2DB1123eB395"
+      };
+    }
+    case 31337: {
+      // Local
+      if (process.env.ENV_NAME !== "local") {
+        throw new Error(
+          `Environment variable ENV_NAME should be 'local' (current value '${process.env.ENV_NAME}')`
+        );
+      }
+      return {
+        protocolAddress: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+        priceDiscoveryClient: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+        seaport: "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF"
+      };
+    }
+  }
+}

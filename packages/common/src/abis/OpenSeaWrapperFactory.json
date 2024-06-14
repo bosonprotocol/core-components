@@ -1,0 +1,81 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_protocolAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_unwrapperAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_seaport",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_openSeaFee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address payable",
+        "name": "_openSeaRecipient",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_openSeaConduitKey",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "_openSeaConduit",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_voucherContract",
+        "type": "address"
+      }
+    ],
+    "name": "create",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_voucherContract",
+        "type": "address"
+      }
+    ],
+    "name": "getWrapper",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

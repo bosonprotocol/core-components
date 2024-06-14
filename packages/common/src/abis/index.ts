@@ -22,8 +22,11 @@ import IBosonPriceDiscoveryHandlerABI from "./IBosonPriceDiscoveryHandler.json";
 import IBosonVoucherABI from "./IBosonVoucher.json";
 import MockForwarderABI from "./MockForwarder.json";
 import NativeMetaTransactionABI from "./MockNativeMetaTransaction.json";
+import OpenSeaWrapperABI from "./OpenSeaWrapper.json";
+import OpenSeaWrapperFactoryABI from "./OpenSeaWrapperFactory.json";
 import ProtocolDiamondABI from "./ProtocolDiamond.json";
 import SeaportABI from "./Seaport.json";
+import SeaportInterfaceABI from "./SeaportInterface.json";
 
 export {
   BiconomyForwarderABI,
@@ -48,6 +51,9 @@ export {
   IBosonVoucherABI,
   MockForwarderABI,
   NativeMetaTransactionABI,
+  OpenSeaWrapperABI,
+  OpenSeaWrapperFactoryABI,
   ProtocolDiamondABI,
-  SeaportABI
+  SeaportABI,
+  SeaportInterfaceABI
 };

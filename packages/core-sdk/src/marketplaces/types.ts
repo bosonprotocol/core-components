@@ -1,5 +1,10 @@
-import { PriceDiscoveryStruct, Side } from "@bosonprotocol/common";
+import {
+  PriceDiscoveryStruct,
+  Side,
+  TransactionResponse
+} from "@bosonprotocol/common";
 import { OpenSeaSDKHandler } from "./opensea";
+import { AdvancedOrder } from "../seaport/interface";
 
 export type DefaultHandler = {
   // Just here as an example for other type of merketplace in the future
@@ -55,6 +60,10 @@ export type SignedOrder = Order & {
   signature: string;
 };
 
+export abstract class Wrapper {
+  public abstract get address(): string;
+}
+
 export abstract class Marketplace {
   constructor(protected _type: MarketplaceType) {}
   public abstract createListing(listing: Listing): Promise<Order>;
@@ -66,8 +75,34 @@ export abstract class Marketplace {
     },
     side: Side
   ): Promise<SignedOrder>;
-  public abstract generateFulfilmentData(asset: {
+  public abstract generateFulfilmentData(
+    asset: {
+      contract: string;
+      tokenId: string;
+    },
+    withWrapper?: boolean
+  ): Promise<PriceDiscoveryStruct>;
+  public abstract buildAdvancedOrder(asset: {
     contract: string;
     tokenId: string;
-  }): Promise<PriceDiscoveryStruct>;
+  }): Promise<AdvancedOrder>;
+  public abstract wrapVouchers(
+    contract: string,
+    tokenIds: string[]
+  ): Promise<TransactionResponse>;
+  public abstract unwrapVoucher(
+    contract: string,
+    tokenId: string
+  ): Promise<TransactionResponse>;
+  public abstract finalizeAuction(asset: {
+    contract: string;
+    tokenId: string;
+  }): Promise<TransactionResponse>;
+  public abstract isVoucherWrapped(
+    contractAddress: string,
+    tokenId: string
+  ): Promise<{ wrapped: boolean; wrapper?: string }>;
+  public abstract getOrCreateVouchersWrapper(
+    contractAddress: string
+  ): Promise<Wrapper>;
 }

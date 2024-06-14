@@ -1,6 +1,6 @@
 import fs from "fs";
 import { execSync } from "child_process";
-import prettier from "prettier";
+import * as prettier from "prettier";
 
 async function main() {
   console.log("Compiling contracts...");

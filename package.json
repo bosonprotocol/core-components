@@ -33,6 +33,7 @@
     "explore-offer": "ts-node -P tsconfig.base.json ./scripts/explore-offer.ts",
     "create-offer": "ts-node -P tsconfig.base.json ./scripts/create-offer.ts",
     "create-pd-offer": "ts-node -P tsconfig.base.json ./scripts/create-price-discovery-offer.ts",
+    "opensea:wrap": "ts-node -P tsconfig.base.json ./scripts/opensea/wrap-vouchers.ts",
     "opensea:list": "ts-node -P tsconfig.base.json ./scripts/opensea/create-listing.ts",
     "opensea:bid": "ts-node -P tsconfig.base.json ./scripts/opensea/create-offer.ts",
     "opensea:fulfil": "ts-node -P tsconfig.base.json ./scripts/opensea/fulfil-order.ts",
