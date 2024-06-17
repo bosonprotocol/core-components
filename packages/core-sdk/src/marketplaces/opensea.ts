@@ -189,7 +189,7 @@ export class OpenSeaMarketplace extends Marketplace {
       this._wrapperFactory = new WrapperFactory(
         this._contracts["openseaWrapper"],
         this._web3Lib
-      );  
+      );
     }
   }
 
@@ -363,7 +363,7 @@ export class OpenSeaMarketplace extends Marketplace {
     contractAddress: string
   ): Promise<OpenSeaWrapper> {
     if (!this._wrapperFactory) {
-      throw new Error("WrapperFactory is not initialized")
+      throw new Error("WrapperFactory is not initialized");
     }
     // Is the wrapper already cached?
     let wrapper = this._wrappersMap.get(contractAddress);
@@ -396,8 +396,8 @@ export class OpenSeaMarketplace extends Marketplace {
     let wrapper = this._wrappersMap.get(contractAddress);
     if (!wrapper) {
       if (!this._wrapperFactory) {
-        throw new Error("WrapperFactory is not initialized")
-      }  
+        throw new Error("WrapperFactory is not initialized");
+      }
       // Does the wrapper exist on chain?
       const wrapperAddress = await this._wrapperFactory.getWrapper({
         voucherContract: contractAddress
