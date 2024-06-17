@@ -1,6 +1,7 @@
 import React, { HTMLAttributes, forwardRef } from "react";
 import styled, { CSSProperties } from "styled-components";
 import { getTransientCustomProps } from "./getTransientCustomProps";
+import { isDefined } from "./common";
 
 const pickedProps = {
   alignItems: true,
@@ -38,43 +39,52 @@ type InnerTypographyProps = Record<
   `$${keyof WrapperProps}`,
   WrapperProps[keyof WrapperProps]
 >;
-
 const Wrapper = styled.div<InnerTypographyProps>`
   display: flex;
-  ${({ $display }) => ($display ? `display:${$display};` : "")}
-  ${({ $alignItems }) => $alignItems && `align-items: ${$alignItems}`};
-  ${({ $flexBasis }) => $flexBasis && `flex-basis: ${$flexBasis}`};
+  ${({ $display }) => (isDefined($display) ? `display:${$display};` : "")}
+  ${({ $alignItems }) =>
+    isDefined($alignItems) && `align-items: ${$alignItems}`};
+  ${({ $flexBasis }) => isDefined($flexBasis) && `flex-basis: ${$flexBasis}`};
   ${({ $flexDirection }) =>
-    $flexDirection && `flex-direction: ${$flexDirection}`};
-  ${({ $flexGrow }) => $flexGrow && `flex-grow: ${$flexGrow}`};
-  ${({ $flexShrink }) => $flexShrink && `flex-shrink: ${$flexShrink}`};
+    isDefined($flexDirection) && `flex-direction: ${$flexDirection}`};
+  ${({ $flexGrow }) => isDefined($flexGrow) && `flex-grow: ${$flexGrow}`};
+  ${({ $flexShrink }) =>
+    isDefined($flexShrink) && `flex-shrink: ${$flexShrink}`};
   ${({ $justifyContent }) =>
-    $justifyContent && `justify-content: ${$justifyContent}`};
-  ${({ $flexWrap }) => ($flexWrap ? `flex-wrap:${$flexWrap};` : "")}
-  ${({ $rowGap }) => ($rowGap ? `row-gap:${$rowGap};` : "")}
-  ${({ $columnGap }) => ($columnGap ? `column-gap:${$columnGap};` : "")}
-  ${({ $gap }) => ($gap ? `gap:${$gap};` : "")}
-  ${({ $flex }) => ($flex ? `> * { flex: ${$flex}; }` : "")}
-  ${({ $padding }) => ($padding ? `padding:${$padding};` : "")}
-  ${({ $margin }) => ($margin ? `margin:${$margin};` : "")}
-  ${({ $marginTop }) => ($marginTop ? `margin-top:${$marginTop};` : "")}
-  ${({ $marginRight }) => ($marginRight ? `margin-right:${$marginRight};` : "")}
+    isDefined($justifyContent) && `justify-content: ${$justifyContent}`};
+  ${({ $flexWrap }) => (isDefined($flexWrap) ? `flex-wrap:${$flexWrap};` : "")}
+  ${({ $rowGap }) => (isDefined($rowGap) ? `row-gap:${$rowGap};` : "")}
+  ${({ $columnGap }) =>
+    isDefined($columnGap) ? `column-gap:${$columnGap};` : ""}
+  ${({ $gap }) => (isDefined($gap) ? `gap:${$gap};` : "")}
+  ${({ $flex }) => (isDefined($flex) ? `> * { flex: ${$flex}; }` : "")}
+  ${({ $padding }) => (isDefined($padding) ? `padding:${$padding};` : "")}
+  ${({ $margin }) => (isDefined($margin) ? `margin:${$margin};` : "")}
+  ${({ $marginTop }) =>
+    isDefined($marginTop) ? `margin-top:${$marginTop};` : ""}
+  ${({ $marginRight }) =>
+    isDefined($marginRight) ? `margin-right:${$marginRight};` : ""}
   ${({ $marginBottom }) =>
-    $marginBottom ? `margin-bottom:${$marginBottom};` : ""}
-  ${({ $marginLeft }) => ($marginLeft ? `margin-left:${$marginLeft};` : "")}
+    isDefined($marginBottom) ? `margin-bottom:${$marginBottom};` : ""}
+  ${({ $marginLeft }) =>
+    isDefined($marginLeft) ? `margin-left:${$marginLeft};` : ""}
 
 
-  ${({ $fontSize }) => ($fontSize ? `font-size:${$fontSize};` : "")}
-  ${({ $fontWeight }) => ($fontWeight ? `font-weight:${$fontWeight};` : "")}
-  ${({ $lineHeight }) => ($lineHeight ? `line-height:${$lineHeight};` : "")}
-  ${({ $color }) => ($color ? `color:${$color};` : "")}
-  ${({ $background }) => ($background ? `background:${$background};` : "")}
-  ${({ $cursor }) => ($cursor ? `cursor:${$cursor};` : "")}
+  ${({ $fontSize }) => (isDefined($fontSize) ? `font-size:${$fontSize};` : "")}
+  ${({ $fontWeight }) =>
+    isDefined($fontWeight) ? `font-weight:${$fontWeight};` : ""}
+  ${({ $lineHeight }) =>
+    isDefined($lineHeight) ? `line-height:${$lineHeight};` : ""}
+  ${({ $color }) => (isDefined($color) ? `color:${$color};` : "")}
+  ${({ $background }) =>
+    isDefined($background) ? `background:${$background};` : ""}
+  ${({ $cursor }) => (isDefined($cursor) ? `cursor:${$cursor};` : "")}
   ${({ $letterSpacing }) =>
-    $letterSpacing ? `letter-spacing:${$letterSpacing};` : ""}
-    ${({ $textAlign }) => ($textAlign ? `text-align:${$textAlign};` : "")}
-    ${({ $opacity }) => ($opacity ? `opacity:${$opacity};` : "")}
-    ${({ $width }) => ($width ? `width:${$width};` : "")}
+    isDefined($letterSpacing) ? `letter-spacing:${$letterSpacing};` : ""}
+    ${({ $textAlign }) =>
+    isDefined($textAlign) ? `text-align:${$textAlign};` : ""}
+    ${({ $opacity }) => (isDefined($opacity) ? `opacity:${$opacity};` : "")}
+    ${({ $width }) => (isDefined($width) ? `width:${$width};` : "")}
 `;
 
 export type TypographyProps = WrapperProps &
