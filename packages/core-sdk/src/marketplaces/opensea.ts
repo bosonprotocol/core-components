@@ -96,7 +96,9 @@ export class WrapperFactory {
     protected _contract: string,
     protected _web3Lib: Web3LibAdapter
   ) {
-    this.iface = new Interface(abis.OpenSeaWrapperFactoryABI);
+    if (abis["OpenSeaWrapperFactoryABI"]) {
+      this.iface = new Interface(abis["OpenSeaWrapperFactoryABI"]);
+    }
     //TODO: check contract address is valid (trying to read contract)?
   }
 
@@ -125,7 +127,9 @@ export class OpenSeaWrapper extends Wrapper {
     protected _web3Lib: Web3LibAdapter
   ) {
     super();
-    this.iface = new Interface(abis.OpenSeaWrapperABI);
+    if (abis["OpenSeaWrapperABI"]) {
+      this.iface = new Interface(abis["OpenSeaWrapperABI"]);
+    }
   }
 
   public async wrapForAuction(args: { tokenIds: BigNumberish[] }) {
@@ -181,10 +185,12 @@ export class OpenSeaMarketplace extends Marketplace {
     protected _web3Lib: Web3LibAdapter
   ) {
     super(_type);
-    this._wrapperFactory = new WrapperFactory(
-      this._contracts.openseaWrapper,
-      this._web3Lib
-    );
+    if (this._contracts["openseaWrapper"]) {
+      this._wrapperFactory = new WrapperFactory(
+        this._contracts["openseaWrapper"],
+        this._web3Lib
+      );
+    }
   }
 
   public async createListing(listing: Listing): Promise<Order> {
@@ -356,6 +362,9 @@ export class OpenSeaMarketplace extends Marketplace {
   public async getOrCreateVouchersWrapper(
     contractAddress: string
   ): Promise<OpenSeaWrapper> {
+    if (!this._wrapperFactory) {
+      throw new Error("WrapperFactory is not initialized");
+    }
     // Is the wrapper already cached?
     let wrapper = this._wrappersMap.get(contractAddress);
     if (!wrapper) {
@@ -386,6 +395,9 @@ export class OpenSeaMarketplace extends Marketplace {
   ): Promise<{ wrapped: boolean; wrapper?: string }> {
     let wrapper = this._wrappersMap.get(contractAddress);
     if (!wrapper) {
+      if (!this._wrapperFactory) {
+        throw new Error("WrapperFactory is not initialized");
+      }
       // Does the wrapper exist on chain?
       const wrapperAddress = await this._wrapperFactory.getWrapper({
         voucherContract: contractAddress
