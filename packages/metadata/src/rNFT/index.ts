@@ -1,7 +1,7 @@
 import { buildYup } from "schema-to-yup";
 import { SchemaOf } from "yup";
 import schema from "./schema.json";
-import { IMetadata } from "../iMetadata";
+import { IMetadata } from "@bosonprotocol/metadata-storage";
 
 export const rNFTMetadataSchema: SchemaOf<RNftMetadata> = buildYup(schema, {});
 

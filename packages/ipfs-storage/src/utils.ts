@@ -1,4 +1,4 @@
-import { AnyMetadata } from "@bosonprotocol/metadata";
+import { AnyMetadata } from "@bosonprotocol/metadata-storage";
 
 export type ERC721Metadata = AnyMetadata & {
   image_data?: string;

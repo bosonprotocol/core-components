@@ -1,7 +1,7 @@
 {
-  "name": "@bosonprotocol/ipfs-storage",
-  "version": "1.11.3",
-  "description": "IPFS metadata storage implementation for building on top of the Boson Protocol.",
+  "name": "@bosonprotocol/metadata-storage",
+  "version": "1.0.0",
+  "description": "defines the interfaces for metadata-storage implementation (eg. ipfs-storage)",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/cjs/index.d.ts",
@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/bosonprotocol/core-components/issues"
   },
-  "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/contracts-sdk#readme",
+  "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/metadata#readme",
   "files": [
     "dist/*",
     "src/*"
@@ -30,20 +30,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "devDependencies": {
-    "@types/jest": "^29.5.4",
-    "eslint": "^8.10.0",
-    "jest": "29.6.2",
-    "rimraf": "^3.0.2",
-    "ts-jest": "29.1.1",
-    "typescript": "^5.1.6"
-  },
-  "dependencies": {
-    "@bosonprotocol/metadata-storage": "^1.0.0",
-    "ipfs-http-client": "^56.0.1",
-    "multiformats": "^9.6.4",
-    "uint8arrays": "^3.0.0"
-  },
+  "devDependencies": {},
+  "dependencies": {},
   "overrides": {
     "typescript": "^5.1.6"
   }

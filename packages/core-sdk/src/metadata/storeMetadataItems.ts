@@ -1,5 +1,6 @@
 import { CreateOfferArgs, MetadataStorage } from "@bosonprotocol/common";
 import { storeMetadataOnTheGraph } from "../offers/storage";
+import { bundle } from "..";
 
 export async function storeMetadataItems(args: {
   createOffersArgs: CreateOfferArgs[];
@@ -13,7 +14,7 @@ export async function storeMetadataItems(args: {
       );
       if (offerMetadata?.type === "BUNDLE") {
         await Promise.all(
-          offerMetadata.items.map((item) => {
+          (offerMetadata as bundle.BundleMetadata).items.map((item) => {
             return storeMetadataOnTheGraph({
               metadataUriOrHash: item.url,
               metadataStorage: args.metadataStorage,

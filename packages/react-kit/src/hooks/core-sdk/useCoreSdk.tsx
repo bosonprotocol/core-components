@@ -4,7 +4,8 @@ import {
   getEnvConfigById,
   ConfigId,
   EnvironmentType,
-  MetaTxConfig
+  MetaTxConfig,
+  validateMetadata
 } from "@bosonprotocol/core-sdk";
 import { EthersAdapter, Provider } from "@bosonprotocol/ethers-sdk";
 import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
@@ -108,7 +109,7 @@ function initCoreSdk(config: CoreSdkConfig, overrides?: CoreSdkOverrides) {
     protocolDiamond:
       config.protocolDiamond || defaultConfig.contracts.protocolDiamond,
     subgraphUrl: config.subgraphUrl || defaultConfig.subgraphUrl,
-    theGraphStorage: new IpfsMetadataStorage({
+    theGraphStorage: new IpfsMetadataStorage(validateMetadata, {
       url: theGraphStorageUrl,
       headers:
         config.theGraphIpfsStorageHeaders ||
@@ -116,7 +117,7 @@ function initCoreSdk(config: CoreSdkConfig, overrides?: CoreSdkOverrides) {
           ? config.ipfsMetadataStorageHeaders
           : undefined
     }),
-    metadataStorage: new IpfsMetadataStorage({
+    metadataStorage: new IpfsMetadataStorage(validateMetadata, {
       url: metadataStorageUrl,
       headers: config.ipfsMetadataStorageHeaders
     }),
