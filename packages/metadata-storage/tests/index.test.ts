@@ -1,4 +1,11 @@
-import { IMetadata, ERC721Metadata, ERC721MetadataAlt, AnyMetadata, MetadataStorage, tValidateMetadata } from "../src";
+import {
+  IMetadata,
+  ERC721Metadata,
+  ERC721MetadataAlt,
+  AnyMetadata,
+  MetadataStorage,
+  tValidateMetadata
+} from "../src";
 
 function buildAnyMetadata() {
   return {
@@ -11,13 +18,14 @@ function buildAnyMetadata() {
         display_type: "display_type",
         value: "value",
         trait_type: "trait_type"
-      },{
+      },
+      {
         displayType: "displayType",
         value: "value",
         traitType: "traitType"
       }
     ]
-  }
+  };
 }
 
 function checkAnyMetadata(metadata: AnyMetadata) {
