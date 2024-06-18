@@ -1,6 +1,6 @@
 export interface IMetadata {
   type: string;
-  schemaUrl: string;
+  schemaUrl?: string;
 }
 
 export type ERC721Metadata = {
