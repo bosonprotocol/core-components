@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getEnvConfigById, ConfigId, validateMetadata } from "@bosonprotocol/core-sdk";
+import {
+  getEnvConfigById,
+  ConfigId,
+  validateMetadata
+} from "@bosonprotocol/core-sdk";
 import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
 import { EnvironmentType } from "@bosonprotocol/common/src/types";
 
