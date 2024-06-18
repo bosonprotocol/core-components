@@ -1,6 +1,6 @@
 {
   "name": "meta-tx-gateway",
-  "version": "1.7.9-alpha.4",
+  "version": "1.7.9-alpha.5",
   "description": "",
   "main": "index.js",
   "private": true,
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/bosonprotocol/core-components#readme",
   "dependencies": {
-    "@bosonprotocol/common": "^1.28.1-alpha.4",
+    "@bosonprotocol/common": "^1.28.1-alpha.5",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "ethers": "^5.7.0",
