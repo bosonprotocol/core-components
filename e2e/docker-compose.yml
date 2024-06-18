@@ -5,7 +5,7 @@ services:
       context: ../.
       dockerfile: ./e2e/meta-tx-gateway/Dockerfile
     user: "node:node"
-    image: meta-tx-gateway:202402121549
+    image: meta-tx-gateway:202518061227
     ports:
       - "8888:8888"
     environment:
@@ -23,7 +23,7 @@ services:
       context: ../.
       dockerfile: ./e2e/opensea-api-mock/Dockerfile
     user: "node:node"
-    image: opensea-api-mock:202404191626
+    image: opensea-api-mock:202518061227
     ports:
       - "3334:3334"
     environment:
