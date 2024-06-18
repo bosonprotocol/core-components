@@ -1,6 +1,6 @@
 import { IpfsMetadataStorage } from "../src/";
 import { IPFS_HASH } from "@bosonprotocol/common/tests/mocks";
-import { MetadataType } from "@bosonprotocol/metadata";
+import { MetadataType, validateMetadata } from "@bosonprotocol/metadata";
 
 import fetch from "cross-fetch";
 jest.mock("cross-fetch");
@@ -20,7 +20,7 @@ const IPFS_URL = "https://ipfs.api.com:5001";
 
 describe("#storeMetadata()", () => {
   it("throw if invalid metadata", async () => {
-    const ipfsStorage = new IpfsMetadataStorage({
+    const ipfsStorage = new IpfsMetadataStorage(validateMetadata, {
       url: IPFS_URL
     });
 
@@ -36,7 +36,7 @@ describe("#storeMetadata()", () => {
         cid: IPFS_HASH
       })
     });
-    const ipfsStorage = new IpfsMetadataStorage({
+    const ipfsStorage = new IpfsMetadataStorage(validateMetadata, {
       url: IPFS_URL
     });
 
@@ -93,7 +93,7 @@ describe("#getMetadata()", () => {
     mockedUint8arrays.toString.mockReturnValueOnce(
       JSON.stringify(METADATA_FROM_IPFS)
     );
-    const ipfsStorage = new IpfsMetadataStorage({
+    const ipfsStorage = new IpfsMetadataStorage(validateMetadata, {
       url: IPFS_URL
     });
 
@@ -111,7 +111,7 @@ describe("#getMetadata()", () => {
     mockedFetch.mockResolvedValueOnce(
       new Response(JSON.stringify(METADATA_FROM_IPFS))
     );
-    const ipfsStorage = new IpfsMetadataStorage({
+    const ipfsStorage = new IpfsMetadataStorage(validateMetadata, {
       url: IPFS_URL
     });
 
@@ -130,7 +130,7 @@ describe("#getMetadata()", () => {
     mockedFetch.mockResolvedValueOnce(
       new Response(JSON.stringify({ type: MetadataType.BASE }))
     );
-    const ipfsStorage = new IpfsMetadataStorage({
+    const ipfsStorage = new IpfsMetadataStorage(validateMetadata, {
       url: IPFS_URL
     });
 

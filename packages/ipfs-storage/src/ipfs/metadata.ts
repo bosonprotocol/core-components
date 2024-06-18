@@ -1,8 +1,7 @@
-import { MetadataStorage, AnyMetadata } from "@bosonprotocol/metadata";
-import { validateMetadata } from "../validation";
 import { convertToERC721Metadata, ERC721Metadata, sortObjKeys } from "../utils";
 import { BaseIpfsStorage } from "./base";
 import { Options } from "ipfs-http-client";
+import { AnyMetadata, MetadataStorage } from "@bosonprotocol/metadata-storage";
 
 /**
  * `MetadataStorage` implementation for IPFS.
@@ -11,7 +10,10 @@ export class IpfsMetadataStorage
   extends BaseIpfsStorage
   implements MetadataStorage
 {
-  constructor(opts: Options) {
+  constructor(
+    protected validateMetadata: (metadata: AnyMetadata) => void,
+    opts: Options
+  ) {
     super(opts);
   }
 
@@ -22,10 +24,12 @@ export class IpfsMetadataStorage
    */
   public async storeMetadata(metadata: AnyMetadata): Promise<string> {
     if (metadata.type) {
-      validateMetadata(metadata);
+      this.validateMetadata(metadata);
     }
     const metadataConformingToERC721 = convertToERC721Metadata(metadata);
-    const metadataWithSortedKeys = sortObjKeys(metadataConformingToERC721);
+    const metadataWithSortedKeys = sortObjKeys(
+      metadataConformingToERC721 as unknown as Record<string, unknown>
+    );
     const cid = await this.add(JSON.stringify(metadataWithSortedKeys));
     return cid;
   }
@@ -41,7 +45,7 @@ export class IpfsMetadataStorage
       metadataUriOrHash
     )) as ERC721Metadata;
     if (metadata.type) {
-      validateMetadata(metadata);
+      this.validateMetadata(metadata);
     }
 
     return metadata;

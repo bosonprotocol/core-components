@@ -32,7 +32,8 @@ import {
   productV1,
   productV1Item,
   nftItem,
-  seller
+  seller,
+  validateMetadata
 } from "../../packages/metadata/src";
 import {
   BaseIpfsStorage,
@@ -232,10 +233,10 @@ export const mockErc1155Contract = new Contract(
   provider
 );
 
-export const ipfsMetadataStorage = new IpfsMetadataStorage({
+export const ipfsMetadataStorage = new IpfsMetadataStorage(validateMetadata, {
   url: defaultConfig.ipfsMetadataUrl
 });
-export const graphMetadataStorage = new IpfsMetadataStorage({
+export const graphMetadataStorage = new IpfsMetadataStorage(validateMetadata, {
   url: defaultConfig.theGraphIpfsUrl
 });
 

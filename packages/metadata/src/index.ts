@@ -9,22 +9,16 @@ import * as nftItem from "./nftItem";
 import { MetadataType } from "./iMetadata";
 import { buildUuid, Media } from "./common";
 
-export type AnyMetadata =
-  | base.BaseMetadata
-  | productV1.ProductV1Metadata
-  | seller.SellerMetadata
-  | collection.CollectionMetadata
-  | rNFT.RNftMetadata
-  | bundle.BundleMetadata
-  | productV1Item.ProductV1Item
-  | nftItem.NftItem;
+import {
+  IMetadata as _IMetadata,
+  AnyMetadata as _AnyMetadata,
+  MetadataStorage as _MetadataStorage
+} from "@bosonprotocol/metadata-storage";
+type IMetadata = _IMetadata;
+type AnyMetadata = _AnyMetadata;
+type MetadataStorage = _MetadataStorage;
 
 export type OfferOrSellerMetadata = AnyMetadata;
-
-export interface MetadataStorage {
-  getMetadata(metadataUri: string): Promise<OfferOrSellerMetadata>;
-  storeMetadata(metadata: OfferOrSellerMetadata): Promise<string>;
-}
 
 const METADATA_LENGTH_LIMIT = 2048;
 function validateIpfsLimits(
@@ -128,5 +122,8 @@ export {
   productV1Item,
   METADATA_LENGTH_LIMIT,
   buildUuid,
-  Media
+  Media,
+  IMetadata,
+  AnyMetadata,
+  MetadataStorage
 };

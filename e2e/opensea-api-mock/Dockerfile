@@ -11,6 +11,7 @@ COPY --chown=node:node ./*.json ./
 COPY --chown=node:node ./e2e/opensea-api-mock ./e2e/opensea-api-mock
 COPY --chown=node:node ./packages/common ./packages/common
 COPY --chown=node:node ./packages/metadata ./packages/metadata
+COPY --chown=node:node ./packages/metadata-storage ./packages/metadata-storage
 RUN npm ci
 ENV NODE_ENV production
 RUN npm run build
