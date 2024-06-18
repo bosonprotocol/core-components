@@ -67,6 +67,7 @@ export * from "./components/ui/Grid";
 export * from "./components/ui/GridContainer";
 export * from "./components/ui/Typography";
 export * from "./components/ui/MuteButton";
+export * from "./components/ui/CardCTA";
 export * from "./components/form";
 export * from "./lib/magicLink/logout";
 export * from "./lib/magicLink/provider";
