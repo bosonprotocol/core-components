@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
 import { Grid } from "../../../../ui/Grid";
-import IpfsImage from "../../../../ui/IpfsImage";
+import { IpfsImage } from "../../../../ui/IpfsImage";
 import Loading from "../../../../ui/loading/LoadingWrapper";
 import { Typography } from "../../../../ui/Typography";
 import DetailOpenSea from "../../common/DetailOpenSea";

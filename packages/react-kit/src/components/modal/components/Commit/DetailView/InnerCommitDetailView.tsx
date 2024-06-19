@@ -28,7 +28,7 @@ import { Typography } from "../../../../ui/Typography";
 import {
   getItemFromStorage,
   saveItemInStorage
-} from "../../../../widgets/finance/storage/useLocalStorage";
+} from "../../../../../hooks/storage/useBosonLocalStorage";
 import { useModal } from "../../../useModal";
 import { InnerDetailViewWithPortal } from "../../common/detail/InnerDetailViewWithPortal";
 import { BuyOrSwapContainer } from "../../common/detail/BuyOrSwapContainer";

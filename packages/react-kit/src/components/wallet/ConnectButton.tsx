@@ -8,7 +8,7 @@ import FallbackAvatar from "../avatar/fallback-avatar";
 import { Button } from "../buttons/Button";
 import ThemedButton, { bosonButtonThemes } from "../ui/ThemedButton";
 import { useBreakpoints } from "../../hooks/useBreakpoints";
-import { saveItemInStorage } from "../widgets/finance/storage/useLocalStorage";
+import { saveItemInStorage } from "../../hooks/storage/useBosonLocalStorage";
 import { SignOut, Wallet } from "phosphor-react";
 import { useIsMagicLoggedIn } from "../../hooks";
 import { useAccount, useChainId } from "../../hooks/connection/connection";

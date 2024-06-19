@@ -5,6 +5,9 @@ const SAFE_URL_PATTERN =
 const DATA_URL_PATTERN =
   /^data:(?:image\/(?:bmp|gif|jpeg|jpg|png|tiff|webp)|video\/(?:mpeg|mp4|ogg|webm)|audio\/(?:mp3|oga|ogg|opus));base64,[a-z0-9+\\/]+=*$/i;
 
+export const websitePattern =
+  "^(http://|https://)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{1}.([-a-z-A-Z-0-9:_+.?/@#%&=]+)?$";
+
 function _sanitizeUrl(url: string): string {
   url = String(url);
   if (url === "null" || url.length === 0 || url === "about:blank")

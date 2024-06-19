@@ -5,7 +5,7 @@ import groupBy from "lodash/groupBy";
 import { useCallback, useMemo } from "react";
 
 import { Props } from "./Finance";
-import { saveItemInStorage } from "./storage/useLocalStorage";
+import { saveItemInStorage } from "../../../hooks/storage/useLocalStorage";
 import { SellerExchangeProps } from "./useSellerDeposit";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../../types/offer";

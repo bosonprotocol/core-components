@@ -86,7 +86,9 @@ interface IImage {
     ipfsGateway?: string;
   };
 }
-const IpfsImage: React.FC<IImage & React.HTMLAttributes<HTMLDivElement>> = ({
+export const IpfsImage: React.FC<
+  IImage & React.HTMLAttributes<HTMLDivElement>
+> = ({
   src,
   children,
   dataTestId = "image",
@@ -179,5 +181,3 @@ const IpfsImage: React.FC<IImage & React.HTMLAttributes<HTMLDivElement>> = ({
     </>
   );
 };
-
-export default IpfsImage;

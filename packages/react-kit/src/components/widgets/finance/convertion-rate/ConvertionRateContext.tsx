@@ -1,7 +1,7 @@
 /* eslint @typescript-eslint/no-empty-function: "off" */
 /* eslint @typescript-eslint/no-explicit-any: "off" */
 import { createContext } from "react";
-import { getItemFromStorage } from "../storage/useLocalStorage";
+import { getItemFromStorage } from "../../../../hooks/storage/useBosonLocalStorage";
 
 export type Token = {
   symbol: string;

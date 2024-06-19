@@ -1,17 +1,8 @@
 // extracted from https://usehooks.com/useLocalStorage/
 import { useCallback, useState } from "react";
 
-export type GetItemFromStorageKey =
-  | "wagmi.store"
-  | "isChainUnsupported"
-  | "tracing-url"
-  | "isConnectWalletFromCommit"
-  | "convertionRates"
-  | "google-jwt"
-  | "showCookies";
-
-export function getItemFromStorage<T>(
-  key: GetItemFromStorageKey,
+export function getItemFromStorage<K extends string, T>(
+  key: K,
   initialValue: T
 ) {
   if (typeof window === "undefined") {
@@ -26,7 +17,7 @@ export function getItemFromStorage<T>(
   }
 }
 
-export function saveItemInStorage<T>(key: string, value: T) {
+export function saveItemInStorage<K extends string, T>(key: K, value: T) {
   if (typeof window !== "undefined") {
     try {
       window.localStorage.setItem(key, JSON.stringify(value));
@@ -36,7 +27,7 @@ export function saveItemInStorage<T>(key: string, value: T) {
   }
 }
 
-export function removeItemInStorage(key: string) {
+export function removeItemInStorage<K extends string>(key: K) {
   if (typeof window !== "undefined") {
     try {
       Object.keys(localStorage)
@@ -58,10 +49,7 @@ export const clearLocalStorage = () => {
   }
 };
 
-export function useLocalStorage<T>(
-  key: GetItemFromStorageKey,
-  initialValue: T
-) {
+export function useLocalStorage<K extends string, T>(key: K, initialValue: T) {
   const [storedValue, setStoredValue] = useState<T>(() =>
     getItemFromStorage(key, initialValue)
   );
