@@ -19,7 +19,7 @@ import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkW
 import { isNftItem } from "../../../../../lib/bundle/filter";
 import { isTruthy } from "../../../../../types/helpers";
 import Video from "../../../../ui/Video";
-import IpfsImage from "../../../../ui/IpfsImage";
+import { IpfsImage } from "../../../../ui/IpfsImage";
 
 const StyledDetailsSummary = styled(DetailsSummary)`
   .icon-wrapper {

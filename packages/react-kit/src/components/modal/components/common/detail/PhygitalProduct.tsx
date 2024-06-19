@@ -12,7 +12,7 @@ import { theme } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { Tooltip } from "../../../../tooltip/Tooltip";
 import { Grid } from "../../../../ui/Grid";
-import IpfsImage from "../../../../ui/IpfsImage";
+import { IpfsImage } from "../../../../ui/IpfsImage";
 import ThemedButton from "../../../../ui/ThemedButton";
 import { Typography } from "../../../../ui/Typography";
 import Video from "../../../../ui/Video";

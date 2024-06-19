@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import _Slider, { Settings } from "react-slick";
 
-import IpfsImage from "../../../../ui/IpfsImage";
+import { IpfsImage } from "../../../../ui/IpfsImage";
 import Video from "../../../../ui/Video";
 import styled, { CSSProperties, css } from "styled-components";
 import { theme } from "../../../../../theme";
