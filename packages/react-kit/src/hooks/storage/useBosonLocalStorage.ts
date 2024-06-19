@@ -22,11 +22,11 @@ export function getItemFromStorage<T>(
   return baseGetItemFromStorage(key, initialValue);
 }
 
-export function saveItemInStorage<T>(key: string, value: T) {
+export function saveItemInStorage<T>(key: GetItemFromStorageKey, value: T) {
   return baseSaveItemInStorage(key, value);
 }
 
-export function removeItemInStorage(key: string) {
+export function removeItemInStorage(key: GetItemFromStorageKey) {
   return baseRemoveItemInStorage(key);
 }
 

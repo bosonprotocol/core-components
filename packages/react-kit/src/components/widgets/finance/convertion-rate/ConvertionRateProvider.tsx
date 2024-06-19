@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useTokens } from "../exchange-tokens/useTokens";
-import { saveItemInStorage } from "../../../../hooks/storage/useLocalStorage";
+import { saveItemInStorage } from "../../../../hooks/storage/useBosonLocalStorage";
 import ConvertionRateContext, {
   ConvertionRateContextType,
   initalState,
