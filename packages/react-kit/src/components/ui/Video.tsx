@@ -196,7 +196,7 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
       videoRef.current.play();
     }
   }, [muted]);
-  console.log({ isLoaded, isError, src });
+
   if (!isLoaded && !isError) {
     if (ComponentWhileLoading) {
       return <ComponentWhileLoading />;
