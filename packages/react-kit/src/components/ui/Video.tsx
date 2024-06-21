@@ -133,6 +133,8 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
             ipfsMetadataStorage
           );
           setVideoSrc(base64str as string);
+          setIsLoaded(true);
+          setIsError(false);
         } catch (error) {
           console.error("error in Video", error);
           setIsLoaded(true);
