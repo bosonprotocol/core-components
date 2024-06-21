@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { CSSProperties, css } from "styled-components";
 import { theme } from "../../theme";
 
 export const ImageWrapper = styled.div<{ $hide?: boolean }>`
@@ -27,11 +27,13 @@ const buttonText = css`
   line-height: 24px;
 `;
 
-export const ImagePlaceholder = styled.div<{ position?: string }>`
-  ${({ position }) =>
-    position
+export const ImagePlaceholder = styled.div<{
+  $position?: CSSProperties["position"];
+}>`
+  ${({ $position }) =>
+    $position
       ? css`
-          position: ${position};
+          position: ${$position};
         `
       : css`
           position: absolute;
