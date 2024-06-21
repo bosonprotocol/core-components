@@ -89,3 +89,4 @@ export * from "./components/step/MultiSteps";
 export * from "./components/ipfs/IpfsProvider";
 export * from "./types/helpers";
 export * from "./lib/url/url";
+export * from "./lib/promises/promises";

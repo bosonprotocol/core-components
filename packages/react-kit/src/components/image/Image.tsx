@@ -48,7 +48,7 @@ export const Image: React.FC<IBaseImage> = ({
   return (
     <>
       <ImageWrapper {...rest} data-image-wrapper $hide={!isError}>
-        <ImagePlaceholder data-image-placeholder position="static">
+        <ImagePlaceholder data-image-placeholder $position="static">
           {errorConfig.errorIcon ?? null}
           <ImageErrorText>
             {errorConfig.errorImageText || "Failed to load image"}
@@ -56,7 +56,7 @@ export const Image: React.FC<IBaseImage> = ({
         </ImagePlaceholder>
       </ImageWrapper>
       <ImageWrapper {...rest} data-image-wrapper $hide={!isLoading}>
-        <ImagePlaceholder data-image-placeholder position="static">
+        <ImagePlaceholder data-image-placeholder $position="static">
           <Loading />
         </ImagePlaceholder>
       </ImageWrapper>

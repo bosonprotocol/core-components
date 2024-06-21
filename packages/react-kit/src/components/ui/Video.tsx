@@ -9,7 +9,7 @@ import React, {
   useRef,
   useState
 } from "react";
-import styled, { css } from "styled-components";
+import styled, { CSSProperties, css } from "styled-components";
 import { useIpfsStorage } from "../../hooks/useIpfsStorage";
 import { fetchIpfsBase64Media } from "../../lib/base64/base64";
 import { theme } from "../../theme";
@@ -24,6 +24,7 @@ const StyledMuteButton = styled(MuteButton)`
   position: absolute;
   top: 1rem;
   right: 1rem;
+  z-index: 1;
 `;
 const VideoWrapper = styled.div<{ $hasOnClick?: boolean }>`
   overflow: hidden;
@@ -68,8 +69,15 @@ const VideoHtml = styled.video`
   object-fit: contain;
 `;
 
-const VideoPlaceholder = styled.div`
-  position: absolute;
+const VideoPlaceholder = styled.div<{ $position?: CSSProperties["position"] }>`
+  ${({ $position }) =>
+    $position
+      ? css`
+          position: ${$position};
+        `
+      : css`
+          position: absolute;
+        `}
   top: 0;
   height: 100%;
   width: 100%;
@@ -136,8 +144,13 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
       }
     }
     if (!isLoaded && videoSrc === null) {
-      if (src?.includes("ipfs://")) {
-        const newString = src.split("//");
+      if (
+        src?.startsWith("ipfs://") ||
+        src.startsWith("https://bosonprotocol.infura-ipfs.io/ipfs/")
+      ) {
+        const newString = src?.startsWith("ipfs://")
+          ? src.split("//")
+          : src.split("https://bosonprotocol.infura-ipfs.io/ipfs/");
         const CID = newString[newString.length - 1];
         fetchData(`ipfs://${CID}`);
       } else if (src?.startsWith("undefined") && src?.length > 9) {
@@ -183,13 +196,14 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
       videoRef.current.play();
     }
   }, [muted]);
+
   if (!isLoaded && !isError) {
     if (ComponentWhileLoading) {
       return <ComponentWhileLoading />;
     }
     return (
       <VideoWrapper {...rest}>
-        <VideoPlaceholder>
+        <VideoPlaceholder $position="static">
           <Typography tag="div">
             <Loading />
           </Typography>
@@ -200,8 +214,8 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
 
   if (isLoaded && isError) {
     return (
-      <VideoWrapper {...rest}>
-        <VideoPlaceholder data-video-placeholder>
+      <VideoWrapper {...rest} className="video-container">
+        <VideoPlaceholder data-video-placeholder $position="static">
           {showPlaceholderText ? (
             <VideoIcon size={50} color={colors.white} />
           ) : (
@@ -235,6 +249,10 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
             data-testid={dataTestId}
             {...videoProps}
             src={mp4Src || ""}
+            onError={() => {
+              setIsLoaded(true);
+              setIsError(true);
+            }}
           />
         </>
       )}
