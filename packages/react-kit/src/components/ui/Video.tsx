@@ -146,7 +146,7 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
     if (!isLoaded && videoSrc === null) {
       if (
         src?.startsWith("ipfs://") ||
-        src.startsWith("https://bosonprotocol.infura-ipfs.io/ipfs/")
+        src?.startsWith("https://bosonprotocol.infura-ipfs.io/ipfs/")
       ) {
         const newString = src?.startsWith("ipfs://")
           ? src.split("//")
@@ -161,12 +161,6 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
       }
     }
   }, []); // eslint-disable-line
-
-  useEffect(() => {
-    if (videoSrc !== null) {
-      setTimeout(() => setIsLoaded(true), 100);
-    }
-  }, [videoSrc]);
 
   const mp4Src = useMemo(() => {
     const octetSrc =
