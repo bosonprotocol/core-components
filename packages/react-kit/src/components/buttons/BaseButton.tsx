@@ -19,6 +19,7 @@ const colors = theme.colors.light;
 const ButtonWithThemeProps = styled.button<{
   size: ButtonSizeProp;
   fill: boolean | undefined;
+  theme: BaseButtonTheme;
 }>`
   ${() => Styles.button};
   ${(props) => Styles[props.size as keyof typeof Styles]}
@@ -26,6 +27,8 @@ const ButtonWithThemeProps = styled.button<{
   border-color: ${(props) => props.theme?.borderColor || "transparent"};
   border-width: ${(props) => props.theme?.borderWidth || 0}px;
   border-radius: ${(props) => props.theme?.borderRadius || 0}px;
+  ${(props) =>
+    props.theme?.boxShadow ? `box-shadow: ${props.theme.boxShadow}` : ""};
   color: ${(props) => props.theme?.color || "#000000"};
   background-color: ${(props) => props.theme?.background || "transparent"};
   svg {
@@ -110,6 +113,7 @@ export type BaseButtonTheme = {
   borderColor?: CSSProperties["borderColor"];
   borderRadius?: CSSProperties["borderRadius"];
   borderWidth?: CSSProperties["borderWidth"];
+  boxShadow?: CSSProperties["boxShadow"];
   color?: CSSProperties["color"];
   padding?: CSSProperties["padding"];
   gap?: CSSProperties["gap"];

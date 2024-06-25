@@ -8,9 +8,10 @@ import { zIndex } from "../ui/zIndex";
 
 import Error from "./Error";
 import type { SelectDataProps, SelectProps } from "./types";
+export type { SelectProps } from "./types";
 const colors = theme.colors.light;
 
-const customStyles = (error: any) => ({
+const customStyles = (error: any, customTheme: SelectProps["theme"]) => ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   singleValue: (provided: any, state: any) => {
     return {
@@ -34,16 +35,18 @@ const customStyles = (error: any) => ({
       borderRadius: 0,
       padding: "0.4rem 0.25rem",
       boxShadow: "none",
+      background: colors.lightGrey,
+      ...customTheme?.control,
+      border: state.isFocused
+        ? customTheme?.control?.focus?.border ?? `1px solid ${colors.secondary}`
+        : !checkIfValueIsEmpty(error)
+          ? customTheme?.control?.error?.border ?? `1px solid ${colors.orange}`
+          : customTheme?.control?.border ?? `1px solid ${colors.border}`,
       ":hover": {
         borderColor: colors.secondary,
-        borderWidth: "1px"
+        borderWidth: "1px",
+        ...customTheme?.control?.hover
       },
-      background: colors.lightGrey,
-      border: state.isFocused
-        ? `1px solid ${colors.secondary}`
-        : !checkIfValueIsEmpty(error)
-          ? `1px solid ${colors.orange}`
-          : `1px solid ${colors.border}`,
       ...before
     };
   },
@@ -56,15 +59,17 @@ const customStyles = (error: any) => ({
   option: (provided: any, state: any) => ({
     ...provided,
     cursor: state.isDisabled ? "not-allowed" : "pointer",
-    opacity: state.isDisabled ? "0.5" : "1",
+    opacity: state.isDisabled
+      ? customTheme?.option?.disabled?.opacity ?? "0.5"
+      : customTheme?.option?.opacity ?? "1",
     background:
       state.isOptionSelected || state.isSelected || state.isFocused
-        ? colors.lightGrey
-        : colors.white,
+        ? customTheme?.option?.selected?.background ?? colors.lightGrey
+        : customTheme?.option?.background ?? colors.white,
     color:
       state.isOptionSelected || state.isSelected
-        ? colors.secondary
-        : colors.black
+        ? customTheme?.option?.selected?.color ?? colors.secondary
+        : customTheme?.option?.color ?? colors.black
   }),
   indicatorSeparator: () => ({
     display: "none"
@@ -80,6 +85,7 @@ export default function SelectComponent({
   disabled = false,
   errorMessage,
   onChange,
+  theme,
   ...props
 }: SelectProps) {
   const [field, meta, helpers] = useField(name);
@@ -109,7 +115,7 @@ export default function SelectComponent({
   return (
     <>
       <Select
-        styles={customStyles(displayErrorMessage)}
+        styles={customStyles(displayErrorMessage, theme)}
         {...field}
         {...props}
         placeholder={placeholder}
