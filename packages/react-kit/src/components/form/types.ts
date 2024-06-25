@@ -89,6 +89,39 @@ export interface SelectProps extends BaseProps {
   errorMessage?: string;
   onChange?: (option: SelectDataProps<string>) => void;
   label?: string;
+  theme?: Partial<{
+    control: Partial<{
+      background: CSSProperties["background"];
+      borderRadius: CSSProperties["borderRadius"];
+      padding: CSSProperties["padding"];
+      boxShadow: CSSProperties["boxShadow"];
+      borderWidth: CSSProperties["borderWidth"];
+      border: CSSProperties["border"];
+      focus: Partial<{
+        border: CSSProperties["border"];
+      }>;
+      hover: Partial<{
+        borderColor: CSSProperties["borderColor"];
+        borderWidth: CSSProperties["borderWidth"];
+        border: CSSProperties["border"];
+      }>;
+      error: Partial<{
+        border: CSSProperties["border"];
+      }>;
+    }>;
+    option: Partial<{
+      opacity: CSSProperties["opacity"];
+      background: CSSProperties["background"];
+      color: CSSProperties["color"];
+      selected: Partial<{
+        background: CSSProperties["background"];
+        color: CSSProperties["color"];
+      }>;
+      disabled: Partial<{
+        opacity: CSSProperties["opacity"];
+      }>;
+    }>;
+  }>;
 }
 
 export type UploadProps = BaseProps & {
