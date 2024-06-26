@@ -122,6 +122,7 @@ const PhoneWrapper = styled.div`
 
 export type CountrySelectProps = InputProps & {
   countries?: CountryCode[];
+  fieldValueIsCountryCode?: boolean; // if true, the field.value will be the countryCodeOrName, otherwise the country name
   theme?: Partial<{
     controlHeight: CSSProperties["height"];
     borderRadius: CSSProperties["borderRadius"];
@@ -135,11 +136,12 @@ export type CountrySelectProps = InputProps & {
     unselectedOptionColor: CSSProperties["color"];
   }>;
 };
-
+type CountryName = string;
 export function CountrySelect({
   name,
   countries,
   theme: selectTheme,
+  fieldValueIsCountryCode,
   ...rest
 }: CountrySelectProps) {
   const { status } = useFormikContext();
@@ -149,11 +151,13 @@ export function CountrySelect({
   const errorMessage = errorText && meta.touched ? errorText : "";
   const displayError = typeof errorMessage === "string" && errorMessage !== "";
   const [phone, setPhone] = useState<string | undefined>(undefined);
-  const [countryCode, setCountryCode] = useState<CountryCode | undefined>();
+  const [countryCodeOrName, setCountryCodeOrName] = useState<
+    CountryCode | CountryName | undefined
+  >();
 
   useEffect(() => {
     if (!initialized && field.value) {
-      setCountryCode(field.value as CountryCode);
+      setCountryCodeOrName(field.value);
       setInitialized(true);
     }
   }, [field.value, initialized]); // eslint-disable-line
@@ -167,94 +171,104 @@ export function CountrySelect({
             <div></div>
           ))}
           addInternationalOption={false}
-          country={countryCode}
+          country={countryCodeOrName}
           value={phone}
           onChange={(value) => setPhone((value || "").replace(/\+/g, ""))}
           countries={countries}
-          countrySelectComponent={({ iconComponent: Icon, ...props }) => (
-            <>
-              <div>
-                <Select
-                  {...rest}
-                  {...props}
-                  isDisabled={rest.disabled}
-                  theme={(theme) => ({
-                    ...theme,
-                    controlHeight: selectTheme?.controlHeight,
-                    borderRadius: selectTheme?.borderRadius || 0,
-                    colors: {
-                      ...theme.colors,
-                      controlHoverBorderColor:
-                        selectTheme?.controlHoverBorderColor ||
-                        colors.secondary,
-                      controlBackground:
-                        selectTheme?.controlBackground || colors.lightGrey,
-                      controlFocusBorderColor:
-                        selectTheme?.controlFocusBorderColor ||
-                        colors.secondary,
-                      controlUnfocusedBorderColor:
-                        selectTheme?.controlUnfocusedBorderColor ||
-                        colors.border,
-                      selectedOptionBackground:
-                        selectTheme?.selectedOptionBackground ||
-                        colors.lightGrey,
-                      unselectedOptionBackground:
-                        selectTheme?.unselectedOptionBackground || colors.white,
-                      selectedOptionColor:
-                        selectTheme?.selectedOptionColor || colors.secondary,
-                      unselectedOptionColor:
-                        selectTheme?.unselectedOptionColor || colors.black
-                    }
-                  })}
-                  styles={customStyles}
-                  name="countrySelect"
-                  value={(props?.options || []).find(
-                    (o: SelectDataProps) => o.value === countryCode
-                  )}
-                  onChange={(o: SelectDataProps) => {
-                    setCountryCode(o.value as CountryCode);
-                    helpers.setValue(o.label);
-                  }}
-                  components={{
-                    Control: (props) => {
-                      const country =
-                        (props?.getValue()[0] as any)?.value || null;
-                      return (
-                        <components.Control {...props}>
-                          <ControlGrid>
-                            {country ? (
-                              <Icon country={country as CountryCode} label="" />
-                            ) : (
-                              <GlobeHemisphereWest />
-                            )}
-                            {props.children as any}
-                          </ControlGrid>
-                        </components.Control>
-                      );
-                    },
-                    Option: (props) => {
-                      const country = (props?.data as any)?.value || null;
-                      return (
-                        <components.Option {...props}>
-                          <OptionGrid>
-                            {country ? (
-                              <Icon
-                                country={country as CountryCode}
-                                label={props.label}
-                              />
-                            ) : (
-                              <GlobeHemisphereWest />
-                            )}
-                            {props.label}
-                          </OptionGrid>
-                        </components.Option>
-                      );
-                    }
-                  }}
-                />
-              </div>
-            </>
-          )}
+          countrySelectComponent={({ iconComponent: Icon, ...props }) => {
+            const value = (props?.options || []).find((o: SelectDataProps) =>
+              fieldValueIsCountryCode
+                ? o.value === countryCodeOrName
+                : o.label === countryCodeOrName
+            );
+            return (
+              <>
+                <div>
+                  <Select
+                    {...rest}
+                    {...props}
+                    isDisabled={rest.disabled}
+                    theme={(theme) => ({
+                      ...theme,
+                      controlHeight: selectTheme?.controlHeight,
+                      borderRadius: selectTheme?.borderRadius || 0,
+                      colors: {
+                        ...theme.colors,
+                        controlHoverBorderColor:
+                          selectTheme?.controlHoverBorderColor ||
+                          colors.secondary,
+                        controlBackground:
+                          selectTheme?.controlBackground || colors.lightGrey,
+                        controlFocusBorderColor:
+                          selectTheme?.controlFocusBorderColor ||
+                          colors.secondary,
+                        controlUnfocusedBorderColor:
+                          selectTheme?.controlUnfocusedBorderColor ||
+                          colors.border,
+                        selectedOptionBackground:
+                          selectTheme?.selectedOptionBackground ||
+                          colors.lightGrey,
+                        unselectedOptionBackground:
+                          selectTheme?.unselectedOptionBackground ||
+                          colors.white,
+                        selectedOptionColor:
+                          selectTheme?.selectedOptionColor || colors.secondary,
+                        unselectedOptionColor:
+                          selectTheme?.unselectedOptionColor || colors.black
+                      }
+                    })}
+                    styles={customStyles}
+                    name="countrySelect"
+                    value={value}
+                    onChange={(o: SelectDataProps) => {
+                      const value = fieldValueIsCountryCode ? o.value : o.label;
+                      setCountryCodeOrName(value);
+                      helpers.setValue(value);
+                    }}
+                    components={{
+                      Control: (props) => {
+                        const country =
+                          (props?.getValue()[0] as any)?.value || null;
+                        return (
+                          <components.Control {...props}>
+                            <ControlGrid>
+                              {country ? (
+                                <Icon
+                                  country={country as CountryCode}
+                                  label=""
+                                />
+                              ) : (
+                                <GlobeHemisphereWest />
+                              )}
+                              {props.children as any}
+                            </ControlGrid>
+                          </components.Control>
+                        );
+                      },
+                      Option: (props) => {
+                        const country = (props?.data as any)?.value || null;
+                        return (
+                          <components.Option {...props}>
+                            <OptionGrid>
+                              {country ? (
+                                <Icon
+                                  country={country as CountryCode}
+                                  label={props.label}
+                                />
+                              ) : (
+                                <GlobeHemisphereWest />
+                              )}
+                              {props.label}
+                            </OptionGrid>
+                          </components.Option>
+                        );
+                      }
+                    }}
+                  />
+                </div>
+              </>
+            );
+          }}
         />
       </PhoneWrapper>
       <Error display={!rest.hideError && displayError} message={errorMessage} />

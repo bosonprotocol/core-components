@@ -74,7 +74,14 @@ export default {
           initialValues={{ [inputName]: "" }}
           initialTouched={{ [inputName]: true }}
         >
-          <Story args={{ ...args, name: inputName }} />
+          {({ values }) => {
+            return (
+              <>
+                <Story args={{ ...args, name: inputName }} />
+                <div>selected value: {JSON.stringify(values)}</div>
+              </>
+            );
+          }}
         </Formik>
       );
     }
