@@ -90,37 +90,20 @@ export interface SelectProps extends BaseProps {
   onChange?: (option: SelectDataProps<string>) => void;
   label?: string;
   theme?: Partial<{
-    control: Partial<{
-      background: CSSProperties["background"];
-      borderRadius: CSSProperties["borderRadius"];
-      padding: CSSProperties["padding"];
-      boxShadow: CSSProperties["boxShadow"];
-      borderWidth: CSSProperties["borderWidth"];
-      border: CSSProperties["border"];
-      focus: Partial<{
-        border: CSSProperties["border"];
+    control: Partial<CSSProperties> &
+      Partial<{
+        hover: Partial<CSSProperties>;
+        focus: Partial<CSSProperties>;
+        error: Partial<CSSProperties>;
       }>;
-      hover: Partial<{
-        borderColor: CSSProperties["borderColor"];
-        borderWidth: CSSProperties["borderWidth"];
-        border: CSSProperties["border"];
+    option: Partial<CSSProperties> &
+      Partial<{
+        selected: Partial<CSSProperties>;
+        disabled: Partial<CSSProperties>;
       }>;
-      error: Partial<{
-        border: CSSProperties["border"];
-      }>;
-    }>;
-    option: Partial<{
-      opacity: CSSProperties["opacity"];
-      background: CSSProperties["background"];
-      color: CSSProperties["color"];
-      selected: Partial<{
-        background: CSSProperties["background"];
-        color: CSSProperties["color"];
-      }>;
-      disabled: Partial<{
-        opacity: CSSProperties["opacity"];
-      }>;
-    }>;
+    placeholder: Partial<CSSProperties>;
+    input: Partial<CSSProperties>;
+    singleValue: Partial<CSSProperties>;
   }>;
 }
 

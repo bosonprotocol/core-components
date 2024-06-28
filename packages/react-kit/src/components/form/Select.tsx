@@ -11,13 +11,14 @@ import type { SelectDataProps, SelectProps } from "./types";
 export type { SelectProps } from "./types";
 const colors = theme.colors.light;
 
-const customStyles = (error: any, customTheme: SelectProps["theme"]) => ({
+const customStyles = (error: unknown, customTheme: SelectProps["theme"]) => ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   singleValue: (provided: any, state: any) => {
     return {
       ...provided,
       color: colors.darkGrey,
-      fontSize: "13.33px"
+      fontSize: "13.33px",
+      ...customTheme?.singleValue
     };
   },
   control: (provided: any, state: any) => {
@@ -69,10 +70,21 @@ const customStyles = (error: any, customTheme: SelectProps["theme"]) => ({
     color:
       state.isOptionSelected || state.isSelected
         ? customTheme?.option?.selected?.color ?? colors.secondary
-        : customTheme?.option?.color ?? colors.black
+        : customTheme?.option?.color ?? colors.black,
+    ...(state.isDisabled && customTheme?.option?.disabled),
+    ...((state.isOptionSelected || state.isSelected) &&
+      customTheme?.option?.selected)
   }),
   indicatorSeparator: () => ({
     display: "none"
+  }),
+  placeholder: (provided: any) => ({
+    ...provided,
+    ...customTheme?.placeholder
+  }),
+  input: (provided: any) => ({
+    ...provided,
+    ...customTheme?.input
   })
 });
 
