@@ -11,11 +11,18 @@ import Error from "./Error";
 import type { InputProps } from "./types";
 import { SelectDataProps } from "./types";
 import { theme as importedTheme } from "../../theme";
+import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
 export type { Country as CountryCode } from "react-phone-number-input";
 
 const colors = importedTheme.colors.light;
-const customStyles = {
-  control: (provided: any, state: any) => {
+const customStyles = (
+  error: unknown
+): StylesConfig<
+  SelectDataProps<string>,
+  false,
+  GroupBase<SelectDataProps<string>>
+> => ({
+  control: (provided, state: any) => {
     const before = state.selectProps.label
       ? {
           ":before": {
@@ -40,11 +47,13 @@ const customStyles = {
       background: theme.colors.controlBackground,
       border: state.isFocused
         ? `1px solid ${theme.colors.controlFocusBorderColor}`
-        : `1px solid ${theme.colors.controlUnfocusedBorderColor}`,
+        : !checkIfValueIsEmpty(error)
+          ? `1px solid ${theme.colors.controlErrorBorderColor}`
+          : `1px solid ${theme.colors.controlUnfocusedBorderColor}`,
       ...before
     };
   },
-  container: (provided: any, state: any) => {
+  container: (provided, state) => {
     return {
       ...provided,
       zIndex: state.isFocused ? zIndex.Select + 1 : zIndex.Select,
@@ -52,7 +61,7 @@ const customStyles = {
       width: "100%"
     };
   },
-  option: (provided: any, state: any) => {
+  option: (provided, state: any) => {
     const { theme } = state;
     return {
       ...provided,
@@ -75,11 +84,7 @@ const customStyles = {
   indicatorSeparator: () => ({
     display: "none"
   })
-} satisfies StylesConfig<
-  SelectDataProps<string>,
-  false,
-  GroupBase<SelectDataProps<string>>
->;
+});
 
 const ControlGrid = styled.div`
   display: flex;
@@ -129,6 +134,7 @@ export type CountrySelectProps = InputProps & {
     controlHoverBorderColor: CSSProperties["borderColor"];
     controlBackground: CSSProperties["background"];
     controlFocusBorderColor: CSSProperties["borderColor"];
+    controlErrorBorderColor: CSSProperties["borderColor"];
     controlUnfocusedBorderColor: CSSProperties["borderColor"];
     selectedOptionBackground: CSSProperties["background"];
     unselectedOptionBackground: CSSProperties["background"];
@@ -147,9 +153,15 @@ export function CountrySelect({
   const { status } = useFormikContext();
   const [initialized, setInitialized] = useState<boolean>(false);
   const [field, meta, helpers] = useField(name);
-  const errorText = meta.error || status?.[name];
-  const errorMessage = errorText && meta.touched ? errorText : "";
-  const displayError = typeof errorMessage === "string" && errorMessage !== "";
+  const errorMessage = meta.error || status?.[name];
+  const displayErrorMessage =
+    meta.error && meta.touched && !errorMessage
+      ? meta.error
+      : meta.error && meta.touched && errorMessage
+        ? errorMessage
+        : "";
+  const displayError =
+    typeof displayErrorMessage === "string" && displayErrorMessage !== "";
   const [phone, setPhone] = useState<string | undefined>(undefined);
   const [countryCodeOrName, setCountryCodeOrName] = useState<
     CountryCode | CountryName | undefined
@@ -205,6 +217,8 @@ export function CountrySelect({
                         controlUnfocusedBorderColor:
                           selectTheme?.controlUnfocusedBorderColor ||
                           colors.border,
+                        controlErrorBorderColor:
+                          selectTheme?.controlErrorBorderColor || colors.orange,
                         selectedOptionBackground:
                           selectTheme?.selectedOptionBackground ||
                           colors.lightGrey,
@@ -217,13 +231,21 @@ export function CountrySelect({
                           selectTheme?.unselectedOptionColor || colors.black
                       }
                     })}
-                    styles={customStyles}
+                    styles={customStyles(displayErrorMessage)}
                     name="countrySelect"
                     value={value}
                     onChange={(o: SelectDataProps) => {
+                      if (!meta.touched) {
+                        helpers.setTouched(true);
+                      }
                       const value = fieldValueIsCountryCode ? o.value : o.label;
                       setCountryCodeOrName(value);
                       helpers.setValue(value);
+                    }}
+                    onBlur={() => {
+                      if (!meta.touched) {
+                        helpers.setTouched(true);
+                      }
                     }}
                     components={{
                       Control: (props) => {
