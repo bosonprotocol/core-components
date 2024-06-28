@@ -38,7 +38,7 @@ const customStyles = (
       alignContent: "center",
       borderRadius: customTheme?.control?.borderRadius ?? 0,
       height: customTheme?.control?.height,
-      padding: "0.4rem 0.25rem",
+      padding: "0.4rem 1rem",
       boxShadow: "none",
       background: colors.lightGrey,
       ...customTheme?.control,
