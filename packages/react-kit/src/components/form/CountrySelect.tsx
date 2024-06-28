@@ -16,7 +16,8 @@ export type { Country as CountryCode } from "react-phone-number-input";
 
 const colors = importedTheme.colors.light;
 const customStyles = (
-  error: unknown
+  error: unknown,
+  customTheme: CountrySelectProps["theme"]
 ): StylesConfig<
   SelectDataProps<string>,
   false,
@@ -32,24 +33,25 @@ const customStyles = (
           }
         }
       : null;
-    const { theme } = state;
     return {
       ...provided,
-      borderRadius: theme.borderRadius,
-      height: theme.controlHeight,
       alignContent: "center",
-      padding: "0.4rem 1rem",
+      borderRadius: customTheme?.control?.borderRadius ?? 0,
+      height: customTheme?.control?.height,
+      padding: "0.4rem 0.25rem",
       boxShadow: "none",
-      ":hover": {
-        borderColor: theme.colors.controlHoverBorderColor,
-        borderWidth: "1px"
-      },
-      background: theme.colors.controlBackground,
+      background: colors.lightGrey,
+      ...customTheme?.control,
       border: state.isFocused
-        ? `1px solid ${theme.colors.controlFocusBorderColor}`
+        ? customTheme?.control?.focus?.border ?? `1px solid ${colors.secondary}`
         : !checkIfValueIsEmpty(error)
-          ? `1px solid ${theme.colors.controlErrorBorderColor}`
-          : `1px solid ${theme.colors.controlUnfocusedBorderColor}`,
+          ? customTheme?.control?.error?.border ?? `1px solid ${colors.orange}`
+          : customTheme?.control?.border ?? `1px solid ${colors.border}`,
+      ":hover": {
+        borderColor: colors.secondary,
+        borderWidth: "1px",
+        ...customTheme?.control?.hover
+      },
       ...before
     };
   },
@@ -62,19 +64,24 @@ const customStyles = (
     };
   },
   option: (provided, state: any) => {
-    const { theme } = state;
     return {
       ...provided,
+      ...customTheme?.option,
       cursor: state.isDisabled ? "not-allowed" : "pointer",
-      opacity: state.isDisabled ? "0.5" : "1",
+      opacity: state.isDisabled
+        ? customTheme?.option?.disabled?.opacity ?? "0.5"
+        : customTheme?.option?.opacity ?? "1",
       background:
         state.isOptionSelected || state.isSelected || state.isFocused
-          ? theme.colors.selectedOptionBackground
-          : theme.colors.unselectedOptionBackground,
+          ? customTheme?.option?.selected?.background ?? colors.lightGrey
+          : customTheme?.option?.background ?? colors.white,
       color:
         state.isOptionSelected || state.isSelected
-          ? theme.colors.selectedOptionColor
-          : theme.colors.unselectedOptionColor
+          ? customTheme?.option?.selected?.color ?? colors.secondary
+          : customTheme?.option?.color ?? colors.black,
+      ...(state.isDisabled && customTheme?.option?.disabled),
+      ...((state.isOptionSelected || state.isSelected) &&
+        customTheme?.option?.selected)
     };
   },
   menu: (provided) => ({
@@ -83,6 +90,18 @@ const customStyles = (
   }),
   indicatorSeparator: () => ({
     display: "none"
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    ...customTheme?.placeholder
+  }),
+  input: (provided) => ({
+    ...provided,
+    ...customTheme?.input
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    ...customTheme?.singleValue
   })
 });
 
@@ -129,17 +148,20 @@ export type CountrySelectProps = InputProps & {
   countries?: CountryCode[];
   fieldValueIsCountryCode?: boolean; // if true, the field.value will be the countryCodeOrName, otherwise the country name
   theme?: Partial<{
-    controlHeight: CSSProperties["height"];
-    borderRadius: CSSProperties["borderRadius"];
-    controlHoverBorderColor: CSSProperties["borderColor"];
-    controlBackground: CSSProperties["background"];
-    controlFocusBorderColor: CSSProperties["borderColor"];
-    controlErrorBorderColor: CSSProperties["borderColor"];
-    controlUnfocusedBorderColor: CSSProperties["borderColor"];
-    selectedOptionBackground: CSSProperties["background"];
-    unselectedOptionBackground: CSSProperties["background"];
-    selectedOptionColor: CSSProperties["color"];
-    unselectedOptionColor: CSSProperties["color"];
+    control: Partial<CSSProperties> &
+      Partial<{
+        hover: Partial<CSSProperties>;
+        focus: Partial<CSSProperties>;
+        error: Partial<CSSProperties>;
+      }>;
+    option: Partial<CSSProperties> &
+      Partial<{
+        selected: Partial<CSSProperties>;
+        disabled: Partial<CSSProperties>;
+      }>;
+    placeholder: Partial<CSSProperties>;
+    input: Partial<CSSProperties>;
+    singleValue: Partial<CSSProperties>;
   }>;
 };
 type CountryName = string;
@@ -200,38 +222,7 @@ export function CountrySelect({
                     {...rest}
                     {...props}
                     isDisabled={rest.disabled}
-                    theme={(theme) => ({
-                      ...theme,
-                      controlHeight: selectTheme?.controlHeight,
-                      borderRadius: selectTheme?.borderRadius || 0,
-                      colors: {
-                        ...theme.colors,
-                        controlHoverBorderColor:
-                          selectTheme?.controlHoverBorderColor ||
-                          colors.secondary,
-                        controlBackground:
-                          selectTheme?.controlBackground || colors.lightGrey,
-                        controlFocusBorderColor:
-                          selectTheme?.controlFocusBorderColor ||
-                          colors.secondary,
-                        controlUnfocusedBorderColor:
-                          selectTheme?.controlUnfocusedBorderColor ||
-                          colors.border,
-                        controlErrorBorderColor:
-                          selectTheme?.controlErrorBorderColor || colors.orange,
-                        selectedOptionBackground:
-                          selectTheme?.selectedOptionBackground ||
-                          colors.lightGrey,
-                        unselectedOptionBackground:
-                          selectTheme?.unselectedOptionBackground ||
-                          colors.white,
-                        selectedOptionColor:
-                          selectTheme?.selectedOptionColor || colors.secondary,
-                        unselectedOptionColor:
-                          selectTheme?.unselectedOptionColor || colors.black
-                      }
-                    })}
-                    styles={customStyles(displayErrorMessage)}
+                    styles={customStyles(displayErrorMessage, selectTheme)}
                     name="countrySelect"
                     value={value}
                     onChange={(o: SelectDataProps) => {

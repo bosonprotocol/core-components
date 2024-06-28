@@ -102,16 +102,47 @@ export const CustomTheme = {
   args: {
     ...BASE_ARGS,
     theme: {
-      controlHeight: "45px",
-      borderRadius: "30px",
-      controlBackground: colors.lightGrey,
-      controlFocusBorderColor: colors.blue,
-      controlHoverBorderColor: colors.red,
-      controlUnfocusedBorderColor: colors.border,
-      selectedOptionBackground: colors.lightGrey,
-      selectedOptionColor: colors.orange,
-      unselectedOptionBackground: colors.white,
-      unselectedOptionColor: colors.black
+      control: {
+        color: "yellow",
+        height: undefined,
+        background: colors.arsenic,
+        borderRadius: "16px",
+        padding: "3px",
+        boxShadow: "1px 2px 3px 4px blue",
+        borderWidth: undefined,
+        border: "1px solid green",
+        focus: {
+          border: "1px solid red"
+        },
+        hover: {
+          borderColor: "purple",
+          borderWidth: "1px"
+        },
+        error: {
+          border: "1px solid orange"
+        }
+      },
+      option: {
+        opacity: "1",
+        background: "pink",
+        color: "brown",
+        selected: {
+          background: "yellow",
+          color: "cyan"
+        },
+        disabled: {
+          opacity: "0.8"
+        }
+      },
+      placeholder: {
+        color: "red"
+      },
+      input: {
+        color: "cyan"
+      },
+      singleValue: {
+        color: "orange"
+      }
     }
   } satisfies CountrySelectProps
 };
