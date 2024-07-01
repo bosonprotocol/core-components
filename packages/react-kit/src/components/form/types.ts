@@ -101,9 +101,9 @@ export interface SelectProps extends BaseProps {
         selected: Partial<CSSProperties>;
         disabled: Partial<CSSProperties>;
       }>;
-    placeholder: Partial<CSSProperties>;
-    input: Partial<CSSProperties>;
-    singleValue: Partial<CSSProperties>;
+    placeholder: Partial<CSSProperties> & Partial<{ error: CSSProperties }>;
+    input: Partial<CSSProperties> & Partial<{ error: CSSProperties }>;
+    singleValue: Partial<CSSProperties> & Partial<{ error: CSSProperties }>;
   }>;
 }
 

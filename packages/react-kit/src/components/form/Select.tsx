@@ -1,7 +1,7 @@
 /* eslint @typescript-eslint/no-explicit-any: "off" */
 import React from "react";
 import { useField } from "formik";
-import Select from "react-select";
+import Select, { GroupBase, StylesConfig } from "react-select";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
 import { theme } from "../../theme";
 import { zIndex } from "../ui/zIndex";
@@ -11,14 +11,21 @@ import type { SelectDataProps, SelectProps } from "./types";
 export type { SelectProps } from "./types";
 const colors = theme.colors.light;
 
-const customStyles = (error: unknown, customTheme: SelectProps["theme"]) => ({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  singleValue: (provided: any, state: any) => {
+const customStyles = (
+  error: unknown,
+  customTheme: SelectProps["theme"]
+): StylesConfig<
+  SelectDataProps<string>,
+  boolean,
+  GroupBase<SelectDataProps<string>>
+> => ({
+  singleValue: (provided: any) => {
     return {
       ...provided,
       color: colors.darkGrey,
       fontSize: "13.33px",
-      ...customTheme?.singleValue
+      ...customTheme?.singleValue,
+      ...(!checkIfValueIsEmpty(error) && customTheme?.singleValue?.error)
     };
   },
   control: (provided: any, state: any) => {
@@ -80,11 +87,13 @@ const customStyles = (error: unknown, customTheme: SelectProps["theme"]) => ({
   }),
   placeholder: (provided: any) => ({
     ...provided,
-    ...customTheme?.placeholder
+    ...customTheme?.placeholder,
+    ...(!checkIfValueIsEmpty(error) && customTheme?.placeholder?.error)
   }),
   input: (provided: any) => ({
     ...provided,
-    ...customTheme?.input
+    ...customTheme?.input,
+    ...(!checkIfValueIsEmpty(error) && customTheme?.input?.error)
   })
 });
 
