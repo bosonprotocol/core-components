@@ -4,7 +4,12 @@ import { GlobeHemisphereWest } from "phosphor-react";
 import React, { forwardRef, useState, useEffect } from "react";
 import type { Country as CountryCode } from "react-phone-number-input";
 import PhoneInput from "react-phone-number-input";
-import Select, { GroupBase, StylesConfig, components } from "react-select";
+import Select, {
+  CSSObjectWithLabel,
+  GroupBase,
+  StylesConfig,
+  components
+} from "react-select";
 import styled, { CSSProperties } from "styled-components";
 import { zIndex } from "../ui/zIndex";
 import Error from "./Error";
@@ -81,27 +86,35 @@ const customStyles = (
           : customTheme?.option?.color ?? colors.black,
       ...(state.isDisabled && customTheme?.option?.disabled),
       ...((state.isOptionSelected || state.isSelected) &&
-        customTheme?.option?.selected)
+        customTheme?.option?.selected),
+      ...(!checkIfValueIsEmpty(error) && customTheme?.option?.error)
     };
   },
-  menu: (provided) => ({
-    ...provided,
-    overflow: "hidden"
-  }),
+  menu: (provided) => {
+    return {
+      ...provided,
+      overflow: "hidden",
+      ...customTheme?.menu,
+      ...(!checkIfValueIsEmpty(error) && customTheme?.menu?.error)
+    };
+  },
   indicatorSeparator: () => ({
     display: "none"
   }),
   placeholder: (provided) => ({
     ...provided,
-    ...customTheme?.placeholder
+    ...customTheme?.placeholder,
+    ...(!checkIfValueIsEmpty(error) && customTheme?.placeholder?.error)
   }),
   input: (provided) => ({
     ...provided,
-    ...customTheme?.input
+    ...customTheme?.input,
+    ...(!checkIfValueIsEmpty(error) && customTheme?.input?.error)
   }),
   singleValue: (provided) => ({
     ...provided,
-    ...customTheme?.singleValue
+    ...customTheme?.singleValue,
+    ...(!checkIfValueIsEmpty(error) && customTheme?.singleValue?.error)
   })
 });
 
@@ -158,10 +171,14 @@ export type CountrySelectProps = InputProps & {
       Partial<{
         selected: Partial<CSSProperties>;
         disabled: Partial<CSSProperties>;
+        error: CSSProperties;
       }>;
-    placeholder: Partial<CSSProperties>;
-    input: Partial<CSSProperties>;
-    singleValue: Partial<CSSProperties>;
+    placeholder: Partial<CSSProperties> &
+      Partial<{ error: CSSObjectWithLabel }>;
+    input: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
+    singleValue: Partial<CSSProperties> &
+      Partial<{ error: CSSObjectWithLabel }>;
+    menu: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
   }>;
 };
 type CountryName = string;
