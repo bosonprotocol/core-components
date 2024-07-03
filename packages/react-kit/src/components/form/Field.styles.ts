@@ -115,7 +115,21 @@ export const FieldInput = styled.input<{
     `};
 `;
 
-export const FileUploadWrapper = styled.div<{ error: any }>`
+export type FileUploadWrapperTheme = Partial<{
+  borderColor: CSSProperties["borderColor"];
+  borderRadius: CSSProperties["borderRadius"];
+  background: CSSProperties["background"];
+  focus: Partial<{
+    borderColor: CSSProperties["borderColor"];
+  }>;
+  error: Partial<{
+    borderColor: CSSProperties["borderColor"];
+  }>;
+}>;
+export const FileUploadWrapper = styled.div<{
+  $error: unknown;
+  theme: FileUploadWrapperTheme | undefined;
+}>`
   position: relative;
   overflow: hidden;
   display: flex;
@@ -144,28 +158,33 @@ export const FileUploadWrapper = styled.div<{ error: any }>`
     }
   }
 
-  background: ${colors.lightGrey};
-  border-radius: 0;
+  background: ${({ theme }) => theme?.background || colors.lightGrey};
+  ${({ theme }) =>
+    theme.borderRadius !== undefined &&
+    css`
+      border-radius: ${theme.borderRadius};
+    `};
   outline: none;
 
-  ${({ error }) =>
-    !checkIfValueIsEmpty(error)
+  ${({ $error, theme }) =>
+    !checkIfValueIsEmpty($error)
       ? css`
-          border: 1px solid ${colors.orange};
+          border: 1px solid ${theme?.error?.borderColor || colors.orange};
         `
       : css`
-          border: 1px solid ${colors.border};
+          border: 1px solid ${theme?.borderColor || colors.border};
         `}
 
   ${transition};
 
   &:focus,
   &:hover {
-    border: 1px solid var(--secondary);
+    border: 1px solid
+      ${({ theme }) => theme?.hover?.borderColor || colors.lightGrey};
   }
 
   /* prettier-ignore */
-  [data-disabled=true] {
+  :disabled, [data-disabled=true] {
     cursor: not-allowed;
     opacity: 0.5;
   }

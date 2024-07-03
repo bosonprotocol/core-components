@@ -22,7 +22,8 @@ export function FormField({
   children,
   style = {},
   valueToCopy,
-  copyIconColor = colors.secondary
+  copyIconColor = colors.secondary,
+  ...rest
 }: FormFieldProps) {
   return (
     <FormFieldWrapper
@@ -31,6 +32,7 @@ export function FormField({
       alignItems="flex-start"
       flexGrow="1"
       style={style}
+      {...rest}
     >
       <>
         <Grid justifyContent="flex-start" margin="0 0 0.375rem 0">
