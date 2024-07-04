@@ -9,4 +9,5 @@ export { default as Select, SelectProps } from "./Select";
 export * from "./CountrySelect";
 export * from "./BaseTagsInput";
 export * from "./BaseTextArea";
-export { default as Upload } from "./Upload/Upload";
+export { default as BaseUpload, BaseUploadProps } from "./Upload/BaseUpload";
+export { Upload, UploadProps } from "./Upload/Upload";

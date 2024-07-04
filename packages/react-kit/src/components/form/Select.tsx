@@ -64,24 +64,27 @@ const customStyles = (
     position: "relative",
     width: "100%"
   }),
-  option: (provided: any, state: any) => ({
-    ...provided,
-    cursor: state.isDisabled ? "not-allowed" : "pointer",
-    opacity: state.isDisabled
-      ? customTheme?.option?.disabled?.opacity ?? "0.5"
-      : customTheme?.option?.opacity ?? "1",
-    background:
-      state.isOptionSelected || state.isSelected || state.isFocused
-        ? customTheme?.option?.selected?.background ?? colors.lightGrey
-        : customTheme?.option?.background ?? colors.white,
-    color:
-      state.isOptionSelected || state.isSelected
-        ? customTheme?.option?.selected?.color ?? colors.secondary
-        : customTheme?.option?.color ?? colors.black,
-    ...(state.isDisabled && customTheme?.option?.disabled),
-    ...((state.isOptionSelected || state.isSelected) &&
-      customTheme?.option?.selected)
-  }),
+  option: (provided: any, state: any) => {
+    return {
+      ...provided,
+      cursor: state.isDisabled ? "not-allowed" : "pointer",
+      opacity: state.isDisabled
+        ? customTheme?.option?.disabled?.opacity ?? "0.5"
+        : customTheme?.option?.opacity ?? "1",
+      background:
+        state.isOptionSelected || state.isSelected || state.isFocused
+          ? customTheme?.option?.selected?.background ?? colors.lightGrey
+          : customTheme?.option?.background ?? colors.white,
+      color:
+        state.isOptionSelected || state.isSelected
+          ? customTheme?.option?.selected?.color ?? colors.secondary
+          : customTheme?.option?.color ?? colors.black,
+      ...(state.isDisabled && customTheme?.option?.disabled),
+      ...((state.isOptionSelected || state.isSelected) &&
+        customTheme?.option?.selected),
+      ...(state.isFocused && customTheme?.option?.focus)
+    };
+  },
   indicatorSeparator: () => ({
     display: "none"
   }),

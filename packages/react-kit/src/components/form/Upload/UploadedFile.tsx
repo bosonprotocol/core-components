@@ -1,7 +1,7 @@
 import { ImageSquare, X } from "phosphor-react";
 import React, { useCallback } from "react";
 import styled from "styled-components";
-import bytesToSize from "../../../lib/bytes/bytesToSize";
+import { bytesToSize } from "../../../lib/bytes/bytesToSize";
 import { theme } from "../../../theme";
 
 import { Grid } from "../../ui/Grid";

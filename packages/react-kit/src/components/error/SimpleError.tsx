@@ -13,7 +13,7 @@ const StyledGrid = styled(Grid)<{
   background-color: ${({ $background }) => $background};
 `;
 
-export type SimpleProps = GridProps & {
+export type SimpleErrorProps = GridProps & {
   errorMessage?: string;
   children?: ReactNode;
   backgroundColor?: CSSProperties["backgroundColor"];
@@ -26,7 +26,7 @@ export function SimpleError({
   backgroundColor = colors.lightGrey,
   warningColor = colors.darkOrange,
   ...rest
-}: SimpleProps) {
+}: SimpleErrorProps) {
   return (
     <StyledGrid
       justifyContent="flex-start"

@@ -8,7 +8,7 @@ import ErrorToast from "../../toasts/common/ErrorToast";
 import { Typography } from "../../ui/Typography";
 import { FileProps, UploadProps } from "../types";
 import { useSaveImageToIpfs } from "../../../hooks/ipfs/useSaveImageToIpfs";
-import bytesToSize from "../../../lib/bytes/bytesToSize";
+import { bytesToSize } from "../../../lib/bytes/bytesToSize";
 
 const colors = theme.colors.light;
 

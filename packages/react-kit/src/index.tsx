@@ -71,6 +71,7 @@ export * from "./components/ui/MuteButton";
 export * from "./components/ui/CardCTA";
 export * from "./components/form";
 export * from "./lib/magicLink/logout";
+export * from "./lib/bytes/bytesToSize";
 export * from "./lib/magicLink/provider";
 export * from "./lib/const/networks";
 export * from "./lib/errors/transactions";

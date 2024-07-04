@@ -2,7 +2,8 @@ import { ReactNode } from "react";
 import { SingleValue } from "react-select";
 import { CSSProperties } from "styled-components";
 import { ImageEditorModalProps } from "./Upload/ImageEditorModal/ImageEditorModal";
-import type { TextAreaTheme } from "./Field.styles";
+import type { FileUploadWrapperTheme, TextAreaTheme } from "./Field.styles";
+import type { GridProps } from "../ui/Grid";
 
 export interface BaseProps {
   name: string;
@@ -30,7 +31,7 @@ export interface ErrorProps {
   message?: string;
 }
 
-export interface FormFieldProps {
+export interface FormFieldProps extends GridProps {
   title: string;
   titleIcon?: ReactNode;
   subTitle?: string | false;
@@ -100,6 +101,7 @@ export interface SelectProps extends BaseProps {
       Partial<{
         selected: Partial<CSSProperties>;
         disabled: Partial<CSSProperties>;
+        focus: Partial<CSSProperties>;
       }>;
     placeholder: Partial<CSSProperties> & Partial<{ error: CSSProperties }>;
     input: Partial<CSSProperties> & Partial<{ error: CSSProperties }>;
@@ -122,6 +124,7 @@ export type UploadProps = BaseProps & {
   width?: number;
   height?: number;
   imgPreviewStyle?: Pick<CSSProperties, "objectFit">;
+  theme?: Partial<{ triggerTheme: FileUploadWrapperTheme }>;
 } & (
     | {
         withEditor: true;
