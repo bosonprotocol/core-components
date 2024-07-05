@@ -19,16 +19,7 @@ const customStyles = (
   boolean,
   GroupBase<SelectDataProps<string>>
 > => ({
-  singleValue: (provided: any) => {
-    return {
-      ...provided,
-      color: colors.darkGrey,
-      fontSize: "13.33px",
-      ...customTheme?.singleValue,
-      ...(!checkIfValueIsEmpty(error) && customTheme?.singleValue?.error)
-    };
-  },
-  control: (provided: any, state: any) => {
+  control: (provided, state: any) => {
     const before = state.selectProps.label
       ? {
           ":before": {
@@ -58,13 +49,13 @@ const customStyles = (
       ...before
     };
   },
-  container: (provided: any, state: any) => ({
+  container: (provided, state: any) => ({
     ...provided,
     zIndex: state.isFocused ? zIndex.Select + 1 : zIndex.Select,
     position: "relative",
     width: "100%"
   }),
-  option: (provided: any, state: any) => {
+  option: (provided, state: any) => {
     return {
       ...provided,
       cursor: state.isDisabled ? "not-allowed" : "pointer",
@@ -82,22 +73,32 @@ const customStyles = (
       ...(state.isDisabled && customTheme?.option?.disabled),
       ...((state.isOptionSelected || state.isSelected) &&
         customTheme?.option?.selected),
-      ...(state.isFocused && customTheme?.option?.focus)
+      ...(state.isFocused && customTheme?.option?.focus),
+      ...(!checkIfValueIsEmpty(error) && customTheme?.option?.error)
     };
   },
   indicatorSeparator: () => ({
     display: "none"
   }),
-  placeholder: (provided: any) => ({
+  placeholder: (provided) => ({
     ...provided,
     ...customTheme?.placeholder,
     ...(!checkIfValueIsEmpty(error) && customTheme?.placeholder?.error)
   }),
-  input: (provided: any) => ({
+  input: (provided) => ({
     ...provided,
     ...customTheme?.input,
     ...(!checkIfValueIsEmpty(error) && customTheme?.input?.error)
-  })
+  }),
+  singleValue: (provided) => {
+    return {
+      ...provided,
+      color: colors.darkGrey,
+      fontSize: "13.33px",
+      ...customTheme?.singleValue,
+      ...(!checkIfValueIsEmpty(error) && customTheme?.singleValue?.error)
+    };
+  }
 });
 
 export default function SelectComponent({

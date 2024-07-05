@@ -10,6 +10,7 @@ import { Grid } from "../ui/Grid";
 import { Typography } from "../ui/Typography";
 import { CopyButton, FormFieldWrapper } from "./Field.styles";
 import type { FormFieldProps } from "./types";
+export type { FormFieldProps } from "./types";
 
 const colors = theme.colors.light;
 
