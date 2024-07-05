@@ -41,8 +41,6 @@ const customStyles = (
     return {
       ...provided,
       alignContent: "center",
-      borderRadius: customTheme?.control?.borderRadius ?? 0,
-      height: customTheme?.control?.height,
       padding: "0.4rem 1rem",
       boxShadow: "none",
       background: colors.lightGrey,
@@ -87,6 +85,7 @@ const customStyles = (
       ...(state.isDisabled && customTheme?.option?.disabled),
       ...((state.isOptionSelected || state.isSelected) &&
         customTheme?.option?.selected),
+      ...(state.isFocused && customTheme?.option?.focus),
       ...(!checkIfValueIsEmpty(error) && customTheme?.option?.error)
     };
   },
@@ -125,12 +124,16 @@ const ControlGrid = styled.div`
   align-items: center;
   justify-content: space-between;
   .PhoneInputCountryIcon {
+    max-width: fit-content;
     min-width: 40px;
     display: inline;
     height: 27px;
     img {
       max-width: 40px;
     }
+  }
+  svg {
+    max-width: 40px;
   }
 `;
 const OptionGrid = styled.div`
@@ -171,6 +174,7 @@ export type CountrySelectProps = InputProps & {
       Partial<{
         selected: Partial<CSSProperties>;
         disabled: Partial<CSSProperties>;
+        focus: Partial<CSSProperties>;
         error: CSSProperties;
       }>;
     placeholder: Partial<CSSProperties> &

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { SingleValue } from "react-select";
+import { CSSObjectWithLabel, SingleValue } from "react-select";
 import { CSSProperties } from "styled-components";
 import { ImageEditorModalProps } from "./Upload/ImageEditorModal/ImageEditorModal";
 import type { FileUploadWrapperTheme, TextAreaTheme } from "./Field.styles";
@@ -102,10 +102,13 @@ export interface SelectProps extends BaseProps {
         selected: Partial<CSSProperties>;
         disabled: Partial<CSSProperties>;
         focus: Partial<CSSProperties>;
+        error: Partial<CSSObjectWithLabel>;
       }>;
-    placeholder: Partial<CSSProperties> & Partial<{ error: CSSProperties }>;
-    input: Partial<CSSProperties> & Partial<{ error: CSSProperties }>;
-    singleValue: Partial<CSSProperties> & Partial<{ error: CSSProperties }>;
+    placeholder: Partial<CSSProperties> &
+      Partial<{ error: CSSObjectWithLabel }>;
+    input: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
+    singleValue: Partial<CSSProperties> &
+      Partial<{ error: CSSObjectWithLabel }>;
   }>;
 }
 
