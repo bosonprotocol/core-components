@@ -1,4 +1,5 @@
-export { default as Checkbox } from "./Checkbox";
+export { Checkbox, CheckboxProps } from "./Checkbox";
+export { BaseCheckbox, BaseCheckboxProps } from "./BaseCheckbox";
 export { default as Datepicker } from "./Datepicker";
 export { default as Error } from "./Error";
 export { FormField, FormFieldProps } from "./FormField";

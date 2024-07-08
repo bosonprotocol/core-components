@@ -34,9 +34,8 @@ export function WithUploadToIpfs<P extends WithUploadToIpfsProps>(
     props: Omit<P & UploadProps, keyof WithUploadToIpfsProps>
   ) => {
     const withUpload = props?.withUpload || false;
-    const accept: string = props.accept
-      ? props.accept
-      : SUPPORTED_FORMATS.join(",");
+    const accept: string = props.accept || SUPPORTED_FORMATS.join(",");
+    const maxSize = Number(props.maxSize) || MAX_FILE_SIZE;
     const { saveFile, loadMedia, removeFile } = useSaveImageToIpfs();
 
     const saveToIpfs: WithUploadToIpfsProps["saveToIpfs"] = useCallback(
@@ -47,10 +46,8 @@ export function WithUploadToIpfs<P extends WithUploadToIpfsProps>(
         const filesErrors: string[] = [];
 
         for (const file of filesArray) {
-          const sizeValidation = Number(props.maxSize) || MAX_FILE_SIZE;
-          const formatValidation = props.accept
-            ? props.accept.split(",").map((acc) => acc.trim())
-            : SUPPORTED_FORMATS;
+          const sizeValidation = maxSize;
+          const formatValidation = accept.split(",").map((acc) => acc.trim());
 
           if (file?.size > sizeValidation) {
             const err = `File ${
@@ -101,18 +98,18 @@ export function WithUploadToIpfs<P extends WithUploadToIpfsProps>(
 
         return ipfsArray as FileProps[];
       },
-      [props.accept, props.maxSize, saveFile]
+      [accept, maxSize, saveFile]
     );
 
     const newProps = useMemo(
       () => ({
-        maxSize: MAX_FILE_SIZE,
+        maxSize,
         accept,
         saveToIpfs,
         loadMedia,
         removeFile
       }),
-      [saveToIpfs, loadMedia, removeFile, accept]
+      [saveToIpfs, loadMedia, removeFile, accept, maxSize]
     );
 
     if (withUpload) {

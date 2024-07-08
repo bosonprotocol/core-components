@@ -33,6 +33,7 @@ export * from "./components/currencyDisplay/CurrencyDisplay";
 export * from "./components/exchangeCard/ExchangeCard";
 export * from "./components/image/Image";
 export * from "./components/ui/IpfsImage";
+export { Video, VideoProps } from "./components/ui/Video";
 export * from "./components/ui/loading/Loading";
 export * from "./components/productCard/ProductCard";
 export * from "./components/productCard/const";

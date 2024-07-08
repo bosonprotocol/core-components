@@ -2,7 +2,11 @@ import { ReactNode } from "react";
 import { CSSObjectWithLabel, SingleValue } from "react-select";
 import { CSSProperties } from "styled-components";
 import { ImageEditorModalProps } from "./Upload/ImageEditorModal/ImageEditorModal";
-import type { FileUploadWrapperTheme, TextAreaTheme } from "./Field.styles";
+import type {
+  CheckboxTheme,
+  FileUploadWrapperTheme,
+  TextAreaTheme
+} from "./Field.styles";
 import type { GridProps } from "../ui/Grid";
 
 export interface BaseProps {
@@ -21,6 +25,7 @@ export interface DatepickerProps extends BaseProps {
 
 export interface CheckboxProps extends BaseProps {
   text?: string;
+  theme?: CheckboxTheme;
 }
 
 export type TextareaProps = BaseProps &
