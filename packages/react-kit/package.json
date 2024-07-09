@@ -43,6 +43,7 @@
     "cids": "^1.1.9",
     "dayjs": "1.11.7",
     "eth-revert-reason": "^1.0.3",
+    "ethers-v6": "npm:ethers@^6.10.0",
     "formik": "2.2.9",
     "graphql-request": "5.2.0",
     "jotai": "^1.13.1",
