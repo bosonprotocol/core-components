@@ -11,6 +11,7 @@ export function BaseCheckbox({
   name,
   text,
   theme,
+  hideError,
   ...props
 }: BaseCheckboxProps) {
   const [field, meta, helpers] = useField(name);
@@ -43,7 +44,7 @@ export function BaseCheckbox({
         </div>
         <b>{text}</b>
       </CheckboxWrapper>
-      <Error display={displayError} message={errorMessage} />
+      <Error display={!hideError && displayError} message={errorMessage} />
     </>
   );
 }
