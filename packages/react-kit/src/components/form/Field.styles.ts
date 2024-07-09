@@ -338,7 +338,31 @@ export const FormFieldWrapper = styled(Grid)`
   }
 `;
 
-export const CheckboxWrapper = styled.label<{ error: any }>`
+export type CheckboxTheme = Partial<{
+  backgroundColor: CSSProperties["backgroundColor"];
+  borderColor: CSSProperties["borderColor"];
+  borderRadius: CSSProperties["borderRadius"];
+  color: CSSProperties["color"];
+  hover: Partial<{
+    borderColor: CSSProperties["borderColor"];
+    backgroundColor: CSSProperties["backgroundColor"];
+    color: CSSProperties["color"];
+  }>;
+  error: Partial<{
+    borderColor: CSSProperties["borderColor"];
+    backgroundColor: CSSProperties["backgroundColor"];
+    color: CSSProperties["color"];
+  }>;
+  checked: Partial<{
+    borderColor: CSSProperties["borderColor"];
+    backgroundColor: CSSProperties["backgroundColor"];
+    color: CSSProperties["color"];
+  }>;
+}>;
+export const CheckboxWrapper = styled.label<{
+  $error: unknown;
+  theme: CheckboxTheme;
+}>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -355,7 +379,18 @@ export const CheckboxWrapper = styled.label<{ error: any }>`
       + div {
         cursor: pointer;
         &:hover {
-          border: 1px solid ${colors.secondary};
+          border: 1px solid
+            ${({ theme }) => theme?.hover?.borderColor || colors.border};
+          ${({ theme }) =>
+            theme?.hover?.backgroundColor &&
+            css`
+              background-color: ${theme?.hover?.backgroundColor};
+            `};
+          ${({ theme }) =>
+            theme?.hover?.color &&
+            css`
+              color: ${theme?.hover?.color};
+            `};
           svg {
             opacity: 0.25;
           }
@@ -375,8 +410,19 @@ export const CheckboxWrapper = styled.label<{ error: any }>`
     width: 1.5rem;
     height: 1.5rem;
 
-    background: ${colors.lightGrey};
-
+    background-color: ${({ theme }) =>
+      theme?.backgroundColor || colors.lightGrey};
+    border: 1px solid ${({ theme }) => theme?.borderColor};
+    ${({ theme }) =>
+      theme?.color &&
+      css`
+        color: ${theme?.color};
+      `};
+    ${({ theme }) =>
+      theme?.borderRadius !== undefined &&
+      css`
+        border-radius: ${theme?.borderRadius};
+      `};
     margin-right: 0.5rem;
   }
 
@@ -384,6 +430,23 @@ export const CheckboxWrapper = styled.label<{ error: any }>`
     &:checked {
       + div svg {
         opacity: 1;
+      }
+      + div {
+        ${({ theme }) =>
+          theme?.checked?.backgroundColor &&
+          css`
+            background-color: ${theme?.checked?.backgroundColor};
+          `};
+        ${({ theme }) =>
+          theme?.checked?.borderColor &&
+          css`
+            border: 1px solid ${theme?.checked?.borderColor};
+          `};
+        ${({ theme }) =>
+          theme?.checked?.color &&
+          css`
+            color: ${theme?.checked?.color};
+          `};
       }
     }
     &:not(:checked) {
@@ -393,17 +456,24 @@ export const CheckboxWrapper = styled.label<{ error: any }>`
     }
   }
 
-  ${({ error }) =>
-    !checkIfValueIsEmpty(error)
-      ? css`
-          > div {
-            border: 1px solid ${colors.orange};
-          }
-        `
-      : css`
-          > div {
-            border: 1px solid ${colors.border};
-          }
+  ${({ $error, theme }) =>
+    !checkIfValueIsEmpty($error) &&
+    css`
+      > div {
+        border: 1px solid ${theme?.error?.borderColor || colors.orange}};
+        ${
+          theme?.error?.backgroundColor &&
+          css`
+            background-color: ${theme?.error?.backgroundColor};
+          `
+        };
+        ${
+          theme?.error?.color &&
+          css`
+            color: ${theme?.error?.color};
+          `
+        };
+      }
         `}
 `;
 

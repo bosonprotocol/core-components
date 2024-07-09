@@ -97,7 +97,7 @@ const VideoPlaceholder = styled.div<{ $position?: CSSProperties["position"] }>`
   }
 `;
 
-interface IVideo {
+export type VideoProps = React.HTMLAttributes<HTMLDivElement> & {
   src: string;
   children?: ReactNode;
   dataTestId?: string;
@@ -106,8 +106,8 @@ interface IVideo {
   videoProps?: VideoHTMLAttributes<HTMLElement>;
   withMuteButton?: boolean;
   componentWhileLoading?: () => ReactElement;
-}
-const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
+};
+export const Video: React.FC<VideoProps> = ({
   src,
   children,
   dataTestId = "video",
@@ -150,10 +150,10 @@ const Video: React.FC<IVideo & React.HTMLAttributes<HTMLDivElement>> = ({
         src?.startsWith("ipfs://") ||
         src?.startsWith("https://bosonprotocol.infura-ipfs.io/ipfs/")
       ) {
-        const newString = src?.startsWith("ipfs://")
+        const split = src?.startsWith("ipfs://")
           ? src.split("//")
           : src.split("https://bosonprotocol.infura-ipfs.io/ipfs/");
-        const CID = newString[newString.length - 1];
+        const CID = split[split.length - 1];
         fetchData(`ipfs://${CID}`);
       } else if (src?.startsWith("undefined") && src?.length > 9) {
         const CID = src.replace("undefined", "");

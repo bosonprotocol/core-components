@@ -80,3 +80,11 @@ export const Base = {
     ...BASE_ARGS
   }
 };
+
+export const VideoOnly = {
+  args: {
+    ...BASE_ARGS,
+    accept: "video/mp4",
+    withUpload: true
+  }
+};

@@ -73,7 +73,7 @@ const ImagePlaceholder = styled.div`
   }
 `;
 
-interface IImage {
+export type IpfsImageProps = React.HTMLAttributes<HTMLDivElement> & {
   src: string;
   children?: React.ReactNode;
   dataTestId?: string;
@@ -85,10 +85,9 @@ interface IImage {
   overrides?: {
     ipfsGateway?: string;
   };
-}
-export const IpfsImage: React.FC<
-  IImage & React.HTMLAttributes<HTMLDivElement>
-> = ({
+  className?: string;
+};
+export const IpfsImage: React.FC<IpfsImageProps> = ({
   src,
   children,
   dataTestId = "image",
@@ -130,7 +129,11 @@ export const IpfsImage: React.FC<
 
   return (
     <>
-      <ImageWrapper {...rest} $hide={!isLoading} className="loading-container">
+      <ImageWrapper
+        {...rest}
+        $hide={!isLoading}
+        className={"loading-container " + rest.className}
+      >
         <ImagePlaceholder>
           <Typography tag="div">
             <Loading />
@@ -149,7 +152,11 @@ export const IpfsImage: React.FC<
           )}
         </ImagePlaceholder>
       </ImageWrapper>
-      <ImageWrapper {...rest} $hide={!isSuccess} className="image-container">
+      <ImageWrapper
+        {...rest}
+        $hide={!isSuccess}
+        className={"image-container " + rest.className}
+      >
         {children || ""}
         <ImageContainer
           data-testid={dataTestId}
