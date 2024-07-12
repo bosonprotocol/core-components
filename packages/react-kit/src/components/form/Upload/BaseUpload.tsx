@@ -47,6 +47,7 @@ function BaseUpload({
   width,
   height,
   borderRadius,
+  borderRadiusUnit = "px",
   imgPreviewStyle,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   removeFile,
@@ -230,7 +231,7 @@ function BaseUpload({
   );
   const saveFn = withUpload ? handleSave : handleChange;
   const style = {
-    borderRadius: borderRadius ? `${borderRadius}%` : "",
+    borderRadius: borderRadius ? `${borderRadius}${borderRadiusUnit}` : "",
     width: width ? `100%` : ""
   };
   return (
