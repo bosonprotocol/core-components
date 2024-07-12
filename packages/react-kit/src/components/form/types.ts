@@ -129,6 +129,7 @@ export type UploadProps = BaseProps & {
   withUpload?: boolean;
   onLoading?: (loading: boolean) => void;
   borderRadius?: number;
+  borderRadiusUnit?: "px" | "%";
   width?: number;
   height?: number;
   imgPreviewStyle?: Pick<CSSProperties, "objectFit">;
