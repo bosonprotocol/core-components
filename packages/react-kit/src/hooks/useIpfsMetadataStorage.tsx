@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   getEnvConfigById,
   ConfigId,
-  validateMetadata
+  AnyMetadata
 } from "@bosonprotocol/core-sdk";
 import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
 import { EnvironmentType } from "@bosonprotocol/common/src/types";
@@ -18,19 +18,20 @@ import { EnvironmentType } from "@bosonprotocol/common/src/types";
 export function useIpfsMetadataStorage(
   envName: EnvironmentType,
   configId: ConfigId,
+  validateMetadata: (metadata: AnyMetadata) => void,
   url?: string,
   headers?: Headers | Record<string, string>
 ) {
   const [ipfsMetadataStorage, setIpfsMetadataStorage] =
     useState<IpfsMetadataStorage>(
-      initIpfsMetadataStorage(envName, configId, url, headers)
+      initIpfsMetadataStorage(envName, configId, validateMetadata, url, headers)
     );
 
   useEffect(() => {
     setIpfsMetadataStorage(
-      initIpfsMetadataStorage(envName, configId, url, headers)
+      initIpfsMetadataStorage(envName, configId, validateMetadata, url, headers)
     );
-  }, [envName, configId, url, headers]);
+  }, [envName, configId, validateMetadata, url, headers]);
 
   return ipfsMetadataStorage;
 }
@@ -38,6 +39,7 @@ export function useIpfsMetadataStorage(
 function initIpfsMetadataStorage(
   envName: EnvironmentType,
   configId: ConfigId,
+  validateMetadata: (metadata: AnyMetadata) => void,
   url?: string,
   headers?: Headers | Record<string, string>
 ) {
