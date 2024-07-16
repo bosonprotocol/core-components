@@ -5,7 +5,7 @@ import polygonMaticLogo from "../../assets/svg/polygon-matic-logo.svg";
 import polygonSquareLogoUrl from "../../assets/svg/polygon_square_logo.svg";
 import ms from "ms";
 
-import { SupportedL1ChainId, SupportedL2ChainId } from "./chains";
+import { LocalChainId, SupportedL1ChainId, SupportedL2ChainId } from "./chains";
 
 export const AVERAGE_L1_BLOCK_TIME = ms(`12s`);
 
@@ -113,6 +113,15 @@ const CHAIN_INFO: ChainInfoMap = {
       symbol: "aMATIC",
       decimals: 18
     }
+  },
+  [LocalChainId]: {
+    networkType: NetworkType.L1,
+    docs: "https://docs.uniswap.org/",
+    explorer: "https://etherscan.io/",
+    infoLink: "https://info.uniswap.org/#/",
+    label: "Local",
+    logoUrl: ethereumLogoUrl,
+    nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 }
   }
 } as const;
 
