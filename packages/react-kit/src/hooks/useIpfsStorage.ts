@@ -1,6 +1,7 @@
 import { useIpfsMetadataStorage } from "./";
 import { useEnvContext } from "../components/environment/EnvironmentContext";
 import { useIpfsContext } from "../components/ipfs/IpfsContext";
+import { validateMetadata } from "@bosonprotocol/core-sdk";
 
 export function useIpfsStorage() {
   const { envName, configId } = useEnvContext();
@@ -9,6 +10,7 @@ export function useIpfsStorage() {
   const storage = useIpfsMetadataStorage(
     envName,
     configId,
+    validateMetadata,
     ipfsMetadataStorageUrl,
     ipfsMetadataStorageHeaders
   );
