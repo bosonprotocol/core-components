@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/metadata-storage",
-  "version": "1.0.1-alpha.14",
+  "version": "1.0.1-alpha.15",
   "description": "defines the interfaces for metadata-storage implementation (eg. ipfs-storage)",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
