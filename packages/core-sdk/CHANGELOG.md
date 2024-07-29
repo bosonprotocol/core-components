@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.40.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.40.4...@bosonprotocol/core-sdk@1.40.5) (2024-07-29)
+
+**Note:** Version bump only for package @bosonprotocol/core-sdk
+
+
+
+
+
 ## [1.40.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.40.3...@bosonprotocol/core-sdk@1.40.4) (2024-06-11)
 
 **Note:** Version bump only for package @bosonprotocol/core-sdk

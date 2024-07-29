@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.33.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.32.0...@bosonprotocol/react-kit@0.33.0) (2024-07-29)
+
+
+### Bug Fixes
+
+* add Local chain in chain info ([#777](https://github.com/bosonprotocol/core-components/issues/777)) ([8d3a446](https://github.com/bosonprotocol/core-components/commit/8d3a44679ee0ff83d626abba6971c3c4bbac324c))
+* country select issue ([#767](https://github.com/bosonprotocol/core-components/issues/767)) ([fb9c74f](https://github.com/bosonprotocol/core-components/commit/fb9c74f7a83b816d0d0a9e96472cc4bef52238d4))
+* grid and typography components ([#758](https://github.com/bosonprotocol/core-components/issues/758)) ([874192b](https://github.com/bosonprotocol/core-components/commit/874192bca265c21dbe12421c2f6d1c6f2ce41eee))
+* missing use of hideError prop in checkbox, not it's used ([#773](https://github.com/bosonprotocol/core-components/issues/773)) ([99cc9cf](https://github.com/bosonprotocol/core-components/commit/99cc9cf3429c16ca7e0df5e4c6170c744d6df999))
+* remove timeout video component ([#764](https://github.com/bosonprotocol/core-components/issues/764)) ([80f3761](https://github.com/bosonprotocol/core-components/commit/80f376111b4900907ec68bbe8abf2325f991b08f))
+* set touched and add border when error ([#768](https://github.com/bosonprotocol/core-components/issues/768)) ([cf066e0](https://github.com/bosonprotocol/core-components/commit/cf066e0530207a09995db548e40f7ba6f7c439de))
+* useProvider ([#756](https://github.com/bosonprotocol/core-components/issues/756)) ([fa6ad68](https://github.com/bosonprotocol/core-components/commit/fa6ad68614b6478227ef098586560f4e0a87d9ab))
+* video component ([#765](https://github.com/bosonprotocol/core-components/issues/765)) ([7c19ad8](https://github.com/bosonprotocol/core-components/commit/7c19ad8cdf3cd98ab5e75fb5d1d7cc1bba9c3440))
+* video error state ([#763](https://github.com/bosonprotocol/core-components/issues/763)) ([f123c52](https://github.com/bosonprotocol/core-components/commit/f123c52352a60b4f976d0e230a0aeabb4f6ccdb0))
+
+
+### Features
+
+* add border radius unit to upload component in react-kit ([#775](https://github.com/bosonprotocol/core-components/issues/775)) ([f54a140](https://github.com/bosonprotocol/core-components/commit/f54a140a9ef08be0a2447c8629e66414d3aa1380))
+* add cardCta component ([#761](https://github.com/bosonprotocol/core-components/issues/761)) ([8248515](https://github.com/bosonprotocol/core-components/commit/8248515dd1ff61283245f5d1175d775f709a8332))
+* add more styles to regular select and country select ([#769](https://github.com/bosonprotocol/core-components/issues/769)) ([1d29415](https://github.com/bosonprotocol/core-components/commit/1d2941564bf2d2e1f897404b3d2fd4e32eb9237d))
+* add props to various components and theme prop to upload ([#770](https://github.com/bosonprotocol/core-components/issues/770)) ([994fcd4](https://github.com/bosonprotocol/core-components/commit/994fcd4ec44e98de16bd2c3bdc84d4d4150e185a))
+* add some more stylying props to selects ([#771](https://github.com/bosonprotocol/core-components/issues/771)) ([3ea1c21](https://github.com/bosonprotocol/core-components/commit/3ea1c218d5de11c3da08a141f8745ef3b4593bf4))
+* export country select ([#755](https://github.com/bosonprotocol/core-components/issues/755)) ([afb0bba](https://github.com/bosonprotocol/core-components/commit/afb0bbab4587315b8b89908b57fe9f79c629136b))
+* make checkbox generic ([#772](https://github.com/bosonprotocol/core-components/issues/772)) ([a495789](https://github.com/bosonprotocol/core-components/commit/a495789989325100cc565d9dcae8127f1d420b04))
+* make select component generic via a theme prop ([#766](https://github.com/bosonprotocol/core-components/issues/766)) ([e334aed](https://github.com/bosonprotocol/core-components/commit/e334aed0b8332555b6bf8e081c3a49e973fe0c3d))
+
+
+
+
+
 # [0.32.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.31.1...@bosonprotocol/react-kit@0.32.0) (2024-06-11)
 
 
