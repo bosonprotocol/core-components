@@ -56,6 +56,10 @@ const Wrapper = styled.div`
 
   ${StyledButton} {
     transition: background 150ms ease-in-out;
+    padding: 0.75rem 0.625rem;
+    svg {
+      max-width: 100%;
+    }
   }
 `;
 
