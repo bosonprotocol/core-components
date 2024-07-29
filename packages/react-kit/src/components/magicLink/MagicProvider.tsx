@@ -5,6 +5,7 @@ import { CONFIG } from "../../lib/config/config";
 import { useConfigContext } from "../config/ConfigContext";
 import type { getRpcUrls } from "../../lib/const/networks";
 import { ethers } from "ethers";
+import { ethers as ethersV6 } from "ethers-v6";
 import { MagicContext } from "./MagicContext";
 
 export const MagicProvider = ({ children }: { children: ReactNode }) => {
@@ -51,7 +52,10 @@ export const InnerMagicProvider = ({
     return {
       magic: magic as typeof magic & { uuid: string },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      magicProvider: new ethers.providers.Web3Provider(magic.rpcProvider as any)
+      magicProvider: new ethers.providers.Web3Provider(
+        magic.rpcProvider as any
+      ),
+      magicProviderV6: new ethersV6.BrowserProvider(magic.rpcProvider as any)
     }; // return magic provider too
   }, [chainId, magicLinkKey, rpcUrls]);
   return (

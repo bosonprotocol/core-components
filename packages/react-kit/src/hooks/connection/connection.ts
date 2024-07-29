@@ -3,13 +3,15 @@
 
 import { useMemo } from "react";
 import { useNetwork, useAccount as useWagmiAccount } from "wagmi";
+import { Signer as SignerV6 } from "ethers-v6";
 import { useUser } from "../../components/magicLink/UserContext";
 import {
   useIsMagicLoggedIn,
   useMagicChainId,
-  useMagicProvider
+  useMagicProvider,
+  useMagicSignerV6
 } from "../magic";
-import { useEthersSigner } from "../ethers/useEthersSigner";
+import { useEthersSigner, useEthersSignerV6 } from "../ethers/useEthersSigner";
 import { useConfigContext } from "../../components/config/ConfigContext";
 import { useExternalSigner } from "../../components/signer/useExternalSigner";
 import { useSignerAddress } from "../useSignerAddress";
@@ -167,6 +169,33 @@ export function useSigner(): Signer | undefined {
     withWeb3React
   ]);
   if (!withExternalConnectionProps && error && !withWeb3React) {
+    throw error;
+  }
+  return signer;
+}
+
+export function useSignerV6(): SignerV6 | undefined {
+  const { withExternalConnectionProps, externalConnectedSignerV6 } =
+    useConfigContext();
+  let wagmiSigner: unknown, error: unknown;
+  try {
+    const { data: ethersSigner } = useEthersSignerV6();
+    wagmiSigner = ethersSigner;
+  } catch (wagmiError) {
+    error = wagmiError; // error if the provider is not there
+  }
+  const { data: magicSignerV6 } = useMagicSignerV6();
+
+  const isMagicLoggedIn = useIsMagicLoggedIn();
+
+  const signer = useMemo(() => {
+    return externalConnectedSignerV6
+      ? externalConnectedSignerV6
+      : isMagicLoggedIn
+        ? (magicSignerV6 as SignerV6)
+        : (wagmiSigner as SignerV6);
+  }, [externalConnectedSignerV6, wagmiSigner, magicSignerV6, isMagicLoggedIn]);
+  if (!withExternalConnectionProps && error) {
     throw error;
   }
   return signer;

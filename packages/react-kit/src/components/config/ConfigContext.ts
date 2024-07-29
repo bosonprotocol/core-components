@@ -1,6 +1,7 @@
 import { ProtocolConfig } from "@bosonprotocol/core-sdk";
 import { createContext, useContext } from "react";
 import { Signer } from "ethers";
+import { Signer as SignerV6 } from "ethers-v6";
 
 export type ConfigContextProps = {
   config: ProtocolConfig;
@@ -17,6 +18,7 @@ export type ConfigContextProps = {
   externalConnectedChainId?: number;
   externalConnectedAccount?: string;
   externalConnectedSigner?: Signer;
+  externalConnectedSignerV6?: SignerV6;
   withExternalConnectionProps?: boolean;
   withWeb3React: boolean;
   withCustomReduxContext?: boolean;

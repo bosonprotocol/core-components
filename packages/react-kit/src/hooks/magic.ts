@@ -30,6 +30,28 @@ export function useMagicProvider() {
   return context.magicProvider;
 }
 
+export function useMagicProviderV6() {
+  const context = useContext(MagicContext);
+  if (!context) {
+    throw new Error("useMagic must be used within MagicContext");
+  }
+  return context.magicProviderV6;
+}
+
+export const useMagicSignerV6 = () => {
+  const context = useContext(MagicContext);
+  if (!context) {
+    throw new Error("useMagic must be used within MagicContext");
+  }
+  return useQuery(["signer", context.magic?.uuid], async () => {
+    if (!context.magicProviderV6) {
+      return;
+    }
+    const signer = await context.magicProviderV6?.getSigner();
+    return signer;
+  });
+};
+
 export function useMagicChainId() {
   const magicProvider = useMagicProvider();
   return magicProvider?._network?.chainId;
