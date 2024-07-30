@@ -80,6 +80,7 @@ export * from "./lib/offer/getIsOfferExpired";
 export * from "./lib/bundle/filter";
 export * from "./lib/bundle/const";
 export * from "./lib/offer/filter";
+export * from "./lib/ipfs/ipfs";
 export * from "./components/wallet2/selector/ChainSelector";
 export * from "./components/wallet2/web3Status/index";
 export * from "./components/wallet2/web3Provider/index";
