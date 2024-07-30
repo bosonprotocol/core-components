@@ -2670,6 +2670,7 @@ export type Exchange = {
   finalizedDate?: Maybe<Scalars["BigInt"]["output"]>;
   id: Scalars["ID"]["output"];
   offer: Offer;
+  protocolFeeCollected?: Maybe<ProtocolFeeCollected>;
   redeemedDate?: Maybe<Scalars["BigInt"]["output"]>;
   revokedDate?: Maybe<Scalars["BigInt"]["output"]>;
   seller: Seller;
@@ -3094,6 +3095,7 @@ export type Exchange_Filter = {
   offer_starts_with?: InputMaybe<Scalars["String"]["input"]>;
   offer_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
   or?: InputMaybe<Array<InputMaybe<Exchange_Filter>>>;
+  protocolFeeCollected_?: InputMaybe<ProtocolFeeCollected_Filter>;
   redeemedDate?: InputMaybe<Scalars["BigInt"]["input"]>;
   redeemedDate_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
   redeemedDate_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
@@ -3208,6 +3210,12 @@ export enum Exchange_OrderBy {
   OFFER__VOUCHERREDEEMABLEFROMDATE = "offer__voucherRedeemableFromDate",
   OFFER__VOUCHERREDEEMABLEUNTILDATE = "offer__voucherRedeemableUntilDate",
   OFFER__VOUCHERVALIDDURATION = "offer__voucherValidDuration",
+  PROTOCOLFEECOLLECTED = "protocolFeeCollected",
+  PROTOCOLFEECOLLECTED__AMOUNT = "protocolFeeCollected__amount",
+  PROTOCOLFEECOLLECTED__EXCHANGEID = "protocolFeeCollected__exchangeId",
+  PROTOCOLFEECOLLECTED__EXCHANGETOKEN = "protocolFeeCollected__exchangeToken",
+  PROTOCOLFEECOLLECTED__EXECUTEDBY = "protocolFeeCollected__executedBy",
+  PROTOCOLFEECOLLECTED__ID = "protocolFeeCollected__id",
   REDEEMEDDATE = "redeemedDate",
   REVOKEDDATE = "revokedDate",
   SELLER = "seller",
@@ -10295,6 +10303,109 @@ export enum ProductV1Variation_OrderBy {
   TYPE = "type"
 }
 
+export type ProtocolFeeCollected = {
+  __typename?: "ProtocolFeeCollected";
+  amount: Scalars["BigInt"]["output"];
+  exchange: Exchange;
+  exchangeId: Scalars["BigInt"]["output"];
+  exchangeToken: Scalars["Bytes"]["output"];
+  executedBy: Scalars["Bytes"]["output"];
+  id: Scalars["ID"]["output"];
+};
+
+export type ProtocolFeeCollected_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  amount?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  amount_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  and?: InputMaybe<Array<InputMaybe<ProtocolFeeCollected_Filter>>>;
+  exchange?: InputMaybe<Scalars["String"]["input"]>;
+  exchangeId?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  exchangeId_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  exchangeToken?: InputMaybe<Scalars["Bytes"]["input"]>;
+  exchangeToken_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  exchangeToken_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  exchangeToken_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  exchangeToken_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  exchangeToken_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  exchangeToken_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  exchangeToken_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  exchangeToken_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  exchangeToken_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  exchange_?: InputMaybe<Exchange_Filter>;
+  exchange_contains?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_gt?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_gte?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  exchange_lt?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_lte?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_not?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_not_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_not_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_not_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_not_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  exchange_not_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  exchange_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  executedBy?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  executedBy_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  id?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_lte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  or?: InputMaybe<Array<InputMaybe<ProtocolFeeCollected_Filter>>>;
+};
+
+export enum ProtocolFeeCollected_OrderBy {
+  AMOUNT = "amount",
+  EXCHANGE = "exchange",
+  EXCHANGEID = "exchangeId",
+  EXCHANGETOKEN = "exchangeToken",
+  EXCHANGE__CANCELLEDDATE = "exchange__cancelledDate",
+  EXCHANGE__COMMITTEDDATE = "exchange__committedDate",
+  EXCHANGE__COMPLETEDDATE = "exchange__completedDate",
+  EXCHANGE__DISPUTED = "exchange__disputed",
+  EXCHANGE__DISPUTEDDATE = "exchange__disputedDate",
+  EXCHANGE__EXPIRED = "exchange__expired",
+  EXCHANGE__FINALIZEDDATE = "exchange__finalizedDate",
+  EXCHANGE__ID = "exchange__id",
+  EXCHANGE__REDEEMEDDATE = "exchange__redeemedDate",
+  EXCHANGE__REVOKEDDATE = "exchange__revokedDate",
+  EXCHANGE__STATE = "exchange__state",
+  EXCHANGE__VALIDUNTILDATE = "exchange__validUntilDate",
+  EXECUTEDBY = "executedBy",
+  ID = "id"
+}
+
 export type Query = {
   __typename?: "Query";
   /** Access to subgraph metadata */
@@ -10390,6 +10501,8 @@ export type Query = {
   productV1Variants: Array<ProductV1Variant>;
   productV1Variation?: Maybe<ProductV1Variation>;
   productV1Variations: Array<ProductV1Variation>;
+  protocolFeeCollected?: Maybe<ProtocolFeeCollected>;
+  protocolFeeCollecteds: Array<ProtocolFeeCollected>;
   rangeEntities: Array<RangeEntity>;
   rangeEntity?: Maybe<RangeEntity>;
   royaltyInfo?: Maybe<RoyaltyInfo>;
@@ -11157,6 +11270,22 @@ export type QueryProductV1VariationsArgs = {
   skip?: InputMaybe<Scalars["Int"]["input"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<ProductV1Variation_Filter>;
+};
+
+export type QueryProtocolFeeCollectedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProtocolFeeCollectedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<ProtocolFeeCollected_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProtocolFeeCollected_Filter>;
 };
 
 export type QueryRangeEntitiesArgs = {
@@ -13021,6 +13150,8 @@ export type Subscription = {
   productV1Variants: Array<ProductV1Variant>;
   productV1Variation?: Maybe<ProductV1Variation>;
   productV1Variations: Array<ProductV1Variation>;
+  protocolFeeCollected?: Maybe<ProtocolFeeCollected>;
+  protocolFeeCollecteds: Array<ProtocolFeeCollected>;
   rangeEntities: Array<RangeEntity>;
   rangeEntity?: Maybe<RangeEntity>;
   royaltyInfo?: Maybe<RoyaltyInfo>;
@@ -13788,6 +13919,22 @@ export type SubscriptionProductV1VariationsArgs = {
   skip?: InputMaybe<Scalars["Int"]["input"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<ProductV1Variation_Filter>;
+};
+
+export type SubscriptionProtocolFeeCollectedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProtocolFeeCollectedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<ProtocolFeeCollected_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProtocolFeeCollected_Filter>;
 };
 
 export type SubscriptionRangeEntitiesArgs = {
@@ -15715,6 +15862,10 @@ export type GetSellerByIdQueryQuery = {
           }> | null;
         } | null;
       };
+      protocolFeeCollected?: {
+        __typename?: "ProtocolFeeCollected";
+        amount: string;
+      } | null;
     }>;
     logs?: Array<
       | {
@@ -17249,6 +17400,10 @@ export type GetSellersQueryQuery = {
           }> | null;
         } | null;
       };
+      protocolFeeCollected?: {
+        __typename?: "ProtocolFeeCollected";
+        amount: string;
+      } | null;
     }>;
     logs?: Array<
       | {
@@ -17558,6 +17713,10 @@ export type GetBuyerByIdQueryQuery = {
           }> | null;
         } | null;
       };
+      protocolFeeCollected?: {
+        __typename?: "ProtocolFeeCollected";
+        amount: string;
+      } | null;
     }>;
     logs?: Array<
       | {
@@ -17805,6 +17964,10 @@ export type GetBuyersQueryQuery = {
           }> | null;
         } | null;
       };
+      protocolFeeCollected?: {
+        __typename?: "ProtocolFeeCollected";
+        amount: string;
+      } | null;
     }>;
     logs?: Array<
       | {
@@ -24468,6 +24631,10 @@ export type SellerFieldsFragment = {
         }> | null;
       } | null;
     };
+    protocolFeeCollected?: {
+      __typename?: "ProtocolFeeCollected";
+      amount: string;
+    } | null;
   }>;
   logs?: Array<
     | {
@@ -24903,6 +25070,10 @@ export type BuyerFieldsFragment = {
         }> | null;
       } | null;
     };
+    protocolFeeCollected?: {
+      __typename?: "ProtocolFeeCollected";
+      amount: string;
+    } | null;
   }>;
   logs?: Array<
     | {
@@ -26473,6 +26644,10 @@ export type GetDisputeByIdQueryQuery = {
           }> | null;
         } | null;
       };
+      protocolFeeCollected?: {
+        __typename?: "ProtocolFeeCollected";
+        amount: string;
+      } | null;
     };
     seller: {
       __typename?: "Seller";
@@ -26712,6 +26887,10 @@ export type GetDisputesQueryQuery = {
           }> | null;
         } | null;
       };
+      protocolFeeCollected?: {
+        __typename?: "ProtocolFeeCollected";
+        amount: string;
+      } | null;
     };
     seller: {
       __typename?: "Seller";
@@ -26941,6 +27120,10 @@ export type DisputeFieldsFragment = {
         }> | null;
       } | null;
     };
+    protocolFeeCollected?: {
+      __typename?: "ProtocolFeeCollected";
+      amount: string;
+    } | null;
   };
   seller: {
     __typename?: "Seller";
@@ -32131,6 +32314,10 @@ export type GetExchangeByIdQueryQuery = {
         }> | null;
       } | null;
     };
+    protocolFeeCollected?: {
+      __typename?: "ProtocolFeeCollected";
+      amount: string;
+    } | null;
   } | null;
 };
 
@@ -33441,6 +33628,10 @@ export type GetExchangesQueryQuery = {
         }> | null;
       } | null;
     };
+    protocolFeeCollected?: {
+      __typename?: "ProtocolFeeCollected";
+      amount: string;
+    } | null;
   }>;
 };
 
@@ -34724,6 +34915,10 @@ export type ExchangeFieldsFragment = {
       }> | null;
     } | null;
   };
+  protocolFeeCollected?: {
+    __typename?: "ProtocolFeeCollected";
+    amount: string;
+  } | null;
 };
 
 export type BaseExchangeFieldsFragment = {
@@ -34841,6 +35036,10 @@ export type BaseExchangeFieldsFragment = {
       }> | null;
     } | null;
   };
+  protocolFeeCollected?: {
+    __typename?: "ProtocolFeeCollected";
+    amount: string;
+  } | null;
 };
 
 export type GetFundsByIdQueryVariables = Exact<{
@@ -40361,6 +40560,10 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
             }> | null;
           } | null;
         };
+        protocolFeeCollected?: {
+          __typename?: "ProtocolFeeCollected";
+          amount: string;
+        } | null;
       }>;
       royaltyInfos: Array<{
         __typename?: "RoyaltyInfo";
@@ -42247,6 +42450,10 @@ export type GetBundleMetadataEntitiesQueryQuery = {
             }> | null;
           } | null;
         };
+        protocolFeeCollected?: {
+          __typename?: "ProtocolFeeCollected";
+          amount: string;
+        } | null;
       }>;
       royaltyInfos: Array<{
         __typename?: "RoyaltyInfo";
@@ -44123,6 +44330,10 @@ export type BundleMetadataEntityFieldsFragment = {
           }> | null;
         } | null;
       };
+      protocolFeeCollected?: {
+        __typename?: "ProtocolFeeCollected";
+        amount: string;
+      } | null;
     }>;
     royaltyInfos: Array<{
       __typename?: "RoyaltyInfo";
@@ -45986,6 +46197,10 @@ export type BaseBundleMetadataEntityFieldsFragment = {
           }> | null;
         } | null;
       };
+      protocolFeeCollected?: {
+        __typename?: "ProtocolFeeCollected";
+        amount: string;
+      } | null;
     }>;
     royaltyInfos: Array<{
       __typename?: "RoyaltyInfo";
@@ -48104,6 +48319,10 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               }> | null;
             } | null;
           };
+          protocolFeeCollected?: {
+            __typename?: "ProtocolFeeCollected";
+            amount: string;
+          } | null;
         }>;
         royaltyInfos: Array<{
           __typename?: "RoyaltyInfo";
@@ -49442,6 +49661,10 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 }> | null;
               } | null;
             };
+            protocolFeeCollected?: {
+              __typename?: "ProtocolFeeCollected";
+              amount: string;
+            } | null;
           }>;
           royaltyInfos: Array<{
             __typename?: "RoyaltyInfo";
@@ -51523,6 +51746,10 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               }> | null;
             } | null;
           };
+          protocolFeeCollected?: {
+            __typename?: "ProtocolFeeCollected";
+            amount: string;
+          } | null;
         }>;
         royaltyInfos: Array<{
           __typename?: "RoyaltyInfo";
@@ -52861,6 +53088,10 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 }> | null;
               } | null;
             };
+            protocolFeeCollected?: {
+              __typename?: "ProtocolFeeCollected";
+              amount: string;
+            } | null;
           }>;
           royaltyInfos: Array<{
             __typename?: "RoyaltyInfo";
@@ -54956,6 +55187,10 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             }> | null;
           } | null;
         };
+        protocolFeeCollected?: {
+          __typename?: "ProtocolFeeCollected";
+          amount: string;
+        } | null;
       }>;
       royaltyInfos: Array<{
         __typename?: "RoyaltyInfo";
@@ -56733,6 +56968,10 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             }> | null;
           } | null;
         };
+        protocolFeeCollected?: {
+          __typename?: "ProtocolFeeCollected";
+          amount: string;
+        } | null;
       }>;
       royaltyInfos: Array<{
         __typename?: "RoyaltyInfo";
@@ -58500,6 +58739,10 @@ export type ProductV1MetadataEntityFieldsFragment = {
           }> | null;
         } | null;
       };
+      protocolFeeCollected?: {
+        __typename?: "ProtocolFeeCollected";
+        amount: string;
+      } | null;
     }>;
     royaltyInfos: Array<{
       __typename?: "RoyaltyInfo";
@@ -60254,6 +60497,10 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           }> | null;
         } | null;
       };
+      protocolFeeCollected?: {
+        __typename?: "ProtocolFeeCollected";
+        amount: string;
+      } | null;
     }>;
     royaltyInfos: Array<{
       __typename?: "RoyaltyInfo";
@@ -62234,6 +62481,10 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             }> | null;
           } | null;
         };
+        protocolFeeCollected?: {
+          __typename?: "ProtocolFeeCollected";
+          amount: string;
+        } | null;
       }>;
       royaltyInfos: Array<{
         __typename?: "RoyaltyInfo";
@@ -63572,6 +63823,10 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               }> | null;
             } | null;
           };
+          protocolFeeCollected?: {
+            __typename?: "ProtocolFeeCollected";
+            amount: string;
+          } | null;
         }>;
         royaltyInfos: Array<{
           __typename?: "RoyaltyInfo";
@@ -65642,6 +65897,10 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             }> | null;
           } | null;
         };
+        protocolFeeCollected?: {
+          __typename?: "ProtocolFeeCollected";
+          amount: string;
+        } | null;
       }>;
       royaltyInfos: Array<{
         __typename?: "RoyaltyInfo";
@@ -66980,6 +67239,10 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               }> | null;
             } | null;
           };
+          protocolFeeCollected?: {
+            __typename?: "ProtocolFeeCollected";
+            amount: string;
+          } | null;
         }>;
         royaltyInfos: Array<{
           __typename?: "RoyaltyInfo";
@@ -69266,6 +69529,10 @@ export type GetOfferByIdQueryQuery = {
           }> | null;
         } | null;
       };
+      protocolFeeCollected?: {
+        __typename?: "ProtocolFeeCollected";
+        amount: string;
+      } | null;
     }>;
     royaltyInfos: Array<{
       __typename?: "RoyaltyInfo";
@@ -70570,6 +70837,10 @@ export type GetOffersQueryQuery = {
           }> | null;
         } | null;
       };
+      protocolFeeCollected?: {
+        __typename?: "ProtocolFeeCollected";
+        amount: string;
+      } | null;
     }>;
     royaltyInfos: Array<{
       __typename?: "RoyaltyInfo";
@@ -71966,6 +72237,10 @@ export type OfferFieldsFragment = {
         }> | null;
       } | null;
     };
+    protocolFeeCollected?: {
+      __typename?: "ProtocolFeeCollected";
+      amount: string;
+    } | null;
   }>;
   royaltyInfos: Array<{
     __typename?: "RoyaltyInfo";
@@ -74997,6 +75272,9 @@ export const BaseExchangeFieldsFragmentDoc = gql`
     }
     seller {
       ...BaseSellerFields
+    }
+    protocolFeeCollected {
+      amount
     }
   }
   ${BaseDisputeFieldsFragmentDoc}
