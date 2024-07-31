@@ -101,7 +101,7 @@ const customStyles = (
   }
 });
 
-export default function SelectComponent({
+export default function SelectComponent<M extends boolean>({
   name,
   options,
   placeholder = "Choose...",
@@ -111,8 +111,9 @@ export default function SelectComponent({
   errorMessage,
   onChange,
   theme,
+  isMulti,
   ...props
-}: SelectProps) {
+}: SelectProps<M>) {
   const [field, meta, helpers] = useField(name);
   const displayErrorMessage =
     meta.error && meta.touched && !errorMessage
@@ -124,7 +125,9 @@ export default function SelectComponent({
   const displayError =
     typeof displayErrorMessage === "string" && displayErrorMessage !== "";
 
-  const handleChange = (option: SelectDataProps<string>) => {
+  const handleChange = (
+    option: Parameters<NonNullable<typeof onChange>>[0]
+  ) => {
     if (!meta.touched) {
       helpers.setTouched(true);
     }
@@ -143,6 +146,7 @@ export default function SelectComponent({
         styles={customStyles(displayErrorMessage, theme)}
         {...field}
         {...props}
+        isMulti={isMulti}
         placeholder={placeholder}
         options={options}
         value={field.value}
@@ -151,7 +155,7 @@ export default function SelectComponent({
         isSearchable={isSearchable}
         isClearable={isClearable}
         isDisabled={disabled}
-        isOptionDisabled={(option) => option.disabled}
+        isOptionDisabled={(option) => !!option.disabled}
       />
       <Error display={displayError} message={displayErrorMessage} />{" "}
     </>
