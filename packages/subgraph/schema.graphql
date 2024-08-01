@@ -672,6 +672,7 @@ type Exchange @entity {
   disputedDate: BigInt
   expired: Boolean!
   dispute: Dispute
+  protocolFeeCollected: ProtocolFeeCollected @derivedFrom(field: "exchange")
 }
 
 """
@@ -938,6 +939,15 @@ type FundsEventLog implements EventLog @entity {
   account: Account!
 
   funds: FundsEntity!
+}
+
+type ProtocolFeeCollected @entity {
+  id: ID!
+  exchangeId: BigInt!,
+  exchange: Exchange!,
+  exchangeToken: Bytes!,
+  amount: BigInt!,
+  executedBy: Bytes!
 }
 
 type DisputeEventLog implements EventLog @entity {

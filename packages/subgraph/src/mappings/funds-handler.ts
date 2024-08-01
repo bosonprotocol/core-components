@@ -1,11 +1,17 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { log, Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
   FundsDeposited,
   FundsReleased,
   FundsWithdrawn,
-  FundsEncumbered
+  FundsEncumbered,
+  ProtocolFeeCollected as ProtocolFeeCollectedEvent
 } from "../../generated/BosonFundsHandler/IBosonFundsHandler";
-import { FundsEntity, Seller } from "../../generated/schema";
+import {
+  FundsEntity,
+  Seller,
+  ProtocolFeeCollected
+} from "../../generated/schema";
 import { saveExchangeToken } from "../entities/token";
 import { saveFundsEventLog } from "../entities/event-log";
 
@@ -144,4 +150,25 @@ function handleIncreasingFundsEvent(
 
 function getFundsEntityId(accountId: BigInt, tokenAddress: Bytes): string {
   return `${accountId.toString()}-${tokenAddress.toHexString()}`;
+}
+
+export function handleProtocolFeeCollectedEvent(
+  event: ProtocolFeeCollectedEvent
+): void {
+  const protocolFeeCollectedId = event.params.exchangeId.toString();
+  let protocolFeeCollected = ProtocolFeeCollected.load(protocolFeeCollectedId);
+  if (protocolFeeCollected) {
+    // Warning
+    log.warning("protocolFeeCollected already exists with ID {}", [
+      protocolFeeCollectedId
+    ]);
+  } else {
+    protocolFeeCollected = new ProtocolFeeCollected(protocolFeeCollectedId);
+  }
+  protocolFeeCollected.amount = event.params.amount;
+  protocolFeeCollected.exchange = event.params.exchangeId.toString();
+  protocolFeeCollected.exchangeId = event.params.exchangeId;
+  protocolFeeCollected.exchangeToken = event.params.exchangeToken;
+  protocolFeeCollected.executedBy = event.params.executedBy;
+  protocolFeeCollected.save();
 }

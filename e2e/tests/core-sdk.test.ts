@@ -47,9 +47,8 @@ jest.setTimeout(60_000);
 describe("core-sdk", () => {
   describe("core user flows", () => {
     test("create seller and offer", async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
 
       const createdOffer = await createSellerAndOffer(
         coreSDK,
@@ -69,9 +68,8 @@ describe("core-sdk", () => {
     });
 
     test("create seller, then create offer", async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
 
       const seller = await createSeller(coreSDK, fundedWallet.address);
       expect(seller).toBeTruthy();
@@ -96,9 +94,8 @@ describe("core-sdk", () => {
     });
 
     test("void offer", async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
 
       const createdOffer = await createSellerAndOffer(
         coreSDK,
@@ -139,9 +136,8 @@ describe("core-sdk", () => {
 
     test("Create a group for multiple offers", async () => {
       const tokenID = Date.now().toString();
-      const { sellerCoreSDK, sellerWallet } = await initSellerAndBuyerSDKs(
-        seedWallet
-      );
+      const { sellerCoreSDK, sellerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
       await ensureCreatedSeller(sellerWallet);
 
       // Create 3 offers
@@ -190,9 +186,8 @@ describe("core-sdk", () => {
 
     test("createOfferWithCondition()", async () => {
       const tokenID = Date.now().toString();
-      const { sellerCoreSDK, sellerWallet } = await initSellerAndBuyerSDKs(
-        seedWallet
-      );
+      const { sellerCoreSDK, sellerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
       await ensureCreatedSeller(sellerWallet);
 
       // Ensure the condition token is minted
@@ -237,9 +232,8 @@ describe("core-sdk", () => {
 
     test("createSellerAndOfferWithCondition()", async () => {
       const tokenID = Date.now().toString();
-      const { sellerCoreSDK, sellerWallet } = await initSellerAndBuyerSDKs(
-        seedWallet
-      );
+      const { sellerCoreSDK, sellerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
 
       // Ensure the condition token is minted
       await ensureMintedERC1155(sellerWallet, tokenID, "5");
@@ -1007,9 +1001,8 @@ describe("core-sdk", () => {
       await ensureMintedAndAllowedTokens([buyerWallet], offerPrice, false);
 
       // Check the allowance is not enough
-      const allowance = await buyerCoreSDK.getProtocolAllowance(
-        MOCK_ERC20_ADDRESS
-      );
+      const allowance =
+        await buyerCoreSDK.getProtocolAllowance(MOCK_ERC20_ADDRESS);
       expect(BigNumber.from(allowance).lt(createdOffer.price)).toBe(true);
 
       const exchange = await commitToOffer({
@@ -1111,6 +1104,12 @@ describe("core-sdk", () => {
 
       expect(exchangeAfterComplete.state).toBe(ExchangeState.COMPLETED);
       expect(exchangeAfterComplete.completedDate).toBeTruthy();
+      expect(exchangeAfterComplete.protocolFeeCollected).toBeTruthy();
+      expect(
+        BigNumber.from(exchangeAfterComplete.protocolFeeCollected?.amount).eq(
+          createdOffer.protocolFee
+        )
+      ).toBe(true);
     });
 
     test("redeem + finalize batch", async () => {
@@ -1148,8 +1147,20 @@ describe("core-sdk", () => {
 
       expect(exchangesAfterComplete[0].state).toBe(ExchangeState.COMPLETED);
       expect(exchangesAfterComplete[0].completedDate).toBeTruthy();
+      expect(exchangesAfterComplete[0].protocolFeeCollected).toBeTruthy();
+      expect(
+        BigNumber.from(
+          exchangesAfterComplete[0].protocolFeeCollected?.amount
+        ).eq(createdOffer.protocolFee)
+      ).toBe(true);
       expect(exchangesAfterComplete[1].state).toBe(ExchangeState.COMPLETED);
       expect(exchangesAfterComplete[1].completedDate).toBeTruthy();
+      expect(exchangesAfterComplete[1].protocolFeeCollected).toBeTruthy();
+      expect(
+        BigNumber.from(
+          exchangesAfterComplete[1].protocolFeeCollected?.amount
+        ).eq(createdOffer.protocolFee)
+      ).toBe(true);
     });
 
     describe("disputes", () => {
@@ -1336,9 +1347,8 @@ describe("core-sdk", () => {
 
   describe("getSellerByAddress()", () => {
     test("getSellerByAddress() retrieve the seller using the address", async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
 
       const seller = await createSeller(coreSDK, fundedWallet.address);
       expect(seller).toBeTruthy();

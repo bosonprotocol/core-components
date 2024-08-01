@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { CSSObjectWithLabel, SingleValue } from "react-select";
+import { CSSObjectWithLabel, MultiValue, SingleValue } from "react-select";
 import { CSSProperties } from "styled-components";
 import { ImageEditorModalProps } from "./Upload/ImageEditorModal/ImageEditorModal";
 import type {
@@ -86,14 +86,19 @@ export interface BaseSelectProps {
   onChange?: OnChange;
 }
 
-export interface SelectProps extends BaseProps {
-  isMulti?: boolean;
+export interface SelectProps<M extends boolean | undefined = false>
+  extends BaseProps {
+  isMulti?: M;
   disabled?: boolean;
   isClearable?: boolean;
   isSearchable?: boolean;
   options: Array<SelectDataProps> | Readonly<Array<SelectDataProps>>;
   errorMessage?: string;
-  onChange?: (option: SelectDataProps<string>) => void;
+  onChange?: (
+    option: M extends true
+      ? MultiValue<SelectDataProps<string>>
+      : SingleValue<SelectDataProps<string>>
+  ) => void;
   label?: string;
   theme?: Partial<{
     control: Partial<CSSProperties> &

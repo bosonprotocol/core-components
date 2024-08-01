@@ -267,6 +267,8 @@ dataSources:
           handler: handleFundsEncumberedEvent
         - event: FundsWithdrawn(indexed uint256,indexed address,indexed address,uint256,address)
           handler: handleFundsWithdrawnEvent
+        - event: ProtocolFeeCollected(indexed uint256,indexed address,uint256,indexed address)
+          handler: handleProtocolFeeCollectedEvent
       file: ./src/mappings/funds-handler.ts
   - kind: ethereum/contract
     name: BosonDisputeHandler
