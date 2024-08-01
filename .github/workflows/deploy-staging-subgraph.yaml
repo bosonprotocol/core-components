@@ -32,5 +32,7 @@ jobs:
         run: npx graph auth --studio ${{ secrets.THE_GRAPH_ACCESS_TOKEN_STAGING }}
       - name: Deploy subgraph to amoy
         run: cd ./packages/subgraph && npm run deploy:staging:amoy
+      - name: Authenticate The Graph CLI
+        run: npx graph auth ${{ secrets.ORMI_0x_GRAPH_API_KEY_STAGING }}
       - name: Deploy subgraph to sepolia
         run: cd ./packages/subgraph && npm run deploy:staging:sepolia

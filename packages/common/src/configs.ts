@@ -84,10 +84,10 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       nativeCoin: chainIdToInfo.get(11155111),
       getTxExplorerUrl: chainIdToGraphTx.get(11155111),
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/19713/boson-testing-sepolia/v0.0.1",
+        "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-sepolia/1.33.2/gn",
       jsonRpcUrl:
         "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs/api/v0",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
@@ -142,10 +142,10 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       nativeCoin: chainIdToInfo.get(11155111),
       getTxExplorerUrl: chainIdToGraphTx.get(11155111),
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/19713/boson-staging-sepolia/v0.0.1",
+        "https://api.0xgraph.xyz/api/public/da9367fc-3453-4e08-824f-19fb4281b6a1/subgraphs/boson-staging-sepolia/1.33.2/gn",
       jsonRpcUrl:
         "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
@@ -169,10 +169,10 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       nativeCoin: chainIdToInfo.get(137),
       getTxExplorerUrl: chainIdToGraphTx.get(137),
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/19713/boson-polygon/v0.0.1",
+        "https://api.0xgraph.xyz/api/public/b521f6b7-36c4-4117-8ad5-6b21c6eeb195/subgraphs/boson-polygon/1.33.2/gn",
       jsonRpcUrl:
         "https://polygon-mainnet.infura.io/v3/383117b55d614525b07f03b5979c5f19",
-      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
@@ -198,10 +198,10 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       nativeCoin: chainIdToInfo.get(1),
       getTxExplorerUrl: chainIdToGraphTx.get(1),
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/19713/boson-ethereum/v0.0.1",
+        "https://api.0xgraph.xyz/api/public/b521f6b7-36c4-4117-8ad5-6b21c6eeb195/subgraphs/boson-ethereum/1.33.2/gn",
       jsonRpcUrl:
         "https://mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e",
-      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
