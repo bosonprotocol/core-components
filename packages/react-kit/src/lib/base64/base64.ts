@@ -48,10 +48,8 @@ export const fetchIpfsBase64Media = async (
     return [];
   }
   const fetchPromises = ipfsLinks.map(async (src) => {
-    const imgData = await ipfsMetadataStorage.get(src, false);
-    const base64str = await blobToBase64(
-      new Blob([imgData as unknown as BlobPart])
-    );
+    const imgData = await ipfsMetadataStorage.get<Blob>(src, false, true);
+    const base64str = await blobToBase64(new Blob([imgData]));
     if (!String(base64str).includes("base64")) {
       throw new Error("Decoded image is not in base64");
     }
