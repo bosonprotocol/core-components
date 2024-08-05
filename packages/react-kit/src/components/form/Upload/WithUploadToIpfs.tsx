@@ -24,8 +24,8 @@ export interface WithUploadToIpfsProps {
   saveToIpfs: (
     files: File[] | null
   ) => Promise<false | FileProps[] | undefined>;
-  loadMedia: (src: string) => string;
-  removeFile: (src: string) => void;
+  loadMedia: (src: string) => Promise<string | undefined>;
+  removeFile: (src: string) => Promise<void>;
 }
 export function WithUploadToIpfs<P extends WithUploadToIpfsProps>(
   WrappedComponent: React.ComponentType<P>

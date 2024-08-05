@@ -21,7 +21,11 @@ export class BaseIpfsStorage {
     return cid;
   }
 
-  public async get<T>(uriOrHash: string, asJson = true): Promise<T | string> {
+  public async get<T>(
+    uriOrHash: string,
+    asJson = true,
+    asBlob = false
+  ): Promise<T | string | Blob | Uint8Array> {
     let cid: CID = null;
     try {
       cid = CID.parse(
@@ -34,30 +38,79 @@ export class BaseIpfsStorage {
     }
 
     const value = await (cid
-      ? this.getByCID<T>(cid.toString(), asJson)
-      : this.getByURL<T>(uriOrHash, asJson));
+      ? this.getByCID<T>(cid.toString(), asJson, asBlob)
+      : this.getByURL<T>(uriOrHash, asJson, asBlob));
     return value;
   }
-
-  public async getByCID<T>(cid: string, asJson = true): Promise<T | string> {
+  public async getByCID<T>(
+    cid: string,
+    asJson: true,
+    asBlob: false
+  ): Promise<T>;
+  public async getByCID(
+    cid: string,
+    asJson: false,
+    asBlob: true
+  ): Promise<Blob>;
+  public async getByCID(
+    cid: string,
+    asJson: false,
+    asBlob: false
+  ): Promise<Uint8Array>;
+  public async getByCID<T>(
+    cid: string,
+    asJson: boolean,
+    asBlob: boolean
+  ): Promise<Uint8Array | Blob | T>;
+  public async getByCID<T>(
+    cid: string,
+    asJson = true,
+    asBlob = false
+  ): Promise<Uint8Array | Blob | T> {
     const chunks = [];
     for await (const chunk of this.ipfsClient.cat(cid)) {
       chunks.push(chunk);
     }
     const data = concat(chunks);
-    if (!asJson) {
-      return data as unknown as T;
+    if (!asJson && asBlob) {
+      return new Blob([data]);
+    } else if (!asJson) {
+      return data;
     }
     const dataStr = toString(data);
-    return JSON.parse(dataStr);
+    return JSON.parse(dataStr) as T;
   }
-
-  public async getByURL<T>(url: string, asJson = true): Promise<T | string> {
+  public async getByURL<T>(
+    url: string,
+    asJson: true,
+    asBlob: false
+  ): Promise<T>;
+  public async getByURL(
+    url: string,
+    asJson: false,
+    asBlob: true
+  ): Promise<Blob>;
+  public async getByURL(
+    url: string,
+    asJson: false,
+    asBlob: false
+  ): Promise<string>;
+  public async getByURL<T>(
+    url: string,
+    asJson: boolean,
+    asBlob: boolean
+  ): Promise<string | Blob | T>;
+  public async getByURL<T>(
+    url: string,
+    asJson = true,
+    asBlob = false
+  ): Promise<string | Blob | T> {
     const response = await fetch(url);
-
-    if (!asJson) {
+    if (!asJson && asBlob) {
+      return response.blob();
+    } else if (!asJson) {
       return response.text();
     }
-    return response.json();
+    return response.json() as T;
   }
 }
