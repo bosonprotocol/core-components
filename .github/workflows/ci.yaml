@@ -62,7 +62,7 @@ jobs:
       - name: Build
         run: |
           npm run build -- --cache-dir=".turbo"
-      - run: cd e2e && docker-compose build && cd ..
+      - run: cd e2e && docker compose build && cd ..
       # In this step, this action saves a list of existing images,
       # the cache is created without them in the post run.
       # It also restores the cache if it exists.

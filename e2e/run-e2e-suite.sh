@@ -5,7 +5,7 @@ trap cleanup EXIT INT TERM
 function cleanup() {
   exit_status=$?
   cd e2e
-  docker-compose down -v
+  docker compose down -v
   exit "$exit_status"
 }
 
@@ -15,7 +15,7 @@ npm ci
 cd ..
 cd e2e
 
-docker-compose up -d
+docker compose up -d
 
 echo "Waiting for services..."
 sleep 15

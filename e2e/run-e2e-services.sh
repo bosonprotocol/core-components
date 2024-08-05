@@ -3,7 +3,7 @@
 trap cleanup EXIT INT TERM
 
 function cleanup() {
-  docker-compose down -v
+  docker compose down -v
   rm -rf ./data
   exit
 }
@@ -14,7 +14,7 @@ npm ci
 cd ..
 cd e2e
 
-docker-compose up -d #--build
+docker compose up -d #--build
 
 echo "Waiting for services..."
 sleep 15
