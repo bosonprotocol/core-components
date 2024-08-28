@@ -82,10 +82,13 @@ export abstract class Marketplace {
     },
     withWrapper?: boolean
   ): Promise<PriceDiscoveryStruct>;
-  public abstract buildAdvancedOrder(asset: {
-    contract: string;
-    tokenId: string;
-  }): Promise<AdvancedOrder>;
+  public abstract buildAdvancedOrder(
+    asset: {
+      contract: string;
+      tokenId: string;
+    },
+    withWrapper?: boolean
+  ): Promise<AdvancedOrder>;
   public abstract wrapVouchers(
     contract: string,
     tokenIds: string[]
