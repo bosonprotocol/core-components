@@ -93,20 +93,18 @@ export abstract class Marketplace {
     filter: OrderFilterOptions,
     side: Side
   ): Promise<SignedOrder[]>;
-  public abstract generateFulfilmentData(
-    asset: {
-      contract: string;
-      tokenId: string;
-    },
-    withWrapper?: boolean
-  ): Promise<PriceDiscoveryStruct>;
+  public abstract generateFulfilmentData(asset: {
+    contract: string;
+    tokenId: string;
+    withWrapper?: boolean;
+  }): Promise<PriceDiscoveryStruct>;
   public abstract buildAdvancedOrder(
     asset: {
       contract: string;
       tokenId: string;
+      withWrapper?: boolean;
     },
-    filter: OrderFilterOptions,
-    withWrapper?: boolean
+    filter: OrderFilterOptions
   ): Promise<AdvancedOrder>;
   public abstract wrapVouchers(
     contract: string,

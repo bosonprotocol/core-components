@@ -273,9 +273,9 @@ export class OpenSeaMarketplace extends Marketplace {
     asset: {
       contract: string;
       tokenId: string;
+      withWrapper?: boolean;
     },
-    filter: OrderFilterOptions = {},
-    withWrapper = false
+    filter: OrderFilterOptions = {}
   ): Promise<AdvancedOrder> {
     // Assumption: we're fulfilling a Bid Order (don't know if it makes sense with an Ask order)
     const osOrder = await this._handler.api.getOrder({
@@ -284,7 +284,7 @@ export class OpenSeaMarketplace extends Marketplace {
       side: OrderSide.BID,
       ...filter
     });
-    const fulfillerAddress = withWrapper
+    const fulfillerAddress = asset.withWrapper
       ? asset.contract // If the token is wrapped, the fulfiller is the wrapper contract itself
       : this._contracts.priceDiscoveryClient; // otherwise the address of the PriceDiscoveryClient contract
     const ffd = await this._handler.api.generateFulfillmentData(
@@ -303,13 +303,12 @@ export class OpenSeaMarketplace extends Marketplace {
     return inputData.orders[0];
   }
 
-  public async generateFulfilmentData(
-    asset: {
-      contract: string;
-      tokenId: string;
-    },
-    withWrapper = false
-  ): Promise<PriceDiscoveryStruct> {
+  public async generateFulfilmentData(asset: {
+    contract: string;
+    tokenId: string;
+    withWrapper?: boolean;
+  }): Promise<PriceDiscoveryStruct> {
+    const withWrapper = !!asset.withWrapper;
     const wrapper = withWrapper
       ? await this.getOrCreateVouchersWrapper(asset.contract)
       : undefined;
