@@ -253,7 +253,7 @@ export class OpenSeaMarketplace extends Marketplace {
     const protocolAddress = listing.protocolAddress || this._contracts.seaport;
     if (!protocolAddress) {
       throw new Error(
-        `Seaport protocol address must be specified in Lsiting or CoreSDK config`
+        `Seaport protocol address must be specified in Listing or CoreSDK config`
       );
     }
 
@@ -265,18 +265,24 @@ export class OpenSeaMarketplace extends Marketplace {
     return this.convertOsOrder(osOrder);
   }
 
-  public async buildAdvancedOrder(asset: {
-    contract: string;
-    tokenId: string;
-  }): Promise<AdvancedOrder> {
+  public async buildAdvancedOrder(
+    asset: {
+      contract: string;
+      tokenId: string;
+    },
+    withWrapper = false
+  ): Promise<AdvancedOrder> {
     // Asumption: we're fulfilling a Bid Order (don't know if it makes sense with an Ask order)
     const osOrder = await this._handler.api.getOrder({
       assetContractAddress: asset.contract,
       tokenId: asset.tokenId,
       side: OrderSide.BID
     });
+    const fulfillerAddress = withWrapper
+      ? asset.contract // If the token is wrapped, the fulfiller is the wrapper contract itself
+      : this._contracts.priceDiscoveryClient; // otherwise the address of the PriceDiscoveryClient contract
     const ffd = await this._handler.api.generateFulfillmentData(
-      this._contracts.priceDiscoveryClient, // the address of the PriceDiscoveryClient contract, which will call the fulfilment method
+      fulfillerAddress,
       osOrder.orderHash,
       osOrder.protocolAddress,
       osOrder.side

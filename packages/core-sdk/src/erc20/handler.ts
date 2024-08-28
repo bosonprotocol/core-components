@@ -1,4 +1,4 @@
-import { Web3LibAdapter } from "@bosonprotocol/common";
+import { Web3LibAdapter, TransactionRequest } from "@bosonprotocol/common";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { erc20Iface } from "./interface";
 
@@ -7,8 +7,10 @@ export async function approve(args: {
   spender: string;
   value: BigNumberish;
   web3Lib: Web3LibAdapter;
+  txRequest?: TransactionRequest;
 }) {
   return args.web3Lib.sendTransaction({
+    ...args.txRequest,
     to: args.contractAddress,
     data: erc20Iface.encodeFunctionData("approve", [args.spender, args.value])
   });
@@ -74,6 +76,7 @@ export async function ensureAllowance(args: {
   contractAddress: string;
   value: BigNumberish;
   web3Lib: Web3LibAdapter;
+  txRequest?: TransactionRequest;
 }) {
   const allowance = await getAllowance(args);
   if (BigNumber.from(allowance).lt(args.value)) {
