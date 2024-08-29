@@ -594,8 +594,8 @@ export class OpenSeaMarketplace extends Marketplace {
       contract: string;
       tokenId: string;
     },
-    filter: OrderFilterOptions = {},
-    side: Side
+    side: Side,
+    filter: OrderFilterOptions = {}
   ): Promise<SignedOrder> {
     const osOrder = await this._handler.api.getOrder({
       assetContractAddress: asset.contract,
@@ -616,8 +616,8 @@ export class OpenSeaMarketplace extends Marketplace {
       contract: string;
       tokenIds: string[];
     },
-    filter: OrderFilterOptions = {},
-    side: Side
+    side: Side,
+    filter: OrderFilterOptions = {}
   ): Promise<SignedOrder[]> {
     const { orders } = await this._handler.api.getOrders({
       assetContractAddress: asset.contract,

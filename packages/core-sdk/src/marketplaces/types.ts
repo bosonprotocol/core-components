@@ -82,16 +82,16 @@ export abstract class Marketplace {
       contract: string;
       tokenId: string;
     },
-    filter: OrderFilterOptions,
-    side: Side
+    side: Side,
+    filter: OrderFilterOptions
   ): Promise<SignedOrder>;
   public abstract getOrders(
     asset: {
       contract: string;
       tokenIds: string[];
     },
-    filter: OrderFilterOptions,
-    side: Side
+    side: Side,
+    filter: OrderFilterOptions
   ): Promise<SignedOrder[]>;
   public abstract generateFulfilmentData(asset: {
     contract: string;
