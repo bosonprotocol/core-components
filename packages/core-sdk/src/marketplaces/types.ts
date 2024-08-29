@@ -83,7 +83,7 @@ export abstract class Marketplace {
       tokenId: string;
     },
     side: Side,
-    filter: OrderFilterOptions
+    filter?: OrderFilterOptions
   ): Promise<SignedOrder>;
   public abstract getOrders(
     asset: {
@@ -91,7 +91,7 @@ export abstract class Marketplace {
       tokenIds: string[];
     },
     side: Side,
-    filter: OrderFilterOptions
+    filter?: OrderFilterOptions
   ): Promise<SignedOrder[]>;
   public abstract generateFulfilmentData(asset: {
     contract: string;
@@ -104,7 +104,7 @@ export abstract class Marketplace {
       tokenId: string;
       withWrapper?: boolean;
     },
-    filter: OrderFilterOptions
+    filter?: OrderFilterOptions
   ): Promise<AdvancedOrder>;
   public abstract wrapVouchers(
     contract: string,
