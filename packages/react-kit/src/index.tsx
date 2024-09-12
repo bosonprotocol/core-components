@@ -85,6 +85,7 @@ export * from "./lib/magicLink/logout";
 export * from "./lib/magicLink/provider";
 export * from "./lib/offer/filter";
 export * from "./lib/offer/getIsOfferExpired";
+export * from "./lib/opensea/getOpenSeaUrl";
 export * from "./lib/promises/promises";
 export * from "./lib/url/url";
 export * from "./theme";
