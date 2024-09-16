@@ -1,11 +1,9 @@
-import { fn } from "@storybook/test";
 import React from "react";
 import { Meta } from "@storybook/react";
-import { Upload } from "../..";
+import { QueryClientProviderCustom, Upload } from "../..";
 import { EnvironmentProvider } from "../../components/environment/EnvironmentProvider";
 import { IpfsProvider } from "../../components/ipfs/IpfsProvider";
 import { Formik } from "formik";
-import { QueryClientProviderCustom } from "../../components/queryClient/withQueryClientProvider";
 import {
   bosonButtonThemeKeys,
   bosonButtonThemes

@@ -3,6 +3,7 @@ export * from "./components/buttons/BurgerButton";
 export * from "./components/buttons/Button";
 export * from "./components/buttons/CommitButtonView";
 export * from "./components/config/ConfigProvider";
+export * from "./components/cta/common/types";
 export * from "./components/cta/dispute/DecideDisputeButton";
 export * from "./components/cta/dispute/EscalateDisputeButton";
 export * from "./components/cta/dispute/ExpireDisputeButton";
@@ -45,6 +46,8 @@ export * from "./components/modal/components/Redeem/DetailView/ExternalExchangeD
 export * from "./components/portal/Portal";
 export * from "./components/productCard/const";
 export * from "./components/productCard/ProductCard";
+export * from "./components/queryClient/withQueryClientProvider";
+export * from "./components/queryClient/QueryClientProviderCustom";
 export * from "./components/scroll/ScrollToID";
 export * from "./components/scroll/ScrollToTop";
 export * from "./components/searchBar/SearchBar";
