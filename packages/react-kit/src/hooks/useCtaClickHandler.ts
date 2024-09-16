@@ -20,7 +20,10 @@ export function useCtaClickHandler<T>({
   successPayload
 }: {
   waitBlocks: number;
-  coreSdk: CoreSDK;
+  coreSdk: Pick<
+    CoreSDK,
+    "relayNativeMetaTransaction" | "relayMetaTransaction" | "parseError"
+  >;
   useMetaTx: boolean;
   actions: Action[];
   successPayload: T | ((receipt: providers.TransactionReceipt) => T);
