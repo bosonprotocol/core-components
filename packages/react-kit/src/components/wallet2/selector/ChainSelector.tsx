@@ -28,10 +28,13 @@ import {
   UniWalletSupportedChains,
   getChainPriority
 } from "../../../lib/const/chains";
-import { useConfigContext } from "../../config/ConfigContext";
-import { getEnvConfigsFilteredByEnv } from "../../../lib/config/getConfigsByChainId";
+import { getEnvConfigsFilteredByEnv as importedGetEnvConfigsFilteredByEnv } from "../../../lib/config/getConfigsByChainId";
 import { useSelectChain } from "../../../hooks/connection/useSelectChain";
-import { ConfigId, ProtocolConfig } from "@bosonprotocol/core-sdk";
+import {
+  ConfigId,
+  EnvironmentType,
+  CoreProtocolConfig
+} from "@bosonprotocol/core-sdk";
 import { SvgImage } from "../../ui/SvgImage";
 
 const IconAndChevron = styled.div<{
@@ -56,11 +59,6 @@ const IconAndChevron = styled.div<{
     );
   }
 `;
-
-export interface ChainSelectorProps {
-  leftAlign?: boolean;
-  backgroundColor: CSSProperties["backgroundColor"];
-}
 
 function useWalletSupportedChains({
   NETWORK_SELECTOR_CHAINS_IDS
@@ -88,14 +86,25 @@ const chevronProps = {
   height: 20,
   width: 20
 };
+
+export interface ChainSelectorProps {
+  leftAlign?: boolean;
+  backgroundColor: CSSProperties["backgroundColor"];
+  config: CoreProtocolConfig;
+  getEnvConfigsFilteredByEnv?: (
+    envName: EnvironmentType
+  ) => CoreProtocolConfig[];
+}
+
 export const ChainSelector = ({
   leftAlign,
-  backgroundColor
+  backgroundColor,
+  config,
+  getEnvConfigsFilteredByEnv = importedGetEnvConfigsFilteredByEnv
 }: ChainSelectorProps) => {
-  const { config } = useConfigContext();
   const NETWORK_SELECTOR_CHAINS = useMemo(
     () => getEnvConfigsFilteredByEnv(config.envName),
-    [config.envName]
+    [config.envName, getEnvConfigsFilteredByEnv]
   );
   const NETWORK_SELECTOR_CHAINS_IDS = NETWORK_SELECTOR_CHAINS.map(
     (config) => config.chainId as ChainId
@@ -128,7 +137,10 @@ export const ChainSelector = ({
           }
           return acc;
         },
-        { supported: [], unsupported: [] } as Record<string, ProtocolConfig[]>
+        { supported: [], unsupported: [] } as Record<
+          string,
+          CoreProtocolConfig[]
+        >
       );
     return [supported, unsupported];
   }, [NETWORK_SELECTOR_CHAINS, walletSupportsChain]);
@@ -148,7 +160,7 @@ export const ChainSelector = ({
 
   const [pendingConfigId, setPendingConfigId] = useState<ConfigId>();
   const onSelectChain = useCallback(
-    async (config: ProtocolConfig) => {
+    async (config: CoreProtocolConfig) => {
       try {
         setPendingConfigId(config.configId);
         await selectChain(config.configId);

@@ -30,7 +30,8 @@ const errorButtonTheme = bosonButtonThemes({ withBosonStyle: false })[
 const envName =
   (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
 const envConfig = getEnvConfigs(envName);
-const configId = envConfig[0].configId;
+const config = envConfig[0];
+const configId = config.configId;
 const ColorGlobalStyle = createGlobalStyle<{ color: CSSProperties["color"] }>`
   html, body{
     color: ${({ color }) => color};
@@ -114,6 +115,7 @@ const Component = ({
                   <ChainSelector
                     leftAlign={true}
                     backgroundColor={chainSelectorBackgroundColor}
+                    config={config}
                   />
                   <ConnectWallet
                     successButtonTheme={{
