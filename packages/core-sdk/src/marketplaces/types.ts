@@ -16,7 +16,10 @@ export enum MarketplaceType {
   OPENSEA
 }
 
-export enum OrderSide {}
+export enum OrderSide {
+  ASK = "ask",
+  BID = "bid"
+}
 
 export type MarketplaceHandler = OpenSeaSDKHandler | DefaultHandler;
 
@@ -64,6 +67,12 @@ export abstract class Wrapper {
   public abstract get address(): string;
 }
 
+export type OrderFilterOptions = {
+  maker?: string;
+  listedAfter?: number | string;
+  listedBefore?: number | string;
+};
+
 export abstract class Marketplace {
   constructor(protected _type: MarketplaceType) {}
   public abstract createListing(listing: Listing): Promise<Order>;
@@ -73,19 +82,30 @@ export abstract class Marketplace {
       contract: string;
       tokenId: string;
     },
-    side: Side
+    side: Side,
+    filter?: OrderFilterOptions
   ): Promise<SignedOrder>;
-  public abstract generateFulfilmentData(
+  public abstract getOrders(
+    asset: {
+      contract: string;
+      tokenIds: string[];
+    },
+    side: Side,
+    filter?: OrderFilterOptions
+  ): Promise<SignedOrder[]>;
+  public abstract generateFulfilmentData(asset: {
+    contract: string;
+    tokenId: string;
+    withWrapper?: boolean;
+  }): Promise<PriceDiscoveryStruct>;
+  public abstract buildAdvancedOrder(
     asset: {
       contract: string;
       tokenId: string;
+      withWrapper?: boolean;
     },
-    withWrapper?: boolean
-  ): Promise<PriceDiscoveryStruct>;
-  public abstract buildAdvancedOrder(asset: {
-    contract: string;
-    tokenId: string;
-  }): Promise<AdvancedOrder>;
+    filter?: OrderFilterOptions
+  ): Promise<AdvancedOrder>;
   public abstract wrapVouchers(
     contract: string,
     tokenIds: string[]

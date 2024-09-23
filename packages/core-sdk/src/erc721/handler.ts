@@ -1,4 +1,4 @@
-import { Web3LibAdapter } from "@bosonprotocol/common";
+import { TransactionRequest, Web3LibAdapter } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { erc721Iface } from "./interface";
 
@@ -101,8 +101,10 @@ export async function setApprovalForAll(args: {
   operator: string;
   approved: boolean;
   web3Lib: Web3LibAdapter;
+  txRequest?: TransactionRequest;
 }) {
   return args.web3Lib.sendTransaction({
+    ...args.txRequest,
     to: args.contractAddress,
     data: erc721Iface.encodeFunctionData("setApprovalForAll", [
       args.operator,

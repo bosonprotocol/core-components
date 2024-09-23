@@ -4,7 +4,6 @@ import {
   FulfillmentDataResponse,
   GetNFTResponse,
   OrderAPIOptions,
-  OrderSide,
   OrderV2,
   OrdersQueryOptions,
   ProtocolData
@@ -18,6 +17,8 @@ import {
   Marketplace,
   MarketplaceType,
   Order,
+  OrderFilterOptions,
+  OrderSide,
   SignedOrder,
   Wrapper
 } from "./types";
@@ -68,6 +69,9 @@ export type OpenSeaSDKHandler = {
   api: {
     apiBaseUrl: string;
     getOrder(order: Omit<OrdersQueryOptions, "limit">): Promise<OrderV2>;
+    getOrders(
+      order: Omit<OrdersQueryOptions, "limit">
+    ): Promise<{ orders: OrderV2[] }>;
     generateFulfillmentData(
       fulfillerAddress: string,
       orderHash: string,
@@ -253,7 +257,7 @@ export class OpenSeaMarketplace extends Marketplace {
     const protocolAddress = listing.protocolAddress || this._contracts.seaport;
     if (!protocolAddress) {
       throw new Error(
-        `Seaport protocol address must be specified in Lsiting or CoreSDK config`
+        `Seaport protocol address must be specified in Listing or CoreSDK config`
       );
     }
 
@@ -265,18 +269,26 @@ export class OpenSeaMarketplace extends Marketplace {
     return this.convertOsOrder(osOrder);
   }
 
-  public async buildAdvancedOrder(asset: {
-    contract: string;
-    tokenId: string;
-  }): Promise<AdvancedOrder> {
-    // Asumption: we're fulfilling a Bid Order (don't know if it makes sense with an Ask order)
+  public async buildAdvancedOrder(
+    asset: {
+      contract: string;
+      tokenId: string;
+      withWrapper?: boolean;
+    },
+    filter: OrderFilterOptions = {}
+  ): Promise<AdvancedOrder> {
+    // Assumption: we're fulfilling a Bid Order (don't know if it makes sense with an Ask order)
     const osOrder = await this._handler.api.getOrder({
       assetContractAddress: asset.contract,
       tokenId: asset.tokenId,
-      side: OrderSide.BID
+      side: OrderSide.BID,
+      ...filter
     });
+    const fulfillerAddress = asset.withWrapper
+      ? asset.contract // If the token is wrapped, the fulfiller is the wrapper contract itself
+      : this._contracts.priceDiscoveryClient; // otherwise the address of the PriceDiscoveryClient contract
     const ffd = await this._handler.api.generateFulfillmentData(
-      this._contracts.priceDiscoveryClient, // the address of the PriceDiscoveryClient contract, which will call the fulfilment method
+      fulfillerAddress,
       osOrder.orderHash,
       osOrder.protocolAddress,
       osOrder.side
@@ -291,13 +303,12 @@ export class OpenSeaMarketplace extends Marketplace {
     return inputData.orders[0];
   }
 
-  public async generateFulfilmentData(
-    asset: {
-      contract: string;
-      tokenId: string;
-    },
-    withWrapper = false
-  ): Promise<PriceDiscoveryStruct> {
+  public async generateFulfilmentData(asset: {
+    contract: string;
+    tokenId: string;
+    withWrapper?: boolean;
+  }): Promise<PriceDiscoveryStruct> {
+    const withWrapper = !!asset.withWrapper;
     const wrapper = withWrapper
       ? await this.getOrCreateVouchersWrapper(asset.contract)
       : undefined;
@@ -583,12 +594,14 @@ export class OpenSeaMarketplace extends Marketplace {
       contract: string;
       tokenId: string;
     },
-    side: Side
+    side: Side,
+    filter: OrderFilterOptions = {}
   ): Promise<SignedOrder> {
     const osOrder = await this._handler.api.getOrder({
       assetContractAddress: asset.contract,
       tokenId: asset.tokenId,
-      side: side === Side.Ask ? OrderSide.ASK : OrderSide.BID
+      side: side === Side.Ask ? OrderSide.ASK : OrderSide.BID,
+      ...filter
     });
     return osOrder
       ? {
@@ -596,5 +609,25 @@ export class OpenSeaMarketplace extends Marketplace {
           signature: osOrder.protocolData?.signature
         }
       : undefined;
+  }
+
+  public async getOrders(
+    asset: {
+      contract: string;
+      tokenIds: string[];
+    },
+    side: Side,
+    filter: OrderFilterOptions = {}
+  ): Promise<SignedOrder[]> {
+    const { orders } = await this._handler.api.getOrders({
+      assetContractAddress: asset.contract,
+      tokenIds: asset.tokenIds,
+      side: side === Side.Ask ? OrderSide.ASK : OrderSide.BID,
+      ...filter
+    });
+    return orders.map((osOrder) => ({
+      ...this.convertOsOrder(osOrder),
+      signature: osOrder.protocolData?.signature
+    }));
   }
 }

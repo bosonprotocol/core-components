@@ -28,10 +28,11 @@ export function useRenderTemplate(
       setRenderStatus(ProgressStatus.LOADING);
       if (ipfsMetadataStorage && coreSDK) {
         try {
-          const rawTemplate = await ipfsMetadataStorage.get<Uint8Array>(
+          const rawTemplate = (await ipfsMetadataStorage.get<Uint8Array>(
             templateUrl,
+            false,
             false
-          );
+          )) as Uint8Array;
           const template = Buffer.from(rawTemplate).toString("utf-8");
           let theOfferData = offerData;
           // If the offerData is not specified, retrieve the data from offerId

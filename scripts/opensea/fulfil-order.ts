@@ -94,13 +94,11 @@ async function main() {
     );
   }
   console.log("ORDER TO BE FULFILLED", order);
-  const priceDiscoveryStruct = await openseaSdkSeller.generateFulfilmentData(
-    {
-      contract: nftContract,
-      tokenId
-    },
-    wrapped
-  );
+  const priceDiscoveryStruct = await openseaSdkSeller.generateFulfilmentData({
+    contract: nftContract,
+    tokenId,
+    withWrapper: wrapped
+  });
 
   const BOSON_PROTOCOL = defaultConfig.contracts.protocolDiamond;
 

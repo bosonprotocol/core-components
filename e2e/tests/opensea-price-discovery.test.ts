@@ -532,13 +532,11 @@ describe("Opensea Price Discovery", () => {
         sellerCoreSDK
       );
       // Call commitToPriceDiscoveryOffer, that will fulfil the Order on Seaport
-      const fulfilmentData = await openseaSdkSeller.generateFulfilmentData(
-        {
-          contract: voucherContract,
-          tokenId: listing.asset.tokenId
-        },
-        true // withWrapper
-      );
+      const fulfilmentData = await openseaSdkSeller.generateFulfilmentData({
+        contract: voucherContract,
+        tokenId: listing.asset.tokenId,
+        withWrapper: true
+      });
       const txCommit = await sellerCoreSDK.commitToPriceDiscoveryOffer(
         buyerWallet.address,
         listing.asset.tokenId,
