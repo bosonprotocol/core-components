@@ -75,3 +75,8 @@ export type ProtocolConfig = {
   metaTx?: Partial<MetaTxConfig>;
   lens: Lens | undefined;
 };
+
+export type CoreProtocolConfig = Pick<
+  ProtocolConfig,
+  "envName" | "chainId" | "configId"
+>;
