@@ -1,5 +1,5 @@
 import { fn } from "@storybook/test";
-import React from "react";
+import React, { ReactNode } from "react";
 import { Meta } from "@storybook/react";
 import {
   ChainSelector,
@@ -17,8 +17,9 @@ import {
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { bosonButtonThemeKeys } from "../components/ui/ThemedButton";
 import { CSSProperties, createGlobalStyle } from "styled-components";
+import { Wallet } from "phosphor-react";
 const colors = theme.colors.light;
-const successButtonTheme: ConnectWalletProps["successButtonTheme"] = {
+const successButtonTheme: ConnectWalletProps["connectWalletButtonTheme"] = {
   ...bosonButtonThemes({ withBosonStyle: false })["primary"],
   color: "inherit",
   background: "var(--buttonBgColor)"
@@ -38,6 +39,9 @@ const ColorGlobalStyle = createGlobalStyle<{ color: CSSProperties["color"] }>`
   }
 `;
 const Component = ({
+  showStatusIcon,
+  rightConnectedChild,
+  connectWalletChild,
   textColor,
   chainSelectorBackgroundColor,
   connectWalletBorderRadius,
@@ -59,7 +63,10 @@ const Component = ({
   magicLoginButtonBorderRadiusPx,
   onUserDisconnect
 }: {
+  showStatusIcon: boolean;
+  rightConnectedChild?: ReactNode;
   textColor: string;
+  connectWalletChild: string;
   chainSelectorBackgroundColor: string | undefined;
   connectWalletBorderRadius: string | undefined;
   connectWalletSuccessButtonThemeKey: string | undefined;
@@ -118,7 +125,19 @@ const Component = ({
                     config={config}
                   />
                   <ConnectWallet
-                    successButtonTheme={{
+                    showStatusIcon={showStatusIcon}
+                    connectWalletChild={connectWalletChild}
+                    rightConnectedChild={rightConnectedChild}
+                    connectWalletButtonTheme={{
+                      ...(connectWalletSuccessButtonThemeKey
+                        ? bosonButtonThemes({ withBosonStyle: false })[
+                            connectWalletSuccessButtonThemeKey
+                          ]
+                        : successButtonTheme),
+                      borderRadius: connectWalletBorderRadius,
+                      gap: "2px"
+                    }}
+                    connectedButtonTheme={{
                       ...(connectWalletSuccessButtonThemeKey
                         ? bosonButtonThemes({ withBosonStyle: false })[
                             connectWalletSuccessButtonThemeKey
@@ -285,6 +304,9 @@ export const CustomTheme = {
     walletHoverFocusBackgroundColor: "#e89f0e",
     walletHoverColor: "#ff0000",
     magicLoginButtonThemeKey: "orangeInverse",
-    magicLoginButtonBorderRadiusPx: "50"
+    magicLoginButtonBorderRadiusPx: "50",
+    showStatusIcon: false,
+    connectWalletChild: <>Connect</>,
+    rightConnectedChild: <Wallet />
   }
 };
