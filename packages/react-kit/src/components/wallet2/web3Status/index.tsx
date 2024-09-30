@@ -1,5 +1,5 @@
 import { useWeb3React } from "@web3-react/core";
-import React, { memo, useCallback, useEffect, useRef } from "react";
+import React, { ReactNode, memo, useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import { useIsMagicLoggedIn } from "../../../hooks";
@@ -64,7 +64,17 @@ const getCommonWalletButtonProps = (isXXS: boolean) =>
 function Web3StatusInner({
   showOnlyIcon,
   errorButtonTheme,
-  successButtonTheme
+  connectedButtonTheme,
+  connectWalletButtonTheme,
+  connectWalletChild = <>Connect Wallet</>,
+  showStatusIcon = true,
+  wrongNetworkChild = <>Wrong network</>,
+  leftConnectWalletChild,
+  leftConnectedChild,
+  leftWrongNetworkChild,
+  rightConnectWalletChild,
+  rightConnectedChild,
+  rightWrongNetworkChild
 }: ConnectWalletProps) {
   const switchingChain = useAppSelector(
     (state) => state.wallets.switchingChain
@@ -121,18 +131,21 @@ function Web3StatusInner({
         disabled={Boolean(switchingChain)}
         data-testid="web3-status-connected"
         onClick={handleWalletDropdownClick}
-        theme={successButtonTheme}
+        theme={connectedButtonTheme}
       >
-        <StatusIcon
-          account={account}
-          size={24}
-          connection={connection}
-          showMiniIcons={showOnlyIcon}
-        />
-
+        {showStatusIcon && (
+          <StatusIcon
+            account={account}
+            size={24}
+            connection={connection}
+            showMiniIcons={showOnlyIcon}
+          />
+        )}
+        {leftConnectedChild}
         <AddressAndChevronContainer>
           <Text>{ENSName || formatAddress(account)}</Text>
         </AddressAndChevronContainer>
+        {rightConnectedChild}
       </BaseButton>
     );
   }
@@ -163,7 +176,9 @@ function Web3StatusInner({
             onClick={handleWalletDropdownClick}
             theme={errorButtonTheme}
           >
-            Wrong network
+            {leftWrongNetworkChild}
+            {wrongNetworkChild}
+            {rightWrongNetworkChild}
           </BaseButton>
         </Tooltip>
       ) : (
@@ -171,23 +186,36 @@ function Web3StatusInner({
           onClick={handleWalletDropdownClick}
           data-testid="navbar-connect-wallet"
           {...getCommonWalletButtonProps(isXXS)}
-          theme={successButtonTheme}
+          theme={connectWalletButtonTheme}
           style={{
             ...getCommonWalletButtonProps(isXXS).style
           }}
         >
-          Connect Wallet
+          {leftConnectWalletChild}
+          {connectWalletChild}
+          {rightConnectWalletChild}
         </BaseButton>
       )}
     </Grid>
   );
 }
+type SuccessButtonTheme = Omit<BaseButtonTheme, "color" | "background"> &
+  Required<Pick<BaseButtonTheme, "color" | "background">>;
 
 export type ConnectWalletProps = {
   showOnlyIcon?: boolean;
   errorButtonTheme: BaseButtonTheme;
-  successButtonTheme: Omit<BaseButtonTheme, "color" | "background"> &
-    Required<Pick<BaseButtonTheme, "color" | "background">>;
+  connectedButtonTheme: SuccessButtonTheme;
+  connectWalletButtonTheme: SuccessButtonTheme;
+  connectWalletChild?: ReactNode;
+  wrongNetworkChild?: ReactNode;
+  showStatusIcon?: boolean;
+  leftConnectedChild?: ReactNode;
+  rightConnectedChild?: ReactNode;
+  leftWrongNetworkChild?: ReactNode;
+  rightWrongNetworkChild?: ReactNode;
+  leftConnectWalletChild?: ReactNode;
+  rightConnectWalletChild?: ReactNode;
 };
 export const ConnectWallet = memo(function Web3Status(
   props: ConnectWalletProps
