@@ -110,6 +110,9 @@ export interface OptionProps {
   hoverColor: CSSProperties["color"];
   backgroundColor: CSSProperties["backgroundColor"];
   borderRadius: CSSProperties["borderRadius"];
+  onOptionClick?: (arg0: {
+    activationState: ReturnType<typeof useActivationState>["activationState"];
+  }) => void;
 }
 export function Option({
   connection,
@@ -117,7 +120,8 @@ export function Option({
   hoverFocusBackgroundColor,
   hoverColor,
   backgroundColor,
-  borderRadius
+  borderRadius,
+  onOptionClick
 }: OptionProps) {
   const { activationState, tryActivation } = useActivationState();
   const toggleAccountDrawer = useToggleAccountDrawer();
@@ -139,7 +143,10 @@ export function Option({
     >
       <OptionCardClickable
         disabled={isSomeOptionPending}
-        onClick={activate}
+        onClick={() => {
+          activate();
+          onOptionClick?.({ activationState });
+        }}
         selected={isCurrentOptionPending}
         data-testid={`wallet-option-${connection.type}`}
       >
