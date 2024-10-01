@@ -19,7 +19,6 @@ const InjectedWalletTable: {
   isBraveWallet: { name: "Brave", icon: BRAVE_ICON },
   isRabby: { name: "Rabby", icon: RABBY_ICON },
   isTrust: { name: "Trust Wallet", icon: TRUST_WALLET_ICON },
-  // @ts-expect-error this was like this in the dapp, TODO: check if this can be deleted
   isLedgerConnect: { name: "Ledger", icon: LEDGER_ICON }
 };
 
