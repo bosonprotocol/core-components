@@ -47,6 +47,7 @@ export type WalletModalProps = {
     | "hoverColor"
     | "backgroundColor"
     | "borderRadius"
+    | "onOptionClick"
   > & { iconBorderRadius: CSSProperties["borderRadius"] };
 };
 export function WalletModal({
