@@ -1,5 +1,6 @@
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import { balanceOf, name, symbol, uri } from "./handler";
+import { AsyncReturnType } from "@bosonprotocol/common";
 
 export class ERC1155Mixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
@@ -7,23 +8,23 @@ export class ERC1155Mixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
   public async erc1155Name(
     args: Omit<Parameters<typeof name>[0], "web3Lib">
-  ): Promise<ReturnType<typeof name>> {
+  ): Promise<AsyncReturnType<typeof name>> {
     return name({ web3Lib: this._web3Lib, ...args });
   }
   public async erc1155Symbol(
     args: Omit<Parameters<typeof symbol>[0], "web3Lib">
-  ): Promise<ReturnType<typeof symbol>> {
+  ): Promise<AsyncReturnType<typeof symbol>> {
     return symbol({ web3Lib: this._web3Lib, ...args });
   }
   public async erc1155Uri(
     args: Omit<Parameters<typeof uri>[0], "web3Lib">
-  ): Promise<ReturnType<typeof uri>> {
+  ): Promise<AsyncReturnType<typeof uri>> {
     return uri({ web3Lib: this._web3Lib, ...args });
   }
 
   public async erc1155BalanceOf(
     args: Omit<Parameters<typeof balanceOf>[0], "web3Lib">
-  ): Promise<ReturnType<typeof balanceOf>> {
+  ): Promise<AsyncReturnType<typeof balanceOf>> {
     return balanceOf({ web3Lib: this._web3Lib, ...args });
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
 export type DeepReadonly<T> = {
   // TODO: remove once https://github.com/microsoft/TypeScript/issues/13923 is merged

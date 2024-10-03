@@ -1,5 +1,6 @@
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import { supportsInterface } from "./handler";
+import { AsyncReturnType } from "@bosonprotocol/common";
 
 export class ERC165Mixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
@@ -7,7 +8,7 @@ export class ERC165Mixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
   public async erc165SupportsInterface(
     args: Omit<Parameters<typeof supportsInterface>[0], "web3Lib">
-  ): Promise<ReturnType<typeof supportsInterface>> {
+  ): Promise<AsyncReturnType<typeof supportsInterface>> {
     return supportsInterface({ web3Lib: this._web3Lib, ...args });
   }
 }
