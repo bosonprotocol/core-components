@@ -39,6 +39,9 @@ export interface Web3LibAdapter {
     addressOrName: string,
     blockNumber?: string | number
   ): Promise<BigNumberish>;
+  estimateGas(
+    transactionRequest: TransactionRequest
+  ): Promise<BigNumberish>;
   sendTransaction(
     transactionRequest: TransactionRequest
   ): Promise<TransactionResponse>;
