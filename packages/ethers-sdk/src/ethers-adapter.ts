@@ -61,6 +61,12 @@ export class EthersAdapter implements Web3LibAdapter {
     return this._provider.getBalance(addressOrName, blockNumber);
   }
 
+  public async estimateGas(
+    transactionRequest: TransactionRequest
+  ): Promise<BigNumberish> {
+    return this._signer.estimateGas(transactionRequest);
+  }
+
   public async sendTransaction(
     transactionRequest: TransactionRequest
   ): Promise<TransactionResponse> {
