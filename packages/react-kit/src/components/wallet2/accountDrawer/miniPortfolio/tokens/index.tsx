@@ -1,4 +1,5 @@
 import React from "react";
+import { Token as TokenType } from "@bosonprotocol/common";
 import { Token } from "@uniswap/sdk-core";
 import { ethers } from "ethers";
 import styled from "styled-components";
@@ -20,11 +21,16 @@ import {
 import { nativeOnChain } from "../../../../../lib/const/tokens";
 import { PortfolioLogo } from "../../../../logo/PortfolioLogo";
 
-export default function Tokens({ account }: { account: string }) {
+export type TokensProps = {
+  account: string;
+  defaultTokens?: TokenType[];
+};
+export default function Tokens({ account, defaultTokens }: TokensProps) {
   const chainId = useChainId();
   const { data: tokenBalances, isLoading } = useTokenBalances({
     address: account,
-    chainId
+    chainId,
+    tokens: defaultTokens
   });
 
   if (!chainId || isLoading) {

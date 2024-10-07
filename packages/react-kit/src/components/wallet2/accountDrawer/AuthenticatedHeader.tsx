@@ -9,13 +9,12 @@ import {
 } from "phosphor-react";
 import React, { useCallback, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
-
 import { Typography } from "../../ui/Typography";
 import StatusIcon from "../identicon/StatusIcon";
 import { FiatLink, useFiatLinkContext } from "./fiatOnrampModal/FiatLink";
 // import FiatOnrampModal from "./fiatOnrampModal";
 import { IconWithConfirmTextButton } from "./IconButton";
-import MiniPortfolio from "./miniPortfolio";
+import MiniPortfolio, { MiniPortfolioProps } from "./miniPortfolio";
 import { Column } from "../../ui/column";
 import { theme } from "../../../theme";
 import { useENSName } from "../../../hooks/ens/useENSName";
@@ -131,8 +130,7 @@ export function PortfolioArrow({
     <ArrowUpRight size={20} {...rest} />
   );
 }
-export type AuthenticatedHeaderProps = {
-  account: string;
+export type AuthenticatedHeaderProps = MiniPortfolioProps & {
   onUserDisconnect?: () => unknown;
   disconnectColor: CSSProperties["color"];
   disconnectBackgroundColor: CSSProperties["backgroundColor"];
@@ -145,7 +143,8 @@ export function AuthenticatedHeader({
   disconnectColor,
   disconnectBackgroundColor,
   disconnectBorderRadius,
-  buyCryptoTheme
+  buyCryptoTheme,
+  defaultTokens
 }: AuthenticatedHeaderProps) {
   const { connector } = useWeb3React();
   const { ENSName } = useENSName(account);
@@ -292,7 +291,7 @@ export function AuthenticatedHeader({
             </Tooltip>
           </FiatOnrampNotAvailableText>
         )}
-        <MiniPortfolio account={account} />
+        <MiniPortfolio account={account} defaultTokens={defaultTokens} />
       </PortfolioDrawerContainer>
     </AuthenticatedHeaderWrapper>
   );

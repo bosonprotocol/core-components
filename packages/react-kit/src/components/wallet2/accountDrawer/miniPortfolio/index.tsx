@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { Grid } from "../../../ui/Grid";
 import { Typography } from "../../../ui/Typography";
-import Tokens from "./tokens";
+import Tokens, { TokensProps } from "./tokens";
 import { breakpointNumbers } from "../../../../lib/ui/breakpoint";
 import { Column } from "../../../ui/column";
 
@@ -41,7 +41,7 @@ const PageWrapper = styled.div`
 interface Page {
   title: React.ReactNode;
   key: string;
-  component: ({ account }: { account: string }) => JSX.Element;
+  component: ({ account }: MiniPortfolioProps) => JSX.Element;
 }
 
 const Pages: Array<Page> = [
@@ -52,7 +52,11 @@ const Pages: Array<Page> = [
   }
 ];
 
-export default function MiniPortfolio({ account }: { account: string }) {
+export type MiniPortfolioProps = TokensProps;
+export default function MiniPortfolio({
+  account,
+  defaultTokens
+}: MiniPortfolioProps) {
   const [currentPage, setCurrentPage] = useState(0);
 
   const { component: Page } = Pages[currentPage];
@@ -72,7 +76,7 @@ export default function MiniPortfolio({ account }: { account: string }) {
         })}
       </Nav>
       <PageWrapper data-testid="mini-portfolio-page">
-        <Page account={account} />
+        <Page account={account} defaultTokens={defaultTokens} />
       </PageWrapper>
     </Wrapper>
   );
