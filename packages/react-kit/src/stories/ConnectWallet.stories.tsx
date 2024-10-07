@@ -61,6 +61,7 @@ const Component = ({
   walletHoverColor,
   magicLoginButtonThemeKey,
   magicLoginButtonBorderRadiusPx,
+  withMagicLogin,
   onUserDisconnect
 }: {
   showStatusIcon: boolean;
@@ -85,6 +86,7 @@ const Component = ({
   walletHoverColor: string | undefined;
   magicLoginButtonThemeKey: string | undefined;
   magicLoginButtonBorderRadiusPx: string | undefined;
+  withMagicLogin: boolean | undefined;
   onUserDisconnect: () => unknown;
 }) => {
   return (
@@ -175,6 +177,7 @@ const Component = ({
                     disconnectColor={accountDrawerDisconnectColor}
                     onUserDisconnect={onUserDisconnect}
                     walletModalProps={{
+                      withMagicLogin,
                       optionProps: {
                         backgroundColor: walletBackgroundColor,
                         color: walletColor,
@@ -305,6 +308,7 @@ export const CustomTheme = {
     walletHoverColor: "#ff0000",
     magicLoginButtonThemeKey: "orangeInverse",
     magicLoginButtonBorderRadiusPx: "50",
+    withMagicLogin: true,
     showStatusIcon: false,
     connectWalletChild: <>Connect</>,
     rightConnectedChild: <Wallet />

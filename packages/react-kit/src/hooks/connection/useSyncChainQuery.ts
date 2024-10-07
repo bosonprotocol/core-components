@@ -35,7 +35,7 @@ export default function useSyncChainQuery() {
   const parsedQs = useParsedQueryString();
   const configIdRef = useRef(currentConfigId);
   const accountRef = useRef(account);
-  const accountAlreadyConnected = useRef(account);
+  const accountAlreadyConnected = useRef<string | undefined>(account);
   const disconnect = useCallback(() => {
     accountAlreadyConnected.current = undefined;
     _disconnect({ isUserDisconnecting: false });
