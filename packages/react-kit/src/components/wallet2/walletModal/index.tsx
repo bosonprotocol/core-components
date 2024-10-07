@@ -49,11 +49,13 @@ export type WalletModalProps = {
     | "borderRadius"
     | "onOptionClick"
   > & { iconBorderRadius: CSSProperties["borderRadius"] };
+  withMagicLogin?: boolean;
 };
 export function WalletModal({
   PrivacyPolicy,
   magicLoginButtonProps,
-  optionProps
+  optionProps,
+  withMagicLogin = true
 }: WalletModalProps) {
   const chainId = useChainId();
   const { config } = useConfigContext();
@@ -101,7 +103,7 @@ export function WalletModal({
                 />
               ))}
           </OptionGrid>
-          <MagicLoginButton {...magicLoginButtonProps} />
+          {withMagicLogin && <MagicLoginButton {...magicLoginButtonProps} />}
           <PrivacyPolicy />
         </AutoColumn>
       )}
