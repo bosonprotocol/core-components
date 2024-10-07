@@ -23,7 +23,7 @@ services:
       context: ../.
       dockerfile: ./e2e/opensea-api-mock/Dockerfile
     user: "node:node"
-    image: opensea-api-mock:202518061227
+    image: opensea-api-mock:202410071017
     ports:
       - "3334:3334"
     environment:
