@@ -5,12 +5,13 @@ import styled from "styled-components";
 import { Typography } from "../../ui/Typography";
 import { useCloseAccountDrawer } from "../accountDrawer";
 import { flexColumnNoWrap } from "../styles";
-import { Button } from "../../buttons/Button";
 import {
   ActivationStatus,
   useActivationState
 } from "../../connection/activate";
 import { theme } from "../../../theme";
+import { Grid } from "../../ui/Grid";
+import { BaseButton, BaseButtonProps } from "../../buttons/BaseButton";
 const colors = theme.colors.light;
 const Wrapper = styled.div`
   ${flexColumnNoWrap};
@@ -27,8 +28,15 @@ const AlertTriangleIcon = styled(Warning)`
   color: ${colors.red};
 `;
 
+export type ConnectionErrorViewProps = {
+  tryAgainTheme: BaseButtonProps["theme"];
+  backToWalletSelectionTheme: BaseButtonProps["theme"];
+};
 // TODO(cartcrom): move this to a top level modal, rather than inline in the drawer
-export default function ConnectionErrorView() {
+export default function ConnectionErrorView({
+  tryAgainTheme,
+  backToWalletSelectionTheme
+}: ConnectionErrorViewProps) {
   const { activationState, tryActivation, cancelActivation } =
     useActivationState();
   const closeDrawer = useCloseAccountDrawer();
@@ -50,10 +58,17 @@ export default function ConnectionErrorView() {
         The connection attempt failed. Please click try again and follow the
         steps to connect in your wallet.
       </Typography>
-      <Button onClick={retry}>Try Again</Button>
-      <Button onClick={cancelActivation}>
-        <Typography marginBottom={12}>Back to wallet selection</Typography>
-      </Button>
+      <Grid gap="1rem">
+        <BaseButton onClick={retry} theme={tryAgainTheme}>
+          Try Again
+        </BaseButton>
+        <BaseButton
+          onClick={cancelActivation}
+          theme={backToWalletSelectionTheme}
+        >
+          <Typography marginBottom={12}>Back to wallet selection</Typography>
+        </BaseButton>
+      </Grid>
     </Wrapper>
   );
 }

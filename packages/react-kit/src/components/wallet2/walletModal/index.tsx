@@ -5,7 +5,9 @@ import styled, { CSSProperties } from "styled-components";
 
 import { Grid } from "../../ui/Grid";
 import { flexColumnNoWrap } from "../styles";
-import ConnectionErrorView from "./ConnectionErrorView";
+import ConnectionErrorView, {
+  ConnectionErrorViewProps
+} from "./ConnectionErrorView";
 import { Option, OptionProps } from "./Option";
 import {
   ActivationStatus,
@@ -50,12 +52,14 @@ export type WalletModalProps = {
     | "onOptionClick"
   > & { iconBorderRadius: CSSProperties["borderRadius"] };
   withMagicLogin?: boolean;
+  connectionErrorProps: ConnectionErrorViewProps;
 };
 export function WalletModal({
   PrivacyPolicy,
   magicLoginButtonProps,
   optionProps,
-  withMagicLogin = true
+  withMagicLogin = true,
+  connectionErrorProps
 }: WalletModalProps) {
   const chainId = useChainId();
   const { config } = useConfigContext();
@@ -85,7 +89,7 @@ export function WalletModal({
         Connect a wallet
       </Grid>
       {activationState.status === ActivationStatus.ERROR ? (
-        <ConnectionErrorView />
+        <ConnectionErrorView {...connectionErrorProps} />
       ) : (
         <AutoColumn $gap="16px">
           <OptionGrid

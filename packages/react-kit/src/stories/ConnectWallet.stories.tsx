@@ -60,6 +60,8 @@ const Component = ({
   walletHoverFocusBackgroundColor,
   walletHoverColor,
   magicLoginButtonThemeKey,
+  connectionErrorTryAgainButtonThemeKey,
+  connectionErrorBackToWalletSelectionButtonThemeKey,
   magicLoginButtonBorderRadiusPx,
   withMagicLogin,
   onUserDisconnect
@@ -85,6 +87,8 @@ const Component = ({
   walletHoverFocusBackgroundColor: string | undefined;
   walletHoverColor: string | undefined;
   magicLoginButtonThemeKey: string | undefined;
+  connectionErrorTryAgainButtonThemeKey: string;
+  connectionErrorBackToWalletSelectionButtonThemeKey: string;
   magicLoginButtonBorderRadiusPx: string | undefined;
   withMagicLogin: boolean | undefined;
   onUserDisconnect: () => unknown;
@@ -199,6 +203,19 @@ const Component = ({
                           }
                         }
                       },
+                      connectionErrorProps: {
+                        tryAgainTheme: connectionErrorTryAgainButtonThemeKey
+                          ? bosonButtonThemes({ withBosonStyle: false })[
+                              connectionErrorTryAgainButtonThemeKey
+                            ]
+                          : successButtonTheme,
+                        backToWalletSelectionTheme:
+                          connectionErrorBackToWalletSelectionButtonThemeKey
+                            ? bosonButtonThemes({ withBosonStyle: false })[
+                                connectionErrorBackToWalletSelectionButtonThemeKey
+                              ]
+                            : successButtonTheme
+                      },
                       PrivacyPolicy: () => <div>privacy policy</div>
                     }}
                   />
@@ -248,6 +265,14 @@ export default {
     magicLoginButtonThemeKey: {
       control: "select",
       options: bosonButtonThemeKeys
+    },
+    connectionErrorTryAgainButtonThemeKey: {
+      control: "select",
+      options: bosonButtonThemeKeys
+    },
+    connectionErrorBackToWalletSelectionButtonThemeKey: {
+      control: "select",
+      options: bosonButtonThemeKeys
     }
   },
   decorators: [
@@ -282,7 +307,9 @@ export const BosonTheme = {
     walletColor: colors.white,
     walletHoverFocusBackgroundColor: colors.black,
     walletHoverColor: colors.white,
-    magicLoginButtonThemeKey: undefined
+    magicLoginButtonThemeKey: undefined,
+    connectionErrorTryAgainButtonThemeKey: "orangeInverse",
+    connectionErrorBackToWalletSelectionButtonThemeKey: "orangeInverse"
   }
 };
 
@@ -307,6 +334,8 @@ export const CustomTheme = {
     walletHoverFocusBackgroundColor: "#e89f0e",
     walletHoverColor: "#ff0000",
     magicLoginButtonThemeKey: "orangeInverse",
+    connectionErrorTryAgainButtonThemeKey: "orangeInverse",
+    connectionErrorBackToWalletSelectionButtonThemeKey: "orangeInverse",
     magicLoginButtonBorderRadiusPx: "50",
     withMagicLogin: true,
     showStatusIcon: false,
