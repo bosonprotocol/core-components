@@ -83,7 +83,7 @@
     "graphql": "^16.8.1",
     "ipfs-utils": "^9.0.14",
     "lerna": "^5.5.1",
-    "opensea-js": "^7.1.5",
+    "opensea-js": "^7.1.13",
     "prettier": "^3.2.5",
     "run-script-os": "^1.1.6",
     "ts-jest": "29.1.1",

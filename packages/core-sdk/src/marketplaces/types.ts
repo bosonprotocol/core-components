@@ -17,8 +17,8 @@ export enum MarketplaceType {
 }
 
 export enum OrderSide {
-  ASK = "ask",
-  BID = "bid"
+  LISTING = "ask",
+  OFFER = "bid"
 }
 
 export type MarketplaceHandler = OpenSeaSDKHandler | DefaultHandler;

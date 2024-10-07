@@ -120,10 +120,10 @@ export async function computeFulfillmentData(
 function getOrderSide(sidePath: string): OrderSide {
   switch (sidePath) {
     case "listings": {
-      return OrderSide.ASK;
+      return OrderSide.LISTING;
     }
     case "offers": {
-      return OrderSide.BID;
+      return OrderSide.OFFER;
     }
     default:
       throw new Error(`Invalid sidePath '${sidePath}'`);
@@ -151,17 +151,17 @@ function extractOrderInfo(
     (c) => c.itemType === ItemType.ERC721
   );
   const nftAsk = parameters.offer.find((c) => c.itemType === ItemType.ERC721);
-  if (side === OrderSide.BID && !nftBid) {
+  if (side === OrderSide.OFFER && !nftBid) {
     throw new Error(`NFT not found in order consideration`);
   }
-  if (side === OrderSide.ASK && !nftAsk) {
+  if (side === OrderSide.LISTING && !nftAsk) {
     throw new Error(`NFT not found in order offer`);
   }
   if (!side) {
     if (nftBid && !nftAsk) {
-      side = OrderSide.BID;
+      side = OrderSide.OFFER;
     } else if (!nftBid && nftAsk) {
-      side = OrderSide.ASK;
+      side = OrderSide.LISTING;
     } else if (nftBid && nftAsk) {
       throw new Error(
         `NFT found in both consideration and offer. Unable to detect the order side`
@@ -172,7 +172,7 @@ function extractOrderInfo(
       );
     }
   }
-  if (side === OrderSide.BID) {
+  if (side === OrderSide.OFFER) {
     price = parameters.offer
       .filter((c) => c.itemType === ItemType.ERC20)
       .reduce(
