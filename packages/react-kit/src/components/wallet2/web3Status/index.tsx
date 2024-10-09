@@ -66,6 +66,7 @@ function Web3StatusInner({
   errorButtonTheme,
   connectedButtonTheme,
   connectWalletButtonTheme,
+  connectWalletButtonDisabled,
   connectWalletChild = <>Connect Wallet</>,
   showStatusIcon = true,
   wrongNetworkChild = <>Wrong network</>,
@@ -183,6 +184,7 @@ function Web3StatusInner({
         </Tooltip>
       ) : (
         <BaseButton
+          disabled={connectWalletButtonDisabled}
           onClick={handleWalletDropdownClick}
           data-testid="navbar-connect-wallet"
           {...getCommonWalletButtonProps(isXXS)}
@@ -208,6 +210,7 @@ export type ConnectWalletProps = {
   connectedButtonTheme: SuccessButtonTheme;
   connectWalletButtonTheme: SuccessButtonTheme;
   connectWalletChild?: ReactNode;
+  connectWalletButtonDisabled?: boolean;
   wrongNetworkChild?: ReactNode;
   showStatusIcon?: boolean;
   leftConnectedChild?: ReactNode;
