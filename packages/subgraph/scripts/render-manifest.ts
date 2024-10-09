@@ -53,7 +53,7 @@ const envNameToConfig: Record<
   },
   production: {
     "production-137-0": {
-      network: providers.getNetwork(chainId).name,
+      network: "polygon",
       startBlock: 34258150 // polygon, block num when protocol is deployed
     },
     "production-1-0": {
