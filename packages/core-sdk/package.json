@@ -46,7 +46,7 @@
     "graphql": "^16.5.0",
     "graphql-request": "^4.3.0",
     "mustache": "^4.2.0",
-    "opensea-js": "^7.1.5",
+    "opensea-js": "^7.1.13",
     "schema-to-yup": "^1.11.11",
     "yup": "^0.32.11"
   },
