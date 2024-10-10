@@ -1,17 +1,17 @@
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { CSSProperties, css, styled } from "styled-components";
-import { Grid } from "../../ui/Grid";
-import { Typography } from "../../ui/Typography";
-import { BaseButton, BaseButtonTheme } from "../../buttons/BaseButton";
-import { ConnectWallet } from "../../wallet2/web3Status";
-import { Portal } from "../../portal/Portal";
-import { AccountDrawer } from "../../wallet2/accountDrawer";
-import { WithProvidersProps, withProviders } from "./components/withProviders";
-import { useAccount } from "../../../hooks";
+import { Grid } from "../../../ui/Grid";
+import { Typography } from "../../../ui/Typography";
+import { BaseButton, BaseButtonTheme } from "../../../buttons/BaseButton";
+import { ConnectWallet } from "../../../wallet2/web3Status";
+import { Portal } from "../../../portal/Portal";
+import { AccountDrawer } from "../../../wallet2/accountDrawer";
+import { WithProvidersProps, withProviders } from "./withProviders";
+import { useAccount } from "../../../../hooks";
 import { CheckCircle, Power } from "phosphor-react";
-import { useDisconnect } from "../../../hooks/connection/useDisconnect";
-import { useIsRobloxLoggedIn } from "../../../hooks/roblox/useIsRobloxLoggedIn";
-import { useRobloxLogout } from "../../../hooks/roblox/useRobloxLogout";
+import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
+import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
+import { useRobloxLogout } from "../../../../hooks/roblox/useRobloxLogout";
 
 const Wrapper = styled.div`
   container-type: inline-size;

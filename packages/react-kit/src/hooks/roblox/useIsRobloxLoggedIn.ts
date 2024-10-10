@@ -14,7 +14,7 @@ export const useIsRobloxLoggedIn = ({
 }: UseIsRobloxLoggedInProps) => {
   const [storedValue, setValue] = useRobloxLocalStorage();
   return useQuery(
-    [robloxQueryKeys.loggedIn, origin],
+    robloxQueryKeys.loggedIn(origin),
     async () => {
       const response = await fetch(`${origin}/logged-in`, {
         method: "GET",

@@ -10,7 +10,7 @@ export const useRobloxLogout = ({ origin }: UseIsRobloxLoggedInProps) => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    [robloxQueryKeys.logout, origin],
+    robloxQueryKeys.logout(origin),
     async () => {
       const response = await fetch(`${origin}/logout`, {
         method: "POST",
@@ -18,7 +18,7 @@ export const useRobloxLogout = ({ origin }: UseIsRobloxLoggedInProps) => {
       });
       if (response.ok) {
         removeFromStorage();
-        queryClient.removeQueries([robloxQueryKeys.loggedIn, origin]);
+        queryClient.removeQueries(robloxQueryKeys.loggedIn(origin));
       }
       return null;
     },

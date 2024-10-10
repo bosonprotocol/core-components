@@ -12,6 +12,6 @@ export const loggedInPayloadSchema = Yup.object({
 export type RobloxLoggedIn = Yup.InferType<typeof loggedInPayloadSchema>;
 
 export const robloxQueryKeys = {
-  loggedIn: "roblox-logged-in",
-  logout: "roblox-logged-in"
+  loggedIn: (origin: string) => ["roblox-logged-in", origin],
+  logout: (origin: string) => ["roblox-loggout", origin]
 } as const;

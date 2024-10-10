@@ -2,7 +2,7 @@ import { fn } from "@storybook/test";
 import {
   ConnectRoblox,
   ConnectRobloxProps
-} from "../../components/widgets/roblox/ConnectRoblox";
+} from "../../components/widgets/roblox/components/ConnectRoblox";
 import React from "react";
 import { Meta } from "@storybook/react";
 import { bosonButtonThemes } from "../../components/ui/ThemedButton";
