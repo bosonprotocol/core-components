@@ -246,7 +246,7 @@ export const ConnectRoblox = withProviders(
       setActiveStep((activeStep) => Math.max(step, activeStep) as ActiveStep);
     };
     const isRobloxLoggedIn = !!robloxLoggedInData?.isLoggedIn;
-    const robloxNickname = robloxLoggedInData?.claims.nickname;
+    const robloxNickname = robloxLoggedInData?.claims?.nickname || "";
     useEffect(() => {
       if (isRobloxLoggedIn) {
         nextLatestActiveStep(1);
@@ -258,8 +258,6 @@ export const ConnectRoblox = withProviders(
       }
     }, [address, isRobloxLoggedIn]);
     const isConnectWalletStepActive = activeStep >= 1 || !!address;
-    console.log({ activeStep, robloxLoggedInData });
-
     return (
       <Wrapper>
         <Step
