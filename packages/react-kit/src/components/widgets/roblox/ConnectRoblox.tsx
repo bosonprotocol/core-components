@@ -207,7 +207,7 @@ export const ConnectRoblox = withProviders(
       <Wrapper>
         <Step
           theme={theme}
-          isActive={activeStep === 0}
+          isActive={true}
           isDone={isRobloxLoggedIn}
           icon={
             <svg
@@ -245,7 +245,6 @@ export const ConnectRoblox = withProviders(
             ) : (
               <BaseButton
                 theme={theme.button.active}
-                disabled={activeStep !== 0}
                 onClick={() => {
                   window.open(`${backendOrigin}/login`, "_blank");
                   const id = setInterval(async () => {

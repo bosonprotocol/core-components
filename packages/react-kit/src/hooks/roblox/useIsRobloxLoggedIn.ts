@@ -1,8 +1,7 @@
 import { useQuery } from "react-query";
 import * as Yup from "yup";
-import { useLocalStorage } from "../storage/useLocalStorage";
-import { RobloxLoggedIn, robloxLocalStorageKey } from "./const";
 import { useRobloxLocalStorage } from "./useRobloxLocalStorage";
+import { robloxQueryKeys } from "./const";
 
 const loggedPayloadSchema = Yup.object({
   isLoggedIn: Yup.boolean().required(),
@@ -23,13 +22,13 @@ export const useIsRobloxLoggedIn = ({
 }: UseIsRobloxLoggedInProps) => {
   const [storedValue, setValue] = useRobloxLocalStorage();
   return useQuery(
-    ["roblox-logged-in", origin],
+    [robloxQueryKeys.loggedIn, origin],
     async () => {
       const response = await fetch(`${origin}/logged-in`, {
         method: "GET",
         credentials: "include"
       });
-      if (response && response.ok) {
+      if (response.ok) {
         const data = await response.json();
         const validatedData = await loggedPayloadSchema.validate(data);
         setValue(validatedData);

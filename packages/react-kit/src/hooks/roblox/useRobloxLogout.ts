@@ -1,20 +1,24 @@
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { useRobloxLocalStorage } from "./useRobloxLocalStorage";
+import { robloxQueryKeys } from "./const";
 
 type UseIsRobloxLoggedInProps = {
   origin: string;
 };
 export const useRobloxLogout = ({ origin }: UseIsRobloxLoggedInProps) => {
   const [, , removeFromStorage] = useRobloxLocalStorage();
+  const queryClient = useQueryClient();
+
   return useMutation(
-    ["roblox-logout", origin],
+    [robloxQueryKeys.logout, origin],
     async () => {
       const response = await fetch(`${origin}/logout`, {
-        method: "GET"
-        // credentials: "include", // TODO: check comment in backend
+        method: "POST",
+        credentials: "include"
       });
-      if (response && response.ok) {
+      if (response.ok) {
         removeFromStorage();
+        queryClient.resetQueries(robloxQueryKeys.loggedIn);
       }
       return null;
     },
