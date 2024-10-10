@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useRef, useState } from "react";
-import { CSSProperties, styled } from "styled-components";
+import { CSSProperties, css, styled } from "styled-components";
 import { Grid } from "../../ui/Grid";
 import { Typography } from "../../ui/Typography";
 import { BaseButton, BaseButtonTheme } from "../../buttons/BaseButton";
@@ -14,7 +14,9 @@ import { useIsRobloxLoggedIn } from "../../../hooks/roblox/useIsRobloxLoggedIn";
 import { useRobloxLogout } from "../../../hooks/roblox/useRobloxLogout";
 
 const Wrapper = styled.div`
+  container-type: inline-size;
   display: flex;
+  justify-content: center;
   gap: 1.5rem;
 
   flex-direction: row;
@@ -31,25 +33,62 @@ const IconWrapper = styled.div`
   padding-left: 15px;
   background-color: white;
 `;
+const CardTitle = styled(Typography)``;
 const StepWrapperGrid = styled(Grid)<{
   $theme: ConnectRobloxProps["theme"];
   $isActive: StepProps["isActive"];
   $isDone: StepProps["isDone"];
+  $name: StepProps["name"];
   $itemWidthPx: number;
 }>`
   max-width: 22.125rem;
   background-color: white;
   svg {
-    path:first-child {
-      fill: ${({ $theme, $isActive }) =>
-        $isActive ? $theme.number.active.color : $theme.number.inactive.color};
-    }
-    path:last-child {
-      stroke: ${({ $theme, $isActive }) =>
-        $isActive
-          ? $theme.number.active.stroke
-          : $theme.number.inactive.stroke};
-    }
+    ${({ $name, $theme, $isActive }) => {
+      if ($name === "roblox") {
+        return css`
+          path:first-child {
+            fill: ${$isActive
+              ? $theme.robloxCard.number.active.backgroundColor
+              : $theme.robloxCard.number.inactive.backgroundColor};
+          }
+          path:last-child {
+            stroke: ${$isActive
+              ? $theme.robloxCard.number.active.stroke
+              : $theme.robloxCard.number.inactive.stroke};
+          }
+        `;
+      }
+      if ($name === "wallet") {
+        return css`
+          path:first-child {
+            fill: ${$isActive
+              ? $theme.walletCard.number.active.backgroundColor
+              : $theme.walletCard.number.inactive.backgroundColor};
+          }
+          path:last-child {
+            stroke: ${$isActive
+              ? $theme.walletCard.number.active.stroke
+              : $theme.walletCard.number.inactive.stroke};
+          }
+        `;
+      }
+      if ($name === "signup") {
+        return css`
+          path:first-child {
+            fill: ${$isActive
+              ? $theme.signUpCard.number.active.backgroundColor
+              : $theme.signUpCard.number.inactive.backgroundColor};
+          }
+          path:last-child {
+            stroke: ${$isActive
+              ? $theme.signUpCard.number.active.stroke
+              : $theme.signUpCard.number.inactive.stroke};
+          }
+        `;
+      }
+      return "";
+    }}
   }
   &:nth-of-type(1) ${IconWrapper} {
     &::after {
@@ -62,15 +101,22 @@ const StepWrapperGrid = styled(Grid)<{
       background-color: #f1f3f9;
     }
   }
+  @container (width < 692px) {
+    ${CardTitle} {
+      min-height: 45px;
+    }
+  }
 `;
 
 type StepProps = Pick<ConnectRobloxProps, "theme"> & {
+  itemTheme: CardThemeProps;
   icon: ReactElement;
   title: string;
   subtitle: string;
   isActive: boolean;
   isDone: boolean;
   button: ReactElement;
+  name: "roblox" | "wallet" | "signup";
 };
 const Step = ({
   icon: Icon,
@@ -79,6 +125,8 @@ const Step = ({
   isActive,
   isDone,
   theme,
+  name,
+  itemTheme,
   button: Button
 }: StepProps) => {
   const itemRef = useRef<HTMLDivElement>(null);
@@ -109,11 +157,16 @@ const Step = ({
       $isActive={isActive}
       $isDone={isDone}
       $itemWidthPx={itemWidthPx}
+      $name={name}
     >
       <IconWrapper>
-        {isDone ? <CheckCircle size={41} color={theme.check.color} /> : Icon}
+        {isDone ? (
+          <CheckCircle size={41} color={itemTheme.check.color} />
+        ) : (
+          Icon
+        )}
       </IconWrapper>
-      <Typography
+      <CardTitle
         tag="h4"
         margin={0}
         textAlign="center"
@@ -121,11 +174,11 @@ const Step = ({
         style={{ textWrap: "balance" }}
       >
         {title}
-      </Typography>
+      </CardTitle>
       <Typography
         tag="p"
         margin="0.25rem 0 1rem 0"
-        color={theme.subtitle.color}
+        color={itemTheme.subtitle.color}
         textAlign="center"
         // @ts-expect-error textWrap is supported by browser
         style={{ textWrap: "pretty", flexGrow: 1 }}
@@ -137,33 +190,36 @@ const Step = ({
   );
 };
 
+type CardThemeProps = {
+  subtitle: {
+    color: CSSProperties["color"];
+  };
+  check: {
+    color: CSSProperties["color"];
+  };
+  number: {
+    active: {
+      backgroundColor: CSSProperties["color"];
+      stroke: CSSProperties["color"];
+    };
+    inactive: {
+      backgroundColor: CSSProperties["color"];
+      stroke: CSSProperties["color"];
+    };
+  };
+  button: {
+    active: Omit<BaseButtonTheme, "color" | "background"> &
+      Required<Pick<BaseButtonTheme, "color" | "background">>;
+    inactive: Omit<BaseButtonTheme, "color" | "background"> &
+      Required<Pick<BaseButtonTheme, "color" | "background">>;
+  };
+};
 export type ConnectRobloxProps = WithProvidersProps & {
   brand: string;
   theme: {
-    subtitle: {
-      color: CSSProperties["color"];
-    };
-    check: {
-      color: CSSProperties["color"];
-    };
-    number: {
-      active: {
-        color: CSSProperties["color"];
-        stroke: CSSProperties["color"];
-      };
-      inactive: {
-        color: CSSProperties["color"];
-        stroke: CSSProperties["color"];
-      };
-    };
-    button: {
-      active: Omit<BaseButtonTheme, "color" | "background"> &
-        Required<Pick<BaseButtonTheme, "color" | "background">>;
-      inactive: Omit<BaseButtonTheme, "color" | "background"> &
-        Required<Pick<BaseButtonTheme, "color" | "background">>;
-    };
-    signUpButton: Omit<BaseButtonTheme, "color" | "background"> &
-      Required<Pick<BaseButtonTheme, "color" | "background">>;
+    robloxCard: CardThemeProps;
+    walletCard: CardThemeProps;
+    signUpCard: CardThemeProps;
   };
 };
 
@@ -192,21 +248,24 @@ export const ConnectRoblox = withProviders(
     const isRobloxLoggedIn = !!robloxLoggedInData?.isLoggedIn;
     const robloxNickname = robloxLoggedInData?.claims.nickname;
     useEffect(() => {
+      if (isRobloxLoggedIn) {
+        nextLatestActiveStep(1);
+      }
+    }, [isRobloxLoggedIn]);
+    useEffect(() => {
       if (address && isRobloxLoggedIn) {
-        setActiveStep(2);
+        nextLatestActiveStep(2);
       }
     }, [address, isRobloxLoggedIn]);
     const isConnectWalletStepActive = activeStep >= 1 || !!address;
-    console.log({
-      robloxLoggedInData,
-      activeStep,
-      isConnectWalletStepActive,
-      address
-    });
+    console.log({ activeStep, robloxLoggedInData });
+
     return (
       <Wrapper>
         <Step
+          name="roblox"
           theme={theme}
+          itemTheme={theme.robloxCard}
           isActive={true}
           isDone={isRobloxLoggedIn}
           icon={
@@ -235,7 +294,7 @@ export const ConnectRoblox = withProviders(
           button={
             isRobloxLoggedIn ? (
               <BaseButton
-                theme={theme.button.inactive}
+                theme={theme.robloxCard.button.inactive}
                 onClick={async () => {
                   await robloxLogoutAsync();
                 }}
@@ -244,7 +303,7 @@ export const ConnectRoblox = withProviders(
               </BaseButton>
             ) : (
               <BaseButton
-                theme={theme.button.active}
+                theme={theme.robloxCard.button.active}
                 onClick={() => {
                   window.open(`${backendOrigin}/login`, "_blank");
                   const id = setInterval(async () => {
@@ -259,7 +318,6 @@ export const ConnectRoblox = withProviders(
                         }
                       }
                     } catch (error) {
-                      console.error(error);
                       clearInterval(id); // something went wrong, stop polling
                     }
                   }, 1000);
@@ -271,7 +329,9 @@ export const ConnectRoblox = withProviders(
           }
         />
         <Step
+          name="wallet"
           theme={theme}
+          itemTheme={theme.walletCard}
           isActive={isConnectWalletStepActive}
           isDone={!!address}
           icon={
@@ -297,7 +357,7 @@ export const ConnectRoblox = withProviders(
             <>
               {address ? (
                 <BaseButton
-                  theme={theme.button.inactive}
+                  theme={theme.walletCard.button.inactive}
                   onClick={() => disconnect({ isUserDisconnecting: true })}
                 >
                   Disconnect Wallet <StyledPower size={20} />
@@ -305,37 +365,43 @@ export const ConnectRoblox = withProviders(
               ) : (
                 <ConnectWallet
                   connectWalletButtonDisabled={!isConnectWalletStepActive}
-                  connectWalletButtonTheme={theme.button.active}
-                  connectedButtonTheme={theme.button.active}
-                  errorButtonTheme={theme.button.active}
+                  connectWalletButtonTheme={theme.walletCard.button.active}
+                  connectedButtonTheme={theme.walletCard.button.active}
+                  errorButtonTheme={theme.walletCard.button.active}
                 />
               )}
               <Portal>
                 <AccountDrawer
                   backgroundColor="white"
-                  buyCryptoTheme={theme.button.active}
-                  disconnectBorderRadius={theme.button.active.borderRadius}
-                  disconnectBackgroundColor={theme.button.active.background}
-                  disconnectColor={theme.button.active.color}
+                  buyCryptoTheme={theme.walletCard.button.active}
+                  disconnectBorderRadius={
+                    theme.walletCard.button.active.borderRadius
+                  }
+                  disconnectBackgroundColor={
+                    theme.walletCard.button.active.background
+                  }
+                  disconnectColor={theme.walletCard.button.active.color}
                   walletModalProps={{
                     withMagicLogin: true,
                     optionProps: {
-                      backgroundColor: theme.button.active.background,
-                      color: theme.button.active.color,
-                      borderRadius: theme.button.active.borderRadius,
-                      iconBorderRadius: theme.button.active.borderRadius,
+                      backgroundColor:
+                        theme.walletCard.button.active.background,
+                      color: theme.walletCard.button.active.color,
+                      borderRadius: theme.walletCard.button.active.borderRadius,
+                      iconBorderRadius:
+                        theme.walletCard.button.active.borderRadius,
                       hoverFocusBackgroundColor:
-                        theme.button.active.hover?.background,
-                      hoverColor: theme.button.active.hover?.color
+                        theme.walletCard.button.active.hover?.background,
+                      hoverColor: theme.walletCard.button.active.hover?.color
                     },
                     magicLoginButtonProps: {
                       buttonProps: {
-                        theme: theme.button.active
+                        theme: theme.walletCard.button.active
                       }
                     },
                     connectionErrorProps: {
-                      tryAgainTheme: theme.button.active,
-                      backToWalletSelectionTheme: theme.button.active
+                      tryAgainTheme: theme.walletCard.button.active,
+                      backToWalletSelectionTheme: theme.walletCard.button.active
                     },
                     PrivacyPolicy: () => (
                       <Typography
@@ -368,7 +434,9 @@ export const ConnectRoblox = withProviders(
           }
         />
         <Step
+          name="signup"
           theme={theme}
+          itemTheme={theme.signUpCard}
           isActive={activeStep === 2}
           isDone={isSignUpDone}
           icon={
@@ -392,7 +460,7 @@ export const ConnectRoblox = withProviders(
           subtitle={`Now you can purchase ${brand} exclusives that are available to you.`}
           button={
             <BaseButton
-              theme={theme.signUpButton}
+              theme={theme.signUpCard.button.inactive}
               disabled={activeStep !== 2}
               onClick={() => {
                 setSignUpDone(true);

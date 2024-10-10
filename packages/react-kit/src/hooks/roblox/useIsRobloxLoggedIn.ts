@@ -24,6 +24,7 @@ export const useIsRobloxLoggedIn = ({
   return useQuery(
     [robloxQueryKeys.loggedIn, origin],
     async () => {
+      console.log("refetching /logged-in");
       const response = await fetch(`${origin}/logged-in`, {
         method: "GET",
         credentials: "include"

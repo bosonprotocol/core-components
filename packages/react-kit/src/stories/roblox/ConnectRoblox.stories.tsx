@@ -6,7 +6,13 @@ import {
 import React from "react";
 import { Meta } from "@storybook/react";
 import { bosonButtonThemes } from "../../components/ui/ThemedButton";
+import { createGlobalStyle } from "styled-components";
 
+const GlobalStyle = createGlobalStyle`
+    #storybook-root {
+        width: 100%;
+    }
+`;
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Visual Components/Roblox/ConnectRoblox",
@@ -31,7 +37,12 @@ export default {
   },
   decorators: [
     (Story) => {
-      return <Story />;
+      return (
+        <>
+          <GlobalStyle />
+          <Story />
+        </>
+      );
     }
   ]
 } satisfies Meta<typeof ConnectRoblox>;
@@ -52,27 +63,81 @@ export const Base = {
     },
     brand: "GYMSHARK",
     theme: {
-      subtitle: {
-        color: "#556072"
-      },
-      check: {
-        color: "#02F3A2"
-      },
-      number: {
-        active: {
-          color: "#02F3A2",
-          stroke: "black"
+      robloxCard: {
+        subtitle: {
+          color: "#556072"
         },
-        inactive: {
-          color: "#F1F3F9",
-          stroke: "black"
+        check: {
+          color: "#02F3A2"
+        },
+        number: {
+          active: {
+            backgroundColor: "#02F3A2",
+            stroke: "black"
+          },
+          inactive: {
+            backgroundColor: "#F1F3F9",
+            stroke: "black"
+          }
+        },
+        button: {
+          active: {
+            ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
+            borderRadius: 8
+          },
+          inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
         }
       },
-      button: {
-        active: bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
-        inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
+      walletCard: {
+        subtitle: {
+          color: "#556072"
+        },
+        check: {
+          color: "#02F3A2"
+        },
+        number: {
+          active: {
+            backgroundColor: "#02F3A2",
+            stroke: "black"
+          },
+          inactive: {
+            backgroundColor: "#F1F3F9",
+            stroke: "black"
+          }
+        },
+        button: {
+          active: {
+            ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
+            borderRadius: 8
+          },
+          inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
+        }
       },
-      signUpButton: bosonButtonThemes({ withBosonStyle: true })["white"]
+      signUpCard: {
+        subtitle: {
+          color: "#556072"
+        },
+        check: {
+          color: "#02F3A2"
+        },
+        number: {
+          active: {
+            backgroundColor: "#02F3A2",
+            stroke: "black"
+          },
+          inactive: {
+            backgroundColor: "#F1F3F9",
+            stroke: "black"
+          }
+        },
+        button: {
+          active: {
+            ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
+            borderRadius: 8
+          },
+          inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
+        }
+      }
     }
   } satisfies ConnectRobloxProps
 };

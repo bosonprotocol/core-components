@@ -12,13 +12,15 @@ export const useRobloxLogout = ({ origin }: UseIsRobloxLoggedInProps) => {
   return useMutation(
     [robloxQueryKeys.logout, origin],
     async () => {
+      console.log("call to logout");
       const response = await fetch(`${origin}/logout`, {
         method: "POST",
         credentials: "include"
       });
       if (response.ok) {
+        console.log("remove queries logged in in logout");
         removeFromStorage();
-        queryClient.resetQueries(robloxQueryKeys.loggedIn);
+        queryClient.removeQueries([robloxQueryKeys.loggedIn, origin]);
       }
       return null;
     },
