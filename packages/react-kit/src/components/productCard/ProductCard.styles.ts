@@ -148,7 +148,7 @@ export const ProductCardTitleWrapper = styled.div`
 
 export const ProductCardWrapper = styled.div<{
   $isHoverDisabled: boolean;
-  $isImageFitCover: boolean;
+  $isImageFitCover?: boolean;
 }>`
   ${cardWrapperStyles}
   overflow: hidden;
