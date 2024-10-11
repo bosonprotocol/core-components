@@ -6,7 +6,6 @@ import {
   ProductCardCreator,
   ProductCardCreatorAvatar,
   ProductCardCreatorName,
-  ProductCardData,
   ProductCardImageWrapper,
   ProductCardPrice,
   ProductCardPriceWrapper,
@@ -37,7 +36,7 @@ export const ProductCardSkeleton = (props: SkeletonCardProps) => {
       <ProductCardBottom>
         <div>
           <ProductCardBottomContent>
-            <ProductCardData>
+            <Grid flexDirection="column">
               <ProductCardCreator>
                 <ProductCardCreatorAvatar>
                   <LoadingBubble $width="16px" $height="16px" />
@@ -46,7 +45,7 @@ export const ProductCardSkeleton = (props: SkeletonCardProps) => {
                   <LoadingBubble $width="50px" $height="12.5px" />
                 </ProductCardCreatorName>
               </ProductCardCreator>
-            </ProductCardData>
+            </Grid>
             <ProductCardPriceWrapper>
               <ProductCardPrice>
                 <Grid justifyContent="flex-end">
