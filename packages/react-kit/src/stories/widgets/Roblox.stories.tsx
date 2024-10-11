@@ -54,7 +54,44 @@ const BASE_ARGS = {} as const;
 export const Base = {
   args: {
     ...BASE_ARGS,
-    connectRoblox: {
+
+    productsGridProps: {
+      configId: "testing-80002-0",
+      envName: "testing",
+      sellerId: "3",
+      theme: {
+        style: {
+          background: "#F1F3F9"
+        },
+        availableProducts: {
+          title: {
+            style: {
+              margin: 0,
+              color: "#09182C"
+            }
+          },
+          subtitle: {
+            style: {
+              color: "#556072"
+            }
+          }
+        },
+        unavailabeProducts: {
+          title: {
+            style: {
+              margin: 0,
+              color: "#09182C"
+            }
+          },
+          subtitle: {
+            style: {
+              color: "#556072"
+            }
+          }
+        }
+      }
+    },
+    connectProps: {
       config: {
         configId: "testing-80002-0",
         envName: "testing",

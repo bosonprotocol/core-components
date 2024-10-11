@@ -1,24 +1,52 @@
 import { styled } from "styled-components";
-import { ConnectRoblox } from "./components/ConnectRoblox";
+import { ConnectRoblox, ConnectRobloxProps } from "./components/ConnectRoblox";
 import React from "react";
 import { Grid } from "../../ui/Grid";
-import { ProductsRoblox } from "./components/ProductsRoblox";
+import {
+  ProductsRoblox,
+  ProductsRobloxProps
+} from "./components/ProductsRoblox";
+import { CommitWidgetProviders } from "../commit/CommitWidgetProviders";
 
 const Wrapper = styled(Grid)``;
 
 export type RobloxWidgetProps = {
-  connectRoblox: Parameters<typeof ConnectRoblox>[0];
+  connectProps: ConnectRobloxProps;
+  productsGridProps: ProductsRobloxProps;
 };
-export const RobloxWidget = ({ connectRoblox }: RobloxWidgetProps) => {
+export const RobloxWidget = ({
+  connectProps,
+  productsGridProps
+}: RobloxWidgetProps) => {
   return (
-    <Wrapper
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      gap="3rem"
+    <CommitWidgetProviders
+      configId={productsGridProps.configId}
+      envName={productsGridProps.envName}
+      contactSellerForExchangeUrl="https://bosonapp.io/#/chat/{id}"
+      fairExchangePolicyRules="ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt"
+      ipfsGateway={process.env.STORYBOOK_DATA_IPFS_GATEWAY}
+      ipfsProjectId={process.env.STORYBOOK_DATA_IPFS_PROJECT_ID}
+      ipfsProjectSecret={process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET}
+      walletConnectProjectId={
+        process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? ""
+      }
+      dateFormat="YYYY/MM/DD"
+      shortDateFormat="MMM DD, YYYY"
+      defaultCurrencySymbol="$"
+      defaultCurrencyTicker="USD"
+      withCustomReduxContext={false}
+      withReduxProvider={true}
+      withWeb3React={true}
     >
-      <ConnectRoblox {...connectRoblox} />
-      <ProductsRoblox />
-    </Wrapper>
+      <Wrapper
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        gap="3rem"
+      >
+        <ConnectRoblox {...connectProps} />
+        {/* <ProductsRoblox {...productsGridProps} /> */}
+      </Wrapper>
+    </CommitWidgetProviders>
   );
 };

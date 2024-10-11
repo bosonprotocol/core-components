@@ -2,15 +2,15 @@ import React, { ReactNode, createContext, useContext, useMemo } from "react";
 import { isTruthy } from "../../types/helpers";
 
 export type BosonProviderProps = {
-  minimumDisputePeriodInDays: number;
-  minimumDisputeResolutionPeriodDays: number;
+  minimumDisputePeriodInDays?: number;
+  minimumDisputeResolutionPeriodDays?: number;
   fairExchangePolicyRules: string;
   commitProxyAddress?: string;
   openseaLinkToOriginalMainnetCollection?: string;
   enableCurationLists?: boolean;
   withOwnProducts?: "all" | "mine" | "custom";
-  buyerSellerAgreementTemplate: string;
-  licenseTemplate: string;
+  buyerSellerAgreementTemplate?: string;
+  licenseTemplate?: string;
   contactSellerForExchangeUrl: string;
   sellerCurationListBetweenCommas?: string;
   offerCurationListBetweenCommas?: string;
@@ -22,6 +22,10 @@ type BosonContextProps = Omit<
 > & {
   sellerCurationList?: string[];
   offerCurationList?: string[];
+  licenseTemplate: string;
+  buyerSellerAgreementTemplate: string;
+  minimumDisputePeriodInDays: number;
+  minimumDisputeResolutionPeriodDays: number;
 };
 
 const BosonContext = createContext<null | BosonContextProps>(null);
