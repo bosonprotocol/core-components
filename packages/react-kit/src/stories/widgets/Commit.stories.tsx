@@ -1,7 +1,10 @@
 import React from "react";
 import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 
-import { CommitWidget } from "../../components/widgets/commit/CommitWidget";
+import {
+  CommitWidget,
+  CommitWidgetProps
+} from "../../components/widgets/commit/CommitWidget";
 import { EnvironmentType, getEnvConfigs } from "@bosonprotocol/core-sdk";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -27,8 +30,10 @@ export const Commit: ComponentStory<typeof CommitWidget> = Template.bind({});
 const BASE_ARGS = {
   envName,
   configId: envConfig[0].configId,
-  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
-  withCustomReduxContext: false
+  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID || "",
+  withCustomReduxContext: false,
+  withExternalSigner: false,
+  lookAndFeel: "modal"
 } as const;
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Commit.args = {
@@ -42,10 +47,8 @@ Commit.args = {
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
-  offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
-  bundleUuid: "",
   productUuid: "f4bb0f8-2f2c-d151-2801-0d3c6250461", // with size variations
   sellerId: "4",
   metaTx: {
@@ -59,8 +62,9 @@ Commit.args = {
   //   console.log("onAlreadyOwnOfferClick");
   // },
   forcedAccount: "",
-  showBosonLogo: false
-};
+  showBosonLogo: false,
+  withWeb3React: true
+} satisfies CommitWidgetProps;
 
 Commit.decorators = [(Story) => wrapper(Story)];
 
@@ -96,8 +100,9 @@ CommitTokenGated_ERC20.args = {
     console.log("onAlreadyOwnOfferClick");
   },
   forcedAccount: "",
-  showBosonLogo: false
-};
+  showBosonLogo: false,
+  withWeb3React: true
+} satisfies CommitWidgetProps;
 
 CommitTokenGated_ERC20.decorators = [(Story) => wrapper(Story)];
 
@@ -108,9 +113,6 @@ export const CommitWithColorAndSizeVariations: ComponentStory<
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitWithColorAndSizeVariations.args = {
   ...BASE_ARGS,
-  dateFormat: "YYYY/MM/DD",
-  defaultCurrencySymbol: "$",
-  defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
     "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
@@ -134,8 +136,9 @@ CommitWithColorAndSizeVariations.args = {
     console.log("onAlreadyOwnOfferClick");
   },
   forcedAccount: "",
-  showBosonLogo: false
-};
+  showBosonLogo: false,
+  withWeb3React: true
+} satisfies CommitWidgetProps;
 
 CommitWithColorAndSizeVariations.decorators = [(Story) => wrapper(Story)];
 
@@ -171,8 +174,9 @@ CommitTokenGated_ERC721.args = {
     console.log("onAlreadyOwnOfferClick");
   },
   forcedAccount: "",
-  showBosonLogo: false
-};
+  showBosonLogo: false,
+  withWeb3React: true
+} satisfies CommitWidgetProps;
 
 CommitTokenGated_ERC721.decorators = [(Story) => wrapper(Story)];
 
@@ -208,8 +212,9 @@ CommitTokenGated_ERC721_2.args = {
     console.log("onAlreadyOwnOfferClick");
   },
   forcedAccount: "",
-  showBosonLogo: false
-};
+  showBosonLogo: false,
+  withWeb3React: true
+} satisfies CommitWidgetProps;
 
 CommitTokenGated_ERC721_2.decorators = [(Story) => wrapper(Story)];
 
@@ -245,8 +250,9 @@ CommitTokenGated_ERC1155.args = {
     console.log("onAlreadyOwnOfferClick");
   },
   forcedAccount: "",
-  showBosonLogo: false
-};
+  showBosonLogo: false,
+  withWeb3React: true
+} satisfies CommitWidgetProps;
 
 CommitTokenGated_ERC1155.decorators = [(Story) => wrapper(Story)];
 
@@ -258,7 +264,6 @@ export const CommitBundle: ComponentStory<typeof CommitWidget> = Template.bind(
 CommitBundle.args = {
   ...BASE_ARGS,
   configId: "testing-11155111-0",
-  dateFormat: "YYYY/MM/DD",
   defaultCurrencySymbol: "$",
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
@@ -284,7 +289,8 @@ CommitBundle.args = {
     console.log("onAlreadyOwnOfferClick");
   },
   forcedAccount: "",
-  showBosonLogo: false
-};
+  showBosonLogo: false,
+  withWeb3React: true
+} satisfies CommitWidgetProps;
 
 CommitBundle.decorators = [(Story) => wrapper(Story)];

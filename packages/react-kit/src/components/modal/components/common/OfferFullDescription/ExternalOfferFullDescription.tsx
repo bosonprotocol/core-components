@@ -4,7 +4,6 @@ import {
   ConfigProviderProps
 } from "../../../../config/ConfigProvider";
 import { IpfsProvider, IpfsProviderProps } from "../../../../ipfs/IpfsProvider";
-import { WalletConnectionProviderProps } from "../../../../wallet/WalletConnectionProvider";
 import { CommonWidgetTypes } from "../../../../widgets/types";
 import { DetailViewWithProvider } from "../detail/DetailViewWithProvider";
 import {
@@ -21,7 +20,6 @@ export type ExternalOfferFullDescriptionProps = Omit<
   "defaultSelectedTabId"
 > & {
   providerProps: Omit<ConfigProviderProps, "children"> &
-    Omit<WalletConnectionProviderProps, "children" | "envName"> &
     Omit<IpfsProviderProps, "children"> &
     BosonProviderProps;
   defaultSelectedOfferTabsIdTab?: OfferFullDescriptionProps["defaultSelectedTabId"];

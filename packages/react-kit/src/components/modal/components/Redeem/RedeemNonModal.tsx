@@ -7,7 +7,6 @@ import React, {
   useRef,
   useState
 } from "react";
-import { useDisconnect } from "wagmi";
 import * as Yup from "yup";
 import { Exchange } from "../../../../types/exchange";
 import {
@@ -58,6 +57,7 @@ import {
 } from "../common/detail/DetailViewProvider";
 import { getHasBuyerTransferInfos } from "../../../../lib/offer/filter";
 import { BuyerTransferInfo } from "../../../../lib/bundle/const";
+import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 
 const colors = theme.colors.light;
 const UlWithWordBreak = styled.ul`
@@ -418,12 +418,7 @@ function RedeemNonModal({
     }
   }, [currentStep]);
   const { address } = useAccount();
-  const { disconnectAsync, status } = useDisconnect();
-  const disconnect = useCallback(() => {
-    if (disconnectAsync && status !== "loading") {
-      disconnectAsync();
-    }
-  }, [disconnectAsync, status]);
+  const disconnect = useDisconnect();
 
   useEffect(() => {
     // if the user disconnects their wallet amid redeem, cancellation, etc process, reset current flow
@@ -456,7 +451,7 @@ function RedeemNonModal({
     forcedAccount.toLowerCase() !== address.toLowerCase()
   ) {
     // force disconnection as the current connected wallet is not the forced one
-    disconnect();
+    disconnect({ isUserDisconnecting: false });
   }
 
   if (!address) {

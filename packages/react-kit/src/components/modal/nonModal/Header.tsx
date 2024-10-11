@@ -3,9 +3,9 @@ import { theme } from "../../../theme";
 import styled from "styled-components";
 import { X } from "phosphor-react";
 import { Grid } from "../../ui/Grid";
-import ConnectButton from "../../wallet/ConnectButton";
 import ThemedButton from "../../ui/ThemedButton";
 import { useBreakpoints } from "../../../hooks/useBreakpoints";
+import { BosonConnectWallet } from "../../wallet2/web3Status/BosonConnectWallet";
 
 const colors = theme.colors.light;
 const Wrapper = styled.div<{ $flexWrap: string }>`
@@ -57,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({
     <Wrapper $flexWrap={isLteXS ? "wrap" : "nowrap"}>
       <InnerContainer>
         {HeaderComponent}
-        {showConnectButton && !isLteXS && <ConnectButton showChangeWallet />}
+        {showConnectButton && !isLteXS && <BosonConnectWallet />}
         {closable && (
           <ThemedButton
             data-close
@@ -72,7 +72,7 @@ const Header: React.FC<HeaderProps> = ({
 
       {showConnectButton && isLteXS && (
         <Grid justifyContent="flex-end">
-          <ConnectButton showChangeWallet />
+          <BosonConnectWallet />
         </Grid>
       )}
     </Wrapper>

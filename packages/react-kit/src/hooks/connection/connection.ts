@@ -2,37 +2,23 @@
 // source: https://wagmi.sh/react/ethers-adapters
 
 import { useMemo } from "react";
-import { useNetwork, useAccount as useWagmiAccount } from "wagmi";
 import { useUser } from "../../components/magicLink/UserContext";
 import {
   useIsMagicLoggedIn,
   useMagicChainId,
   useMagicProvider
 } from "../magic";
-import { useEthersSigner } from "../ethers/useEthersSigner";
 import { useConfigContext } from "../../components/config/ConfigContext";
 import { useExternalSigner } from "../../components/signer/useExternalSigner";
 import { useSignerAddress } from "../useSignerAddress";
-import { useEthersProvider } from "../ethers/useEthersProvider";
 import { useQuery } from "react-query";
 import { useExternalSignerChainId } from "../../lib/signer/externalSigner";
 import { Signer, providers } from "ethers";
 import { useWeb3ReactWrapper } from "../web3React/useWeb3ReactWrapper";
 
 export function useAccount() {
-  let wagmiAccount: `0x${string}` | undefined, error: unknown;
   const { account: web3ReactAccount } = useWeb3ReactWrapper() || {};
-  const {
-    withExternalConnectionProps,
-    externalConnectedAccount,
-    withWeb3React
-  } = useConfigContext();
-  try {
-    const { address: account } = useWagmiAccount();
-    wagmiAccount = account;
-  } catch (err) {
-    error = err;
-  }
+  const { externalConnectedAccount } = useConfigContext();
 
   const { user } = useUser();
   const { externalWeb3LibAdapter } = useExternalSigner() ?? {};
@@ -44,42 +30,22 @@ export function useAccount() {
       address:
         externalConnectedAccount ??
         externalSignerAddress ??
-        wagmiAccount ??
         web3ReactAccount ??
         user
     }),
-    [
-      wagmiAccount,
-      user,
-      web3ReactAccount,
-      externalSignerAddress,
-      externalConnectedAccount
-    ]
+    [user, web3ReactAccount, externalSignerAddress, externalConnectedAccount]
   );
-  if (!withExternalConnectionProps && error && !withWeb3React) {
-    throw error;
-  }
   return account;
 }
 
 export function useChainId(): number | undefined {
   const { chainId: web3ReactChainId } = useWeb3ReactWrapper() || {};
-  const {
-    withExternalConnectionProps,
-    externalConnectedChainId,
-    withWeb3React
-  } = useConfigContext();
+  const { externalConnectedChainId } = useConfigContext();
   const externalSigner = useExternalSigner();
   const { data: externalSignerChainId } = useExternalSignerChainId();
   const magicChainId = useMagicChainId();
   const isMagicLoggedIn = useIsMagicLoggedIn();
-  let networkChainId: number | undefined;
-  let error: unknown;
-  try {
-    networkChainId = useNetwork().chain?.id;
-  } catch (wagmiError) {
-    error = wagmiError; // error if the provider is not there
-  }
+
   if (externalConnectedChainId) {
     return externalConnectedChainId;
   }
@@ -89,13 +55,7 @@ export function useChainId(): number | undefined {
   if (isMagicLoggedIn) {
     return magicChainId;
   }
-  if (web3ReactChainId) {
-    return web3ReactChainId;
-  }
-  if (!withExternalConnectionProps && error && !withWeb3React) {
-    throw error;
-  }
-  return networkChainId;
+  return web3ReactChainId;
 }
 
 export function useIsConnectedToWrongChain(): boolean {
@@ -108,40 +68,21 @@ export function useIsConnectedToWrongChain(): boolean {
 export function useProvider():
   | providers.JsonRpcProvider
   | providers.FallbackProvider {
-  const { withExternalConnectionProps, withWeb3React } = useConfigContext();
+  const { withWeb3React } = useConfigContext();
   const { provider: web3Provider } = useWeb3ReactWrapper() || {};
-  let provider;
-  let error: unknown;
-  try {
-    provider = useEthersProvider();
-  } catch (wagmiError) {
-    error = wagmiError; // error if the provider is not there
-  }
+
   const magicProvider = useMagicProvider();
   const isMagicLoggedIn = useIsMagicLoggedIn();
-  if (!withExternalConnectionProps && error && !withWeb3React) {
-    throw error;
-  }
+
   return isMagicLoggedIn
-    ? magicProvider ?? web3Provider ?? provider
+    ? magicProvider ?? web3Provider
     : withWeb3React
-      ? web3Provider ?? magicProvider ?? provider
-      : provider ?? magicProvider ?? web3Provider;
+      ? web3Provider ?? magicProvider
+      : magicProvider ?? web3Provider;
 }
 
 export function useSigner(): Signer | undefined {
-  const {
-    withExternalConnectionProps,
-    externalConnectedSigner,
-    withWeb3React
-  } = useConfigContext();
-  let wagmiSigner: ReturnType<typeof useEthersSigner>, error: unknown;
-  try {
-    const ethersSigner = useEthersSigner();
-    wagmiSigner = ethersSigner;
-  } catch (wagmiError) {
-    error = wagmiError; // error if the provider is not there
-  }
+  const { externalConnectedSigner } = useConfigContext();
   const { externalSigner } = useExternalSigner() ?? {};
   const magicProvider = useMagicProvider();
   const isMagicLoggedIn = useIsMagicLoggedIn();
@@ -154,21 +95,14 @@ export function useSigner(): Signer | undefined {
         ? externalSigner
         : isMagicLoggedIn
           ? magicProvider?.getSigner()
-          : withWeb3React
-            ? web3Provider?.getSigner()
-            : wagmiSigner;
+          : web3Provider?.getSigner();
   }, [
     externalConnectedSigner,
     externalSigner,
-    wagmiSigner,
     magicProvider,
     isMagicLoggedIn,
-    web3Provider,
-    withWeb3React
+    web3Provider
   ]);
-  if (!withExternalConnectionProps && error && !withWeb3React) {
-    throw error;
-  }
   return signer;
 }
 

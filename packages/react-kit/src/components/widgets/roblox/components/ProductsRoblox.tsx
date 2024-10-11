@@ -73,7 +73,7 @@ export const ProductsRoblox = ({
           </Typography>
         </Grid>
       </>
-      <CommitWidget
+      {/* <CommitWidget
         sellerId={sellerId}
         productUuid={productUuid}
         bundleUuid={bundleUuid}
@@ -97,7 +97,7 @@ export const ProductsRoblox = ({
         lookAndFeel="regular"
       >
         <></>
-      </CommitWidget>
+      </CommitWidget> */}
     </Wrapper>
   );
 };

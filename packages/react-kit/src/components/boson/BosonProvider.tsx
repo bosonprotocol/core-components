@@ -4,14 +4,14 @@ import { isTruthy } from "../../types/helpers";
 export type BosonProviderProps = {
   minimumDisputePeriodInDays?: number;
   minimumDisputeResolutionPeriodDays?: number;
-  fairExchangePolicyRules: string;
+  fairExchangePolicyRules?: string;
   commitProxyAddress?: string;
   openseaLinkToOriginalMainnetCollection?: string;
   enableCurationLists?: boolean;
   withOwnProducts?: "all" | "mine" | "custom";
   buyerSellerAgreementTemplate?: string;
   licenseTemplate?: string;
-  contactSellerForExchangeUrl: string;
+  contactSellerForExchangeUrl?: string;
   sellerCurationListBetweenCommas?: string;
   offerCurationListBetweenCommas?: string;
 };
@@ -23,6 +23,8 @@ type BosonContextProps = Omit<
   sellerCurationList?: string[];
   offerCurationList?: string[];
   licenseTemplate: string;
+  fairExchangePolicyRules: string;
+  contactSellerForExchangeUrl: string;
   buyerSellerAgreementTemplate: string;
   minimumDisputePeriodInDays: number;
   minimumDisputeResolutionPeriodDays: number;
@@ -58,6 +60,11 @@ export function BosonProvider({
         minimumDisputePeriodInDays: rest.minimumDisputePeriodInDays || 30,
         minimumDisputeResolutionPeriodDays:
           rest.minimumDisputeResolutionPeriodDays || 15,
+        fairExchangePolicyRules:
+          rest.fairExchangePolicyRules ||
+          "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+        contactSellerForExchangeUrl:
+          rest.contactSellerForExchangeUrl || "https://bosonapp.io/#/chat/{id}",
         buyerSellerAgreementTemplate:
           rest.buyerSellerAgreementTemplate ||
           "ipfs://QmXxRznUVMkQMb6hLiojbiv9uDw22RcEpVk6Gr3YywihcJ",

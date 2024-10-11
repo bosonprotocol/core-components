@@ -10,7 +10,6 @@ import { ModalProvider } from "../../modal/ModalProvider";
 import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 import { SignerProvider } from "../../signer/SignerProvider";
 import GlobalStyle from "../../styles/GlobalStyle";
-import { WalletConnectionProviderProps } from "../../wallet/WalletConnectionProvider";
 import { WithReduxProvider, WithReduxProviderProps } from "../ReduxProvider";
 import { getParentWindowOrigin } from "../common";
 import ConvertionRateProvider, {
@@ -20,13 +19,15 @@ import { CommonWidgetTypes } from "../types";
 import { RedemptionContextProps } from "./provider/RedemptionContext";
 import { RedemptionProvider } from "./provider/RedemptionProvider";
 import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
+import { Web3Provider, Web3ProviderProps } from "../../wallet2/web3Provider";
+import { BlockNumberProvider } from "../../../hooks/contracts/useBlockNumber";
 
 export type RedemptionWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   Omit<RedemptionContextProps, "setWidgetAction"> &
   ConvertionRateProviderProps &
   CommonWidgetTypes &
-  Omit<WalletConnectionProviderProps, "children" | "envName"> &
+  Omit<Web3ProviderProps, "infuraKey"> &
   BosonProviderProps &
   WithReduxProviderProps & {
     signatures?: string[] | undefined | null; // signature1,signature2,signature3
@@ -44,31 +45,35 @@ export const RedemptionWidgetProviders: React.FC<RedemptionWidgetProvidersProps>
         withCustomReduxContext={props.withCustomReduxContext}
         withReduxProvider={props.withReduxProvider}
       >
-        <ConfigProvider
-          magicLinkKey={magicLinkKey}
-          infuraKey={infuraKey}
-          {...props}
-        >
-          <BosonProvider {...props}>
-            <GlobalStyle />
-            <SignerProvider
-              parentOrigin={parentOrigin}
-              withExternalSigner={props.withExternalSigner}
-            >
-              <ChatProvider>
-                <IpfsProvider {...props}>
-                  <ConvertionRateProvider>
-                    <ModalProvider>
-                      <RedemptionProvider {...props}>
-                        {children}
-                      </RedemptionProvider>
-                    </ModalProvider>
-                  </ConvertionRateProvider>
-                </IpfsProvider>
-              </ChatProvider>
-            </SignerProvider>
-          </BosonProvider>
-        </ConfigProvider>
+        <Web3Provider {...props} infuraKey={infuraKey}>
+          <ConfigProvider
+            magicLinkKey={magicLinkKey}
+            {...props}
+            infuraKey={infuraKey}
+          >
+            <BlockNumberProvider>
+              <BosonProvider {...props}>
+                <GlobalStyle />
+                <SignerProvider
+                  parentOrigin={parentOrigin}
+                  withExternalSigner={props.withExternalSigner}
+                >
+                  <ChatProvider>
+                    <IpfsProvider {...props}>
+                      <ConvertionRateProvider>
+                        <ModalProvider>
+                          <RedemptionProvider {...props}>
+                            {children}
+                          </RedemptionProvider>
+                        </ModalProvider>
+                      </ConvertionRateProvider>
+                    </IpfsProvider>
+                  </ChatProvider>
+                </SignerProvider>
+              </BosonProvider>
+            </BlockNumberProvider>
+          </ConfigProvider>
+        </Web3Provider>
       </WithReduxProvider>
     );
   });

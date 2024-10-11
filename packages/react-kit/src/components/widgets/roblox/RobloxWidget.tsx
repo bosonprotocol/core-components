@@ -22,18 +22,12 @@ export const RobloxWidget = ({
     <CommitWidgetProviders
       configId={productsGridProps.configId}
       envName={productsGridProps.envName}
-      contactSellerForExchangeUrl="https://bosonapp.io/#/chat/{id}"
-      fairExchangePolicyRules="ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt"
       ipfsGateway={process.env.STORYBOOK_DATA_IPFS_GATEWAY}
       ipfsProjectId={process.env.STORYBOOK_DATA_IPFS_PROJECT_ID}
       ipfsProjectSecret={process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET}
       walletConnectProjectId={
         process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? ""
       }
-      dateFormat="YYYY/MM/DD"
-      shortDateFormat="MMM DD, YYYY"
-      defaultCurrencySymbol="$"
-      defaultCurrencyTicker="USD"
       withCustomReduxContext={false}
       withReduxProvider={true}
       withWeb3React={true}
@@ -45,7 +39,7 @@ export const RobloxWidget = ({
         gap="3rem"
       >
         <ConnectRoblox {...connectProps} />
-        {/* <ProductsRoblox {...productsGridProps} /> */}
+        <ProductsRoblox {...productsGridProps} />
       </Wrapper>
     </CommitWidgetProviders>
   );

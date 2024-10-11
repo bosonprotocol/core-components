@@ -1,6 +1,5 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Provider } from "@bosonprotocol/ethers-sdk";
-import { useAccountModal } from "@rainbow-me/rainbowkit";
 import * as Sentry from "@sentry/browser";
 import { BigNumberish, ethers, providers } from "ethers";
 import { ArrowRight, ArrowsLeftRight, Spinner } from "phosphor-react";
@@ -35,6 +34,7 @@ import { BuyOrSwapContainer } from "../../common/detail/BuyOrSwapContainer";
 import { useDetailViewContext } from "../../common/detail/DetailViewProvider";
 import { DetailViewProps } from "../../common/detail/types";
 import { useBuyers } from "../../../../../hooks/useBuyers";
+import { useOpenAccountDrawer } from "../../../../wallet2/accountDrawer";
 const colors = theme.colors.light;
 
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
@@ -124,7 +124,7 @@ export default function InnerCommitDetailView(
   const coreSDK = useCoreSDKWithContext();
   const commitButtonRef = useRef<HTMLButtonElement>(null);
   const { address } = useAccount();
-  const { openAccountModal } = useAccountModal();
+  const [, openAccountDrawer] = useOpenAccountDrawer();
   const onCommitPendingSignature = () => {
     setIsLoading(true);
     showModal("WAITING_FOR_CONFIRMATION");
@@ -329,7 +329,7 @@ export default function InnerCommitDetailView(
                   if (!address) {
                     saveItemInStorage("isConnectWalletFromCommit", true);
                     setIsCommittingFromNotConnectedWallet(true);
-                    openAccountModal?.();
+                    openAccountDrawer();
                   }
                 }}
               >

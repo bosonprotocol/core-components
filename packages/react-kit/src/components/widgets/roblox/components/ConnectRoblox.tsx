@@ -6,19 +6,15 @@ import { BaseButton, BaseButtonTheme } from "../../../buttons/BaseButton";
 import { ConnectWallet } from "../../../wallet2/web3Status";
 import { Portal } from "../../../portal/Portal";
 import { AccountDrawer } from "../../../wallet2/accountDrawer";
-import { WithProvidersProps } from "./withProviders";
 import { useAccount } from "../../../../hooks";
 import { CheckCircle, Power } from "phosphor-react";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { useRobloxLogout } from "../../../../hooks/roblox/useRobloxLogout";
 
-const Wrapper = styled.div`
+const Wrapper = styled(Grid)`
   container-type: inline-size;
   display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-
   flex-direction: row;
 `;
 
@@ -214,7 +210,7 @@ type CardThemeProps = {
       Required<Pick<BaseButtonTheme, "color" | "background">>;
   };
 };
-export type ConnectRobloxProps = WithProvidersProps & {
+export type ConnectRobloxProps = {
   brand: string;
   theme: {
     robloxCard: CardThemeProps;
@@ -258,7 +254,7 @@ export const ConnectRoblox = ({ brand, theme }: ConnectRobloxProps) => {
   }, [address, isRobloxLoggedIn]);
   const isConnectWalletStepActive = activeStep >= 1 || !!address;
   return (
-    <Wrapper>
+    <Wrapper justifyContent="center" gap="1.5rem">
       <Step
         name="roblox"
         theme={theme}
@@ -357,7 +353,7 @@ export const ConnectRoblox = ({ brand, theme }: ConnectRobloxProps) => {
                 theme={theme.walletCard.button.inactive}
                 onClick={() => disconnect({ isUserDisconnecting: true })}
               >
-                Disconnect Wallet <StyledPower size={20} />
+                Disconnect Account <StyledPower size={20} />
               </BaseButton>
             ) : (
               <ConnectWallet

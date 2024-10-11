@@ -34,7 +34,10 @@ type CommitProps = {
     modalMargin?: CSSProperties["margin"];
   };
 export type CommitWidgetProps = CommitProps &
-  Omit<CommitWidgetProvidersProps, "withReduxProvider" | "provider">;
+  Omit<
+    CommitWidgetProvidersProps,
+    "withReduxProvider" | "provider" | "children"
+  >;
 
 export function CommitWidget(props: CommitWidgetProps) {
   return (

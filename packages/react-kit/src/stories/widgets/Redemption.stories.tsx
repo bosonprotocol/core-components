@@ -1,7 +1,10 @@
 import React from "react";
 import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 
-import { RedemptionWidget } from "../../components/widgets/redemption/RedemptionWidget";
+import {
+  RedemptionWidget,
+  RedemptionWidgetProps
+} from "../../components/widgets/redemption/RedemptionWidget";
 import {
   EnvironmentType,
   getEnvConfigs,
@@ -32,13 +35,17 @@ const envName =
   (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
 const envConfig = getEnvConfigs(envName);
 const BASE_ARGS = {
-  withCustomReduxContext: false
-};
+  withCustomReduxContext: false,
+  raiseDisputeForExchangeUrl: "domain.com/{id}",
+  lookAndFeel: "modal",
+  withWeb3React: true,
+  withReduxProvider: true
+} as const;
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Redemption.args = {
   envName,
   configId: envConfig[0].configId,
-  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID || "",
   dateFormat: "YYYY/MM/DD",
   defaultCurrencySymbol: "$",
   defaultCurrencyTicker: "USD",
@@ -66,7 +73,7 @@ Redemption.args = {
   sellerIds: undefined,
   signatures: undefined,
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 Redemption.decorators = [(Story) => wrapper(Story)];
 
@@ -85,7 +92,7 @@ RedemptionCallbacks.args = {
     "0x8357f1aabd7b1811c4b7e30ed867471b9d813614ebb56ce0a90d9bae0b86c4a5272a1b9749c1cf9ad6823eb6fe5a0367c0f727b68bd411eec02167080d28d3a21c"
   ],
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 export const RedemptionCallbacksThenClose: ComponentStory<
   typeof RedemptionWidget
@@ -98,7 +105,7 @@ RedemptionCallbacksThenClose.args = {
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed",
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 export const RedemptionCallbacksRedeemConfirm: ComponentStory<
   typeof RedemptionWidget
@@ -117,7 +124,7 @@ RedemptionCallbacksRedeemConfirm.args = {
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed",
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 export const RedemptionCallbacksFailure: ComponentStory<
   typeof RedemptionWidget
@@ -130,7 +137,7 @@ RedemptionCallbacksFailure.args = {
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed",
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 export const RedemptionCallbacksFailure2: ComponentStory<
   typeof RedemptionWidget
@@ -146,7 +153,7 @@ RedemptionCallbacksFailure2.args = {
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed",
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 export const RedemptionCallbacksFailure3: ComponentStory<
   typeof RedemptionWidget
@@ -172,7 +179,7 @@ RedemptionCallbacksFailure3.args = {
   postRedemptionSubmittedUrl: "http://localhost:3666/fail3",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed",
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 export const RedemptionCallbacksFailure4: ComponentStory<
   typeof RedemptionWidget
@@ -198,7 +205,7 @@ RedemptionCallbacksFailure4.args = {
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/fail4",
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 export const RedemptionHandlers: ComponentStory<typeof RedemptionWidget> =
   Template.bind({});
@@ -229,7 +236,7 @@ RedemptionHandlers.args = {
     };
   },
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 export const RedemptionHandlersNoResume: ComponentStory<
   typeof RedemptionWidget
@@ -246,7 +253,7 @@ RedemptionHandlersNoResume.args = {
     };
   },
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 export const RedemptionHandlersFailure1: ComponentStory<
   typeof RedemptionWidget
@@ -263,7 +270,7 @@ RedemptionHandlersFailure1.args = {
     };
   },
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 export const RedemptionHandlersFailure2: ComponentStory<
   typeof RedemptionWidget
@@ -276,7 +283,7 @@ RedemptionHandlersFailure2.args = {
     throw new Error("Redemption handler is throwing an exception");
   },
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 export const RedemptionHandlersFailure3: ComponentStory<
   typeof RedemptionWidget
@@ -298,7 +305,7 @@ RedemptionHandlersFailure3.args = {
     throw new Error("Redemption handler is throwing an exception");
   },
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 export const RedemptionHandlersFailure4: ComponentStory<
   typeof RedemptionWidget
@@ -320,4 +327,4 @@ RedemptionHandlersFailure4.args = {
     throw new Error("Redemption handler is throwing an exception");
   },
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
