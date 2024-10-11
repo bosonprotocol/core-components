@@ -7,16 +7,41 @@ import React from "react";
 import { Meta } from "@storybook/react";
 import { bosonButtonThemes } from "../../components/ui/ThemedButton";
 import { createGlobalStyle } from "styled-components";
-
+import { EnvironmentType, getEnvConfigs } from "@bosonprotocol/core-sdk";
+import { CommitWidgetProviders } from "../../components/widgets/commit/CommitWidgetProviders";
+const envName =
+  (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
+const envConfig = getEnvConfigs(envName);
+const configId = envConfig[0].configId;
 const GlobalStyle = createGlobalStyle`
-    #storybook-root {
+    #storybook-root, [scale="1"] {
         width: 100%;
     }
 `;
+
+const ConnectRobloxWrapper = (props: ConnectRobloxProps) => {
+  return (
+    <CommitWidgetProviders
+      configId={configId}
+      envName={envName}
+      ipfsGateway={process.env.STORYBOOK_DATA_IPFS_GATEWAY}
+      ipfsProjectId={process.env.STORYBOOK_DATA_IPFS_PROJECT_ID}
+      ipfsProjectSecret={process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET}
+      walletConnectProjectId={
+        process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? ""
+      }
+      withCustomReduxContext={false}
+      withReduxProvider={true}
+      withWeb3React={true}
+    >
+      <ConnectRoblox {...props} />
+    </CommitWidgetProviders>
+  );
+};
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Visual Components/Roblox/ConnectRoblox",
-  component: ConnectRoblox,
+  component: ConnectRobloxWrapper,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: "centered"
@@ -45,7 +70,7 @@ export default {
       );
     }
   ]
-} satisfies Meta<typeof ConnectRoblox>;
+} satisfies Meta<typeof ConnectRobloxWrapper>;
 
 const BASE_ARGS = {} as const;
 
@@ -53,14 +78,6 @@ const BASE_ARGS = {} as const;
 export const Base = {
   args: {
     ...BASE_ARGS,
-    config: {
-      configId: "testing-80002-0",
-      envName: "testing",
-      infuraKey: process.env.REACT_APP_INFURA_KEY ?? "",
-      magicLinkKey: process.env.STORYBOOK_REACT_APP_MAGIC_API_KEY ?? "",
-      walletConnectProjectId:
-        process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? ""
-    },
     brand: "GYMSHARK",
     theme: {
       robloxCard: {

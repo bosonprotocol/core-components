@@ -9,7 +9,7 @@ import { bosonButtonThemes } from "../../components/ui/ThemedButton";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-    #storybook-root,[data-rk] {
+    #storybook-root,[data-rk], [scale="1"] {
         width: 100%;
     }
 `;

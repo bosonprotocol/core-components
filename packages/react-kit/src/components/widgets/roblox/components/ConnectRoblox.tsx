@@ -344,7 +344,7 @@ export const ConnectRoblox = ({ brand, theme }: ConnectRobloxProps) => {
             />
           </svg>
         }
-        title="Connect your Wallet"
+        title="Create an account"
         subtitle="Linking your Roblox account to your wallet to signal your permission."
         button={
           <>
@@ -361,6 +361,7 @@ export const ConnectRoblox = ({ brand, theme }: ConnectRobloxProps) => {
                 connectWalletButtonTheme={theme.walletCard.button.active}
                 connectedButtonTheme={theme.walletCard.button.active}
                 errorButtonTheme={theme.walletCard.button.active}
+                connectWalletChild="Connect Account"
               />
             )}
             <Portal>
@@ -397,7 +398,7 @@ export const ConnectRoblox = ({ brand, theme }: ConnectRobloxProps) => {
                   },
                   PrivacyPolicy: () => (
                     <Typography
-                      style={{ color: "rgb(9, 24, 44)" }}
+                      style={{ color: "rgb(9, 24, 44)", fontSize: "0.75rem" }}
                       display="block"
                     >
                       By connecting a wallet, you agree to Boson App 's{" "}
@@ -405,6 +406,7 @@ export const ConnectRoblox = ({ brand, theme }: ConnectRobloxProps) => {
                         href="https://bosonapp.io/#/terms-and-conditions"
                         target="_blank"
                         rel="noreferrer noopener"
+                        style={{ fontSize: "inherit" }}
                       >
                         Terms & Conditions
                       </a>{" "}
@@ -413,6 +415,7 @@ export const ConnectRoblox = ({ brand, theme }: ConnectRobloxProps) => {
                         href="https://bosonapp.io/#/privacy-policy"
                         target="_blank"
                         rel="noreferrer noopener"
+                        style={{ fontSize: "inherit" }}
                       >
                         Privacy Policy
                       </a>
