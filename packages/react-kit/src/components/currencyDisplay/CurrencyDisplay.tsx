@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled, { css, CSSProperties } from "styled-components";
 
 import {
   Bitcoin,
@@ -67,13 +67,13 @@ const CurrencyDisplayValueWrapper = styled.div`
 `;
 
 const CurrencyDisplayValue = styled.span<{
-  $height: number;
-  $fontSize?: number | string;
-  $gap?: number | string;
+  $height: CSSProperties["height"];
+  $fontSize?: CSSProperties["fontSize"];
+  $gap?: CSSProperties["gap"];
 }>`
   ${({ $height, $fontSize, $gap }) => css`
     line-height: ${$height}px;
-    font-size: ${$fontSize ? $fontSize : `${($height - 5) / 16}rem`};
+    font-size: ${$fontSize ? $fontSize : `${(Number($height) - 5) / 16}rem`};
     padding-left: ${$gap !== undefined ? $gap : "1rem"};
   `}
   color: #09182c;

@@ -155,7 +155,7 @@ export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
   justify-content: space-between;
   flex-direction: column;
   cursor: pointer;
-  min-height: unset;
+  min-height: 286px;
   height: 286px;
   padding: 0 1rem 1rem 1rem;
   [data-image-wrapper] {

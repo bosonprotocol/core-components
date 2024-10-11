@@ -40,6 +40,7 @@ interface IProductCard {
   tooltip?: string;
   tooltipProps?: Omit<TooltipProps, "content">;
   CTAOnHover?: ReactNode;
+  hideCreatorName?: boolean;
 }
 
 const Wrapper = ({
@@ -79,7 +80,8 @@ export const ProductCard = (props: IProductCard) => {
     title,
     tooltip = "",
     tooltipProps = {},
-    CTAOnHover
+    CTAOnHover,
+    hideCreatorName = false
   } = props;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -112,9 +114,11 @@ export const ProductCard = (props: IProductCard) => {
                 {title}
               </ProductCardTitle>
             </ProductCardTitleWrapper>
-            <ProductCardCreatorName data-avatarname="product-card">
-              {avatarName}
-            </ProductCardCreatorName>
+            {!hideCreatorName && (
+              <ProductCardCreatorName data-avatarname="product-card">
+                {avatarName}
+              </ProductCardCreatorName>
+            )}
           </Grid>
           <Wrapper tooltip={tooltip} tooltipProps={tooltipProps}>
             <CurrencyDisplay
