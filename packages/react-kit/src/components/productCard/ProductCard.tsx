@@ -6,28 +6,19 @@ import {
 import { IBaseImage, Image } from "../image/Image";
 import { Tooltip, TooltipProps } from "../tooltip/Tooltip";
 import {
-  BottomText,
   ProductCardBottom,
   ProductCardBottomContent,
-  ProductCardCreator,
-  ProductCardCreatorAvatar,
   TopLeftRibbon,
   ProductCardCreatorName,
-  ProductCardData,
   ProductCardImageWrapper,
-  ProductCardPrice,
-  ProductCardPriceWrapper,
   ProductCardTitle,
   ProductCardTitleWrapper,
   ProductCardWrapper,
-  CTAOnHoverContainer,
-  ProductCardImageAndCTAContainer
+  CTAOnHoverContainer
 } from "./ProductCard.styles";
 
 import { ProductType } from "./const";
 import { Grid } from "../ui/Grid";
-import { Button } from "../buttons/Button";
-import { Typography } from "../ui/Typography";
 
 interface IProductCard {
   asterisk?: boolean;
