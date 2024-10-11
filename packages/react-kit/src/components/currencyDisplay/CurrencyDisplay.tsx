@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled, { css, CSSProperties } from "styled-components";
 
 import {
   Bitcoin,
@@ -24,10 +24,14 @@ export enum Currencies {
   USDC = "USDC",
   WETH = "WETH"
 }
+
 interface CurrencyDisplayProps {
   value?: number | string;
   currency: Currencies;
   height?: number;
+  fontSize?: number | string;
+  iconSize?: number;
+  gap?: number | string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any;
 }
@@ -36,6 +40,9 @@ export const CurrencyDisplay = ({
   value,
   currency,
   height = 25,
+  fontSize,
+  iconSize,
+  gap,
   ...rest
 }: CurrencyDisplayProps) => {
   return (
@@ -43,9 +50,11 @@ export const CurrencyDisplay = ({
       style={{ height: `${height}px`, width: "100%" }}
       {...rest}
     >
-      <CurrencyLogo currency={currency} size={height} />
+      <CurrencyLogo currency={currency} size={iconSize || height} />
       {value && (
-        <CurrencyDisplayValue $height={height}>{value}</CurrencyDisplayValue>
+        <CurrencyDisplayValue $height={height} $fontSize={fontSize} $gap={gap}>
+          {value}
+        </CurrencyDisplayValue>
       )}
     </CurrencyDisplayValueWrapper>
   );
@@ -57,17 +66,20 @@ const CurrencyDisplayValueWrapper = styled.div`
   align-items: center;
 `;
 
-const CurrencyDisplayValue = styled.span<{ $height: number }>`
-  ${({ $height }) => css`
+const CurrencyDisplayValue = styled.span<{
+  $height: CSSProperties["height"];
+  $fontSize?: CSSProperties["fontSize"];
+  $gap?: CSSProperties["gap"];
+}>`
+  ${({ $height, $fontSize, $gap }) => css`
     line-height: ${$height}px;
-    font-size: ${($height - 5) / 16}rem;
+    font-size: ${$fontSize ? $fontSize : `${(Number($height) - 5) / 16}rem`};
+    padding-left: ${$gap !== undefined ? $gap : "1rem"};
   `}
-
   color: #09182c;
   display: flex;
   text-align: right;
   align-items: center;
-  padding-left: 1rem;
 `;
 
 export const CurrencyLogo = ({
@@ -80,31 +92,22 @@ export const CurrencyLogo = ({
   switch (currency) {
     case Currencies.ETH:
       return <Ether size={size} />;
-
     case Currencies.BTC:
       return <Bitcoin size={size} />;
-
     case Currencies.POLYGON:
       return <Polygon size={size} />;
-
     case Currencies.SOLANA:
       return <Solana size={size} />;
-
     case Currencies.TETHER:
       return <Tether size={size} />;
-
     case Currencies.DAI:
       return <Dai size={size} />;
-
     case Currencies.WETH:
       return <Weth size={size} />;
-
     case Currencies.BOSON:
       return <Boson size={size} />;
-
     case Currencies.USDC:
       return <Usdc size={size} />;
-
     default:
       return <div>{currency}</div>;
   }

@@ -1,13 +1,14 @@
 import styled, { css } from "styled-components";
 import { theme } from "../../theme";
 import { cardWrapperStyles } from "./commonStyles";
+import { Typography } from "../ui/Typography";
+import { zIndex } from "../ui/zIndex";
 
 export const ProductCardLabelWrapper = styled.div`
   position: absolute;
   top: 0.5rem;
   left: 0.5rem;
   background: white;
-  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
   font-weight: 600;
   color: ${({ theme }) => theme?.colors?.light.darkGrey};
   z-index: 1;
@@ -73,20 +74,24 @@ export const ProductCardCreatorAvatar = styled.div`
 
 export const ProductCardCreatorName = styled.div`
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.625rem;
   line-height: 150%;
-  min-height: 3em;
-  color: ${({ theme }) => theme?.colors?.light.accent};
+  color: ${({ theme }) => theme?.colors?.light.darkGrey};
   flex: none;
   order: 1;
   flex-grow: 0;
-  justify-self: flex-end;
-  margin-bottom: 0.25rem;
+  justify-self: flex-start;
+  margin-right: auto;
+  > span {
+    font-weight: 600;
+    font-size: 0.625rem;
+    color: ${({ theme }) => theme?.colors?.light.darkGrey};
+  }
 `;
 
-export const ProductCardTitle = styled.div.attrs({ className: "title" })`
-  font-weight: 600;
-  font-size: 1.25rem;
+export const ProductCardTitle = styled(Typography).attrs({
+  className: "title"
+})`
   color: ${({ theme }) => theme?.colors?.light.black};
   word-break: break-word;
   overflow: hidden;
@@ -117,37 +122,34 @@ export const ProductCardPrice = styled.div`
   color: ${({ theme }) => theme?.colors?.light.darkGrey};
 `;
 
-export const ProductCardData = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 export const ProductCardBottom = styled.div.attrs({ className: "bottom" })`
   width: 100%;
-  background: ${theme?.colors?.light.white};
   height: 12rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
+  z-index: ${zIndex.ChatSeparator};
+  flex: 0;
 `;
 export const ProductCardBottomContent = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   width: 100%;
-  padding: 1rem 1.5rem 0.5rem 1.5rem;
   box-sizing: border-box;
   align-items: flex-start;
   column-gap: 0.25rem;
-  border-top: 2px solid ${theme.colors.light.border};
 `;
 
 export const ProductCardTitleWrapper = styled.div`
   width: 100%;
-  padding: 0 1.5rem 0.5rem 1.5rem;
   box-sizing: border-box;
 `;
 
-export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
+export const ProductCardWrapper = styled.div<{
+  $isHoverDisabled: boolean;
+  $isImageFitCover?: boolean;
+}>`
   ${cardWrapperStyles}
   overflow: hidden;
   position: relative;
@@ -156,6 +158,9 @@ export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
   justify-content: space-between;
   flex-direction: column;
   cursor: pointer;
+  min-height: 286px;
+  height: 286px;
+  padding: 0 1rem 1rem 1rem;
   [data-image-wrapper] {
     position: static;
     padding-top: 0;
@@ -163,6 +168,15 @@ export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
     display: flex;
     justify-content: center;
     align-items: center;
+    ${({ $isImageFitCover }) =>
+      $isImageFitCover
+        ? css`
+            width: 100%;
+            img {
+              object-fit: cover;
+            }
+          `
+        : ""}
   }
   ${({ $isHoverDisabled }) =>
     !$isHoverDisabled
@@ -176,8 +190,10 @@ export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
               16px 16px 16px rgba(0, 0, 0, 0.05);
 
             [data-image-wrapper] {
+              width: 110%;
               img {
-                transform: scale(1.05);
+                transform: scale(1.5);
+                object-position: center;
                 transition: all 300ms ease-in-out;
               }
             }
@@ -192,7 +208,7 @@ export const ProductCardTop = styled.div<{ $isNotImageLoaded: boolean }>`
   overflow: hidden;
   width: 100%;
   align-self: stretch;
-  z-index: 0;
+  z-index: ${zIndex.Default};
 `;
 
 export const BottomText = styled.p`
@@ -200,14 +216,28 @@ export const BottomText = styled.p`
   font-weight: 600;
   line-height: 0.975rem;
   margin: 0;
-  padding: 0 1.5rem 1rem 1.5rem;
   letter-spacing: 0.5px;
   color: ${theme.colors.light.darkGrey};
 `;
 
 export const ProductCardImageWrapper = styled.div`
   width: 100%;
-  min-height: 0;
-  height: auto;
+  height: 13.125rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0.9375rem;
+  padding-bottom: 0.9375rem;
   flex: 1;
+`;
+
+export const ProductCardImageAndCTAContainer = styled.div`
+  position: relative;
+`;
+
+export const CTAOnHoverContainer = styled.div<{ $isHovered: boolean }>`
+  position: absolute;
+  z-index: ${zIndex.OfferCard};
+  bottom: ${({ $isHovered }) => ($isHovered ? "95px" : "1.875rem")};
+  transition: all 300ms ease-in-out;
 `;
