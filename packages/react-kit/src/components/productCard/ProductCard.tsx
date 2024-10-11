@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode, useState } from "react";
 import {
   Currencies,
   CurrencyDisplay
@@ -19,10 +19,16 @@ import {
   ProductCardPriceWrapper,
   ProductCardTitle,
   ProductCardTitleWrapper,
-  ProductCardWrapper
+  ProductCardWrapper,
+  CTAOnHoverContainer,
+  ProductCardImageAndCTAContainer
 } from "./ProductCard.styles";
 
 import { ProductType } from "./const";
+import { Grid } from "../ui/Grid";
+import { Button } from "../buttons/Button";
+import { Typography } from "../ui/Typography";
+
 interface IProductCard {
   asterisk?: boolean;
   avatar: string;
@@ -42,6 +48,7 @@ interface IProductCard {
   title: string;
   tooltip?: string;
   tooltipProps?: Omit<TooltipProps, "content">;
+  CTAOnHover?: ReactNode;
 }
 
 const Wrapper = ({
@@ -62,31 +69,30 @@ const Wrapper = ({
   }
   return <>{children}</>;
 };
+
 export const PhygitalLabel = ({ ...rest }) => {
   return <TopLeftRibbon {...rest} data-text="Phygital" />;
 };
+
 export const ProductCard = (props: IProductCard) => {
   const {
-    asterisk = false,
-    avatar,
-    onAvatarError,
     avatarName,
-    bottomText,
     currency,
     dataCard = "product-card",
     dataTestId = "offer",
     imageProps,
     isHoverDisabled = false,
-    onAvatarNameClick,
     onCardClick,
     price,
     productId,
     title,
     tooltip = "",
     tooltipProps = {},
-    productType
+    CTAOnHover
   } = props;
-  const isPhygital = productType === ProductType.phygital;
+
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <ProductCardWrapper
       data-card={dataCard}
@@ -96,51 +102,45 @@ export const ProductCard = (props: IProductCard) => {
         e.preventDefault();
         onCardClick?.(productId);
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <ProductCardImageWrapper>
-        {isPhygital && <PhygitalLabel />}
         <Image {...imageProps} />
       </ProductCardImageWrapper>
+      {CTAOnHover && (
+        <CTAOnHoverContainer $isHovered={isHovered}>
+          {CTAOnHover}
+        </CTAOnHoverContainer>
+      )}
       <ProductCardBottom>
-        <div>
-          <ProductCardBottomContent>
-            <ProductCardData>
-              <ProductCardCreator
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onAvatarNameClick?.();
-                }}
-              >
-                <ProductCardCreatorAvatar>
-                  <img src={avatar} alt="avatar" onError={onAvatarError} />
-                </ProductCardCreatorAvatar>
-                <ProductCardCreatorName data-avatarname="product-card">
-                  {avatarName}
-                </ProductCardCreatorName>
-              </ProductCardCreator>
-            </ProductCardData>
-            <ProductCardPriceWrapper>
-              <Wrapper tooltip={tooltip} tooltipProps={tooltipProps}>
-                <>
-                  <ProductCardPrice>Price {asterisk && "*"}</ProductCardPrice>
-                  <CurrencyDisplay
-                    value={price}
-                    currency={currency}
-                    style={{
-                      wordBreak: "break-all",
-                      alignItems: "flex-start",
-                      justifyContent: "flex-end"
-                    }}
-                  />
-                </>
-              </Wrapper>
-            </ProductCardPriceWrapper>
-          </ProductCardBottomContent>
-          <ProductCardTitleWrapper>
-            <ProductCardTitle>{title}</ProductCardTitle>
-          </ProductCardTitleWrapper>
-        </div>
-        {bottomText && <BottomText>{bottomText}</BottomText>}
+        <ProductCardBottomContent>
+          <Grid flexDirection="column">
+            <ProductCardTitleWrapper>
+              <ProductCardTitle fontSize={"0.75rem"} fontWeight={"600"}>
+                {title}
+              </ProductCardTitle>
+            </ProductCardTitleWrapper>
+            <ProductCardCreatorName data-avatarname="product-card">
+              {avatarName}
+            </ProductCardCreatorName>
+          </Grid>
+          <Wrapper tooltip={tooltip} tooltipProps={tooltipProps}>
+            <CurrencyDisplay
+              value={price}
+              currency={currency}
+              fontSize={"0.875rem"}
+              iconSize={16}
+              gap={"0.3125rem"}
+              style={{
+                wordBreak: "break-all",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingTop: "0.25rem"
+              }}
+            />
+          </Wrapper>
+        </ProductCardBottomContent>
       </ProductCardBottom>
     </ProductCardWrapper>
   );
