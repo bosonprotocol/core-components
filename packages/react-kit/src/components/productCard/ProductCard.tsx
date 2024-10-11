@@ -41,6 +41,7 @@ interface IProductCard {
   tooltipProps?: Omit<TooltipProps, "content">;
   CTAOnHover?: ReactNode;
   hideCreatorName?: boolean;
+  isImageFitCover?: boolean;
 }
 
 const Wrapper = ({
@@ -81,7 +82,8 @@ export const ProductCard = (props: IProductCard) => {
     tooltip = "",
     tooltipProps = {},
     CTAOnHover,
-    hideCreatorName = false
+    hideCreatorName = false,
+    isImageFitCover = false
   } = props;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -91,6 +93,7 @@ export const ProductCard = (props: IProductCard) => {
       data-card={dataCard}
       $isHoverDisabled={isHoverDisabled}
       data-testid={dataTestId}
+      $isImageFitCover={isImageFitCover}
       onClick={(e) => {
         e.preventDefault();
         onCardClick?.(productId);

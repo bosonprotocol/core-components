@@ -146,7 +146,10 @@ export const ProductCardTitleWrapper = styled.div`
   box-sizing: border-box;
 `;
 
-export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
+export const ProductCardWrapper = styled.div<{
+  $isHoverDisabled: boolean;
+  $isImageFitCover: boolean;
+}>`
   ${cardWrapperStyles}
   overflow: hidden;
   position: relative;
@@ -165,6 +168,15 @@ export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
     display: flex;
     justify-content: center;
     align-items: center;
+    ${({ $isImageFitCover }) =>
+      $isImageFitCover
+        ? css`
+            width: 100%;
+            img {
+              object-fit: cover;
+            }
+          `
+        : ""}
   }
   ${({ $isHoverDisabled }) =>
     !$isHoverDisabled
