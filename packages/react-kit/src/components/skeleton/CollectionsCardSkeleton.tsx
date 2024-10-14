@@ -3,27 +3,44 @@ import styled from "styled-components";
 import { theme } from "../../theme";
 import { cardWrapperStyles } from "../productCard/commonStyles";
 import { LoadingBubble } from "./common";
-
+const colors = theme.colors.light;
 const Container = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(2, min-content);
+  display: flex;
+  flex-direction: column;
   ${cardWrapperStyles}
+  /* REMs gives bad height here on smaller views */
+  height: 279px;
+  min-width: 265px;
 `;
 
 const ImagesContainer = styled.div`
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  grid-column-gap: 1px;
-  grid-row-gap: 1px;
+  position: relative;
+  /* REMs gives bad height here on smaller views */
+  height: 208px;
+  background-color: ${colors.lightGrey};
 `;
 
 const BottomCard = styled.div`
   padding: 1rem 1.5rem 1rem 1.5rem;
 `;
 
+const ImageOne = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+`;
+const ImageTwo = styled.div`
+  position: absolute;
+  right: 10%;
+  top: 5%;
+`;
+const ImageThree = styled.div`
+  position: absolute;
+  right: 10%;
+  bottom: 5%;
+`;
 type SkeletonCardProps = ButtonHTMLAttributes<HTMLDivElement> & {
   withBottomText?: boolean;
 };
@@ -31,30 +48,30 @@ export const CollectionsCardSkeleton = (props: SkeletonCardProps) => {
   return (
     <Container>
       <ImagesContainer>
-        <LoadingBubble
-          $width="100%"
-          $height="170px"
-          $borderRadius="0px"
-          $backgroundColor={theme.colors.light.darkGrey}
-        />
-        <LoadingBubble
-          $width="100%"
-          $height="170px"
-          $borderRadius="0px"
-          $backgroundColor={theme.colors.light.darkGrey}
-        />
-        <LoadingBubble
-          $width="100%"
-          $height="170px"
-          $borderRadius="0px"
-          $backgroundColor={theme.colors.light.darkGrey}
-        />
-        <LoadingBubble
-          $width="100%"
-          $height="170px"
-          $borderRadius="0px"
-          $backgroundColor={theme.colors.light.darkGrey}
-        />
+        <ImageOne>
+          <LoadingBubble
+            $width="140px"
+            $height="102px"
+            $borderRadius="0px"
+            $backgroundColor={theme.colors.light.darkGrey}
+          />
+        </ImageOne>
+        <ImageTwo>
+          <LoadingBubble
+            $width="60px"
+            $height="50px"
+            $borderRadius="0px"
+            $backgroundColor={theme.colors.light.darkGrey}
+          />
+        </ImageTwo>
+        <ImageThree>
+          <LoadingBubble
+            $width="60px"
+            $height="50px"
+            $borderRadius="0px"
+            $backgroundColor={theme.colors.light.darkGrey}
+          />
+        </ImageThree>
       </ImagesContainer>
       <BottomCard>
         <LoadingBubble $width="50%" $height="26px" $margin="0 0 8.75px 0" />
