@@ -54,7 +54,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       nativeCoin: chainIdToInfo.get(80002),
       getTxExplorerUrl: chainIdToGraphTx.get(80002),
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/19713/boson-testing-amoy/v0.0.1",
+        "https://api.studio.thegraph.com/query/19713/boson-testing-amoy/version/latest",
       jsonRpcUrl:
         "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",

@@ -1,6 +1,6 @@
 {
   "name": "opensea-api-mock",
-  "version": "1.0.5-alpha.8",
+  "version": "1.0.5-alpha.10",
   "description": "",
   "main": "index.js",
   "private": true,
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/bosonprotocol/core-components#readme",
   "dependencies": {
-    "@bosonprotocol/common": "^1.29.0-alpha.3",
+    "@bosonprotocol/common": "^1.29.0-alpha.5",
     "@opensea/seaport-js": "^4.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
