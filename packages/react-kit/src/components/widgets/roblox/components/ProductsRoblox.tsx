@@ -2,9 +2,8 @@ import { styled } from "styled-components";
 import React, { useState } from "react";
 import { Typography, TypographyProps } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
-import { CommitWidget } from "../../commit/CommitWidget";
 import { ConfigId, EnvironmentType } from "@bosonprotocol/core-sdk";
-import { CommitWidgetProviders } from "../../commit/CommitWidgetProviders";
+import { CommitModalWithOffer } from "../../commit/CommitModalWithOffer";
 
 const Wrapper = styled(Grid)`
   width: 100%;
@@ -46,6 +45,10 @@ export const ProductsRoblox = ({
     setProductUuid("");
     setBundleUuid(selectedBundleUuid);
   };
+  const clearSelection = () => {
+    setProductUuid("");
+    setBundleUuid("");
+  };
   return (
     <Wrapper
       style={theme?.style}
@@ -73,31 +76,15 @@ export const ProductsRoblox = ({
           </Typography>
         </Grid>
       </>
-      {/* <CommitWidget
-        sellerId={sellerId}
-        productUuid={productUuid}
-        bundleUuid={bundleUuid}
-        configId={configId}
-        envName={envName}
-        contactSellerForExchangeUrl="https://bosonapp.io/#/chat/{id}"
-        fairExchangePolicyRules="ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt"
-        ipfsGateway={process.env.STORYBOOK_DATA_IPFS_GATEWAY}
-        ipfsProjectId={process.env.STORYBOOK_DATA_IPFS_PROJECT_ID}
-        ipfsProjectSecret={process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET}
-        walletConnectProjectId={
-          process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? ""
-        }
-        dateFormat="YYYY/MM/DD"
-        shortDateFormat="MMM DD, YYYY"
-        defaultCurrencySymbol="$"
-        defaultCurrencyTicker="USD"
-        withExternalSigner={false}
-        withCustomReduxContext={false}
-        withWeb3React={true}
-        lookAndFeel="regular"
-      >
-        <></>
-      </CommitWidget> */}
+      {(productUuid || bundleUuid) && (
+        <CommitModalWithOffer
+          sellerId={sellerId}
+          productUuid={productUuid}
+          bundleUuid={bundleUuid}
+          lookAndFeel="regular"
+          hideModal={clearSelection}
+        />
+      )}
     </Wrapper>
   );
 };

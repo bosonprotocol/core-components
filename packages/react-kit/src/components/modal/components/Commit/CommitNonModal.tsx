@@ -44,7 +44,7 @@ export type CommitNonModalProps = Pick<
   offerViewOnPurchaseOverview?: OfferVariantViewProps["onPurchaseOverview"];
   offerViewOnViewFullDescription?: OfferVariantViewProps["onViewFullDescription"];
   forcedAccount?: string;
-  withExternalSigner: boolean | undefined | null;
+  withExternalSigner?: boolean | undefined | null;
   lookAndFeel: "regular" | "modal";
 };
 
