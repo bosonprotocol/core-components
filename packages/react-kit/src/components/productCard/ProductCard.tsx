@@ -33,7 +33,7 @@ interface IProductCard {
   isHoverDisabled?: boolean;
   onAvatarNameClick?: () => void;
   onCardClick?: (id: string | number) => void;
-  price: number | string;
+  price: string;
   productId: string;
   productType?: ProductType;
   title: string;
