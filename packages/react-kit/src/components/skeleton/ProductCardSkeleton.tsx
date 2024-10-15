@@ -22,6 +22,10 @@ const ProductCardImageWrapperStyled = styled(ProductCardImageWrapper)`
   max-height: 210px;
   min-height: 11.25rem;
 `;
+
+const ProductCardTitleWrapperStyled = styled(ProductCardTitleWrapper)`
+  margin-bottom: 5px;
+`;
 export const ProductCardSkeleton = (props: SkeletonCardProps) => {
   const { withBottomText } = props;
 
@@ -37,15 +41,20 @@ export const ProductCardSkeleton = (props: SkeletonCardProps) => {
       </ProductCardImageWrapperStyled>
       <ProductCardBottom>
         <div>
-          <ProductCardTitleWrapper>
+          <ProductCardTitleWrapperStyled>
             <ProductCardTitle>
-              <LoadingBubble $width="70%" $height="30px" />
+              <LoadingBubble $width="50%" $height="12px" />
             </ProductCardTitle>
-          </ProductCardTitleWrapper>
+          </ProductCardTitleWrapperStyled>
+          <ProductCardTitleWrapperStyled>
+            <ProductCardTitle>
+              <LoadingBubble $width="20%" $height="8px" />
+            </ProductCardTitle>
+          </ProductCardTitleWrapperStyled>
         </div>
         {withBottomText && (
           <BottomText>
-            <LoadingBubble $width="30%" $height="15.5px" />
+            <LoadingBubble $width="15%" $height="13px" />
           </BottomText>
         )}
       </ProductCardBottom>
