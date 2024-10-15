@@ -34,7 +34,7 @@ export type { ExchangeCardStatus } from "./types";
 interface Base {
   id: string;
   title: string;
-  price: number;
+  price: string;
   currency: Currencies;
   avatar: string;
   avatarName: JSX.Element | string;
@@ -199,7 +199,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
           <ExchangeCardPriceWrapper>
             <ExchangeCardPrice>Price</ExchangeCardPrice>
             <CurrencyDisplay
-              value={price.toString()}
+              value={price}
               currency={currency}
               style={{
                 wordBreak: "break-all",
