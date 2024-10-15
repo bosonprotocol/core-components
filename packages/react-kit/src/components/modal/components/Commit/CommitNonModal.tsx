@@ -46,6 +46,7 @@ export type CommitNonModalProps = Pick<
   forcedAccount?: string;
   withExternalSigner: boolean | undefined | null;
   lookAndFeel: "regular" | "modal";
+  withLeftArrowButton?: boolean;
 };
 
 export function CommitWrapper({ hideModal, ...props }: CommitNonModalProps) {
@@ -56,6 +57,7 @@ export function CommitWrapper({ hideModal, ...props }: CommitNonModalProps) {
       contentStyle={{
         background: colors.white
       }}
+      withLeftArrowButton={props.withLeftArrowButton}
       lookAndFeel={props.lookAndFeel}
       showConnectButton={!props.withExternalSigner}
     >

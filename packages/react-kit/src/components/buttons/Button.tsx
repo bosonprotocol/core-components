@@ -15,39 +15,22 @@ export type ButtonProps = IButton & {
   loading?: boolean;
 };
 
+export const variantToThemeKey = {
+  primaryFill: "primary",
+  primaryInverted: "secondary",
+  secondaryFill: "bosonSecondaryInverse",
+  secondaryInverted: "secondaryInverted",
+  accentFill: "accentFill",
+  accentInverted: "accentInverted",
+  accentInvertedNoBorder: "accentInvertedNoBorder"
+} satisfies Record<NonNullable<ButtonProps["variant"]>, IButton["themeVal"]>;
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = "primaryFill", loading = false, ...props }, ref) => {
-    let themeVal: IButton["themeVal"] = props.themeVal;
-    switch (variant) {
-      case "primaryFill": {
-        themeVal = "primary";
-        break;
-      }
-      case "primaryInverted": {
-        themeVal = "secondary";
-        break;
-      }
-      case "secondaryFill": {
-        themeVal = "bosonSecondaryInverse";
-        break;
-      }
-      case "secondaryInverted": {
-        themeVal = "secondaryInverted";
-        break;
-      }
-      case "accentFill": {
-        themeVal = "accentFill";
-        break;
-      }
-      case "accentInverted": {
-        themeVal = "accentInverted";
-        break;
-      }
-      case "accentInvertedNoBorder": {
-        themeVal = "accentInvertedNoBorder";
-        break;
-      }
-    }
+    const themeVal: IButton["themeVal"] = variant
+      ? variantToThemeKey[variant] || props.themeVal
+      : props.themeVal;
+    console.log({ themeVal, theme: props.theme, variant });
     return (
       <ThemedButton
         {...props}

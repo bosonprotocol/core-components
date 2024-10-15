@@ -5,13 +5,20 @@ import { SvgImage, SvgImageProps } from "../../../ui/SvgImage";
 
 export function BosonLogo({
   gridProps,
-  svgImageProps
+  svgImageProps,
+  className
 }: {
+  className?: string;
   gridProps?: GridProps;
   svgImageProps?: Omit<SvgImageProps, "src">;
 } = {}) {
   return (
-    <Grid justifyContent="center" padding="1.5rem 0" {...gridProps}>
+    <Grid
+      justifyContent="center"
+      padding="1.5rem 0"
+      {...gridProps}
+      className={className}
+    >
       <SvgImage
         src={ReactComponent}
         height="24px"
