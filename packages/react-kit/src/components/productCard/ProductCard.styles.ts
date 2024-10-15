@@ -95,12 +95,13 @@ export const ProductCardTitle = styled(Typography).attrs({
   color: ${({ theme }) => theme?.colors?.light.black};
   word-break: break-word;
   overflow: hidden;
-  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-height: 1.5em;
   max-height: calc(1.5em * 2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 export const ProductCardPriceWrapper = styled.div`

@@ -2,71 +2,50 @@ import React, { ButtonHTMLAttributes } from "react";
 import {
   BottomText,
   ProductCardBottom,
-  ProductCardBottomContent,
-  ProductCardCreator,
-  ProductCardCreatorAvatar,
-  ProductCardCreatorName,
   ProductCardImageWrapper,
-  ProductCardPrice,
-  ProductCardPriceWrapper,
   ProductCardTitle,
   ProductCardTitleWrapper,
   ProductCardWrapper
 } from "../productCard/ProductCard.styles";
-import { Grid } from "../ui/Grid";
 import { theme } from "../../theme";
 import { LoadingBubble } from "./common";
+import styled from "styled-components";
 
 type SkeletonCardProps = ButtonHTMLAttributes<HTMLDivElement> & {
   withBottomText?: boolean;
 };
+
+const ProductCardImageWrapperStyled = styled(ProductCardImageWrapper)`
+  overflow: hidden;
+  width: 100%;
+  /* REMs gives bad height here on smaller views */
+  max-height: 210px;
+  min-height: 11.25rem;
+`;
 export const ProductCardSkeleton = (props: SkeletonCardProps) => {
   const { withBottomText } = props;
 
   return (
     <ProductCardWrapper {...props} $isHoverDisabled={true}>
-      <ProductCardImageWrapper>
+      <ProductCardImageWrapperStyled>
         <LoadingBubble
           $width="100%"
           $height="340px"
           $borderRadius="0px"
           $backgroundColor={theme.colors.light.darkGrey}
         />
-      </ProductCardImageWrapper>
+      </ProductCardImageWrapperStyled>
       <ProductCardBottom>
         <div>
-          <ProductCardBottomContent>
-            <Grid flexDirection="column">
-              <ProductCardCreator>
-                <ProductCardCreatorAvatar>
-                  <LoadingBubble $width="16px" $height="16px" />
-                </ProductCardCreatorAvatar>
-                <ProductCardCreatorName data-avatarname="product-card">
-                  <LoadingBubble $width="50px" $height="12.5px" />
-                </ProductCardCreatorName>
-              </ProductCardCreator>
-            </Grid>
-            <ProductCardPriceWrapper>
-              <ProductCardPrice>
-                <Grid justifyContent="flex-end">
-                  <LoadingBubble $width="30px" $height="10px" />
-                </Grid>
-              </ProductCardPrice>
-              <Grid justifyContent="flex-end" gap="8px">
-                <LoadingBubble $width="24px" $height="24px" />
-                <LoadingBubble $width="calc(100% - 24px - 8px)" />
-              </Grid>
-            </ProductCardPriceWrapper>
-          </ProductCardBottomContent>
           <ProductCardTitleWrapper>
             <ProductCardTitle>
-              <LoadingBubble $width="100%" $height="30px" />
+              <LoadingBubble $width="70%" $height="30px" />
             </ProductCardTitle>
           </ProductCardTitleWrapper>
         </div>
         {withBottomText && (
           <BottomText>
-            <LoadingBubble $width="100%" $height="15.5px" />
+            <LoadingBubble $width="30%" $height="15.5px" />
           </BottomText>
         )}
       </ProductCardBottom>
