@@ -31,8 +31,39 @@ const ButtonWithThemeProps = styled.button<{
     props.theme?.boxShadow ? `box-shadow: ${props.theme.boxShadow}` : ""};
   color: ${(props) => props.theme?.color || "#000000"};
   background-color: ${(props) => props.theme?.background || "transparent"};
+
   svg {
     stroke: ${(props) => props.theme?.color || "#000000"};
+    ${(props) =>
+      props.theme.svg &&
+      css`
+        ${props.theme.svg.fill &&
+        css`
+          fill: ${props.theme.svg.fill} !important;
+        `};
+        line {
+          ${props.theme.svg.line?.stroke &&
+          css`
+            stroke: ${props.theme.svg.line.stroke} !important;
+          `};
+        }
+        polyline {
+          ${props.theme.svg.polyline?.stroke &&
+          css`
+            stroke: ${props.theme.svg.polyline?.stroke} !important;
+          `};
+        }
+        path {
+          ${props.theme.svg.path?.stroke &&
+          css`
+            stroke: ${props.theme.svg.path.stroke} !important;
+          `};
+          ${props.theme.svg.path?.fill &&
+          css`
+            fill: ${props.theme.svg.path.fill} !important;
+          `};
+        }
+      `}
   }
   ${(props) =>
     props.fill
@@ -49,15 +80,23 @@ const ButtonWithThemeProps = styled.button<{
         css`
           color: ${props.theme.hover.color} !important;
           svg {
-            fill: ${props.theme.hover.color} !important;
+            fill: ${props.theme.hover?.svg?.fill ||
+            props.theme.hover.color} !important;
             line {
-              stroke: ${props.theme.hover.color} !important;
+              stroke: ${props.theme.hover?.svg?.line?.stroke ||
+              props.theme.hover.color} !important;
             }
             polyline {
-              stroke: ${props.theme.hover.color} !important;
+              stroke: ${props.theme.hover?.svg?.polyline?.stroke ||
+              props.theme.hover.color} !important;
             }
             path {
-              stroke: ${props.theme.hover.color} !important;
+              stroke: ${props.theme.hover?.svg?.path?.stroke ||
+              props.theme.hover.color} !important;
+              ${props.theme.hover?.svg?.path?.fill &&
+              css`
+                fill: ${props.theme.hover?.svg?.path?.fill} !important;
+              `};
             }
           }
         `};
@@ -108,6 +147,20 @@ const ChildWrapperButton = styled.div`
   ${() => Styles.buttonText};
 `;
 
+type SvgTheme = Partial<{
+  fill: CSSProperties["color"];
+  line: Partial<{
+    stroke: CSSProperties["color"];
+  }>;
+  polyline: Partial<{
+    stroke: CSSProperties["color"];
+  }>;
+  path: Partial<{
+    stroke: CSSProperties["color"];
+    fill: CSSProperties["color"];
+  }>;
+}>;
+
 export type BaseButtonTheme = {
   background?: CSSProperties["backgroundColor"];
   borderColor?: CSSProperties["borderColor"];
@@ -117,10 +170,12 @@ export type BaseButtonTheme = {
   color?: CSSProperties["color"];
   padding?: CSSProperties["padding"];
   gap?: CSSProperties["gap"];
+  svg?: SvgTheme;
   hover?: {
     background?: CSSProperties["backgroundColor"];
     borderColor?: CSSProperties["borderColor"];
     color?: CSSProperties["color"];
+    svg?: SvgTheme;
   };
   disabled?: {
     background?: CSSProperties["backgroundColor"];

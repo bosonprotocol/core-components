@@ -251,15 +251,18 @@ export type IButton = ButtonHTMLAttributes<HTMLButtonElement> & {
   isLoading?: boolean;
   tooltip?: string;
   withBosonStyle?: boolean;
+  theme?: BaseButtonTheme;
 };
 
 const ThemedButton = forwardRef<HTMLButtonElement, IButton>(
-  ({ themeVal = "primary", withBosonStyle = false, ...rest }, ref) => {
+  ({ themeVal = "primary", withBosonStyle = false, theme, ...rest }, ref) => {
+    console.log({ themeVal, theme });
+
     return (
       <BaseButton
         {...rest}
         ref={ref}
-        theme={bosonButtonThemes({ withBosonStyle })[themeVal]}
+        theme={theme || bosonButtonThemes({ withBosonStyle })[themeVal]}
       />
     );
   }
