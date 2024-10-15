@@ -199,7 +199,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
           <ExchangeCardPriceWrapper>
             <ExchangeCardPrice>Price</ExchangeCardPrice>
             <CurrencyDisplay
-              value={price}
+              value={price.toString()}
               currency={currency}
               style={{
                 wordBreak: "break-all",
