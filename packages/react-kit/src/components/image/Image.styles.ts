@@ -15,8 +15,6 @@ export const ImageContainer = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
-  object-position: top;
-  padding: 1rem;
 `;
 
 const buttonText = css`

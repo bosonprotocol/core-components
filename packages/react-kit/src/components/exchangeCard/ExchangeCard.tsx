@@ -34,7 +34,7 @@ export type { ExchangeCardStatus } from "./types";
 interface Base {
   id: string;
   title: string;
-  price: number;
+  price: string;
   currency: Currencies;
   avatar: string;
   avatarName: JSX.Element | string;

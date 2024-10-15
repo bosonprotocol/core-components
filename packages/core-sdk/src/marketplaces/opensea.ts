@@ -264,7 +264,7 @@ export class OpenSeaMarketplace extends Marketplace {
     const osOrder = await this._handler.api.postOrder(order, {
       protocol: "seaport",
       protocolAddress,
-      side: OrderSide.BID
+      side: OrderSide.OFFER
     });
     return this.convertOsOrder(osOrder);
   }
@@ -281,7 +281,7 @@ export class OpenSeaMarketplace extends Marketplace {
     const osOrder = await this._handler.api.getOrder({
       assetContractAddress: asset.contract,
       tokenId: asset.tokenId,
-      side: OrderSide.BID,
+      side: OrderSide.OFFER,
       ...filter
     });
     const fulfillerAddress = asset.withWrapper
@@ -316,7 +316,7 @@ export class OpenSeaMarketplace extends Marketplace {
     const osOrder = await this._handler.api.getOrder({
       assetContractAddress: withWrapper ? wrapper.address : asset.contract,
       tokenId: asset.tokenId,
-      side: OrderSide.BID
+      side: OrderSide.OFFER
     });
     const ffd = await this._handler.api.generateFulfillmentData(
       withWrapper
@@ -449,7 +449,7 @@ export class OpenSeaMarketplace extends Marketplace {
     const osOrder = await this._handler.api.getOrder({
       assetContractAddress: wrapper.address, // Bid Order must be for the wrapped token
       tokenId: asset.tokenId,
-      side: OrderSide.BID
+      side: OrderSide.OFFER
     });
     const ffd = await this._handler.api.generateFulfillmentData(
       this._contracts.priceDiscoveryClient, // the address of the PriceDiscoveryClient contract, which will call the fulfilment method
@@ -484,7 +484,7 @@ export class OpenSeaMarketplace extends Marketplace {
       return undefined;
     }
     const orderInfo = this.extractOrderInfo(osOrder.protocolData.parameters);
-    const side = orderInfo.side === OrderSide.ASK ? Side.Ask : Side.Bid;
+    const side = orderInfo.side === OrderSide.LISTING ? Side.Ask : Side.Bid;
     return {
       offerer: orderInfo.offerer,
       side,
@@ -524,17 +524,17 @@ export class OpenSeaMarketplace extends Marketplace {
       (c) => c.itemType === ItemType.ERC721
     );
     const nftAsk = parameters.offer.find((c) => c.itemType === ItemType.ERC721);
-    if (side === OrderSide.BID && !nftBid) {
+    if (side === OrderSide.OFFER && !nftBid) {
       console.warn(`NFT not found in order consideration`);
     }
-    if (side === OrderSide.ASK && !nftAsk) {
+    if (side === OrderSide.LISTING && !nftAsk) {
       console.warn(`NFT not found in order offer`);
     }
     if (!side) {
       if (nftBid && !nftAsk) {
-        side = OrderSide.BID;
+        side = OrderSide.OFFER;
       } else if (!nftBid && nftAsk) {
-        side = OrderSide.ASK;
+        side = OrderSide.LISTING;
       } else if (nftBid && nftAsk) {
         console.warn(
           `NFT found in both consideration and offer. Unable to detect the order side`
@@ -545,7 +545,7 @@ export class OpenSeaMarketplace extends Marketplace {
         );
       }
     }
-    if (side === OrderSide.BID) {
+    if (side === OrderSide.OFFER) {
       price = parameters.offer
         .filter((c) => c.itemType === ItemType.ERC20)
         .reduce(
@@ -600,7 +600,7 @@ export class OpenSeaMarketplace extends Marketplace {
     const osOrder = await this._handler.api.getOrder({
       assetContractAddress: asset.contract,
       tokenId: asset.tokenId,
-      side: side === Side.Ask ? OrderSide.ASK : OrderSide.BID,
+      side: side === Side.Ask ? OrderSide.LISTING : OrderSide.OFFER,
       ...filter
     });
     return osOrder
@@ -622,7 +622,7 @@ export class OpenSeaMarketplace extends Marketplace {
     const { orders } = await this._handler.api.getOrders({
       assetContractAddress: asset.contract,
       tokenIds: asset.tokenIds,
-      side: side === Side.Ask ? OrderSide.ASK : OrderSide.BID,
+      side: side === Side.Ask ? OrderSide.LISTING : OrderSide.OFFER,
       ...filter
     });
     return orders.map((osOrder) => ({
