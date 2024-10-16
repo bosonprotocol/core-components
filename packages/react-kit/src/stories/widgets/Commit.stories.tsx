@@ -33,7 +33,8 @@ const BASE_ARGS = {
   walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID || "",
   withCustomReduxContext: false,
   withExternalSigner: false,
-  lookAndFeel: "modal"
+  lookAndFeel: "modal",
+  withMagicLink: true
 } as const;
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Commit.args = {
