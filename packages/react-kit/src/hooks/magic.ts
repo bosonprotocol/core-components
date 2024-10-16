@@ -2,13 +2,15 @@ import { useContext } from "react";
 import { useQuery } from "react-query";
 import { MagicContext } from "../components/magicLink/MagicContext";
 import { useUser } from "../components/magicLink/UserContext";
+import { useConfigContext } from "../components/config/ConfigContext";
 
 export const useMagic = () => {
+  const { withMagicLink } = useConfigContext();
   const context = useContext(MagicContext);
-  if (!context) {
+  if (!context && withMagicLink) {
     throw new Error("useMagic must be used within MagicContext");
   }
-  return context.magic;
+  return context?.magic;
 };
 
 export const useWalletInfo = () => {
@@ -23,11 +25,12 @@ export const useWalletInfo = () => {
 };
 
 export function useMagicProvider() {
+  const { withMagicLink } = useConfigContext();
   const context = useContext(MagicContext);
-  if (!context) {
+  if (!context && withMagicLink) {
     throw new Error("useMagic must be used within MagicContext");
   }
-  return context.magicProvider;
+  return context?.magicProvider;
 }
 
 export function useMagicChainId() {
@@ -36,7 +39,7 @@ export function useMagicChainId() {
 }
 
 export function useIsMagicLoggedIn() {
-  const { user } = useUser();
-  const isMagicLoggedIn = !!user;
+  const userContext = useUser();
+  const isMagicLoggedIn = !!userContext?.user;
   return isMagicLoggedIn;
 }
