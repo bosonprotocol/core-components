@@ -31,6 +31,7 @@ export const RobloxWidget = ({
       withCustomReduxContext={false}
       withReduxProvider={true}
       withWeb3React={true}
+      withMagicLink={false}
     >
       <Wrapper
         flexDirection="column"

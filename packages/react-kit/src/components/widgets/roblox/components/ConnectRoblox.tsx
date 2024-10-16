@@ -376,7 +376,7 @@ export const ConnectRoblox = ({ brand, theme }: ConnectRobloxProps) => {
                 }
                 disconnectColor={theme.walletCard.button.active.color}
                 walletModalProps={{
-                  withMagicLogin: true,
+                  withMagicLogin: false,
                   optionProps: {
                     backgroundColor: theme.walletCard.button.active.background,
                     color: theme.walletCard.button.active.color,
@@ -386,11 +386,6 @@ export const ConnectRoblox = ({ brand, theme }: ConnectRobloxProps) => {
                     hoverFocusBackgroundColor:
                       theme.walletCard.button.active.hover?.background,
                     hoverColor: theme.walletCard.button.active.hover?.color
-                  },
-                  magicLoginButtonProps: {
-                    buttonProps: {
-                      theme: theme.walletCard.button.active
-                    }
                   },
                   connectionErrorProps: {
                     tryAgainTheme: theme.walletCard.button.active,

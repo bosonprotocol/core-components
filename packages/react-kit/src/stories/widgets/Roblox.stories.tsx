@@ -11,6 +11,7 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyle = createGlobalStyle`
     #storybook-root,[data-rk], [scale="1"] {
         width: 100%;
+        padding: 0 !important;
     }
 `;
 
