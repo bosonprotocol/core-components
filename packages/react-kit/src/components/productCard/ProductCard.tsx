@@ -22,7 +22,6 @@ import { Grid } from "../ui/Grid";
 
 interface IProductCard {
   asterisk?: boolean;
-  avatar: string;
   onAvatarError?: React.ReactEventHandler<HTMLImageElement> | undefined;
   avatarName: JSX.Element | string;
   bottomText?: string;
@@ -32,9 +31,8 @@ interface IProductCard {
   imageProps: IBaseImage;
   isHoverDisabled?: boolean;
   onAvatarNameClick?: () => void;
-  onCardClick?: (id: string | number) => void;
+  onCardClick?: () => void;
   price: string;
-  productId: string;
   productType?: ProductType;
   title: string;
   tooltip?: string;
@@ -42,6 +40,7 @@ interface IProductCard {
   CTAOnHover?: ReactNode;
   hideCreatorName?: boolean;
   isImageFitCover?: boolean;
+  className?: string;
 }
 
 const Wrapper = ({
@@ -77,13 +76,13 @@ export const ProductCard = (props: IProductCard) => {
     isHoverDisabled = false,
     onCardClick,
     price,
-    productId,
     title,
     tooltip = "",
     tooltipProps = {},
     CTAOnHover,
     hideCreatorName = false,
-    isImageFitCover = false
+    isImageFitCover = false,
+    className
   } = props;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -96,10 +95,11 @@ export const ProductCard = (props: IProductCard) => {
       $isImageFitCover={isImageFitCover}
       onClick={(e) => {
         e.preventDefault();
-        onCardClick?.(productId);
+        onCardClick?.();
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      className={className}
     >
       <ProductCardImageWrapper>
         <Image {...imageProps} />

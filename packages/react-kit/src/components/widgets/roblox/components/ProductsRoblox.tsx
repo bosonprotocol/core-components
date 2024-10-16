@@ -4,6 +4,9 @@ import { Typography, TypographyProps } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
 import { ConfigId, EnvironmentType } from "@bosonprotocol/core-sdk";
 import { CommitModalWithOffer } from "../../commit/CommitModalWithOffer";
+import { Currencies } from "../../../currencyDisplay/CurrencyDisplay";
+import { GridContainer } from "../../../ui/GridContainer";
+import { ProductsGrid } from "./ProductsGrid";
 
 const Wrapper = styled(Grid)`
   width: 100%;
@@ -23,11 +26,13 @@ export type ProductsRobloxProps = {
   envName: EnvironmentType;
   theme?: Partial<{
     style: Partial<TypographyProps["style"]>;
+    purchasedProducts: Omit<SectionThemeProps, "subtitle">;
     availableProducts: SectionThemeProps;
     unavailabeProducts: SectionThemeProps;
   }>;
 };
-
+const availableProducts = [{}] as any[];
+const unavailableProducts = [{}] as any[];
 export const ProductsRoblox = ({
   sellerId,
   theme,
@@ -58,6 +63,11 @@ export const ProductsRoblox = ({
     >
       <>
         <Grid flexDirection="column" alignItems="flex-start">
+          <Typography tag="h3" style={theme?.purchasedProducts?.title?.style}>
+            Purchased Products
+          </Typography>
+        </Grid>
+        <Grid flexDirection="column" alignItems="flex-start">
           <Typography tag="h3" style={theme?.availableProducts?.title?.style}>
             Available Products
           </Typography>
@@ -65,6 +75,7 @@ export const ProductsRoblox = ({
             Following products are available for you based on the Roblox
             inventory you have
           </Typography>
+          <ProductsGrid products={availableProducts} />
         </Grid>
         <Grid flexDirection="column" alignItems="flex-start">
           <Typography tag="h3" style={theme?.unavailabeProducts?.title?.style}>
@@ -74,6 +85,7 @@ export const ProductsRoblox = ({
             Other products that can be purchased when you have the right Roblox
             inventory item.
           </Typography>
+          <ProductsGrid products={unavailableProducts} />
         </Grid>
       </>
       {(productUuid || bundleUuid) && (
