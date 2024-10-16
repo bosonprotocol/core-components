@@ -41,7 +41,6 @@ const OptionGrid = styled.div<{ $borderRadius: CSSProperties["borderRadius"] }>`
 
 export type WalletModalProps = {
   PrivacyPolicy: React.FC;
-  magicLoginButtonProps: MagicLoginButtonProps;
   optionProps: Pick<
     OptionProps,
     | "color"
@@ -53,7 +52,10 @@ export type WalletModalProps = {
   > & { iconBorderRadius: CSSProperties["borderRadius"] };
   withMagicLogin?: boolean;
   connectionErrorProps: ConnectionErrorViewProps;
-};
+} & (
+  | { withMagicLogin: true; magicLoginButtonProps: MagicLoginButtonProps }
+  | { withMagicLogin?: false; magicLoginButtonProps?: undefined }
+);
 export function WalletModal({
   PrivacyPolicy,
   magicLoginButtonProps,
@@ -107,7 +109,9 @@ export function WalletModal({
                 />
               ))}
           </OptionGrid>
-          {withMagicLogin && <MagicLoginButton {...magicLoginButtonProps} />}
+          {withMagicLogin && magicLoginButtonProps && (
+            <MagicLoginButton {...magicLoginButtonProps} />
+          )}
           <PrivacyPolicy />
         </AutoColumn>
       )}

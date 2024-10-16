@@ -48,6 +48,9 @@ export function ConfigProvider({
   const Web3ProviderComponent = useMemo(() => {
     return rest.withWeb3React ? InnerWeb3Provider : Fragment;
   }, [rest.withWeb3React]);
+  const MagicLinkProvider = useMemo(() => {
+    return rest.withMagicLink ? MagicProvider : Fragment;
+  }, [rest.withMagicLink]);
   return (
     <EnvironmentProvider
       envName={rest.envName}
@@ -56,13 +59,13 @@ export function ConfigProvider({
     >
       <InnerConfigProvider {...rest}>
         <Web3ProviderComponent>
-          <MagicProvider>
+          <MagicLinkProvider>
             <WalletConnectionProvider
               walletConnectProjectId={walletConnectProjectId}
             >
               <SyncCurrentConfigId>{children}</SyncCurrentConfigId>
             </WalletConnectionProvider>
-          </MagicProvider>
+          </MagicLinkProvider>
         </Web3ProviderComponent>
       </InnerConfigProvider>
     </EnvironmentProvider>
