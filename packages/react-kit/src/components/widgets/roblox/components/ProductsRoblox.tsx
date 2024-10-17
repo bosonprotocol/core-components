@@ -1,12 +1,14 @@
 import { styled } from "styled-components";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Typography, TypographyProps } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
-import { ConfigId, EnvironmentType } from "@bosonprotocol/core-sdk";
+import { ConfigId, EnvironmentType, subgraph } from "@bosonprotocol/core-sdk";
 import { CommitModalWithOffer } from "../../commit/CommitModalWithOffer";
 import { Currencies } from "../../../currencyDisplay/CurrencyDisplay";
 import { GridContainer } from "../../../ui/GridContainer";
 import { ProductsGrid } from "./ProductsGrid";
+import useProductByOfferId from "../../../../hooks/products/useProductByOfferId";
+import { isTruthy } from "../../../../types/helpers";
 
 const Wrapper = styled(Grid)`
   width: 100%;
@@ -31,7 +33,7 @@ export type ProductsRobloxProps = {
     unavailabeProducts: SectionThemeProps;
   }>;
 };
-const availableProducts = [{}] as any[];
+
 const unavailableProducts = [{}] as any[];
 export const ProductsRoblox = ({
   sellerId,
@@ -39,6 +41,17 @@ export const ProductsRoblox = ({
   configId,
   envName
 }: ProductsRobloxProps) => {
+  const { data, ...rest } = useProductByOfferId("17", {
+    enabled: true
+  });
+  console.log({ data, ...rest });
+  const availableProducts = useMemo(
+    () =>
+      data?.variants.at(0)?.offer
+        ? [data?.variants.at(0)?.offer].filter(isTruthy) || []
+        : [],
+    [data?.variants]
+  );
   const [productUuid, setProductUuid] = useState<string>("");
   const [bundleUuid, setBundleUuid] = useState<string>("");
 

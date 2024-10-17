@@ -3,7 +3,7 @@ import { GridContainer } from "../../../ui/GridContainer";
 import { ProductCard } from "../../../productCard/ProductCard";
 import styled from "styled-components";
 import { Currencies } from "../../../currencyDisplay/CurrencyDisplay";
-import { useAccount } from "../../../../hooks";
+import { useAccount, useIpfsContext } from "../../../../hooks";
 import { Button } from "../../../buttons/Button";
 import React from "react";
 import { utils } from "ethers";
@@ -14,7 +14,6 @@ import {
   getImageUrl
 } from "../../../../lib/images/images";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
-import { isTruthy } from "../../../../types/helpers";
 import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
 
 const colors = theme.colors.light;
@@ -29,23 +28,24 @@ export type ProductsGridProps = {
 };
 export const ProductsGrid = ({ products }: ProductsGridProps) => {
   const { address } = useAccount();
-
+  const { ipfsImageGateway } = useIpfsContext();
   return (
     <GridContainer columnGap="2rem" rowGap="2rem">
       {products
         .filter((offer) => offer.metadata)
-        .filter((offer) => isProductV1(offer) || isBundle(offer))
         .map((offer) => {
           if (!offer.metadata || !(isProductV1(offer) || isBundle(offer))) {
             return null;
           }
-          const { mainImage } = getOfferDetails(offer.metadata);
-
+          const metadata = offer.metadata;
+          const { mainImage } = getOfferDetails(offer);
+          const imageOptimizationOptions = {
+            height: 500
+          };
           const imageSrc = getImageUrl(
             (mainImage || metadata?.imageUrl) ?? "",
-            {
-              height: 500
-            }
+            ipfsImageGateway,
+            imageOptimizationOptions
           );
           return (
             <TransparentProductCard
@@ -58,7 +58,11 @@ export const ProductsGrid = ({ products }: ProductsGridProps) => {
               title={offer.metadata?.name ?? ""}
               imageProps={{
                 src: imageSrc,
-                fallbackSrc: getFallbackImageUrl(imageSrc),
+                fallbackSrc: getFallbackImageUrl(
+                  imageSrc,
+                  ipfsImageGateway,
+                  imageOptimizationOptions
+                ),
                 withLoading: true,
                 errorConfig: {
                   errorIcon: <CameraSlash size={32} color={colors.white} />
