@@ -35,11 +35,6 @@ export const theme = {
   },
   mobile: "768px",
   tablet: "1024px",
-  fontSizes: {
-    small: "12px",
-    medium: "16px",
-    large: "24px"
-  },
   transition: {
     time: "150ms",
     timing: "ease-in-out"

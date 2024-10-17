@@ -12,7 +12,6 @@ import {
 import { IpfsProvider, IpfsProviderProps } from "../../ipfs/IpfsProvider";
 import { ModalProvider } from "../../modal/ModalProvider";
 import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
-import { WalletConnectionProviderProps } from "../../wallet/WalletConnectionProvider";
 import {
   ReduxProvider,
   WithReduxProvider,
@@ -21,11 +20,13 @@ import {
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "../finance/convertion-rate/ConvertionRateProvider";
+import { Web3Provider, Web3ProviderProps } from "../../wallet2/web3Provider";
+import { BlockNumberProvider } from "../../../hooks/contracts/useBlockNumber";
 
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   ConvertionRateProviderProps &
-  Omit<WalletConnectionProviderProps, "children" | "envName"> &
+  Omit<Web3ProviderProps, "infuraKey"> &
   BosonProviderProps &
   WithReduxProviderProps & {
     children: ReactNode;
@@ -60,24 +61,28 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
           withCustomReduxContext={withCustomReduxContext}
           withReduxProvider={withReduxProvider}
         >
-          <ConfigProvider
-            magicLinkKey={magicLinkKey}
-            infuraKey={infuraKey}
-            withCustomReduxContext={withCustomReduxContext}
-            {...props}
-          >
-            <BosonProvider {...props}>
-              <WithUpdaters>
-                <ChatProvider>
-                  <IpfsProvider {...props}>
-                    <ConvertionRateProvider>
-                      <ModalProvider>{children}</ModalProvider>
-                    </ConvertionRateProvider>
-                  </IpfsProvider>
-                </ChatProvider>
-              </WithUpdaters>
-            </BosonProvider>
-          </ConfigProvider>
+          <Web3Provider {...props} infuraKey={infuraKey}>
+            <ConfigProvider
+              magicLinkKey={magicLinkKey}
+              infuraKey={infuraKey}
+              withCustomReduxContext={withCustomReduxContext}
+              {...props}
+            >
+              <BlockNumberProvider>
+                <BosonProvider {...props}>
+                  <WithUpdaters>
+                    <ChatProvider>
+                      <IpfsProvider {...props}>
+                        <ConvertionRateProvider>
+                          <ModalProvider>{children}</ModalProvider>
+                        </ConvertionRateProvider>
+                      </IpfsProvider>
+                    </ChatProvider>
+                  </WithUpdaters>
+                </BosonProvider>
+              </BlockNumberProvider>
+            </ConfigProvider>
+          </Web3Provider>
         </WithReduxProvider>
       );
     }
