@@ -14,6 +14,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       chainId: 31337,
       configId: "local-31337-0",
       sellersBlackList: "",
+      offersWhiteList: "",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(31337),
       nativeCoin: chainIdToInfo.get(31337),
@@ -49,6 +50,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "testing-80002-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-80002-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/testing-80002-0/offers/whitelist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(80002),
       nativeCoin: chainIdToInfo.get(80002),
@@ -79,6 +82,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "testing-11155111-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-11155111-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/testing-11155111-0/offers/whitelist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(11155111),
       nativeCoin: chainIdToInfo.get(11155111),
@@ -107,6 +112,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "staging-80002-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-80002-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/staging-80002-0/offers/whitelist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(80002),
       nativeCoin: chainIdToInfo.get(80002),
@@ -137,6 +144,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "staging-11155111-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-11155111-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/staging-11155111-0/offers/whitelist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(11155111),
       nativeCoin: chainIdToInfo.get(11155111),
@@ -164,6 +173,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "production-137-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-137-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-137-0/offers/whitelist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(137),
       nativeCoin: chainIdToInfo.get(137),
@@ -193,6 +204,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "production-1-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-1-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-1-0/offers/whitelist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(1),
       nativeCoin: chainIdToInfo.get(1),

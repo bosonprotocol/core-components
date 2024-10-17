@@ -56,6 +56,7 @@ export type ProtocolConfig = {
   defaultTokens: Token[] | undefined;
   defaultDisputeResolverId: string;
   sellersBlackList: string;
+  offersWhiteList: string;
   chainId: ChainId;
   nativeCoin:
     | undefined
