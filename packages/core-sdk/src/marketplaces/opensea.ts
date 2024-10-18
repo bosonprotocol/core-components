@@ -291,7 +291,8 @@ export class OpenSeaMarketplace extends Marketplace {
       fulfillerAddress,
       osOrder.orderHash,
       osOrder.protocolAddress,
-      osOrder.side
+      // osOrder.side
+      OrderSide.LISTING // TODO: Hack waiting for Opensea API bug to be fixed. See https://github.com/fermionprotocol/ui/issues/358
     );
     const inputData = ffd.fulfillment_data.transaction
       .input_data as unknown as {
