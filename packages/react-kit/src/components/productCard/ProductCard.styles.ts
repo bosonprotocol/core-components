@@ -150,6 +150,7 @@ export const ProductCardTitleWrapper = styled.div`
 export const ProductCardWrapper = styled.div<{
   $isHoverDisabled: boolean;
   $isImageFitCover?: boolean;
+  $isClickable?: boolean;
 }>`
   ${cardWrapperStyles}
   overflow: hidden;
@@ -158,10 +159,39 @@ export const ProductCardWrapper = styled.div<{
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-  cursor: pointer;
   min-height: 286px;
   height: 286px;
   padding: 0 1rem 1rem 1rem;
+  ${({ $isHoverDisabled }) =>
+    $isHoverDisabled
+      ? ""
+      : css`
+          transition: all 300ms ease-in-out;
+          &:hover {
+            box-shadow:
+              0px 0px 0px rgba(0, 0, 0, 0.05),
+              4px 4px 4px rgba(0, 0, 0, 0.05),
+              8px 8px 8px rgba(0, 0, 0, 0.05),
+              16px 16px 16px rgba(0, 0, 0, 0.05);
+
+            [data-image-wrapper] {
+              width: 110%;
+              img {
+                transform: scale(1.5);
+                object-position: center;
+                transition: all 300ms ease-in-out;
+              }
+            }
+          }
+        `}
+  ${({ $isClickable }) => {
+    if ($isClickable) {
+      return css`
+        cursor: pointer;
+      `;
+    }
+    return "";
+  }}
   [data-image-wrapper] {
     position: static;
     padding-top: 0;
@@ -180,28 +210,6 @@ export const ProductCardWrapper = styled.div<{
           `
         : ""}
   }
-  ${({ $isHoverDisabled }) =>
-    !$isHoverDisabled
-      ? css`
-          transition: all 300ms ease-in-out;
-          &:hover {
-            box-shadow:
-              0px 0px 0px rgba(0, 0, 0, 0.05),
-              4px 4px 4px rgba(0, 0, 0, 0.05),
-              8px 8px 8px rgba(0, 0, 0, 0.05),
-              16px 16px 16px rgba(0, 0, 0, 0.05);
-
-            [data-image-wrapper] {
-              width: 110%;
-              img {
-                transform: scale(1.5);
-                object-position: center;
-                transition: all 300ms ease-in-out;
-              }
-            }
-          }
-        `
-      : ""}
 `;
 
 export const ProductCardTop = styled.div<{ $isNotImageLoaded: boolean }>`
@@ -262,4 +270,15 @@ export const CTAOnHoverContainer = styled.div<{ $isHovered: boolean }>`
     }
     return "";
   }};
+`;
+
+export const ProductTypeWrapper = styled.div`
+  background-color: ${theme?.colors?.light.black};
+  color: ${theme?.colors?.light.white};
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.1563rem 0.25rem;
+  border-radius: 2px;
+  margin-top: 0.5rem;
 `;

@@ -14,11 +14,13 @@ import {
   ProductCardTitle,
   ProductCardTitleWrapper,
   ProductCardWrapper,
-  CTAOnHoverContainer
+  CTAOnHoverContainer,
+  ProductTypeWrapper
 } from "./ProductCard.styles";
 
 import { ProductType } from "./const";
 import { Grid } from "../ui/Grid";
+import { CircleHalf } from "phosphor-react";
 
 interface IProductCard {
   asterisk?: boolean;
@@ -82,7 +84,8 @@ export const ProductCard = (props: IProductCard) => {
     CTAOnHover,
     hideCreatorName = false,
     isImageFitCover = false,
-    className
+    className,
+    productType
   } = props;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -100,6 +103,7 @@ export const ProductCard = (props: IProductCard) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={className}
+      $isClickable
     >
       <ProductCardImageWrapper>
         <Image {...imageProps} />
@@ -138,6 +142,12 @@ export const ProductCard = (props: IProductCard) => {
               }}
             />
           </Wrapper>
+          {productType === ProductType.phygital && (
+            <ProductTypeWrapper>
+              <CircleHalf />
+              Phygital
+            </ProductTypeWrapper>
+          )}
         </ProductCardBottomContent>
       </ProductCardBottom>
     </ProductCardWrapper>

@@ -16,6 +16,8 @@ import {
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
+import { CommitButtonView } from "../../../buttons/CommitButtonView";
+import { ProductType } from "../../../productCard/const";
 
 const colors = theme.colors.light;
 
@@ -84,6 +86,13 @@ export const ProductsGrid = ({
 
               return (
                 <TransparentProductCard
+                  productType={
+                    isBundle(offer)
+                      ? ProductType.phygital
+                      : isProductV1(offer)
+                        ? ProductType.physical
+                        : ProductType.digital
+                  }
                   avatarName=""
                   currency={offer.exchangeToken.symbol as Currencies}
                   price={utils.formatUnits(
@@ -107,7 +116,7 @@ export const ProductsGrid = ({
                     address ? (
                       <Button>Connect Account</Button>
                     ) : cta === "buy" ? (
-                      <Button
+                      <CommitButtonView
                         onClick={() => {
                           if (isProductV1(offer) && offer.metadata?.uuid) {
                             handleSetProductUuid(offer.metadata.uuid);
@@ -118,9 +127,7 @@ export const ProductsGrid = ({
                             handleSetBundleUuid(offer.metadata.bundleUuid);
                           }
                         }}
-                      >
-                        Buy
-                      </Button>
+                      />
                     ) : (
                       <Button onClick={() => handleRequestShipment(offer)}>
                         Request Shipment

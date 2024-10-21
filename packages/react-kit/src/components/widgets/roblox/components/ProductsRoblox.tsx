@@ -85,53 +85,7 @@ export const ProductsRoblox = ({
         gap="5rem"
         maxWidth={maxWidth}
       >
-        <Grid flexDirection="column" alignItems="flex-start">
-          <Typography tag="h3" style={theme?.purchasedProducts?.title?.style}>
-            Purchased Products
-          </Typography>
-          <ProductsGrid
-            products={purchasedProducts}
-            cta="request-shipment"
-            handleRequestShipment={(offer) => {
-              //showModal;
-            }}
-            isLoading={purchasedProductsLoading}
-          />
-        </Grid>
-        <Grid flexDirection="column" alignItems="flex-start">
-          <Typography tag="h3" style={theme?.availableProducts?.title?.style}>
-            Available Products
-          </Typography>
-          <Typography style={theme?.availableProducts?.subtitle?.style}>
-            Following products are available for you based on the Roblox
-            inventory you have
-          </Typography>
-          <ProductsGrid
-            products={availableProducts}
-            handleSetProductUuid={handleSetProductUuid}
-            handleSetBundleUuid={handleSetBundleUuid}
-            isLoading={availableProductLoading}
-            cta="buy"
-          />
-        </Grid>
-        <Grid flexDirection="column" alignItems="flex-start">
-          <Typography tag="h3" style={theme?.unavailabeProducts?.title?.style}>
-            Unavailable products
-          </Typography>
-          <Typography style={theme?.unavailabeProducts?.subtitle?.style}>
-            Other products that can be purchased when you have the right Roblox
-            inventory item.
-          </Typography>
-          <ProductsGrid
-            products={unavailableProducts}
-            handleSetProductUuid={handleSetProductUuid}
-            handleSetBundleUuid={handleSetBundleUuid}
-            isLoading={unavailableProductsLoading}
-            cta="buy"
-          />
-        </Grid>
-
-        {(productUuid || bundleUuid) && (
+        {productUuid || bundleUuid ? (
           <CommitModalWithOffer
             sellerId={sellerId}
             productUuid={productUuid}
@@ -139,6 +93,63 @@ export const ProductsRoblox = ({
             lookAndFeel="regular"
             hideModal={clearSelection}
           />
+        ) : (
+          <>
+            <Grid flexDirection="column" alignItems="flex-start">
+              <Typography
+                tag="h3"
+                style={theme?.purchasedProducts?.title?.style}
+              >
+                Purchased Products
+              </Typography>
+              <ProductsGrid
+                products={purchasedProducts}
+                cta="request-shipment"
+                handleRequestShipment={(offer) => {
+                  //showModal;
+                }}
+                isLoading={purchasedProductsLoading}
+              />
+            </Grid>
+            <Grid flexDirection="column" alignItems="flex-start">
+              <Typography
+                tag="h3"
+                style={theme?.availableProducts?.title?.style}
+              >
+                Available Products
+              </Typography>
+              <Typography style={theme?.availableProducts?.subtitle?.style}>
+                Following products are available for you based on the Roblox
+                inventory you have
+              </Typography>
+              <ProductsGrid
+                products={availableProducts}
+                handleSetProductUuid={handleSetProductUuid}
+                handleSetBundleUuid={handleSetBundleUuid}
+                isLoading={availableProductLoading}
+                cta="buy"
+              />
+            </Grid>
+            <Grid flexDirection="column" alignItems="flex-start">
+              <Typography
+                tag="h3"
+                style={theme?.unavailabeProducts?.title?.style}
+              >
+                Unavailable products
+              </Typography>
+              <Typography style={theme?.unavailabeProducts?.subtitle?.style}>
+                Other products that can be purchased when you have the right
+                Roblox inventory item.
+              </Typography>
+              <ProductsGrid
+                products={unavailableProducts}
+                handleSetProductUuid={handleSetProductUuid}
+                handleSetBundleUuid={handleSetBundleUuid}
+                isLoading={unavailableProductsLoading}
+                cta="buy"
+              />
+            </Grid>
+          </>
         )}
       </ContentWrapper>
     </Wrapper>

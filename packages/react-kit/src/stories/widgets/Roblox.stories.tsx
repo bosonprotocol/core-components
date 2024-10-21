@@ -62,7 +62,9 @@ export const Base = {
       sellerId: "3",
       theme: {
         style: {
-          background: "#F1F3F9"
+          background: "#F1F3F9",
+          paddingTop: "5rem",
+          paddingBottom: "5rem"
         },
         purchasedProducts: {
           title: {
