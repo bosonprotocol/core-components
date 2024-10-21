@@ -64,6 +64,15 @@ export const Base = {
         style: {
           background: "#F1F3F9"
         },
+        purchasedProducts: {
+          title: {
+            style: {
+              margin: 0,
+              marginBottom: "32px",
+              color: "#09182C"
+            }
+          }
+        },
         availableProducts: {
           title: {
             style: {
@@ -73,6 +82,7 @@ export const Base = {
           },
           subtitle: {
             style: {
+              marginBottom: "32px",
               color: "#556072"
             }
           }
@@ -86,6 +96,7 @@ export const Base = {
           },
           subtitle: {
             style: {
+              marginBottom: "32px",
               color: "#556072"
             }
           }
@@ -93,16 +104,17 @@ export const Base = {
       }
     },
     connectProps: {
-      config: {
-        configId: "testing-80002-0",
-        envName: "testing",
-        infuraKey: process.env.REACT_APP_INFURA_KEY ?? "",
-        magicLinkKey: process.env.STORYBOOK_REACT_APP_MAGIC_API_KEY ?? "",
-        walletConnectProjectId:
-          process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? ""
-      },
+      // config: {
+      //   configId: "testing-80002-0",
+      //   envName: "testing",
+      //   infuraKey: process.env.REACT_APP_INFURA_KEY ?? "",
+      //   magicLinkKey: process.env.STORYBOOK_REACT_APP_MAGIC_API_KEY ?? "",
+      //   walletConnectProjectId:
+      //     process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? ""
+      // },
       brand: "GYMSHARK",
       theme: {
+        gapInPx: 24,
         robloxCard: {
           subtitle: {
             color: "#556072"

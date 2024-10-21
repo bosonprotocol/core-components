@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import { CSSProperties, styled } from "styled-components";
 import React, { useMemo, useState } from "react";
 import { Typography, TypographyProps } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
@@ -9,10 +9,10 @@ import { GridContainer } from "../../../ui/GridContainer";
 import { ProductsGrid } from "./ProductsGrid";
 import useProductByOfferId from "../../../../hooks/products/useProductByOfferId";
 import { isTruthy } from "../../../../types/helpers";
+import { useModal } from "../../../modal/useModal";
 
-const Wrapper = styled(Grid)`
-  width: 100%;
-`;
+const Wrapper = styled(Grid)``;
+const ContentWrapper = styled(Grid)``;
 
 type SectionThemeProps = Partial<{
   title: {
@@ -32,16 +32,26 @@ export type ProductsRobloxProps = {
     availableProducts: SectionThemeProps;
     unavailabeProducts: SectionThemeProps;
   }>;
+  maxWidth?: CSSProperties["maxWidth"];
 };
 
+const purchasedProducts = [{}] as any[];
+const purchasedProductsLoading = false;
 const unavailableProducts = [{}] as any[];
+const unavailableProductsLoading = false;
 export const ProductsRoblox = ({
   sellerId,
   theme,
   configId,
-  envName
+  envName,
+  maxWidth
 }: ProductsRobloxProps) => {
-  const { data, ...rest } = useProductByOfferId("17", {
+  const { showModal } = useModal();
+  const {
+    data,
+    isLoading: availableProductLoading,
+    ...rest
+  } = useProductByOfferId("17", {
     enabled: true
   });
   console.log({ data, ...rest });
@@ -68,17 +78,25 @@ export const ProductsRoblox = ({
     setBundleUuid("");
   };
   return (
-    <Wrapper
-      style={theme?.style}
-      flexDirection="column"
-      alignItems="flex-start"
-      gap="5rem"
-    >
-      <>
+    <Wrapper style={theme?.style} justifyContent="center" alignItems="center">
+      <ContentWrapper
+        flexDirection="column"
+        alignItems="flex-start"
+        gap="5rem"
+        maxWidth={maxWidth}
+      >
         <Grid flexDirection="column" alignItems="flex-start">
           <Typography tag="h3" style={theme?.purchasedProducts?.title?.style}>
             Purchased Products
           </Typography>
+          <ProductsGrid
+            products={purchasedProducts}
+            cta="request-shipment"
+            handleRequestShipment={(offer) => {
+              //showModal;
+            }}
+            isLoading={purchasedProductsLoading}
+          />
         </Grid>
         <Grid flexDirection="column" alignItems="flex-start">
           <Typography tag="h3" style={theme?.availableProducts?.title?.style}>
@@ -88,7 +106,13 @@ export const ProductsRoblox = ({
             Following products are available for you based on the Roblox
             inventory you have
           </Typography>
-          <ProductsGrid products={availableProducts} />
+          <ProductsGrid
+            products={availableProducts}
+            handleSetProductUuid={handleSetProductUuid}
+            handleSetBundleUuid={handleSetBundleUuid}
+            isLoading={availableProductLoading}
+            cta="buy"
+          />
         </Grid>
         <Grid flexDirection="column" alignItems="flex-start">
           <Typography tag="h3" style={theme?.unavailabeProducts?.title?.style}>
@@ -98,18 +122,25 @@ export const ProductsRoblox = ({
             Other products that can be purchased when you have the right Roblox
             inventory item.
           </Typography>
-          <ProductsGrid products={unavailableProducts} />
+          <ProductsGrid
+            products={unavailableProducts}
+            handleSetProductUuid={handleSetProductUuid}
+            handleSetBundleUuid={handleSetBundleUuid}
+            isLoading={unavailableProductsLoading}
+            cta="buy"
+          />
         </Grid>
-      </>
-      {(productUuid || bundleUuid) && (
-        <CommitModalWithOffer
-          sellerId={sellerId}
-          productUuid={productUuid}
-          bundleUuid={bundleUuid}
-          lookAndFeel="regular"
-          hideModal={clearSelection}
-        />
-      )}
+
+        {(productUuid || bundleUuid) && (
+          <CommitModalWithOffer
+            sellerId={sellerId}
+            productUuid={productUuid}
+            bundleUuid={bundleUuid}
+            lookAndFeel="regular"
+            hideModal={clearSelection}
+          />
+        )}
+      </ContentWrapper>
     </Wrapper>
   );
 };

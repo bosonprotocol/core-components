@@ -40,3 +40,6 @@ export type ExtendedOmit<T, K extends keyof T> = OmitFromKnownKeys<T, K> &
       ? { [n: number]: T[Exclude<keyof T, string>] }
       : {}); // support number property
 //#endregion
+export type AddDollarPrefixToKeys<T> = {
+  [K in keyof T as `$${string & K}`]: T[K];
+};

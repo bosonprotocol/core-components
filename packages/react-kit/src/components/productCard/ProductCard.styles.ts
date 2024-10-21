@@ -166,6 +166,7 @@ export const ProductCardWrapper = styled.div<{
     position: static;
     padding-top: 0;
     height: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -236,9 +237,29 @@ export const ProductCardImageAndCTAContainer = styled.div`
   position: relative;
 `;
 
+const CTAstartState = css`
+  opacity: 0;
+  bottom: 30px;
+`;
 export const CTAOnHoverContainer = styled.div<{ $isHovered: boolean }>`
+  @keyframes appear {
+    from {
+      ${CTAstartState}
+    }
+    to {
+      opacity: 1;
+      bottom: 95px;
+    }
+  }
+  ${CTAstartState}
   position: absolute;
   z-index: ${zIndex.OfferCard};
-  bottom: ${({ $isHovered }) => ($isHovered ? "95px" : "1.875rem")};
-  transition: all 300ms ease-in-out;
+  ${({ $isHovered }) => {
+    if ($isHovered) {
+      return css`
+        animation: appear 300ms forwards;
+      `;
+    }
+    return "";
+  }};
 `;
