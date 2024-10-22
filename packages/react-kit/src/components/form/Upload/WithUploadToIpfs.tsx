@@ -22,7 +22,8 @@ export const SUPPORTED_FORMATS = [
 ];
 export interface WithUploadToIpfsProps {
   saveToIpfs: (
-    files: File[] | null
+    files: File[] | null,
+    throwOnError?: boolean
   ) => Promise<false | FileProps[] | undefined>;
   loadMedia: (src: string) => Promise<string | undefined>;
   removeFile: (src: string) => Promise<void>;
@@ -39,7 +40,7 @@ export function WithUploadToIpfs<P extends WithUploadToIpfsProps>(
     const { saveFile, loadMedia, removeFile } = useSaveImageToIpfs();
 
     const saveToIpfs: WithUploadToIpfsProps["saveToIpfs"] = useCallback(
-      async (filesArray: File[] | null) => {
+      async (filesArray: File[] | null, throwOnError?: boolean) => {
         if (!filesArray) {
           return;
         }
@@ -53,10 +54,12 @@ export function WithUploadToIpfs<P extends WithUploadToIpfsProps>(
             const err = `File ${
               file?.name
             } size cannot exceed more than ${bytesToSize(sizeValidation)}!`;
+            if (throwOnError) throw new Error(err);
             filesErrors.push(err);
           }
           if (!formatValidation.includes(file?.type)) {
             const err = `Uploaded file has unsupported format of ${file?.type}!`;
+            if (throwOnError) throw new Error(err);
             filesErrors.push(err);
           }
         }

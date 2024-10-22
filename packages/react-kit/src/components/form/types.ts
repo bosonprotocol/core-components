@@ -137,6 +137,7 @@ export type UploadProps = BaseProps & {
   borderRadiusUnit?: "px" | "%";
   width?: number;
   height?: number;
+  errorComponent?: (errorMessage: string) => React.ReactNode;
   imgPreviewStyle?: Pick<CSSProperties, "objectFit">;
   theme?: Partial<{ triggerTheme: FileUploadWrapperTheme }>;
 } & (
