@@ -8,17 +8,17 @@ import { Tooltip, TooltipProps } from "../tooltip/Tooltip";
 import {
   ProductCardBottom,
   ProductCardBottomContent,
-  TopLeftRibbon,
   ProductCardCreatorName,
   ProductCardImageWrapper,
   ProductCardTitle,
   ProductCardTitleWrapper,
   ProductCardWrapper,
   CTAOnHoverContainer,
-  ProductTypeWrapper
+  ProductTypeWrapper,
+  Label
 } from "./ProductCard.styles";
 
-import { ProductType } from "./const";
+import { ProductType, LabelType } from "./const";
 import { Grid } from "../ui/Grid";
 import { CircleHalf } from "phosphor-react";
 
@@ -43,6 +43,7 @@ interface IProductCard {
   hideCreatorName?: boolean;
   isImageFitCover?: boolean;
   className?: string;
+  label?: (typeof LabelType)[keyof typeof LabelType];
 }
 
 const Wrapper = ({
@@ -64,10 +65,6 @@ const Wrapper = ({
   return <>{children}</>;
 };
 
-export const PhygitalLabel = ({ ...rest }) => {
-  return <TopLeftRibbon {...rest} data-text="Phygital" />;
-};
-
 export const ProductCard = (props: IProductCard) => {
   const {
     avatarName,
@@ -85,7 +82,8 @@ export const ProductCard = (props: IProductCard) => {
     hideCreatorName = false,
     isImageFitCover = false,
     className,
-    productType
+    productType,
+    label
   } = props;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -103,16 +101,20 @@ export const ProductCard = (props: IProductCard) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={className}
-      $isClickable
+      $isClickable={!!onCardClick}
     >
       <ProductCardImageWrapper>
+        {label === LabelType.purchased && (
+          <Label data-test="label">Purchased</Label>
+        )}
         <Image {...imageProps} />
+        {CTAOnHover && (
+          <CTAOnHoverContainer $isHovered={isHovered}>
+            {CTAOnHover}
+          </CTAOnHoverContainer>
+        )}
       </ProductCardImageWrapper>
-      {CTAOnHover && (
-        <CTAOnHoverContainer $isHovered={isHovered}>
-          {CTAOnHover}
-        </CTAOnHoverContainer>
-      )}
+
       <ProductCardBottom>
         <ProductCardBottomContent>
           <Grid flexDirection="column">

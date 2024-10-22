@@ -17,13 +17,17 @@ import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
 import { CommitButtonView } from "../../../buttons/CommitButtonView";
-import { ProductType } from "../../../productCard/const";
+import { LabelType, ProductType } from "../../../productCard/const";
 
 const colors = theme.colors.light;
 
 const commonCardStyles = css`
   background: transparent;
   box-shadow: unset;
+  padding: 0;
+  > * {
+    padding-top: 0;
+  }
 `;
 const TransparentProductCard = styled(ProductCard)`
   ${commonCardStyles}
@@ -64,7 +68,7 @@ export const ProductsGrid = ({
   return (
     <GridContainer columnGap="2rem" rowGap="2rem" width="100%">
       {isLoading
-        ? new Array(numProducts || 4).fill(null).map(() => {
+        ? new Array(numProducts || 3).fill(null).map(() => {
             return <TransparentSkeletonProductCard />;
           })
         : products
@@ -99,6 +103,11 @@ export const ProductsGrid = ({
                     offer.price || "0",
                     offer.exchangeToken.decimals
                   )}
+                  isHoverDisabled
+                  isImageFitCover
+                  label={
+                    cta === "request-shipment" ? LabelType.purchased : undefined
+                  }
                   title={offer.metadata?.name ?? ""}
                   imageProps={{
                     src: imageSrc,
@@ -113,7 +122,7 @@ export const ProductsGrid = ({
                     }
                   }}
                   CTAOnHover={
-                    address ? (
+                    !address ? (
                       <Button>Connect Account</Button>
                     ) : cta === "buy" ? (
                       <CommitButtonView

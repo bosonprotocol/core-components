@@ -268,10 +268,7 @@ const getInitialStep = (
             ? ActiveStep.EXCHANGE_VIEW
             : ActiveStep.REDEEM_FORM_CONFIRMATION;
 };
-const getPreviousSteps = (
-  widgetAction: RedemptionWidgetAction,
-  showRedemptionOverview: boolean
-) => {
+const getPreviousSteps = (widgetAction: RedemptionWidgetAction) => {
   return widgetAction === RedemptionWidgetAction.CONFIRM_REDEEM
     ? [ActiveStep.REDEEM_FORM]
     : [];
@@ -383,7 +380,7 @@ function RedeemNonModal({
     previousStep: ActiveStep[];
     currentStep: ActiveStep;
   }>({
-    previousStep: getPreviousSteps(widgetAction, showRedemptionOverview),
+    previousStep: getPreviousSteps(widgetAction),
     currentStep: getInitialStep(widgetAction, showRedemptionOverview)
   });
 

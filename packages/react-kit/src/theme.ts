@@ -33,6 +33,13 @@ export const theme = {
       lightGrey2: "#eff0f7"
     }
   },
+  borders: {
+    // in px
+    small: 8,
+    medium: 12,
+    big: 16,
+    large: 32
+  } as const,
   mobile: "768px",
   tablet: "1024px",
   transition: {

@@ -3,7 +3,6 @@ import type { Country as CountryCode } from "react-phone-number-input";
 import { useBreakpoints } from "../../../../../hooks/useBreakpoints";
 import { BuyerTransferInfo } from "../../../../../lib/bundle/const";
 import { getHasBuyerTransferInfos } from "../../../../../lib/offer/filter";
-import { Exchange } from "../../../../../types/exchange";
 import { Button } from "../../../../buttons/Button";
 import { CountrySelect } from "../../../../form/CountrySelect";
 import Input from "../../../../form/Input";
@@ -11,8 +10,9 @@ import Phone from "../../../../form/Phone";
 import { Grid } from "../../../../ui/Grid";
 import { Typography } from "../../../../ui/Typography";
 import { FormModel } from "../RedeemFormModel";
+import { subgraph } from "@bosonprotocol/core-sdk";
 interface Props {
-  exchange: Exchange | null;
+  offer: subgraph.OfferFieldsFragment | null;
   isValid: boolean;
   onNextClick: () => void;
   onBackClick: () => void;
@@ -60,17 +60,15 @@ const fatfMemberCountries: CountryCode[] = [
 ];
 
 export default function RedeemForm({
-  exchange,
+  offer,
   isValid,
   onNextClick,
   onBackClick,
   setConnectedWalletAddress
 }: Props) {
   const { isLteXS } = useBreakpoints();
-  const requestBuyerAddress = exchange?.offer
-    ? getHasBuyerTransferInfos(exchange.offer, [
-        BuyerTransferInfo.walletAddress
-      ])
+  const requestBuyerAddress = offer
+    ? getHasBuyerTransferInfos(offer, [BuyerTransferInfo.walletAddress])
     : false;
   return (
     <>

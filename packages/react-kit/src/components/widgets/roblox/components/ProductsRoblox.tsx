@@ -35,8 +35,8 @@ export type ProductsRobloxProps = {
   maxWidth?: CSSProperties["maxWidth"];
 };
 
-const purchasedProducts = [{}] as any[];
-const purchasedProductsLoading = false;
+// const purchasedProducts = [{}] as any[];
+// const purchasedProductsLoading = false;
 const unavailableProducts = [{}] as any[];
 const unavailableProductsLoading = false;
 export const ProductsRoblox = ({
@@ -62,6 +62,9 @@ export const ProductsRoblox = ({
         : [],
     [data?.variants]
   );
+  const purchasedProducts = availableProducts;
+  const purchasedProductsLoading = availableProductLoading;
+
   const [productUuid, setProductUuid] = useState<string>("");
   const [bundleUuid, setBundleUuid] = useState<string>("");
 
@@ -106,7 +109,14 @@ export const ProductsRoblox = ({
                 products={purchasedProducts}
                 cta="request-shipment"
                 handleRequestShipment={(offer) => {
-                  //showModal;
+                  showModal("REQUEST_SHIPMENT", {
+                    offer,
+                    exchange: {
+                      offer,
+                      buyer: { id: "3" },
+                      seller: { id: "5", assistant: "0x123" }
+                    } as unknown as subgraph.ExchangeFieldsFragment // TODO: remove cast
+                  });
                 }}
                 isLoading={purchasedProductsLoading}
               />
