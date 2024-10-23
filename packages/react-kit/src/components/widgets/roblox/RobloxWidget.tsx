@@ -7,17 +7,23 @@ import {
   ProductsRobloxProps
 } from "./components/ProductsRoblox";
 import { CommitWidgetProviders } from "../commit/CommitWidgetProviders";
+import { CommitWidgetProps } from "../commit/CommitWidget";
 
 const Wrapper = styled(Grid)``;
 const numSteps = 3;
 const numGaps = numSteps - 1;
 export type RobloxWidgetProps = {
   connectProps: ConnectRobloxProps;
-  productsGridProps: ProductsRobloxProps;
+  productsGridProps: Omit<ProductsRobloxProps, "backendOrigin">;
+  configProps: Omit<
+    CommitWidgetProps,
+    "lookAndFeel" | "withWeb3React" | "withCustomReduxContext"
+  >;
 };
 export const RobloxWidget = ({
   connectProps,
-  productsGridProps
+  productsGridProps,
+  configProps
 }: RobloxWidgetProps) => {
   const singleStepConnectRobloxRef = useRef<HTMLDivElement>(null);
   const [singleStepWidth, setSingleStepWidth] =
@@ -47,14 +53,7 @@ export const RobloxWidget = ({
 
   return (
     <CommitWidgetProviders
-      configId={productsGridProps.configId}
-      envName={productsGridProps.envName}
-      ipfsGateway={process.env.STORYBOOK_DATA_IPFS_GATEWAY}
-      ipfsProjectId={process.env.STORYBOOK_DATA_IPFS_PROJECT_ID}
-      ipfsProjectSecret={process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET}
-      walletConnectProjectId={
-        process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? ""
-      }
+      {...configProps}
       withCustomReduxContext={false}
       withReduxProvider={true}
       withWeb3React={true}
@@ -67,7 +66,11 @@ export const RobloxWidget = ({
         gap="3rem"
       >
         <ConnectRoblox {...connectProps} ref={singleStepConnectRobloxRef} />
-        <ProductsRoblox {...productsGridProps} maxWidth={singleStepWidth} />
+        <ProductsRoblox
+          {...productsGridProps}
+          maxWidth={singleStepWidth}
+          backendOrigin={configProps.backendOrigin}
+        />
       </Wrapper>
     </CommitWidgetProviders>
   );

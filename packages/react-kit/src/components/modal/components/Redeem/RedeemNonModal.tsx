@@ -32,9 +32,12 @@ import { useConfigContext } from "../../../config/ConfigContext";
 import { Typography } from "../../../ui/Typography";
 import {
   RedemptionContextProps,
-  RedemptionWidgetAction,
   useRedemptionContext
 } from "../../../widgets/redemption/provider/RedemptionContext";
+import {
+  useRedemptionWidgetContext,
+  RedemptionWidgetAction
+} from "../../../widgets/redemption/provider/RedemptionWidgetContext";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import { BosonLogo } from "../common/BosonLogo";
 import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
@@ -50,7 +53,7 @@ import {
   ExpireVoucherView,
   ExpireVoucherViewProps
 } from "./ExchangeView/expireVoucher/ExpireVoucherView";
-import { ContactPreference } from "./const";
+import { ContactPreference, getRedeemFormValidationSchema } from "./const";
 import {
   DetailContextProps,
   DetailViewProvider
@@ -58,6 +61,7 @@ import {
 import { getHasBuyerTransferInfos } from "../../../../lib/offer/filter";
 import { BuyerTransferInfo } from "../../../../lib/bundle/const";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
+import { mockedDeliveryAddress } from "../../../widgets/redemption/const";
 
 const colors = theme.colors.light;
 const UlWithWordBreak = styled.ul`
@@ -317,12 +321,9 @@ function RedeemNonModal({
     sellerIds: sellerIds,
     enabled: doFetchSellersFromSellerIds
   });
-  const {
-    showRedemptionOverview,
-    widgetAction,
-    exchangeState,
-    deliveryInfo: initialDeliveryInfo
-  } = useRedemptionContext();
+  const { deliveryInfo: initialDeliveryInfo } = useRedemptionContext();
+  const { showRedemptionOverview, widgetAction, exchangeState } =
+    useRedemptionWidgetContext();
 
   const emailPreference =
     exchange?.seller.metadata?.contactPreference ===
@@ -333,46 +334,9 @@ function RedeemNonModal({
       ])
     : false;
   const validationSchema = useMemo(() => {
-    return Yup.object({
-      [FormModel.formFields.name.name]: Yup.string()
-        .trim()
-        .required(FormModel.formFields.name.requiredErrorMessage),
-      [FormModel.formFields.streetNameAndNumber.name]: Yup.string()
-        .trim()
-        .required(
-          FormModel.formFields.streetNameAndNumber.requiredErrorMessage
-        ),
-      [FormModel.formFields.city.name]: Yup.string()
-        .trim()
-        .required(FormModel.formFields.city.requiredErrorMessage),
-      [FormModel.formFields.state.name]: Yup.string()
-        .trim()
-        .required(FormModel.formFields.state.requiredErrorMessage),
-      [FormModel.formFields.zip.name]: Yup.string()
-        .trim()
-        .required(FormModel.formFields.zip.requiredErrorMessage),
-      [FormModel.formFields.country.name]: Yup.string()
-        .trim()
-        .required(FormModel.formFields.country.requiredErrorMessage),
-      [FormModel.formFields.email.name]: emailPreference
-        ? Yup.string()
-            .trim()
-            .required(FormModel.formFields.email.requiredErrorMessage)
-            .email(FormModel.formFields.email.mustBeEmail)
-        : Yup.string().trim().email(FormModel.formFields.email.mustBeEmail),
-      [FormModel.formFields.walletAddress.name]: requestBuyerAddress
-        ? Yup.string()
-            .trim()
-            .required(FormModel.formFields.walletAddress.requiredErrorMessage)
-            .test(
-              "mustBeAddress",
-              FormModel.formFields.walletAddress.mustBeWalletAddress,
-              (value) => (value ? ethers.utils.isAddress(value) : true)
-            )
-        : Yup.string().trim(),
-      [FormModel.formFields.phone.name]: Yup.string()
-        .trim()
-        .required(FormModel.formFields.phone.requiredErrorMessage)
+    return getRedeemFormValidationSchema({
+      emailPreference,
+      requestBuyerAddress
     });
   }, [emailPreference, requestBuyerAddress]);
   type FormType = Yup.InferType<typeof validationSchema>;
@@ -474,15 +438,6 @@ function RedeemNonModal({
   if (jsx) {
     return jsx;
   }
-  const deliveryAddressVar =
-    typeof process !== "undefined"
-      ? process?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK || // @ts-expect-error import.meta.env only exists in vite environments
-        import.meta?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK
-      : // @ts-expect-error import.meta.env only exists in vite environments
-        import.meta?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK;
-  const mockedDeliveryAddress = deliveryAddressVar
-    ? JSON.parse(deliveryAddressVar)
-    : undefined;
 
   const handleRaiseDispute = (exchangeId: string | undefined) => {
     const raiseDisputeForExchangeUrlWithId =

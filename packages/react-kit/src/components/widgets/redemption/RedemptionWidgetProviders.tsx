@@ -16,21 +16,28 @@ import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "../finance/convertion-rate/ConvertionRateProvider";
 import { CommonWidgetTypes } from "../types";
-import { RedemptionContextProps } from "./provider/RedemptionContext";
-import { RedemptionProvider } from "./provider/RedemptionProvider";
+import {
+  RedemptionProvider,
+  RedemptionProviderProps
+} from "./provider/RedemptionProvider";
+import {
+  RedemptionWidgetProvider,
+  RedemptionWidgetProviderProps
+} from "./provider/RedemptionWidgetProvider";
 import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
 import { Web3Provider, Web3ProviderProps } from "../../wallet2/web3Provider";
 import { BlockNumberProvider } from "../../../hooks/contracts/useBlockNumber";
 
 export type RedemptionWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
-  Omit<RedemptionContextProps, "setWidgetAction"> &
+  RedemptionProviderProps &
+  Omit<RedemptionWidgetProviderProps, "setWidgetAction"> &
   ConvertionRateProviderProps &
   CommonWidgetTypes &
   Omit<Web3ProviderProps, "infuraKey"> &
   BosonProviderProps &
   WithReduxProviderProps & {
-    signatures?: string[] | undefined | null; // signature1,signature2,signature3
+    signatures?: string[] | undefined | null;
   } & {
     children: ReactNode;
   };
@@ -63,7 +70,9 @@ export const RedemptionWidgetProviders: React.FC<RedemptionWidgetProvidersProps>
                       <ConvertionRateProvider>
                         <ModalProvider>
                           <RedemptionProvider {...props}>
-                            {children}
+                            <RedemptionWidgetProvider {...props}>
+                              {children}
+                            </RedemptionWidgetProvider>
                           </RedemptionProvider>
                         </ModalProvider>
                       </ConvertionRateProvider>

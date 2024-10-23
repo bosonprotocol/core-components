@@ -1,22 +1,20 @@
 import { useQuery } from "react-query";
 import { useRobloxLocalStorage } from "./useRobloxLocalStorage";
 import { loggedInPayloadSchema, robloxQueryKeys } from "./const";
+import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
 
 type UseIsRobloxLoggedInProps = {
-  origin: string;
   options?: {
     enabled?: boolean;
   };
 };
-export const useIsRobloxLoggedIn = ({
-  origin,
-  options
-}: UseIsRobloxLoggedInProps) => {
+export const useIsRobloxLoggedIn = ({ options }: UseIsRobloxLoggedInProps) => {
   const [storedValue, setValue] = useRobloxLocalStorage();
+  const { backendOrigin } = useRobloxConfigContext();
   return useQuery(
-    robloxQueryKeys.loggedIn(origin),
+    robloxQueryKeys.loggedIn(backendOrigin),
     async () => {
-      const response = await fetch(`${origin}/logged-in`, {
+      const response = await fetch(`${backendOrigin}/logged-in`, {
         method: "GET",
         credentials: "include"
       });

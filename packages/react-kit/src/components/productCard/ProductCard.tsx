@@ -22,6 +22,15 @@ import { ProductType, LabelType } from "./const";
 import { Grid } from "../ui/Grid";
 import { CircleHalf } from "phosphor-react";
 
+export const PhygitalLabel = () => {
+  return (
+    <ProductTypeWrapper>
+      <CircleHalf />
+      Phygital
+    </ProductTypeWrapper>
+  );
+};
+
 interface IProductCard {
   asterisk?: boolean;
   onAvatarError?: React.ReactEventHandler<HTMLImageElement> | undefined;

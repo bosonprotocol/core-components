@@ -17,6 +17,7 @@ import { CheckCircle, Power } from "phosphor-react";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { useRobloxLogout } from "../../../../hooks/roblox/useRobloxLogout";
+import { useRobloxConfigContext } from "../../../../hooks/roblox/context/useRobloxConfigContext";
 
 const Wrapper = styled(Grid)`
   container-type: inline-size;
@@ -242,7 +243,6 @@ export type ConnectRobloxProps = {
   };
 };
 
-const backendOrigin = "http://localhost:3333";
 type ActiveStep = 0 | 1 | 2;
 export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
   ({ brand, theme }, ref) => {
@@ -252,15 +252,12 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
     const [activeStep, setActiveStep] = useState<ActiveStep>(0);
     const { data: robloxLoggedInData, refetch: getIsRobloxLoggedInAsync } =
       useIsRobloxLoggedIn({
-        origin: backendOrigin,
         options: {
           enabled: true
         }
       });
-    const { mutateAsync: robloxLogoutAsync } = useRobloxLogout({
-      origin: backendOrigin
-    });
-
+    const { mutateAsync: robloxLogoutAsync } = useRobloxLogout();
+    const { backendOrigin } = useRobloxConfigContext();
     const nextLatestActiveStep = (step: ActiveStep) => {
       setActiveStep((activeStep) => Math.max(step, activeStep) as ActiveStep);
     };

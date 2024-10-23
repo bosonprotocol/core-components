@@ -10,6 +10,7 @@ import { ProductsGrid } from "./ProductsGrid";
 import useProductByOfferId from "../../../../hooks/products/useProductByOfferId";
 import { isTruthy } from "../../../../types/helpers";
 import { useModal } from "../../../modal/useModal";
+import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 
 const Wrapper = styled(Grid)``;
 const ContentWrapper = styled(Grid)``;
@@ -23,6 +24,7 @@ type SectionThemeProps = Partial<{
   };
 }>;
 export type ProductsRobloxProps = {
+  backendOrigin: string;
   sellerId: string;
   configId: ConfigId;
   envName: EnvironmentType;
@@ -44,7 +46,8 @@ export const ProductsRoblox = ({
   theme,
   configId,
   envName,
-  maxWidth
+  maxWidth,
+  backendOrigin
 }: ProductsRobloxProps) => {
   const { showModal } = useModal();
   const {

@@ -22,9 +22,19 @@ import ConvertionRateProvider, {
 } from "../finance/convertion-rate/ConvertionRateProvider";
 import { Web3Provider, Web3ProviderProps } from "../../wallet2/web3Provider";
 import { BlockNumberProvider } from "../../../hooks/contracts/useBlockNumber";
+import {
+  RedemptionProvider,
+  RedemptionProviderProps
+} from "../redemption/provider/RedemptionProvider";
+import {
+  RobloxProvider,
+  RobloxProviderProps
+} from "../../../hooks/roblox/context/RobloxProvider";
 
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
+  RedemptionProviderProps &
+  RobloxProviderProps &
   ConvertionRateProviderProps &
   Omit<Web3ProviderProps, "infuraKey"> &
   BosonProviderProps &
@@ -74,7 +84,11 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
                     <ChatProvider>
                       <IpfsProvider {...props}>
                         <ConvertionRateProvider>
-                          <ModalProvider>{children}</ModalProvider>
+                          <RedemptionProvider {...props}>
+                            <RobloxProvider {...props}>
+                              <ModalProvider>{children}</ModalProvider>
+                            </RobloxProvider>
+                          </RedemptionProvider>
                         </ConvertionRateProvider>
                       </IpfsProvider>
                     </ChatProvider>

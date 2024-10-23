@@ -105,15 +105,18 @@ export const Base = {
         }
       }
     },
+    configProps: {
+      configId: "testing-80002-0",
+      envName: "testing",
+      walletConnectProjectId:
+        process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? "",
+      backendOrigin: "http://localhost:3000",
+      ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
+      ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
+      ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+      sendDeliveryInfoThroughXMTP: false
+    },
     connectProps: {
-      // config: {
-      //   configId: "testing-80002-0",
-      //   envName: "testing",
-      //   infuraKey: process.env.REACT_APP_INFURA_KEY ?? "",
-      //   magicLinkKey: process.env.STORYBOOK_REACT_APP_MAGIC_API_KEY ?? "",
-      //   walletConnectProjectId:
-      //     process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? ""
-      // },
       brand: "GYMSHARK",
       theme: {
         gapInPx: 24,
