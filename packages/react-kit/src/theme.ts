@@ -30,7 +30,8 @@ export const theme = {
       cyan: "#00FFFF",
       lightArrowColor: "#dedfe3",
       darkGreyTimeStamp: "#E8EAF1",
-      lightGrey2: "#eff0f7"
+      lightGrey2: "#eff0f7",
+      darkShade: "#333033"
     }
   },
   mobile: "768px",
