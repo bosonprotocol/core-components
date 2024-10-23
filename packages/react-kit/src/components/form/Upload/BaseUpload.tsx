@@ -53,7 +53,6 @@ function BaseUpload({
   removeFile,
   saveButtonTheme,
   errorComponent,
-  v2,
   theme,
   ...props
 }: UploadPropsWithNoIpfs & WithUploadToIpfsProps) {
@@ -220,7 +219,7 @@ function BaseUpload({
       }
       handleLoading(true);
       try {
-        const files = await saveToIpfs(efiles, true);
+        const files = await saveToIpfs(efiles, { throwOnError: true });
         setErrorMessage(undefined);
         if (files) {
           setFiles(files);
@@ -233,6 +232,8 @@ function BaseUpload({
       } catch (err) {
         if (err instanceof Error) {
           setErrorMessage(err.message);
+        } else {
+          setErrorMessage("Something went wrong");
         }
       } finally {
         handleLoading(false);
@@ -319,7 +320,6 @@ function BaseUpload({
             data-disabled={disabled}
             onClick={handleChooseFile}
             $error={errorMessage}
-            $v2={v2}
             style={style}
             theme={theme?.triggerTheme}
           >

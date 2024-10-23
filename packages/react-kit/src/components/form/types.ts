@@ -138,9 +138,11 @@ export type UploadProps = BaseProps & {
   width?: number;
   height?: number;
   errorComponent?: (errorMessage: string) => React.ReactNode;
-  v2?: boolean;
   imgPreviewStyle?: Pick<CSSProperties, "objectFit">;
-  theme?: Partial<{ triggerTheme: FileUploadWrapperTheme }>;
+  theme?: Partial<{
+    triggerTheme: FileUploadWrapperTheme;
+    overrides: React.CSSProperties;
+  }>;
 } & (
     | {
         withEditor: true;
