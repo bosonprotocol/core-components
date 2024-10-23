@@ -53,6 +53,7 @@ function BaseUpload({
   removeFile,
   saveButtonTheme,
   errorComponent,
+  v2,
   theme,
   ...props
 }: UploadPropsWithNoIpfs & WithUploadToIpfsProps) {
@@ -220,6 +221,7 @@ function BaseUpload({
       handleLoading(true);
       try {
         const files = await saveToIpfs(efiles, true);
+        setErrorMessage(undefined);
         if (files) {
           setFiles(files);
         } else {
@@ -272,8 +274,8 @@ function BaseUpload({
           }}
         />
       )}
+      {errorMesage && errorComponent?.(errorMesage)}
       <FieldFileUploadWrapper {...wrapperProps} $disabled={!!disabled}>
-        {errorMesage && errorComponent?.(errorMesage)}
         <FieldInput
           {...props}
           hidden
@@ -317,6 +319,7 @@ function BaseUpload({
             data-disabled={disabled}
             onClick={handleChooseFile}
             $error={errorMessage}
+            $v2={v2}
             style={style}
             theme={theme?.triggerTheme}
           >

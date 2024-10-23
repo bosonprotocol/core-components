@@ -128,6 +128,7 @@ export type FileUploadWrapperTheme = Partial<{
 }>;
 export const FileUploadWrapper = styled.div<{
   $error: unknown;
+  $v2?: boolean;
   theme: FileUploadWrapperTheme | undefined;
 }>`
   position: relative;
@@ -188,13 +189,28 @@ export const FileUploadWrapper = styled.div<{
     cursor: not-allowed;
     opacity: 0.5;
   }
+  ${({ $v2 }) =>
+    $v2 &&
+    css`
+      aspect-ratio: 1/1;
+      padding-inline: 1.5rem;
+      background: ${colors.white};
+      min-width: 9.375rem;
+      width: auto;
+      height: auto;
+      border-radius: 12px;
+      border: 2px solid ${theme.colors.light.border};
+      color: ${theme.colors.light.greyText};
+    `}
 `;
 
 export const FieldFileUpload = styled(FieldInput)`
   display: none;
 `;
 
-export const FieldFileUploadWrapper = styled.div<{ $disabled: boolean }>`
+export const FieldFileUploadWrapper = styled.div<{
+  $disabled: boolean;
+}>`
   position: relative;
   display: inline-block;
   ${({ $disabled }) =>
