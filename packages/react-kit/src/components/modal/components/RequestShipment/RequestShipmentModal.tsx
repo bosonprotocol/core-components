@@ -19,8 +19,14 @@ import { getHasBuyerTransferInfos } from "../../../../lib/offer/filter";
 import { BuyerTransferInfo } from "../../../../lib/bundle/const";
 import { Form, Formik, FormikProps } from "formik";
 import { FormModel } from "../Redeem/RedeemFormModel";
-import { useRedemptionContext } from "../../../widgets/redemption/provider/RedemptionContext";
+import {
+  RedemptionContextProps,
+  useRedemptionContext
+} from "../../../widgets/redemption/provider/RedemptionContext";
 import { mockedDeliveryAddress } from "../../../widgets/redemption/const";
+import { checkSignatures } from "../Redeem/checkSignatures";
+import Loading from "../../../ui/loading/LoadingWrapper";
+import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
 
 const Wrapper = styled.div``;
 
@@ -33,14 +39,30 @@ enum ActiveStep {
   REDEEM_FORM_CONFIRMATION,
   REDEEM_SUCESS
 }
-export type RequestShipmentModalProps = {
+export type RequestShipmentModalProps = Pick<
+  RedemptionContextProps,
+  | "postDeliveryInfoUrl"
+  | "deliveryInfoHandler"
+  | "redemptionSubmittedHandler"
+  | "redemptionConfirmedHandler"
+> & {
   offer: subgraph.OfferFieldsFragment;
   exchange: subgraph.ExchangeFieldsFragment;
+  forcedAccount?: string;
+  parentOrigin?: string | null;
+  signatures?: string[] | null;
 };
 const initialStep = ActiveStep.EXCHANGE_POLICY_OVERVIEW;
 export const RequestShipmentModal = ({
   offer,
-  exchange
+  exchange,
+  parentOrigin,
+  signatures,
+  forcedAccount,
+  deliveryInfoHandler,
+  postDeliveryInfoUrl,
+  redemptionConfirmedHandler,
+  redemptionSubmittedHandler
 }: RequestShipmentModalProps) => {
   const offerId = offer.id;
   const offerName = exchange?.offer?.metadata?.name || "";
@@ -94,7 +116,44 @@ export const RequestShipmentModal = ({
     }
   }, [step]);
   const { deliveryInfo: initialDeliveryInfo } = useRedemptionContext();
+  const doFetchSellersFromSellerIds = !!sellerId;
+  const sellerIds = useMemo(() => [sellerId], [sellerId]);
+  const {
+    sellers: sellersFromSellerIds,
+    isLoading: areSellersFromSellerIdsLoading
+  } = useCurrentSellers({
+    sellerIds,
+    enabled: doFetchSellersFromSellerIds
+  });
+  if (!address) {
+    return (
+      <>
+        <p>Please connect your wallet</p>
+        {forcedAccount && <p>(expected account: {forcedAccount})</p>}
+      </>
+    );
+  }
 
+  if (areSellersFromSellerIdsLoading) {
+    return <Loading />;
+  }
+  const areSignaturesMandatory = !!(
+    postDeliveryInfoUrl ||
+    deliveryInfoHandler ||
+    redemptionSubmittedHandler ||
+    redemptionConfirmedHandler
+  );
+  const jsx = checkSignatures({
+    doFetchSellersFromSellerIds,
+    sellersFromSellerIds,
+    parentOrigin,
+    sellerIds,
+    signatures,
+    areSignaturesMandatory
+  });
+  if (jsx) {
+    return jsx;
+  }
   return (
     <Wrapper>
       <Formik<FormType>

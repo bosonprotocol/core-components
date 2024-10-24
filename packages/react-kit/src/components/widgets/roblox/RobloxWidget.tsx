@@ -14,16 +14,25 @@ const numSteps = 3;
 const numGaps = numSteps - 1;
 export type RobloxWidgetProps = {
   connectProps: ConnectRobloxProps;
-  productsGridProps: Omit<ProductsRobloxProps, "backendOrigin">;
+  productsGridProps: Omit<
+    ProductsRobloxProps,
+    | "backendOrigin"
+    | "configId"
+    | "envName"
+    | "sellerId"
+    | "requestShipmentProps"
+  >;
   configProps: Omit<
     CommitWidgetProps,
     "lookAndFeel" | "withWeb3React" | "withCustomReduxContext"
-  >;
+  > &
+    Pick<ProductsRobloxProps, "sellerId"> &
+    ProductsRobloxProps["requestShipmentProps"];
 };
 export const RobloxWidget = ({
   connectProps,
   productsGridProps,
-  configProps
+  configProps: { sellerId, ...configProps }
 }: RobloxWidgetProps) => {
   const singleStepConnectRobloxRef = useRef<HTMLDivElement>(null);
   const [singleStepWidth, setSingleStepWidth] =
@@ -68,8 +77,9 @@ export const RobloxWidget = ({
         <ConnectRoblox {...connectProps} ref={singleStepConnectRobloxRef} />
         <ProductsRoblox
           {...productsGridProps}
+          requestShipmentProps={configProps}
           maxWidth={singleStepWidth}
-          backendOrigin={configProps.backendOrigin}
+          sellerId={sellerId}
         />
       </Wrapper>
     </CommitWidgetProviders>

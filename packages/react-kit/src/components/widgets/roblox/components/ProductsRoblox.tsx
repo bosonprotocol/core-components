@@ -2,15 +2,13 @@ import { CSSProperties, styled } from "styled-components";
 import React, { useMemo, useState } from "react";
 import { Typography, TypographyProps } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
-import { ConfigId, EnvironmentType, subgraph } from "@bosonprotocol/core-sdk";
+import { subgraph } from "@bosonprotocol/core-sdk";
 import { CommitModalWithOffer } from "../../commit/CommitModalWithOffer";
-import { Currencies } from "../../../currencyDisplay/CurrencyDisplay";
-import { GridContainer } from "../../../ui/GridContainer";
 import { ProductsGrid } from "./ProductsGrid";
 import useProductByOfferId from "../../../../hooks/products/useProductByOfferId";
 import { isTruthy } from "../../../../types/helpers";
 import { useModal } from "../../../modal/useModal";
-import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
+import { RequestShipmentModalProps } from "../../../modal/components/RequestShipment/RequestShipmentModal";
 
 const Wrapper = styled(Grid)``;
 const ContentWrapper = styled(Grid)``;
@@ -24,10 +22,17 @@ type SectionThemeProps = Partial<{
   };
 }>;
 export type ProductsRobloxProps = {
-  backendOrigin: string;
+  requestShipmentProps: Pick<
+    RequestShipmentModalProps,
+    | "postDeliveryInfoUrl"
+    | "deliveryInfoHandler"
+    | "redemptionSubmittedHandler"
+    | "redemptionConfirmedHandler"
+    | "forcedAccount"
+    | "parentOrigin"
+    | "signatures"
+  >;
   sellerId: string;
-  configId: ConfigId;
-  envName: EnvironmentType;
   theme?: Partial<{
     style: Partial<TypographyProps["style"]>;
     purchasedProducts: Omit<SectionThemeProps, "subtitle">;
@@ -39,15 +44,21 @@ export type ProductsRobloxProps = {
 
 // const purchasedProducts = [{}] as any[];
 // const purchasedProductsLoading = false;
-const unavailableProducts = [{}] as any[];
-const unavailableProductsLoading = false;
+const unavailableProducts = [{}] as any[]; // TODO: get from API instead
+const unavailableProductsLoading = false; // TODO: get from API instead
 export const ProductsRoblox = ({
   sellerId,
   theme,
-  configId,
-  envName,
   maxWidth,
-  backendOrigin
+  requestShipmentProps: {
+    deliveryInfoHandler,
+    postDeliveryInfoUrl,
+    redemptionSubmittedHandler,
+    redemptionConfirmedHandler,
+    forcedAccount,
+    parentOrigin,
+    signatures
+  }
 }: ProductsRobloxProps) => {
   const { showModal } = useModal();
   const {
@@ -55,9 +66,10 @@ export const ProductsRoblox = ({
     isLoading: availableProductLoading,
     ...rest
   } = useProductByOfferId("17", {
+    // TODO: get from API instead
     enabled: true
   });
-  console.log({ data, ...rest });
+  console.log({ data, ...rest }); // TODO: remove
   const availableProducts = useMemo(
     () =>
       data?.variants.at(0)?.offer
@@ -115,10 +127,18 @@ export const ProductsRoblox = ({
                   showModal("REQUEST_SHIPMENT", {
                     offer,
                     exchange: {
+                      // TODO: should not be hardcoded
                       offer,
                       buyer: { id: "3" },
-                      seller: { id: "5", assistant: "0x123" }
-                    } as unknown as subgraph.ExchangeFieldsFragment // TODO: remove cast
+                      seller: { id: sellerId, assistant: "0x123" }
+                    } as unknown as subgraph.ExchangeFieldsFragment, // TODO: remove cast
+                    deliveryInfoHandler,
+                    parentOrigin,
+                    postDeliveryInfoUrl,
+                    redemptionConfirmedHandler,
+                    redemptionSubmittedHandler,
+                    signatures,
+                    forcedAccount
                   });
                 }}
                 isLoading={purchasedProductsLoading}

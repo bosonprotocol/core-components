@@ -57,9 +57,6 @@ export const Base = {
     ...BASE_ARGS,
 
     productsGridProps: {
-      configId: "testing-80002-0",
-      envName: "testing",
-      sellerId: "3",
       theme: {
         style: {
           background: "#F1F3F9",
@@ -108,6 +105,7 @@ export const Base = {
     configProps: {
       configId: "testing-80002-0",
       envName: "testing",
+      sellerId: "20",
       walletConnectProjectId:
         process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? "",
       backendOrigin: "http://localhost:3000",
