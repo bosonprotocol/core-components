@@ -19,9 +19,6 @@ import {
 } from "../environment/EnvironmentProvider";
 import { MagicProvider } from "../magicLink/MagicProvider";
 import { withQueryClientProvider } from "../queryClient/withQueryClientProvider";
-import WalletConnectionProvider, {
-  WalletConnectionProviderProps
-} from "../wallet/WalletConnectionProvider";
 import { InnerWeb3Provider } from "../wallet2/web3Provider/InnerWeb3Provider";
 import {
   ConfigContext,
@@ -29,22 +26,20 @@ import {
   useConfigContext
 } from "./ConfigContext";
 
+type OptionalConfigProps = "dateFormat" | "shortDateFormat";
 export type ConfigProviderProps = Omit<
   ConfigContextProps,
-  "config" | "defaultCurrency" | "supportedChains"
-> & {
-  children: ReactNode;
-  defaultCurrencyTicker: string;
-  defaultCurrencySymbol: string;
-  withWeb3React: boolean;
-  withCustomReduxContext: boolean;
-} & EnvironmentProviderProps &
-  WalletConnectionProviderProps;
-export function ConfigProvider({
-  children,
-  walletConnectProjectId,
-  ...rest
-}: ConfigProviderProps) {
+  "config" | "defaultCurrency" | "supportedChains" | OptionalConfigProps
+> &
+  Partial<Pick<ConfigContextProps, OptionalConfigProps>> & {
+    children: ReactNode;
+    defaultCurrencyTicker?: string;
+    defaultCurrencySymbol?: string;
+    withWeb3React: boolean;
+    withCustomReduxContext: boolean;
+  } & EnvironmentProviderProps;
+
+export function ConfigProvider({ children, ...rest }: ConfigProviderProps) {
   const Web3ProviderComponent = useMemo(() => {
     return rest.withWeb3React ? InnerWeb3Provider : Fragment;
   }, [rest.withWeb3React]);
@@ -60,11 +55,7 @@ export function ConfigProvider({
       <InnerConfigProvider {...rest}>
         <Web3ProviderComponent>
           <MagicLinkProvider>
-            <WalletConnectionProvider
-              walletConnectProjectId={walletConnectProjectId}
-            >
-              <SyncCurrentConfigId>{children}</SyncCurrentConfigId>
-            </WalletConnectionProvider>
+            <SyncCurrentConfigId>{children}</SyncCurrentConfigId>
           </MagicLinkProvider>
         </Web3ProviderComponent>
       </InnerConfigProvider>
@@ -109,8 +100,8 @@ function InnerConfigProvider({
         setEnvConfig,
         config: envConfig,
         defaultCurrency: {
-          ticker: rest.defaultCurrencyTicker,
-          symbol: rest.defaultCurrencySymbol
+          ticker: rest.defaultCurrencyTicker || "USD",
+          symbol: rest.defaultCurrencySymbol || "$"
         },
         dateFormat: rest.dateFormat || "YYYY/MM/DD",
         shortDateFormat: rest.shortDateFormat || "MMM DD, YYYY",

@@ -3,3 +3,7 @@ export enum ProductType {
   physical = "Physical",
   digital = "Digital"
 }
+
+export const LabelType = {
+  purchased: "purchased"
+} as const;

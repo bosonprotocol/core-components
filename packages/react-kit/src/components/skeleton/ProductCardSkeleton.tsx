@@ -30,7 +30,7 @@ export const ProductCardSkeleton = (props: SkeletonCardProps) => {
   const { withBottomText } = props;
 
   return (
-    <ProductCardWrapper {...props} $isHoverDisabled={true}>
+    <ProductCardWrapper {...props} $isHoverDisabled={true} $isClickable={false}>
       <ProductCardImageWrapperStyled>
         <LoadingBubble
           $width="100%"

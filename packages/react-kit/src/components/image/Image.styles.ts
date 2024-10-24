@@ -61,4 +61,5 @@ export const ImageErrorText = styled.div`
   line-height: 1;
   color: ${theme.colors.light.white};
   text-align: center;
+  padding: 0.5rem;
 `;

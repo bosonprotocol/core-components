@@ -1,19 +1,14 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 import { RedemptionContext, RedemptionContextProps } from "./RedemptionContext";
-
+export type RedemptionProviderProps = RedemptionContextProps & {
+  children: ReactNode;
+};
 export function RedemptionProvider({
   children,
   ...rest
-}: Omit<RedemptionContextProps, "setWidgetAction"> & { children: ReactNode }) {
-  const [widgetAction, setWidgetAction] = useState(rest.widgetAction);
+}: RedemptionProviderProps) {
   return (
-    <RedemptionContext.Provider
-      value={{
-        ...rest,
-        widgetAction,
-        setWidgetAction
-      }}
-    >
+    <RedemptionContext.Provider value={rest}>
       {children}
     </RedemptionContext.Provider>
   );

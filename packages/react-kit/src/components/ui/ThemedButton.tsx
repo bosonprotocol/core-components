@@ -16,6 +16,7 @@ export const bosonButtonThemeKeys = [
   "accentInverted",
   "orangeInverse",
   "bosonSecondaryInverse",
+  "bosonSecondaryInverseBlack",
   "orange",
   "outline",
   "ghostSecondary",
@@ -124,6 +125,17 @@ export const bosonButtonThemes = ({
         color: colors.secondary,
         borderColor: colors.secondary,
         background: colors.white
+      }
+    },
+    bosonSecondaryInverseBlack: {
+      color: colors.white,
+      borderColor: colors.secondary,
+      background: colors.secondary,
+      borderWidth: 2,
+      hover: {
+        color: colors.white,
+        borderColor: colors.black,
+        background: colors.black
       }
     },
     orange: {

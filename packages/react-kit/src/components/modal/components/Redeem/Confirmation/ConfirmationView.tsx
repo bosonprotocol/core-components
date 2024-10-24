@@ -1,11 +1,15 @@
 import { getAddress } from "ethers/lib/utils";
 import React, { useEffect } from "react";
 import { Exchange } from "../../../../../types/exchange";
-import Confirmation, { ConfirmationProps } from "./Confirmation";
+import { Confirmation, ConfirmationProps } from "./Confirmation";
 import { NonModalProps, useNonModalContext } from "../../../nonModal/NonModal";
 import { theme } from "../../../../../theme";
 import { RedeemHeader } from "../RedeemHeader";
 import { useAccount } from "../../../../../hooks/connection/connection";
+import {
+  RedemptionWidgetAction,
+  useRedemptionWidgetContext
+} from "../../../../widgets/redemption/provider/RedemptionWidgetContext";
 
 const colors = theme.colors.light;
 
@@ -41,6 +45,8 @@ export function ConfirmationView({
       }
     });
   }, [dispatch]);
+  const { widgetAction, setWidgetAction } = useRedemptionWidgetContext();
+  const isConfirm = widgetAction === RedemptionWidgetAction.CONFIRM_REDEEM;
   return (
     <>
       {!exchange ? (
@@ -57,7 +63,15 @@ export function ConfirmationView({
           buyerId={buyerId}
           sellerId={sellerId}
           sellerAddress={sellerAddress}
-          onBackClick={onBackClick}
+          redemptionInfoAcceptedInitial={isConfirm}
+          resumeRedemptionInitial={isConfirm}
+          onBackClick={() => {
+            if (isConfirm) {
+              // As the redemption will be edited again, switch the widgetAction to REDEEM_FORM
+              setWidgetAction(RedemptionWidgetAction.REDEEM_FORM);
+            }
+            onBackClick();
+          }}
           onSuccess={onSuccess}
           hideModal={hideModal}
         />

@@ -23,7 +23,11 @@ const pickedProps = {
   marginBottom: true,
   marginLeft: true,
   width: true,
-  height: true
+  height: true,
+  maxWidth: true,
+  minWidth: true,
+  maxHeight: true,
+  minHeight: true
 } as const;
 type IGrid = Pick<CSSProperties, keyof typeof pickedProps>;
 
@@ -31,6 +35,12 @@ type InnerGridProps = Record<`$${keyof IGrid}`, IGrid[keyof IGrid]>;
 
 const Container = styled.div<InnerGridProps>`
   ${({ $width }) => (isDefined($width) ? `width:${$width};` : "width: 100%;")}
+  ${({ $maxWidth }) => (isDefined($maxWidth) ? `max-width:${$maxWidth}` : "")};
+  ${({ $minWidth }) => (isDefined($minWidth) ? `min-width:${$minWidth}` : "")};
+  ${({ $maxHeight }) =>
+    isDefined($maxHeight) ? `max-height:${$maxHeight}` : ""};
+  ${({ $minHeight }) =>
+    isDefined($minHeight) ? `min-height:${$minHeight}` : ""};
   height: ${({ $height }) => (isDefined($height) ? $height : "initial")};
   display: flex;
   align-items: ${({ $alignItems }) =>

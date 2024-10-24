@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/browser";
 import { Form, Formik, FormikProps } from "formik";
 import React, {
   useCallback,
@@ -7,7 +6,6 @@ import React, {
   useRef,
   useState
 } from "react";
-import { useDisconnect } from "wagmi";
 import * as Yup from "yup";
 import { Exchange } from "../../../../types/exchange";
 import {
@@ -21,21 +19,20 @@ import { RedeemOfferPolicyView } from "./OfferPolicyView/RedeemOfferPolicyView";
 import RedeemFormView from "./RedeemForm/RedeemFormView";
 import { FormModel } from "./RedeemFormModel";
 
-import { subgraph } from "@bosonprotocol/core-sdk";
-import { ethers } from "ethers";
-import styled from "styled-components";
 import { useAccount } from "../../../../hooks/connection/connection";
 import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
 import { theme } from "../../../../theme";
-import { isTruthy } from "../../../../types/helpers";
 import { Loading } from "../../../ui/loading/Loading";
 import { useConfigContext } from "../../../config/ConfigContext";
 import { Typography } from "../../../ui/Typography";
 import {
   RedemptionContextProps,
-  RedemptionWidgetAction,
   useRedemptionContext
 } from "../../../widgets/redemption/provider/RedemptionContext";
+import {
+  useRedemptionWidgetContext,
+  RedemptionWidgetAction
+} from "../../../widgets/redemption/provider/RedemptionWidgetContext";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import { BosonLogo } from "../common/BosonLogo";
 import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
@@ -51,134 +48,18 @@ import {
   ExpireVoucherView,
   ExpireVoucherViewProps
 } from "./ExchangeView/expireVoucher/ExpireVoucherView";
-import { ContactPreference } from "./const";
+import { ContactPreference, getRedeemFormValidationSchema } from "./const";
 import {
   DetailContextProps,
   DetailViewProvider
 } from "../common/detail/DetailViewProvider";
 import { getHasBuyerTransferInfos } from "../../../../lib/offer/filter";
 import { BuyerTransferInfo } from "../../../../lib/bundle/const";
+import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
+import { mockedDeliveryAddress } from "../../../widgets/redemption/const";
+import { checkSignatures } from "./checkSignatures";
 
 const colors = theme.colors.light;
-const UlWithWordBreak = styled.ul`
-  * > {
-    word-break: break-word;
-  }
-`;
-const checkSignatures = ({
-  doFetchSellersFromSellerIds,
-  parentOrigin,
-  sellerIds,
-  signatures,
-  sellersFromSellerIds,
-  areSignaturesMandatory
-}: Pick<RedeemNonModalProps, "parentOrigin" | "sellerIds" | "signatures"> & {
-  doFetchSellersFromSellerIds: boolean;
-  sellersFromSellerIds:
-    | (subgraph.SellerFieldsFragment & {
-        lensOwner?: string | null | undefined;
-      })[]
-    | undefined;
-  areSignaturesMandatory: boolean;
-}) => {
-  try {
-    if (areSignaturesMandatory && !sellerIds) {
-      return (
-        <p>
-          SellerIds must be defined as these are defined postDeliveryInfoUrl,
-          deliveryInfoHandler, redemptionSubmittedHandler,
-          redemptionConfirmedHandler{" "}
-        </p>
-      );
-    }
-    if (
-      sellerIds?.length &&
-      areSignaturesMandatory &&
-      (!signatures || signatures?.filter(isTruthy).length !== sellerIds.length)
-    ) {
-      return (
-        <p>
-          Please provide a list of signatures of the message{" "}
-          {JSON.stringify({ origin: "<parentWindowOrigin>" })} for each seller
-          in sellerIds list
-        </p>
-      );
-    }
-    if (
-      doFetchSellersFromSellerIds &&
-      (!sellersFromSellerIds ||
-        sellersFromSellerIds.length !== sellerIds?.length)
-    ) {
-      return (
-        <p>
-          Could not retrieve sellers from the specified sellerIds{" "}
-          {sellerIds?.join(",")}
-        </p>
-      );
-    }
-    const originMessage = JSON.stringify({ origin: parentOrigin });
-    const firstIndexSignatureThatDoesntMatch = sellersFromSellerIds?.findIndex(
-      ({ assistant }, index) => {
-        if (!signatures?.[index]) {
-          return true;
-        }
-        const signerAddr = ethers.utils
-          .verifyMessage(originMessage, signatures[index])
-          .toLowerCase();
-
-        if (signerAddr.toLowerCase() !== assistant.toLowerCase()) {
-          return true;
-        }
-        return false;
-      }
-    );
-    if (
-      firstIndexSignatureThatDoesntMatch !== undefined &&
-      firstIndexSignatureThatDoesntMatch !== -1 &&
-      sellersFromSellerIds &&
-      signatures
-    ) {
-      return (
-        <div>
-          <p>Signature does not match.</p>
-          <UlWithWordBreak>
-            <li>Signatures: {signatures}</li>
-            <li>
-              Seller assistant address is{" "}
-              {sellersFromSellerIds[
-                firstIndexSignatureThatDoesntMatch
-              ]?.assistant?.toLowerCase()}
-            </li>
-            <li>
-              Address that signed the message:{" "}
-              {signatures
-                ? ethers.utils
-                    .verifyMessage(
-                      originMessage,
-                      signatures[firstIndexSignatureThatDoesntMatch]
-                    )
-                    .toLowerCase()
-                : "(no signatures)"}
-            </li>
-            <li>
-              Received signature for this seller:{" "}
-              {signatures?.[firstIndexSignatureThatDoesntMatch]}
-            </li>
-            <li>Message used to verify signature: {originMessage}</li>
-          </UlWithWordBreak>
-        </div>
-      );
-    }
-  } catch (error) {
-    console.error(error);
-    Sentry.captureException(error);
-    return (
-      <p>
-        Something went wrong: {error instanceof Error && <b>{error.message}</b>}
-      </p>
-    );
-  }
-};
 
 enum ActiveStep {
   STEPS_OVERVIEW,
@@ -268,10 +149,7 @@ const getInitialStep = (
             ? ActiveStep.EXCHANGE_VIEW
             : ActiveStep.REDEEM_FORM_CONFIRMATION;
 };
-const getPreviousSteps = (
-  widgetAction: RedemptionWidgetAction,
-  showRedemptionOverview: boolean
-) => {
+const getPreviousSteps = (widgetAction: RedemptionWidgetAction) => {
   return widgetAction === RedemptionWidgetAction.CONFIRM_REDEEM
     ? [ActiveStep.REDEEM_FORM]
     : [];
@@ -320,12 +198,9 @@ function RedeemNonModal({
     sellerIds: sellerIds,
     enabled: doFetchSellersFromSellerIds
   });
-  const {
-    showRedemptionOverview,
-    widgetAction,
-    exchangeState,
-    deliveryInfo: initialDeliveryInfo
-  } = useRedemptionContext();
+  const { deliveryInfo: initialDeliveryInfo } = useRedemptionContext();
+  const { showRedemptionOverview, widgetAction, exchangeState } =
+    useRedemptionWidgetContext();
 
   const emailPreference =
     exchange?.seller.metadata?.contactPreference ===
@@ -336,46 +211,9 @@ function RedeemNonModal({
       ])
     : false;
   const validationSchema = useMemo(() => {
-    return Yup.object({
-      [FormModel.formFields.name.name]: Yup.string()
-        .trim()
-        .required(FormModel.formFields.name.requiredErrorMessage),
-      [FormModel.formFields.streetNameAndNumber.name]: Yup.string()
-        .trim()
-        .required(
-          FormModel.formFields.streetNameAndNumber.requiredErrorMessage
-        ),
-      [FormModel.formFields.city.name]: Yup.string()
-        .trim()
-        .required(FormModel.formFields.city.requiredErrorMessage),
-      [FormModel.formFields.state.name]: Yup.string()
-        .trim()
-        .required(FormModel.formFields.state.requiredErrorMessage),
-      [FormModel.formFields.zip.name]: Yup.string()
-        .trim()
-        .required(FormModel.formFields.zip.requiredErrorMessage),
-      [FormModel.formFields.country.name]: Yup.string()
-        .trim()
-        .required(FormModel.formFields.country.requiredErrorMessage),
-      [FormModel.formFields.email.name]: emailPreference
-        ? Yup.string()
-            .trim()
-            .required(FormModel.formFields.email.requiredErrorMessage)
-            .email(FormModel.formFields.email.mustBeEmail)
-        : Yup.string().trim().email(FormModel.formFields.email.mustBeEmail),
-      [FormModel.formFields.walletAddress.name]: requestBuyerAddress
-        ? Yup.string()
-            .trim()
-            .required(FormModel.formFields.walletAddress.requiredErrorMessage)
-            .test(
-              "mustBeAddress",
-              FormModel.formFields.walletAddress.mustBeWalletAddress,
-              (value) => (value ? ethers.utils.isAddress(value) : true)
-            )
-        : Yup.string().trim(),
-      [FormModel.formFields.phone.name]: Yup.string()
-        .trim()
-        .required(FormModel.formFields.phone.requiredErrorMessage)
+    return getRedeemFormValidationSchema({
+      emailPreference,
+      requestBuyerAddress
     });
   }, [emailPreference, requestBuyerAddress]);
   type FormType = Yup.InferType<typeof validationSchema>;
@@ -383,7 +221,7 @@ function RedeemNonModal({
     previousStep: ActiveStep[];
     currentStep: ActiveStep;
   }>({
-    previousStep: getPreviousSteps(widgetAction, showRedemptionOverview),
+    previousStep: getPreviousSteps(widgetAction),
     currentStep: getInitialStep(widgetAction, showRedemptionOverview)
   });
 
@@ -418,12 +256,7 @@ function RedeemNonModal({
     }
   }, [currentStep]);
   const { address } = useAccount();
-  const { disconnectAsync, status } = useDisconnect();
-  const disconnect = useCallback(() => {
-    if (disconnectAsync && status !== "loading") {
-      disconnectAsync();
-    }
-  }, [disconnectAsync, status]);
+  const disconnect = useDisconnect();
 
   useEffect(() => {
     // if the user disconnects their wallet amid redeem, cancellation, etc process, reset current flow
@@ -456,7 +289,7 @@ function RedeemNonModal({
     forcedAccount.toLowerCase() !== address.toLowerCase()
   ) {
     // force disconnection as the current connected wallet is not the forced one
-    disconnect();
+    disconnect({ isUserDisconnecting: false });
   }
 
   if (!address) {
@@ -482,15 +315,6 @@ function RedeemNonModal({
   if (jsx) {
     return jsx;
   }
-  const deliveryAddressVar =
-    typeof process !== "undefined"
-      ? process?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK || // @ts-expect-error import.meta.env only exists in vite environments
-        import.meta?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK
-      : // @ts-expect-error import.meta.env only exists in vite environments
-        import.meta?.env?.REACT_APP_DELIVERY_ADDRESS_MOCK;
-  const mockedDeliveryAddress = deliveryAddressVar
-    ? JSON.parse(deliveryAddressVar)
-    : undefined;
 
   const handleRaiseDispute = (exchangeId: string | undefined) => {
     const raiseDisputeForExchangeUrlWithId =

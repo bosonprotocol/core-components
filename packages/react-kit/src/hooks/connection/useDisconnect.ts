@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import { useDisconnect as useDisconnectWagmi } from "wagmi";
 import { useUser } from "../../components/magicLink/UserContext";
 import { useIsMagicLoggedIn, useMagic, useWalletInfo } from "../magic";
 import { getMagicLogout } from "../../lib/magicLink/logout";
@@ -24,12 +23,6 @@ export const useDisconnect = () => {
   const magicLogout = getMagicLogout(magic);
   const isMagicLoggedIn = useIsMagicLoggedIn();
   const dispatch = useAppDispatch();
-  const { disconnectAsync, status } = useDisconnectWagmi();
-  const disconnect = useCallback(() => {
-    if (disconnectAsync && status !== "loading") {
-      disconnectAsync();
-    }
-  }, [disconnectAsync, status]);
 
   return useCallback(
     async ({ isUserDisconnecting, onUserDisconnect }: DisconnectProps) => {
@@ -47,18 +40,8 @@ export const useDisconnect = () => {
       dispatch(updateSelectedWallet({ wallet: undefined }));
       if (isMagicLoggedIn) {
         await magicLogout(setUser);
-      } else {
-        await disconnect();
       }
     },
-    [
-      magicLogout,
-      remove,
-      setUser,
-      isMagicLoggedIn,
-      disconnect,
-      connector,
-      dispatch
-    ]
+    [magicLogout, remove, setUser, isMagicLoggedIn, connector, dispatch]
   );
 };

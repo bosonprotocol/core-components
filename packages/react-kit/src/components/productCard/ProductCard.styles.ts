@@ -14,43 +14,20 @@ export const ProductCardLabelWrapper = styled.div`
   z-index: 1;
 `;
 
-export const TopLeftRibbon = styled.div`
-  --d: 6px; /* folded part */
-  position: relative;
-  z-index: 1;
-  &:before {
-    content: attr(data-text);
-    font-size: var(--f);
-    font-weight: 600;
-    /* I : position & coloration */
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translate(0%, 125%) rotate(-45deg);
-    transform-origin: bottom left;
-    padding: 5px 35px calc(var(--d) + 5px);
-    color: ${({ theme }) => theme?.colors?.light.white};
-    background: linear-gradient(rgba(0, 0, 0, 0.5) 0 0) bottom/100% var(--d)
-      no-repeat ${({ theme }) => theme?.colors?.light.secondary};
-    /* II : clipping */
-    clip-path: polygon(
-      0 0,
-      100% 0,
-      100% 100%,
-      calc(100% - var(--d)) calc(100% - var(--d)),
-      var(--d) calc(100% - var(--d)),
-      0 100%
-    );
-    /* III : masking */
-    -webkit-mask:
-      linear-gradient(135deg, transparent calc(50% - var(--d) * 0.707), #fff 0)
-        bottom left,
-      linear-gradient(-135deg, transparent calc(50% - var(--d) * 0.707), #fff 0)
-        bottom right;
-    -webkit-mask-size: 300vmax 300vmax;
-    -webkit-mask-composite: destination-in;
-    mask-composite: intersect;
-  }
+export const Label = styled.div`
+  position: absolute;
+  z-index: ${zIndex.OfferCard + 1};
+  left: 0.5rem;
+  top: 0.5rem;
+  color: ${theme?.colors?.light.white};
+  border-radius: 1.25rem;
+  box-shadow: 0px 3px 2px 0px rgba(0, 0, 0, 0.1);
+  background: ${theme?.colors?.light.secondary};
+  display: flex;
+  padding: 0.5rem 1rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
 `;
 
 export const ProductCardCreator = styled.div`
@@ -150,6 +127,7 @@ export const ProductCardTitleWrapper = styled.div`
 export const ProductCardWrapper = styled.div<{
   $isHoverDisabled: boolean;
   $isImageFitCover?: boolean;
+  $isClickable?: boolean;
 }>`
   ${cardWrapperStyles}
   overflow: hidden;
@@ -158,30 +136,13 @@ export const ProductCardWrapper = styled.div<{
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-  cursor: pointer;
   min-height: 286px;
   height: 286px;
   padding: 0 1rem 1rem 1rem;
-  [data-image-wrapper] {
-    position: static;
-    padding-top: 0;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    ${({ $isImageFitCover }) =>
-      $isImageFitCover
-        ? css`
-            width: 100%;
-            img {
-              object-fit: cover;
-            }
-          `
-        : ""}
-  }
   ${({ $isHoverDisabled }) =>
-    !$isHoverDisabled
-      ? css`
+    $isHoverDisabled
+      ? ""
+      : css`
           transition: all 300ms ease-in-out;
           &:hover {
             box-shadow:
@@ -199,8 +160,33 @@ export const ProductCardWrapper = styled.div<{
               }
             }
           }
-        `
-      : ""}
+        `}
+  ${({ $isClickable }) => {
+    if ($isClickable) {
+      return css`
+        cursor: pointer;
+      `;
+    }
+    return "";
+  }}
+  [data-image-wrapper] {
+    position: static;
+    padding-top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    ${({ $isImageFitCover }) =>
+      $isImageFitCover
+        ? css`
+            width: 100%;
+            img {
+              object-fit: cover;
+            }
+          `
+        : ""}
+  }
 `;
 
 export const ProductCardTop = styled.div<{ $isNotImageLoaded: boolean }>`
@@ -236,9 +222,40 @@ export const ProductCardImageAndCTAContainer = styled.div`
   position: relative;
 `;
 
+const CTAstartState = css`
+  opacity: 0;
+  bottom: 30px;
+`;
 export const CTAOnHoverContainer = styled.div<{ $isHovered: boolean }>`
+  @keyframes appear {
+    from {
+      ${CTAstartState}
+    }
+    to {
+      opacity: 1;
+      bottom: 70px;
+    }
+  }
+  ${CTAstartState}
   position: absolute;
   z-index: ${zIndex.OfferCard};
-  bottom: ${({ $isHovered }) => ($isHovered ? "95px" : "1.875rem")};
-  transition: all 300ms ease-in-out;
+  ${({ $isHovered }) => {
+    if ($isHovered) {
+      return css`
+        animation: appear 300ms forwards;
+      `;
+    }
+    return "";
+  }};
+`;
+
+export const ProductTypeWrapper = styled.div`
+  background-color: ${theme?.colors?.light.black};
+  color: ${theme?.colors?.light.white};
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.1563rem 0.25rem;
+  border-radius: 2px;
+  margin-top: 0.5rem;
 `;

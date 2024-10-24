@@ -1,7 +1,10 @@
 import React from "react";
 import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 
-import { FinanceWidget } from "../../components/widgets/finance/FinanceWidget";
+import {
+  FinanceWidget,
+  FinanceWidgetProps
+} from "../../components/widgets/finance/FinanceWidget";
 import { EnvironmentType, getEnvConfigs } from "@bosonprotocol/core-sdk";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -29,13 +32,15 @@ Finance.args = {
   sellerId: process.env.STORYBOOK_DATA_SELLER_ID || "25",
   envName,
   configId: envConfig[0].configId,
-  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID || "",
   metaTx: {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
     apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
   },
   withExternalSigner: false,
-  withCustomReduxContext: false
-};
+  withCustomReduxContext: false,
+  withWeb3React: true,
+  withReduxProvider: true
+} satisfies FinanceWidgetProps;
 
 Finance.decorators = [(Story) => wrapper(Story)];

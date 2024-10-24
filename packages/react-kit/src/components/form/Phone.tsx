@@ -122,7 +122,10 @@ export const PhoneWrapper = styled.div`
 `;
 
 const handleCountry = () => {
-  const countryCode = (navigator?.language || "")?.toUpperCase() as CountryCode;
+  const countryCode = (navigator?.languages || [])
+    .find((language) => language.includes("-"))
+    ?.split("-")?.[1]
+    ?.toUpperCase() as CountryCode;
   if (isSupportedCountry(countryCode as CountryCode)) return countryCode;
   return undefined;
 };
