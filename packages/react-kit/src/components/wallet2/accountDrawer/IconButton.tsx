@@ -112,19 +112,19 @@ const IconBlock = forwardRef<
     borderRadius: CSSProperties["borderRadius"];
   }
 >(function IconBlock(props, ref) {
-  const { color, backgroundColor, borderRadius } = props;
   if ("href" in props) {
+    const { color, backgroundColor, borderRadius, ...restProps } = props;
     return (
       <IconBlockLink
         ref={ref as React.ForwardedRef<HTMLAnchorElement>}
         $color={color}
         $backgroundColor={backgroundColor}
         $borderRadius={borderRadius}
-        {...props}
+        {...restProps}
       />
     );
   }
-
+  const { color, backgroundColor, borderRadius, ...restProps } = props;
   return (
     <IconBlockButton
       // ignoring 'button' 'type' conflict between React and styled-components
@@ -134,7 +134,7 @@ const IconBlock = forwardRef<
       $color={color}
       $backgroundColor={backgroundColor}
       $borderRadius={borderRadius}
-      {...props}
+      {...restProps}
     />
   );
 });
