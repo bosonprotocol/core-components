@@ -13,16 +13,17 @@ import { Typography } from "../ui/Typography";
 import { theme } from "../../theme";
 import { Loading } from "../ui/loading/Loading";
 import { ButtonSize } from "../ui/buttonSize";
-
+import { AddDollarPrefixToKeys } from "../../types/helpers";
 const colors = theme.colors.light;
 
-const ButtonWithThemeProps = styled.button<{
-  size: ButtonSizeProp;
-  fill: boolean | undefined;
-  theme: BaseButtonTheme;
-}>`
+const ButtonWithThemeProps = styled.button<
+  AddDollarPrefixToKeys<{
+    size: ButtonSizeProp;
+    fill: boolean | undefined;
+  }> & { theme: BaseButtonTheme }
+>`
   ${() => Styles.button};
-  ${(props) => Styles[props.size as keyof typeof Styles]}
+  ${(props) => Styles[props.$size as keyof typeof Styles]}
   border-style: solid;
   border-color: ${(props) => props.theme?.borderColor || "transparent"};
   border-width: ${(props) => props.theme?.borderWidth || 0}px;
@@ -35,7 +36,7 @@ const ButtonWithThemeProps = styled.button<{
     stroke: ${(props) => props.theme?.color || "#000000"};
   }
   ${(props) =>
-    props.fill
+    props.$fill
       ? css`
           width: 100%;
         `
@@ -175,8 +176,8 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
           <ButtonWithThemeProps
             onClick={onClick}
             type={type}
-            size={size}
-            fill={fill ? fill : undefined}
+            $size={size}
+            $fill={fill ? fill : undefined}
             theme={theme}
             {...rest}
             ref={ref}
