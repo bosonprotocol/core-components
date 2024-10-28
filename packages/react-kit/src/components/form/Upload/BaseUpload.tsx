@@ -125,12 +125,12 @@ function BaseUpload({
     }
     handleLoading(true);
     try {
-      const imagePreview = await loadMedia(fileSrc || "");
-      if (imagePreview) {
-        setPreview(imagePreview);
+      const videoPreview = await loadMedia(fileSrc || "");
+      if (videoPreview) {
+        setPreview(videoPreview);
       } else {
         console.warn(
-          `imagePreview ${imagePreview} is falsy in loadIpfsImagePreview`
+          `videoPreview ${videoPreview} is falsy in loadIpfsImagePreview`
         );
       }
     } catch (error) {
@@ -246,7 +246,7 @@ function BaseUpload({
     borderRadius: borderRadius ? `${borderRadius}${borderRadiusUnit}` : "",
     width: width ? `100%` : ""
   };
-
+  const showPreview = field.value && field.value?.length !== 0 && preview;
   return (
     <>
       {withEditor && showEditor && (
@@ -327,17 +327,21 @@ function BaseUpload({
               <Loading size={2} />
             ) : (
               <>
-                {field.value && field.value?.length !== 0 && preview ? (
+                {showPreview ? (
                   <>
                     {isVideoOnly ? (
                       <VideoPreview
                         src={
                           preview?.startsWith("http")
                             ? preview
-                            : "data:video/mp4;base64," +
-                              preview?.substring(
-                                "data:application/octet-stream;base64,".length
-                              )
+                            : preview?.startsWith(
+                                  "data:application/octet-stream;base64,"
+                                )
+                              ? "data:video/mp4;base64," +
+                                preview?.substring(
+                                  "data:application/octet-stream;base64,".length
+                                )
+                              : preview
                         }
                         autoPlay
                         muted
@@ -355,7 +359,7 @@ function BaseUpload({
                 ) : (
                   <Image size={24} />
                 )}
-                {placeholder && (
+                {placeholder && !showPreview && (
                   <Typography tag="p" marginBottom={0} textAlign="center">
                     {placeholder}
                   </Typography>
