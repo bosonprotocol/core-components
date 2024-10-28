@@ -125,6 +125,7 @@ export type FileUploadWrapperTheme = Partial<{
   error: Partial<{
     borderColor: CSSProperties["borderColor"];
   }>;
+  overrides: Partial<CSSProperties>;
 }>;
 export const FileUploadWrapper = styled.div<{
   $error: unknown;
@@ -188,13 +189,16 @@ export const FileUploadWrapper = styled.div<{
     cursor: not-allowed;
     opacity: 0.5;
   }
+  ${({ theme: { overrides } }) => overrides}
 `;
 
 export const FieldFileUpload = styled(FieldInput)`
   display: none;
 `;
 
-export const FieldFileUploadWrapper = styled.div<{ $disabled: boolean }>`
+export const FieldFileUploadWrapper = styled.div<{
+  $disabled: boolean;
+}>`
   position: relative;
   display: inline-block;
   ${({ $disabled }) =>

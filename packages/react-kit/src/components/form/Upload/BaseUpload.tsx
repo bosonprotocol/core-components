@@ -9,7 +9,7 @@ import { theme } from "../../../theme";
 import Loading from "../../ui/loading/LoadingWrapper";
 import ThemedButton from "../../ui/ThemedButton";
 import { Typography } from "../../ui/Typography";
-import Error from "../Error";
+import ErrorComponent from "../Error";
 import {
   FieldFileUploadWrapper,
   FieldInput,
@@ -52,6 +52,7 @@ function BaseUpload({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   removeFile,
   saveButtonTheme,
+  errorComponent,
   theme,
   ...props
 }: UploadPropsWithNoIpfs & WithUploadToIpfsProps) {
@@ -60,6 +61,7 @@ function BaseUpload({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [preview, setPreview] = useState<string | null>();
   const [field, meta, helpers] = useField(name);
+  const [errorMesage, setErrorMessage] = useState<string>();
 
   const handleLoading = useCallback(
     (loadingValue: boolean) => {
@@ -216,16 +218,26 @@ function BaseUpload({
         helpers.setTouched(true);
       }
       handleLoading(true);
-      const files = await saveToIpfs(efiles);
-      if (files) {
-        setFiles(files);
-      } else {
-        setFiles([]);
-        console.warn(
-          `There has been an error because 'files' ${files} is falsy in handleSave`
-        );
+      try {
+        const files = await saveToIpfs(efiles, { throwOnError: true });
+        setErrorMessage(undefined);
+        if (files) {
+          setFiles(files);
+        } else {
+          setFiles([]);
+          console.warn(
+            `There has been an error because 'files' ${files} is falsy in handleSave`
+          );
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          setErrorMessage(err.message);
+        } else {
+          setErrorMessage("Something went wrong");
+        }
+      } finally {
+        handleLoading(false);
       }
-      handleLoading(false);
     },
     [meta.touched, handleLoading, saveToIpfs, helpers, setFiles]
   );
@@ -263,6 +275,7 @@ function BaseUpload({
           }}
         />
       )}
+      {errorMesage && errorComponent?.(errorMesage)}
       <FieldFileUploadWrapper {...wrapperProps} $disabled={!!disabled}>
         <FieldInput
           {...props}
@@ -364,7 +377,7 @@ function BaseUpload({
           <UploadedFiles files={files} handleRemoveFile={handleRemoveFile} />
         )}
       </FieldFileUploadWrapper>
-      <Error display={displayError} message={errorMessage} />
+      <ErrorComponent display={displayError} message={errorMessage} />
     </>
   );
 }
