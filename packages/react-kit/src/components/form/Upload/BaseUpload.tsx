@@ -320,7 +320,7 @@ function BaseUpload({
             data-disabled={disabled}
             onClick={handleChooseFile}
             $error={errorMessage}
-            style={style}
+            style={{ ...style, ...theme?.overrides }}
             theme={theme?.triggerTheme}
           >
             {isLoading ? (
