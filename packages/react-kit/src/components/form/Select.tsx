@@ -133,7 +133,7 @@ export default function SelectComponent<M extends boolean>({
 
   return (
     <>
-      <Select<SelectDataProps<string>, M>
+      <Select
         styles={customStyles(displayErrorMessage, theme)}
         {...field}
         {...props}
