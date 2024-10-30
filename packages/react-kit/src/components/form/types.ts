@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import Select, {
+import {
   ActionMeta,
   CSSObjectWithLabel,
   MultiValue,
@@ -103,7 +103,7 @@ export type SelectProps<M extends boolean | undefined = false> = BaseProps & {
     option: M extends true
       ? MultiValue<SelectDataProps<string>>
       : SingleValue<SelectDataProps<string>>,
-    actionMeta: ActionMeta<SelectDataProps<string>>
+    actionMeta?: ActionMeta<SelectDataProps<string>>
   ) => void;
   label?: string;
   theme?: Partial<{
