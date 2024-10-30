@@ -1,5 +1,10 @@
 import { ReactNode } from "react";
-import { CSSObjectWithLabel, MultiValue, SingleValue } from "react-select";
+import Select, {
+  ActionMeta,
+  CSSObjectWithLabel,
+  MultiValue,
+  SingleValue
+} from "react-select";
 import { CSSProperties } from "styled-components";
 import { ImageEditorModalProps } from "./Upload/ImageEditorModal/ImageEditorModal";
 import type {
@@ -8,6 +13,7 @@ import type {
   TextAreaTheme
 } from "./Field.styles";
 import type { GridProps } from "../ui/Grid";
+import { StateManagerProps } from "react-select/dist/declarations/src/useStateManager";
 
 export interface BaseProps {
   name: string;
@@ -86,8 +92,7 @@ export interface BaseSelectProps {
   onChange?: OnChange;
 }
 
-export interface SelectProps<M extends boolean | undefined = false>
-  extends BaseProps {
+export type SelectProps<M extends boolean | undefined = false> = BaseProps & {
   isMulti?: M;
   disabled?: boolean;
   isClearable?: boolean;
@@ -97,7 +102,8 @@ export interface SelectProps<M extends boolean | undefined = false>
   onChange?: (
     option: M extends true
       ? MultiValue<SelectDataProps<string>>
-      : SingleValue<SelectDataProps<string>>
+      : SingleValue<SelectDataProps<string>>,
+    actionMeta: ActionMeta<SelectDataProps<string>>
   ) => void;
   label?: string;
   theme?: Partial<{
@@ -120,7 +126,13 @@ export interface SelectProps<M extends boolean | undefined = false>
     singleValue: Partial<CSSProperties> &
       Partial<{ error: CSSObjectWithLabel }>;
   }>;
-}
+} & Pick<
+    StateManagerProps<
+      SelectDataProps<string>,
+      M extends undefined ? false : boolean
+    >,
+    "formatGroupLabel" | "formatOptionLabel"
+  >;
 
 export type UploadProps = BaseProps & {
   accept?: string;

@@ -125,15 +125,6 @@ export default function SelectComponent<M extends boolean>({
   const displayError =
     typeof displayErrorMessage === "string" && displayErrorMessage !== "";
 
-  const handleChange = (
-    option: Parameters<NonNullable<typeof onChange>>[0]
-  ) => {
-    if (!meta.touched) {
-      helpers.setTouched(true);
-    }
-    helpers.setValue(option);
-    onChange?.(option);
-  };
   const handleBlur = () => {
     if (!meta.touched) {
       helpers.setTouched(true);
@@ -150,7 +141,13 @@ export default function SelectComponent<M extends boolean>({
         placeholder={placeholder}
         options={options}
         value={field.value}
-        onChange={handleChange}
+        onChange={(option, ...rest) => {
+          if (!meta.touched) {
+            helpers.setTouched(true);
+          }
+          helpers.setValue(option);
+          onChange?.(option, ...rest);
+        }}
         onBlur={handleBlur}
         isSearchable={isSearchable}
         isClearable={isClearable}
