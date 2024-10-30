@@ -189,7 +189,6 @@ export const FileUploadWrapper = styled.div<{
     cursor: not-allowed;
     opacity: 0.5;
   }
-  ${({ theme: { overrides } }) => overrides}
 `;
 
 export const FieldFileUpload = styled(FieldInput)`
