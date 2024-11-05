@@ -14,6 +14,7 @@ import type {
 } from "./Field.styles";
 import type { GridProps } from "../ui/Grid";
 import { StateManagerProps } from "react-select/dist/declarations/src/useStateManager";
+import { IconProps } from "phosphor-react";
 
 export interface BaseProps {
   name: string;
@@ -29,10 +30,17 @@ export interface DatepickerProps extends BaseProps {
   setIsFormValid?: (isValid: boolean) => void;
 }
 
-export interface CheckboxProps extends BaseProps {
-  text?: string;
-  theme?: CheckboxTheme;
-}
+export type CheckboxProps = BaseProps &
+  Omit<React.InputHTMLAttributes<HTMLInputElement>, "checked"> & {
+    text?: string;
+    className?: string;
+    theme?: CheckboxTheme;
+    iconProps?: Parameters<
+      React.ForwardRefExoticComponent<
+        IconProps & React.RefAttributes<SVGSVGElement>
+      >
+    >[0];
+  };
 
 export type TextareaProps = BaseProps &
   React.TextareaHTMLAttributes<HTMLTextAreaElement> & { theme?: TextAreaTheme };

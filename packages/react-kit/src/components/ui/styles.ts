@@ -58,40 +58,31 @@ export const buttonText = css`
 export const small = css`
   min-height: 2.125rem;
   padding: 0.5rem 1rem;
-  > * {
+  * {
     font-size: 0.75rem !important;
-  }
-  #buttonText {
-    font-size: 0.75rem;
   }
 `;
 export const regular = css`
   min-height: 2.813rem;
   padding: 0.75rem 1.5rem;
-  > * {
+  * {
     font-size: 1rem !important;
   }
   ${breakpoint.xxs} {
-    > * {
+    * {
       font-size: 0.875rem !important;
     }
-  }
-  #buttonText {
-    font-size: 0.875rem;
   }
 `;
 export const large = css`
   min-height: 3.5rem;
   padding: 1rem 2rem;
-  > * {
+  * {
     font-size: 1.125rem !important;
   }
   ${breakpoint.xxs} {
-    > * {
+    * {
       font-size: 1rem !important;
     }
-  }
-  #buttonText {
-    font-size: 1rem;
   }
 `;

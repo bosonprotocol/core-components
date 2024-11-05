@@ -410,6 +410,7 @@ export const CheckboxWrapper = styled.label<{
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
     width: 1.5rem;
     height: 1.5rem;
 
@@ -426,7 +427,6 @@ export const CheckboxWrapper = styled.label<{
       css`
         border-radius: ${theme?.borderRadius};
       `};
-    margin-right: 0.5rem;
   }
 
   > input {
