@@ -107,7 +107,7 @@ const ChildWrapperButton = styled.div`
   z-index: ${zIndex.Button};
 
   ${() => Styles.buttonText};
-  font: inherit;
+  font-size: inherit;
 `;
 
 export type BaseButtonTheme = {
