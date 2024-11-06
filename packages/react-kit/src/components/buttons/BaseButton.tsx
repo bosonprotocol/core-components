@@ -6,10 +6,8 @@ import React, {
 } from "react";
 import styled, { css, CSSProperties } from "styled-components";
 
-import { zIndex } from "../ui/zIndex";
 import { Tooltip } from "../tooltip/Tooltip";
 import * as Styles from "../ui/styles";
-import { Typography } from "../ui/Typography";
 import { theme } from "../../theme";
 import { Loading } from "../ui/loading/Loading";
 import { ButtonSize } from "../ui/buttonSize";
@@ -98,18 +96,6 @@ const ButtonWithThemeProps = styled.button<
         `};
 `;
 
-const ChildWrapperButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: ${(props) => props.theme?.gap || "12px"};
-  position: relative;
-  z-index: ${zIndex.Button};
-
-  ${() => Styles.buttonText};
-  font-size: inherit;
-`;
-
 export type BaseButtonTheme = {
   background?: CSSProperties["backgroundColor"];
   borderColor?: CSSProperties["borderColor"];
@@ -137,7 +123,6 @@ export type BaseButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: ButtonSizeProp;
   theme: BaseButtonTheme;
   fill?: boolean;
-  step?: number;
   isLoading?: boolean;
   tooltip?: string;
 };
@@ -150,7 +135,6 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
       size = "regular",
       theme,
       type = "button",
-      step = 0,
       fill = false,
       isLoading = false,
       tooltip = "",
@@ -183,18 +167,7 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
             {...rest}
             ref={ref}
           >
-            {isLoading ? (
-              <Loading />
-            ) : (
-              <ChildWrapperButton data-child-wrapper-button theme={theme}>
-                {children}
-                {step !== 0 && (
-                  <Typography>
-                    <small>Step {step}</small>
-                  </Typography>
-                )}
-              </ChildWrapperButton>
-            )}
+            {isLoading ? <Loading /> : children}
           </ButtonWithThemeProps>
         </Wrapper>
       </>

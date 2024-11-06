@@ -5,6 +5,14 @@ export const transition = css`
   transition: all 150ms ease-in-out;
 `;
 
+export const buttonText = css`
+  letter-spacing: 0.5px;
+  font-style: normal;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 24px;
+`;
+
 export const button = css`
   box-sizing: border-box;
   cursor: pointer;
@@ -18,7 +26,7 @@ export const button = css`
   position: relative;
   overflow: hidden;
   box-shadow: 0px 0px 0px #000000;
-
+  ${buttonText}
   ${transition}
   svg {
     ${transition}
@@ -47,30 +55,22 @@ export const text = css`
   line-height: 24px;
 `;
 
-export const buttonText = css`
-  letter-spacing: 0.5px;
-  font-style: normal;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 24px;
-`;
-
 export const small = css`
   min-height: 2.125rem;
   padding: 0.5rem 1rem;
   * {
-    font-size: 0.75rem !important;
+    font-size: 0.75rem;
   }
 `;
 export const regular = css`
   min-height: 2.813rem;
   padding: 0.75rem 1.5rem;
   * {
-    font-size: 1rem !important;
+    font-size: 1rem;
   }
   ${breakpoint.xxs} {
     * {
-      font-size: 0.875rem !important;
+      font-size: 0.875rem;
     }
   }
 `;
@@ -78,11 +78,11 @@ export const large = css`
   min-height: 3.5rem;
   padding: 1rem 2rem;
   * {
-    font-size: 1.125rem !important;
+    font-size: 1.125rem;
   }
   ${breakpoint.xxs} {
     * {
-      font-size: 1rem !important;
+      font-size: 1rem;
     }
   }
 `;
