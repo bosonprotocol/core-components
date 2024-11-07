@@ -67,7 +67,7 @@ const ButtonWithThemeProps = styled.button<
       }
     `}
   ${(props) =>
-    props.theme?.padding
+    props.theme?.padding !== undefined
       ? css`
           padding: ${props.theme.padding} !important;
         `
