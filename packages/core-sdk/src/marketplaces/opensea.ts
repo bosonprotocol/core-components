@@ -474,6 +474,7 @@ export class OpenSeaMarketplace extends Marketplace {
       },
       accountAddress: listing.offerer,
       startAmount: formatUnits(listing.price, listing.exchangeToken.decimals),
+      listingTime: listing.listingTime,
       expirationTime: listing.expirationTime,
       paymentTokenAddress: listing.exchangeToken.address,
       englishAuction: listing.auction
