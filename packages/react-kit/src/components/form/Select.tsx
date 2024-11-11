@@ -11,14 +11,10 @@ import type { SelectDataProps, SelectProps } from "./types";
 export type { SelectProps } from "./types";
 const colors = theme.colors.light;
 
-const customStyles = <Value,>(
+const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
   error: unknown,
   customTheme: SelectProps["theme"]
-): StylesConfig<
-  SelectDataProps<Value>,
-  boolean,
-  GroupBase<SelectDataProps<Value>>
-> => ({
+): StylesConfig<Option, boolean, GroupBase<Option>> => ({
   control: (provided, state: any) => {
     const before = state.selectProps.label
       ? {
@@ -101,7 +97,10 @@ const customStyles = <Value,>(
   }
 });
 
-export default function SelectComponent<M extends boolean, Value = string>({
+export default function SelectComponent<
+  M extends boolean,
+  Option extends Record<string, unknown> = SelectDataProps
+>({
   name,
   options,
   placeholder = "Choose...",
@@ -113,7 +112,7 @@ export default function SelectComponent<M extends boolean, Value = string>({
   theme,
   isMulti,
   ...props
-}: SelectProps<M, Value>) {
+}: SelectProps<M, Option>) {
   const [field, meta, helpers] = useField(name);
   const displayErrorMessage =
     meta.error && meta.touched && !errorMessage
@@ -144,7 +143,7 @@ export default function SelectComponent<M extends boolean, Value = string>({
   return (
     <>
       <Select
-        styles={customStyles<Value>(displayErrorMessage, theme)}
+        styles={customStyles<Option>(displayErrorMessage, theme)}
         {...field}
         {...props}
         isMulti={isMulti}
