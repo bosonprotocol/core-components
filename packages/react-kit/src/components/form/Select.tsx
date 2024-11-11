@@ -11,7 +11,7 @@ import type { SelectDataProps, SelectProps } from "./types";
 export type { SelectProps } from "./types";
 const colors = theme.colors.light;
 
-const customStyles = <Value extends string>(
+const customStyles = <Value,>(
   error: unknown,
   customTheme: SelectProps["theme"]
 ): StylesConfig<
@@ -101,10 +101,7 @@ const customStyles = <Value extends string>(
   }
 });
 
-export default function SelectComponent<
-  M extends boolean,
-  Value extends string = string
->({
+export default function SelectComponent<M extends boolean, Value = string>({
   name,
   options,
   placeholder = "Choose...",
