@@ -91,27 +91,34 @@ export interface SelectContentProps {
   children: React.ReactNode | JSX.Element;
 }
 
-export type OnChange = (value: SingleValue<SelectDataProps>) => void;
+export type OnChange<Value extends string = string> = (
+  value: SingleValue<SelectDataProps<Value>>
+) => void;
 
-export interface BaseSelectProps {
-  options: Array<SelectDataProps>;
+export interface BaseSelectProps<Value extends string = string> {
+  options: Array<SelectDataProps<Value>>;
   placeholder?: string;
-  defaultValue?: SelectDataProps | null;
-  onChange?: OnChange;
+  defaultValue?: SelectDataProps<Value> | null;
+  onChange?: OnChange<Value>;
 }
 
-export type SelectProps<M extends boolean | undefined = false> = BaseProps & {
+export type SelectProps<
+  M extends boolean | undefined = false,
+  Value extends string = string
+> = BaseProps & {
   isMulti?: M;
   disabled?: boolean;
   isClearable?: boolean;
   isSearchable?: boolean;
-  options: Array<SelectDataProps> | Readonly<Array<SelectDataProps>>;
+  options:
+    | Array<SelectDataProps<Value>>
+    | Readonly<Array<SelectDataProps<Value>>>;
   errorMessage?: string;
   onChange?: (
     option: M extends true
-      ? MultiValue<SelectDataProps<string>>
-      : SingleValue<SelectDataProps<string>>,
-    actionMeta?: ActionMeta<SelectDataProps<string>>
+      ? MultiValue<SelectDataProps<Value>>
+      : SingleValue<SelectDataProps<Value>>,
+    actionMeta?: ActionMeta<SelectDataProps<Value>>
   ) => void;
   label?: string;
   theme?: Partial<{
@@ -136,7 +143,7 @@ export type SelectProps<M extends boolean | undefined = false> = BaseProps & {
   }>;
 } & Pick<
     StateManagerProps<
-      SelectDataProps<string>,
+      SelectDataProps<Value>,
       M extends undefined ? false : boolean
     >,
     "formatGroupLabel" | "formatOptionLabel"
