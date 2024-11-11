@@ -104,21 +104,17 @@ export interface BaseSelectProps<Value = string> {
 
 export type SelectProps<
   M extends boolean | undefined = false,
-  Value = string
+  Option extends Record<string, unknown> = SelectDataProps
 > = BaseProps & {
   isMulti?: M;
   disabled?: boolean;
   isClearable?: boolean;
   isSearchable?: boolean;
-  options:
-    | Array<SelectDataProps<Value>>
-    | Readonly<Array<SelectDataProps<Value>>>;
+  options: Array<Option> | Readonly<Array<Option>>;
   errorMessage?: string;
   onChange?: (
-    option: M extends true
-      ? MultiValue<SelectDataProps<Value>>
-      : SingleValue<SelectDataProps<Value>>,
-    actionMeta?: ActionMeta<SelectDataProps<Value>>
+    option: M extends true ? MultiValue<Option> : SingleValue<Option>,
+    actionMeta?: ActionMeta<Option>
   ) => void;
   label?: string;
   theme?: Partial<{
@@ -142,11 +138,27 @@ export type SelectProps<
       Partial<{ error: CSSObjectWithLabel }>;
   }>;
 } & Pick<
-    StateManagerProps<
-      SelectDataProps<Value>,
-      M extends undefined ? false : boolean
-    >,
-    "formatGroupLabel" | "formatOptionLabel"
+    StateManagerProps<Option, M extends undefined ? false : boolean>,
+    | "formatGroupLabel"
+    | "formatOptionLabel"
+    | "menuPlacement"
+    | "menuPosition"
+    | "menuIsOpen"
+    | "menuPortalTarget"
+    | "onMenuClose"
+    | "onMenuOpen"
+    | "onMenuScrollToBottom"
+    | "onMenuScrollToTop"
+    | "maxMenuHeight"
+    | "minMenuHeight"
+    | "menuShouldBlockScroll"
+    | "menuShouldScrollIntoView"
+    | "openMenuOnClick"
+    | "openMenuOnFocus"
+    | "closeMenuOnScroll"
+    | "closeMenuOnSelect"
+    | "captureMenuScroll"
+    | "defaultMenuIsOpen"
   >;
 
 export type UploadProps = BaseProps & {
