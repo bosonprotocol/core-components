@@ -13,7 +13,7 @@ import ErrorComponent from "../Error";
 import {
   FieldFileUploadWrapper,
   FieldInput,
-  FileOnlyLabel,
+  PdfOnlyLabel,
   FileUploadWrapper,
   ImagePreview,
   VideoPreview
@@ -93,7 +93,7 @@ function BaseUpload({
   const isVideoOnly = mimetypes.every((mimetype) =>
     mimetype.startsWith("video/")
   );
-  const isFileOnly = mimetypes.every((mimetype) =>
+  const isPdfOnly = mimetypes.every((mimetype) =>
     mimetype.startsWith("application/")
   );
 
@@ -119,7 +119,7 @@ function BaseUpload({
             setPreview(base64Uri);
           });
         }
-      } else if (isFileOnly) {
+      } else if (isPdfOnly) {
         if (withUpload) {
           loadIpfsFile(files[0] as FileProps);
         } else {
@@ -183,12 +183,11 @@ function BaseUpload({
     }
     try {
       handleLoading(true);
-      const imagePreview = await loadMedia(fileSrc || "");
-      if (imagePreview) {
-        setPreview(imagePreview);
-        onLoadSinglePreviewImage?.(imagePreview);
+      const filePreview = await loadMedia(fileSrc || "");
+      if (filePreview) {
+        setPreview(filePreview);
       } else {
-        console.warn(`imagePreview ${imagePreview} is falsy in loadIpfsFile`);
+        console.warn(`filePreview ${filePreview} is falsy in loadIpfsFile`);
       }
     } catch (error) {
       console.error(error);
@@ -311,14 +310,14 @@ function BaseUpload({
       {errorMesage && errorComponent?.(errorMesage)}
       <FieldFileUploadWrapper
         {...wrapperProps}
-        $isFileOnly={isFileOnly}
+        $isPdfOnly={isPdfOnly}
         $disabled={!!disabled}
       >
         <FieldInput
           {...props}
           hidden
           type="file"
-          id={name}
+          id={`file-${name}`}
           accept={accept}
           multiple={multiple}
           onChange={async (e) => {
@@ -355,7 +354,7 @@ function BaseUpload({
           </ThemedButton>
         ) : (
           <FileUploadWrapper
-            $isFileOnly={isFileOnly}
+            $isPdfOnly={isPdfOnly}
             data-disabled={disabled}
             onClick={handleChooseFile}
             $error={errorMessage}
@@ -386,7 +385,7 @@ function BaseUpload({
                         muted
                         loop
                       />
-                    ) : isFileOnly ? (
+                    ) : isPdfOnly ? (
                       <Grid
                         flexDirection="row"
                         alignItems="center"
@@ -417,7 +416,7 @@ function BaseUpload({
                   </>
                 ) : isVideoOnly ? (
                   <VideoCamera size={24} />
-                ) : isFileOnly ? (
+                ) : isPdfOnly ? (
                   <FilePdf size={24} />
                 ) : (
                   <Image size={24} />
@@ -427,7 +426,7 @@ function BaseUpload({
                     tag="p"
                     marginBottom={0}
                     textAlign="center"
-                    {...(isFileOnly && { marginTop: 0 })}
+                    {...(isPdfOnly && { marginTop: 0 })}
                   >
                     {placeholder}
                   </Typography>
@@ -436,18 +435,21 @@ function BaseUpload({
             )}
           </FileUploadWrapper>
         )}
-        {isFileOnly && (
+        {isPdfOnly && (
           <Grid>
-            <FileOnlyLabel htmlFor={name} style={{ ...theme?.triggerTheme }}>
+            <PdfOnlyLabel
+              htmlFor={`file-${name}`}
+              style={{ ...theme?.uploadButton }}
+            >
               Upload file <Upload size={20} />
-            </FileOnlyLabel>
+            </PdfOnlyLabel>
           </Grid>
         )}
         {!disabled &&
           field.value &&
           field.value?.length !== 0 &&
           preview &&
-          !isFileOnly && (
+          !isPdfOnly && (
             <div onClick={handleRemoveAllFiles} data-remove style={style}>
               <Trash size={24} color={colors.white} />
             </div>

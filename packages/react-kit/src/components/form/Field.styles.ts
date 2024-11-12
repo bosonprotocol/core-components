@@ -129,7 +129,7 @@ export type FileUploadWrapperTheme = Partial<{
 }>;
 export const FileUploadWrapper = styled.div<{
   $error: unknown;
-  $isFileOnly?: boolean;
+  $isPdfOnly?: boolean;
   theme: FileUploadWrapperTheme | undefined;
 }>`
   position: relative;
@@ -139,8 +139,8 @@ export const FileUploadWrapper = styled.div<{
   padding: 0.5rem;
   align-items: center;
 
-  ${({ $isFileOnly }) =>
-    $isFileOnly
+  ${({ $isPdfOnly }) =>
+    $isPdfOnly
       ? css`
           width: 100%;
           flex-direction: row;
@@ -202,7 +202,7 @@ export const FieldFileUpload = styled(FieldInput)`
   display: none;
 `;
 
-export const FileOnlyLabel = styled.label`
+export const PdfOnlyLabel = styled.label`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,7 +217,7 @@ export const FileOnlyLabel = styled.label`
 
 export const FieldFileUploadWrapper = styled.div<{
   $disabled: boolean;
-  $isFileOnly?: boolean;
+  $isPdfOnly?: boolean;
 }>`
   position: relative;
   display: inline-block;
@@ -230,8 +230,8 @@ export const FieldFileUploadWrapper = styled.div<{
           cursor: pointer;
         `}
 
-  ${({ $isFileOnly }) =>
-    !$isFileOnly &&
+  ${({ $isPdfOnly }) =>
+    !$isPdfOnly &&
     css`
       width: 8rem;
     `}
