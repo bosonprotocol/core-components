@@ -445,16 +445,6 @@ function BaseUpload({
             </FileUploadWrapper>
           )
         )}
-        {isPdfOnly && (
-          <Grid>
-            <PdfOnlyLabel
-              htmlFor={`file-${name}`}
-              style={{ ...theme?.uploadButton }}
-            >
-              Upload file <Upload size={20} />
-            </PdfOnlyLabel>
-          </Grid>
-        )}
         {!disabled &&
           field.value &&
           field.value?.length !== 0 &&
@@ -470,6 +460,16 @@ function BaseUpload({
             isPdfOnly={isPdfOnly}
             handleRemoveFile={handleRemoveFile}
           />
+        )}
+        {isPdfOnly && (
+          <Grid>
+            <PdfOnlyLabel
+              htmlFor={`file-${name}`}
+              style={{ ...theme?.uploadButton }}
+            >
+              Upload file <Upload size={20} />
+            </PdfOnlyLabel>
+          </Grid>
         )}
       </FieldFileUploadWrapper>
       <ErrorComponent display={displayError} message={errorMessage} />
