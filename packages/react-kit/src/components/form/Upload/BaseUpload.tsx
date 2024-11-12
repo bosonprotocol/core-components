@@ -353,7 +353,7 @@ function BaseUpload({
             <>{trigger}</>
           </ThemedButton>
         ) : (
-          (!isPdfOnly || (isPdfOnly && files.length > 0)) && (
+          (!isPdfOnly || (isPdfOnly && files.length > 0 && !multiple)) && (
             <FileUploadWrapper
               $isPdfOnly={isPdfOnly}
               data-disabled={disabled}
@@ -465,7 +465,11 @@ function BaseUpload({
             </div>
           )}
         {multiple && (
-          <UploadedFiles files={files} handleRemoveFile={handleRemoveFile} />
+          <UploadedFiles
+            files={files}
+            isPdfOnly={isPdfOnly}
+            handleRemoveFile={handleRemoveFile}
+          />
         )}
       </FieldFileUploadWrapper>
       <ErrorComponent display={displayError} message={errorMessage} />

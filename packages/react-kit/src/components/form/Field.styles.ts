@@ -203,17 +203,24 @@ export const FieldFileUpload = styled(FieldInput)`
   display: none;
 `;
 
-export const PdfOnlyLabel = styled.label`
+export const PdfOnlyLabel = styled.label<{ $disabled?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 1rem;
-  cursor: pointer;
   gap: 0.25rem;
   border-radius: 32px;
   padding: 0.656rem 1.25rem;
   background: ${colors.lightGrey};
   font-size: 0.875rem;
+  ${({ $disabled }) =>
+    $disabled
+      ? css`
+          cursor: not-allowed;
+        `
+      : css`
+          cursor: pointer;
+        `}
 `;
 
 export const FieldFileUploadWrapper = styled.div<{
