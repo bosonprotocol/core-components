@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/browser";
 import { useField } from "formik";
-import { Image, Trash, VideoCamera } from "phosphor-react";
+import { Image, Trash, VideoCamera, FilePdf, Upload, X } from "phosphor-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { loadAndSetMedia } from "../../../lib/base64/base64";
 import { bytesToSize } from "../../../lib/bytes/bytesToSize";
@@ -13,6 +13,7 @@ import ErrorComponent from "../Error";
 import {
   FieldFileUploadWrapper,
   FieldInput,
+  FileOnlyLabel,
   FileUploadWrapper,
   ImagePreview,
   VideoPreview
@@ -26,6 +27,7 @@ import UploadedFiles from "./UploadedFiles";
 import { WithUploadToIpfs, WithUploadToIpfsProps } from "./WithUploadToIpfs";
 import { useModal } from "../../modal/useModal";
 import { ImageEditorModal } from "./ImageEditorModal/ImageEditorModal";
+import { Grid } from "../../ui/Grid";
 const colors = theme.colors.light;
 export type BaseUploadProps = UploadPropsWithNoIpfs;
 function BaseUpload({
@@ -91,6 +93,9 @@ function BaseUpload({
   const isVideoOnly = mimetypes.every((mimetype) =>
     mimetype.startsWith("video/")
   );
+  const isFileOnly = mimetypes.every((mimetype) =>
+    mimetype.startsWith("application/")
+  );
 
   useEffect(() => {
     onFilesSelect?.(files);
@@ -113,6 +118,12 @@ function BaseUpload({
           loadAndSetMedia(files[0] as File, (base64Uri) => {
             setPreview(base64Uri);
           });
+        }
+      } else if (isFileOnly) {
+        if (withUpload) {
+          loadIpfsFile(files[0] as FileProps);
+        } else {
+          setPreview(files[0]?.name);
         }
       }
     }
@@ -156,6 +167,28 @@ function BaseUpload({
         console.warn(
           `imagePreview ${imagePreview} is falsy in loadIpfsImagePreview`
         );
+      }
+    } catch (error) {
+      console.error(error);
+      Sentry.captureException(error);
+    } finally {
+      handleLoading(false);
+    }
+  };
+
+  const loadIpfsFile = async (file: FileProps) => {
+    const fileSrc = file && file?.src ? file?.src : false;
+    if (!fileSrc) {
+      return false;
+    }
+    try {
+      handleLoading(true);
+      const imagePreview = await loadMedia(fileSrc || "");
+      if (imagePreview) {
+        setPreview(imagePreview);
+        onLoadSinglePreviewImage?.(imagePreview);
+      } else {
+        console.warn(`imagePreview ${imagePreview} is falsy in loadIpfsFile`);
       }
     } catch (error) {
       console.error(error);
@@ -276,11 +309,16 @@ function BaseUpload({
         />
       )}
       {errorMesage && errorComponent?.(errorMesage)}
-      <FieldFileUploadWrapper {...wrapperProps} $disabled={!!disabled}>
+      <FieldFileUploadWrapper
+        {...wrapperProps}
+        $isFileOnly={isFileOnly}
+        $disabled={!!disabled}
+      >
         <FieldInput
           {...props}
           hidden
           type="file"
+          id={name}
           accept={accept}
           multiple={multiple}
           onChange={async (e) => {
@@ -317,6 +355,7 @@ function BaseUpload({
           </ThemedButton>
         ) : (
           <FileUploadWrapper
+            $isFileOnly={isFileOnly}
             data-disabled={disabled}
             onClick={handleChooseFile}
             $error={errorMessage}
@@ -347,6 +386,28 @@ function BaseUpload({
                         muted
                         loop
                       />
+                    ) : isFileOnly ? (
+                      <Grid
+                        flexDirection="row"
+                        alignItems="center"
+                        gap="0.25rem"
+                      >
+                        <div>
+                          <FilePdf size={24} />
+                        </div>
+                        <Typography>{preview}</Typography>
+                        <button
+                          type="button"
+                          style={{ display: "flex", justifyContent: "center" }}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleRemoveAllFiles();
+                          }}
+                        >
+                          <X size={12.5} />
+                        </button>
+                      </Grid>
                     ) : (
                       <ImagePreview
                         style={{ ...imgPreviewStyle }}
@@ -356,11 +417,18 @@ function BaseUpload({
                   </>
                 ) : isVideoOnly ? (
                   <VideoCamera size={24} />
+                ) : isFileOnly ? (
+                  <FilePdf size={24} />
                 ) : (
                   <Image size={24} />
                 )}
                 {placeholder && !showPreview && (
-                  <Typography tag="p" marginBottom={0} textAlign="center">
+                  <Typography
+                    tag="p"
+                    marginBottom={0}
+                    textAlign="center"
+                    {...(isFileOnly && { marginTop: 0 })}
+                  >
                     {placeholder}
                   </Typography>
                 )}
@@ -368,11 +436,22 @@ function BaseUpload({
             )}
           </FileUploadWrapper>
         )}
-        {!disabled && field.value && field.value?.length !== 0 && preview && (
-          <div onClick={handleRemoveAllFiles} data-remove style={style}>
-            <Trash size={24} color={colors.white} />
-          </div>
+        {isFileOnly && (
+          <Grid>
+            <FileOnlyLabel htmlFor={name} style={{ ...theme?.triggerTheme }}>
+              Upload file <Upload size={20} />
+            </FileOnlyLabel>
+          </Grid>
         )}
+        {!disabled &&
+          field.value &&
+          field.value?.length !== 0 &&
+          preview &&
+          !isFileOnly && (
+            <div onClick={handleRemoveAllFiles} data-remove style={style}>
+              <Trash size={24} color={colors.white} />
+            </div>
+          )}
         {multiple && (
           <UploadedFiles files={files} handleRemoveFile={handleRemoveFile} />
         )}

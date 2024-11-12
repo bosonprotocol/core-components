@@ -181,6 +181,7 @@ export type UploadProps = BaseProps & {
   theme?: Partial<{
     triggerTheme: FileUploadWrapperTheme;
     overrides: React.CSSProperties;
+    uploadButton: React.CSSProperties;
   }>;
 } & (
     | {

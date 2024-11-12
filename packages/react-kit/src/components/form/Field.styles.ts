@@ -129,20 +129,27 @@ export type FileUploadWrapperTheme = Partial<{
 }>;
 export const FileUploadWrapper = styled.div<{
   $error: unknown;
+  $isFileOnly?: boolean;
   theme: FileUploadWrapperTheme | undefined;
 }>`
   position: relative;
   overflow: hidden;
   display: flex;
-
-  align-items: center;
   justify-content: center;
-  flex-direction: column;
-
   padding: 0.5rem;
+  align-items: center;
 
-  width: 8rem;
-  height: 8rem;
+  ${({ $isFileOnly }) =>
+    $isFileOnly
+      ? css`
+          width: 100%;
+          flex-direction: row;
+        `
+      : css`
+          width: 8rem;
+          height: 8rem;
+          flex-direction: column;
+        `}
 
   img {
     position: absolute;
@@ -195,8 +202,22 @@ export const FieldFileUpload = styled(FieldInput)`
   display: none;
 `;
 
+export const FileOnlyLabel = styled.label`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  cursor: pointer;
+  gap: 0.25rem;
+  border-radius: 32px;
+  padding: 0.656rem 1.25rem;
+  background: ${colors.lightGrey};
+  font-size: 0.875rem;
+`;
+
 export const FieldFileUploadWrapper = styled.div<{
   $disabled: boolean;
+  $isFileOnly?: boolean;
 }>`
   position: relative;
   display: inline-block;
@@ -209,7 +230,11 @@ export const FieldFileUploadWrapper = styled.div<{
           cursor: pointer;
         `}
 
-  width: 8rem;
+  ${({ $isFileOnly }) =>
+    !$isFileOnly &&
+    css`
+      width: 8rem;
+    `}
 
   &:hover {
     [data-remove] {
