@@ -94,7 +94,7 @@ function BaseUpload({
     mimetype.startsWith("video/")
   );
   const isPdfOnly = mimetypes.every((mimetype) =>
-    mimetype.startsWith("application/")
+    mimetype.startsWith("application/pdf")
   );
 
   useEffect(() => {
