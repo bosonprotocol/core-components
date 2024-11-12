@@ -89,10 +89,10 @@ export const VideoOnly = {
   } satisfies BaseUploadProps
 };
 
-export const FileOnly = {
+export const PdfOnly = {
   args: {
     ...BASE_ARGS,
     accept: "application/pdf",
-    placeholder: "Upload file"
+    placeholder: "Upload pdf"
   } satisfies BaseUploadProps
 };
