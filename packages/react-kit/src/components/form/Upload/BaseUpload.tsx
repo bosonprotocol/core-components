@@ -353,87 +353,97 @@ function BaseUpload({
             <>{trigger}</>
           </ThemedButton>
         ) : (
-          <FileUploadWrapper
-            $isPdfOnly={isPdfOnly}
-            data-disabled={disabled}
-            onClick={handleChooseFile}
-            $error={errorMessage}
-            style={{ ...style, ...theme?.overrides }}
-            theme={theme?.triggerTheme}
-          >
-            {isLoading ? (
-              <Loading size={2} />
-            ) : (
-              <>
-                {showPreview ? (
-                  <>
-                    {isVideoOnly ? (
-                      <VideoPreview
-                        src={
-                          preview?.startsWith("http")
-                            ? preview
-                            : preview?.startsWith(
-                                  "data:application/octet-stream;base64,"
-                                )
-                              ? "data:video/mp4;base64," +
-                                preview?.substring(
-                                  "data:application/octet-stream;base64,".length
-                                )
-                              : preview
-                        }
-                        autoPlay
-                        muted
-                        loop
-                      />
-                    ) : isPdfOnly ? (
-                      <Grid
-                        flexDirection="row"
-                        alignItems="center"
-                        gap="0.25rem"
-                      >
-                        <div>
-                          <FilePdf size={24} />
-                        </div>
-                        <Typography>{preview}</Typography>
-                        <button
-                          type="button"
-                          style={{ display: "flex", justifyContent: "center" }}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            handleRemoveAllFiles();
-                          }}
+          (!isPdfOnly || (isPdfOnly && files.length > 0)) && (
+            <FileUploadWrapper
+              $isPdfOnly={isPdfOnly}
+              data-disabled={disabled}
+              onClick={() => {
+                if (!isPdfOnly) {
+                  handleChooseFile();
+                }
+              }}
+              $error={errorMessage}
+              style={{ ...style, ...theme?.overrides }}
+              theme={theme?.triggerTheme}
+            >
+              {isLoading ? (
+                <Loading size={2} />
+              ) : (
+                <>
+                  {showPreview ? (
+                    <>
+                      {isVideoOnly ? (
+                        <VideoPreview
+                          src={
+                            preview?.startsWith("http")
+                              ? preview
+                              : preview?.startsWith(
+                                    "data:application/octet-stream;base64,"
+                                  )
+                                ? "data:video/mp4;base64," +
+                                  preview?.substring(
+                                    "data:application/octet-stream;base64,"
+                                      .length
+                                  )
+                                : preview
+                          }
+                          autoPlay
+                          muted
+                          loop
+                        />
+                      ) : isPdfOnly ? (
+                        <Grid
+                          flexDirection="row"
+                          alignItems="center"
+                          gap="0.25rem"
                         >
-                          <X size={12.5} />
-                        </button>
-                      </Grid>
-                    ) : (
-                      <ImagePreview
-                        style={{ ...imgPreviewStyle }}
-                        src={preview}
-                      />
-                    )}
-                  </>
-                ) : isVideoOnly ? (
-                  <VideoCamera size={24} />
-                ) : isPdfOnly ? (
-                  <FilePdf size={24} />
-                ) : (
-                  <Image size={24} />
-                )}
-                {placeholder && !showPreview && (
-                  <Typography
-                    tag="p"
-                    marginBottom={0}
-                    textAlign="center"
-                    {...(isPdfOnly && { marginTop: 0 })}
-                  >
-                    {placeholder}
-                  </Typography>
-                )}
-              </>
-            )}
-          </FileUploadWrapper>
+                          <div>
+                            <FilePdf size={24} />
+                          </div>
+                          <Typography>{preview}</Typography>
+                          <button
+                            type="button"
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleRemoveAllFiles();
+                            }}
+                          >
+                            <X size={12.5} />
+                          </button>
+                        </Grid>
+                      ) : (
+                        <ImagePreview
+                          style={{ ...imgPreviewStyle }}
+                          src={preview}
+                        />
+                      )}
+                    </>
+                  ) : isVideoOnly ? (
+                    <VideoCamera size={24} />
+                  ) : isPdfOnly ? (
+                    <FilePdf size={24} />
+                  ) : (
+                    <Image size={24} />
+                  )}
+                  {placeholder && !showPreview && (
+                    <Typography
+                      tag="p"
+                      marginBottom={0}
+                      textAlign="center"
+                      {...(isPdfOnly && { marginTop: 0 })}
+                    >
+                      {placeholder}
+                    </Typography>
+                  )}
+                </>
+              )}
+            </FileUploadWrapper>
+          )
         )}
         {isPdfOnly && (
           <Grid>

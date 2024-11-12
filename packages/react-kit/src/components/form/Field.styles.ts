@@ -144,6 +144,7 @@ export const FileUploadWrapper = styled.div<{
       ? css`
           width: 100%;
           flex-direction: row;
+          cursor: default;
         `
       : css`
           width: 8rem;
