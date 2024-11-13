@@ -14,6 +14,7 @@ export function BaseCheckbox({
   hideError,
   className,
   iconProps,
+  children,
   ...props
 }: BaseCheckboxProps) {
   const [field, meta, helpers] = useField(name);
@@ -53,7 +54,7 @@ export function BaseCheckbox({
         <div>
           <Check size={16} width="100%" height="100%" {...iconProps} />
         </div>
-        <b>{text}</b>
+        {children || <b>{text}</b>}
       </CheckboxWrapper>
       <Error display={!hideError && displayError} message={errorMessage} />
     </>

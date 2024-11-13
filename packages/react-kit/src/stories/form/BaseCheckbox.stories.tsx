@@ -111,3 +111,10 @@ export const CustomThemeWithError = {
     } satisfies BaseCheckboxProps["theme"]
   }
 };
+
+export const SimpleWithChildren = {
+  args: {
+    ...BASE_ARGS,
+    children: <p>text in paragraph</p>
+  }
+};
