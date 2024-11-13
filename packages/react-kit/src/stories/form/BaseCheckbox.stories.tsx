@@ -113,8 +113,9 @@ export const CustomThemeWithError = {
 };
 
 export const SimpleWithChildren = {
+  name: "With error with children",
   args: {
     ...BASE_ARGS,
-    children: <p>text in paragraph</p>
+    children: <div>text in paragraph</div>
   }
 };

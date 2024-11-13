@@ -403,11 +403,11 @@ export const CheckboxWrapper = styled.label<{
     }
   }
 
-  > div,
-  > div svg {
+  > div:first-of-type,
+  > div:first-of-type svg {
     ${transition}
   }
-  > div {
+  > div:first-of-type {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -462,7 +462,7 @@ export const CheckboxWrapper = styled.label<{
   ${({ $error, theme }) =>
     !checkIfValueIsEmpty($error) &&
     css`
-      > div {
+      > div:first-of-type {
         border: 1px solid ${theme?.error?.borderColor || colors.orange}};
         ${
           theme?.error?.backgroundColor &&
