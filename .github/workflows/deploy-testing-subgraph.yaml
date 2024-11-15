@@ -2,14 +2,14 @@ name: Deploy subgraph to testing env
 
 on:
   workflow_dispatch:
-    branches: [main]
   push:
+    branches:
+      - 'main'
     paths:
       - packages/subgraph/**
 
 jobs:
   deploy:
-    if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     name: Deploy subgraph
     steps:
