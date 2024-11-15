@@ -11,7 +11,7 @@ export type ConfigContextProps = {
     symbol: "$" | string;
   };
   usePendingTransactions?: boolean;
-  magicLinkKey: string;
+  magicLinkKey?: string;
   infuraKey: string;
   supportedChains: number[];
   externalConnectedChainId?: number;
@@ -20,6 +20,7 @@ export type ConfigContextProps = {
   withExternalConnectionProps?: boolean;
   withWeb3React: boolean;
   withCustomReduxContext?: boolean;
+  withMagicLink?: boolean;
 };
 
 export const ConfigContext = createContext<

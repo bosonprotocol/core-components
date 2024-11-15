@@ -28,7 +28,8 @@ const BASE_ARGS = {
   envName,
   configId: envConfig[0].configId,
   walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
-  withCustomReduxContext: false
+  withCustomReduxContext: false,
+  withMagicLink: true
 } as const;
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Commit.args = {

@@ -9,7 +9,7 @@ import { theme } from "../../../theme";
 import Loading from "../../ui/loading/LoadingWrapper";
 import ThemedButton from "../../ui/ThemedButton";
 import { Typography } from "../../ui/Typography";
-import Error from "../Error";
+import ErrorComponent from "../Error";
 import {
   FieldFileUploadWrapper,
   FieldInput,
@@ -52,6 +52,7 @@ function BaseUpload({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   removeFile,
   saveButtonTheme,
+  errorComponent,
   theme,
   ...props
 }: UploadPropsWithNoIpfs & WithUploadToIpfsProps) {
@@ -60,6 +61,7 @@ function BaseUpload({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [preview, setPreview] = useState<string | null>();
   const [field, meta, helpers] = useField(name);
+  const [errorMesage, setErrorMessage] = useState<string>();
 
   const handleLoading = useCallback(
     (loadingValue: boolean) => {
@@ -123,12 +125,12 @@ function BaseUpload({
     }
     handleLoading(true);
     try {
-      const imagePreview = await loadMedia(fileSrc || "");
-      if (imagePreview) {
-        setPreview(imagePreview);
+      const videoPreview = await loadMedia(fileSrc || "");
+      if (videoPreview) {
+        setPreview(videoPreview);
       } else {
         console.warn(
-          `imagePreview ${imagePreview} is falsy in loadIpfsImagePreview`
+          `videoPreview ${videoPreview} is falsy in loadIpfsImagePreview`
         );
       }
     } catch (error) {
@@ -216,16 +218,26 @@ function BaseUpload({
         helpers.setTouched(true);
       }
       handleLoading(true);
-      const files = await saveToIpfs(efiles);
-      if (files) {
-        setFiles(files);
-      } else {
-        setFiles([]);
-        console.warn(
-          `There has been an error because 'files' ${files} is falsy in handleSave`
-        );
+      try {
+        const files = await saveToIpfs(efiles, { throwOnError: true });
+        setErrorMessage(undefined);
+        if (files) {
+          setFiles(files);
+        } else {
+          setFiles([]);
+          console.warn(
+            `There has been an error because 'files' ${files} is falsy in handleSave`
+          );
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          setErrorMessage(err.message);
+        } else {
+          setErrorMessage("Something went wrong");
+        }
+      } finally {
+        handleLoading(false);
       }
-      handleLoading(false);
     },
     [meta.touched, handleLoading, saveToIpfs, helpers, setFiles]
   );
@@ -234,6 +246,7 @@ function BaseUpload({
     borderRadius: borderRadius ? `${borderRadius}${borderRadiusUnit}` : "",
     width: width ? `100%` : ""
   };
+  const showPreview = field.value && field.value?.length !== 0 && preview;
   return (
     <>
       {withEditor && showEditor && (
@@ -262,6 +275,7 @@ function BaseUpload({
           }}
         />
       )}
+      {errorMesage && errorComponent?.(errorMesage)}
       <FieldFileUploadWrapper {...wrapperProps} $disabled={!!disabled}>
         <FieldInput
           {...props}
@@ -306,24 +320,28 @@ function BaseUpload({
             data-disabled={disabled}
             onClick={handleChooseFile}
             $error={errorMessage}
-            style={style}
+            style={{ ...style, ...theme?.overrides }}
             theme={theme?.triggerTheme}
           >
             {isLoading ? (
               <Loading size={2} />
             ) : (
               <>
-                {field.value && field.value?.length !== 0 && preview ? (
+                {showPreview ? (
                   <>
                     {isVideoOnly ? (
                       <VideoPreview
                         src={
                           preview?.startsWith("http")
                             ? preview
-                            : "data:video/mp4;base64," +
-                              preview?.substring(
-                                "data:application/octet-stream;base64,".length
-                              )
+                            : preview?.startsWith(
+                                  "data:application/octet-stream;base64,"
+                                )
+                              ? "data:video/mp4;base64," +
+                                preview?.substring(
+                                  "data:application/octet-stream;base64,".length
+                                )
+                              : preview
                         }
                         autoPlay
                         muted
@@ -341,7 +359,7 @@ function BaseUpload({
                 ) : (
                   <Image size={24} />
                 )}
-                {placeholder && (
+                {placeholder && !showPreview && (
                   <Typography tag="p" marginBottom={0} textAlign="center">
                     {placeholder}
                   </Typography>
@@ -359,7 +377,7 @@ function BaseUpload({
           <UploadedFiles files={files} handleRemoveFile={handleRemoveFile} />
         )}
       </FieldFileUploadWrapper>
-      <Error display={displayError} message={errorMessage} />
+      <ErrorComponent display={displayError} message={errorMessage} />
     </>
   );
 }

@@ -5,7 +5,9 @@ import styled, { CSSProperties } from "styled-components";
 
 import { Grid } from "../../ui/Grid";
 import { flexColumnNoWrap } from "../styles";
-import ConnectionErrorView from "./ConnectionErrorView";
+import ConnectionErrorView, {
+  ConnectionErrorViewProps
+} from "./ConnectionErrorView";
 import { Option, OptionProps } from "./Option";
 import {
   ActivationStatus,
@@ -39,7 +41,6 @@ const OptionGrid = styled.div<{ $borderRadius: CSSProperties["borderRadius"] }>`
 
 export type WalletModalProps = {
   PrivacyPolicy: React.FC;
-  magicLoginButtonProps: MagicLoginButtonProps;
   optionProps: Pick<
     OptionProps,
     | "color"
@@ -47,12 +48,20 @@ export type WalletModalProps = {
     | "hoverColor"
     | "backgroundColor"
     | "borderRadius"
+    | "onOptionClick"
   > & { iconBorderRadius: CSSProperties["borderRadius"] };
-};
+  withMagicLogin?: boolean;
+  connectionErrorProps: ConnectionErrorViewProps;
+} & (
+  | { withMagicLogin: true; magicLoginButtonProps: MagicLoginButtonProps }
+  | { withMagicLogin?: false; magicLoginButtonProps?: undefined }
+);
 export function WalletModal({
   PrivacyPolicy,
   magicLoginButtonProps,
-  optionProps
+  optionProps,
+  withMagicLogin = true,
+  connectionErrorProps
 }: WalletModalProps) {
   const chainId = useChainId();
   const { config } = useConfigContext();
@@ -82,7 +91,7 @@ export function WalletModal({
         Connect a wallet
       </Grid>
       {activationState.status === ActivationStatus.ERROR ? (
-        <ConnectionErrorView />
+        <ConnectionErrorView {...connectionErrorProps} />
       ) : (
         <AutoColumn $gap="16px">
           <OptionGrid
@@ -100,7 +109,9 @@ export function WalletModal({
                 />
               ))}
           </OptionGrid>
-          <MagicLoginButton {...magicLoginButtonProps} />
+          {withMagicLogin && magicLoginButtonProps && (
+            <MagicLoginButton {...magicLoginButtonProps} />
+          )}
           <PrivacyPolicy />
         </AutoColumn>
       )}

@@ -11,14 +11,10 @@ import type { SelectDataProps, SelectProps } from "./types";
 export type { SelectProps } from "./types";
 const colors = theme.colors.light;
 
-const customStyles = (
+const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
   error: unknown,
   customTheme: SelectProps["theme"]
-): StylesConfig<
-  SelectDataProps<string>,
-  boolean,
-  GroupBase<SelectDataProps<string>>
-> => ({
+): StylesConfig<Option, boolean, GroupBase<Option>> => ({
   control: (provided, state: any) => {
     const before = state.selectProps.label
       ? {
@@ -101,7 +97,10 @@ const customStyles = (
   }
 });
 
-export default function SelectComponent<M extends boolean>({
+export default function SelectComponent<
+  M extends boolean,
+  Option extends Record<string, unknown> = SelectDataProps
+>({
   name,
   options,
   placeholder = "Choose...",
@@ -113,7 +112,7 @@ export default function SelectComponent<M extends boolean>({
   theme,
   isMulti,
   ...props
-}: SelectProps<M>) {
+}: SelectProps<M, Option>) {
   const [field, meta, helpers] = useField(name);
   const displayErrorMessage =
     meta.error && meta.touched && !errorMessage
@@ -126,13 +125,14 @@ export default function SelectComponent<M extends boolean>({
     typeof displayErrorMessage === "string" && displayErrorMessage !== "";
 
   const handleChange = (
-    option: Parameters<NonNullable<typeof onChange>>[0]
+    option: Parameters<NonNullable<typeof onChange>>[0],
+    actionMeta: Parameters<NonNullable<typeof onChange>>[1]
   ) => {
     if (!meta.touched) {
       helpers.setTouched(true);
     }
     helpers.setValue(option);
-    onChange?.(option);
+    onChange?.(option, actionMeta);
   };
   const handleBlur = () => {
     if (!meta.touched) {
@@ -143,7 +143,7 @@ export default function SelectComponent<M extends boolean>({
   return (
     <>
       <Select
-        styles={customStyles(displayErrorMessage, theme)}
+        styles={customStyles<Option>(displayErrorMessage, theme)}
         {...field}
         {...props}
         isMulti={isMulti}

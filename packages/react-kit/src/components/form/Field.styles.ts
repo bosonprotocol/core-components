@@ -125,6 +125,7 @@ export type FileUploadWrapperTheme = Partial<{
   error: Partial<{
     borderColor: CSSProperties["borderColor"];
   }>;
+  overrides: Partial<CSSProperties>;
 }>;
 export const FileUploadWrapper = styled.div<{
   $error: unknown;
@@ -194,7 +195,9 @@ export const FieldFileUpload = styled(FieldInput)`
   display: none;
 `;
 
-export const FieldFileUploadWrapper = styled.div<{ $disabled: boolean }>`
+export const FieldFileUploadWrapper = styled.div<{
+  $disabled: boolean;
+}>`
   position: relative;
   display: inline-block;
   ${({ $disabled }) =>
@@ -367,6 +370,7 @@ export const CheckboxWrapper = styled.label<{
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
+  gap: 0.5rem;
 
   > input {
     &:disabled {
@@ -399,11 +403,11 @@ export const CheckboxWrapper = styled.label<{
     }
   }
 
-  > div,
-  > div svg {
+  > div:first-of-type,
+  > div:first-of-type svg {
     ${transition}
   }
-  > div {
+  > div:first-of-type {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -423,7 +427,6 @@ export const CheckboxWrapper = styled.label<{
       css`
         border-radius: ${theme?.borderRadius};
       `};
-    margin-right: 0.5rem;
   }
 
   > input {
@@ -459,7 +462,7 @@ export const CheckboxWrapper = styled.label<{
   ${({ $error, theme }) =>
     !checkIfValueIsEmpty($error) &&
     css`
-      > div {
+      > div:first-of-type {
         border: 1px solid ${theme?.error?.borderColor || colors.orange}};
         ${
           theme?.error?.backgroundColor &&

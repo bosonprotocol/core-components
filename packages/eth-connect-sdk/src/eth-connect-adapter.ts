@@ -105,6 +105,15 @@ export class EthConnectAdapter implements Web3LibAdapter {
     );
   }
 
+  public async estimateGas(
+    transactionRequest: TransactionRequest
+  ): Promise<string | number> {
+    return this._requestManager.eth_estimateGas({
+      data: transactionRequest.data,
+      to: transactionRequest.to
+    });
+  }
+
   public async send(rpcMethod: string, payload: unknown[]): Promise<string> {
     // Use requestManagerSigner to (sign and) send transaction
     return this._requestManagerSigner.sendAsync({

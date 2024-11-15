@@ -56,6 +56,7 @@ export type ProtocolConfig = {
   defaultTokens: Token[] | undefined;
   defaultDisputeResolverId: string;
   sellersBlackList: string;
+  offersWhiteList: string;
   chainId: ChainId;
   nativeCoin:
     | undefined
@@ -75,3 +76,8 @@ export type ProtocolConfig = {
   metaTx?: Partial<MetaTxConfig>;
   lens: Lens | undefined;
 };
+
+export type CoreProtocolConfig = Pick<
+  ProtocolConfig,
+  "envName" | "chainId" | "configId"
+>;

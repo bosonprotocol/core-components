@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/subgraph",
-  "version": "1.34.0-alpha.8",
+  "version": "1.34.0-alpha.40",
   "dependencies": {
     "@graphprotocol/graph-cli": "0.68.5",
     "@graphprotocol/graph-ts": "0.33.0"

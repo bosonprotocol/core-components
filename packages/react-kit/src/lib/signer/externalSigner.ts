@@ -152,6 +152,13 @@ const getExternalWeb3LibAdapterListener = ({
         );
       });
     },
+    estimateGas: async (...args: any[]): Promise<BigNumberish> => {
+      return getDefaultHandleSignerFunction<BigNumberish>({
+        parentOrigin,
+        functionName: "estimateGas",
+        args
+      });
+    },
     call: async (...args: any[]): Promise<string> => {
       return getDefaultHandleSignerFunction<string>({
         parentOrigin,

@@ -24,6 +24,7 @@ export {
   ConfigId,
   MetaTxConfig,
   ProtocolConfig,
+  CoreProtocolConfig,
   abis
 } from "@bosonprotocol/common";
 

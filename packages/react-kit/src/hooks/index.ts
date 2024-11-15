@@ -28,3 +28,10 @@ export * from "./useBreakpoints";
 export * from "./useSignerAddress";
 export * from "./useMetaTx";
 export { useCtaClickHandler } from "./useCtaClickHandler";
+export {
+  useToggleAccountDrawer,
+  useAccountDrawer,
+  useCloseAccountDrawer,
+  useOpenAccountDrawer
+} from "../components/wallet2/accountDrawer/index";
+export * from "./usePrevious";

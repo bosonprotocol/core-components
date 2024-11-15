@@ -1,5 +1,5 @@
 import { fn } from "@storybook/test";
-import React from "react";
+import React, { ReactNode } from "react";
 import { Meta } from "@storybook/react";
 import {
   ChainSelector,
@@ -17,8 +17,9 @@ import {
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { bosonButtonThemeKeys } from "../components/ui/ThemedButton";
 import { CSSProperties, createGlobalStyle } from "styled-components";
+import { Wallet } from "phosphor-react";
 const colors = theme.colors.light;
-const successButtonTheme: ConnectWalletProps["successButtonTheme"] = {
+const successButtonTheme: ConnectWalletProps["connectWalletButtonTheme"] = {
   ...bosonButtonThemes({ withBosonStyle: false })["primary"],
   color: "inherit",
   background: "var(--buttonBgColor)"
@@ -30,13 +31,17 @@ const errorButtonTheme = bosonButtonThemes({ withBosonStyle: false })[
 const envName =
   (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
 const envConfig = getEnvConfigs(envName);
-const configId = envConfig[0].configId;
+const config = envConfig[0];
+const configId = config.configId;
 const ColorGlobalStyle = createGlobalStyle<{ color: CSSProperties["color"] }>`
   html, body{
     color: ${({ color }) => color};
   }
 `;
 const Component = ({
+  showStatusIcon,
+  rightConnectedChild,
+  connectWalletChild,
   textColor,
   chainSelectorBackgroundColor,
   connectWalletBorderRadius,
@@ -55,10 +60,16 @@ const Component = ({
   walletHoverFocusBackgroundColor,
   walletHoverColor,
   magicLoginButtonThemeKey,
+  connectionErrorTryAgainButtonThemeKey,
+  connectionErrorBackToWalletSelectionButtonThemeKey,
   magicLoginButtonBorderRadiusPx,
+  withMagicLogin,
   onUserDisconnect
 }: {
+  showStatusIcon: boolean;
+  rightConnectedChild?: ReactNode;
   textColor: string;
+  connectWalletChild: string;
   chainSelectorBackgroundColor: string | undefined;
   connectWalletBorderRadius: string | undefined;
   connectWalletSuccessButtonThemeKey: string | undefined;
@@ -76,7 +87,10 @@ const Component = ({
   walletHoverFocusBackgroundColor: string | undefined;
   walletHoverColor: string | undefined;
   magicLoginButtonThemeKey: string | undefined;
+  connectionErrorTryAgainButtonThemeKey: string;
+  connectionErrorBackToWalletSelectionButtonThemeKey: string;
   magicLoginButtonBorderRadiusPx: string | undefined;
+  withMagicLogin: boolean | undefined;
   onUserDisconnect: () => unknown;
 }) => {
   return (
@@ -114,9 +128,22 @@ const Component = ({
                   <ChainSelector
                     leftAlign={true}
                     backgroundColor={chainSelectorBackgroundColor}
+                    config={config}
                   />
                   <ConnectWallet
-                    successButtonTheme={{
+                    showStatusIcon={showStatusIcon}
+                    connectWalletChild={connectWalletChild}
+                    rightConnectedChild={rightConnectedChild}
+                    connectWalletButtonTheme={{
+                      ...(connectWalletSuccessButtonThemeKey
+                        ? bosonButtonThemes({ withBosonStyle: false })[
+                            connectWalletSuccessButtonThemeKey
+                          ]
+                        : successButtonTheme),
+                      borderRadius: connectWalletBorderRadius,
+                      gap: "2px"
+                    }}
+                    connectedButtonTheme={{
                       ...(connectWalletSuccessButtonThemeKey
                         ? bosonButtonThemes({ withBosonStyle: false })[
                             connectWalletSuccessButtonThemeKey
@@ -154,6 +181,7 @@ const Component = ({
                     disconnectColor={accountDrawerDisconnectColor}
                     onUserDisconnect={onUserDisconnect}
                     walletModalProps={{
+                      withMagicLogin,
                       optionProps: {
                         backgroundColor: walletBackgroundColor,
                         color: walletColor,
@@ -174,6 +202,19 @@ const Component = ({
                             borderRadius: magicLoginButtonBorderRadiusPx
                           }
                         }
+                      },
+                      connectionErrorProps: {
+                        tryAgainTheme: connectionErrorTryAgainButtonThemeKey
+                          ? bosonButtonThemes({ withBosonStyle: false })[
+                              connectionErrorTryAgainButtonThemeKey
+                            ]
+                          : successButtonTheme,
+                        backToWalletSelectionTheme:
+                          connectionErrorBackToWalletSelectionButtonThemeKey
+                            ? bosonButtonThemes({ withBosonStyle: false })[
+                                connectionErrorBackToWalletSelectionButtonThemeKey
+                              ]
+                            : successButtonTheme
                       },
                       PrivacyPolicy: () => <div>privacy policy</div>
                     }}
@@ -224,6 +265,14 @@ export default {
     magicLoginButtonThemeKey: {
       control: "select",
       options: bosonButtonThemeKeys
+    },
+    connectionErrorTryAgainButtonThemeKey: {
+      control: "select",
+      options: bosonButtonThemeKeys
+    },
+    connectionErrorBackToWalletSelectionButtonThemeKey: {
+      control: "select",
+      options: bosonButtonThemeKeys
     }
   },
   decorators: [
@@ -258,7 +307,9 @@ export const BosonTheme = {
     walletColor: colors.white,
     walletHoverFocusBackgroundColor: colors.black,
     walletHoverColor: colors.white,
-    magicLoginButtonThemeKey: undefined
+    magicLoginButtonThemeKey: undefined,
+    connectionErrorTryAgainButtonThemeKey: "orangeInverse",
+    connectionErrorBackToWalletSelectionButtonThemeKey: "orangeInverse"
   }
 };
 
@@ -283,6 +334,12 @@ export const CustomTheme = {
     walletHoverFocusBackgroundColor: "#e89f0e",
     walletHoverColor: "#ff0000",
     magicLoginButtonThemeKey: "orangeInverse",
-    magicLoginButtonBorderRadiusPx: "50"
+    connectionErrorTryAgainButtonThemeKey: "orangeInverse",
+    connectionErrorBackToWalletSelectionButtonThemeKey: "orangeInverse",
+    magicLoginButtonBorderRadiusPx: "50",
+    withMagicLogin: true,
+    showStatusIcon: false,
+    connectWalletChild: <>Connect</>,
+    rightConnectedChild: <Wallet />
   }
 };

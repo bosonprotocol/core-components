@@ -1,14 +1,16 @@
 import styled from "styled-components";
 
 export const ExtraInfo = styled.span`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 0.75rem;
-  line-height: 150%;
-  opacity: 0.5;
+  &&& {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 150%;
+    opacity: 0.5;
+  }
 `;
 
 export const ButtonTextWrapper = styled.div`

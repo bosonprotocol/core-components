@@ -198,7 +198,7 @@ export const Video: React.FC<VideoProps> = ({
       return <ComponentWhileLoading />;
     }
     return (
-      <VideoWrapper {...rest}>
+      <VideoWrapper {...rest} className="video-container">
         <VideoPlaceholder $position="static">
           <Typography tag="div">
             <Loading />

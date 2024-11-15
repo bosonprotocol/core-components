@@ -6,6 +6,7 @@ export const theme = {
       primary: "#02F3A2",
       secondary: "#7829F9",
       accent: "#7829F9",
+      darkNavy: "#1E1E1E",
       black: "#09182C",
       lightGrey: "#F1F3F9",
       darkGrey: "#556072",
@@ -30,7 +31,8 @@ export const theme = {
       cyan: "#00FFFF",
       lightArrowColor: "#dedfe3",
       darkGreyTimeStamp: "#E8EAF1",
-      lightGrey2: "#eff0f7"
+      lightGrey2: "#eff0f7",
+      greyText: "rgba(28, 13, 24, 0.75)"
     }
   },
   mobile: "768px",

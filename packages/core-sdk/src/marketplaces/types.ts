@@ -16,10 +16,7 @@ export enum MarketplaceType {
   OPENSEA
 }
 
-export enum OrderSide {
-  ASK = "ask",
-  BID = "bid"
-}
+export { OrderSide } from "opensea-js";
 
 export type MarketplaceHandler = OpenSeaSDKHandler | DefaultHandler;
 
@@ -30,6 +27,7 @@ export type Listing = {
   };
   offerer: string;
   price: string;
+  listingTime?: number;
   expirationTime: number;
   exchangeToken: { address: string; decimals: number };
   auction: boolean;

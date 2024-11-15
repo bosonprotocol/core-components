@@ -182,6 +182,10 @@ export class MockWeb3LibAdapter implements Web3LibAdapter {
     return this._returnValues.getBalance;
   }
 
+  async estimateGas() {
+    return 1234;
+  }
+
   async sendTransaction(args: TransactionRequest) {
     this.sendTransactionArgs.push(args);
     return this._returnValues.sendTransaction;
