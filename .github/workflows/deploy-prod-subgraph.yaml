@@ -36,6 +36,10 @@ jobs:
       - name: Authenticate The Graph CLI
         run: npx graph auth https://api.0xgraph.xyz/deploy/ ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
       - name: Deploy subgraph to Polygon
-        run: cd ./packages/subgraph && npm run deploy:production
+        run: cd ./packages/subgraph && npm run deploy:production:polygon
+        env:
+          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
       - name: Deploy subgraph to Ethereum
         run: cd ./packages/subgraph && npm run deploy:production:ethereum
+        env:
+          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}

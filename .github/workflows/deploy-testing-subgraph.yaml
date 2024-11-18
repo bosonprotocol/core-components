@@ -33,5 +33,9 @@ jobs:
         run: npx graph auth https://api.0xgraph.xyz/deploy/ ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
       - name: Deploy subgraph to amoy
         run: cd ./packages/subgraph && npm run deploy:testing:amoy
+        env:
+          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
       - name: Deploy subgraph to sepolia
         run: cd ./packages/subgraph && npm run deploy:testing:sepolia
+        env:
+          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
