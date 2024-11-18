@@ -29,6 +29,10 @@ jobs:
       - run: npm ci
       - id: build
         run: npm run build -- --cache-dir=".turbo"
+      - name: Set github bot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
       - name: Authenticate The Graph CLI
         run: npx graph auth https://api.0xgraph.xyz/deploy/ ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
       - name: Deploy subgraph to amoy
@@ -39,3 +43,11 @@ jobs:
         run: cd ./packages/subgraph && npm run deploy:testing:sepolia
         env:
           ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
+      - name: Commit & Push
+        env:
+          GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+        run: |
+          git add .
+          git commit -m "chore(release): publish alpha [skip ci]"
+          git push
