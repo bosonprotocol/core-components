@@ -185,7 +185,7 @@ function BaseUpload({
       handleLoading(true);
       const filePreview = await loadMedia(fileSrc || "");
       if (filePreview) {
-        setPreview(filePreview);
+        setPreview(files[0]?.name);
       } else {
         console.warn(`filePreview ${filePreview} is falsy in loadIpfsFile`);
       }
@@ -400,7 +400,9 @@ function BaseUpload({
                           <div>
                             <FilePdf size={24} />
                           </div>
-                          <Typography>{preview}</Typography>
+                          <Typography style={{ width: "100%" }}>
+                            {preview}
+                          </Typography>
                           <button
                             type="button"
                             style={{
