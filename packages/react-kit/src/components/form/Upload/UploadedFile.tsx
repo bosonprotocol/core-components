@@ -1,4 +1,4 @@
-import { ImageSquare, X } from "phosphor-react";
+import { ImageSquare, X, FilePdf } from "phosphor-react";
 import React, { useCallback } from "react";
 import styled from "styled-components";
 import { bytesToSize } from "../../../lib/bytes/bytesToSize";
@@ -33,6 +33,7 @@ interface Props {
   base64Content?: string;
   showSize: boolean;
   color: "grey" | "white";
+  isPdfOnly?: boolean;
   handleRemoveFile?: () => void;
 }
 export default function UploadedFile({
@@ -41,12 +42,13 @@ export default function UploadedFile({
   color,
   base64Content,
   showSize,
+  isPdfOnly,
   handleRemoveFile
 }: Props) {
   const FileContent = useCallback(() => {
     return (
       <>
-        <ImageSquare size={23} />
+        {isPdfOnly ? <FilePdf size={23} /> : <ImageSquare size={23} />}
         <Typography fontSize="1rem" fontWeight="400">
           &nbsp;&nbsp; {fileName}
         </Typography>
@@ -57,7 +59,7 @@ export default function UploadedFile({
         )}
       </>
     );
-  }, [fileName, fileSize, showSize]);
+  }, [fileName, isPdfOnly, fileSize, showSize]);
   return (
     <Grid>
       <AttachmentContainer $isLeftAligned={color === "white"}>
