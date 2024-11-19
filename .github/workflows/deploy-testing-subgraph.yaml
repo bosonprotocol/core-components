@@ -2,11 +2,12 @@ name: Deploy subgraph to testing env
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - packages/subgraph/**
+  workflow_call:
+    secrets:
+      ORMI_0x_GRAPH_API_KEY_TESTING:
+        required: true
+      BSNORG_ACTIONS_SECRET:
+        required: true
 
 jobs:
   deploy:
