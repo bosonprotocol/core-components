@@ -19,16 +19,6 @@ program
   )
   .parse(process.argv);
 
-/**
- * 1. check the old version of current "latest"-tagged subgraph
- * 2. deploy the new version
- * 3. if OK, then
- * 3.1. remove the "latest" tag from old version
- * 3.2. add the "latest" tag on new version
- * 3.3. remove the old version
- * 3.4. log the new version to be able to find it back next time
- */
-
 const { env } = program.opts();
 const baseUrl = `https://api.0xgraph.xyz/public_api/v1/0xgraph`;
 const queryTagUrl = `${baseUrl}/query_tag`;
@@ -190,6 +180,16 @@ function readLog(subgraphName: string):
 }
 
 async function main() {
+  /**
+   * After a new version of the subgraph has been successfully deployed:
+   * 1. add the "latest" tag on new version
+   * 2. get in the logs the old version previously deployed
+   * 3. log the new version to be able to find it back next time
+   * 4. if the old version has been found (and is different from the new version):
+   * 4.1. if the old version has the "latest" tag applied
+   * 4.1.1. remove the "latest" tag from the old version
+   * 4.2. delete the old version subgraph
+   */
   checkEnvVars();
   const subgraphName = process.env[`npm_package_config_${env}`] as string;
   const newVersion = process.env["npm_package_version"] as string;
