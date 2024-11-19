@@ -79,7 +79,7 @@ jobs:
     uses: ./.github/workflows/deploy-testing-subgraph.yaml
     # condition only if packages/subgraph workspace has changed
     needs: publish
-    if: ${{ needs.publish.outputs.SUBGRAPH_CHANGES }}
+    if: needs.publish.outputs.SUBGRAPH_CHANGES == 'true'
     secrets:
       ORMI_0x_GRAPH_API_KEY_TESTING: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
       BSNORG_ACTIONS_SECRET: ${{ secrets.BSNORG_ACTIONS_SECRET }}
