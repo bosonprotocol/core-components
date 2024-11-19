@@ -4,7 +4,7 @@ import React, {
   ReactNode,
   useCallback
 } from "react";
-import styled, { css, CSSProperties } from "styled-components";
+import styled, { css, CSSProperties, RuleSet } from "styled-components";
 
 import { Tooltip } from "../tooltip/Tooltip";
 import * as Styles from "../ui/styles";
@@ -13,13 +13,11 @@ import { Loading } from "../ui/loading/Loading";
 import { ButtonSize } from "../ui/buttonSize";
 import { AddDollarPrefixToKeys } from "../../types/helpers";
 const colors = theme.colors.light;
-
-const ButtonWithThemeProps = styled.button<
-  AddDollarPrefixToKeys<{
-    size: ButtonSizeProp;
-    fill: boolean | undefined;
-  }> & { theme: BaseButtonTheme }
->`
+type ButtonWithThemePropsType = AddDollarPrefixToKeys<{
+  size: ButtonSizeProp;
+  fill: boolean | undefined;
+}> & { theme: BaseButtonTheme };
+const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
   ${() => Styles.button};
   ${(props) => Styles[props.$size as keyof typeof Styles]}
   border-style: solid;
@@ -94,6 +92,12 @@ const ButtonWithThemeProps = styled.button<
             opacity: 0.5;
           }
         `};
+  ${(props) => {
+    if (props.theme.applyCustomStyles) {
+      return props.theme.applyCustomStyles(props);
+    }
+    return "";
+  }}
 `;
 
 export type BaseButtonTheme = {
@@ -114,6 +118,9 @@ export type BaseButtonTheme = {
     background?: CSSProperties["backgroundColor"];
     color?: CSSProperties["color"];
   };
+  applyCustomStyles?: (
+    buttonWithThemePropsType: ButtonWithThemePropsType
+  ) => RuleSet<object>;
 };
 type ButtonSizeProp = "small" | "regular" | "large" | ButtonSize;
 
