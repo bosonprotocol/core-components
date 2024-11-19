@@ -8,15 +8,15 @@ program
       "--env <ENV>",
       `Deployed environment (Boson env + chain): "testing_amoy", "testing_sepolia", ...`
     )
-    .makeOptionMandatory(true)
-    .choices([
-      "testing_amoy",
-      "testing_sepolia",
-      "staging_amoy",
-      "staging_sepolia",
-      "production_polygon",
-      "production_ethereum"
-    ])
+      .makeOptionMandatory(true)
+      .choices([
+        "testing_amoy",
+        "testing_sepolia",
+        "staging_amoy",
+        "staging_sepolia",
+        "production_polygon",
+        "production_ethereum"
+      ])
   )
   .parse(process.argv);
 
@@ -44,38 +44,44 @@ const requiredEnvVars = [
 const ormiApiKey = process.env.ORMI_0x_GRAPH_API_KEY as string;
 
 function checkEnvVars() {
-  for(const envVar of requiredEnvVars) {
+  for (const envVar of requiredEnvVars) {
     if (!process.env[envVar]) {
-      throw new Error(`Missing environment variable '${envVar}'`)
+      throw new Error(`Missing environment variable '${envVar}'`);
     }
   }
 }
 
-async function checkTag(subgraphName: string, subgraphVersion: string, subgraphTag: string): Promise<boolean> {
+async function checkTag(
+  subgraphName: string,
+  subgraphVersion: string,
+  subgraphTag: string
+): Promise<boolean> {
   const tags = await queryTags(subgraphName, subgraphVersion);
-  const hasTag = !!(tags?.some((tag) => tag.tag === subgraphTag));
+  const hasTag = !!tags?.some((tag) => tag.tag === subgraphTag);
   console.log("checkTag()", { hasTag });
   return hasTag;
 }
 
-async function queryTags(subgraphName: string, subgraphVersion: string): Promise<{tag: string; create_time: number}[] | undefined> {
+async function queryTags(
+  subgraphName: string,
+  subgraphVersion: string
+): Promise<{ tag: string; create_time: number }[] | undefined> {
   try {
-    const response = await fetch(
-      queryTagUrl,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${ormiApiKey}`
-        },
-        body: JSON.stringify({
-          subgraph_name: subgraphName,
-          version: subgraphVersion,
-        })
-      }
-    );
+    const response = await fetch(queryTagUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${ormiApiKey}`
+      },
+      body: JSON.stringify({
+        subgraph_name: subgraphName,
+        version: subgraphVersion
+      })
+    });
     if (response.ok) {
-      const { data } = await response.json();
+      const { data } = (await response.json()) as {
+        data: { tags?: { tag: string; create_time: number }[] };
+      };
       console.log("queryTags()", { data });
       return data?.tags;
     }
@@ -87,45 +93,47 @@ async function queryTags(subgraphName: string, subgraphVersion: string): Promise
   return undefined;
 }
 
-async function removeTag(subgraphName: string, subgraphVersion: string, subgraphTag: string) {
+async function removeTag(
+  subgraphName: string,
+  subgraphVersion: string,
+  subgraphTag: string
+) {
   console.log(`removeTag(${subgraphName}, ${subgraphVersion}, ${subgraphTag})`);
-  const response = await fetch(
-    deleteTagUrl,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${ormiApiKey}`
-      },
-      body: JSON.stringify({
-        subgraph_name: subgraphName,
-        version: subgraphVersion,
-        tag: subgraphTag
-      })
-    }
-  )
+  const response = await fetch(deleteTagUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${ormiApiKey}`
+    },
+    body: JSON.stringify({
+      subgraph_name: subgraphName,
+      version: subgraphVersion,
+      tag: subgraphTag
+    })
+  });
   if (!response.ok) {
     console.error(response.statusText);
   }
 }
 
-async function createTag(subgraphName: string, subgraphVersion: string, subgraphTag: string) {
+async function createTag(
+  subgraphName: string,
+  subgraphVersion: string,
+  subgraphTag: string
+) {
   console.log(`createTag(${subgraphName}, ${subgraphVersion}, ${subgraphTag})`);
-  const response = await fetch(
-    createTagUrl,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${ormiApiKey}`
-      },
-      body: JSON.stringify({
-        subgraph_name: subgraphName,
-        version: subgraphVersion,
-        tag: subgraphTag
-      })
-    }
-  )
+  const response = await fetch(createTagUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${ormiApiKey}`
+    },
+    body: JSON.stringify({
+      subgraph_name: subgraphName,
+      version: subgraphVersion,
+      tag: subgraphTag
+    })
+  });
   if (!response.ok) {
     console.error(response.statusText);
   }
@@ -133,20 +141,17 @@ async function createTag(subgraphName: string, subgraphVersion: string, subgraph
 
 async function removeSubgraph(subgraphName: string, subgraphVersion: string) {
   console.log(`removeSubgraph(${subgraphName}, ${subgraphVersion})`);
-  const response = await fetch(
-    removeSubgraphUrl,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${ormiApiKey}`
-      },
-      body: JSON.stringify({
-        name: subgraphName,
-        version: subgraphVersion
-      })
-    }
-  )
+  const response = await fetch(removeSubgraphUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${ormiApiKey}`
+    },
+    body: JSON.stringify({
+      name: subgraphName,
+      version: subgraphVersion
+    })
+  });
   if (!response.ok) {
     console.error(response.statusText);
   }
@@ -164,22 +169,24 @@ function saveLog(subgraphName: string, subgraphVersion: string) {
     timestamp: Math.floor(Date.now() / 1000).toString(),
     version: subgraphVersion
   };
-  console.log(`saveLog(${{subgraphName, subgraphVersion}})`, filename, data);
+  console.log(`saveLog(${{ subgraphName, subgraphVersion }})`, filename, data);
   fs.mkdirSync(`./logs`, { recursive: true });
   fs.writeFileSync(filename, JSON.stringify(data, undefined, 2));
 }
 
-function readLog(subgraphName: string): {
-  timestamp: string;
-  version: string;
-} | undefined {
+function readLog(subgraphName: string):
+  | {
+      timestamp: string;
+      version: string;
+    }
+  | undefined {
   const filename = `./logs/${subgraphName}`;
   let data = undefined;
   if (fs.existsSync(filename)) {
     const raw = fs.readFileSync(filename);
     data = JSON.parse(raw.toString());
   }
-  console.log(`readLog(${{subgraphName}})`, filename, data);
+  console.log(`readLog(${{ subgraphName }})`, filename, data);
   return data;
 }
 
@@ -197,17 +204,19 @@ async function main() {
     if (oldVersion && oldVersion !== newVersion) {
       const hasTag = await checkTag(subgraphName, oldVersion, subgraphTag);
       if (hasTag) {
-        await removeTag(subgraphName, oldVersion, subgraphTag)
+        await removeTag(subgraphName, oldVersion, subgraphTag);
       }
       await removeSubgraph(subgraphName, oldVersion);
     }
   }
 }
 
-main().then(() => {
-  console.log("OK");
-  process.exit(0);
-}).catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+main()
+  .then(() => {
+    console.log("OK");
+    process.exit(0);
+  })
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
