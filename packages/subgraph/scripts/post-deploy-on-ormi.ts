@@ -1,6 +1,5 @@
 import { Option, program } from "commander";
 import fs from "fs";
-import fetch from "node-fetch";
 program
   .description("Post subgraph deployment treatment with Ormi")
   .addOption(
