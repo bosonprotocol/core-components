@@ -101,7 +101,32 @@ export interface BaseSelectProps<Value = string> {
   defaultValue?: SelectDataProps<Value> | null;
   onChange?: OnChange<Value>;
 }
-
+export type SupportedReactSelectProps<
+  M extends boolean | undefined = false,
+  Option extends Record<string, unknown> = SelectDataProps
+> = Pick<
+  StateManagerProps<Option, M extends undefined ? false : boolean>,
+  | "formatGroupLabel"
+  | "formatOptionLabel"
+  | "menuPlacement"
+  | "menuPosition"
+  | "menuIsOpen"
+  | "menuPortalTarget"
+  | "onMenuClose"
+  | "onMenuOpen"
+  | "onMenuScrollToBottom"
+  | "onMenuScrollToTop"
+  | "maxMenuHeight"
+  | "minMenuHeight"
+  | "menuShouldBlockScroll"
+  | "menuShouldScrollIntoView"
+  | "openMenuOnClick"
+  | "openMenuOnFocus"
+  | "closeMenuOnScroll"
+  | "closeMenuOnSelect"
+  | "captureMenuScroll"
+  | "defaultMenuIsOpen"
+>;
 export type SelectProps<
   M extends boolean | undefined = false,
   Option extends Record<string, unknown> = SelectDataProps
@@ -137,29 +162,7 @@ export type SelectProps<
     singleValue: Partial<CSSProperties> &
       Partial<{ error: CSSObjectWithLabel }>;
   }>;
-} & Pick<
-    StateManagerProps<Option, M extends undefined ? false : boolean>,
-    | "formatGroupLabel"
-    | "formatOptionLabel"
-    | "menuPlacement"
-    | "menuPosition"
-    | "menuIsOpen"
-    | "menuPortalTarget"
-    | "onMenuClose"
-    | "onMenuOpen"
-    | "onMenuScrollToBottom"
-    | "onMenuScrollToTop"
-    | "maxMenuHeight"
-    | "minMenuHeight"
-    | "menuShouldBlockScroll"
-    | "menuShouldScrollIntoView"
-    | "openMenuOnClick"
-    | "openMenuOnFocus"
-    | "closeMenuOnScroll"
-    | "closeMenuOnSelect"
-    | "captureMenuScroll"
-    | "defaultMenuIsOpen"
-  >;
+} & SupportedReactSelectProps<M, Option>;
 
 export type UploadProps = BaseProps & {
   accept?: string;
