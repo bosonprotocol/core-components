@@ -49,5 +49,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
         run: |
           git add .
-          git commit -m "chore(release): publish alpha [skip ci]"
+          git commit -m "chore: deploy testing subgraphs [skip ci]"
           git push

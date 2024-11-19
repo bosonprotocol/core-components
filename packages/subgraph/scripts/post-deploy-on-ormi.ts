@@ -81,7 +81,7 @@ async function queryTags(
       const { data } = (await response.json()) as {
         data: { tags?: { tag: string; create_time: number }[] };
       };
-      console.log("queryTags()", { data });
+      console.log("queryTags()", { data: JSON.stringify(data) });
       return data?.tags;
     }
     console.error(response.statusText);
