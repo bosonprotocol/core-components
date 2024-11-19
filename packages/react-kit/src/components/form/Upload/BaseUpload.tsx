@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/browser";
 import { useField } from "formik";
-import { Image, Trash, VideoCamera } from "phosphor-react";
+import { Image, Trash, VideoCamera, FilePdf, Upload, X } from "phosphor-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { loadAndSetMedia } from "../../../lib/base64/base64";
 import { bytesToSize } from "../../../lib/bytes/bytesToSize";
@@ -13,6 +13,7 @@ import ErrorComponent from "../Error";
 import {
   FieldFileUploadWrapper,
   FieldInput,
+  PdfOnlyLabel,
   FileUploadWrapper,
   ImagePreview,
   VideoPreview
@@ -26,6 +27,7 @@ import UploadedFiles from "./UploadedFiles";
 import { WithUploadToIpfs, WithUploadToIpfsProps } from "./WithUploadToIpfs";
 import { useModal } from "../../modal/useModal";
 import { ImageEditorModal } from "./ImageEditorModal/ImageEditorModal";
+import { Grid } from "../../ui/Grid";
 const colors = theme.colors.light;
 export type BaseUploadProps = UploadPropsWithNoIpfs;
 function BaseUpload({
@@ -91,6 +93,9 @@ function BaseUpload({
   const isVideoOnly = mimetypes.every((mimetype) =>
     mimetype.startsWith("video/")
   );
+  const isPdfOnly = mimetypes.every((mimetype) =>
+    mimetype.startsWith("application/pdf")
+  );
 
   useEffect(() => {
     onFilesSelect?.(files);
@@ -113,6 +118,12 @@ function BaseUpload({
           loadAndSetMedia(files[0] as File, (base64Uri) => {
             setPreview(base64Uri);
           });
+        }
+      } else if (isPdfOnly) {
+        if (withUpload) {
+          loadIpfsFile(files[0] as FileProps);
+        } else {
+          setPreview(files[0]?.name);
         }
       }
     }
@@ -156,6 +167,27 @@ function BaseUpload({
         console.warn(
           `imagePreview ${imagePreview} is falsy in loadIpfsImagePreview`
         );
+      }
+    } catch (error) {
+      console.error(error);
+      Sentry.captureException(error);
+    } finally {
+      handleLoading(false);
+    }
+  };
+
+  const loadIpfsFile = async (file: FileProps) => {
+    const fileSrc = file && file?.src ? file?.src : false;
+    if (!fileSrc) {
+      return false;
+    }
+    try {
+      handleLoading(true);
+      const filePreview = await loadMedia(fileSrc || "");
+      if (filePreview) {
+        setPreview(files[0]?.name);
+      } else {
+        console.warn(`filePreview ${filePreview} is falsy in loadIpfsFile`);
       }
     } catch (error) {
       console.error(error);
@@ -276,11 +308,16 @@ function BaseUpload({
         />
       )}
       {errorMesage && errorComponent?.(errorMesage)}
-      <FieldFileUploadWrapper {...wrapperProps} $disabled={!!disabled}>
+      <FieldFileUploadWrapper
+        {...wrapperProps}
+        $isPdfOnly={isPdfOnly}
+        $disabled={!!disabled}
+      >
         <FieldInput
           {...props}
           hidden
           type="file"
+          id={`file-${name}`}
           accept={accept}
           multiple={multiple}
           onChange={async (e) => {
@@ -316,65 +353,126 @@ function BaseUpload({
             <>{trigger}</>
           </ThemedButton>
         ) : (
-          <FileUploadWrapper
-            data-disabled={disabled}
-            onClick={handleChooseFile}
-            $error={errorMessage}
-            style={{ ...style, ...theme?.overrides }}
-            theme={theme?.triggerTheme}
-          >
-            {isLoading ? (
-              <Loading size={2} />
-            ) : (
-              <>
-                {showPreview ? (
-                  <>
-                    {isVideoOnly ? (
-                      <VideoPreview
-                        src={
-                          preview?.startsWith("http")
-                            ? preview
-                            : preview?.startsWith(
-                                  "data:application/octet-stream;base64,"
-                                )
-                              ? "data:video/mp4;base64," +
-                                preview?.substring(
-                                  "data:application/octet-stream;base64,".length
-                                )
-                              : preview
-                        }
-                        autoPlay
-                        muted
-                        loop
-                      />
-                    ) : (
-                      <ImagePreview
-                        style={{ ...imgPreviewStyle }}
-                        src={preview}
-                      />
-                    )}
-                  </>
-                ) : isVideoOnly ? (
-                  <VideoCamera size={24} />
-                ) : (
-                  <Image size={24} />
-                )}
-                {placeholder && !showPreview && (
-                  <Typography tag="p" marginBottom={0} textAlign="center">
-                    {placeholder}
-                  </Typography>
-                )}
-              </>
-            )}
-          </FileUploadWrapper>
+          (!isPdfOnly || (isPdfOnly && files.length > 0 && !multiple)) && (
+            <FileUploadWrapper
+              $isPdfOnly={isPdfOnly}
+              data-disabled={disabled}
+              onClick={() => {
+                if (!isPdfOnly) {
+                  handleChooseFile();
+                }
+              }}
+              $error={errorMessage}
+              style={{ ...style, ...theme?.overrides }}
+              theme={theme?.triggerTheme}
+            >
+              {isLoading ? (
+                <Loading size={2} />
+              ) : (
+                <>
+                  {showPreview ? (
+                    <>
+                      {isVideoOnly ? (
+                        <VideoPreview
+                          src={
+                            preview?.startsWith("http")
+                              ? preview
+                              : preview?.startsWith(
+                                    "data:application/octet-stream;base64,"
+                                  )
+                                ? "data:video/mp4;base64," +
+                                  preview?.substring(
+                                    "data:application/octet-stream;base64,"
+                                      .length
+                                  )
+                                : preview
+                          }
+                          autoPlay
+                          muted
+                          loop
+                        />
+                      ) : isPdfOnly ? (
+                        <Grid
+                          flexDirection="row"
+                          alignItems="center"
+                          gap="0.25rem"
+                        >
+                          <div>
+                            <FilePdf size={24} />
+                          </div>
+                          <Typography style={{ width: "100%" }}>
+                            {preview}
+                          </Typography>
+                          <button
+                            type="button"
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleRemoveAllFiles();
+                            }}
+                          >
+                            <X size={12.5} />
+                          </button>
+                        </Grid>
+                      ) : (
+                        <ImagePreview
+                          style={{ ...imgPreviewStyle }}
+                          src={preview}
+                        />
+                      )}
+                    </>
+                  ) : isVideoOnly ? (
+                    <VideoCamera size={24} />
+                  ) : isPdfOnly ? (
+                    <FilePdf size={24} />
+                  ) : (
+                    <Image size={24} />
+                  )}
+                  {placeholder && !showPreview && (
+                    <Typography
+                      tag="p"
+                      marginBottom={0}
+                      textAlign="center"
+                      {...(isPdfOnly && { marginTop: 0 })}
+                    >
+                      {placeholder}
+                    </Typography>
+                  )}
+                </>
+              )}
+            </FileUploadWrapper>
+          )
         )}
-        {!disabled && field.value && field.value?.length !== 0 && preview && (
-          <div onClick={handleRemoveAllFiles} data-remove style={style}>
-            <Trash size={24} color={colors.white} />
-          </div>
-        )}
+        {!disabled &&
+          field.value &&
+          field.value?.length !== 0 &&
+          preview &&
+          !isPdfOnly && (
+            <div onClick={handleRemoveAllFiles} data-remove style={style}>
+              <Trash size={24} color={colors.white} />
+            </div>
+          )}
         {multiple && (
-          <UploadedFiles files={files} handleRemoveFile={handleRemoveFile} />
+          <UploadedFiles
+            files={files}
+            isPdfOnly={isPdfOnly}
+            handleRemoveFile={handleRemoveFile}
+          />
+        )}
+        {isPdfOnly && (
+          <Grid>
+            <PdfOnlyLabel
+              htmlFor={`file-${name}`}
+              $disabled={disabled}
+              style={{ ...theme?.uploadButton }}
+            >
+              Upload file <Upload size={20} />
+            </PdfOnlyLabel>
+          </Grid>
         )}
       </FieldFileUploadWrapper>
       <ErrorComponent display={displayError} message={errorMessage} />

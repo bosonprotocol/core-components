@@ -13,7 +13,7 @@ import Select, {
 import styled, { CSSProperties } from "styled-components";
 import { zIndex } from "../ui/zIndex";
 import Error from "./Error";
-import type { InputProps } from "./types";
+import type { BaseProps, SupportedReactSelectProps } from "./types";
 import { SelectDataProps } from "./types";
 import { theme as importedTheme } from "../../theme";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
@@ -160,31 +160,32 @@ const PhoneWrapper = styled.div`
   }
 `;
 
-export type CountrySelectProps = InputProps & {
-  countries?: CountryCode[];
-  fieldValueIsCountryCode?: boolean; // if true, the field.value will be the countryCodeOrName, otherwise the country name
-  theme?: Partial<{
-    control: Partial<CSSProperties> &
-      Partial<{
-        hover: Partial<CSSProperties>;
-        focus: Partial<CSSProperties>;
-        error: Partial<CSSProperties>;
-      }>;
-    option: Partial<CSSProperties> &
-      Partial<{
-        selected: Partial<CSSProperties>;
-        disabled: Partial<CSSProperties>;
-        focus: Partial<CSSProperties>;
-        error: CSSProperties;
-      }>;
-    placeholder: Partial<CSSProperties> &
-      Partial<{ error: CSSObjectWithLabel }>;
-    input: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
-    singleValue: Partial<CSSProperties> &
-      Partial<{ error: CSSObjectWithLabel }>;
-    menu: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
-  }>;
-};
+export type CountrySelectProps = BaseProps &
+  SupportedReactSelectProps & {
+    countries?: CountryCode[];
+    fieldValueIsCountryCode?: boolean; // if true, the field.value will be the countryCodeOrName, otherwise the country name
+    theme?: Partial<{
+      control: Partial<CSSProperties> &
+        Partial<{
+          hover: Partial<CSSProperties>;
+          focus: Partial<CSSProperties>;
+          error: Partial<CSSProperties>;
+        }>;
+      option: Partial<CSSProperties> &
+        Partial<{
+          selected: Partial<CSSProperties>;
+          disabled: Partial<CSSProperties>;
+          focus: Partial<CSSProperties>;
+          error: CSSProperties;
+        }>;
+      placeholder: Partial<CSSProperties> &
+        Partial<{ error: CSSObjectWithLabel }>;
+      input: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
+      singleValue: Partial<CSSProperties> &
+        Partial<{ error: CSSObjectWithLabel }>;
+      menu: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
+    }>;
+  };
 type CountryName = string;
 export function CountrySelect({
   name,
