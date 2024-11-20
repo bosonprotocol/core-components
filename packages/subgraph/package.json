@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/subgraph",
-  "version": "1.34.0-alpha.47",
+  "version": "1.34.0-alpha.48",
   "config": {
     "node": "https://api.0xgraph.xyz/deploy/",
     "ipfs": "https://api.0xgraph.xyz/ipfs",
