@@ -6,7 +6,7 @@ on:
     secrets:
       ORMI_0x_GRAPH_API_KEY_TESTING:
         required: true
-      GITHUB_TOKEN:
+      GH_TOKEN:
         required: true
 
 jobs:
@@ -47,7 +47,7 @@ jobs:
           ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
       - name: Commit & Push
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git add .
           git commit -m "chore: deploy testing subgraphs [skip ci]"
