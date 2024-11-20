@@ -51,6 +51,7 @@ jobs:
           GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
           GITHUB_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
         run: |
+          git pull origin main
           git add .
           git commit -m "chore: deploy production subgraphs [skip ci]"
           git push origin HEAD:main
