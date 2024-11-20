@@ -50,4 +50,4 @@ jobs:
         run: |
           git add .
           git commit -m "chore: deploy staging subgraphs [skip ci]"
-          git push
+          git push origin HEAD:main
