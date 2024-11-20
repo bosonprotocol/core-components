@@ -26,14 +26,6 @@ export function convertToString(jsonValue: JSONValue | null): string {
   return "";
 }
 
-export function convertToArray(jsonValue: JSONValue | null): Array<JSONValue> {
-  if (jsonValue !== null && jsonValue.kind === JSONValueKind.ARRAY) {
-    return jsonValue.toArray();
-  }
-
-  return [];
-}
-
 export function convertToStringArray(
   jsonValue: JSONValue | null
 ): Array<string> {
@@ -43,6 +35,14 @@ export function convertToStringArray(
     convertedArray.push(convertToString(array[i]));
   }
   return convertedArray;
+}
+
+export function convertToArray(jsonValue: JSONValue | null): Array<JSONValue> {
+  if (jsonValue !== null && jsonValue.kind === JSONValueKind.ARRAY) {
+    return jsonValue.toArray();
+  }
+
+  return [];
 }
 
 export function convertToBoolean(jsonValue: JSONValue | null): boolean {
