@@ -83,4 +83,4 @@ jobs:
     if: needs.publish.outputs.SUBGRAPH_CHANGES == 'true'
     secrets:
       ORMI_0x_GRAPH_API_KEY_TESTING: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
