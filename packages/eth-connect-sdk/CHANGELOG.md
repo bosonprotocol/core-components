@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.6.8...@bosonprotocol/eth-connect-sdk@1.7.0) (2024-11-20)
+
+
+### Features
+
+* add estimateGas in Web3LibAdapter ([#803](https://github.com/bosonprotocol/core-components/issues/803)) ([3be665b](https://github.com/bosonprotocol/core-components/commit/3be665b1dca4249c627b89eb76bc6b61a914b2f0))
+
+
+
+
+
 ## [1.6.8](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.6.7...@bosonprotocol/eth-connect-sdk@1.6.8) (2024-07-29)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk

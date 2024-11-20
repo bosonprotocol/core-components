@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.14.5...@bosonprotocol/ethers-sdk@1.15.0) (2024-11-20)
+
+
+### Features
+
+* add estimateGas in Web3LibAdapter ([#803](https://github.com/bosonprotocol/core-components/issues/803)) ([3be665b](https://github.com/bosonprotocol/core-components/commit/3be665b1dca4249c627b89eb76bc6b61a914b2f0))
+
+
+
+
+
 ## [1.14.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.14.4...@bosonprotocol/ethers-sdk@1.14.5) (2024-07-29)
 
 **Note:** Version bump only for package @bosonprotocol/ethers-sdk
