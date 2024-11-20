@@ -51,14 +51,15 @@ jobs:
             --no-push
       - name: Get all changed files in subgraph workspace
         id: changed-subgraph-files
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/verify-changed-files@v20
         with:
           files: packages/subgraph/**
       - name: Export if changed files in subgraph workspace
         id: export-changed-subgraph-files
         env:
-          SUBGRAPH_CHANGES: ${{ steps.changed-subgraph-files.outputs.any_changed }}
+          SUBGRAPH_CHANGES: ${{ steps.changed-subgraph-files.outputs.files_changed }}
         run: |
+          echo "SUBGRAPH_CHANGES=$SUBGRAPH_CHANGES"
           echo "SUBGRAPH_CHANGES=$SUBGRAPH_CHANGES" >> "$GITHUB_OUTPUT"
       - name: Commit changes
         env:
@@ -79,7 +80,7 @@ jobs:
     uses: ./.github/workflows/deploy-testing-subgraph.yaml
     # condition only if packages/subgraph workspace has changed
     needs: publish
-    if: ${{ needs.publish.outputs.SUBGRAPH_CHANGES }}
+    if: needs.publish.outputs.SUBGRAPH_CHANGES == 'true'
     secrets:
       ORMI_0x_GRAPH_API_KEY_TESTING: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
       BSNORG_ACTIONS_SECRET: ${{ secrets.BSNORG_ACTIONS_SECRET }}
