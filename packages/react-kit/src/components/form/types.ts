@@ -1,5 +1,10 @@
 import { ReactNode } from "react";
-import { CSSObjectWithLabel, MultiValue, SingleValue } from "react-select";
+import {
+  ActionMeta,
+  CSSObjectWithLabel,
+  MultiValue,
+  SingleValue
+} from "react-select";
 import { CSSProperties } from "styled-components";
 import { ImageEditorModalProps } from "./Upload/ImageEditorModal/ImageEditorModal";
 import type {
@@ -8,6 +13,8 @@ import type {
   TextAreaTheme
 } from "./Field.styles";
 import type { GridProps } from "../ui/Grid";
+import { StateManagerProps } from "react-select/dist/declarations/src/useStateManager";
+import { IconProps } from "phosphor-react";
 
 export interface BaseProps {
   name: string;
@@ -23,10 +30,17 @@ export interface DatepickerProps extends BaseProps {
   setIsFormValid?: (isValid: boolean) => void;
 }
 
-export interface CheckboxProps extends BaseProps {
-  text?: string;
-  theme?: CheckboxTheme;
-}
+export type CheckboxProps = BaseProps &
+  Omit<React.InputHTMLAttributes<HTMLInputElement>, "checked"> & {
+    text?: string;
+    className?: string;
+    theme?: CheckboxTheme;
+    iconProps?: Parameters<
+      React.ForwardRefExoticComponent<
+        IconProps & React.RefAttributes<SVGSVGElement>
+      >
+    >[0];
+  };
 
 export type TextareaProps = BaseProps &
   React.TextareaHTMLAttributes<HTMLTextAreaElement> & { theme?: TextAreaTheme };
@@ -66,7 +80,7 @@ export type TagsProps = BaseProps &
     transform?: (tag: string) => string;
   };
 
-export interface SelectDataProps<Value extends string = string> {
+export interface SelectDataProps<Value = string> {
   label: string;
   value: Value;
   disabled?: boolean;
@@ -77,27 +91,55 @@ export interface SelectContentProps {
   children: React.ReactNode | JSX.Element;
 }
 
-export type OnChange = (value: SingleValue<SelectDataProps>) => void;
+export type OnChange<Value = string> = (
+  value: SingleValue<SelectDataProps<Value>>
+) => void;
 
-export interface BaseSelectProps {
-  options: Array<SelectDataProps>;
+export interface BaseSelectProps<Value = string> {
+  options: Array<SelectDataProps<Value>>;
   placeholder?: string;
-  defaultValue?: SelectDataProps | null;
-  onChange?: OnChange;
+  defaultValue?: SelectDataProps<Value> | null;
+  onChange?: OnChange<Value>;
 }
-
-export interface SelectProps<M extends boolean | undefined = false>
-  extends BaseProps {
+export type SupportedReactSelectProps<
+  M extends boolean | undefined = false,
+  Option extends Record<string, unknown> = SelectDataProps
+> = Pick<
+  StateManagerProps<Option, M extends undefined ? false : boolean>,
+  | "formatGroupLabel"
+  | "formatOptionLabel"
+  | "menuPlacement"
+  | "menuPosition"
+  | "menuIsOpen"
+  | "menuPortalTarget"
+  | "onMenuClose"
+  | "onMenuOpen"
+  | "onMenuScrollToBottom"
+  | "onMenuScrollToTop"
+  | "maxMenuHeight"
+  | "minMenuHeight"
+  | "menuShouldBlockScroll"
+  | "menuShouldScrollIntoView"
+  | "openMenuOnClick"
+  | "openMenuOnFocus"
+  | "closeMenuOnScroll"
+  | "closeMenuOnSelect"
+  | "captureMenuScroll"
+  | "defaultMenuIsOpen"
+>;
+export type SelectProps<
+  M extends boolean | undefined = false,
+  Option extends Record<string, unknown> = SelectDataProps
+> = BaseProps & {
   isMulti?: M;
   disabled?: boolean;
   isClearable?: boolean;
   isSearchable?: boolean;
-  options: Array<SelectDataProps> | Readonly<Array<SelectDataProps>>;
+  options: Array<Option> | Readonly<Array<Option>>;
   errorMessage?: string;
   onChange?: (
-    option: M extends true
-      ? MultiValue<SelectDataProps<string>>
-      : SingleValue<SelectDataProps<string>>
+    option: M extends true ? MultiValue<Option> : SingleValue<Option>,
+    actionMeta?: ActionMeta<Option>
   ) => void;
   label?: string;
   theme?: Partial<{
@@ -120,7 +162,7 @@ export interface SelectProps<M extends boolean | undefined = false>
     singleValue: Partial<CSSProperties> &
       Partial<{ error: CSSObjectWithLabel }>;
   }>;
-}
+} & SupportedReactSelectProps<M, Option>;
 
 export type UploadProps = BaseProps & {
   accept?: string;
@@ -137,8 +179,13 @@ export type UploadProps = BaseProps & {
   borderRadiusUnit?: "px" | "%";
   width?: number;
   height?: number;
+  errorComponent?: (errorMessage: string) => React.ReactNode;
   imgPreviewStyle?: Pick<CSSProperties, "objectFit">;
-  theme?: Partial<{ triggerTheme: FileUploadWrapperTheme }>;
+  theme?: Partial<{
+    triggerTheme: FileUploadWrapperTheme;
+    overrides: React.CSSProperties;
+    uploadButton: React.CSSProperties;
+  }>;
 } & (
     | {
         withEditor: true;

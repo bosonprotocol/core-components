@@ -2,7 +2,6 @@ name: Deploy subgraph to staging env
 
 on:
   workflow_dispatch:
-    branches: [main]
   release:
     types: [published]
 
@@ -13,9 +12,11 @@ jobs:
     name: Deploy subgraph
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
       - uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "20"
           cache: "npm"
       - name: Turbo Cache
         id: turbo-cache
@@ -28,9 +29,25 @@ jobs:
       - run: npm ci
       - id: build
         run: npm run build -- --cache-dir=".turbo"
+      - name: Set github bot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
       - name: Authenticate The Graph CLI
-        run: npx graph auth --studio ${{ secrets.THE_GRAPH_ACCESS_TOKEN_STAGING }}
+        run: npx graph auth https://api.0xgraph.xyz/deploy/ ${{ secrets.ORMI_0x_GRAPH_API_KEY_STAGING }}
       - name: Deploy subgraph to amoy
         run: cd ./packages/subgraph && npm run deploy:staging:amoy
+        env:
+          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_STAGING }}
       - name: Deploy subgraph to sepolia
         run: cd ./packages/subgraph && npm run deploy:staging:sepolia
+        env:
+          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_STAGING }}
+      - name: Commit & Push
+        env:
+          GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+        run: |
+          git add .
+          git commit -m "chore: deploy staging subgraphs [skip ci]"
+          git push origin HEAD:main

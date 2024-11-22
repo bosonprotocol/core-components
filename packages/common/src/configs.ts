@@ -14,6 +14,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       chainId: 31337,
       configId: "local-31337-0",
       sellersBlackList: "",
+      offersWhiteList: "",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(31337),
       nativeCoin: chainIdToInfo.get(31337),
@@ -49,12 +50,14 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "testing-80002-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-80002-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/testing-80002-0/offers/whitelist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(80002),
       nativeCoin: chainIdToInfo.get(80002),
       getTxExplorerUrl: chainIdToGraphTx.get(80002),
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/19713/boson-testing-amoy/version/latest",
+        "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-amoy/latest/gn",
       jsonRpcUrl:
         "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
@@ -79,15 +82,17 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "testing-11155111-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-11155111-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/testing-11155111-0/offers/whitelist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(11155111),
       nativeCoin: chainIdToInfo.get(11155111),
       getTxExplorerUrl: chainIdToGraphTx.get(11155111),
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/19713/boson-testing-sepolia/v0.0.1",
+        "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-sepolia/latest/gn",
       jsonRpcUrl:
         "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs/api/v0",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
@@ -107,12 +112,14 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "staging-80002-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-80002-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/staging-80002-0/offers/whitelist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(80002),
       nativeCoin: chainIdToInfo.get(80002),
       getTxExplorerUrl: chainIdToGraphTx.get(80002),
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/19713/boson-staging-amoy/v0.0.1",
+        "https://api.0xgraph.xyz/api/public/da9367fc-3453-4e08-824f-19fb4281b6a1/subgraphs/boson-staging-amoy/latest/gn",
       jsonRpcUrl:
         "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
@@ -137,15 +144,17 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "staging-11155111-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-11155111-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/staging-11155111-0/offers/whitelist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(11155111),
       nativeCoin: chainIdToInfo.get(11155111),
       getTxExplorerUrl: chainIdToGraphTx.get(11155111),
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/19713/boson-staging-sepolia/v0.0.1",
+        "https://api.0xgraph.xyz/api/public/da9367fc-3453-4e08-824f-19fb4281b6a1/subgraphs/boson-staging-sepolia/latest/gn",
       jsonRpcUrl:
         "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
@@ -164,15 +173,17 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "production-137-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-137-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-137-0/offers/whitelist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(137),
       nativeCoin: chainIdToInfo.get(137),
       getTxExplorerUrl: chainIdToGraphTx.get(137),
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/19713/boson-polygon/v0.0.1",
+        "https://api.0xgraph.xyz/api/public/b521f6b7-36c4-4117-8ad5-6b21c6eeb195/subgraphs/boson-polygon/latest/gn",
       jsonRpcUrl:
         "https://polygon-mainnet.infura.io/v3/383117b55d614525b07f03b5979c5f19",
-      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
@@ -193,15 +204,17 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "production-1-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-1-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-1-0/offers/whitelist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(1),
       nativeCoin: chainIdToInfo.get(1),
       getTxExplorerUrl: chainIdToGraphTx.get(1),
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/19713/boson-ethereum/v0.0.1",
+        "https://api.0xgraph.xyz/api/public/b521f6b7-36c4-4117-8ad5-6b21c6eeb195/subgraphs/boson-ethereum/latest/gn",
       jsonRpcUrl:
         "https://mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e",
-      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",

@@ -9,6 +9,8 @@ jobs:
   publish:
     name: Publish alpha packages
     runs-on: ubuntu-latest
+    outputs:
+      SUBGRAPH_CHANGES: ${{ steps.export-changed-subgraph-files.outputs.SUBGRAPH_CHANGES }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -47,7 +49,23 @@ jobs:
             --no-git-tag-version \
             --no-changelog \
             --no-push
-
+      - name: Get all changed files in subgraph workspace
+        id: changed-subgraph-files
+        uses: tj-actions/verify-changed-files@v20
+        with:
+          files: packages/subgraph/**
+      - name: Export if changed files in subgraph workspace
+        id: export-changed-subgraph-files
+        env:
+          SUBGRAPH_CHANGES: ${{ steps.changed-subgraph-files.outputs.files_changed }}
+        run: |
+          echo "SUBGRAPH_CHANGES=$SUBGRAPH_CHANGES"
+          echo "SUBGRAPH_CHANGES=$SUBGRAPH_CHANGES" >> "$GITHUB_OUTPUT"
+      - name: Commit changes
+        env:
+          GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+        run: |
           git add .
           git commit -m "chore(release): publish alpha [skip ci]"
       - name: Publish to npm
@@ -57,3 +75,12 @@ jobs:
         run: |
           npx lerna publish from-package --dist-tag alpha --yes
           git push
+
+  call-deploy-testing-subgraph:
+    uses: ./.github/workflows/deploy-testing-subgraph.yaml
+    # condition only if packages/subgraph workspace has changed
+    needs: publish
+    if: needs.publish.outputs.SUBGRAPH_CHANGES == 'true'
+    secrets:
+      ORMI_0x_GRAPH_API_KEY_TESTING: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
+      GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}

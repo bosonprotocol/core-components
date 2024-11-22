@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.11.4...@bosonprotocol/ipfs-storage@1.12.0) (2024-11-20)
+
+
+### Features
+
+* add asBlob parameter to baseIpfsStorage to retrieve ipfs item as a blob ([#787](https://github.com/bosonprotocol/core-components/issues/787)) ([1b8a762](https://github.com/bosonprotocol/core-components/commit/1b8a762f3213aadd04ee9e72db11baae0111020f))
+
+
+
+
+
 ## [1.11.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.11.3...@bosonprotocol/ipfs-storage@1.11.4) (2024-07-29)
 
 **Note:** Version bump only for package @bosonprotocol/ipfs-storage

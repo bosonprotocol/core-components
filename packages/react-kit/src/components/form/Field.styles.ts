@@ -125,23 +125,32 @@ export type FileUploadWrapperTheme = Partial<{
   error: Partial<{
     borderColor: CSSProperties["borderColor"];
   }>;
+  overrides: Partial<CSSProperties>;
 }>;
 export const FileUploadWrapper = styled.div<{
   $error: unknown;
+  $isPdfOnly?: boolean;
   theme: FileUploadWrapperTheme | undefined;
 }>`
   position: relative;
   overflow: hidden;
   display: flex;
-
-  align-items: center;
   justify-content: center;
-  flex-direction: column;
-
   padding: 0.5rem;
+  align-items: center;
 
-  width: 8rem;
-  height: 8rem;
+  ${({ $isPdfOnly }) =>
+    $isPdfOnly
+      ? css`
+          width: 100%;
+          flex-direction: row;
+          cursor: default;
+        `
+      : css`
+          width: 8rem;
+          height: 8rem;
+          flex-direction: column;
+        `}
 
   img {
     position: absolute;
@@ -194,7 +203,30 @@ export const FieldFileUpload = styled(FieldInput)`
   display: none;
 `;
 
-export const FieldFileUploadWrapper = styled.div<{ $disabled: boolean }>`
+export const PdfOnlyLabel = styled.label<{ $disabled?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  gap: 0.25rem;
+  border-radius: 32px;
+  padding: 0.656rem 1.25rem;
+  background: ${colors.lightGrey};
+  font-size: 0.875rem;
+  ${({ $disabled }) =>
+    $disabled
+      ? css`
+          cursor: not-allowed;
+        `
+      : css`
+          cursor: pointer;
+        `}
+`;
+
+export const FieldFileUploadWrapper = styled.div<{
+  $disabled: boolean;
+  $isPdfOnly?: boolean;
+}>`
   position: relative;
   display: inline-block;
   ${({ $disabled }) =>
@@ -206,7 +238,11 @@ export const FieldFileUploadWrapper = styled.div<{ $disabled: boolean }>`
           cursor: pointer;
         `}
 
-  width: 8rem;
+  ${({ $isPdfOnly }) =>
+    !$isPdfOnly &&
+    css`
+      width: 8rem;
+    `}
 
   &:hover {
     [data-remove] {
@@ -367,6 +403,7 @@ export const CheckboxWrapper = styled.label<{
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
+  gap: 0.5rem;
 
   > input {
     &:disabled {
@@ -399,11 +436,11 @@ export const CheckboxWrapper = styled.label<{
     }
   }
 
-  > div,
-  > div svg {
+  > div:first-of-type,
+  > div:first-of-type svg {
     ${transition}
   }
-  > div {
+  > div:first-of-type {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -423,7 +460,6 @@ export const CheckboxWrapper = styled.label<{
       css`
         border-radius: ${theme?.borderRadius};
       `};
-    margin-right: 0.5rem;
   }
 
   > input {
@@ -459,7 +495,7 @@ export const CheckboxWrapper = styled.label<{
   ${({ $error, theme }) =>
     !checkIfValueIsEmpty($error) &&
     css`
-      > div {
+      > div:first-of-type {
         border: 1px solid ${theme?.error?.borderColor || colors.orange}};
         ${
           theme?.error?.backgroundColor &&

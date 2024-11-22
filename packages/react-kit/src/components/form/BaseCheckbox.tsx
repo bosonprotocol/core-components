@@ -12,6 +12,9 @@ export function BaseCheckbox({
   text,
   theme,
   hideError,
+  className,
+  iconProps,
+  children,
   ...props
 }: BaseCheckboxProps) {
   const [field, meta, helpers] = useField(name);
@@ -30,19 +33,28 @@ export function BaseCheckbox({
 
   return (
     <>
-      <CheckboxWrapper htmlFor={checkboxId} $error={errorMessage} theme={theme}>
+      <CheckboxWrapper
+        htmlFor={checkboxId}
+        $error={errorMessage}
+        theme={theme}
+        className={className}
+      >
         <input
           hidden
           id={checkboxId}
           type="checkbox"
           {...props}
           {...field}
+          onChange={(event) => {
+            field.onChange(event);
+            props.onChange?.(event);
+          }}
           checked={field.value}
         />
         <div>
-          <Check size={16} />
+          <Check size={16} width="100%" height="100%" {...iconProps} />
         </div>
-        <b>{text}</b>
+        {children || <b>{text}</b>}
       </CheckboxWrapper>
       <Error display={!hideError && displayError} message={errorMessage} />
     </>
