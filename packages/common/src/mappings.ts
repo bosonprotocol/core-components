@@ -105,13 +105,13 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
         name: "Boson Token (PoS)",
         address: "0x94e32c4bfcA1D3fe08B6F8252ABB47A5B14AC2bD",
         decimals: "18"
+      },
+      {
+        symbol: "USDC",
+        name: "Amoy USD Coin",
+        address: "0x41e94eb019c0762f9bfcf9fb1e58725bfb0e7582",
+        decimals: "6"
       }
-      // {
-      //   symbol: "USDC",
-      //   name: "Amoy USD Coin",
-      //   address: "0x????????????????????????????????????????", // TODO: to be defined
-      //   decimals: "6"
-      // },
       // {
       //   symbol: "DAI",
       //   name: "DAI",
