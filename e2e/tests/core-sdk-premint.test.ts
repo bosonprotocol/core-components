@@ -4,6 +4,7 @@ import { parseEther } from "@ethersproject/units";
 import {
   createPremintedOfferAddToGroup,
   createPremintedOfferWithCondition,
+  createRandomWallet,
   createSeaportOrder,
   createSeller,
   createSellerAndOffer,
@@ -223,7 +224,7 @@ describe("core-sdk-premint", () => {
     expect(createdOffer).toBeTruthy();
     expect(createdOffer.seller).toBeTruthy();
 
-    const openseaConduit = Wallet.createRandom().address;
+    const openseaConduit = createRandomWallet().address;
     const isApprovedForAllBefore = await coreSDK.isApprovedForAll(
       openseaConduit,
       { owner: createdOffer.seller.voucherCloneAddress }
@@ -285,7 +286,7 @@ describe("core-sdk-premint", () => {
       createdOffer.seller.voucherCloneAddress.toLowerCase()
     );
 
-    const openseaConduit = Wallet.createRandom().address;
+    const openseaConduit = createRandomWallet().address;
     const isApprovedForAllBefore = await coreSDK.isApprovedForAll(
       openseaConduit,
       { owner: createdOffer.seller.voucherCloneAddress }

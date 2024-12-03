@@ -2,6 +2,7 @@ import {
   MOCK_ERC1155_ADDRESS,
   MOCK_ERC20_ADDRESS,
   MOCK_ERC721_ADDRESS,
+  createRandomWallet,
   initCoreSDKWithWallet
 } from "./utils";
 import { Wallet } from "ethers";
@@ -50,7 +51,7 @@ describe("ERC", () => {
   ])(
     `ERC contract %p supports (or not) erc165 interface`,
     async ({ address, supports, matchesInterfaceId, interfaceId }) => {
-      const coreSDK = initCoreSDKWithWallet(Wallet.createRandom());
+      const coreSDK = initCoreSDKWithWallet(createRandomWallet());
       const call = async () =>
         await coreSDK.erc165SupportsInterface({
           contractAddress: address,

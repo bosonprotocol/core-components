@@ -84,6 +84,7 @@ import productV1ValidMinimalOffer from "../../scripts/assets/offer_1.metadata.js
 import bundleMetadataMinimal from "../../packages/metadata/tests/bundle/valid/minimal.json";
 import { Chain, OpenSeaSDK } from "opensea-js";
 import { Seaport } from "@opensea/seaport-js";
+import { hexlify, randomBytes } from "ethers/lib/utils";
 
 export type DeepPartial<T> = T extends object
   ? {
@@ -293,11 +294,15 @@ export async function wait(ms: number) {
   });
 }
 
+export function createRandomWallet() {
+  return new Wallet(hexlify(randomBytes(32)));
+}
+
 export async function createFundedWallet(
   fundingWallet: Wallet,
   fundAmountInEth = "10"
 ) {
-  const fundedWallet = Wallet.createRandom().connect(provider);
+  const fundedWallet = createRandomWallet().connect(provider);
   const fundingTx = await fundingWallet.sendTransaction({
     value: utils.parseEther(fundAmountInEth),
     to: fundedWallet.address
