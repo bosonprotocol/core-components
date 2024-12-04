@@ -51,6 +51,24 @@ export type ForwarderDomainData = {
   salt: string;
 };
 
+async function _fetch(
+  input: RequestInfo | URL,
+  init?: RequestInit
+): Promise<Response> {
+  let retry = 2;
+  while (retry) {
+    try {
+      const res = await fetch(input, init);
+      const clonedRes = res.clone();
+      return clonedRes;
+    } catch (error) {
+      if (!retry--) {
+        throw error;
+      }
+    }
+  }
+}
+
 export class Biconomy {
   public constructor(
     private _relayerUrl: string,
@@ -68,7 +86,7 @@ export class Biconomy {
     const url = `${
       overrides.relayerUrl || this._relayerUrl
     }/api/v2/meta-tx/systemInfo?networkId=${args.chainId}`;
-    const response = await fetch(url, { method: "GET" });
+    const response = await _fetch(url, { method: "GET" });
 
     if (!response.ok) {
       let message;
@@ -91,7 +109,7 @@ export class Biconomy {
     const url = `${
       overrides.relayerUrl || this._relayerUrl
     }/api/v2/meta-tx/native`;
-    const response = await fetch(url, {
+    const response = await _fetch(url, {
       method: "POST",
       headers: {
         "x-api-key": overrides.apiKey || this._apiKey,
@@ -134,7 +152,7 @@ export class Biconomy {
     }/api/v1/meta-tx/resubmitted?networkId=${args.networkId}&transactionHash=${
       args.transactionHash
     }`;
-    const response = await fetch(url, {
+    const response = await _fetch(url, {
       method: "GET",
       headers: {
         "content-type": "application/json;charset=UTF-8",
