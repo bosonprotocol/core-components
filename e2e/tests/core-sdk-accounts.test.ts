@@ -1,5 +1,6 @@
 import { AuthTokenType } from "../../packages/common";
 import {
+  createRandomWallet,
   createSeller,
   initCoreSDKWithFundedWallet,
   mintLensToken,
@@ -31,7 +32,7 @@ describe("CoreSDK Accounts", () => {
       await initCoreSDKWithFundedWallet(seedWallet21);
     const { coreSDK: coreSDKAssistant2, fundedWallet: assistantWallet2 } =
       await initCoreSDKWithFundedWallet(seedWallet21);
-    const treasuryWallet1and2 = Wallet.createRandom();
+    const treasuryWallet1and2 = createRandomWallet();
     treasury1and2 = treasuryWallet1and2.address;
     await Promise.all([
       new Promise<void>(async (resolve, reject) => {

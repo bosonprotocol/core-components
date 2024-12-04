@@ -3,6 +3,7 @@ import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 import {
   createOffer,
   createOfferBatch,
+  createRandomWallet,
   createSeller,
   createSellerAndOffer,
   initCoreSDKWithFundedWallet,
@@ -32,7 +33,7 @@ describe("Seller royalties recipients", () => {
     };
   };
   beforeAll(async () => {
-    const coreSDK = initCoreSDKWithWallet(Wallet.createRandom());
+    const coreSDK = initCoreSDKWithWallet(createRandomWallet());
     maxRoyaltyPercentage = await coreSDK.getMaxRoyaltyPercentage();
   });
   test("default royalties for a seller", async () => {
@@ -82,8 +83,8 @@ describe("Seller royalties recipients", () => {
     expect(seller.royaltyRecipients?.length).toEqual(1);
 
     const recipients = [
-      Wallet.createRandom().address.toLowerCase(),
-      Wallet.createRandom().address.toLowerCase()
+      createRandomWallet().address.toLowerCase(),
+      createRandomWallet().address.toLowerCase()
     ];
     const recipientsPercentage = ["200", "300"];
     const tx = await coreSDK.addRoyaltyRecipients(
@@ -123,8 +124,8 @@ describe("Seller royalties recipients", () => {
     ).toEqual(recipientsPercentage[1]);
 
     const recipients_2 = [
-      Wallet.createRandom().address.toLowerCase(),
-      Wallet.createRandom().address.toLowerCase()
+      createRandomWallet().address.toLowerCase(),
+      createRandomWallet().address.toLowerCase()
     ];
     const recipientsPercentage_2 = ["400", "500"];
     const tx_2 = await coreSDK.addRoyaltyRecipients(
@@ -169,8 +170,8 @@ describe("Seller royalties recipients", () => {
       }
     });
     const recipients = [
-      Wallet.createRandom().address.toLowerCase(),
-      Wallet.createRandom().address.toLowerCase()
+      createRandomWallet().address.toLowerCase(),
+      createRandomWallet().address.toLowerCase()
     ];
     const recipientsPercentage = ["200", "300"];
     const tx = await coreSDK.addRoyaltyRecipients(
@@ -210,8 +211,8 @@ describe("Seller royalties recipients", () => {
     ).toEqual(recipientsPercentage[1]);
 
     const recipients_2 = [
-      Wallet.createRandom().address.toLowerCase(),
-      Wallet.createRandom().address.toLowerCase()
+      createRandomWallet().address.toLowerCase(),
+      createRandomWallet().address.toLowerCase()
     ];
     const recipientsPercentage_2 = ["400", "500"];
     const tx_2 = await coreSDK.updateRoyaltyRecipients(
@@ -261,8 +262,8 @@ describe("Seller royalties recipients", () => {
       }
     });
     const recipients = [
-      Wallet.createRandom().address.toLowerCase(),
-      Wallet.createRandom().address.toLowerCase()
+      createRandomWallet().address.toLowerCase(),
+      createRandomWallet().address.toLowerCase()
     ];
     const recipientsPercentage = ["200", "300"];
     const tx = await coreSDK.addRoyaltyRecipients(
@@ -301,8 +302,8 @@ describe("Seller royalties recipients", () => {
     ).toEqual(recipientsPercentage[1]);
 
     const recipients_2 = [
-      Wallet.createRandom().address.toLowerCase(),
-      Wallet.createRandom().address.toLowerCase()
+      createRandomWallet().address.toLowerCase(),
+      createRandomWallet().address.toLowerCase()
     ];
     const recipientsPercentage_2 = ["400", "500"];
     const tx_2 = await coreSDK.updateRoyaltyRecipients(
@@ -347,8 +348,8 @@ describe("Seller royalties recipients", () => {
       }
     });
     const recipients = [
-      Wallet.createRandom().address.toLowerCase(),
-      Wallet.createRandom().address.toLowerCase()
+      createRandomWallet().address.toLowerCase(),
+      createRandomWallet().address.toLowerCase()
     ];
     const recipientsPercentage = ["200", "300"];
     const tx = await coreSDK.addRoyaltyRecipients(
@@ -394,8 +395,8 @@ describe("Seller royalties recipients", () => {
       }
     });
     const recipients = [
-      Wallet.createRandom().address.toLowerCase(),
-      Wallet.createRandom().address.toLowerCase()
+      createRandomWallet().address.toLowerCase(),
+      createRandomWallet().address.toLowerCase()
     ];
     const recipientsPercentage = ["200", "300"];
     const tx = await coreSDK.addRoyaltyRecipients(
@@ -547,8 +548,8 @@ describe("Offer royalties recipients", () => {
       await initCoreSDKWithFundedWallet(seedWallet);
     const seller = await createSeller(coreSDK, fundedWallet.address);
     const recipients = [
-      Wallet.createRandom().address.toLowerCase(),
-      Wallet.createRandom().address.toLowerCase()
+      createRandomWallet().address.toLowerCase(),
+      createRandomWallet().address.toLowerCase()
     ];
     const recipientsPercentage = ["200", "300"];
     const tx = await coreSDK.addRoyaltyRecipients(
@@ -618,8 +619,8 @@ describe("Offer royalties recipients", () => {
     expect(createdOffer.royaltyInfos).toBeTruthy();
     expect(createdOffer.royaltyInfos.length).toEqual(1);
     const recipients = [
-      Wallet.createRandom().address.toLowerCase(),
-      Wallet.createRandom().address.toLowerCase()
+      createRandomWallet().address.toLowerCase(),
+      createRandomWallet().address.toLowerCase()
     ];
     const recipientsPercentage = ["200", "300"];
     const tx1 = await coreSDK.addRoyaltyRecipients(
@@ -663,8 +664,8 @@ describe("Offer royalties recipients", () => {
     expect(createdOffer.royaltyInfos).toBeTruthy();
     expect(createdOffer.royaltyInfos.length).toEqual(1);
     const recipients = [
-      Wallet.createRandom().address.toLowerCase(),
-      Wallet.createRandom().address.toLowerCase()
+      createRandomWallet().address.toLowerCase(),
+      createRandomWallet().address.toLowerCase()
     ];
     const recipientsPercentage = ["200", "300"];
     const tx1 = await coreSDK.addRoyaltyRecipients(
@@ -736,8 +737,8 @@ describe("Offer royalties recipients", () => {
       expect(createdOffer.royaltyInfos.length).toEqual(1);
     });
     const recipients = [
-      Wallet.createRandom().address.toLowerCase(),
-      Wallet.createRandom().address.toLowerCase()
+      createRandomWallet().address.toLowerCase(),
+      createRandomWallet().address.toLowerCase()
     ];
     const recipientsPercentage = ["200", "300"];
     const tx1 = await coreSDK.addRoyaltyRecipients(
