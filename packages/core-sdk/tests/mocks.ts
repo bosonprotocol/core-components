@@ -16,6 +16,7 @@ export const DAY_IN_MS = DAY_IN_SEC * 1000;
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 const sellerMetadataUri =
   "ipfs://Qmcp1cqzUu62CggNpA45p4LmQuExYjoW4yazv11JdEMESj";
+export const BICONOMY_URL = "https://biconomy.io";
 
 export function interceptSubgraph(operationName?: string) {
   return nock(SUBGRAPH_URL).post("", (body) => {
