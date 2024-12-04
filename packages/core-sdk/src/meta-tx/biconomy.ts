@@ -55,18 +55,18 @@ async function _fetch(
   input: RequestInfo | URL,
   init?: RequestInit
 ): Promise<Response> {
-  let retry = 2;
-  while (retry) {
+  let retry = 3;
+  let err;
+  while (retry--) {
     try {
       const res = await fetch(input, init);
       const clonedRes = res.clone();
       return clonedRes;
     } catch (error) {
-      if (!retry--) {
-        throw error;
-      }
+      err = error;
     }
   }
+  throw err;
 }
 
 export class Biconomy {
