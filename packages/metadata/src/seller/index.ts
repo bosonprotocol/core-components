@@ -1,9 +1,9 @@
 import { buildYup } from "schema-to-yup";
-import { SchemaOf } from "yup";
+import { Schema } from "yup";
 import schema from "./schema.json";
 import { Media } from "../common";
 
-export const sellerMetadataSchema: SchemaOf<SellerMetadata> = buildYup(
+export const sellerMetadataSchema: Schema<SellerMetadata> = buildYup(
   schema,
   {}
 );
