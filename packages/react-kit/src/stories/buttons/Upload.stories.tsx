@@ -95,3 +95,15 @@ export const PdfOnly = {
     accept: "application/pdf"
   } satisfies UploadProps
 };
+
+export const PdfOnlyCustomTheme = {
+  args: {
+    ...BASE_ARGS,
+    accept: "application/pdf",
+    theme: {
+      uploadButton: {
+        borderRadius: "32px"
+      }
+    }
+  } satisfies UploadProps
+};
