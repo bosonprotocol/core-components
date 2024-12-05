@@ -278,7 +278,7 @@ function BaseUpload({
     borderRadius: borderRadius ? `${borderRadius}${borderRadiusUnit}` : "",
     width: width ? `100%` : ""
   };
-  const showPreview = field.value && field.value?.length !== 0 && preview;
+  const showPreview = !!field.value && field.value?.length !== 0 && !!preview;
   return (
     <>
       {withEditor && showEditor && (

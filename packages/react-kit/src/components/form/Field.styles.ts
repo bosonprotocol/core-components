@@ -209,7 +209,6 @@ export const PdfOnlyLabel = styled.label<{ $disabled?: boolean }>`
   justify-content: center;
   margin-top: 1rem;
   gap: 0.25rem;
-  border-radius: 32px;
   padding: 0.656rem 1.25rem;
   background: ${colors.lightGrey};
   font-size: 0.875rem;
