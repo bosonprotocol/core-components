@@ -40,7 +40,8 @@
   },
   "dependencies": {
     "@bosonprotocol/metadata-storage": "^1.0.1",
-    "schema-to-yup": "^1.11.11"
+    "schema-to-yup": "^1.11.11",
+    "yup": "^1.5.0"
   },
   "overrides": {
     "typescript": "^5.1.6"
