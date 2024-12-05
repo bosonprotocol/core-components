@@ -28,6 +28,7 @@ import { WithUploadToIpfs, WithUploadToIpfsProps } from "./WithUploadToIpfs";
 import { useModal } from "../../modal/useModal";
 import { ImageEditorModal } from "./ImageEditorModal/ImageEditorModal";
 import { Grid } from "../../ui/Grid";
+import { UploadedSinglePdfFile } from "./UploadedSinglePdfFile";
 const colors = theme.colors.light;
 export type BaseUploadProps = UploadPropsWithNoIpfs;
 function BaseUpload({
@@ -278,7 +279,7 @@ function BaseUpload({
     borderRadius: borderRadius ? `${borderRadius}${borderRadiusUnit}` : "",
     width: width ? `100%` : ""
   };
-  const showPreview = field.value && field.value?.length !== 0 && preview;
+  const showPreview = !!field.value && field.value?.length !== 0 && !!preview;
   return (
     <>
       {withEditor && showEditor && (
@@ -392,32 +393,14 @@ function BaseUpload({
                           loop
                         />
                       ) : isPdfOnly ? (
-                        <Grid
-                          flexDirection="row"
-                          alignItems="center"
-                          gap="0.25rem"
-                        >
-                          <div>
-                            <FilePdf size={24} />
-                          </div>
-                          <Typography style={{ width: "100%" }}>
-                            {preview}
-                          </Typography>
-                          <button
-                            type="button"
-                            style={{
-                              display: "flex",
-                              justifyContent: "center"
-                            }}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              handleRemoveAllFiles();
-                            }}
-                          >
-                            <X size={12.5} />
-                          </button>
-                        </Grid>
+                        <UploadedSinglePdfFile
+                          fileName={preview}
+                          onXClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleRemoveAllFiles();
+                          }}
+                        />
                       ) : (
                         <ImagePreview
                           style={{ ...imgPreviewStyle }}
