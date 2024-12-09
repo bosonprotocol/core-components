@@ -441,6 +441,10 @@ function BaseUpload({
           )}
         {multiple && (
           <UploadedFiles
+            style={{ ...style, ...theme?.overrides }}
+            theme={theme?.triggerTheme}
+            handleChooseFile={handleChooseFile}
+            errorMessage={errorMessage}
             files={files}
             isPdfOnly={isPdfOnly}
             handleRemoveFile={handleRemoveFile}
