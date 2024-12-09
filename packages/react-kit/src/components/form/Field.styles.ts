@@ -135,7 +135,6 @@ export const FileUploadWrapper = styled.div<{
   position: relative;
   overflow: hidden;
   display: flex;
-  justify-content: center;
   padding: 0.5rem;
   align-items: center;
 
@@ -145,11 +144,13 @@ export const FileUploadWrapper = styled.div<{
           width: 100%;
           flex-direction: row;
           cursor: default;
+          justify-content: start;
         `
       : css`
           width: 8rem;
           height: 8rem;
           flex-direction: column;
+          justify-content: center;
         `}
 
   img {
