@@ -43,8 +43,7 @@
     "@ethersproject/address": "^5.5.0",
     "@ethersproject/bignumber": "^5.5.0",
     "@ethersproject/constants": "^5.5.0",
-    "@ethersproject/units": "^5.5.0",
-    "yup": "^0.32.11"
+    "@ethersproject/units": "^5.5.0"
   },
   "overrides": {
     "typescript": "^5.1.6"

@@ -53,23 +53,25 @@ export class InvalidOfferMetadataError extends Error {
   }
 }
 
-export const baseOfferDataSchema: yup.SchemaOf<BaseOfferData> = yup.object({
-  price: yup.mixed().required(),
-  sellerDeposit: yup.mixed().required(),
-  agentId: yup.mixed().required(),
-  buyerCancelPenalty: yup.mixed().required(),
-  quantityAvailable: yup.mixed().required(),
-  validFromDateInMS: yup.mixed().required(),
-  validUntilDateInMS: yup.mixed().required(),
-  voucherRedeemableFromDateInMS: yup.mixed().required(),
-  voucherRedeemableUntilDateInMS: yup.mixed().required(),
-  disputePeriodDurationInMS: yup.mixed().required(),
-  resolutionPeriodDurationInMS: yup.mixed().required(),
-  exchangeToken: yup.string().required(),
-  disputeResolverId: yup.mixed().required(),
-  metadataUri: yup.string().required(),
-  metadataHash: yup.string().required()
-});
+export const baseOfferDataSchema: yup.ObjectSchema<BaseOfferData> = yup
+  .object({
+    price: yup.mixed<BigNumberish>().required(),
+    sellerDeposit: yup.mixed<BigNumberish>().required(),
+    agentId: yup.mixed<BigNumberish>().required(),
+    buyerCancelPenalty: yup.mixed<BigNumberish>().required(),
+    quantityAvailable: yup.mixed<BigNumberish>().required(),
+    validFromDateInMS: yup.mixed<BigNumberish>().required(),
+    validUntilDateInMS: yup.mixed<BigNumberish>().required(),
+    voucherRedeemableFromDateInMS: yup.mixed<BigNumberish>().required(),
+    voucherRedeemableUntilDateInMS: yup.mixed<BigNumberish>().required(),
+    disputePeriodDurationInMS: yup.mixed<BigNumberish>().required(),
+    resolutionPeriodDurationInMS: yup.mixed<BigNumberish>().required(),
+    exchangeToken: yup.string().required(),
+    disputeResolverId: yup.mixed<BigNumberish>().required(),
+    metadataUri: yup.string().required(),
+    metadataHash: yup.string().required()
+  })
+  .required();
 
 export type BaseOfferData = {
   price: BigNumberish;
@@ -89,15 +91,17 @@ export type BaseOfferData = {
   metadataHash: string;
 };
 
-export const baseOfferMetadataSchema: yup.SchemaOf<AdditionalOfferMetadata> =
-  yup.object({
-    sellerContactMethod: yup.string().required(),
-    disputeResolverContactMethod: yup.string().required(),
-    escalationDeposit: yup.mixed().required(),
-    escalationResponsePeriodInSec: yup.mixed().required(),
-    sellerTradingName: yup.string().required(),
-    returnPeriodInDays: yup.number().required()
-  });
+export const baseOfferMetadataSchema: yup.ObjectSchema<AdditionalOfferMetadata> =
+  yup
+    .object({
+      sellerContactMethod: yup.string().required(),
+      disputeResolverContactMethod: yup.string().required(),
+      escalationDeposit: yup.mixed<BigNumberish>().required(),
+      escalationResponsePeriodInSec: yup.mixed<BigNumberish>().required(),
+      sellerTradingName: yup.string().required(),
+      returnPeriodInDays: yup.number().required()
+    })
+    .required();
 
 function checkOfferDataIsValid(
   offerData: unknown,

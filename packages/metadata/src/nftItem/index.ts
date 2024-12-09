@@ -1,9 +1,9 @@
 import { buildYup } from "schema-to-yup";
-import { SchemaOf } from "yup";
+import { Schema } from "yup";
 import schema from "./schema.json";
 import { IItemMetadata } from "../iMetadata";
 
-export const nftItemSchema: SchemaOf<NftItem> = buildYup(schema, {});
+export const nftItemSchema: Schema<NftItem> = buildYup(schema, {});
 
 export type NftItem = Omit<IItemMetadata, "type"> & {
   type: "ITEM_NFT";

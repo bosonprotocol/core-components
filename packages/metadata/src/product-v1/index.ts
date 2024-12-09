@@ -1,5 +1,5 @@
 import { buildYup } from "schema-to-yup";
-import { SchemaOf } from "yup";
+import { Schema } from "yup";
 import schema from "./schema.json";
 import { RNftMetadata } from "../rNFT";
 import {
@@ -12,7 +12,7 @@ import { Media } from "../common";
 
 export { ProductV1Variant };
 
-export const productV1MetadataSchema: SchemaOf<ProductV1Metadata> = buildYup(
+export const productV1MetadataSchema: Schema<ProductV1Metadata> = buildYup(
   schema,
   {}
 );
