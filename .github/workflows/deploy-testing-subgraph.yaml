@@ -2,21 +2,24 @@ name: Deploy subgraph to testing env
 
 on:
   workflow_dispatch:
-    branches: [main]
-  push:
-    paths:
-      - packages/subgraph/**
+  workflow_call:
+    secrets:
+      ORMI_0x_GRAPH_API_KEY_TESTING:
+        required: true
+      GH_TOKEN:
+        required: true
 
 jobs:
   deploy:
-    if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     name: Deploy subgraph
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
       - uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "20"
           cache: "npm"
       - name: Turbo Cache
         id: turbo-cache
@@ -29,9 +32,26 @@ jobs:
       - run: npm ci
       - id: build
         run: npm run build -- --cache-dir=".turbo"
+      - name: Set github bot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git pull
       - name: Authenticate The Graph CLI
-        run: npx graph auth --studio ${{ secrets.THE_GRAPH_ACCESS_TOKEN_TESTING }}
+        run: npx graph auth https://api.0xgraph.xyz/deploy/ ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
       - name: Deploy subgraph to amoy
         run: cd ./packages/subgraph && npm run deploy:testing:amoy
+        env:
+          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
       - name: Deploy subgraph to sepolia
         run: cd ./packages/subgraph && npm run deploy:testing:sepolia
+        env:
+          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
+      - name: Commit & Push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git add .
+          git commit -m "chore: deploy testing subgraphs [skip ci]"
+          git push origin HEAD

@@ -13,7 +13,7 @@ export const MagicProvider = ({ children }: { children: ReactNode }) => {
   return (
     <InnerMagicProvider
       chainId={chainId}
-      magicLinkKey={magicLinkKey}
+      magicLinkKey={magicLinkKey ?? ""}
       rpcUrls={CONFIG.rpcUrls}
     >
       {children}

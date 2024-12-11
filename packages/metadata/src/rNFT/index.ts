@@ -1,9 +1,9 @@
 import { buildYup } from "schema-to-yup";
-import { SchemaOf } from "yup";
+import { Schema } from "yup";
 import schema from "./schema.json";
 import { IMetadata } from "@bosonprotocol/metadata-storage";
 
-export const rNFTMetadataSchema: SchemaOf<RNftMetadata> = buildYup(schema, {});
+export const rNFTMetadataSchema: Schema<RNftMetadata> = buildYup(schema, {});
 
 // https://docs.opensea.io/docs/metadata-standards
 // https://github.com/ethereum/ercs/blob/master/ERCS/erc-721.md

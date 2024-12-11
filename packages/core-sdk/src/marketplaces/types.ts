@@ -27,6 +27,7 @@ export type Listing = {
   };
   offerer: string;
   price: string;
+  listingTime?: number;
   expirationTime: number;
   exchangeToken: { address: string; decimals: number };
   auction: boolean;

@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.34.1...@bosonprotocol/subgraph@1.34.2) (2024-11-22)
+
+**Note:** Version bump only for package @bosonprotocol/subgraph
+
+
+
+
+
+## [1.34.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.34.0...@bosonprotocol/subgraph@1.34.1) (2024-11-20)
+
+**Note:** Version bump only for package @bosonprotocol/subgraph
+
+
+
+
+
+# [1.34.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.33.2...@bosonprotocol/subgraph@1.34.0) (2024-11-20)
+
+
+### Features
+
+* add protocolFee events in subgraph ([#782](https://github.com/bosonprotocol/core-components/issues/782)) ([74dde63](https://github.com/bosonprotocol/core-components/commit/74dde63fa5e252a496896ce0b12dd832b7491cc7))
+
+
+
+
+
 ## [1.33.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.33.1...@bosonprotocol/subgraph@1.33.2) (2024-06-11)
 
 **Note:** Version bump only for package @bosonprotocol/subgraph

@@ -29,7 +29,7 @@ export function CtaButton<T>({
   successPayload,
   waitBlocks = 1,
   children,
-  size = ButtonSize.Large,
+  size = ButtonSize.Medium,
   variant = "secondaryFill",
   buttonRef,
   coreSdkConfig,

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.29.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.28.1...@bosonprotocol/common@1.29.0) (2024-11-20)
+
+
+### Bug Fixes
+
+* subgraphUrl for amoy env ([#810](https://github.com/bosonprotocol/core-components/issues/810)) ([bc214c0](https://github.com/bosonprotocol/core-components/commit/bc214c0f5f4de7e53e66e4e59aacc206d152529d))
+
+
+### Features
+
+* add estimateGas in Web3LibAdapter ([#803](https://github.com/bosonprotocol/core-components/issues/803)) ([3be665b](https://github.com/bosonprotocol/core-components/commit/3be665b1dca4249c627b89eb76bc6b61a914b2f0))
+
+
+
+
+
 ## [1.28.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.28.0...@bosonprotocol/common@1.28.1) (2024-07-29)
 
 **Note:** Version bump only for package @bosonprotocol/common

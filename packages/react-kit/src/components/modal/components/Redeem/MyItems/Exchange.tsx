@@ -173,7 +173,7 @@ export default function Exchange({
           }
         }}
         onAvatarNameClick={handleOnAvatarClick}
-        price={Number(price)}
+        price={price}
         currency={offer.exchangeToken.symbol as Currencies}
         {...createSpecificCardConfig()}
       />

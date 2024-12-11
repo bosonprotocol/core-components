@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.41.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.40.5...@bosonprotocol/core-sdk@1.41.0) (2024-11-20)
+
+
+### Bug Fixes
+
+* hack waiting for Opensea API bug to be fixed ([#818](https://github.com/bosonprotocol/core-components/issues/818)) ([26c0727](https://github.com/bosonprotocol/core-components/commit/26c0727cb0d38e473f9216f2d4fb391cd317e773))
+
+
+### Features
+
+* add listingTime and narrow down marketplace returned ([#829](https://github.com/bosonprotocol/core-components/issues/829)) ([8659149](https://github.com/bosonprotocol/core-components/commit/8659149ff7bcce6e53258e0e7212a9b6cb7627bb))
+* add protocolFee events in subgraph ([#782](https://github.com/bosonprotocol/core-components/issues/782)) ([74dde63](https://github.com/bosonprotocol/core-components/commit/74dde63fa5e252a496896ce0b12dd832b7491cc7))
+* improve opensea wrapper ([#790](https://github.com/bosonprotocol/core-components/issues/790)) ([eee07b2](https://github.com/bosonprotocol/core-components/commit/eee07b2cc57f1792d3d361ac2fb8b4b1f293f08e))
+
+
+
+
+
 ## [1.40.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.40.4...@bosonprotocol/core-sdk@1.40.5) (2024-07-29)
 
 **Note:** Version bump only for package @bosonprotocol/core-sdk

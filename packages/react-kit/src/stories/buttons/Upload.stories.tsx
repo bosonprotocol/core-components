@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta } from "@storybook/react";
-import { QueryClientProviderCustom, Upload } from "../..";
+import { QueryClientProviderCustom, Upload, UploadProps } from "../..";
 import { EnvironmentProvider } from "../../components/environment/EnvironmentProvider";
 import { IpfsProvider } from "../../components/ipfs/IpfsProvider";
 import { Formik } from "formik";
@@ -20,7 +20,6 @@ export default {
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
-  // args: { onClick: fn() },
   argTypes: {
     name: {
       table: {
@@ -69,20 +68,42 @@ export default {
 } satisfies Meta<typeof Upload>;
 
 const BASE_ARGS = {
-  name
-} as const;
+  name,
+  placeholder: "",
+  withEditor: false,
+  saveButtonTheme: undefined
+} as const satisfies UploadProps;
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 export const Base = {
   args: {
     ...BASE_ARGS
-  }
+  } satisfies UploadProps
 };
 
 export const VideoOnly = {
   args: {
     ...BASE_ARGS,
     accept: "video/mp4",
-    withUpload: true
-  }
+    withUpload: false
+  } satisfies UploadProps
+};
+
+export const PdfOnly = {
+  args: {
+    ...BASE_ARGS,
+    accept: "application/pdf"
+  } satisfies UploadProps
+};
+
+export const PdfOnlyCustomTheme = {
+  args: {
+    ...BASE_ARGS,
+    accept: "application/pdf",
+    theme: {
+      uploadButton: {
+        borderRadius: "32px"
+      }
+    }
+  } satisfies UploadProps
 };

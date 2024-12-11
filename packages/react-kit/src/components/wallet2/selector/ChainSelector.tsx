@@ -36,6 +36,7 @@ import {
   CoreProtocolConfig
 } from "@bosonprotocol/core-sdk";
 import { SvgImage } from "../../ui/SvgImage";
+import { getSupportedChainIdsFromWalletConnectSession } from "./getSupportedChainIdsFromWalletConnectSession";
 
 const IconAndChevron = styled.div<{
   $isOpen: boolean;
@@ -71,8 +72,6 @@ function useWalletSupportedChains({
 
   switch (connectionType) {
     case ConnectionType.WALLET_CONNECT_V2:
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       return getSupportedChainIdsFromWalletConnectSession(
         (connector as WalletConnectV2).provider?.session
       );

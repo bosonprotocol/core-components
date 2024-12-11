@@ -95,12 +95,13 @@ export const ProductCardTitle = styled(Typography).attrs({
   color: ${({ theme }) => theme?.colors?.light.black};
   word-break: break-word;
   overflow: hidden;
-  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-height: 1.5em;
   max-height: calc(1.5em * 2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 export const ProductCardPriceWrapper = styled.div`
@@ -183,11 +184,7 @@ export const ProductCardWrapper = styled.div<{
       ? css`
           transition: all 300ms ease-in-out;
           &:hover {
-            box-shadow:
-              0px 0px 0px rgba(0, 0, 0, 0.05),
-              4px 4px 4px rgba(0, 0, 0, 0.05),
-              8px 8px 8px rgba(0, 0, 0, 0.05),
-              16px 16px 16px rgba(0, 0, 0, 0.05);
+            border: 2px solid ${theme.colors.light.border};
 
             [data-image-wrapper] {
               width: 110%;

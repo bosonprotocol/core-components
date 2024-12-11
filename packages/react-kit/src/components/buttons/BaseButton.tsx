@@ -4,25 +4,22 @@ import React, {
   ReactNode,
   useCallback
 } from "react";
-import styled, { css, CSSProperties } from "styled-components";
+import styled, { css, CSSProperties, RuleSet } from "styled-components";
 
-import { zIndex } from "../ui/zIndex";
 import { Tooltip } from "../tooltip/Tooltip";
 import * as Styles from "../ui/styles";
-import { Typography } from "../ui/Typography";
 import { theme } from "../../theme";
 import { Loading } from "../ui/loading/Loading";
 import { ButtonSize } from "../ui/buttonSize";
-
+import { AddDollarPrefixToKeys } from "../../types/helpers";
 const colors = theme.colors.light;
-
-const ButtonWithThemeProps = styled.button<{
+type ButtonWithThemePropsType = AddDollarPrefixToKeys<{
   size: ButtonSizeProp;
   fill: boolean | undefined;
-  theme: BaseButtonTheme;
-}>`
+}> & { theme: BaseButtonTheme };
+const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
   ${() => Styles.button};
-  ${(props) => Styles[props.size as keyof typeof Styles]}
+  ${(props) => Styles[props.$size as keyof typeof Styles]}
   border-style: solid;
   border-color: ${(props) => props.theme?.borderColor || "transparent"};
   border-width: ${(props) => props.theme?.borderWidth || 0}px;
@@ -66,7 +63,7 @@ const ButtonWithThemeProps = styled.button<{
       `}
   }
   ${(props) =>
-    props.fill
+    props.$fill
       ? css`
           width: 100%;
         `
@@ -107,7 +104,7 @@ const ButtonWithThemeProps = styled.button<{
       }
     `}
   ${(props) =>
-    props.theme?.padding
+    props.theme?.padding !== undefined
       ? css`
           padding: ${props.theme.padding} !important;
         `
@@ -134,17 +131,12 @@ const ButtonWithThemeProps = styled.button<{
             opacity: 0.5;
           }
         `};
-`;
-
-const ChildWrapperButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: ${(props) => props.theme?.gap || "12px"};
-  position: relative;
-  z-index: ${zIndex.Button};
-
-  ${() => Styles.buttonText};
+  ${(props) => {
+    if (props.theme.applyCustomStyles) {
+      return props.theme.applyCustomStyles(props);
+    }
+    return "";
+  }}
 `;
 
 type SvgTheme = Partial<{
@@ -181,6 +173,9 @@ export type BaseButtonTheme = {
     background?: CSSProperties["backgroundColor"];
     color?: CSSProperties["color"];
   };
+  applyCustomStyles?: (
+    buttonWithThemePropsType: ButtonWithThemePropsType
+  ) => RuleSet<object>;
 };
 type ButtonSizeProp = "small" | "regular" | "large" | ButtonSize;
 
@@ -190,7 +185,6 @@ export type BaseButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: ButtonSizeProp;
   theme: BaseButtonTheme;
   fill?: boolean;
-  step?: number;
   isLoading?: boolean;
   tooltip?: string;
 };
@@ -203,7 +197,6 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
       size = "regular",
       theme,
       type = "button",
-      step = 0,
       fill = false,
       isLoading = false,
       tooltip = "",
@@ -230,24 +223,13 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
           <ButtonWithThemeProps
             onClick={onClick}
             type={type}
-            size={size}
-            fill={fill ? fill : undefined}
+            $size={size}
+            $fill={fill ? fill : undefined}
             theme={theme}
             {...rest}
             ref={ref}
           >
-            {isLoading ? (
-              <Loading />
-            ) : (
-              <ChildWrapperButton data-child-wrapper-button theme={theme}>
-                {children}
-                {step !== 0 && (
-                  <Typography>
-                    <small>Step {step}</small>
-                  </Typography>
-                )}
-              </ChildWrapperButton>
-            )}
+            {isLoading ? <Loading /> : children}
           </ButtonWithThemeProps>
         </Wrapper>
       </>

@@ -3,6 +3,60 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.35.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.34.0...@bosonprotocol/react-kit@0.35.0) (2024-11-22)
+
+
+### Features
+
+* add getSupportedChainIdsFromWalletConnectSession ([#855](https://github.com/bosonprotocol/core-components/issues/855)) ([6863857](https://github.com/bosonprotocol/core-components/commit/68638576d4067bacd6135aa43f5d6f9a2369d3b9))
+
+
+
+
+
+# [0.34.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.33.0...@bosonprotocol/react-kit@0.34.0) (2024-11-20)
+
+
+### Bug Fixes
+
+* 819 upload component improvements ([#820](https://github.com/bosonprotocol/core-components/issues/820)) ([323e876](https://github.com/bosonprotocol/core-components/commit/323e87680514711d9b5af43d9a2698c48e9a858b))
+* base button props ([#828](https://github.com/bosonprotocol/core-components/issues/828)) ([ea7969d](https://github.com/bosonprotocol/core-components/commit/ea7969d116cc31a242f368c024c0a429f7a1d688))
+* build ([#824](https://github.com/bosonprotocol/core-components/issues/824)) ([7072f05](https://github.com/bosonprotocol/core-components/commit/7072f05095a1f8df11be9daf0ef9312adbf3a0bb))
+* checkboox and add more props ([#827](https://github.com/bosonprotocol/core-components/issues/827)) ([7a4b4ba](https://github.com/bosonprotocol/core-components/commit/7a4b4ba08efef7eed8e09f39f108bbab935b2bbf))
+* remove check if magicLinkKey is defined in configuration ([#816](https://github.com/bosonprotocol/core-components/issues/816)) ([30fead6](https://github.com/bosonprotocol/core-components/commit/30fead64a22128e6c8ad10c6db714bc90bba3e1d))
+* remove min height, products skeleton changes ([#812](https://github.com/bosonprotocol/core-components/issues/812)) ([f6a4d70](https://github.com/bosonprotocol/core-components/commit/f6a4d70c0ba93ed87a13160c821aa8118da9810b))
+* styles checkbox ([#837](https://github.com/bosonprotocol/core-components/issues/837)) ([98b01f3](https://github.com/bosonprotocol/core-components/commit/98b01f38325d02807677fad8487eb2e7565da7da))
+* type of select component when isMulti is true or false ([#783](https://github.com/bosonprotocol/core-components/issues/783)) ([1d6e60e](https://github.com/bosonprotocol/core-components/commit/1d6e60eb7944522e05f3a07f585e5c023bf7439c))
+* update file preview display in BaseUpload component ([#838](https://github.com/bosonprotocol/core-components/issues/838)) ([ab04d71](https://github.com/bosonprotocol/core-components/commit/ab04d71bd240df818d0975432359118b32031f5c))
+* value type ([#833](https://github.com/bosonprotocol/core-components/issues/833)) ([905d3e1](https://github.com/bosonprotocol/core-components/commit/905d3e11bf9f849082fa9e68afb6d091fc923fb8))
+* video upload component ([#822](https://github.com/bosonprotocol/core-components/issues/822)) ([2fe943c](https://github.com/bosonprotocol/core-components/commit/2fe943cee1dc817a5b855c685abfd6dc952699cd))
+
+
+### Features
+
+* add asBlob parameter to baseIpfsStorage to retrieve ipfs item as a blob ([#787](https://github.com/bosonprotocol/core-components/issues/787)) ([1b8a762](https://github.com/bosonprotocol/core-components/commit/1b8a762f3213aadd04ee9e72db11baae0111020f))
+* add children prop to checkbox ([#836](https://github.com/bosonprotocol/core-components/issues/836)) ([93cfec5](https://github.com/bosonprotocol/core-components/commit/93cfec5035ef411b3afa8750a348d7b6a91c5068))
+* add default tokens to account drawer and themes to connection error view ([#806](https://github.com/bosonprotocol/core-components/issues/806)) ([ae1a69a](https://github.com/bosonprotocol/core-components/commit/ae1a69acdf56cf3837973801e02ed1e00987ea13))
+* add estimateGas in Web3LibAdapter ([#803](https://github.com/bosonprotocol/core-components/issues/803)) ([3be665b](https://github.com/bosonprotocol/core-components/commit/3be665b1dca4249c627b89eb76bc6b61a914b2f0))
+* add more props to connect wallet button to further customise its look ([#798](https://github.com/bosonprotocol/core-components/issues/798)) ([cf2525a](https://github.com/bosonprotocol/core-components/commit/cf2525af2c9b6f48abd0d477826d240400238a27))
+* add more props to select ([#834](https://github.com/bosonprotocol/core-components/issues/834)) ([348fc0e](https://github.com/bosonprotocol/core-components/commit/348fc0ee8a50e383d29de35b3c74472248360802))
+* add onOptionClick to accountDrawer ([#801](https://github.com/bosonprotocol/core-components/issues/801)) ([0926e31](https://github.com/bosonprotocol/core-components/commit/0926e31334ce8e4f3c1bc6baee309677c7711ce1))
+* add prop to disable magic link ([#804](https://github.com/bosonprotocol/core-components/issues/804)) ([2857edd](https://github.com/bosonprotocol/core-components/commit/2857edd840a9ff95287b00c2c19943621c69ee56))
+* add upload file type  ([#835](https://github.com/bosonprotocol/core-components/issues/835)) ([dcba7e5](https://github.com/bosonprotocol/core-components/commit/dcba7e5cbc75fe2fefd5a31d868cdf3ae9ec2eea))
+* allow applying custom styles to basebutton and fix country select props ([#839](https://github.com/bosonprotocol/core-components/issues/839)) ([c0357de](https://github.com/bosonprotocol/core-components/commit/c0357de9b66c9b8673e145a5c354818484d438fe))
+* extend select props in select component in react kit ([#823](https://github.com/bosonprotocol/core-components/issues/823)) ([a39d82d](https://github.com/bosonprotocol/core-components/commit/a39d82d484b341ec2e89d79fa8ccb4d194b5a234))
+* fix collection skeleton ([#813](https://github.com/bosonprotocol/core-components/issues/813)) ([283f06f](https://github.com/bosonprotocol/core-components/commit/283f06f03450a0a7eb486554c2187206951cf05a))
+* homepage design fixes ([#830](https://github.com/bosonprotocol/core-components/issues/830)) ([fb6129f](https://github.com/bosonprotocol/core-components/commit/fb6129f253fbd4c0feeafc838f52b9b01de3fae2))
+* improve value types in select component ([#832](https://github.com/bosonprotocol/core-components/issues/832)) ([7b7c262](https://github.com/bosonprotocol/core-components/commit/7b7c262b38a551419618d7784cd557ded079526e))
+* make select take into account value type ([#831](https://github.com/bosonprotocol/core-components/issues/831)) ([82e189f](https://github.com/bosonprotocol/core-components/commit/82e189fd989323ffc421f149aa9468ae2c95f853))
+* product card update ([#808](https://github.com/bosonprotocol/core-components/issues/808)) ([1cf62d4](https://github.com/bosonprotocol/core-components/commit/1cf62d4b6426e43a5da4bffc76794b4eb5e45fe5))
+* remove magic provider if disabled ([#815](https://github.com/bosonprotocol/core-components/issues/815)) ([c08b17c](https://github.com/bosonprotocol/core-components/commit/c08b17c6c9c7a032bf8a435048c152d3d8e07822))
+* skeleton cards update ([#811](https://github.com/bosonprotocol/core-components/issues/811)) ([6754899](https://github.com/bosonprotocol/core-components/commit/67548999e700d07b6a967be82168b5f73a28ec92))
+
+
+
+
+
 # [0.33.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.32.0...@bosonprotocol/react-kit@0.33.0) (2024-07-29)
 
 

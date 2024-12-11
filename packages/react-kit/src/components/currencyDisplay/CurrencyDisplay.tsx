@@ -26,7 +26,7 @@ export enum Currencies {
 }
 
 interface CurrencyDisplayProps {
-  value?: number | string;
+  value?: string;
   currency: Currencies;
   height?: number;
   fontSize?: number | string;

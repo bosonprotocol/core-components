@@ -10,7 +10,7 @@ import ThemedButton, { bosonButtonThemes } from "../ui/ThemedButton";
 import { useBreakpoints } from "../../hooks/useBreakpoints";
 import { saveItemInStorage } from "../../hooks/storage/useBosonLocalStorage";
 import { SignOut, Wallet } from "phosphor-react";
-import { useIsMagicLoggedIn } from "../../hooks";
+import { useConfigContext, useIsMagicLoggedIn } from "../../hooks";
 import { useAccount, useChainId } from "../../hooks/connection/connection";
 import { useDisconnect } from "../../hooks/connection/useDisconnect";
 import { MagicLoginButton } from "../magicLink/Login";
@@ -79,6 +79,7 @@ export default function ConnectButton({
   showChangeWallet,
   ...rest
 }: Props) {
+  const { withMagicLink } = useConfigContext();
   const { isLteXS, isLteS } = useBreakpoints();
   const isSideBar = ["left", "right"].includes(navigationBarPosition);
   const buttonPadding = isSideBar ? "0.75rem 1rem" : "";
@@ -120,14 +121,16 @@ export default function ConnectButton({
 
                       return (
                         <>
-                          <MagicLoginButton
-                            buttonProps={{
-                              size: isLteXS ? "small" : "regular",
-                              theme: bosonButtonThemes({
-                                withBosonStyle: false
-                              })["primary"]
-                            }}
-                          />
+                          {withMagicLink && (
+                            <MagicLoginButton
+                              buttonProps={{
+                                size: isLteXS ? "small" : "regular",
+                                theme: bosonButtonThemes({
+                                  withBosonStyle: false
+                                })["primary"]
+                              }}
+                            />
+                          )}
                           <Button
                             onClick={() => {
                               saveItemInStorage(

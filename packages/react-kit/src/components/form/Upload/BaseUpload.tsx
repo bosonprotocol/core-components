@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/browser";
 import { useField } from "formik";
-import { Image, Trash, VideoCamera } from "phosphor-react";
+import { Image, Trash, VideoCamera, FilePdf, Upload, X } from "phosphor-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { loadAndSetMedia } from "../../../lib/base64/base64";
 import { bytesToSize } from "../../../lib/bytes/bytesToSize";
@@ -9,10 +9,11 @@ import { theme } from "../../../theme";
 import Loading from "../../ui/loading/LoadingWrapper";
 import ThemedButton from "../../ui/ThemedButton";
 import { Typography } from "../../ui/Typography";
-import Error from "../Error";
+import ErrorComponent from "../Error";
 import {
   FieldFileUploadWrapper,
   FieldInput,
+  PdfOnlyLabel,
   FileUploadWrapper,
   ImagePreview,
   VideoPreview
@@ -26,6 +27,8 @@ import UploadedFiles from "./UploadedFiles";
 import { WithUploadToIpfs, WithUploadToIpfsProps } from "./WithUploadToIpfs";
 import { useModal } from "../../modal/useModal";
 import { ImageEditorModal } from "./ImageEditorModal/ImageEditorModal";
+import { Grid } from "../../ui/Grid";
+import { UploadedSinglePdfFile } from "./UploadedSinglePdfFile";
 const colors = theme.colors.light;
 export type BaseUploadProps = UploadPropsWithNoIpfs;
 function BaseUpload({
@@ -52,6 +55,7 @@ function BaseUpload({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   removeFile,
   saveButtonTheme,
+  errorComponent,
   theme,
   ...props
 }: UploadPropsWithNoIpfs & WithUploadToIpfsProps) {
@@ -60,6 +64,7 @@ function BaseUpload({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [preview, setPreview] = useState<string | null>();
   const [field, meta, helpers] = useField(name);
+  const [errorMesage, setErrorMessage] = useState<string>();
 
   const handleLoading = useCallback(
     (loadingValue: boolean) => {
@@ -89,6 +94,9 @@ function BaseUpload({
   const isVideoOnly = mimetypes.every((mimetype) =>
     mimetype.startsWith("video/")
   );
+  const isPdfOnly = mimetypes.every((mimetype) =>
+    mimetype.startsWith("application/pdf")
+  );
 
   useEffect(() => {
     onFilesSelect?.(files);
@@ -112,6 +120,12 @@ function BaseUpload({
             setPreview(base64Uri);
           });
         }
+      } else if (isPdfOnly) {
+        if (withUpload) {
+          loadIpfsFile(files[0] as FileProps);
+        } else {
+          setPreview(files[0]?.name);
+        }
       }
     }
   }, [files]); // eslint-disable-line
@@ -123,12 +137,12 @@ function BaseUpload({
     }
     handleLoading(true);
     try {
-      const imagePreview = await loadMedia(fileSrc || "");
-      if (imagePreview) {
-        setPreview(imagePreview);
+      const videoPreview = await loadMedia(fileSrc || "");
+      if (videoPreview) {
+        setPreview(videoPreview);
       } else {
         console.warn(
-          `imagePreview ${imagePreview} is falsy in loadIpfsImagePreview`
+          `videoPreview ${videoPreview} is falsy in loadIpfsImagePreview`
         );
       }
     } catch (error) {
@@ -154,6 +168,27 @@ function BaseUpload({
         console.warn(
           `imagePreview ${imagePreview} is falsy in loadIpfsImagePreview`
         );
+      }
+    } catch (error) {
+      console.error(error);
+      Sentry.captureException(error);
+    } finally {
+      handleLoading(false);
+    }
+  };
+
+  const loadIpfsFile = async (file: FileProps) => {
+    const fileSrc = file && file?.src ? file?.src : false;
+    if (!fileSrc) {
+      return false;
+    }
+    try {
+      handleLoading(true);
+      const filePreview = await loadMedia(fileSrc || "");
+      if (filePreview) {
+        setPreview(files[0]?.name);
+      } else {
+        console.warn(`filePreview ${filePreview} is falsy in loadIpfsFile`);
       }
     } catch (error) {
       console.error(error);
@@ -216,16 +251,26 @@ function BaseUpload({
         helpers.setTouched(true);
       }
       handleLoading(true);
-      const files = await saveToIpfs(efiles);
-      if (files) {
-        setFiles(files);
-      } else {
-        setFiles([]);
-        console.warn(
-          `There has been an error because 'files' ${files} is falsy in handleSave`
-        );
+      try {
+        const files = await saveToIpfs(efiles, { throwOnError: true });
+        setErrorMessage(undefined);
+        if (files) {
+          setFiles(files);
+        } else {
+          setFiles([]);
+          console.warn(
+            `There has been an error because 'files' ${files} is falsy in handleSave`
+          );
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          setErrorMessage(err.message);
+        } else {
+          setErrorMessage("Something went wrong");
+        }
+      } finally {
+        handleLoading(false);
       }
-      handleLoading(false);
     },
     [meta.touched, handleLoading, saveToIpfs, helpers, setFiles]
   );
@@ -234,6 +279,7 @@ function BaseUpload({
     borderRadius: borderRadius ? `${borderRadius}${borderRadiusUnit}` : "",
     width: width ? `100%` : ""
   };
+  const showPreview = !!field.value && field.value?.length !== 0 && !!preview;
   return (
     <>
       {withEditor && showEditor && (
@@ -262,11 +308,17 @@ function BaseUpload({
           }}
         />
       )}
-      <FieldFileUploadWrapper {...wrapperProps} $disabled={!!disabled}>
+      {errorMesage && errorComponent?.(errorMesage)}
+      <FieldFileUploadWrapper
+        {...wrapperProps}
+        $isPdfOnly={isPdfOnly}
+        $disabled={!!disabled}
+      >
         <FieldInput
           {...props}
           hidden
           type="file"
+          id={`file-${name}`}
           accept={accept}
           multiple={multiple}
           onChange={async (e) => {
@@ -302,64 +354,111 @@ function BaseUpload({
             <>{trigger}</>
           </ThemedButton>
         ) : (
-          <FileUploadWrapper
-            data-disabled={disabled}
-            onClick={handleChooseFile}
-            $error={errorMessage}
-            style={style}
-            theme={theme?.triggerTheme}
-          >
-            {isLoading ? (
-              <Loading size={2} />
-            ) : (
-              <>
-                {field.value && field.value?.length !== 0 && preview ? (
-                  <>
-                    {isVideoOnly ? (
-                      <VideoPreview
-                        src={
-                          preview?.startsWith("http")
-                            ? preview
-                            : "data:video/mp4;base64," +
-                              preview?.substring(
-                                "data:application/octet-stream;base64,".length
-                              )
-                        }
-                        autoPlay
-                        muted
-                        loop
-                      />
-                    ) : (
-                      <ImagePreview
-                        style={{ ...imgPreviewStyle }}
-                        src={preview}
-                      />
-                    )}
-                  </>
-                ) : isVideoOnly ? (
-                  <VideoCamera size={24} />
-                ) : (
-                  <Image size={24} />
-                )}
-                {placeholder && (
-                  <Typography tag="p" marginBottom={0} textAlign="center">
-                    {placeholder}
-                  </Typography>
-                )}
-              </>
-            )}
-          </FileUploadWrapper>
+          (!isPdfOnly || (isPdfOnly && files.length > 0 && !multiple)) && (
+            <FileUploadWrapper
+              $isPdfOnly={isPdfOnly}
+              data-disabled={disabled}
+              onClick={() => {
+                if (!isPdfOnly) {
+                  handleChooseFile();
+                }
+              }}
+              $error={errorMessage}
+              style={{ ...style, ...theme?.overrides }}
+              theme={theme?.triggerTheme}
+            >
+              {isLoading ? (
+                <Loading size={2} />
+              ) : (
+                <>
+                  {showPreview ? (
+                    <>
+                      {isVideoOnly ? (
+                        <VideoPreview
+                          src={
+                            preview?.startsWith("http")
+                              ? preview
+                              : preview?.startsWith(
+                                    "data:application/octet-stream;base64,"
+                                  )
+                                ? "data:video/mp4;base64," +
+                                  preview?.substring(
+                                    "data:application/octet-stream;base64,"
+                                      .length
+                                  )
+                                : preview
+                          }
+                          autoPlay
+                          muted
+                          loop
+                        />
+                      ) : isPdfOnly ? (
+                        <UploadedSinglePdfFile
+                          fileName={preview}
+                          onXClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleRemoveAllFiles();
+                          }}
+                        />
+                      ) : (
+                        <ImagePreview
+                          style={{ ...imgPreviewStyle }}
+                          src={preview}
+                        />
+                      )}
+                    </>
+                  ) : isVideoOnly ? (
+                    <VideoCamera size={24} />
+                  ) : isPdfOnly ? (
+                    <FilePdf size={24} />
+                  ) : (
+                    <Image size={24} />
+                  )}
+                  {placeholder && !showPreview && (
+                    <Typography
+                      tag="p"
+                      marginBottom={0}
+                      textAlign="center"
+                      {...(isPdfOnly && { marginTop: 0 })}
+                    >
+                      {placeholder}
+                    </Typography>
+                  )}
+                </>
+              )}
+            </FileUploadWrapper>
+          )
         )}
-        {!disabled && field.value && field.value?.length !== 0 && preview && (
-          <div onClick={handleRemoveAllFiles} data-remove style={style}>
-            <Trash size={24} color={colors.white} />
-          </div>
-        )}
+        {!disabled &&
+          field.value &&
+          field.value?.length !== 0 &&
+          preview &&
+          !isPdfOnly && (
+            <div onClick={handleRemoveAllFiles} data-remove style={style}>
+              <Trash size={24} color={colors.white} />
+            </div>
+          )}
         {multiple && (
-          <UploadedFiles files={files} handleRemoveFile={handleRemoveFile} />
+          <UploadedFiles
+            files={files}
+            isPdfOnly={isPdfOnly}
+            handleRemoveFile={handleRemoveFile}
+          />
+        )}
+        {isPdfOnly && (
+          <Grid>
+            <PdfOnlyLabel
+              htmlFor={`file-${name}`}
+              $disabled={disabled}
+              style={{ ...theme?.uploadButton }}
+            >
+              Upload file <Upload size={20} />
+            </PdfOnlyLabel>
+          </Grid>
         )}
       </FieldFileUploadWrapper>
-      <Error display={displayError} message={errorMessage} />
+      <ErrorComponent display={displayError} message={errorMessage} />
     </>
   );
 }
