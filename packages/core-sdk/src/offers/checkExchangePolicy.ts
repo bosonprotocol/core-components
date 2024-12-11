@@ -1,5 +1,5 @@
 import { buildYup } from "schema-to-yup";
-import { SchemaOf } from "yup";
+import { Schema } from "yup";
 import { OfferFieldsFragment } from "../subgraph";
 
 export type CheckExchangePolicyResult = {
@@ -55,7 +55,7 @@ export function checkExchangePolicy(
   offerData: OfferFieldsFragment,
   rules: CheckExchangePolicyRules
 ): CheckExchangePolicyResult {
-  const baseSchema: SchemaOf<unknown> = buildYup(
+  const baseSchema: Schema<unknown> = buildYup(
     rules.yupSchema,
     rules.yupConfig
   );

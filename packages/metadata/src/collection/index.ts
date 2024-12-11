@@ -1,9 +1,9 @@
 import { buildYup } from "schema-to-yup";
-import { SchemaOf } from "yup";
+import { Schema } from "yup";
 import schema from "./schema.json";
 import { IMetadata } from "@bosonprotocol/metadata-storage";
 
-export const collectionMetadataSchema: SchemaOf<CollectionMetadata> = buildYup(
+export const collectionMetadataSchema: Schema<CollectionMetadata> = buildYup(
   schema,
   {}
 );

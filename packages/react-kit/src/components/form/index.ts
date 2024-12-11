@@ -12,5 +12,6 @@ export * from "./BaseTagsInput";
 export * from "./BaseTextArea";
 export { default as BaseUpload, BaseUploadProps } from "./Upload/BaseUpload";
 export { Upload, UploadProps } from "./Upload/Upload";
+export * from "./Upload/UploadedSinglePdfFile";
 export * from "./types";
 export * from "./Field.styles";

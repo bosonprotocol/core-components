@@ -24,7 +24,8 @@ import {
   updateSellerMetaTx,
   getSellerMetadataUri,
   createOfferWithCondition,
-  getCollectionMetadataUri
+  getCollectionMetadataUri,
+  createRandomWallet
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
@@ -134,7 +135,7 @@ describe("meta-tx", () => {
       );
       expect(seller).toBeTruthy();
 
-      const randomWallet = Wallet.createRandom();
+      const randomWallet = createRandomWallet();
       const metadataUri = await getSellerMetadataUri(sellerCoreSDK);
 
       // Random seller signs meta tx
@@ -226,7 +227,7 @@ describe("meta-tx", () => {
         sellerWallet1.address
       );
       let nonce = Date.now();
-      const randomWallet = Wallet.createRandom();
+      const randomWallet = createRandomWallet();
       const randomCoreSDK = initCoreSDKWithWallet(randomWallet);
       const metadataUri = await getSellerMetadataUri(seller1CoreSDK);
 
@@ -1307,7 +1308,7 @@ describe("meta-tx", () => {
     test("can approve preminted tokens for contract", async () => {
       const createdOffer = await createOffer(sellerCoreSDK);
 
-      const openseaConduit = Wallet.createRandom().address;
+      const openseaConduit = createRandomWallet().address;
       const isApprovedForAllBefore = await sellerCoreSDK.isApprovedForAll(
         openseaConduit,
         { owner: createdOffer.seller.voucherCloneAddress }
@@ -1363,7 +1364,7 @@ describe("meta-tx", () => {
       const tokenId = resultRange.start.toString();
 
       // Create the seaport order
-      const openseaConduit = Wallet.createRandom().address;
+      const openseaConduit = createRandomWallet().address;
       const order = createSeaportOrder({
         offerer: createdOffer.seller.voucherCloneAddress,
         token: createdOffer.seller.voucherCloneAddress,

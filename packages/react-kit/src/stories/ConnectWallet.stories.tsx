@@ -12,12 +12,15 @@ import {
   ConnectWalletProps,
   getEnvConfigs,
   EnvironmentType,
-  theme
+  theme,
+  ConfigProvider
 } from "../index";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { bosonButtonThemeKeys } from "../components/ui/ThemedButton";
 import { CSSProperties, createGlobalStyle } from "styled-components";
 import { Wallet } from "phosphor-react";
+import { ReduxProvider } from "../components/widgets/ReduxProvider";
+import { BlockNumberProvider } from "../hooks/contracts/useBlockNumber";
 const colors = theme.colors.light;
 const successButtonTheme: ConnectWalletProps["connectWalletButtonTheme"] = {
   ...bosonButtonThemes({ withBosonStyle: false })["primary"],
@@ -33,6 +36,7 @@ const envName =
 const envConfig = getEnvConfigs(envName);
 const config = envConfig[0];
 const configId = config.configId;
+console.log({ configId });
 const ColorGlobalStyle = createGlobalStyle<{ color: CSSProperties["color"] }>`
   html, body{
     color: ${({ color }) => color};
@@ -93,6 +97,10 @@ const Component = ({
   withMagicLogin: boolean | undefined;
   onUserDisconnect: () => unknown;
 }) => {
+  const infuraKey = process.env.STORYBOOK_REACT_APP_INFURA_KEY || "";
+  const walletConnectProjectId =
+    process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID || "";
+  const withCustomReduxContext = false;
   return (
     <HashRouter>
       <Routes>
@@ -101,126 +109,141 @@ const Component = ({
           element={
             <header>
               <ColorGlobalStyle color={textColor} />
-              <Web3Provider
-                configProps={{
-                  configId,
-                  dateFormat: "",
-                  defaultCurrencySymbol: "",
-                  defaultCurrencyTicker: "",
-                  envName,
-                  infuraKey: process.env.STORYBOOK_REACT_APP_INFURA_KEY || "",
-                  magicLinkKey:
-                    process.env.STORYBOOK_REACT_APP_MAGIC_API_KEY || "",
-                  shortDateFormat: "",
-                  walletConnectProjectId:
-                    process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID || "",
-                  withWeb3React: true,
-                  externalConnectedAccount: undefined,
-                  externalConnectedChainId: undefined,
-                  externalConnectedSigner: undefined,
-                  metaTx: undefined,
-                  usePendingTransactions: undefined,
-                  withExternalConnectionProps: false,
-                  withCustomReduxContext: false
-                }}
-              >
-                <Grid>
-                  <ChainSelector
-                    leftAlign={true}
-                    backgroundColor={chainSelectorBackgroundColor}
-                    config={config}
-                  />
-                  <ConnectWallet
-                    showStatusIcon={showStatusIcon}
-                    connectWalletChild={connectWalletChild}
-                    rightConnectedChild={rightConnectedChild}
-                    connectWalletButtonTheme={{
-                      ...(connectWalletSuccessButtonThemeKey
-                        ? bosonButtonThemes({ withBosonStyle: false })[
-                            connectWalletSuccessButtonThemeKey
-                          ]
-                        : successButtonTheme),
-                      borderRadius: connectWalletBorderRadius,
-                      gap: "2px"
+              <ReduxProvider withCustomContext={withCustomReduxContext}>
+                <Web3Provider
+                  configId={configId}
+                  envName={envName}
+                  infuraKey={infuraKey}
+                  walletConnectProjectId={walletConnectProjectId}
+                >
+                  <ConfigProvider
+                    {...{
+                      configId,
+                      dateFormat: "",
+                      defaultCurrencySymbol: "",
+                      defaultCurrencyTicker: "",
+                      envName,
+                      infuraKey,
+                      magicLinkKey:
+                        process.env.STORYBOOK_REACT_APP_MAGIC_API_KEY || "",
+                      shortDateFormat: "",
+                      walletConnectProjectId,
+                      withWeb3React: true,
+                      externalConnectedAccount: undefined,
+                      externalConnectedChainId: undefined,
+                      externalConnectedSigner: undefined,
+                      metaTx: undefined,
+                      usePendingTransactions: undefined,
+                      withExternalConnectionProps: false,
+                      withCustomReduxContext
                     }}
-                    connectedButtonTheme={{
-                      ...(connectWalletSuccessButtonThemeKey
-                        ? bosonButtonThemes({ withBosonStyle: false })[
-                            connectWalletSuccessButtonThemeKey
-                          ]
-                        : successButtonTheme),
-                      borderRadius: connectWalletBorderRadius,
-                      gap: "2px"
-                    }}
-                    errorButtonTheme={{
-                      ...(connectWalletErrorButtonThemeKey
-                        ? bosonButtonThemes({ withBosonStyle: false })[
-                            connectWalletErrorButtonThemeKey
-                          ]
-                        : errorButtonTheme),
-                      borderRadius: connectWalletBorderRadius,
-                      gap: "2px"
-                    }}
-                  />
-                </Grid>
-                <Portal>
-                  <AccountDrawer
-                    backgroundColor={accountDrawerBackgroundColor}
-                    buyCryptoTheme={{
-                      ...(accountDrawerBuyCryptoThemeKey
-                        ? bosonButtonThemes({ withBosonStyle: false })[
-                            accountDrawerBuyCryptoThemeKey
-                          ]
-                        : successButtonTheme),
-                      borderRadius: accountDrawerBuyCryptoBorderRadiusPx
-                    }}
-                    disconnectBorderRadius={accountDrawerDisconnectBorderRadius}
-                    disconnectBackgroundColor={
-                      accountDrawerDisconnectBackgroundColor
-                    }
-                    disconnectColor={accountDrawerDisconnectColor}
-                    onUserDisconnect={onUserDisconnect}
-                    walletModalProps={{
-                      withMagicLogin,
-                      optionProps: {
-                        backgroundColor: walletBackgroundColor,
-                        color: walletColor,
-                        borderRadius: walletBorderRadius,
-                        iconBorderRadius: walletIconBorderRadius,
-                        hoverFocusBackgroundColor:
-                          walletHoverFocusBackgroundColor,
-                        hoverColor: walletHoverColor
-                      },
-                      magicLoginButtonProps: {
-                        buttonProps: {
-                          theme: {
-                            ...(magicLoginButtonThemeKey
+                  >
+                    <BlockNumberProvider>
+                      <Grid>
+                        <ChainSelector
+                          leftAlign={true}
+                          backgroundColor={chainSelectorBackgroundColor}
+                          config={config}
+                        />
+                        <ConnectWallet
+                          showStatusIcon={showStatusIcon}
+                          connectWalletChild={connectWalletChild}
+                          rightConnectedChild={rightConnectedChild}
+                          connectWalletButtonTheme={{
+                            ...(connectWalletSuccessButtonThemeKey
                               ? bosonButtonThemes({ withBosonStyle: false })[
-                                  magicLoginButtonThemeKey
+                                  connectWalletSuccessButtonThemeKey
                                 ]
                               : successButtonTheme),
-                            borderRadius: magicLoginButtonBorderRadiusPx
+                            borderRadius: connectWalletBorderRadius,
+                            gap: "2px"
+                          }}
+                          connectedButtonTheme={{
+                            ...(connectWalletSuccessButtonThemeKey
+                              ? bosonButtonThemes({ withBosonStyle: false })[
+                                  connectWalletSuccessButtonThemeKey
+                                ]
+                              : successButtonTheme),
+                            borderRadius: connectWalletBorderRadius,
+                            gap: "2px"
+                          }}
+                          errorButtonTheme={{
+                            ...(connectWalletErrorButtonThemeKey
+                              ? bosonButtonThemes({ withBosonStyle: false })[
+                                  connectWalletErrorButtonThemeKey
+                                ]
+                              : errorButtonTheme),
+                            borderRadius: connectWalletBorderRadius,
+                            gap: "2px"
+                          }}
+                        />
+                      </Grid>
+                      <Portal>
+                        <AccountDrawer
+                          backgroundColor={accountDrawerBackgroundColor}
+                          buyCryptoTheme={{
+                            ...(accountDrawerBuyCryptoThemeKey
+                              ? bosonButtonThemes({ withBosonStyle: false })[
+                                  accountDrawerBuyCryptoThemeKey
+                                ]
+                              : successButtonTheme),
+                            borderRadius: accountDrawerBuyCryptoBorderRadiusPx
+                          }}
+                          disconnectBorderRadius={
+                            accountDrawerDisconnectBorderRadius
                           }
-                        }
-                      },
-                      connectionErrorProps: {
-                        tryAgainTheme: connectionErrorTryAgainButtonThemeKey
-                          ? bosonButtonThemes({ withBosonStyle: false })[
-                              connectionErrorTryAgainButtonThemeKey
-                            ]
-                          : successButtonTheme,
-                        backToWalletSelectionTheme:
-                          connectionErrorBackToWalletSelectionButtonThemeKey
-                            ? bosonButtonThemes({ withBosonStyle: false })[
+                          disconnectBackgroundColor={
+                            accountDrawerDisconnectBackgroundColor
+                          }
+                          disconnectColor={accountDrawerDisconnectColor}
+                          onUserDisconnect={onUserDisconnect}
+                          walletModalProps={{
+                            withMagicLogin,
+                            optionProps: {
+                              backgroundColor: walletBackgroundColor,
+                              color: walletColor,
+                              borderRadius: walletBorderRadius,
+                              iconBorderRadius: walletIconBorderRadius,
+                              hoverFocusBackgroundColor:
+                                walletHoverFocusBackgroundColor,
+                              hoverColor: walletHoverColor
+                            },
+                            magicLoginButtonProps: {
+                              buttonProps: {
+                                theme: {
+                                  ...(magicLoginButtonThemeKey
+                                    ? bosonButtonThemes({
+                                        withBosonStyle: false
+                                      })[magicLoginButtonThemeKey]
+                                    : successButtonTheme),
+                                  borderRadius: magicLoginButtonBorderRadiusPx
+                                }
+                              }
+                            },
+                            connectionErrorProps: {
+                              tryAgainTheme:
+                                connectionErrorTryAgainButtonThemeKey
+                                  ? bosonButtonThemes({
+                                      withBosonStyle: false
+                                    })[connectionErrorTryAgainButtonThemeKey]
+                                  : successButtonTheme,
+                              backToWalletSelectionTheme:
                                 connectionErrorBackToWalletSelectionButtonThemeKey
-                              ]
-                            : successButtonTheme
-                      },
-                      PrivacyPolicy: () => <div>privacy policy</div>
-                    }}
-                  />
-                </Portal>
-              </Web3Provider>
+                                  ? bosonButtonThemes({
+                                      withBosonStyle: false
+                                    })[
+                                      connectionErrorBackToWalletSelectionButtonThemeKey
+                                    ]
+                                  : successButtonTheme
+                            },
+                            PrivacyPolicy: () => <div>privacy policy</div>
+                          }}
+                        />
+                      </Portal>
+                    </BlockNumberProvider>
+                  </ConfigProvider>
+                </Web3Provider>
+              </ReduxProvider>
             </header>
           }
         />
@@ -300,8 +323,8 @@ export const BosonTheme = {
     accountDrawerBuyCryptoThemeKey: undefined,
     accountDrawerDisconnectBackgroundColor: colors.green,
     accountDrawerDisconnectColor: colors.black,
-    accountDrawerDisconnectBorderRadius: "0px",
-    walletBorderRadius: "0px",
+    accountDrawerDisconnectBorderRadius: "12px",
+    walletBorderRadius: "12px",
     walletIconBorderRadius: "0px",
     walletBackgroundColor: "var(--secondaryBgColor)",
     walletColor: colors.white,

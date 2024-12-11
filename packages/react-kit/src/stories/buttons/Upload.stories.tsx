@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta } from "@storybook/react";
-import { BaseUploadProps, QueryClientProviderCustom, Upload } from "../..";
+import { QueryClientProviderCustom, Upload, UploadProps } from "../..";
 import { EnvironmentProvider } from "../../components/environment/EnvironmentProvider";
 import { IpfsProvider } from "../../components/ipfs/IpfsProvider";
 import { Formik } from "formik";
@@ -72,13 +72,13 @@ const BASE_ARGS = {
   placeholder: "",
   withEditor: false,
   saveButtonTheme: undefined
-} as const satisfies BaseUploadProps;
+} as const satisfies UploadProps;
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 export const Base = {
   args: {
     ...BASE_ARGS
-  } satisfies BaseUploadProps
+  } satisfies UploadProps
 };
 
 export const VideoOnly = {
@@ -86,13 +86,24 @@ export const VideoOnly = {
     ...BASE_ARGS,
     accept: "video/mp4",
     withUpload: false
-  } satisfies BaseUploadProps
+  } satisfies UploadProps
 };
 
 export const PdfOnly = {
   args: {
     ...BASE_ARGS,
+    accept: "application/pdf"
+  } satisfies UploadProps
+};
+
+export const PdfOnlyCustomTheme = {
+  args: {
+    ...BASE_ARGS,
     accept: "application/pdf",
-    placeholder: "Upload pdf"
-  } satisfies BaseUploadProps
+    theme: {
+      uploadButton: {
+        borderRadius: "32px"
+      }
+    }
+  } satisfies UploadProps
 };

@@ -7,11 +7,11 @@ import { CancelExchange, CancelExchangeProps } from "./CancelExchange";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
 import { theme } from "../../../../../../theme";
 import { useAccount } from "../../../../../../hooks/connection/connection";
+import { BosonLogo } from "../../../common/BosonLogo";
 import {
   RedemptionWidgetAction,
-  useRedemptionContext
-} from "../../../../../widgets/redemption/provider/RedemptionContext";
-import { BosonLogo } from "../../../common/BosonLogo";
+  useRedemptionWidgetContext
+} from "../../../../../widgets/redemption/provider/RedemptionWidgetContext";
 
 const colors = theme.colors.light;
 export interface CancellationViewProps {
@@ -26,7 +26,7 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
 }) => {
   const { address } = useAccount();
   const dispatch = useNonModalContext();
-  const { widgetAction } = useRedemptionContext();
+  const { widgetAction } = useRedemptionWidgetContext();
   const isCancelModeOnly = widgetAction === RedemptionWidgetAction.CANCEL_FORM;
   useEffect(() => {
     dispatch({

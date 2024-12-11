@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.35.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.34.0...@bosonprotocol/react-kit@0.35.0) (2024-11-22)
+
+
+### Features
+
+* add getSupportedChainIdsFromWalletConnectSession ([#855](https://github.com/bosonprotocol/core-components/issues/855)) ([6863857](https://github.com/bosonprotocol/core-components/commit/68638576d4067bacd6135aa43f5d6f9a2369d3b9))
+
+
+
+
+
 # [0.34.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.33.0...@bosonprotocol/react-kit@0.34.0) (2024-11-20)
 
 

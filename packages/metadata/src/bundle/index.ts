@@ -1,10 +1,10 @@
 import { buildYup } from "schema-to-yup";
-import { SchemaOf } from "yup";
+import { Schema } from "yup";
 import schema from "./schema.json";
 import { RNftMetadata } from "../rNFT";
 import { Media } from "../common";
 
-export const bundleMetadataSchema: SchemaOf<BundleMetadata> = buildYup(
+export const bundleMetadataSchema: Schema<BundleMetadata> = buildYup(
   schema,
   {}
 );

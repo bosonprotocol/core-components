@@ -23,11 +23,9 @@ import SuccessTransactionToast from "../../../../../toasts/SuccessTransactionToa
 import { Grid } from "../../../../../ui/Grid";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import { Spinner } from "../../../../../ui/loading/Spinner";
-import {
-  RedemptionWidgetAction,
-  useRedemptionContext
-} from "../../../../../widgets/redemption/provider/RedemptionContext";
 import DetailTable from "../../../common/detail/DetailTable";
+import { RedemptionWidgetAction } from "../../../../../widgets";
+import { useRedemptionWidgetContext } from "../../../../../widgets/redemption/provider/RedemptionWidgetContext";
 
 const colors = theme.colors.light;
 
@@ -110,7 +108,7 @@ export function CancelExchange({
     exchange,
     exchange.offer.price
   );
-  const { widgetAction } = useRedemptionContext();
+  const { widgetAction } = useRedemptionWidgetContext();
   const isCancelModeOnly = widgetAction === RedemptionWidgetAction.CANCEL_FORM;
   return (
     <>
