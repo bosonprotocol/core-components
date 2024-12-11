@@ -1,4 +1,4 @@
-import { CSSProperties, styled } from "styled-components";
+import { CSSProperties } from "styled-components";
 import React, { useMemo, useState } from "react";
 import { Typography, TypographyProps } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
@@ -10,8 +10,8 @@ import { isTruthy } from "../../../../types/helpers";
 import { useModal } from "../../../modal/useModal";
 import { RequestShipmentModalProps } from "../../../modal/components/RequestShipment/RequestShipmentModal";
 
-const Wrapper = styled(Grid)``;
-const ContentWrapper = styled(Grid)``;
+const Wrapper = Grid;
+const ContentWrapper = Grid;
 
 type SectionThemeProps = Partial<{
   title: {
@@ -110,6 +110,7 @@ export const ProductsRoblox = ({
             bundleUuid={bundleUuid}
             lookAndFeel="regular"
             hideModal={clearSelection}
+            withExternalSigner={false}
           />
         ) : (
           <>
