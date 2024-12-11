@@ -69,7 +69,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         openseaWrapper: "0x6e9C25b48161A2aC6A854af3bc596d3190F0B5A3"
       },
       metaTx: {
-        relayerUrl: "https://api.biconomy.io",
+        relayerUrl:
+          "https://meta-tx-gateway-testing-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: {
@@ -131,7 +132,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         openseaWrapper: "0x6678663A66C228BA79C8B2ABB4b4D797C6215026"
       },
       metaTx: {
-        relayerUrl: "https://api.biconomy.io",
+        relayerUrl:
+          "https://meta-tx-gateway-staging-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: {
@@ -191,7 +193,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         forwarder: "0xf0511f123164602042ab2bCF02111fA5D3Fe97CD"
       },
       metaTx: {
-        relayerUrl: "https://api.biconomy.io",
+        relayerUrl: "https://meta-tx-gateway-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: {
