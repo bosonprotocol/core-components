@@ -1,0 +1,145 @@
+import { GridContainer } from "../../../ui/GridContainer";
+import { ProductCard } from "../../../productCard/ProductCard";
+import styled, { css } from "styled-components";
+import { Currencies } from "../../../currencyDisplay/CurrencyDisplay";
+import { useAccount, useIpfsContext } from "../../../../hooks";
+import { Button } from "../../../buttons/Button";
+import React from "react";
+import { utils } from "ethers";
+import { CameraSlash } from "phosphor-react";
+import { theme } from "../../../../theme";
+import {
+  getFallbackImageUrl,
+  getImageUrl
+} from "../../../../lib/images/images";
+import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
+import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
+import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
+import { CommitButtonView } from "../../../buttons/CommitButtonView";
+import { ProductType } from "../../../productCard/const";
+import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
+import { ButtonThemeProps } from "./types";
+import { BosonRobloxProductWithAvailability } from "../../../../hooks/roblox/backend.types";
+import { Typography } from "../../../ui/Typography";
+import { isTruthy } from "../../../../types/helpers";
+
+const colors = theme.colors.light;
+
+const commonCardStyles = css`
+  background: transparent;
+  box-shadow: unset;
+  padding: 0;
+  > * {
+    padding-top: 0;
+  }
+`;
+const TransparentProductCard = styled(ProductCard)`
+  ${commonCardStyles}
+`;
+const TransparentSkeletonProductCard = styled(ProductCardSkeleton)`
+  ${commonCardStyles}
+`;
+
+export type RobloxProductsGridProps = {
+  isLoading: boolean;
+  products: BosonRobloxProductWithAvailability[] | undefined;
+  numProducts?: number;
+  walletButtonTheme: ButtonThemeProps;
+  handleSetProductUuid: (uuid: string) => void;
+  handleSetBundleUuid: (uuid: string) => void;
+};
+export const RobloxProductsGrid = ({
+  isLoading,
+  numProducts,
+  products,
+  walletButtonTheme,
+  handleSetBundleUuid,
+  handleSetProductUuid
+}: RobloxProductsGridProps) => {
+  const { address } = useAccount();
+  const { ipfsImageGateway } = useIpfsContext();
+  return (
+    <GridContainer columnGap="2rem" rowGap="2rem" width="100%">
+      {isLoading ? (
+        new Array(numProducts || 3).fill(null).map((_, index) => {
+          return <TransparentSkeletonProductCard key={index} />;
+        })
+      ) : products?.length ? (
+        products
+          .filter((robloxProduct) => robloxProduct.offer.metadata)
+          .map((robloxProduct) => {
+            const { exchangeToken, uuid, offer } = robloxProduct;
+            console.log({ robloxProduct });
+            const { price, metadata } = offer;
+            if (!(isProductV1(offer) || isBundle(offer))) {
+              return null;
+            }
+            const bundleUuid = isBundle(offer) ? offer.metadata.bundleUuid : "";
+
+            const { mainImage } = getOfferDetails(offer);
+            const imageOptimizationOptions = {
+              height: 500
+            };
+            const imageSrc = getImageUrl(
+              (mainImage || metadata?.image) ?? "",
+              ipfsImageGateway,
+              imageOptimizationOptions
+            );
+
+            return (
+              <TransparentProductCard
+                key={uuid}
+                productType={
+                  isBundle(offer)
+                    ? ProductType.phygital
+                    : isProductV1(offer)
+                      ? ProductType.physical
+                      : ProductType.digital
+                }
+                avatarName=""
+                currency={exchangeToken.symbol as Currencies}
+                price={utils.formatUnits(price || "0", exchangeToken.decimals)}
+                isHoverDisabled
+                isImageFitCover
+                label={undefined}
+                title={metadata?.name ?? ""}
+                imageProps={{
+                  src: imageSrc,
+                  fallbackSrc: getFallbackImageUrl(
+                    imageSrc,
+                    ipfsImageGateway,
+                    imageOptimizationOptions
+                  ),
+                  withLoading: true,
+                  errorConfig: {
+                    errorIcon: <CameraSlash size={32} color={colors.white} />
+                  }
+                }}
+                CTAOnHover={
+                  !address ? (
+                    <ConnectWalletWithLogic
+                      buttonThemeProps={walletButtonTheme}
+                      connectWalletButtonDisabled={false}
+                    />
+                  ) : (
+                    <CommitButtonView
+                      onClick={() => {
+                        if (isProductV1(offer) && uuid) {
+                          handleSetProductUuid(uuid);
+                        } else if (isBundle(offer) && bundleUuid) {
+                          handleSetBundleUuid(bundleUuid);
+                        }
+                      }}
+                    />
+                  )
+                }
+              />
+            );
+          })
+          .filter(isTruthy)
+      ) : (
+        <Typography>No products found</Typography>
+      )}
+    </GridContainer>
+  );
+};

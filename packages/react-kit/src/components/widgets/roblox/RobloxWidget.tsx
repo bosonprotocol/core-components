@@ -1,4 +1,4 @@
-import { CSSProperties, styled } from "styled-components";
+import { CSSProperties } from "styled-components";
 import { ConnectRoblox, ConnectRobloxProps } from "./components/ConnectRoblox";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Grid } from "../../ui/Grid";
@@ -8,8 +8,11 @@ import {
 } from "./components/ProductsRoblox";
 import { CommitWidgetProviders } from "../commit/CommitWidgetProviders";
 import { CommitWidgetProps } from "../commit/CommitWidget";
+import { Typography } from "../../ui/Typography";
+import { AccountDrawer } from "../../wallet2/accountDrawer";
+import { Portal } from "../../portal/Portal";
 
-const Wrapper = styled(Grid)``;
+const Wrapper = Grid;
 const numSteps = 3;
 const numGaps = numSteps - 1;
 export type RobloxWidgetProps = {
@@ -21,6 +24,7 @@ export type RobloxWidgetProps = {
     | "envName"
     | "sellerId"
     | "requestShipmentProps"
+    | "walletButtonTheme"
   >;
   configProps: Omit<
     CommitWidgetProps,
@@ -77,11 +81,72 @@ export const RobloxWidget = ({
         <ConnectRoblox {...connectProps} ref={singleStepConnectRobloxRef} />
         <ProductsRoblox
           {...productsGridProps}
+          walletButtonTheme={connectProps.theme.walletCard.button}
           requestShipmentProps={configProps}
           maxWidth={singleStepWidth}
           sellerId={sellerId}
         />
       </Wrapper>
+      <Portal>
+        <AccountDrawer
+          backgroundColor="white"
+          buyCryptoTheme={connectProps.theme?.walletCard.button.active}
+          disconnectBorderRadius={
+            connectProps.theme.walletCard.button.active.borderRadius
+          }
+          disconnectBackgroundColor={
+            connectProps.theme.walletCard.button.active.background
+          }
+          disconnectColor={connectProps.theme.walletCard.button.active.color}
+          walletModalProps={{
+            withMagicLogin: false,
+            optionProps: {
+              backgroundColor:
+                connectProps.theme.walletCard.button.active.background,
+              color: connectProps.theme.walletCard.button.active.color,
+              borderRadius:
+                connectProps.theme.walletCard.button.active.borderRadius,
+              iconBorderRadius:
+                connectProps.theme.walletCard.button.active.borderRadius,
+              hoverFocusBackgroundColor:
+                connectProps.theme.walletCard.button.active.hover?.background,
+              hoverColor:
+                connectProps.theme.walletCard.button.active.hover?.color
+            },
+            connectionErrorProps: {
+              tryAgainTheme: connectProps.theme.walletCard.button.active,
+              backToWalletSelectionTheme:
+                connectProps.theme.walletCard.button.active
+            },
+            PrivacyPolicy: () => (
+              <Typography
+                style={{ color: "rgb(9, 24, 44)", fontSize: "0.75rem" }}
+                display="block"
+              >
+                By connecting a wallet, you agree to Boson App 's{" "}
+                <a
+                  href="https://bosonapp.io/#/terms-and-conditions"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  style={{ fontSize: "inherit" }}
+                >
+                  Terms & Conditions
+                </a>{" "}
+                and consent to its{" "}
+                <a
+                  href="https://bosonapp.io/#/privacy-policy"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  style={{ fontSize: "inherit" }}
+                >
+                  Privacy Policy
+                </a>
+                . (Last Updated 18 August 2023)
+              </Typography>
+            )
+          }}
+        />
+      </Portal>
     </CommitWidgetProviders>
   );
 };

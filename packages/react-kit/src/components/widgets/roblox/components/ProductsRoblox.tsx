@@ -1,14 +1,16 @@
 import { CSSProperties } from "styled-components";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Typography, TypographyProps } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
-import { subgraph } from "@bosonprotocol/core-sdk";
 import { CommitModalWithOffer } from "../../commit/CommitModalWithOffer";
-import { ProductsGrid } from "./ProductsGrid";
-import useProductByOfferId from "../../../../hooks/products/useProductByOfferId";
-import { isTruthy } from "../../../../types/helpers";
+import { RobloxProductsGrid } from "./RobloxProductsGrid";
 import { useModal } from "../../../modal/useModal";
 import { RequestShipmentModalProps } from "../../../modal/components/RequestShipment/RequestShipmentModal";
+import { ButtonThemeProps } from "./types";
+import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";
+import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges";
+import { useAccount } from "../../../../hooks";
+import { RobloxExchangesGrid } from "./RobloxExchangesGrid";
 
 const Wrapper = Grid;
 const ContentWrapper = Grid;
@@ -32,6 +34,7 @@ export type ProductsRobloxProps = {
     | "parentOrigin"
     | "signatures"
   >;
+  walletButtonTheme: ButtonThemeProps;
   sellerId: string;
   theme?: Partial<{
     style: Partial<TypographyProps["style"]>;
@@ -42,14 +45,11 @@ export type ProductsRobloxProps = {
   maxWidth?: CSSProperties["maxWidth"];
 };
 
-// const purchasedProducts = [{}] as any[];
-// const purchasedProductsLoading = false;
-const unavailableProducts = [{}] as any[]; // TODO: get from API instead
-const unavailableProductsLoading = false; // TODO: get from API instead
 export const ProductsRoblox = ({
   sellerId,
   theme,
   maxWidth,
+  walletButtonTheme,
   requestShipmentProps: {
     deliveryInfoHandler,
     postDeliveryInfoUrl,
@@ -60,26 +60,22 @@ export const ProductsRoblox = ({
     signatures
   }
 }: ProductsRobloxProps) => {
+  const { address } = useAccount();
   const { showModal } = useModal();
   const {
-    data,
+    data: availableProducts,
     isLoading: availableProductLoading,
     ...rest
-  } = useProductByOfferId("17", {
-    // TODO: get from API instead
-    enabled: true
-  });
-  console.log({ data, ...rest }); // TODO: remove
-  const availableProducts = useMemo(
-    () =>
-      data?.variants.at(0)?.offer
-        ? [data?.variants.at(0)?.offer].filter(isTruthy) || []
-        : [],
-    [data?.variants]
-  );
-  const purchasedProducts = availableProducts;
-  const purchasedProductsLoading = availableProductLoading;
-
+  } = useRobloxProducts({ sellerId });
+  const unavailableProducts = availableProducts; // TODO: change
+  const unavailableProductsLoading = availableProductLoading; // TODO: change
+  console.log({ availableProducts, ...rest });
+  const { data: purchasedProducts, isLoading: purchasedProductsLoading } =
+    useRobloxExchanges({
+      sellerId,
+      userWallet: address ?? "",
+      options: { enabled: !!address }
+    });
   const [productUuid, setProductUuid] = useState<string>("");
   const [bundleUuid, setBundleUuid] = useState<string>("");
 
@@ -121,18 +117,13 @@ export const ProductsRoblox = ({
               >
                 Purchased Products
               </Typography>
-              <ProductsGrid
-                products={purchasedProducts}
-                cta="request-shipment"
-                handleRequestShipment={(offer) => {
+
+              <RobloxExchangesGrid
+                walletButtonTheme={walletButtonTheme}
+                exchanges={purchasedProducts}
+                handleRequestShipment={(robloxExchange) => {
                   showModal("REQUEST_SHIPMENT", {
-                    offer,
-                    exchange: {
-                      // TODO: should not be hardcoded
-                      offer,
-                      buyer: { id: "3" },
-                      seller: { id: sellerId, assistant: "0x123" }
-                    } as unknown as subgraph.ExchangeFieldsFragment, // TODO: remove cast
+                    exchange: robloxExchange,
                     deliveryInfoHandler,
                     parentOrigin,
                     postDeliveryInfoUrl,
@@ -156,12 +147,12 @@ export const ProductsRoblox = ({
                 Following products are available for you based on the Roblox
                 inventory you have
               </Typography>
-              <ProductsGrid
+              <RobloxProductsGrid
+                walletButtonTheme={walletButtonTheme}
                 products={availableProducts}
                 handleSetProductUuid={handleSetProductUuid}
                 handleSetBundleUuid={handleSetBundleUuid}
                 isLoading={availableProductLoading}
-                cta="buy"
               />
             </Grid>
             <Grid flexDirection="column" alignItems="flex-start">
@@ -175,12 +166,12 @@ export const ProductsRoblox = ({
                 Other products that can be purchased when you have the right
                 Roblox inventory item.
               </Typography>
-              <ProductsGrid
+              <RobloxProductsGrid
+                walletButtonTheme={walletButtonTheme}
                 products={unavailableProducts}
                 handleSetProductUuid={handleSetProductUuid}
                 handleSetBundleUuid={handleSetBundleUuid}
                 isLoading={unavailableProductsLoading}
-                cta="buy"
               />
             </Grid>
           </>

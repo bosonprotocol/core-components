@@ -22,6 +22,10 @@ const pickedProps = {
   marginRight: true,
   marginBottom: true,
   marginLeft: true,
+  paddingTop: true,
+  paddingRight: true,
+  paddingBottom: true,
+  paddingLeft: true,
   width: true,
   height: true,
   maxWidth: true,
@@ -72,6 +76,14 @@ const Container = styled.div<InnerGridProps>`
     isDefined($marginBottom) ? `margin-bottom:${$marginBottom};` : ""}
   ${({ $marginLeft }) =>
     isDefined($marginLeft) ? `margin-left:${$marginLeft};` : ""}
+  ${({ $paddingTop }) =>
+    isDefined($paddingTop) ? `padding-top:${$paddingTop};` : ""}
+  ${({ $paddingRight }) =>
+    isDefined($paddingRight) ? `padding-right:${$paddingRight};` : ""}
+  ${({ $paddingBottom }) =>
+    isDefined($paddingBottom) ? `padding-bottom:${$paddingBottom};` : ""}
+  ${({ $paddingLeft }) =>
+    isDefined($paddingLeft) ? `padding-left:${$paddingLeft};` : ""}
   ${({ $alignSelf }) =>
     isDefined($alignSelf) ? `align-self:${$alignSelf};` : ""}
   ${({ $justifySelf }) =>

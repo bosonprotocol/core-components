@@ -108,7 +108,7 @@ export const Base = {
       sellerId: "20",
       walletConnectProjectId:
         process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? "",
-      backendOrigin: "http://localhost:3000",
+      backendOrigin: "http://localhost:3336",
       ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
       ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
       ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,

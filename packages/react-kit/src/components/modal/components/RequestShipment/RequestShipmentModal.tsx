@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { styled } from "styled-components";
 import OfferPolicyDetails from "../../../offerPolicy/OfferPolicyDetails";
-import { subgraph } from "@bosonprotocol/core-sdk";
 import ContractualAgreement from "../../../contractualAgreement/ContractualAgreement";
 import License from "../../../license/License";
 import * as Yup from "yup";
@@ -27,6 +26,7 @@ import { mockedDeliveryAddress } from "../../../widgets/redemption/const";
 import { checkSignatures } from "../Redeem/checkSignatures";
 import Loading from "../../../ui/loading/LoadingWrapper";
 import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
+import { BosonRobloxExchange } from "../../../../hooks/roblox/backend.types";
 
 const Wrapper = styled.div``;
 
@@ -46,15 +46,13 @@ export type RequestShipmentModalProps = Pick<
   | "redemptionSubmittedHandler"
   | "redemptionConfirmedHandler"
 > & {
-  offer: subgraph.OfferFieldsFragment;
-  exchange: subgraph.ExchangeFieldsFragment;
+  exchange: BosonRobloxExchange;
   forcedAccount?: string;
   parentOrigin?: string | null;
   signatures?: string[] | null;
 };
 const initialStep = ActiveStep.EXCHANGE_POLICY_OVERVIEW;
 export const RequestShipmentModal = ({
-  offer,
   exchange,
   parentOrigin,
   signatures,
@@ -64,6 +62,7 @@ export const RequestShipmentModal = ({
   redemptionConfirmedHandler,
   redemptionSubmittedHandler
 }: RequestShipmentModalProps) => {
+  const { offer } = exchange;
   const offerId = offer.id;
   const offerName = exchange?.offer?.metadata?.name || "";
   const buyerId = exchange?.buyer.id || "";

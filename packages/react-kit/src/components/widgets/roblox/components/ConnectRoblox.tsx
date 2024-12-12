@@ -8,16 +8,15 @@ import React, {
 import { CSSProperties, css, styled } from "styled-components";
 import { Grid } from "../../../ui/Grid";
 import { Typography } from "../../../ui/Typography";
-import { BaseButton, BaseButtonTheme } from "../../../buttons/BaseButton";
-import { ConnectWallet } from "../../../wallet2/web3Status";
-import { Portal } from "../../../portal/Portal";
-import { AccountDrawer } from "../../../wallet2/accountDrawer";
+import { BaseButton } from "../../../buttons/BaseButton";
 import { useAccount } from "../../../../hooks";
 import { CheckCircle, Power } from "phosphor-react";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { useRobloxLogout } from "../../../../hooks/roblox/useRobloxLogout";
 import { useRobloxConfigContext } from "../../../../hooks/roblox/context/useRobloxConfigContext";
+import { ButtonThemeProps } from "./types";
+import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
 
 const Wrapper = styled(Grid)`
   container-type: inline-size;
@@ -226,12 +225,7 @@ type CardThemeProps = {
       stroke: CSSProperties["color"];
     };
   };
-  button: {
-    active: Omit<BaseButtonTheme, "color" | "background"> &
-      Required<Pick<BaseButtonTheme, "color" | "background">>;
-    inactive: Omit<BaseButtonTheme, "color" | "background"> &
-      Required<Pick<BaseButtonTheme, "color" | "background">>;
-  };
+  button: ButtonThemeProps;
 };
 export type ConnectRobloxProps = {
   brand: string;
@@ -247,7 +241,6 @@ type ActiveStep = 0 | 1 | 2;
 export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
   ({ brand, theme }, ref) => {
     const { address } = useAccount();
-    const disconnect = useDisconnect();
     const [isSignUpDone, setSignUpDone] = useState<boolean>(false);
     const [activeStep, setActiveStep] = useState<ActiveStep>(0);
     const { data: robloxLoggedInData, refetch: getIsRobloxLoggedInAsync } =
@@ -372,81 +365,10 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
           title="Create an account"
           subtitle="Linking your Roblox account to your wallet to signal your permission."
           button={
-            <>
-              {address ? (
-                <BaseButton
-                  theme={theme.walletCard.button.inactive}
-                  onClick={() => disconnect({ isUserDisconnecting: true })}
-                >
-                  Disconnect Account <StyledPower size={20} />
-                </BaseButton>
-              ) : (
-                <ConnectWallet
-                  connectWalletButtonDisabled={!isConnectWalletStepActive}
-                  connectWalletButtonTheme={theme.walletCard.button.active}
-                  connectedButtonTheme={theme.walletCard.button.active}
-                  errorButtonTheme={theme.walletCard.button.active}
-                  connectWalletChild="Connect Account"
-                />
-              )}
-              <Portal>
-                <AccountDrawer
-                  backgroundColor="white"
-                  buyCryptoTheme={theme.walletCard.button.active}
-                  disconnectBorderRadius={
-                    theme.walletCard.button.active.borderRadius
-                  }
-                  disconnectBackgroundColor={
-                    theme.walletCard.button.active.background
-                  }
-                  disconnectColor={theme.walletCard.button.active.color}
-                  walletModalProps={{
-                    withMagicLogin: false,
-                    optionProps: {
-                      backgroundColor:
-                        theme.walletCard.button.active.background,
-                      color: theme.walletCard.button.active.color,
-                      borderRadius: theme.walletCard.button.active.borderRadius,
-                      iconBorderRadius:
-                        theme.walletCard.button.active.borderRadius,
-                      hoverFocusBackgroundColor:
-                        theme.walletCard.button.active.hover?.background,
-                      hoverColor: theme.walletCard.button.active.hover?.color
-                    },
-                    connectionErrorProps: {
-                      tryAgainTheme: theme.walletCard.button.active,
-                      backToWalletSelectionTheme: theme.walletCard.button.active
-                    },
-                    PrivacyPolicy: () => (
-                      <Typography
-                        style={{ color: "rgb(9, 24, 44)", fontSize: "0.75rem" }}
-                        display="block"
-                      >
-                        By connecting a wallet, you agree to Boson App 's{" "}
-                        <a
-                          href="https://bosonapp.io/#/terms-and-conditions"
-                          target="_blank"
-                          rel="noreferrer noopener"
-                          style={{ fontSize: "inherit" }}
-                        >
-                          Terms & Conditions
-                        </a>{" "}
-                        and consent to its{" "}
-                        <a
-                          href="https://bosonapp.io/#/privacy-policy"
-                          target="_blank"
-                          rel="noreferrer noopener"
-                          style={{ fontSize: "inherit" }}
-                        >
-                          Privacy Policy
-                        </a>
-                        . (Last Updated 18 August 2023)
-                      </Typography>
-                    )
-                  }}
-                />
-              </Portal>
-            </>
+            <ConnectWalletWithLogic
+              buttonThemeProps={theme.walletCard.button}
+              connectWalletButtonDisabled={!isConnectWalletStepActive}
+            />
           }
         />
         <Step
