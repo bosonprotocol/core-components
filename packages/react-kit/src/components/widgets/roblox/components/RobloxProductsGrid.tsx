@@ -68,7 +68,9 @@ export const RobloxProductsGrid = ({
         products
           .filter((robloxProduct) => robloxProduct.offer.metadata)
           .map((robloxProduct) => {
-            const { exchangeToken, uuid, offer } = robloxProduct;
+            const { exchangeToken, uuid, offer, product } = robloxProduct;
+            const key = uuid;
+            const { uuid: productUuid } = product;
             console.log({ robloxProduct });
             const { price, metadata } = offer;
             if (!(isProductV1(offer) || isBundle(offer))) {
@@ -88,7 +90,7 @@ export const RobloxProductsGrid = ({
 
             return (
               <TransparentProductCard
-                key={uuid}
+                key={key}
                 productType={
                   isBundle(offer)
                     ? ProductType.phygital
@@ -124,8 +126,8 @@ export const RobloxProductsGrid = ({
                   ) : (
                     <CommitButtonView
                       onClick={() => {
-                        if (isProductV1(offer) && uuid) {
-                          handleSetProductUuid(uuid);
+                        if (isProductV1(offer) && productUuid) {
+                          handleSetProductUuid(productUuid);
                         } else if (isBundle(offer) && bundleUuid) {
                           handleSetBundleUuid(bundleUuid);
                         }

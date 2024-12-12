@@ -66,7 +66,6 @@ export const RobloxExchangesGrid = ({
           .filter((robloxExchange) => robloxExchange.offer.metadata)
           .map((robloxExchange) => {
             const { offer } = robloxExchange;
-            console.log({ robloxExchange });
             const { price, metadata } = offer;
             if (!(isProductV1(offer) || isBundle(offer))) {
               return null;
