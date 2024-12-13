@@ -11,6 +11,7 @@ import { Grid } from "../../../../ui/Grid";
 import { Typography } from "../../../../ui/Typography";
 import { FormModel } from "../RedeemFormModel";
 import { subgraph } from "@bosonprotocol/core-sdk";
+import { Select } from "../../../../form";
 interface Props {
   offer: subgraph.OfferFieldsFragment | null;
   isValid: boolean;

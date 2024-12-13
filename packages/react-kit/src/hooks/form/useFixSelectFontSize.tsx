@@ -1,7 +1,10 @@
 import React, { useEffect, useRef } from "react";
 
-export const useFixSelectFontSize = () => {
-  const divRef = useRef<HTMLDivElement>(null);
+export const useFixSelectFontSize = ({
+  selectClassName
+}: {
+  selectClassName: string;
+}) => {
   const inputFontSize = useRef<string>();
   useEffect(() => {
     const input = document.createElement("input");
@@ -18,12 +21,12 @@ export const useFixSelectFontSize = () => {
   }, []);
   return {
     jsx: (
-      <style>{`.${divRef.current?.className.split(" ").join(".")}{
-        [class*="-placeholder"],[class*="-singleValue"]{
+      <style>{`.${selectClassName}{
+        [class*="-placeholder"],[class*="-singleValue"],[class*="-option"]{
           font-size: ${inputFontSize.current};
         }
       }`}</style>
     ),
-    wrapperRef: divRef
+    selectClassName
   };
 };

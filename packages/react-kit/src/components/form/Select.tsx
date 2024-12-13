@@ -8,6 +8,7 @@ import { zIndex } from "../ui/zIndex";
 
 import Error from "./Error";
 import type { SelectDataProps, SelectProps } from "./types";
+import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
 export type { SelectProps } from "./types";
 const colors = theme.colors.light;
 
@@ -139,13 +140,17 @@ export default function SelectComponent<
       helpers.setTouched(true);
     }
   };
-
+  const { jsx, selectClassName } = useFixSelectFontSize({
+    selectClassName: "boson-select"
+  });
   return (
     <>
+      {jsx}
       <Select
         styles={customStyles<Option>(displayErrorMessage, theme)}
         {...field}
         {...props}
+        className={selectClassName}
         isMulti={isMulti}
         placeholder={placeholder}
         options={options}

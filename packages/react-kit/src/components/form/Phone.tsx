@@ -89,6 +89,7 @@ export const ControlGrid = styled.div`
   }
 `;
 export const OptionGrid = styled.div`
+  font-size: revert;
   display: grid;
   grid-auto-columns: 1fr;
   grid-template-columns: 2em 1fr;
@@ -185,11 +186,13 @@ export default function Phone({ name, ...props }: InputProps) {
     }
   }, [field.value, initialized]); // eslint-disable-line
 
-  const { jsx, wrapperRef } = useFixSelectFontSize();
+  const { jsx, selectClassName } = useFixSelectFontSize({
+    selectClassName: "phone-select"
+  });
   return (
     <>
       {jsx}
-      <PhoneWrapper ref={wrapperRef}>
+      <PhoneWrapper className={selectClassName}>
         {/* @ts-ignore */}
         <PhoneInput
           country={countryCode}
@@ -237,7 +240,10 @@ export default function Phone({ name, ...props }: InputProps) {
                                 label={props.label}
                               />
                             ) : (
-                              <GlobeHemisphereWest />
+                              <GlobeHemisphereWest
+                                width={"22px"}
+                                height={"22px"}
+                              />
                             )}
                             {props.label}
                           </OptionGrid>
@@ -245,6 +251,7 @@ export default function Phone({ name, ...props }: InputProps) {
                       );
                     }
                   }}
+                  menuPosition="fixed"
                 />
               </div>
             </>

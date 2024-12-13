@@ -138,6 +138,7 @@ const ControlGrid = styled.div`
   }
 `;
 const OptionGrid = styled.div`
+  font-size: revert;
   display: grid;
   grid-auto-columns: 1fr;
   grid-template-columns: 2em 1fr;
@@ -218,11 +219,13 @@ export function CountrySelect({
       setInitialized(true);
     }
   }, [field.value, initialized]); // eslint-disable-line
-  const { jsx, wrapperRef } = useFixSelectFontSize();
+  const { jsx, selectClassName } = useFixSelectFontSize({
+    selectClassName: "country-select"
+  });
   return (
     <>
       {jsx}
-      <PhoneWrapper ref={wrapperRef}>
+      <PhoneWrapper className={selectClassName}>
         <PhoneInput
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           inputComponent={forwardRef((props, ref) => (
@@ -275,7 +278,10 @@ export function CountrySelect({
                                   label=""
                                 />
                               ) : (
-                                <GlobeHemisphereWest />
+                                <GlobeHemisphereWest
+                                  width={"22px"}
+                                  height={"22px"}
+                                />
                               )}
                               {props.children as any}
                             </ControlGrid>
@@ -301,6 +307,7 @@ export function CountrySelect({
                         );
                       }
                     }}
+                    menuPosition="fixed"
                   />
                 </div>
               </>
