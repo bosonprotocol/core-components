@@ -27,6 +27,7 @@ import { checkSignatures } from "../Redeem/checkSignatures";
 import Loading from "../../../ui/loading/LoadingWrapper";
 import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
 import { BosonRobloxExchange } from "../../../../hooks/roblox/backend.types";
+import { RequestShipmentSuccess } from "./exchangePolicyOverview/RequestShipmentSuccess";
 
 const Wrapper = styled.div``;
 
@@ -242,7 +243,7 @@ export const RequestShipmentModal = ({
                   hideModal={hideModal}
                 />
               ) : step === ActiveStep.REDEEM_SUCESS ? (
-                <p>REDEEM_SUCESS</p>
+                <RequestShipmentSuccess onSureClick={hideModal} />
               ) : (
                 <p>Wrong step...something went wrong</p>
               )}

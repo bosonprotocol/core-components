@@ -17,6 +17,7 @@ import type { BaseProps, SupportedReactSelectProps } from "./types";
 import { SelectDataProps } from "./types";
 import { theme as importedTheme } from "../../theme";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
+import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
 export type { Country as CountryCode } from "react-phone-number-input";
 
 const colors = importedTheme.colors.light;
@@ -217,10 +218,11 @@ export function CountrySelect({
       setInitialized(true);
     }
   }, [field.value, initialized]); // eslint-disable-line
-
+  const { jsx, wrapperRef } = useFixSelectFontSize();
   return (
     <>
-      <PhoneWrapper>
+      {jsx}
+      <PhoneWrapper ref={wrapperRef}>
         <PhoneInput
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           inputComponent={forwardRef((props, ref) => (

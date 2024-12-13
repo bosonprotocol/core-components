@@ -20,6 +20,7 @@ import Error from "./Error";
 import { FieldInput } from "./Field.styles";
 import type { InputProps } from "./types";
 import { SelectDataProps } from "./types";
+import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
 const colors = theme.colors.light;
 const customStyles = {
   control: (provided: any, state: any) => {
@@ -184,9 +185,11 @@ export default function Phone({ name, ...props }: InputProps) {
     }
   }, [field.value, initialized]); // eslint-disable-line
 
+  const { jsx, wrapperRef } = useFixSelectFontSize();
   return (
     <>
-      <PhoneWrapper>
+      {jsx}
+      <PhoneWrapper ref={wrapperRef}>
         {/* @ts-ignore */}
         <PhoneInput
           country={countryCode}

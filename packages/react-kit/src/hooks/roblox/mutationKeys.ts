@@ -2,7 +2,7 @@
 interface GetMutationKey
   // This any will be infered, it is more like generic, will be never seen as any in use
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  extends Record<string, (...args: any[]) => [string, ...string[]]> {}
+  extends Record<string, (...args: any[]) => readonly [string, ...string[]]> {}
 
 export const mutationKeys = {
   getProducts: ({

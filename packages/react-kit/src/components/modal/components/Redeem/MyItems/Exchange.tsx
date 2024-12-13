@@ -176,6 +176,7 @@ export default function Exchange({
         price={price}
         currency={offer.exchangeToken.symbol as Currencies}
         {...createSpecificCardConfig()}
+        isConnected={true}
       />
     </ExchangeCardWrapper>
   );
