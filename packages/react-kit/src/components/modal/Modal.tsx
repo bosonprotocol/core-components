@@ -169,7 +169,11 @@ const Wrapper = styled.div<{
       min-height: 100vh;
     `};
 `;
-
+const closeButtonStyles = css`
+  [data-close] {
+    padding-right: 0;
+  }
+`;
 const Header = styled(Typography)<{ $title?: string }>`
   position: relative;
 
@@ -182,6 +186,7 @@ const Header = styled(Typography)<{ $title?: string }>`
     return props.$title ? "space-between" : "flex-end";
   }};
   gap: 0.5rem;
+  ${closeButtonStyles}
 `;
 
 const FooterWrapper = styled.div`
@@ -190,6 +195,7 @@ const FooterWrapper = styled.div`
 
 const HeaderWithTitle = styled(Header)`
   height: 4.25rem;
+  ${closeButtonStyles}
 `;
 
 const Close = styled(X)`

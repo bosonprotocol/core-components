@@ -1,6 +1,5 @@
 import React, { ReactNode, useCallback } from "react";
 import { useProvider } from "../../../hooks/connection/connection";
-import { useIsWindowVisible } from "../../../hooks/uniswap/useIsWindowVisible";
 import { CONFIG } from "../../../lib/config/config";
 import { Updaters } from "../../../state/updaters";
 import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
@@ -50,21 +49,17 @@ export const CommitWidgetReduxProvider = ReduxProvider;
 export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
   withQueryClientProvider(
     ({ children, withReduxProvider, withCustomReduxContext, ...props }) => {
-      const isWindowVisible = useIsWindowVisible();
       const WithUpdaters = useCallback(
         ({ children: updatersChildren }: { children: ReactNode }) => {
           return withReduxProvider ? (
-            <UpdatersWrapper
-              isWindowVisible={isWindowVisible}
-              withWeb3React={props.withWeb3React}
-            >
+            <UpdatersWrapper withWeb3React={props.withWeb3React}>
               {updatersChildren}
             </UpdatersWrapper>
           ) : (
             <>{updatersChildren}</>
           );
         },
-        [withReduxProvider, isWindowVisible, props.withWeb3React]
+        [withReduxProvider, props.withWeb3React]
       );
       return (
         <WithReduxProvider
@@ -104,20 +99,14 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
 
 function UpdatersWrapper({
   children,
-  isWindowVisible,
   withWeb3React
 }: {
   children: ReactNode;
-  isWindowVisible: boolean;
   withWeb3React: boolean;
 }) {
   const provider = useProvider();
   return (
-    <Updaters
-      isWindowVisible={isWindowVisible}
-      provider={provider}
-      withWeb3React={withWeb3React}
-    >
+    <Updaters provider={provider} withWeb3React={withWeb3React}>
       {children}
     </Updaters>
   );
