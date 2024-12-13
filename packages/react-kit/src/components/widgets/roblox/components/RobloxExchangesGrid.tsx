@@ -1,9 +1,7 @@
 import { GridContainer } from "../../../ui/GridContainer";
-import { ProductCard } from "../../../productCard/ProductCard";
 import styled, { css } from "styled-components";
 import { Currencies } from "../../../currencyDisplay/CurrencyDisplay";
 import { useAccount, useIpfsContext } from "../../../../hooks";
-import { Button } from "../../../buttons/Button";
 import React from "react";
 import { utils } from "ethers";
 import { CameraSlash } from "phosphor-react";
@@ -15,16 +13,13 @@ import {
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
-import {
-  exchangeStateToLabelType,
-  ProductType
-} from "../../../productCard/const";
+import { ProductType } from "../../../productCard/const";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
 import { ButtonThemeProps } from "./types";
 import { BosonRobloxExchange } from "../../../../hooks/roblox/backend.types";
 import { Typography } from "../../../ui/Typography";
 import { isTruthy } from "../../../../types/helpers";
-import { subgraph } from "@bosonprotocol/core-sdk";
+import { ExchangeCard } from "../../../exchangeCard/ExchangeCard";
 
 const colors = theme.colors.light;
 
@@ -36,7 +31,7 @@ const commonCardStyles = css`
     padding-top: 0;
   }
 `;
-const TransparentProductCard = styled(ProductCard)`
+const TransparentExchangeCard = styled(ExchangeCard)`
   ${commonCardStyles}
 `;
 const TransparentSkeletonProductCard = styled(ProductCardSkeleton)`
@@ -86,8 +81,9 @@ export const RobloxExchangesGrid = ({
             );
 
             return (
-              <TransparentProductCard
+              <TransparentExchangeCard
                 key={robloxExchange.id}
+                id={robloxExchange.id}
                 productType={
                   isBundle(offer)
                     ? ProductType.phygital
@@ -96,11 +92,11 @@ export const RobloxExchangesGrid = ({
                       : ProductType.digital
                 }
                 avatarName=""
+                avatar={imageSrc}
                 currency={exchangeToken.symbol as Currencies}
                 price={utils.formatUnits(price || "0", exchangeToken.decimals)}
                 isHoverDisabled
-                isImageFitCover
-                label={exchangeStateToLabelType[state]}
+                status={state}
                 title={metadata?.name ?? ""}
                 imageProps={{
                   src: imageSrc,
@@ -114,19 +110,36 @@ export const RobloxExchangesGrid = ({
                     errorIcon: <CameraSlash size={32} color={colors.white} />
                   }
                 }}
-                CTAOnHover={
-                  !address ? (
-                    <ConnectWalletWithLogic
-                      buttonThemeProps={walletButtonTheme}
-                      connectWalletButtonDisabled={false}
-                    />
-                  ) : state === subgraph.ExchangeState.COMMITTED ? (
-                    <Button
-                      onClick={() => handleRequestShipment(robloxExchange)}
-                    >
-                      Request Shipment
-                    </Button>
-                  ) : null // TODO: anything?
+                redeemButtonConfig={
+                  {
+                    onClick: () => {
+                      handleRequestShipment(robloxExchange);
+                    },
+                    type: "button"
+                  } as const
+                }
+                cancelButtonConfig={
+                  {
+                    onClick: () => {
+                      console.log("click on cancel"); // TODO: what do we do?
+                    },
+                    type: "button"
+                  } as const
+                }
+                disputeButtonConfig={
+                  {
+                    onClick: () => {
+                      console.log("click on dispute"); // TODO: what do we do?
+                    },
+                    type: "button"
+                  } as const
+                }
+                isConnected={!!address}
+                CTAIfDisconnected={
+                  <ConnectWalletWithLogic
+                    buttonThemeProps={walletButtonTheme}
+                    connectWalletButtonDisabled={false}
+                  />
                 }
               />
             );

@@ -3,7 +3,6 @@ import { ProductCard } from "../../../productCard/ProductCard";
 import styled, { css } from "styled-components";
 import { Currencies } from "../../../currencyDisplay/CurrencyDisplay";
 import { useAccount, useIpfsContext } from "../../../../hooks";
-import { Button } from "../../../buttons/Button";
 import React from "react";
 import { utils } from "ethers";
 import { CameraSlash } from "phosphor-react";
@@ -103,7 +102,6 @@ export const RobloxProductsGrid = ({
                 price={utils.formatUnits(price || "0", exchangeToken.decimals)}
                 isHoverDisabled
                 isImageFitCover
-                label={undefined}
                 title={metadata?.name ?? ""}
                 imageProps={{
                   src: imageSrc,

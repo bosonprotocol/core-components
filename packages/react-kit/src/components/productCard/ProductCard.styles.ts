@@ -14,22 +14,6 @@ export const ProductCardLabelWrapper = styled.div`
   z-index: 1;
 `;
 
-export const Label = styled.div`
-  position: absolute;
-  z-index: ${zIndex.OfferCard + 1};
-  left: 0.5rem;
-  top: 0.5rem;
-  color: ${theme?.colors?.light.white};
-  border-radius: 1.25rem;
-  box-shadow: 0px 3px 2px 0px rgba(0, 0, 0, 0.1);
-  background: ${theme?.colors?.light.secondary};
-  display: flex;
-  padding: 0.5rem 1rem;
-  justify-content: center;
-  align-items: center;
-  gap: 0.625rem;
-`;
-
 export const ProductCardCreator = styled.div`
   display: flex;
   flex-direction: column;

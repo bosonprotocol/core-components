@@ -14,11 +14,10 @@ import {
   ProductCardTitleWrapper,
   ProductCardWrapper,
   CTAOnHoverContainer,
-  ProductTypeWrapper,
-  Label
+  ProductTypeWrapper
 } from "./ProductCard.styles";
 
-import { ProductType, LabelType, labelValueToText } from "./const";
+import { ProductType } from "./const";
 import { Grid } from "../ui/Grid";
 import { CircleHalf } from "phosphor-react";
 
@@ -52,7 +51,6 @@ interface IProductCard {
   hideCreatorName?: boolean;
   isImageFitCover?: boolean;
   className?: string;
-  label?: (typeof LabelType)[keyof typeof LabelType];
 }
 
 const Wrapper = ({
@@ -91,8 +89,7 @@ export const ProductCard = (props: IProductCard) => {
     hideCreatorName = false,
     isImageFitCover = false,
     className,
-    productType,
-    label
+    productType
   } = props;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -113,7 +110,6 @@ export const ProductCard = (props: IProductCard) => {
       $isClickable={!!onCardClick}
     >
       <ProductCardImageWrapper>
-        {label && <Label data-test="label">{labelValueToText[label]}</Label>}
         <Image {...imageProps} />
         {CTAOnHover && (
           <CTAOnHoverContainer $isHovered={isHovered}>

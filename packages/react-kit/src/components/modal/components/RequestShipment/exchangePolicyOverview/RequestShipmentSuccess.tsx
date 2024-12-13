@@ -1,9 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { Grid } from "../../../../ui/Grid";
-import { FairExchangePolicy } from "./FairExchangePolicy";
 import { Button } from "../../../../buttons/Button";
-import { InfoBox } from "./InfoBox";
 import { theme } from "../../../../../theme";
 import { CheckCircle } from "phosphor-react";
 import { Typography } from "../../../../ui/Typography";
