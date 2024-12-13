@@ -15,12 +15,16 @@ import {
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
-import { LabelType, ProductType } from "../../../productCard/const";
+import {
+  exchangeStateToLabelType,
+  ProductType
+} from "../../../productCard/const";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
 import { ButtonThemeProps } from "./types";
 import { BosonRobloxExchange } from "../../../../hooks/roblox/backend.types";
 import { Typography } from "../../../ui/Typography";
 import { isTruthy } from "../../../../types/helpers";
+import { subgraph } from "@bosonprotocol/core-sdk";
 
 const colors = theme.colors.light;
 
@@ -65,7 +69,7 @@ export const RobloxExchangesGrid = ({
         exchanges
           .filter((robloxExchange) => robloxExchange.offer.metadata)
           .map((robloxExchange) => {
-            const { offer } = robloxExchange;
+            const { offer, state } = robloxExchange;
             const { price, metadata } = offer;
             if (!(isProductV1(offer) || isBundle(offer))) {
               return null;
@@ -96,7 +100,7 @@ export const RobloxExchangesGrid = ({
                 price={utils.formatUnits(price || "0", exchangeToken.decimals)}
                 isHoverDisabled
                 isImageFitCover
-                label={LabelType.purchased}
+                label={exchangeStateToLabelType[state]}
                 title={metadata?.name ?? ""}
                 imageProps={{
                   src: imageSrc,
@@ -116,13 +120,13 @@ export const RobloxExchangesGrid = ({
                       buttonThemeProps={walletButtonTheme}
                       connectWalletButtonDisabled={false}
                     />
-                  ) : (
+                  ) : state === subgraph.ExchangeState.COMMITTED ? (
                     <Button
                       onClick={() => handleRequestShipment(robloxExchange)}
                     >
                       Request Shipment
                     </Button>
-                  )
+                  ) : null // TODO: anything?
                 }
               />
             );

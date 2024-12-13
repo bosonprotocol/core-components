@@ -16,7 +16,7 @@ const Wrapper = Grid;
 const numSteps = 3;
 const numGaps = numSteps - 1;
 export type RobloxWidgetProps = {
-  connectProps: ConnectRobloxProps;
+  connectProps: Omit<ConnectRobloxProps, "sellerId">;
   productsGridProps: Omit<
     ProductsRobloxProps,
     | "backendOrigin"
@@ -78,7 +78,11 @@ export const RobloxWidget = ({
         justifyContent="center"
         gap="3rem"
       >
-        <ConnectRoblox {...connectProps} ref={singleStepConnectRobloxRef} />
+        <ConnectRoblox
+          {...connectProps}
+          ref={singleStepConnectRobloxRef}
+          sellerId={sellerId}
+        />
         <ProductsRoblox
           {...productsGridProps}
           walletButtonTheme={connectProps.theme.walletCard.button}

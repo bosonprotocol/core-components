@@ -11,10 +11,11 @@ import {
 import { useConfigContext } from "../../components/config/ConfigContext";
 import { useExternalSigner } from "../../components/signer/useExternalSigner";
 import { useSignerAddress } from "../useSignerAddress";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useExternalSignerChainId } from "../../lib/signer/externalSigner";
 import { Signer, providers } from "ethers";
 import { useWeb3ReactWrapper } from "../web3React/useWeb3ReactWrapper";
+import { useCoreSDKWithContext } from "../core-sdk/useCoreSdkWithContext";
 
 export function useAccount() {
   const { account: web3ReactAccount } = useWeb3ReactWrapper() || {};
@@ -158,4 +159,20 @@ export function useBalance(
       enabled: options.enabled
     }
   );
+}
+
+type UseWeb3SignTypedDataProps = {
+  dataToSign: string;
+};
+export function useWeb3SignTypedData() {
+  const { address } = useAccount();
+  const coreSDK = useCoreSDKWithContext();
+
+  return useMutation(async ({ dataToSign }: UseWeb3SignTypedDataProps) => {
+    const signature = await coreSDK.web3Lib.send("eth_signTypedData_v4", [
+      address,
+      dataToSign
+    ]);
+    return signature;
+  });
 }

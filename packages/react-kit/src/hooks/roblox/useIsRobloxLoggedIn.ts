@@ -1,16 +1,24 @@
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { useRobloxLocalStorage } from "./useRobloxLocalStorage";
-import { loggedInPayloadSchema, robloxQueryKeys } from "./const";
+import { robloxQueryKeys } from "./const";
 import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
+import { mutationKeys } from "./mutationKeys";
+import { GetLoggedInResponse } from "./backend.types";
 
 type UseIsRobloxLoggedInProps = {
+  sellerId: string;
   options?: {
     enabled?: boolean;
+    onSuccess?: ((data: GetLoggedInResponse | null) => void) | undefined;
   };
 };
-export const useIsRobloxLoggedIn = ({ options }: UseIsRobloxLoggedInProps) => {
+export const useIsRobloxLoggedIn = ({
+  sellerId,
+  options
+}: UseIsRobloxLoggedInProps) => {
   const [storedValue, setValue] = useRobloxLocalStorage();
   const { backendOrigin } = useRobloxConfigContext();
+  const queryClient = useQueryClient();
   return useQuery(
     robloxQueryKeys.loggedIn(backendOrigin),
     async () => {
@@ -20,10 +28,9 @@ export const useIsRobloxLoggedIn = ({ options }: UseIsRobloxLoggedInProps) => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        const validatedData = await loggedInPayloadSchema.validate(data);
-        setValue(validatedData);
-        return validatedData;
+        const data = (await response.json()) as GetLoggedInResponse;
+        setValue(data);
+        return data;
       }
       return null;
     },
@@ -32,6 +39,11 @@ export const useIsRobloxLoggedIn = ({ options }: UseIsRobloxLoggedInProps) => {
       initialData: storedValue,
       onError: (error) => {
         console.error("Error on /logged-in call:", error);
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries(
+          mutationKeys.getProducts({ backendOrigin, sellerId })
+        );
       }
     }
   );

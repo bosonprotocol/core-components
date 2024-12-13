@@ -1,6 +1,7 @@
 import React, {
   ReactElement,
   forwardRef,
+  useCallback,
   useEffect,
   useRef,
   useState
@@ -11,12 +12,20 @@ import { Typography } from "../../../ui/Typography";
 import { BaseButton } from "../../../buttons/BaseButton";
 import { useAccount } from "../../../../hooks";
 import { CheckCircle, Power } from "phosphor-react";
-import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { useRobloxLogout } from "../../../../hooks/roblox/useRobloxLogout";
 import { useRobloxConfigContext } from "../../../../hooks/roblox/context/useRobloxConfigContext";
 import { ButtonThemeProps } from "./types";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
+import { useGetRobloxWalletAuth } from "../../../../hooks/roblox/useGetRobloxWalletAuth";
+import { useRobloxBackendLogin } from "../../../../hooks/roblox/useRobloxBackendLogin";
+import { useQuery } from "react-query";
+import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
+import { useCookies } from "react-cookie";
+import {
+  ROBLOX_OAUTH_COOKIE_NAME,
+  WEB3AUTH_COOKIE_NAME
+} from "../../../../hooks/roblox/backend.const";
 
 const Wrapper = styled(Grid)`
   container-type: inline-size;
@@ -228,6 +237,7 @@ type CardThemeProps = {
   button: ButtonThemeProps;
 };
 export type ConnectRobloxProps = {
+  sellerId: string;
   brand: string;
   theme: {
     gapInPx?: number;
@@ -239,18 +249,100 @@ export type ConnectRobloxProps = {
 
 type ActiveStep = 0 | 1 | 2;
 export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
-  ({ brand, theme }, ref) => {
+  ({ brand, theme, sellerId }, ref) => {
     const { address } = useAccount();
     const [isSignUpDone, setSignUpDone] = useState<boolean>(false);
     const [activeStep, setActiveStep] = useState<ActiveStep>(0);
+    const disconnect = useDisconnect();
+    const { backendOrigin } = useRobloxConfigContext();
+    const removeCookie = useCookies(
+      [ROBLOX_OAUTH_COOKIE_NAME, WEB3AUTH_COOKIE_NAME],
+      { doNotUpdate: true }
+    )[2];
+    const disconnectWallet = useCallback(() => {
+      console.log("disconnectWallet()");
+      // setIsSigning(false);
+      // setIsWalletAuthenticated(false);
+      const domain = backendOrigin
+        .replace("https://", "")
+        .replace("http://", "");
+      const isHttps = ((backendOrigin || "") as string).startsWith("https");
+      const sameSite = isHttps ? "none" : undefined;
+      removeCookie?.(WEB3AUTH_COOKIE_NAME, { path: "/", domain, sameSite });
+      disconnect({ isUserDisconnecting: false });
+      // loadBosonProducts(); // Refresh products
+      // loadBosonExchanges(); // Refresh exchanges
+    }, [
+      removeCookie,
+      disconnect,
+      backendOrigin
+      // loadBosonProducts,
+      // loadBosonExchanges
+    ]);
     const { data: robloxLoggedInData, refetch: getIsRobloxLoggedInAsync } =
       useIsRobloxLoggedIn({
+        sellerId,
         options: {
-          enabled: true
+          enabled: true,
+          onSuccess: (data) => {
+            if (!data?.isLoggedIn && address) {
+              // Roblox auth is not valid, disconnect the wallet if connected
+              console.log(
+                "Roblox auth is not valid, disconnect the wallet if connected"
+              );
+              disconnectWallet();
+            }
+          }
         }
       });
+    const { data: isAuthChecked } = useGetRobloxWalletAuth({
+      sellerId,
+      options: {
+        enabled: !!robloxLoggedInData?.isLoggedIn
+      }
+    });
+    const {
+      mutateAsync: robloxBackendLoginAsync,
+      data: isWalletAuthenticatedSigned
+    } = useRobloxBackendLogin({
+      loggedInData: robloxLoggedInData,
+      sellerId,
+      mutationKey: [
+        address,
+        isAuthChecked?.walletAuth,
+        isAuthChecked,
+        robloxLoggedInData
+      ],
+      options: {
+        onError: () => {
+          disconnectWallet();
+        }
+      }
+    });
+    const isWalletAuthenticated =
+      isWalletAuthenticatedSigned || isAuthChecked?.walletAuth;
+    console.log({ isWalletAuthenticated });
+
+    useQuery(
+      [robloxLoggedInData, address, isAuthChecked],
+      () => {
+        if (robloxLoggedInData?.claims && robloxLoggedInData?.nonce) {
+          robloxBackendLoginAsync();
+        } else {
+          console.error("robloxLoggedInData is not valid");
+        }
+      },
+      {
+        staleTime: Infinity,
+        enabled:
+          !!robloxLoggedInData?.isLoggedIn &&
+          !!address &&
+          !!isAuthChecked &&
+          !isWalletAuthenticated
+      }
+    );
+
     const { mutateAsync: robloxLogoutAsync } = useRobloxLogout();
-    const { backendOrigin } = useRobloxConfigContext();
     const nextLatestActiveStep = (step: ActiveStep) => {
       setActiveStep((activeStep) => Math.max(step, activeStep) as ActiveStep);
     };

@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "react-query";
 import { GetProductsResponse } from "./backend.types";
 import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
+import { mutationKeys } from "./mutationKeys";
 
 type UseRobloxProductsProps = {
   sellerId: string;
@@ -8,7 +9,7 @@ type UseRobloxProductsProps = {
 export const useRobloxProducts = ({ sellerId }: UseRobloxProductsProps) => {
   const queryClient = useQueryClient();
   const { backendOrigin } = useRobloxConfigContext();
-  const queryKey = ["roblox-products", backendOrigin, sellerId];
+  const queryKey = mutationKeys.getProducts({ backendOrigin, sellerId });
   return useQuery(queryKey, async () => {
     const response = await fetch(
       `${backendOrigin}/products?bosonSellerId=${sellerId}`,

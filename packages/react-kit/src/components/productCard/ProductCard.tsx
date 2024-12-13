@@ -18,7 +18,7 @@ import {
   Label
 } from "./ProductCard.styles";
 
-import { ProductType, LabelType } from "./const";
+import { ProductType, LabelType, labelValueToText } from "./const";
 import { Grid } from "../ui/Grid";
 import { CircleHalf } from "phosphor-react";
 
@@ -113,9 +113,7 @@ export const ProductCard = (props: IProductCard) => {
       $isClickable={!!onCardClick}
     >
       <ProductCardImageWrapper>
-        {label === LabelType.purchased && (
-          <Label data-test="label">Purchased</Label>
-        )}
+        {label && <Label data-test="label">{labelValueToText[label]}</Label>}
         <Image {...imageProps} />
         {CTAOnHover && (
           <CTAOnHoverContainer $isHovered={isHovered}>

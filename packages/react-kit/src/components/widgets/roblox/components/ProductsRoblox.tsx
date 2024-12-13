@@ -11,6 +11,7 @@ import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";
 import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges";
 import { useAccount } from "../../../../hooks";
 import { RobloxExchangesGrid } from "./RobloxExchangesGrid";
+import { ProductAvailabilityStatus } from "../../../../hooks/roblox/backend.types";
 
 const Wrapper = Grid;
 const ContentWrapper = Grid;
@@ -62,14 +63,30 @@ export const ProductsRoblox = ({
 }: ProductsRobloxProps) => {
   const { address } = useAccount();
   const { showModal } = useModal();
-  const {
-    data: availableProducts,
-    isLoading: availableProductLoading,
-    ...rest
-  } = useRobloxProducts({ sellerId });
-  const unavailableProducts = availableProducts; // TODO: change
-  const unavailableProductsLoading = availableProductLoading; // TODO: change
-  console.log({ availableProducts, ...rest });
+  const { data: robloxProducts, isLoading } = useRobloxProducts({ sellerId });
+  const availableProducts = robloxProducts?.filter((robloxProduct) =>
+    (
+      [
+        "AVAILABLE",
+        "POTENTIALLY",
+        "PENDING"
+      ] satisfies ProductAvailabilityStatus["status"][]
+    )
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .includes(robloxProduct.availability.status as any)
+  );
+  const unavailableProducts = robloxProducts?.filter((robloxProduct) =>
+    (
+      [
+        "NOT_AVAILABLE",
+        "UNKNOWN"
+      ] satisfies ProductAvailabilityStatus["status"][]
+    )
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .includes(robloxProduct.availability.status as any)
+  );
+  const unavailableProductsLoading = isLoading;
+  const availableProductLoading = isLoading;
   const { data: purchasedProducts, isLoading: purchasedProductsLoading } =
     useRobloxExchanges({
       sellerId,
