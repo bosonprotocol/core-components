@@ -6,6 +6,7 @@ import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
 import { theme } from "../../theme";
 import { zIndex } from "../ui/zIndex";
 import type { BaseSelectProps, SelectDataProps } from "./types";
+import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
 
 const colors = theme.colors.light;
 
@@ -59,14 +60,20 @@ export default function BaseSelect({
   const handleChange = (option: SingleValue<SelectDataProps>) => {
     onChange?.(option);
   };
-
+  const { jsx, selectClassName } = useFixSelectFontSize({
+    selectClassName: "boson-base-select"
+  });
   return (
-    <Select
-      styles={customStyles(null)}
-      {...props}
-      placeholder={placeholder}
-      options={options}
-      onChange={handleChange}
-    />
+    <>
+      {jsx}
+      <Select
+        styles={customStyles(null)}
+        {...props}
+        className={selectClassName}
+        placeholder={placeholder}
+        options={options}
+        onChange={handleChange}
+      />
+    </>
   );
 }

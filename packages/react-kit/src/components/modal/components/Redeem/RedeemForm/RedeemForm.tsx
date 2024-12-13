@@ -12,6 +12,7 @@ import { Typography } from "../../../../ui/Typography";
 import { FormModel } from "../RedeemFormModel";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Select } from "../../../../form";
+import BaseSelect from "../../../../form/BaseSelect";
 interface Props {
   offer: subgraph.OfferFieldsFragment | null;
   isValid: boolean;
@@ -147,6 +148,7 @@ export default function RedeemForm({
             countries={fatfMemberCountries}
           />
         </Grid>
+        <BaseSelect options={[{ label: "hola2", value: "hola" }]} />
         <Grid flexDirection="column" alignItems="flex-start">
           <Input
             name={FormModel.formFields.email.name}
