@@ -9,15 +9,13 @@ export const useFixSelectFontSize = ({
   useEffect(() => {
     const input = document.createElement("input");
     input.type = "hidden";
+
     document.body.appendChild(input);
 
     const fontSizeInPx = window.getComputedStyle(input).fontSize;
-
     inputFontSize.current = fontSizeInPx;
 
-    return () => {
-      document.body.removeChild(input);
-    };
+    document.body.removeChild(input);
   }, []);
   return {
     jsx: (

@@ -112,7 +112,7 @@ export const Base = {
       ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
       ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
       ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
-      sendDeliveryInfoThroughXMTP: false
+      sendDeliveryInfoThroughXMTP: true
     },
     connectProps: {
       brand: "GYMSHARK",

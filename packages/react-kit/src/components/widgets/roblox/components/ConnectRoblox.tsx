@@ -26,6 +26,8 @@ import {
   ROBLOX_OAUTH_COOKIE_NAME,
   WEB3AUTH_COOKIE_NAME
 } from "../../../../hooks/roblox/backend.const";
+import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";
+import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges";
 
 const Wrapper = styled(Grid)`
   container-type: inline-size;
@@ -250,7 +252,7 @@ export type ConnectRobloxProps = {
 type ActiveStep = 0 | 1 | 2;
 export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
   ({ brand, theme, sellerId }, ref) => {
-    const { address } = useAccount();
+    const { address = "" } = useAccount();
     const [isSignUpDone, setSignUpDone] = useState<boolean>(false);
     const [activeStep, setActiveStep] = useState<ActiveStep>(0);
     const disconnect = useDisconnect();
@@ -259,25 +261,34 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
       [ROBLOX_OAUTH_COOKIE_NAME, WEB3AUTH_COOKIE_NAME],
       { doNotUpdate: true }
     )[2];
+    const { refetch: loadBosonProducts } = useRobloxProducts({
+      sellerId,
+      options: { enabled: false }
+    });
+    const { refetch: loadBosonExchanges } = useRobloxExchanges({
+      sellerId,
+      userWallet: address,
+      options: { enabled: false }
+    });
     const disconnectWallet = useCallback(() => {
       console.log("disconnectWallet()");
       // setIsSigning(false);
       // setIsWalletAuthenticated(false);
-      const domain = backendOrigin
-        .replace("https://", "")
-        .replace("http://", "");
+      // const domain = backendOrigin
+      //   .replace("https://", "")
+      //   .replace("http://", "");
       const isHttps = ((backendOrigin || "") as string).startsWith("https");
       const sameSite = isHttps ? "none" : undefined;
-      removeCookie?.(WEB3AUTH_COOKIE_NAME, { path: "/", domain, sameSite });
+      removeCookie?.(WEB3AUTH_COOKIE_NAME, { path: "/", sameSite }); // TODO: no domain?
       disconnect({ isUserDisconnecting: false });
-      // loadBosonProducts(); // Refresh products
-      // loadBosonExchanges(); // Refresh exchanges
+      loadBosonProducts(); // Refresh products
+      loadBosonExchanges(); // Refresh exchanges
     }, [
       removeCookie,
       disconnect,
-      backendOrigin
-      // loadBosonProducts,
-      // loadBosonExchanges
+      backendOrigin,
+      loadBosonProducts,
+      loadBosonExchanges
     ]);
     const { data: robloxLoggedInData, refetch: getIsRobloxLoggedInAsync } =
       useIsRobloxLoggedIn({

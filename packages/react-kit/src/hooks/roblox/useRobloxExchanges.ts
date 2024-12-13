@@ -6,7 +6,7 @@ type UseRobloxProductsProps = {
   sellerId: string;
   userWallet: string;
   options: {
-    enabled: boolean;
+    enabled?: boolean;
   };
 };
 export const useRobloxExchanges = ({

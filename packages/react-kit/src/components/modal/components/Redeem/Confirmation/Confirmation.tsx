@@ -179,6 +179,7 @@ export function Confirmation({
   }> = async (handler, message, signature) => {
     let resume = true;
     try {
+      console.log("handleSendRedemptionInfo", { message, signature, handler });
       setIsLoading(true);
       if (handler) {
         const response = await handler(message, signature);
@@ -341,6 +342,11 @@ ${FormModel.formFields.walletAddress.placeholder}: ${message.deliveryDetails.wal
               deliveryDetails: values,
               ...redemptionInfo
             };
+            console.log({
+              redemptionInfoAccepted,
+              resume,
+              sendDeliveryInfoThroughXMTP
+            });
             if (!redemptionInfoAccepted) {
               setIsLoading(true);
               setRedemptionInfoError(null);

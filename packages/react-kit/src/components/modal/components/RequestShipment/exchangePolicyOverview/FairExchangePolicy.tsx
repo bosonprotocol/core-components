@@ -16,12 +16,12 @@ const InfoTitleWrapper = styled.div`
     margin: 0;
   }
 `;
-const InfoList = styled.ul<{ withCustomMarker?: boolean }>`
+const InfoList = styled.ul<{ $withCustomMarker?: boolean }>`
   margin: 0 0 0 1.5rem;
   padding: 0;
   line-height: 1.063rem;
-  ${({ withCustomMarker }) =>
-    withCustomMarker &&
+  ${({ $withCustomMarker }) =>
+    $withCustomMarker &&
     css`
       margin: unset;
       li {
@@ -73,7 +73,7 @@ export function FairExchangePolicy({
         </Typography>
         {policyIcon}
       </InfoTitleWrapper>
-      <InfoList withCustomMarker={!!bulletPointIcon}>
+      <InfoList $withCustomMarker={!!bulletPointIcon}>
         <InfoListItem>
           {bulletPointIcon}
           <Typography tag="p">
