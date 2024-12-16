@@ -21,6 +21,7 @@ import { ButtonThemeProps } from "./types";
 import { BosonRobloxProductWithAvailability } from "../../../../hooks/roblox/backend.types";
 import { Typography } from "../../../ui/Typography";
 import { isTruthy } from "../../../../types/helpers";
+import { LoginWithRoblox } from "./LoginWithRoblox";
 
 const colors = theme.colors.light;
 
@@ -44,16 +45,20 @@ export type RobloxProductsGridProps = {
   products: BosonRobloxProductWithAvailability[] | undefined;
   numProducts?: number;
   walletButtonTheme: ButtonThemeProps;
+  robloxButtonTheme: ButtonThemeProps;
   handleSetProductUuid?: (uuid: string) => void;
   handleSetBundleUuid?: (uuid: string) => void;
+  isLoggedInWithRoblox: boolean;
 };
 export const RobloxProductsGrid = ({
   isLoading,
   numProducts,
   products,
   walletButtonTheme,
+  robloxButtonTheme,
   handleSetBundleUuid,
-  handleSetProductUuid
+  handleSetProductUuid,
+  isLoggedInWithRoblox
 }: RobloxProductsGridProps) => {
   const { address } = useAccount();
   const { ipfsImageGateway } = useIpfsContext();
@@ -67,10 +72,11 @@ export const RobloxProductsGrid = ({
         products
           .filter((robloxProduct) => robloxProduct.offer.metadata)
           .map((robloxProduct) => {
-            const { exchangeToken, uuid, offer, product } = robloxProduct;
+            const { exchangeToken, uuid, offer, product, seller } =
+              robloxProduct;
             const key = uuid;
             const { uuid: productUuid } = product;
-            console.log({ robloxProduct });
+
             const { price, metadata } = offer;
             if (!(isProductV1(offer) || isBundle(offer))) {
               return null;
@@ -116,7 +122,12 @@ export const RobloxProductsGrid = ({
                   }
                 }}
                 CTAOnHover={
-                  !address ? (
+                  !isLoggedInWithRoblox ? (
+                    <LoginWithRoblox
+                      sellerId={seller.id}
+                      robloxButtonTheme={robloxButtonTheme}
+                    />
+                  ) : !address ? (
                     <ConnectWalletWithLogic
                       buttonThemeProps={walletButtonTheme}
                       connectWalletButtonDisabled={false}

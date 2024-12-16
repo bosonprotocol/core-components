@@ -16,7 +16,6 @@ import {
   ProductAvailabilityStatus
 } from "../../../../hooks/roblox/backend.types";
 import { CancelExchange } from "../../../modal/components/Redeem/ExchangeView/cancellation/CancelExchange";
-import { subgraph } from "@bosonprotocol/core-sdk";
 import NonModal from "../../../modal/nonModal/NonModal";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 
@@ -43,6 +42,7 @@ export type ProductsRobloxProps = {
     | "signatures"
   >;
   walletButtonTheme: ButtonThemeProps;
+  robloxButtonTheme: ButtonThemeProps;
   sellerId: string;
   theme?: Partial<{
     style: Partial<TypographyProps["style"]>;
@@ -61,6 +61,7 @@ export const ProductsRoblox = ({
   theme,
   maxWidth,
   walletButtonTheme,
+  robloxButtonTheme,
   requestShipmentProps: {
     deliveryInfoHandler,
     postDeliveryInfoUrl,
@@ -222,10 +223,12 @@ export const ProductsRoblox = ({
               </Typography>
               <RobloxProductsGrid
                 walletButtonTheme={walletButtonTheme}
+                robloxButtonTheme={robloxButtonTheme}
                 products={availableProducts}
                 handleSetProductUuid={handleSetProductUuid}
                 handleSetBundleUuid={handleSetBundleUuid}
                 isLoading={availableProductLoading}
+                isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}
               />
             </Grid>
             <Grid flexDirection="column" alignItems="flex-start">
@@ -241,10 +244,12 @@ export const ProductsRoblox = ({
               </Typography>
               <RobloxProductsGrid
                 walletButtonTheme={walletButtonTheme}
+                robloxButtonTheme={robloxButtonTheme}
                 products={unavailableProducts}
                 handleSetProductUuid={handleSetProductUuid}
                 handleSetBundleUuid={handleSetBundleUuid}
                 isLoading={unavailableProductsLoading}
+                isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}
               />
             </Grid>
           </>
@@ -263,8 +268,10 @@ export const ProductsRoblox = ({
               </Typography>
               <RobloxProductsGrid
                 walletButtonTheme={walletButtonTheme}
+                robloxButtonTheme={robloxButtonTheme}
                 products={robloxExclusives}
                 isLoading={robloxExclusivesLoading}
+                isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}
               />
             </Grid>
           </>

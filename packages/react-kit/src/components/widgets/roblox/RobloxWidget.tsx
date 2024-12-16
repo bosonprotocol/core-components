@@ -95,6 +95,7 @@ export const RobloxWidget = ({
         <ProductsRoblox
           {...productsGridProps}
           walletButtonTheme={connectProps.theme.walletCard.button}
+          robloxButtonTheme={connectProps.theme.robloxCard.button}
           requestShipmentProps={configProps}
           maxWidth={singleStepWidth}
           sellerId={sellerId}

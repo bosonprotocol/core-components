@@ -15,7 +15,7 @@ import { CheckCircle, Power } from "phosphor-react";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { useRobloxLogout } from "../../../../hooks/roblox/useRobloxLogout";
 import { useRobloxConfigContext } from "../../../../hooks/roblox/context/useRobloxConfigContext";
-import { ButtonThemeProps } from "./types";
+import { ButtonThemeProps, CardThemeProps } from "./types";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
 import { useGetRobloxWalletAuth } from "../../../../hooks/roblox/useGetRobloxWalletAuth";
 import { useRobloxBackendLogin } from "../../../../hooks/roblox/useRobloxBackendLogin";
@@ -28,6 +28,7 @@ import {
 } from "../../../../hooks/roblox/backend.const";
 import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";
 import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges";
+import { LoginWithRoblox } from "./LoginWithRoblox";
 
 const Wrapper = styled(Grid)`
   container-type: inline-size;
@@ -219,25 +220,6 @@ const Step = forwardRef<HTMLDivElement, StepProps>(
   }
 );
 
-type CardThemeProps = {
-  subtitle: {
-    color: CSSProperties["color"];
-  };
-  check: {
-    color: CSSProperties["color"];
-  };
-  number: {
-    active: {
-      backgroundColor: CSSProperties["color"];
-      stroke: CSSProperties["color"];
-    };
-    inactive: {
-      backgroundColor: CSSProperties["color"];
-      stroke: CSSProperties["color"];
-    };
-  };
-  button: ButtonThemeProps;
-};
 export type ConnectRobloxProps = {
   sellerId: string;
   brand: string;
@@ -416,29 +398,16 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
                 Logout Roblox <StyledPower size={20} />
               </BaseButton>
             ) : (
-              <BaseButton
-                theme={theme.robloxCard.button.active}
-                onClick={() => {
-                  window.open(`${backendOrigin}/login`, "_blank");
-                  const id = setInterval(async () => {
-                    try {
-                      const { data } = await getIsRobloxLoggedInAsync();
-                      if (data) {
-                        const { isLoggedIn } = data;
-                        if (isLoggedIn) {
-                          clearInterval(id); // stop polling once the user is logged in
-                          nextLatestActiveStep(1);
-                          return;
-                        }
-                      }
-                    } catch (error) {
-                      clearInterval(id); // something went wrong, stop polling
-                    }
-                  }, 1000);
+              <LoginWithRoblox
+                robloxButtonTheme={theme.robloxCard.button}
+                sellerId={sellerId}
+                onLoggedIn={() => {
+                  nextLatestActiveStep(1);
                 }}
-              >
-                Login with Roblox
-              </BaseButton>
+                onDisconecctWallet={() => {
+                  disconnectWallet();
+                }}
+              />
             )
           }
         />
