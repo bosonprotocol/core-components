@@ -15,6 +15,10 @@ import { Portal } from "../../portal/Portal";
 const Wrapper = Grid;
 const numSteps = 3;
 const numGaps = numSteps - 1;
+type ProductKeysThatGoToConfig =
+  | "sellerId"
+  | "raiseDisputeForExchangeUrl"
+  | "showProductsPreLogin";
 export type RobloxWidgetProps = {
   connectProps: Omit<ConnectRobloxProps, "sellerId">;
   productsGridProps: Omit<
@@ -22,21 +26,26 @@ export type RobloxWidgetProps = {
     | "backendOrigin"
     | "configId"
     | "envName"
-    | "sellerId"
     | "requestShipmentProps"
     | "walletButtonTheme"
+    | ProductKeysThatGoToConfig
   >;
   configProps: Omit<
     CommitWidgetProps,
     "lookAndFeel" | "withWeb3React" | "withCustomReduxContext"
   > &
-    Pick<ProductsRobloxProps, "sellerId"> &
+    Pick<ProductsRobloxProps, ProductKeysThatGoToConfig> &
     ProductsRobloxProps["requestShipmentProps"];
 };
 export const RobloxWidget = ({
   connectProps,
   productsGridProps,
-  configProps: { sellerId, ...configProps }
+  configProps: {
+    sellerId,
+    raiseDisputeForExchangeUrl,
+    showProductsPreLogin,
+    ...configProps
+  }
 }: RobloxWidgetProps) => {
   const singleStepConnectRobloxRef = useRef<HTMLDivElement>(null);
   const [singleStepWidth, setSingleStepWidth] =
@@ -89,6 +98,8 @@ export const RobloxWidget = ({
           requestShipmentProps={configProps}
           maxWidth={singleStepWidth}
           sellerId={sellerId}
+          raiseDisputeForExchangeUrl={raiseDisputeForExchangeUrl}
+          showProductsPreLogin={showProductsPreLogin}
         />
       </Wrapper>
       <Portal>

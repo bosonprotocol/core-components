@@ -10,7 +10,7 @@ import {
   getEnvConfigs,
   subgraph
 } from "@bosonprotocol/core-sdk";
-import { RedemptionWidgetAction } from "../../components/widgets/redemption/provider/RedemptionContext";
+import { RedemptionWidgetAction } from "../../components/widgets";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Widgets/Redemption",
@@ -36,7 +36,7 @@ const envName =
 const envConfig = getEnvConfigs(envName);
 const BASE_ARGS = {
   withCustomReduxContext: false,
-  raiseDisputeForExchangeUrl: "domain.com/{id}",
+  raiseDisputeForExchangeUrl: "https://domain.com/{id}",
   lookAndFeel: "modal",
   withWeb3React: true,
   withReduxProvider: true

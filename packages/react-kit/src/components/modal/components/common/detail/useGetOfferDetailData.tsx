@@ -11,8 +11,6 @@ import {
   getCalcPercentage,
   useDisplayFloat
 } from "../../../../../lib/price/prices";
-import { Exchange } from "../../../../../types/exchange";
-import { Offer } from "../../../../../types/offer";
 import { Typography } from "../../../../ui/Typography";
 import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { DetailViewProps } from "./types";
@@ -22,8 +20,8 @@ const fontSizeExchangePolicy = "0.625rem";
 const colors = theme.colors.light;
 export type UseGetOfferDetailDataProps = {
   defaultCurrencySymbol: string;
-  offer: Offer;
-  exchange?: Exchange | null;
+  offer: subgraph.OfferFieldsFragment;
+  exchange?: subgraph.ExchangeFieldsFragment | null;
   onExchangePolicyClick: DetailViewProps["onExchangePolicyClick"];
   exchangePolicyCheckResult: offers.CheckExchangePolicyResult | undefined;
 };

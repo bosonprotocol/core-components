@@ -41,16 +41,20 @@ const TransparentSkeletonProductCard = styled(ProductCardSkeleton)`
 export type RobloxExchangesGridProps = {
   isLoading: boolean;
   numProducts?: number;
+  raiseDisputeForExchangeUrl: string;
   walletButtonTheme: ButtonThemeProps;
-  handleRequestShipment: (robloxProduct: BosonRobloxExchange) => void;
+  handleRequestShipment: (robloxExchange: BosonRobloxExchange) => void;
+  handleCancellation: (robloxExchange: BosonRobloxExchange) => void;
   exchanges: BosonRobloxExchange[] | undefined;
 };
 export const RobloxExchangesGrid = ({
   isLoading,
   numProducts,
+  raiseDisputeForExchangeUrl,
   exchanges,
   walletButtonTheme,
-  handleRequestShipment
+  handleRequestShipment,
+  handleCancellation
 }: RobloxExchangesGridProps) => {
   const { address } = useAccount();
   const { ipfsImageGateway } = useIpfsContext();
@@ -64,7 +68,7 @@ export const RobloxExchangesGrid = ({
         exchanges
           .filter((robloxExchange) => robloxExchange.offer.metadata)
           .map((robloxExchange) => {
-            const { offer, state } = robloxExchange;
+            const { offer, state, id: exchangeId } = robloxExchange;
             const { price, metadata } = offer;
             if (!(isProductV1(offer) || isBundle(offer))) {
               return null;
@@ -82,8 +86,8 @@ export const RobloxExchangesGrid = ({
 
             return (
               <TransparentExchangeCard
-                key={robloxExchange.id}
-                id={robloxExchange.id}
+                key={exchangeId}
+                id={exchangeId}
                 productType={
                   isBundle(offer)
                     ? ProductType.phygital
@@ -121,7 +125,7 @@ export const RobloxExchangesGrid = ({
                 cancelButtonConfig={
                   {
                     onClick: () => {
-                      console.log("click on cancel"); // TODO: what do we do?
+                      handleCancellation(robloxExchange);
                     },
                     type: "button"
                   } as const
@@ -129,7 +133,24 @@ export const RobloxExchangesGrid = ({
                 disputeButtonConfig={
                   {
                     onClick: () => {
-                      console.log("click on dispute"); // TODO: what do we do?
+                      const raiseDisputeForExchangeUrlWithId:
+                        | string
+                        | undefined = raiseDisputeForExchangeUrl?.replace(
+                        "{id}",
+                        exchangeId || ""
+                      );
+                      if (raiseDisputeForExchangeUrlWithId) {
+                        const urlWithHttpPrefix =
+                          raiseDisputeForExchangeUrlWithId.startsWith(
+                            "http://"
+                          ) ||
+                          raiseDisputeForExchangeUrlWithId.startsWith(
+                            "https://"
+                          )
+                            ? raiseDisputeForExchangeUrlWithId
+                            : `https://${raiseDisputeForExchangeUrlWithId}`;
+                        window.open(urlWithHttpPrefix, "_blank");
+                      }
                     },
                     type: "button"
                   } as const

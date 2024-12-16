@@ -11,7 +11,14 @@ import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";
 import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges";
 import { useAccount } from "../../../../hooks";
 import { RobloxExchangesGrid } from "./RobloxExchangesGrid";
-import { ProductAvailabilityStatus } from "../../../../hooks/roblox/backend.types";
+import {
+  BosonRobloxExchange,
+  ProductAvailabilityStatus
+} from "../../../../hooks/roblox/backend.types";
+import { CancelExchange } from "../../../modal/components/Redeem/ExchangeView/cancellation/CancelExchange";
+import { subgraph } from "@bosonprotocol/core-sdk";
+import NonModal from "../../../modal/nonModal/NonModal";
+import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 
 const Wrapper = Grid;
 const ContentWrapper = Grid;
@@ -44,10 +51,13 @@ export type ProductsRobloxProps = {
     unavailabeProducts: SectionThemeProps;
   }>;
   maxWidth?: CSSProperties["maxWidth"];
+  raiseDisputeForExchangeUrl: string;
+  showProductsPreLogin: boolean;
 };
 
 export const ProductsRoblox = ({
   sellerId,
+  raiseDisputeForExchangeUrl,
   theme,
   maxWidth,
   walletButtonTheme,
@@ -59,11 +69,24 @@ export const ProductsRoblox = ({
     forcedAccount,
     parentOrigin,
     signatures
-  }
+  },
+  showProductsPreLogin
 }: ProductsRobloxProps) => {
   const { address } = useAccount();
   const { showModal } = useModal();
-  const { data: robloxProducts, isLoading } = useRobloxProducts({ sellerId });
+  const { data: robloxLoggedInData } = useIsRobloxLoggedIn({
+    sellerId,
+    options: {
+      enabled: !!showProductsPreLogin
+    }
+  });
+  const { data: robloxProducts, isLoading } = useRobloxProducts({
+    sellerId,
+    options: { enabled: true }
+  });
+  const robloxExclusives = robloxProducts;
+  const robloxExclusivesLoading = isLoading;
+  console.log({ robloxExclusives });
   const availableProducts = robloxProducts?.filter((robloxProduct) =>
     (
       [
@@ -95,14 +118,20 @@ export const ProductsRoblox = ({
     });
   const [productUuid, setProductUuid] = useState<string>("");
   const [bundleUuid, setBundleUuid] = useState<string>("");
+  const [exchangeToCancel, setExchangeToCancel] =
+    useState<BosonRobloxExchange>();
+
+  const resetExchangeToCancel = () => setExchangeToCancel(undefined);
 
   const handleSetProductUuid = (selectedProductUuid: string) => {
     setProductUuid(selectedProductUuid);
     setBundleUuid("");
+    resetExchangeToCancel();
   };
   const handleSetBundleUuid = (selectedBundleUuid: string) => {
     setProductUuid("");
     setBundleUuid(selectedBundleUuid);
+    resetExchangeToCancel();
   };
   const clearSelection = () => {
     setProductUuid("");
@@ -125,7 +154,30 @@ export const ProductsRoblox = ({
             hideModal={clearSelection}
             withExternalSigner={false}
           />
-        ) : (
+        ) : exchangeToCancel ? (
+          <NonModal
+            showConnectButton={false}
+            lookAndFeel="regular"
+            hideModal={() => {
+              resetExchangeToCancel();
+            }}
+            closable
+          >
+            <CancelExchange
+              exchange={exchangeToCancel}
+              showBackButton
+              onBackClick={() => {
+                resetExchangeToCancel();
+              }}
+              onPendingSignature={undefined}
+              onError={undefined}
+              onPendingTransaction={undefined}
+              onSuccess={() => {
+                resetExchangeToCancel();
+              }}
+            />
+          </NonModal>
+        ) : robloxLoggedInData?.isLoggedIn ? (
           <>
             <Grid flexDirection="column" alignItems="flex-start">
               <Typography
@@ -137,7 +189,11 @@ export const ProductsRoblox = ({
 
               <RobloxExchangesGrid
                 walletButtonTheme={walletButtonTheme}
+                raiseDisputeForExchangeUrl={raiseDisputeForExchangeUrl}
                 exchanges={purchasedProducts}
+                handleCancellation={(robloxExchange) => {
+                  setExchangeToCancel(robloxExchange);
+                }}
                 handleRequestShipment={(robloxExchange) => {
                   showModal("REQUEST_SHIPMENT", {
                     exchange: robloxExchange,
@@ -192,6 +248,28 @@ export const ProductsRoblox = ({
               />
             </Grid>
           </>
+        ) : showProductsPreLogin && !robloxLoggedInData?.isLoggedIn ? (
+          <>
+            <Grid flexDirection="column" alignItems="flex-start">
+              <Typography
+                tag="h3"
+                style={theme?.unavailabeProducts?.title?.style}
+              >
+                Roblox exclusives
+              </Typography>
+              <Typography style={theme?.unavailabeProducts?.subtitle?.style}>
+                Other products that can be purchased when you have the right
+                Roblox inventory item.
+              </Typography>
+              <RobloxProductsGrid
+                walletButtonTheme={walletButtonTheme}
+                products={robloxExclusives}
+                isLoading={robloxExclusivesLoading}
+              />
+            </Grid>
+          </>
+        ) : (
+          <></>
         )}
       </ContentWrapper>
     </Wrapper>

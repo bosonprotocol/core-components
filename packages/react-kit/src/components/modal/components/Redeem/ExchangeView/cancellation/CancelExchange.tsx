@@ -12,7 +12,6 @@ import { extractUserFriendlyError } from "../../../../../../lib/errors/transacti
 import { useDisplayFloatWithConfig } from "../../../../../../lib/price/prices";
 import { poll } from "../../../../../../lib/promises/promises";
 import { theme } from "../../../../../../theme";
-import { Exchange } from "../../../../../../types/exchange";
 import {
   CancelButton,
   ICancelButton
@@ -24,8 +23,6 @@ import { Grid } from "../../../../../ui/Grid";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import { Spinner } from "../../../../../ui/loading/Spinner";
 import DetailTable from "../../../common/detail/DetailTable";
-import { RedemptionWidgetAction } from "../../../../../widgets";
-import { useRedemptionWidgetContext } from "../../../../../widgets/redemption/provider/RedemptionWidgetContext";
 
 const colors = theme.colors.light;
 
@@ -34,8 +31,9 @@ export interface CancelExchangeProps
     ICancelButton,
     "onSuccess" | "onError" | "onPendingSignature" | "onPendingTransaction"
   > {
-  exchange: Exchange;
+  exchange: subgraph.ExchangeFieldsFragment;
   onBackClick: () => void;
+  showBackButton: boolean;
 }
 
 const Line = styled.hr`
@@ -91,13 +89,13 @@ export function CancelExchange({
   onBackClick,
   onError,
   onPendingSignature,
-  onPendingTransaction
+  onPendingTransaction,
+  showBackButton
 }: CancelExchangeProps) {
   const [cancelSuccess, setCancelSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cancelError, setCancelError] = useState<Error | null>(null);
   const { offer } = exchange;
-
   const displayFloat = useDisplayFloatWithConfig();
   const coreSDK = useCoreSDKWithContext();
 
@@ -108,8 +106,6 @@ export function CancelExchange({
     exchange,
     exchange.offer.price
   );
-  const { widgetAction } = useRedemptionWidgetContext();
-  const isCancelModeOnly = widgetAction === RedemptionWidgetAction.CANCEL_FORM;
   return (
     <>
       <DetailTable
@@ -258,7 +254,7 @@ export function CancelExchange({
             </Grid>
           </CancelButton>
         </CancelButtonWrapper>
-        {!isCancelModeOnly && (
+        {showBackButton && (
           <ThemedButton themeVal="blankOutline" onClick={() => onBackClick()}>
             Back
           </ThemedButton>

@@ -46,7 +46,7 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({
-  HeaderComponent,
+  HeaderComponent = <div />,
   closable,
   handleOnClose,
   showConnectButton

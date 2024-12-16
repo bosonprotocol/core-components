@@ -69,6 +69,7 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
           exchange={exchange}
           onBackClick={onBackClick}
           onSuccess={onBackClick}
+          showBackButton={!isCancelModeOnly}
         />
       )}
     </>

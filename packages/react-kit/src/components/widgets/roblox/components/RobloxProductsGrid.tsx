@@ -44,8 +44,8 @@ export type RobloxProductsGridProps = {
   products: BosonRobloxProductWithAvailability[] | undefined;
   numProducts?: number;
   walletButtonTheme: ButtonThemeProps;
-  handleSetProductUuid: (uuid: string) => void;
-  handleSetBundleUuid: (uuid: string) => void;
+  handleSetProductUuid?: (uuid: string) => void;
+  handleSetBundleUuid?: (uuid: string) => void;
 };
 export const RobloxProductsGrid = ({
   isLoading,
@@ -125,9 +125,9 @@ export const RobloxProductsGrid = ({
                     <CommitButtonView
                       onClick={() => {
                         if (isProductV1(offer) && productUuid) {
-                          handleSetProductUuid(productUuid);
+                          handleSetProductUuid?.(productUuid);
                         } else if (isBundle(offer) && bundleUuid) {
-                          handleSetBundleUuid(bundleUuid);
+                          handleSetBundleUuid?.(bundleUuid);
                         }
                       }}
                     />

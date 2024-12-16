@@ -344,7 +344,7 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
         }
       },
       {
-        staleTime: Infinity,
+        staleTime: Infinity, // TODO: correct?
         enabled:
           !!robloxLoggedInData?.isLoggedIn &&
           !!address &&
@@ -470,7 +470,7 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
           button={
             <ConnectWalletWithLogic
               buttonThemeProps={theme.walletCard.button}
-              connectWalletButtonDisabled={!isConnectWalletStepActive}
+              connectWalletButtonDisabled={false}
             />
           }
         />
