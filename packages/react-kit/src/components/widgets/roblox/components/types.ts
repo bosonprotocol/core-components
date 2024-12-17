@@ -21,6 +21,7 @@ export type CardThemeProps = {
       stroke: CSSProperties["color"];
     };
   };
+  padding: CSSProperties["padding"];
   button: ButtonThemeProps;
 };
 

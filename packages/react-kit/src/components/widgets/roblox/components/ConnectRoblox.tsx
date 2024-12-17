@@ -62,6 +62,7 @@ const StepWrapperGrid = styled(Grid)<{
     ${({ $name, $theme, $isActive }) => {
       if ($name === "roblox") {
         return css`
+          padding: ${$theme.robloxCard.padding};
           path:first-child {
             fill: ${$isActive
               ? $theme.robloxCard.number.active.backgroundColor
@@ -76,6 +77,7 @@ const StepWrapperGrid = styled(Grid)<{
       }
       if ($name === "wallet") {
         return css`
+          padding: ${$theme.walletCard.padding};
           path:first-child {
             fill: ${$isActive
               ? $theme.walletCard.number.active.backgroundColor
@@ -90,6 +92,7 @@ const StepWrapperGrid = styled(Grid)<{
       }
       if ($name === "signup") {
         return css`
+          padding: ${$theme.signUpCard.padding};
           path:first-child {
             fill: ${$isActive
               ? $theme.signUpCard.number.active.backgroundColor
@@ -379,10 +382,7 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
     }, [address, isRobloxLoggedIn]);
     const isConnectWalletStepActive = activeStep >= 1 || !!address;
     return (
-      <Wrapper
-        justifyContent="center"
-        gap={theme.gapInPx !== undefined ? `${theme.gapInPx}px` : undefined}
-      >
+      <Wrapper justifyContent="center">
         <Step
           ref={ref}
           name="roblox"
