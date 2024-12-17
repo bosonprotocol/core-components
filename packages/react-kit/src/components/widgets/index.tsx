@@ -3,3 +3,4 @@ export { RedemptionWidgetAction } from "./redemption/provider/RedemptionWidgetCo
 export * from "./finance/FinanceWidget";
 export * from "./redemption/RedemptionWidget";
 export * from "./commit/CommitWidget";
+export * from "./roblox/RobloxWidget";
