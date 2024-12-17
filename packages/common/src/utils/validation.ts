@@ -4,21 +4,21 @@ import { isAddress } from "@ethersproject/address";
 
 export { validateMetadata } from "@bosonprotocol/metadata";
 
-const positiveIntTestArgs: [string, string, typeof isPositiveInt] = [
+const positiveIntTestArgs = [
   "is-positive-int",
   "${path} has to be a positive integer",
-  isPositiveInt
-];
-const futureDateTestArgs: [string, string, typeof isFutureDate] = [
+  (value: unknown) => isPositiveInt(value || "")
+] as const;
+const futureDateTestArgs = [
   "is-future-date",
   "${path} has to be a date in the future",
-  isFutureDate
-];
-const addressTestArgs: [string, string, typeof isAddress] = [
+  (value: string | undefined) => isFutureDate(value || "")
+] as const;
+const addressTestArgs = [
   "is-address",
   "${path} has to be a valid address",
-  (value: string) => isAddress(value || "")
-];
+  (value: string | undefined) => isAddress(value || "")
+] as const;
 
 export const createOfferArgsSchema = object({
   price: string()
