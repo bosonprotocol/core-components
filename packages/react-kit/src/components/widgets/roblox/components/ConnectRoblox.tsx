@@ -29,6 +29,7 @@ import {
 import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";
 import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges";
 import { LoginWithRoblox } from "./LoginWithRoblox";
+import { AccountDrawerProps } from "../../../wallet2/accountDrawer";
 
 const Wrapper = styled(Grid)`
   container-type: inline-size;
@@ -227,6 +228,28 @@ export type ConnectRobloxProps = {
     gapInPx?: number;
     robloxCard: CardThemeProps;
     walletCard: CardThemeProps;
+    walletPanel: Pick<
+      AccountDrawerProps,
+      | "backgroundColor"
+      | "buyCryptoTheme"
+      | "disconnectBackgroundColor"
+      | "disconnectBorderRadius"
+      | "disconnectColor"
+    > & {
+      optionProps: Pick<
+        AccountDrawerProps["walletModalProps"]["optionProps"],
+        | "backgroundColor"
+        | "borderRadius"
+        | "color"
+        | "hoverColor"
+        | "hoverFocusBackgroundColor"
+        | "iconBorderRadius"
+      >;
+      connectionErrorProps: Pick<
+        AccountDrawerProps["walletModalProps"]["connectionErrorProps"],
+        "backToWalletSelectionTheme" | "tryAgainTheme"
+      >;
+    };
     signUpCard: CardThemeProps;
   };
 };

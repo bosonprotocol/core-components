@@ -28,6 +28,7 @@ export type RobloxWidgetProps = {
     | "envName"
     | "requestShipmentProps"
     | "walletButtonTheme"
+    | "robloxButtonTheme"
     | ProductKeysThatGoToConfig
   >;
   configProps: Omit<
@@ -105,35 +106,20 @@ export const RobloxWidget = ({
       </Wrapper>
       <Portal>
         <AccountDrawer
-          backgroundColor="white"
-          buyCryptoTheme={connectProps.theme?.walletCard.button.active}
+          backgroundColor={connectProps.theme?.walletPanel.backgroundColor}
+          buyCryptoTheme={connectProps.theme?.walletPanel.buyCryptoTheme}
           disconnectBorderRadius={
-            connectProps.theme.walletCard.button.active.borderRadius
+            connectProps.theme.walletPanel.disconnectBorderRadius
           }
           disconnectBackgroundColor={
-            connectProps.theme.walletCard.button.active.background
+            connectProps.theme.walletPanel.disconnectBackgroundColor
           }
-          disconnectColor={connectProps.theme.walletCard.button.active.color}
+          disconnectColor={connectProps.theme.walletPanel.disconnectColor}
           walletModalProps={{
             withMagicLogin: false,
-            optionProps: {
-              backgroundColor:
-                connectProps.theme.walletCard.button.active.background,
-              color: connectProps.theme.walletCard.button.active.color,
-              borderRadius:
-                connectProps.theme.walletCard.button.active.borderRadius,
-              iconBorderRadius:
-                connectProps.theme.walletCard.button.active.borderRadius,
-              hoverFocusBackgroundColor:
-                connectProps.theme.walletCard.button.active.hover?.background,
-              hoverColor:
-                connectProps.theme.walletCard.button.active.hover?.color
-            },
-            connectionErrorProps: {
-              tryAgainTheme: connectProps.theme.walletCard.button.active,
-              backToWalletSelectionTheme:
-                connectProps.theme.walletCard.button.active
-            },
+            optionProps: connectProps.theme.walletPanel.optionProps,
+            connectionErrorProps:
+              connectProps.theme.walletPanel.connectionErrorProps,
             PrivacyPolicy: () => (
               <Typography
                 style={{ color: "rgb(9, 24, 44)", fontSize: "0.75rem" }}

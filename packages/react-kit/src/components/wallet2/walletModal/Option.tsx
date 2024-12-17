@@ -133,7 +133,6 @@ export function Option({
     activationState.status === ActivationStatus.PENDING;
   const isCurrentOptionPending =
     isSomeOptionPending && activationState.connection.type === connection.type;
-
   return (
     <Wrapper
       disabled={isSomeOptionPending}

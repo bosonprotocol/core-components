@@ -23,7 +23,10 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
   border-style: solid;
   border-color: ${(props) => props.theme?.borderColor || "transparent"};
   border-width: ${(props) => props.theme?.borderWidth || 0}px;
-  border-radius: ${(props) => props.theme?.borderRadius || 0}px;
+  border-radius: ${(props) =>
+    typeof props.theme?.borderRadius === "number"
+      ? `${props.theme.borderRadius || 0}px`
+      : props.theme?.borderRadius};
   ${(props) =>
     props.theme?.boxShadow ? `box-shadow: ${props.theme.boxShadow}` : ""};
   color: ${(props) => props.theme?.color || "#000000"};
@@ -103,7 +106,7 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
 export type BaseButtonTheme = {
   background?: CSSProperties["backgroundColor"];
   borderColor?: CSSProperties["borderColor"];
-  borderRadius?: CSSProperties["borderRadius"];
+  borderRadius?: `${string}px`;
   borderWidth?: CSSProperties["borderWidth"];
   boxShadow?: CSSProperties["boxShadow"];
   color?: CSSProperties["color"];

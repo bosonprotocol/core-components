@@ -7,15 +7,15 @@ import { Typography } from "../../ui/Typography";
 import { BaseButtonTheme } from "../../buttons/BaseButton";
 
 const defaultBorderRadiusPx = 12;
-const defaultBorderRadius = `${defaultBorderRadiusPx}px`;
+const defaultBorderRadius = `${defaultBorderRadiusPx}px` as const;
 const bosonThemes = bosonButtonThemes({ withBosonStyle: true });
 const customBosonPrimaryTheme = {
   ...bosonThemes["bosonPrimary"],
-  borderRadius: defaultBorderRadiusPx
+  borderRadius: defaultBorderRadius
 } satisfies BaseButtonTheme;
 const custombosonSecondaryInverseBlackTheme = {
   ...bosonThemes["bosonSecondaryInverseBlack"],
-  borderRadius: defaultBorderRadiusPx
+  borderRadius: defaultBorderRadius
 } satisfies BaseButtonTheme;
 const bosonPrimaryTheme = bosonThemes["bosonPrimary"] satisfies BaseButtonTheme;
 const orangeTheme = bosonThemes["orange"] satisfies BaseButtonTheme;

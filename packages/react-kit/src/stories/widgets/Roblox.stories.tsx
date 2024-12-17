@@ -7,7 +7,8 @@ import React from "react";
 import { Meta } from "@storybook/react";
 import { bosonButtonThemes } from "../../components/ui/ThemedButton";
 import { createGlobalStyle } from "styled-components";
-
+import { theme } from "../../theme";
+const colors = theme.colors.light;
 const GlobalStyle = createGlobalStyle`
     #storybook-root,[data-rk], [scale="1"] {
         width: 100%;
@@ -141,7 +142,7 @@ export const Base = {
           button: {
             active: {
               ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
-              borderRadius: 8
+              borderRadius: "8px"
             },
             inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
           }
@@ -166,9 +167,34 @@ export const Base = {
           button: {
             active: {
               ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
-              borderRadius: 8
+              borderRadius: "8px"
             },
             inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
+          }
+        },
+        walletPanel: {
+          backgroundColor: "white",
+          buyCryptoTheme: bosonButtonThemes({ withBosonStyle: true })[
+            "bosonPrimary"
+          ],
+          disconnectBorderRadius: "8px",
+          disconnectBackgroundColor: colors.green,
+          disconnectColor: "black",
+          optionProps: {
+            backgroundColor: colors.accent,
+            borderRadius: "8px",
+            color: colors.white,
+            hoverColor: colors.white,
+            hoverFocusBackgroundColor: colors.black,
+            iconBorderRadius: "8px"
+          },
+          connectionErrorProps: {
+            backToWalletSelectionTheme: bosonButtonThemes({
+              withBosonStyle: true
+            })["orangeInverse"],
+            tryAgainTheme: bosonButtonThemes({ withBosonStyle: true })[
+              "orangeInverse"
+            ]
           }
         },
         signUpCard: {
@@ -191,7 +217,7 @@ export const Base = {
           button: {
             active: {
               ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
-              borderRadius: 8
+              borderRadius: "8px"
             },
             inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
           }
