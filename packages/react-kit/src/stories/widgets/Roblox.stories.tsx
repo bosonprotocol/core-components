@@ -126,8 +126,11 @@ export const Base = {
     connectProps: {
       brand: "GYMSHARK",
       theme: {
-        gapInPx: 24,
+        stepsBackgroundSides: "white",
+        backgroundColor: "white",
+        lineBetweenStepsColor: colors.lightGrey,
         robloxCard: {
+          padding: "24px",
           title: {
             color: colors.black
           },
@@ -159,6 +162,7 @@ export const Base = {
           }
         },
         walletCard: {
+          padding: "24px",
           title: {
             color: colors.black
           },
@@ -215,6 +219,7 @@ export const Base = {
           }
         },
         signUpCard: {
+          padding: "24px",
           title: {
             color: colors.black
           },

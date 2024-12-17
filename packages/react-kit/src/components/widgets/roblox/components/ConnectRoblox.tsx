@@ -31,10 +31,15 @@ import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges"
 import { LoginWithRoblox } from "./LoginWithRoblox";
 import { AccountDrawerProps } from "../../../wallet2/accountDrawer";
 
-const Wrapper = styled(Grid)`
+const Wrapper = styled(Grid)<{
+  $backgroundColor: CSSProperties["backgroundColor"];
+}>`
   container-type: inline-size;
   display: flex;
   flex-direction: row;
+  ${({ $backgroundColor }) => css`
+    background-color: ${$backgroundColor};
+  `}
 `;
 
 const StyledPower = styled(Power)`
@@ -249,6 +254,7 @@ export type ConnectRobloxProps = {
   theme: {
     gapInPx?: number;
     backgroundColor: CSSProperties["backgroundColor"];
+    stepsBackgroundSides: CSSProperties["backgroundColor"];
     lineBetweenStepsColor: CSSProperties["backgroundColor"];
     robloxCard: CardThemeProps;
     walletCard: CardThemeProps;
@@ -400,7 +406,10 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
     }, [address, isRobloxLoggedIn]);
     const isConnectWalletStepActive = activeStep >= 1 || !!address;
     return (
-      <Wrapper justifyContent="center">
+      <Wrapper
+        justifyContent="center"
+        $backgroundColor={theme.stepsBackgroundSides}
+      >
         <Step
           ref={ref}
           name="roblox"
