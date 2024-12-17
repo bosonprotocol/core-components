@@ -128,6 +128,9 @@ export const Base = {
       theme: {
         gapInPx: 24,
         robloxCard: {
+          title: {
+            color: colors.black
+          },
           subtitle: {
             color: colors.darkGrey
           },
@@ -156,6 +159,9 @@ export const Base = {
           }
         },
         walletCard: {
+          title: {
+            color: colors.black
+          },
           subtitle: {
             color: colors.darkGrey
           },
@@ -209,6 +215,9 @@ export const Base = {
           }
         },
         signUpCard: {
+          title: {
+            color: colors.black
+          },
           subtitle: {
             color: colors.darkGrey
           },

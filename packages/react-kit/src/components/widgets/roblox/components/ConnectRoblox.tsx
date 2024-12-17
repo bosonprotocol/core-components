@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState
 } from "react";
-import { CSSProperties, css, styled } from "styled-components";
+import { css, styled } from "styled-components";
 import { Grid } from "../../../ui/Grid";
 import { Typography } from "../../../ui/Typography";
 import { BaseButton } from "../../../buttons/BaseButton";
@@ -15,7 +15,7 @@ import { CheckCircle, Power } from "phosphor-react";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { useRobloxLogout } from "../../../../hooks/roblox/useRobloxLogout";
 import { useRobloxConfigContext } from "../../../../hooks/roblox/context/useRobloxConfigContext";
-import { ButtonThemeProps, CardThemeProps } from "./types";
+import { CardThemeProps } from "./types";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
 import { useGetRobloxWalletAuth } from "../../../../hooks/roblox/useGetRobloxWalletAuth";
 import { useRobloxBackendLogin } from "../../../../hooks/roblox/useRobloxBackendLogin";
@@ -200,6 +200,7 @@ const Step = forwardRef<HTMLDivElement, StepProps>(
           tag="h4"
           margin={0}
           textAlign="center"
+          color={itemTheme.title.color}
           // @ts-expect-error textWrap is supported by browser
           style={{ textWrap: "balance" }}
         >
