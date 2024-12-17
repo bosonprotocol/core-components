@@ -60,7 +60,7 @@ export const Base = {
     productsGridProps: {
       theme: {
         style: {
-          background: "#F1F3F9",
+          background: colors.lightGrey,
           paddingTop: "5rem",
           paddingBottom: "5rem"
         },
@@ -127,15 +127,15 @@ export const Base = {
             color: "#556072"
           },
           check: {
-            color: "#02F3A2"
+            color: colors.green
           },
           number: {
             active: {
-              backgroundColor: "#02F3A2",
+              backgroundColor: colors.green,
               stroke: "black"
             },
             inactive: {
-              backgroundColor: "#F1F3F9",
+              backgroundColor: colors.lightGrey,
               stroke: "black"
             }
           },
@@ -152,15 +152,15 @@ export const Base = {
             color: "#556072"
           },
           check: {
-            color: "#02F3A2"
+            color: colors.green
           },
           number: {
             active: {
-              backgroundColor: "#02F3A2",
+              backgroundColor: colors.green,
               stroke: "black"
             },
             inactive: {
-              backgroundColor: "#F1F3F9",
+              backgroundColor: colors.lightGrey,
               stroke: "black"
             }
           },
@@ -202,15 +202,15 @@ export const Base = {
             color: "#556072"
           },
           check: {
-            color: "#02F3A2"
+            color: colors.green
           },
           number: {
             active: {
-              backgroundColor: "#02F3A2",
+              backgroundColor: colors.green,
               stroke: "black"
             },
             inactive: {
-              backgroundColor: "#F1F3F9",
+              backgroundColor: colors.lightGrey,
               stroke: "black"
             }
           },
