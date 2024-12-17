@@ -29,6 +29,7 @@ export type RobloxWidgetProps = {
     | "requestShipmentProps"
     | "walletButtonTheme"
     | "robloxButtonTheme"
+    | "commitButtonTheme"
     | ProductKeysThatGoToConfig
   >;
   configProps: Omit<

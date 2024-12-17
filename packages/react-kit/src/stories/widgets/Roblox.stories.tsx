@@ -64,6 +64,11 @@ export const Base = {
           paddingTop: "5rem",
           paddingBottom: "5rem"
         },
+        commitButton: {
+          color: "green",
+          layout: "horizontal",
+          shape: "rounded"
+        },
         purchasedProducts: {
           title: {
             style: {

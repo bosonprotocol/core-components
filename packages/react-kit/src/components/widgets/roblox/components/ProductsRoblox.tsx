@@ -3,10 +3,12 @@ import React, { useState } from "react";
 import { Typography, TypographyProps } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
 import { CommitModalWithOffer } from "../../commit/CommitModalWithOffer";
-import { RobloxProductsGrid } from "./RobloxProductsGrid";
+import {
+  RobloxProductsGrid,
+  RobloxProductsGridProps
+} from "./RobloxProductsGrid";
 import { useModal } from "../../../modal/useModal";
 import { RequestShipmentModalProps } from "../../../modal/components/RequestShipment/RequestShipmentModal";
-import { ButtonThemeProps } from "./types";
 import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";
 import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges";
 import { useAccount } from "../../../../hooks";
@@ -41,11 +43,12 @@ export type ProductsRobloxProps = {
     | "parentOrigin"
     | "signatures"
   >;
-  walletButtonTheme: ButtonThemeProps;
-  robloxButtonTheme: ButtonThemeProps;
+  walletButtonTheme: RobloxProductsGridProps["walletButtonTheme"];
+  robloxButtonTheme: RobloxProductsGridProps["robloxButtonTheme"];
   sellerId: string;
   theme?: Partial<{
     style: Partial<TypographyProps["style"]>;
+    commitButton: RobloxProductsGridProps["commitButtonTheme"];
     purchasedProducts: Omit<SectionThemeProps, "subtitle">;
     availableProducts: SectionThemeProps;
     unavailabeProducts: SectionThemeProps;
@@ -224,6 +227,7 @@ export const ProductsRoblox = ({
               <RobloxProductsGrid
                 walletButtonTheme={walletButtonTheme}
                 robloxButtonTheme={robloxButtonTheme}
+                commitButtonTheme={theme?.commitButton}
                 products={availableProducts}
                 handleSetProductUuid={handleSetProductUuid}
                 handleSetBundleUuid={handleSetBundleUuid}
@@ -245,6 +249,7 @@ export const ProductsRoblox = ({
               <RobloxProductsGrid
                 walletButtonTheme={walletButtonTheme}
                 robloxButtonTheme={robloxButtonTheme}
+                commitButtonTheme={theme?.commitButton}
                 products={unavailableProducts}
                 handleSetProductUuid={handleSetProductUuid}
                 handleSetBundleUuid={handleSetBundleUuid}
@@ -269,6 +274,7 @@ export const ProductsRoblox = ({
               <RobloxProductsGrid
                 walletButtonTheme={walletButtonTheme}
                 robloxButtonTheme={robloxButtonTheme}
+                commitButtonTheme={theme?.commitButton}
                 products={robloxExclusives}
                 isLoading={robloxExclusivesLoading}
                 isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}
