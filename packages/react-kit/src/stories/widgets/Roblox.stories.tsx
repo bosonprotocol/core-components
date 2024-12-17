@@ -69,7 +69,7 @@ export const Base = {
             style: {
               margin: 0,
               marginBottom: "32px",
-              color: "#09182C"
+              color: colors.black
             }
           }
         },
@@ -77,13 +77,13 @@ export const Base = {
           title: {
             style: {
               margin: 0,
-              color: "#09182C"
+              color: colors.black
             }
           },
           subtitle: {
             style: {
               marginBottom: "32px",
-              color: "#556072"
+              color: colors.darkGrey
             }
           }
         },
@@ -91,13 +91,13 @@ export const Base = {
           title: {
             style: {
               margin: 0,
-              color: "#09182C"
+              color: colors.black
             }
           },
           subtitle: {
             style: {
               marginBottom: "32px",
-              color: "#556072"
+              color: colors.darkGrey
             }
           }
         }
@@ -124,7 +124,7 @@ export const Base = {
         gapInPx: 24,
         robloxCard: {
           subtitle: {
-            color: "#556072"
+            color: colors.darkGrey
           },
           check: {
             color: colors.green
@@ -144,12 +144,15 @@ export const Base = {
               ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
               borderRadius: "8px"
             },
-            inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
+            inactive: {
+              ...bosonButtonThemes({ withBosonStyle: true })["white"],
+              borderRadius: "8px"
+            }
           }
         },
         walletCard: {
           subtitle: {
-            color: "#556072"
+            color: colors.darkGrey
           },
           check: {
             color: colors.green
@@ -169,7 +172,10 @@ export const Base = {
               ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
               borderRadius: "8px"
             },
-            inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
+            inactive: {
+              ...bosonButtonThemes({ withBosonStyle: true })["white"],
+              borderRadius: "8px"
+            }
           }
         },
         walletPanel: {
@@ -199,7 +205,7 @@ export const Base = {
         },
         signUpCard: {
           subtitle: {
-            color: "#556072"
+            color: colors.darkGrey
           },
           check: {
             color: colors.green
@@ -219,7 +225,10 @@ export const Base = {
               ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
               borderRadius: "8px"
             },
-            inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
+            inactive: {
+              ...bosonButtonThemes({ withBosonStyle: true })["white"],
+              borderRadius: "8px"
+            }
           }
         }
       }
