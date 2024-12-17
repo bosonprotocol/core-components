@@ -62,7 +62,6 @@ const StepWrapperGrid = styled(Grid)<{
     ${({ $name, $theme, $isActive }) => {
       if ($name === "roblox") {
         return css`
-          padding: ${$theme.robloxCard.padding};
           path:first-child {
             fill: ${$isActive
               ? $theme.robloxCard.number.active.backgroundColor
@@ -77,7 +76,6 @@ const StepWrapperGrid = styled(Grid)<{
       }
       if ($name === "wallet") {
         return css`
-          padding: ${$theme.walletCard.padding};
           path:first-child {
             fill: ${$isActive
               ? $theme.walletCard.number.active.backgroundColor
@@ -92,7 +90,6 @@ const StepWrapperGrid = styled(Grid)<{
       }
       if ($name === "signup") {
         return css`
-          padding: ${$theme.signUpCard.padding};
           path:first-child {
             fill: ${$isActive
               ? $theme.signUpCard.number.active.backgroundColor
@@ -108,6 +105,25 @@ const StepWrapperGrid = styled(Grid)<{
       return "";
     }}
   }
+  ${({ $name, $theme }) => {
+    if ($name === "roblox") {
+      return css`
+        padding: ${$theme.robloxCard.padding};
+      `;
+    }
+    if ($name === "wallet") {
+      return css`
+        padding: ${$theme.walletCard.padding};
+      `;
+    }
+    if ($name === "signup") {
+      return css`
+        padding: ${$theme.signUpCard.padding};
+      `;
+    }
+    return "";
+  }}
+
   &:nth-of-type(1) ${IconWrapper} {
     &::after {
       content: "";
