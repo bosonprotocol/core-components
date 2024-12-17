@@ -57,6 +57,8 @@ const StepWrapperGrid = styled(Grid)<{
   $itemWidthPx: number;
 }>`
   max-width: 22.125rem;
+  min-height: 100%;
+  align-self: stretch;
   background-color: ${({ $theme }) => $theme.backgroundColor};
   svg {
     ${({ $name, $theme, $isActive }) => {
