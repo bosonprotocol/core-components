@@ -11,6 +11,7 @@ import { CommitWidgetProps } from "../commit/CommitWidget";
 import { Typography } from "../../ui/Typography";
 import { AccountDrawer } from "../../wallet2/accountDrawer";
 import { Portal } from "../../portal/Portal";
+export * from "./components/types";
 
 const Wrapper = Grid;
 const numSteps = 3;

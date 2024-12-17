@@ -2,6 +2,9 @@ import { CSSProperties } from "styled-components";
 import { BaseButtonTheme } from "../../../buttons/BaseButton";
 
 export type CardThemeProps = {
+  title: {
+    color: CSSProperties["color"];
+  };
   subtitle: {
     color: CSSProperties["color"];
   };
