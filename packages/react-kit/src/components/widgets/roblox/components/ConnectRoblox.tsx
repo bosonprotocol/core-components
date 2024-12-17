@@ -46,7 +46,7 @@ const IconWrapper = styled.div`
   position: relative;
   padding-right: 15px;
   padding-left: 15px;
-  background-color: white;
+  background-color: inherit;
 `;
 const CardTitle = styled(Typography)``;
 const StepWrapperGrid = styled(Grid)<{
