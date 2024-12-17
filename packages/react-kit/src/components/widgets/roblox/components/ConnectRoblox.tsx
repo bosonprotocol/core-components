@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState
 } from "react";
-import { css, styled } from "styled-components";
+import { css, CSSProperties, styled } from "styled-components";
 import { Grid } from "../../../ui/Grid";
 import { Typography } from "../../../ui/Typography";
 import { BaseButton } from "../../../buttons/BaseButton";
@@ -57,7 +57,7 @@ const StepWrapperGrid = styled(Grid)<{
   $itemWidthPx: number;
 }>`
   max-width: 22.125rem;
-  background-color: white;
+  background-color: ${({ $theme }) => $theme.backgroundColor};
   svg {
     ${({ $name, $theme, $isActive }) => {
       if ($name === "roblox") {
@@ -113,7 +113,7 @@ const StepWrapperGrid = styled(Grid)<{
       left: 100%;
       width: calc(2 * ${({ $itemWidthPx }) => $itemWidthPx + "px"});
       height: 2px;
-      background-color: #f1f3f9;
+      background-color: ${({ $theme }) => $theme.lineBetweenStepsColor};
     }
   }
   @container (width < 692px) {
@@ -227,6 +227,8 @@ export type ConnectRobloxProps = {
   brand: string;
   theme: {
     gapInPx?: number;
+    backgroundColor: CSSProperties["backgroundColor"];
+    lineBetweenStepsColor: CSSProperties["backgroundColor"];
     robloxCard: CardThemeProps;
     walletCard: CardThemeProps;
     walletPanel: Pick<
