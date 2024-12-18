@@ -2,13 +2,6 @@ import "styled-components";
 /*eslint sort-keys: "error"*/
 
 export const theme = {
-  borders: {
-    // in px
-    big: 16,
-    large: 32,
-    medium: 12,
-    small: 8
-  } as const,
   colors: {
     light: {
       arsenic: "#3a364f",
@@ -31,11 +24,5 @@ export const theme = {
       violet: "#7829F9",
       white: "#ffffff"
     }
-  },
-  mobile: "768px",
-  tablet: "1024px",
-  transition: {
-    time: "150ms",
-    timing: "ease-in-out"
   }
 } as const;
