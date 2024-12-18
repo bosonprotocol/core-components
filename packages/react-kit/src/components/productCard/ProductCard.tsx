@@ -1,7 +1,8 @@
 import React, { ReactNode, useState } from "react";
 import {
   Currencies,
-  CurrencyDisplay
+  CurrencyDisplay,
+  CurrencyDisplayProps
 } from "../currencyDisplay/CurrencyDisplay";
 import { IBaseImage, Image } from "../image/Image";
 import { Tooltip, TooltipProps } from "../tooltip/Tooltip";
@@ -30,7 +31,7 @@ export const PhygitalLabel = () => {
   );
 };
 
-interface IProductCard {
+export interface IProductCard {
   asterisk?: boolean;
   onAvatarError?: React.ReactEventHandler<HTMLImageElement> | undefined;
   avatarName: JSX.Element | string;
@@ -51,6 +52,7 @@ interface IProductCard {
   hideCreatorName?: boolean;
   isImageFitCover?: boolean;
   className?: string;
+  currencyColor?: CurrencyDisplayProps["color"];
 }
 
 const Wrapper = ({
@@ -89,7 +91,8 @@ export const ProductCard = (props: IProductCard) => {
     hideCreatorName = false,
     isImageFitCover = false,
     className,
-    productType
+    productType,
+    currencyColor
   } = props;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -137,6 +140,7 @@ export const ProductCard = (props: IProductCard) => {
               value={price}
               currency={currency}
               fontSize={"0.875rem"}
+              color={currencyColor}
               iconSize={16}
               gap={"0.3125rem"}
               style={{

@@ -52,6 +52,7 @@ export type ProductsRobloxProps = {
     purchasedProducts: Omit<SectionThemeProps, "subtitle">;
     availableProducts: SectionThemeProps;
     unavailabeProducts: SectionThemeProps;
+    currencyColor: CSSProperties["color"];
   }>;
   maxWidth?: CSSProperties["maxWidth"];
   raiseDisputeForExchangeUrl: string;
@@ -90,7 +91,6 @@ export const ProductsRoblox = ({
   });
   const robloxExclusives = robloxProducts;
   const robloxExclusivesLoading = isLoading;
-  console.log({ robloxExclusives });
   const availableProducts = robloxProducts?.filter((robloxProduct) =>
     (
       [
@@ -233,6 +233,7 @@ export const ProductsRoblox = ({
                 handleSetBundleUuid={handleSetBundleUuid}
                 isLoading={availableProductLoading}
                 isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}
+                currencyColor={theme?.currencyColor}
               />
             </Grid>
             <Grid flexDirection="column" alignItems="flex-start">
@@ -255,6 +256,7 @@ export const ProductsRoblox = ({
                 handleSetBundleUuid={handleSetBundleUuid}
                 isLoading={unavailableProductsLoading}
                 isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}
+                currencyColor={theme?.currencyColor}
               />
             </Grid>
           </>
@@ -278,6 +280,7 @@ export const ProductsRoblox = ({
                 products={robloxExclusives}
                 isLoading={robloxExclusivesLoading}
                 isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}
+                currencyColor={theme?.currencyColor}
               />
             </Grid>
           </>
