@@ -80,10 +80,12 @@ export default function UploadedFile({
         style={{ ...style, ...theme?.overrides }}
         theme={theme?.triggerTheme}
       >
-        {isPdfOnly ? <FilePdf size={23} /> : <ImageSquare size={23} />}
-        <Typography fontSize="1rem" fontWeight="400">
-          &nbsp;&nbsp; {fileName}
-        </Typography>
+        <Grid flexDirection="row" alignItems="start">
+          {isPdfOnly ? <FilePdf size={23} /> : <ImageSquare size={23} />}
+          <Typography fontSize="1rem" fontWeight="400">
+            &nbsp;&nbsp; {fileName}
+          </Typography>
+        </Grid>
         {showSize && (
           <Typography tag="p">
             <small>{bytesToSize(fileSize)}</small>
@@ -91,7 +93,17 @@ export default function UploadedFile({
         )}
       </FileUploadWrapper>
     );
-  }, [fileName, isPdfOnly, fileSize, showSize]);
+  }, [
+    fileName,
+    isPdfOnly,
+    disabled,
+    fileSize,
+    showSize,
+    handleChooseFile,
+    theme,
+    style,
+    errorMessage
+  ]);
 
   return (
     <Grid>

@@ -5,10 +5,12 @@ import React from "react";
 
 export type UploadedSinglePdfFileProps = {
   fileName: string;
+  disabled?: boolean;
   onXClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 export const UploadedSinglePdfFile = ({
   fileName,
+  disabled,
   onXClick
 }: UploadedSinglePdfFileProps) => {
   return (
@@ -17,7 +19,7 @@ export const UploadedSinglePdfFile = ({
         <FilePdf size={24} />
       </div>
       <Typography style={{ width: "100%" }}>{fileName}</Typography>
-      {onXClick && (
+      {onXClick && !disabled && (
         <button
           type="button"
           style={{
