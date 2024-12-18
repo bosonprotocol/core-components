@@ -88,7 +88,6 @@ export const RobloxWidget = ({
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        gap="3rem"
       >
         <ConnectRoblox
           {...connectProps}
