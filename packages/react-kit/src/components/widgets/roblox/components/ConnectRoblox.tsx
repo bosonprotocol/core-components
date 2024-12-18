@@ -252,7 +252,6 @@ export type ConnectRobloxProps = {
   sellerId: string;
   brand: string;
   theme: {
-    gapInPx?: number;
     backgroundColor: CSSProperties["backgroundColor"];
     stepsBackgroundSides: CSSProperties["backgroundColor"];
     lineBetweenStepsColor: CSSProperties["backgroundColor"];

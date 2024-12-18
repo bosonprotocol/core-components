@@ -51,30 +51,6 @@ export const RobloxWidget = ({
   }
 }: RobloxWidgetProps) => {
   const singleStepConnectRobloxRef = useRef<HTMLDivElement>(null);
-  const [singleStepWidth, setSingleStepWidth] =
-    useState<CSSProperties["maxWidth"]>();
-  const updateWidth = useCallback(() => {
-    if (singleStepConnectRobloxRef.current) {
-      const newWidth =
-        (singleStepConnectRobloxRef.current.getBoundingClientRect().width ||
-          0) *
-          numSteps +
-        numGaps * (connectProps.theme.gapInPx || 0);
-      if (newWidth) {
-        setSingleStepWidth(`${newWidth}px`);
-      }
-    }
-  }, [connectProps.theme.gapInPx]);
-
-  useEffect(() => {
-    updateWidth();
-
-    window.addEventListener("resize", updateWidth);
-
-    return () => {
-      window.removeEventListener("resize", updateWidth);
-    };
-  }, [updateWidth]);
 
   return (
     <CommitWidgetProviders
@@ -99,7 +75,6 @@ export const RobloxWidget = ({
           walletButtonTheme={connectProps.theme.walletCard.button}
           robloxButtonTheme={connectProps.theme.robloxCard.button}
           requestShipmentProps={configProps}
-          maxWidth={singleStepWidth}
           sellerId={sellerId}
           raiseDisputeForExchangeUrl={raiseDisputeForExchangeUrl}
           showProductsPreLogin={showProductsPreLogin}
