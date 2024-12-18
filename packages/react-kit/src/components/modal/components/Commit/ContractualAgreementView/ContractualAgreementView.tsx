@@ -4,11 +4,10 @@ import { Typography } from "../../../../ui/Typography";
 import { ArrowLeft } from "phosphor-react";
 import ContractualAgreement from "../../../../contractualAgreement/ContractualAgreement";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { BosonLogo } from "../../common/BosonLogo";
 
-const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
   offer: Offer | null;

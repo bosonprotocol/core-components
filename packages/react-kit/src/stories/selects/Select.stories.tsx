@@ -1,5 +1,5 @@
 import { fn } from "@storybook/test";
-import { Select, SelectProps, theme } from "../../index";
+import { colors, Select, SelectProps } from "../../index";
 import React from "react";
 import { Meta } from "@storybook/react";
 import { Formik } from "formik";
@@ -7,7 +7,6 @@ import { Formik } from "formik";
 const inputWithErrors = "With error";
 const inputName = "test";
 
-const colors = theme.colors.light;
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Visual Components/Selects/Select",

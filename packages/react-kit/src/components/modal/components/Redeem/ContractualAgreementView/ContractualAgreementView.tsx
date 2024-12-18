@@ -4,10 +4,9 @@ import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import ContractualAgreement from "../../../../contractualAgreement/ContractualAgreement";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { BosonLogo } from "../../common/BosonLogo";
 
-const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;

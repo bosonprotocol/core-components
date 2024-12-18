@@ -1,13 +1,11 @@
 import { TextAlignLeft } from "phosphor-react";
 import React from "react";
 import styled from "styled-components";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import SellerID from "../../../../avatar/SellerID";
 import { Grid } from "../../../../ui/Grid";
 import { Offer } from "../../../../../types/offer";
 import { LoadingBubble } from "../../../../skeleton/common";
-
-const colors = theme.colors.light;
 
 const Container = styled(Grid)`
   background: ${colors.white};

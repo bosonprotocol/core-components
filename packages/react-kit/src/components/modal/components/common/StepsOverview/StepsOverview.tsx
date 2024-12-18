@@ -7,11 +7,10 @@ import { CommitStep } from "./style";
 import Step from "../../../../ui/Step";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { RedeemHeader } from "../../Redeem/RedeemHeader";
 import { BosonLogo } from "../BosonLogo";
 
-const colors = theme.colors.light;
 const CommitStepWrapper = styled.div`
   overflow: hidden;
   margin: 1rem 0;

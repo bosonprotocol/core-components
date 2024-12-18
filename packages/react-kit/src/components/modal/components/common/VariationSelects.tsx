@@ -9,14 +9,14 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { isNumeric } from "../../../../lib/numbers/numbers";
-import { theme } from "../../../../theme";
+import { colors } from "../../../../theme";
 import { isTruthy } from "../../../../types/helpers";
 import { VariantV1, Variation } from "../../../../types/variants";
 import { SimpleError } from "../../../error/SimpleError";
 import { Select } from "../../../form";
 import { SelectDataProps } from "../../../form/types";
 import { Grid } from "../../../ui/Grid";
-const colors = theme.colors.light;
+
 const selectWidth = "10rem";
 export const ResponsiveVariationSelects = styled(VariationSelects)`
   container-type: inline-size;

@@ -1,9 +1,8 @@
 import styled, { css } from "styled-components";
 
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { transition } from "../ui/styles";
 import { zIndex } from "../ui/zIndex";
-const colors = theme.colors.light;
 
 export const Picker = styled.div`
   width: 100%;

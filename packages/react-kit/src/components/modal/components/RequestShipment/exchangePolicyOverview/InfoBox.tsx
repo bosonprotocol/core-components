@@ -3,9 +3,7 @@ import { CSSProperties, styled } from "styled-components";
 import { Grid } from "../../../../ui/Grid";
 import React from "react";
 import { Typography } from "../../../../ui/Typography";
-import { theme } from "../../../../../theme";
-
-const colors = theme.colors.light;
+import { colors } from "../../../../../theme";
 
 const Wrapper = styled(Grid)`
   border: 1px solid ${colors.border};

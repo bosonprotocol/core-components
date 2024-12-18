@@ -1,10 +1,9 @@
 import React from "react";
 import { CSSProperties } from "styled-components";
-import { theme } from "../../../../theme";
+import { colors } from "../../../../theme";
 import { MarginContainer } from "../../../widgets/MarginContainer";
 import NonModal from "../../nonModal/NonModal";
 import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
-const colors = theme.colors.light;
 
 export type PurchaseOverviewProps = {
   lookAndFeel: "regular" | "modal";

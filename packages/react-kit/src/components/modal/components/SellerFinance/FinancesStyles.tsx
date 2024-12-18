@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { theme } from "../../../../theme";
+import { colors } from "../../../../theme";
 
 import { Grid } from "../../../ui/Grid";
-const colors = theme.colors.light;
+
 export const ProtocolStrong = styled.strong`
   margin-right: 0.25rem;
 `;

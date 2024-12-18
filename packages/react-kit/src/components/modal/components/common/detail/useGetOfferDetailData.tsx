@@ -14,10 +14,10 @@ import {
 import { Typography } from "../../../../ui/Typography";
 import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { DetailViewProps } from "./types";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 
 const fontSizeExchangePolicy = "0.625rem";
-const colors = theme.colors.light;
+
 export type UseGetOfferDetailDataProps = {
   defaultCurrencySymbol: string;
   offer: subgraph.OfferFieldsFragment;

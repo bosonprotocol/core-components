@@ -10,7 +10,7 @@ import { Typography } from "../../../../ui/Typography";
 import DetailOpenSea from "../../common/DetailOpenSea";
 import { useFormikContext } from "formik";
 import { FormType } from "../RedeemFormModel";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import Video from "../../../../ui/Video";
 import { Button } from "../../../../buttons/Button";
 import { GridContainer } from "../../../../ui/GridContainer";
@@ -18,8 +18,6 @@ import { useRedemptionContext } from "../../../../widgets/redemption/provider/Re
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { RedeemHeader } from "../RedeemHeader";
 import { BosonLogo } from "../../common/BosonLogo";
-
-const colors = theme.colors.light;
 
 const ImageWrapper = styled.div`
   position: relative;

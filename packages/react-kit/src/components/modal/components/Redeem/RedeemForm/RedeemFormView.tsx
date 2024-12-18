@@ -2,12 +2,10 @@ import React, { useEffect } from "react";
 import RedeemForm from "./RedeemForm";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { Exchange } from "../../../../../types/exchange";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { useAccount } from "../../../../../hooks/connection/connection";
 import { RedeemHeader } from "../RedeemHeader";
 import { BosonLogo } from "../../common/BosonLogo";
-
-const colors = theme.colors.light;
 
 interface Props {
   exchange: Exchange | null;

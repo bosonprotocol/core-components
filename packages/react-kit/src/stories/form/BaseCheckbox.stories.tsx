@@ -2,9 +2,8 @@ import React from "react";
 import { BaseCheckbox, BaseCheckboxProps } from "../../components/form";
 import { Formik } from "formik";
 import type { Meta } from "@storybook/react";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { bosonCheckboxTheme } from "../../components/form/Checkbox";
-const colors = theme.colors.light;
 
 const inputName = "test";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

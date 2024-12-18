@@ -1,6 +1,6 @@
 import { css } from "styled-components";
-import { theme } from "../../theme";
-const colors = theme.colors.light;
+import { colors } from "../../theme";
+
 export const ClickableStyle = css`
   text-decoration: none;
   cursor: pointer;

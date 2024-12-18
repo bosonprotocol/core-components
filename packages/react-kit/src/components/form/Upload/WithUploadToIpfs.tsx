@@ -3,14 +3,12 @@ import toast from "react-hot-toast";
 
 import { getImageMetadata } from "../../../lib/images/images";
 import { getVideoMetadata } from "../../../lib/videos/videos";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import ErrorToast from "../../toasts/common/ErrorToast";
 import { Typography } from "../../ui/Typography";
 import { FileProps, UploadProps } from "../types";
 import { useSaveImageToIpfs } from "../../../hooks/ipfs/useSaveImageToIpfs";
 import { bytesToSize } from "../../../lib/bytes/bytesToSize";
-
-const colors = theme.colors.light;
 
 export const MAX_FILE_SIZE = 20 * 1024 * 1024;
 export const SUPPORTED_FORMATS = [

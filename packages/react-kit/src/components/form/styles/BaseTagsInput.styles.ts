@@ -1,7 +1,5 @@
 import styled, { CSSProperties, css } from "styled-components";
-import { theme } from "../../../theme";
-
-const colors = theme.colors.light;
+import { colors } from "../../../theme";
 
 export const TagContainer = styled.div<{
   $gap: CSSProperties["gap"];

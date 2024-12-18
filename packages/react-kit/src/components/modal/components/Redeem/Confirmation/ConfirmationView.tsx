@@ -3,15 +3,13 @@ import React, { useEffect } from "react";
 import { Exchange } from "../../../../../types/exchange";
 import { Confirmation, ConfirmationProps } from "./Confirmation";
 import { NonModalProps, useNonModalContext } from "../../../nonModal/NonModal";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { RedeemHeader } from "../RedeemHeader";
 import { useAccount } from "../../../../../hooks/connection/connection";
 import {
   RedemptionWidgetAction,
   useRedemptionWidgetContext
 } from "../../../../widgets/redemption/provider/RedemptionWidgetContext";
-
-const colors = theme.colors.light;
 
 export interface ConfirmationViewProps {
   onBackClick: ConfirmationProps["onBackClick"];

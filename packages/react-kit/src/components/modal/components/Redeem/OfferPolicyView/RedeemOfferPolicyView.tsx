@@ -7,10 +7,9 @@ import OfferPolicyDetails, {
   OfferPolicyDetailsProps
 } from "../../../../offerPolicy/OfferPolicyDetails";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { BosonLogo } from "../../common/BosonLogo";
 
-const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
   offer: Exchange["offer"] | null | undefined;

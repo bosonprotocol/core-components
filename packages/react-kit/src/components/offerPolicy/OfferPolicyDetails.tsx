@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { Grid } from "../ui/Grid";
 import ThemedButton from "../ui/ThemedButton";
 import { Typography } from "../ui/Typography";
@@ -15,7 +15,6 @@ import useCheckExchangePolicy from "../../hooks/useCheckExchangePolicy";
 import { useConfigContext } from "../config/ConfigContext";
 import { useBosonContext } from "../boson/BosonProvider";
 
-const colors = theme.colors.light;
 const NoPaddingButton = styled(ThemedButton)`
   padding: 0 !important;
   border-color: transparent !important;

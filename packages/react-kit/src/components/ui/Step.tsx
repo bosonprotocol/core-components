@@ -3,10 +3,8 @@ import styled from "styled-components";
 
 import { Typography } from "../../components/ui/Typography";
 import { breakpoint } from "../../lib/ui/breakpoint";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { zIndex } from "./zIndex";
-
-const colors = theme.colors.light;
 
 const StepWrapper = styled.div`
   display: flex;

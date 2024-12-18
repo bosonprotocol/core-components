@@ -5,12 +5,11 @@ import { Grid } from "../ui/Grid";
 import ThemedButton from "../ui/ThemedButton";
 import { Typography } from "../ui/Typography";
 import { Spinner } from "../ui/loading/Spinner";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { useChatContext } from "./ChatProvider/ChatContext";
 import { useAccount } from "../../hooks/connection/connection";
 import { BosonConnectWallet } from "../wallet2/web3Status/BosonConnectWallet";
 
-const colors = theme.colors.light;
 const Info = styled(Grid)`
   display: flex;
   justify-content: space-between;

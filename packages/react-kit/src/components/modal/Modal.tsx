@@ -4,14 +4,13 @@ import { ReactNode } from "react";
 import { createPortal } from "react-dom";
 import styled, { css } from "styled-components";
 
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { ModalType, Store } from "./ModalContext";
 import { Typography } from "../ui/Typography";
 import ThemedButton from "../ui/ThemedButton";
 import { breakpoint } from "../../lib/ui/breakpoint";
 import { zIndex } from "../ui/zIndex";
 
-const colors = theme.colors.light;
 const Root = styled.div`
   position: fixed;
   top: 0;

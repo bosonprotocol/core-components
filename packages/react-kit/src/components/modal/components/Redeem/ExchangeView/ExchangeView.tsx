@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { isTruthy } from "../../../../../types/helpers";
 import { VariantV1 } from "../../../../../types/variants";
 import { Grid } from "../../../../ui/Grid";
@@ -23,8 +23,6 @@ import { SlickSlider, initialSettings } from "../../common/detail/SlickSlider";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
 import { getOfferVariations } from "../../../../../lib/offer/getOfferVariations";
 import { BosonLogo } from "../../common/BosonLogo";
-
-const colors = theme.colors.light;
 
 const ImageWrapper = styled.div`
   container-type: inline-size;

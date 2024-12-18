@@ -329,22 +329,21 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
       loadBosonProducts,
       loadBosonExchanges
     ]);
-    const { data: robloxLoggedInData, refetch: getIsRobloxLoggedInAsync } =
-      useIsRobloxLoggedIn({
-        sellerId,
-        options: {
-          enabled: true,
-          onSuccess: (data) => {
-            if (!data?.isLoggedIn && address) {
-              // Roblox auth is not valid, disconnect the wallet if connected
-              console.log(
-                "Roblox auth is not valid, disconnect the wallet if connected"
-              );
-              disconnectWallet();
-            }
+    const { data: robloxLoggedInData } = useIsRobloxLoggedIn({
+      sellerId,
+      options: {
+        enabled: true,
+        onSuccess: (data) => {
+          if (!data?.isLoggedIn && address) {
+            // Roblox auth is not valid, disconnect the wallet if connected
+            console.log(
+              "Roblox auth is not valid, disconnect the wallet if connected"
+            );
+            disconnectWallet();
           }
         }
-      });
+      }
+    });
     const { data: isAuthChecked } = useGetRobloxWalletAuth({
       sellerId,
       options: {

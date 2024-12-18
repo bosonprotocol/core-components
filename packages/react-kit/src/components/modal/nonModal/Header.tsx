@@ -1,5 +1,5 @@
 import React, { Fragment, ReactNode } from "react";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import styled from "styled-components";
 import { X } from "phosphor-react";
 import { Grid } from "../../ui/Grid";
@@ -7,7 +7,6 @@ import ThemedButton from "../../ui/ThemedButton";
 import { useBreakpoints } from "../../../hooks/useBreakpoints";
 import { BosonConnectWallet } from "../../wallet2/web3Status/BosonConnectWallet";
 
-const colors = theme.colors.light;
 const Wrapper = styled.div<{ $flexWrap: string }>`
   box-sizing: border-box;
   container-type: inline-size;

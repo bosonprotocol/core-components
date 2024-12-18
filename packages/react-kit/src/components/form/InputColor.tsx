@@ -2,13 +2,11 @@ import React from "react";
 import { useField } from "formik";
 import styled from "styled-components";
 
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { transition } from "../ui/styles";
 import Error from "./Error";
 import Input from "./Input";
 import { InputColorProps } from "./types";
-
-const colors = theme.colors.light;
 
 const Container = styled.div`
   display: flex;

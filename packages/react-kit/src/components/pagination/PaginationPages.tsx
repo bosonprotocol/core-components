@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 
 const Span = styled.span`
   font-size: 0.75rem;
-  color: ${theme.colors.light.greyDark};
+  color: ${colors.greyDark};
   &:not(:last-of-type) {
     margin-right: 1rem;
   }

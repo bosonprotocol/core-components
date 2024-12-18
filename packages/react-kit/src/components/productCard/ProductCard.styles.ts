@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { cardWrapperStyles } from "./commonStyles";
 import { Typography } from "../ui/Typography";
 import { zIndex } from "../ui/zIndex";
@@ -10,7 +10,7 @@ export const ProductCardLabelWrapper = styled.div`
   left: 0.5rem;
   background: white;
   font-weight: 600;
-  color: ${({ theme }) => theme?.colors?.light.greyDark};
+  color: ${colors.greyDark};
   z-index: 1;
 `;
 
@@ -37,7 +37,7 @@ export const ProductCardCreatorName = styled.div`
   font-weight: 600;
   font-size: 0.625rem;
   line-height: 150%;
-  color: ${({ theme }) => theme?.colors?.light.greyDark};
+  color: ${colors.greyDark};
   flex: none;
   order: 1;
   flex-grow: 0;
@@ -46,14 +46,14 @@ export const ProductCardCreatorName = styled.div`
   > span {
     font-weight: 600;
     font-size: 0.625rem;
-    color: ${({ theme }) => theme?.colors?.light.greyDark};
+    color: ${colors.greyDark};
   }
 `;
 
 export const ProductCardTitle = styled(Typography).attrs({
   className: "title"
 })`
-  color: ${({ theme }) => theme?.colors?.light.black};
+  color: ${colors.black};
   word-break: break-word;
   overflow: hidden;
   display: -webkit-box;
@@ -81,7 +81,7 @@ export const ProductCardPrice = styled.div`
   line-height: 150%;
   text-align: right;
   margin-bottom: 0.25rem;
-  color: ${({ theme }) => theme?.colors?.light.greyDark};
+  color: ${colors.greyDark};
 `;
 
 export const ProductCardBottom = styled.div.attrs({ className: "bottom" })`
@@ -129,7 +129,7 @@ export const ProductCardWrapper = styled.div<{
       : css`
           transition: all 300ms ease-in-out;
           &:hover {
-            border: 2px solid ${theme.colors.light.border};
+            border: 2px solid ${colors.border};
 
             [data-image-wrapper] {
               width: 110%;
@@ -184,7 +184,7 @@ export const BottomText = styled.p`
   line-height: 0.975rem;
   margin: 0;
   letter-spacing: 0.5px;
-  color: ${theme.colors.light.greyDark};
+  color: ${colors.greyDark};
 `;
 
 export const ProductCardImageWrapper = styled.div`
@@ -230,8 +230,8 @@ export const CTAOnHoverContainer = styled.div<{ $isHovered: boolean }>`
 `;
 
 export const ProductTypeWrapper = styled.div`
-  background-color: ${theme?.colors?.light.black};
-  color: ${theme?.colors?.light.white};
+  background-color: ${colors.black};
+  color: ${colors.white};
   display: flex;
   align-items: center;
   gap: 0.25rem;

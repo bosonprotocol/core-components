@@ -1,7 +1,7 @@
 import React from "react";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { BaseInput, BaseInputProps } from "./BaseInput";
-const colors = theme.colors.light;
+
 const bosonTheme = {
   background: colors.greyLight,
   borderColor: colors.border,

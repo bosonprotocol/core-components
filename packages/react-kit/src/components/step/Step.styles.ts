@@ -2,8 +2,8 @@ import styled, { CSSProperties, css } from "styled-components";
 
 import { transition } from "../../components/ui/styles";
 import { StepState } from "./Step";
-import { theme } from "../../theme";
-const colors = theme.colors.light;
+import { colors } from "../../theme";
+
 type StepColorProps = {
   $stepInactiveDotColor?: CSSProperties["color"];
   $stepInactiveBackgroundColor?: CSSProperties["color"];

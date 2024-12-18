@@ -1,9 +1,8 @@
 import { CaretDown, CaretUp } from "phosphor-react";
 import React, { ReactElement, ReactNode, useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { Grid } from "./Grid";
-const colors = theme.colors.light;
 
 const IconWrapper = styled.div`
   display: flex;

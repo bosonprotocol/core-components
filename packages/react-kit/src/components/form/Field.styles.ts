@@ -3,10 +3,8 @@ import styled, { CSSProperties, css } from "styled-components";
 
 import { transition } from "../../components/ui/styles";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { Grid } from "../ui/Grid";
-
-const colors = theme.colors.light;
 
 export const CopyButton = styled.button`
   background: none;

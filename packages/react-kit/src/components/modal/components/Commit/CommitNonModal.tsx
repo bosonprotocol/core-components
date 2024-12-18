@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAccount } from "../../../../hooks/connection/connection";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
-import { theme } from "../../../../theme";
+import { colors } from "../../../../theme";
 import { Exchange } from "../../../../types/exchange";
 import { VariantV1 } from "../../../../types/variants";
 import Loading from "../../../ui/loading/LoadingWrapper";
@@ -19,7 +19,6 @@ import { OfferFullDescriptionView } from "./OfferFullDescriptionView/OfferFullDe
 import { CommitOfferPolicyView } from "./OfferPolicyView/CommitOfferPolicyView";
 import { OfferVariantView, OfferVariantViewProps } from "./OfferVariantView";
 
-const colors = theme.colors.light;
 enum CommitStep {
   OFFER_VIEW,
   PURCHASE_OVERVIEW,

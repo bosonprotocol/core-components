@@ -5,7 +5,7 @@ import { Grid } from "../../../../../ui/Grid";
 import { Typography } from "../../../../../ui/Typography";
 import { CancelExchange, CancelExchangeProps } from "./CancelExchange";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
-import { theme } from "../../../../../../theme";
+import { colors } from "../../../../../../theme";
 import { useAccount } from "../../../../../../hooks/connection/connection";
 import { BosonLogo } from "../../../common/BosonLogo";
 import {
@@ -13,7 +13,6 @@ import {
   useRedemptionWidgetContext
 } from "../../../../../widgets/redemption/provider/RedemptionWidgetContext";
 
-const colors = theme.colors.light;
 export interface CancellationViewProps {
   exchange: Exchange | null;
   onBackClick: CancelExchangeProps["onBackClick"];

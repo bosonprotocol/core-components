@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 
 import { Grid } from "../../../../ui/Grid";
 import Loading from "../../../../ui/loading/LoadingWrapper";
 import { Typography } from "../../../../ui/Typography";
 import { GenericModalProps } from "../../../ModalContext";
 import { useModal } from "../../../useModal";
-const colors = theme.colors.light;
+
 interface Props {
   action: string;
 }

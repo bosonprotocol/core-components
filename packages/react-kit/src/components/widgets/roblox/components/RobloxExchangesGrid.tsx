@@ -5,7 +5,7 @@ import { useAccount, useIpfsContext } from "../../../../hooks";
 import React from "react";
 import { utils } from "ethers";
 import { CameraSlash } from "phosphor-react";
-import { theme } from "../../../../theme";
+import { colors } from "../../../../theme";
 import {
   getFallbackImageUrl,
   getImageUrl
@@ -20,8 +20,6 @@ import { BosonRobloxExchange } from "../../../../hooks/roblox/backend.types";
 import { Typography } from "../../../ui/Typography";
 import { isTruthy } from "../../../../types/helpers";
 import { ExchangeCard } from "../../../exchangeCard/ExchangeCard";
-
-const colors = theme.colors.light;
 
 const commonCardStyles = css`
   background: transparent;

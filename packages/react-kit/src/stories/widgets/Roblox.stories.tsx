@@ -1,4 +1,3 @@
-import { fn } from "@storybook/test";
 import {
   RobloxWidget,
   RobloxWidgetProps
@@ -7,8 +6,8 @@ import React from "react";
 import { Meta } from "@storybook/react";
 import { bosonButtonThemes } from "../../components/ui/ThemedButton";
 import { createGlobalStyle } from "styled-components";
-import { theme } from "../../theme";
-const colors = theme.colors.light;
+import { colors } from "../../theme";
+
 const GlobalStyle = createGlobalStyle`
     #storybook-root,[data-rk], [scale="1"] {
         width: 100%;

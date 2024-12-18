@@ -1,17 +1,17 @@
 import type { Preview } from "@storybook/react";
-import { withThemeFromJSXProvider } from '@storybook/addon-themes';
-import GlobalStyle from "../src/components/styles/GlobalStyle"
+import { withThemeFromJSXProvider } from "@storybook/addon-themes";
+import GlobalStyle from "../src/components/styles/GlobalStyle";
 import { ThemeProvider } from "styled-components";
 
-import { theme } from "../src/theme";
+import { colors } from "../src/theme";
 
 const WithTheme = withThemeFromJSXProvider({
   Provider: ThemeProvider,
   GlobalStyles: GlobalStyle,
-  themes:{
-    theme
+  themes: {
+    theme: colors // TODO: is this correct?
   },
-  defaultTheme: 'theme'
+  defaultTheme: "theme"
 });
 
 const preview: Preview = {
@@ -23,9 +23,7 @@ const preview: Preview = {
       }
     }
   },
-  decorators: [
-    WithTheme,
-  ]
+  decorators: [WithTheme]
 };
 
 export default preview;

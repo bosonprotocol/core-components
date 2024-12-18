@@ -3,11 +3,10 @@ import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
 import ExpireVoucher, { ExpireVoucherProps } from "./ExpireVoucher";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
-import { theme } from "../../../../../../theme";
+import { colors } from "../../../../../../theme";
 import { Grid } from "../../../../../ui/Grid";
 import { BosonLogo } from "../../../common/BosonLogo";
 
-const colors = theme.colors.light;
 export interface ExpireVoucherViewProps {
   onBackClick: ExpireVoucherProps["onBackClick"];
   onSuccess: ExpireVoucherProps["onSuccess"];

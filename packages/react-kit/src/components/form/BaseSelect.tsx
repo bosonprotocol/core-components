@@ -3,12 +3,10 @@ import React from "react";
 import Select, { SingleValue } from "react-select";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
 
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { zIndex } from "../ui/zIndex";
 import type { BaseSelectProps, SelectDataProps } from "./types";
 import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
-
-const colors = theme.colors.light;
 
 const customStyles = (error: any) => ({
   control: (provided: any, state: any) => ({

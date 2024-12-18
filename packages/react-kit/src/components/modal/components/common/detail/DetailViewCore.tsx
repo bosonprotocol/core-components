@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import styled from "styled-components";
 import Logo from "../../../../../assets/logo.svg";
 import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import Price from "../../../../price/Price";
 import { DetailsSummary } from "../../../../ui/DetailsSummary";
@@ -23,8 +23,6 @@ import { TokenGatedItem } from "./TokenGatedItem";
 import { DetailViewProps } from "./types";
 import { useGetOfferDetailData } from "./useGetOfferDetailData";
 import { SvgImage } from "../../../../ui/SvgImage";
-
-const colors = theme.colors.light;
 
 const StyledPrice = styled(Price)`
   h3 {

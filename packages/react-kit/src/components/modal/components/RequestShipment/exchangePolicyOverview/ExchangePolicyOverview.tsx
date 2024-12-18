@@ -4,8 +4,7 @@ import { Grid } from "../../../../ui/Grid";
 import { FairExchangePolicy } from "./FairExchangePolicy";
 import { Button } from "../../../../buttons/Button";
 import { InfoBox } from "./InfoBox";
-import { theme } from "../../../../../theme";
-const colors = theme.colors.light;
+import { colors } from "../../../../../theme";
 
 const Wrapper = styled(Grid)``;
 

@@ -5,12 +5,11 @@ import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
 import { ExchangeFullDescription } from "./ExchangeFullDescription";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
-import { theme } from "../../../../../../theme";
+import { colors } from "../../../../../../theme";
 import { OnClickBuyOrSwapHandler } from "../../../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../../../common/detail/useGetOfferDetailData";
 import { BosonLogo } from "../../../common/BosonLogo";
 
-const colors = theme.colors.light;
 interface Props
   extends OnClickBuyOrSwapHandler,
     Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick"> {

@@ -8,11 +8,11 @@ import styled, { css, CSSProperties, RuleSet } from "styled-components";
 
 import { Tooltip } from "../tooltip/Tooltip";
 import * as Styles from "../ui/styles";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { Loading } from "../ui/loading/Loading";
 import { ButtonSize } from "../ui/buttonSize";
 import { AddDollarPrefixToKeys } from "../../types/helpers";
-const colors = theme.colors.light;
+
 type ButtonWithThemePropsType = AddDollarPrefixToKeys<{
   size: ButtonSizeProp;
   fill: boolean | undefined;

@@ -1,12 +1,11 @@
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { Offer } from "../../types/offer";
 import { getDateTimestamp } from "../dates/getDateTimestamp";
 import { getIsOfferExpired } from "./getIsOfferExpired";
 
-const colors = theme.colors.light;
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Europe/Greenwich");

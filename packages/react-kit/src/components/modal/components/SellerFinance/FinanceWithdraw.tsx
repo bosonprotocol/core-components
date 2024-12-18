@@ -21,7 +21,7 @@ import {
   extractUserFriendlyError,
   getHasUserRejectedTx
 } from "../../../../lib/errors/transactions";
-import { theme } from "../../../../theme";
+import { colors } from "../../../../theme";
 import { WithdrawFundsButton } from "../../../cta/funds/WithdrawFundsButton";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
 import { Grid } from "../../../ui/Grid";
@@ -33,7 +33,6 @@ import {
   InputWrapper,
   ProtocolStrong
 } from "./FinancesStyles";
-const colors = theme.colors.light;
 
 const MaxLimitWrapper = styled.div`
   color: ${colors.greyLight};

@@ -9,8 +9,7 @@ import { useDetailViewContext } from "../../common/detail/DetailViewProvider";
 import { DetailViewProps } from "../../common/detail/types";
 import { useBuyers } from "../../../../../hooks/useBuyers";
 import { useAccount } from "../../../../../hooks/connection/connection";
-import { theme } from "../../../../../theme";
-const colors = theme.colors.light;
+import { colors } from "../../../../../theme";
 
 const SwapArrows = styled(ArrowsLeftRight)`
   && {

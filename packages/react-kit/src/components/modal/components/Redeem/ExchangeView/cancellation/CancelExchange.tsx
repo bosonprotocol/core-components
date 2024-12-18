@@ -11,7 +11,7 @@ import useRefundData from "../../../../../../hooks/useRefundData";
 import { extractUserFriendlyError } from "../../../../../../lib/errors/transactions";
 import { useDisplayFloatWithConfig } from "../../../../../../lib/price/prices";
 import { poll } from "../../../../../../lib/promises/promises";
-import { theme } from "../../../../../../theme";
+import { colors } from "../../../../../../theme";
 import {
   CancelButton,
   ICancelButton
@@ -23,8 +23,6 @@ import { Grid } from "../../../../../ui/Grid";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import { Spinner } from "../../../../../ui/loading/Spinner";
 import DetailTable from "../../../common/detail/DetailTable";
-
-const colors = theme.colors.light;
 
 export interface CancelExchangeProps
   extends Pick<

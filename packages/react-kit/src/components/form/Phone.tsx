@@ -13,7 +13,7 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import Select, { components } from "react-select";
 import styled from "styled-components";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { zIndex } from "../ui/zIndex";
 
 import Error from "./Error";
@@ -21,7 +21,7 @@ import { FieldInput } from "./Field.styles";
 import type { InputProps } from "./types";
 import { SelectDataProps } from "./types";
 import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
-const colors = theme.colors.light;
+
 const customStyles = {
   control: (provided: any, state: any) => {
     const before = state.selectProps.label

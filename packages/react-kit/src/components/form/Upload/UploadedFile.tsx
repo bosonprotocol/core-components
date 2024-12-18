@@ -2,12 +2,11 @@ import { ImageSquare, X, FilePdf } from "phosphor-react";
 import React, { useCallback } from "react";
 import styled from "styled-components";
 import { bytesToSize } from "../../../lib/bytes/bytesToSize";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 
 import { Grid } from "../../ui/Grid";
 import ThemedButton from "../../ui/ThemedButton";
 import { Typography } from "../../ui/Typography";
-const colors = theme.colors.light;
 
 const AttachmentContainer = styled.div<{ $isLeftAligned: boolean }>`
   position: relative;

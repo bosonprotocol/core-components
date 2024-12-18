@@ -16,7 +16,7 @@ import {
   getHasUserRejectedTx
 } from "../../../../../lib/errors/transactions";
 import { poll } from "../../../../../lib/promises/promises";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import { CommitButton } from "../../../../cta/offer/CommitButton";
@@ -35,7 +35,6 @@ import { useDetailViewContext } from "../../common/detail/DetailViewProvider";
 import { DetailViewProps } from "../../common/detail/types";
 import { useBuyers } from "../../../../../hooks/useBuyers";
 import { useOpenAccountDrawer } from "../../../../wallet2/accountDrawer";
-const colors = theme.colors.light;
 
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
 

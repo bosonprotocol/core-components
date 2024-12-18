@@ -3,14 +3,13 @@ import React from "react";
 import { useField } from "formik";
 import Select, { GroupBase, StylesConfig } from "react-select";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { zIndex } from "../ui/zIndex";
 
 import Error from "./Error";
 import type { SelectDataProps, SelectProps } from "./types";
 import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
 export type { SelectProps } from "./types";
-const colors = theme.colors.light;
 
 const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
   error: unknown,

@@ -3,10 +3,10 @@ import { Check } from "phosphor-react";
 import styled from "styled-components";
 import React from "react";
 import { Spinner } from "../../ui/loading/Spinner";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import { getChainInfo } from "../../../lib/const/chainInfo";
 import { SvgImage } from "../../ui/SvgImage";
-const colors = theme.colors.light;
+
 const LOGO_SIZE = 20;
 
 const Container = styled.button<{ disabled: boolean }>`

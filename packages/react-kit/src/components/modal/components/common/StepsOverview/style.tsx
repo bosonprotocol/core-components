@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import { theme } from "../../../../../theme";
-
-const colors = theme.colors.light;
+import { colors } from "../../../../../theme";
 
 export const CommitStep = styled.div`
   position: relative;

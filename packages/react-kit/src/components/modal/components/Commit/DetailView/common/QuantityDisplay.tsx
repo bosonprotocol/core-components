@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
 import { useBreakpoints } from "../../../../../../hooks/useBreakpoints";
 import { isOfferHot } from "../../../../../../lib/offer/getOfferLabel";
-import { theme } from "../../../../../../theme";
+import { colors } from "../../../../../../theme";
 import { Grid } from "../../../../../ui/Grid";
 import { Typography } from "../../../../../ui/Typography";
-const colors = theme.colors.light;
+
 interface IQuantityDisplay {
   quantityInitial: number;
   quantity: number;

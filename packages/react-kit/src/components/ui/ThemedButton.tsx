@@ -1,10 +1,8 @@
 import React, { ButtonHTMLAttributes, forwardRef } from "react";
 
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { BaseButton, BaseButtonTheme } from "../buttons/BaseButton";
 import { ButtonSize } from "./buttonSize";
-
-const colors = theme.colors.light;
 
 export const bosonButtonThemeKeys = [
   "primary",
@@ -239,14 +237,14 @@ export const bosonButtonThemes = ({
       }
     },
     accentFill: {
-      color: theme.colors.light.black,
-      background: theme.colors.light.accent,
+      color: colors.black,
+      background: colors.violet,
       borderColor: "transparent",
       borderWidth: 2,
       hover: {
-        background: theme.colors.light.black,
-        color: theme.colors.light.white,
-        borderColor: theme.colors.light.black
+        background: colors.black,
+        color: colors.white,
+        borderColor: colors.black
       }
     }
   } satisfies Record<(typeof bosonButtonThemeKeys)[number], BaseButtonTheme>;

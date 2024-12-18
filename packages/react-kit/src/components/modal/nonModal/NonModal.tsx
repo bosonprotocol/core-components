@@ -5,7 +5,7 @@ import React, {
   createContext,
   useMemo
 } from "react";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import { ReactNode } from "react";
 import styled, { css } from "styled-components";
 
@@ -15,7 +15,6 @@ import { zIndex } from "../../ui/zIndex";
 import { breakpoint } from "../../../lib/ui/breakpoint";
 import { Content } from "./styles";
 
-const colors = theme.colors.light;
 const Root = styled.div`
   position: relative;
   top: 0;

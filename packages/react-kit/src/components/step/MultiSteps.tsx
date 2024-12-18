@@ -6,8 +6,8 @@ import { Step, StepColorProps, StepState } from "./Step";
 import { MultiStepStyle, MultiStepWrapper, StepWrapper } from "./Step.styles";
 import { useBreakpoints } from "../../hooks/useBreakpoints";
 import { CSSProperties } from "styled-components";
-import { theme } from "../../theme";
-const colors = theme.colors.light;
+import { colors } from "../../theme";
+
 type StepData = {
   name?: string;
   steps: number;

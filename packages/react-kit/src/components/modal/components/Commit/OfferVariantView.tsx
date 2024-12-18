@@ -9,7 +9,6 @@ import React, {
 import styled from "styled-components";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { breakpoint } from "../../../../lib/ui/breakpoint";
-import { theme } from "../../../../theme";
 import { isTruthy } from "../../../../types/helpers";
 import { VariantV1 } from "../../../../types/variants";
 import { Grid } from "../../../ui/Grid";
@@ -29,7 +28,6 @@ import { BosonLogo } from "../common/BosonLogo";
 import { PhygitalLabel } from "../../../productCard/ProductCard";
 import { useIsPhygital } from "../../../../hooks/offer/useIsPhygital";
 
-const colors = theme.colors.light;
 const ImageWrapper = styled.div`
   container-type: inline-size;
   position: relative;

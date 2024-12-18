@@ -12,7 +12,7 @@ import {
   ConnectWalletProps,
   getEnvConfigs,
   EnvironmentType,
-  theme,
+  colors,
   ConfigProvider
 } from "../index";
 import { HashRouter, Route, Routes } from "react-router-dom";
@@ -21,7 +21,7 @@ import { CSSProperties, createGlobalStyle } from "styled-components";
 import { Wallet } from "phosphor-react";
 import { ReduxProvider } from "../components/widgets/ReduxProvider";
 import { BlockNumberProvider } from "../hooks/contracts/useBlockNumber";
-const colors = theme.colors.light;
+
 const successButtonTheme: ConnectWalletProps["connectWalletButtonTheme"] = {
   ...bosonButtonThemes({ withBosonStyle: false })["primary"],
   color: "inherit",

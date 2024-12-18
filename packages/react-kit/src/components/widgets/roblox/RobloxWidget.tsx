@@ -1,6 +1,5 @@
-import { CSSProperties } from "styled-components";
 import { ConnectRoblox, ConnectRobloxProps } from "./components/ConnectRoblox";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Grid } from "../../ui/Grid";
 import {
   ProductsRoblox,
@@ -14,8 +13,6 @@ import { Portal } from "../../portal/Portal";
 export * from "./components/types";
 
 const Wrapper = Grid;
-const numSteps = 3;
-const numGaps = numSteps - 1;
 type ProductKeysThatGoToConfig =
   | "sellerId"
   | "raiseDisputeForExchangeUrl"

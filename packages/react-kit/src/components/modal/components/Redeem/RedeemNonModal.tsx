@@ -21,7 +21,7 @@ import { FormModel } from "./RedeemFormModel";
 
 import { useAccount } from "../../../../hooks/connection/connection";
 import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
-import { theme } from "../../../../theme";
+import { colors } from "../../../../theme";
 import { Loading } from "../../../ui/loading/Loading";
 import { useConfigContext } from "../../../config/ConfigContext";
 import { Typography } from "../../../ui/Typography";
@@ -58,8 +58,6 @@ import { BuyerTransferInfo } from "../../../../lib/bundle/const";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 import { mockedDeliveryAddress } from "../../../widgets/redemption/const";
 import { checkSignatures } from "./checkSignatures";
-
-const colors = theme.colors.light;
 
 enum ActiveStep {
   STEPS_OVERVIEW,

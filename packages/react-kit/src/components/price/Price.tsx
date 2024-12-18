@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { useDisplayFloatWithConfig } from "../../lib/price/prices";
 import { breakpoint } from "../../lib/ui/breakpoint";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import {
   Currencies,
   CurrencyDisplay
@@ -14,7 +14,7 @@ import { Typography } from "../ui/Typography";
 import ConvertedPrice from "./ConvertedPrice";
 
 import { useConvertedPrice } from "./useConvertedPrice";
-const colors = theme.colors.light;
+
 const Root = styled.div<{ $withBosonStyles: boolean }>`
   display: flex;
   gap: 0.25rem;

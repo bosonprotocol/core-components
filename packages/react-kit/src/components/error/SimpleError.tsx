@@ -2,10 +2,9 @@ import { Warning } from "phosphor-react";
 import React, { ReactNode } from "react";
 import styled, { CSSProperties } from "styled-components";
 
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { Grid, GridProps } from "../ui/Grid";
 import { Typography } from "../ui/Typography";
-const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)<{
   $background: CSSProperties["backgroundColor"];

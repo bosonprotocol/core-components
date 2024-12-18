@@ -2,9 +2,8 @@ import React, { ReactNode } from "react";
 import styled, { css } from "styled-components";
 import { CONFIG } from "../../../../../lib/config/config";
 import { Typography } from "../../../../ui/Typography";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { onlyFairExchangePolicyLabel } from "../../../../../lib/const/policies";
-const colors = theme.colors.light;
 
 const InfoTitleWrapper = styled.div`
   display: flex;

@@ -16,7 +16,7 @@ import { FiatLink, useFiatLinkContext } from "./fiatOnrampModal/FiatLink";
 import { IconWithConfirmTextButton } from "./IconButton";
 import MiniPortfolio, { MiniPortfolioProps } from "./miniPortfolio";
 import { Column } from "../../ui/column";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import { useENSName } from "../../../hooks/ens/useENSName";
 import { useDisconnect } from "../../../hooks/connection/useDisconnect";
 import { formatAddress } from "../../../lib/address/address";
@@ -30,7 +30,7 @@ import {
 } from "../../connection/ConnectionsProvider";
 import { useWeb3React } from "@web3-react/core";
 import { BaseButton, BaseButtonTheme } from "../../buttons/BaseButton";
-const colors = theme.colors.light;
+
 const AuthenticatedHeaderWrapper = styled.div`
   padding: 20px 16px;
   display: flex;

@@ -12,14 +12,14 @@ import React, {
 import styled, { CSSProperties, css } from "styled-components";
 import { useIpfsStorage } from "../../hooks/useIpfsStorage";
 import { fetchIpfsBase64Media } from "../../lib/base64/base64";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { Loading } from "./loading/Loading";
 
 import { MuteButton } from "./MuteButton";
 import { Typography } from "./Typography";
 import { buttonText } from "./styles";
 import { zIndex } from "./zIndex";
-const colors = theme.colors.light;
+
 const StyledMuteButton = styled(MuteButton)`
   position: absolute;
   top: 1rem;

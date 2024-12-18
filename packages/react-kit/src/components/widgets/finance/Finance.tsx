@@ -20,7 +20,7 @@ import { useModal } from "../../modal/useModal";
 import { Tooltip } from "../../tooltip/Tooltip";
 import { Grid } from "../../ui/Grid";
 import { Typography } from "../../ui/Typography";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import { Button } from "../../buttons/Button";
 import PaginationPages from "../../pagination/PaginationPages";
 import Loading from "../../ui/loading/LoadingWrapper";
@@ -33,7 +33,7 @@ import { ExchangeTokensProps } from "./exchange-tokens/useExchangeTokens";
 import ThemedButton from "../../ui/ThemedButton";
 import { useAccount } from "../../../hooks/connection/connection";
 dayjs.extend(isBetween);
-const colors = theme.colors.light;
+
 const BosonButton = Button;
 
 const Table = styled.table`

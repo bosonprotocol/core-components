@@ -15,12 +15,11 @@ import { zIndex } from "../ui/zIndex";
 import Error from "./Error";
 import type { BaseProps, SupportedReactSelectProps } from "./types";
 import { SelectDataProps } from "./types";
-import { theme as importedTheme } from "../../theme";
+import { colors } from "../../theme";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
 import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
 export type { Country as CountryCode } from "react-phone-number-input";
 
-const colors = importedTheme.colors.light;
 const customStyles = (
   error: unknown,
   customTheme: CountrySelectProps["theme"]

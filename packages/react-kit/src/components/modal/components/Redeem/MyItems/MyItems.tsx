@@ -6,14 +6,12 @@ import Loading from "../../../../ui/loading/LoadingWrapper";
 import Exchanges from "./Exchanges";
 import { ExchangesStates, WithExchangesData } from "./WithExchangesData";
 import { Exchange } from "../../../../../types/exchange";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { GridContainer } from "../../../../ui/GridContainer";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { useAccount } from "../../../../../hooks/connection/connection";
 import { BosonLogo } from "../../common/BosonLogo";
-
-const colors = theme.colors.light;
 
 export type MyItemsProps = {
   onExchangeCardClick: (exchange: Exchange) => void;

@@ -1,10 +1,9 @@
 import React from "react";
 import { Grid } from "../../../../ui/Grid";
 import { Button } from "../../../../buttons/Button";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { CheckCircle } from "phosphor-react";
 import { Typography } from "../../../../ui/Typography";
-const colors = theme.colors.light;
 
 const Wrapper = Grid;
 

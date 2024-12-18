@@ -11,7 +11,7 @@ import type { ExtendedExchange } from "../../../../../hooks/useExchanges";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
 import { titleCase } from "../../../../../lib/string/formatText";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import { Grid } from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
@@ -24,7 +24,6 @@ import {
 } from "../../common/detail/Detail.style";
 import { InnerDetailViewWithPortal } from "../../common/detail/InnerDetailViewWithPortal";
 import { DetailViewProps } from "../../common/detail/types";
-const colors = theme.colors.light;
 
 const RedeemButton = styled(Button)`
   padding: 1rem;

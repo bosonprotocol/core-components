@@ -7,7 +7,7 @@ import {
   ProductCardTitleWrapper,
   ProductCardWrapper
 } from "../productCard/ProductCard.styles";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { LoadingBubble } from "./common";
 import styled from "styled-components";
 
@@ -36,7 +36,7 @@ export const ProductCardSkeleton = (props: SkeletonCardProps) => {
           $width="100%"
           $height="340px"
           $borderRadius="0px"
-          $backgroundColor={theme.colors.light.greyDark}
+          $backgroundColor={colors.greyDark}
         />
       </ProductCardImageWrapperStyled>
       <ProductCardBottom>

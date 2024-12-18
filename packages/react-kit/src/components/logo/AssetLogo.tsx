@@ -1,11 +1,9 @@
 import { ChainId } from "@uniswap/sdk-core";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { getChainInfo } from "../../lib/const/chainInfo";
 import { useAssetLogoSource } from "./useAssetLogoSource";
-
-const colors = theme.colors.light;
 
 export const MissingImageLogo = styled.div<{ size?: string }>`
   --size: ${({ size }) => size};

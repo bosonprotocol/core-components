@@ -11,14 +11,12 @@ import React, {
 
 import styled, { css } from "styled-components";
 import { breakpointNumbers } from "../../../../../lib/ui/breakpoint";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { Grid } from "../../../../ui/Grid";
 import { IpfsImage } from "../../../../ui/IpfsImage";
 import Video from "../../../../ui/Video";
 import { zIndex } from "../../../../ui/zIndex";
 import { GlideSlide } from "./Detail.style";
-
-const colors = theme.colors.light;
 
 const SLIDER_OPTIONS = {
   type: "carousel",

@@ -1,8 +1,8 @@
 import { fn } from "@storybook/test";
-import { MultiSteps, theme } from "../../index";
+import { colors, MultiSteps } from "../../index";
 import React from "react";
 import { Meta } from "@storybook/react";
-const colors = theme.colors.light;
+
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Visual Components/MultiSteps",

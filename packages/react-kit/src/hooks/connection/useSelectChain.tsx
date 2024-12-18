@@ -13,12 +13,12 @@ import {
 import { isSupportedChain } from "../../lib/const/chains";
 import { configQueryParameters } from "../../lib/const/parameters";
 import { didUserReject } from "../../components/connection/utils";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { Typography } from "../../components/ui/Typography";
 import ErrorToast from "../../components/toasts/common/ErrorToast";
 import { useSwitchChain } from "./useSwitchChain";
 import { getEnvConfigsFilteredByEnv } from "../../lib/config/getConfigsByChainId";
-const colors = theme.colors.light;
+
 export function useSelectChain(
   { throwErrors, doConnect }: { throwErrors: boolean; doConnect: boolean } = {
     throwErrors: false,

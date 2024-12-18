@@ -9,7 +9,7 @@ import {
 import React, { useEffect } from "react";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { getOpenSeaUrl } from "../../../../../lib/opensea/getOpenSeaUrl";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import { Grid } from "../../../../ui/Grid";
@@ -19,8 +19,6 @@ import Loading from "../../../../ui/loading/LoadingWrapper";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { CardCTA } from "./CardCTA";
 import { BosonLogo } from "../../common/BosonLogo";
-
-const colors = theme.colors.light;
 
 type Props = {
   onHouseClick: () => void;

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { useDetailViewContext } from "../../common/detail/DetailViewProvider";
 import { InnerDetailViewWithPortalProps } from "../../common/detail/InnerDetailViewWithPortal";
 import { useNotCommittableOfferStatus } from "../useNotCommittableOfferStatus";
@@ -8,7 +8,6 @@ import InnerCommitDetailView, {
 } from "./InnerCommitDetailView";
 import { InnerCommitDetailViewWithPortal } from "./InnerCommitDetailViewWithPortal";
 import { QuantityDisplay } from "./common/QuantityDisplay";
-const colors = theme.colors.light;
 
 export type InnerDetailWithProviderCommitProps =
   | Omit<InnerCommitDetailViewProps, "priceSibling">

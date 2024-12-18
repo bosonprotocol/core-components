@@ -7,13 +7,13 @@ import styled, { CSSProperties } from "styled-components";
 
 import { ClickableStyle, ScrollBarStyles } from "../styles";
 import { DefaultMenu, DefaultMenuProps } from "./DefaultMenu";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import { breakpointNumbers } from "../../../lib/ui/breakpoint";
 import { zIndex } from "../../ui/zIndex";
 import { useBreakpoints } from "../../../hooks/useBreakpoints";
 import useDisableScrolling from "../../../hooks/useDisableScrolling";
 import { useWindowSize } from "../../../hooks/useWindowSize";
-const colors = theme.colors.light;
+
 const DRAWER_WIDTH_XL = "390px";
 const DRAWER_WIDTH = "330px";
 const DRAWER_MARGIN = "0px";

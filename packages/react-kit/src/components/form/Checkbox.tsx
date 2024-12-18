@@ -1,9 +1,8 @@
 import React from "react";
 
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { BaseCheckbox, BaseCheckboxProps } from "./BaseCheckbox";
 
-const colors = theme.colors.light;
 export const bosonCheckboxTheme = {
   backgroundColor: colors.greyLight,
   borderColor: colors.border,

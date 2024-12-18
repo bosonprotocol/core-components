@@ -1,4 +1,3 @@
-import { fn } from "@storybook/test";
 import {
   ConnectRoblox,
   ConnectRobloxProps
@@ -33,6 +32,8 @@ const ConnectRobloxWrapper = (props: ConnectRobloxProps) => {
       withCustomReduxContext={false}
       withReduxProvider={true}
       withWeb3React={true}
+      sendDeliveryInfoThroughXMTP
+      backendOrigin="http://localhost:3336"
     >
       <ConnectRoblox {...props} />
     </CommitWidgetProviders>
@@ -79,8 +80,39 @@ export const Base = {
   args: {
     ...BASE_ARGS,
     brand: "GYMSHARK",
+    sellerId: "4",
     theme: {
+      backgroundColor: "white",
+      lineBetweenStepsColor: "grey",
+      stepsBackgroundSides: "white",
+      walletPanel: {
+        backgroundColor: "white",
+        buyCryptoTheme: bosonButtonThemes({ withBosonStyle: true })[
+          "bosonPrimary"
+        ],
+        connectionErrorProps: {
+          backToWalletSelectionTheme: bosonButtonThemes({
+            withBosonStyle: true
+          })["bosonPrimary"],
+          tryAgainTheme: bosonButtonThemes({ withBosonStyle: true })["orange"]
+        },
+        disconnectBackgroundColor: "grey",
+        disconnectBorderRadius: "8px",
+        disconnectColor: "grey",
+        optionProps: {
+          backgroundColor: "violet",
+          borderRadius: "8px",
+          color: "white",
+          hoverColor: "white",
+          hoverFocusBackgroundColor: "black",
+          iconBorderRadius: "8px"
+        }
+      },
       robloxCard: {
+        padding: 0,
+        title: {
+          color: "black"
+        },
         subtitle: {
           color: "#556072"
         },
@@ -100,12 +132,16 @@ export const Base = {
         button: {
           active: {
             ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
-            borderRadius: 8
+            borderRadius: "8px"
           },
           inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
         }
       },
       walletCard: {
+        padding: 0,
+        title: {
+          color: "black"
+        },
         subtitle: {
           color: "#556072"
         },
@@ -125,12 +161,16 @@ export const Base = {
         button: {
           active: {
             ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
-            borderRadius: 8
+            borderRadius: "8px"
           },
           inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
         }
       },
       signUpCard: {
+        padding: 0,
+        title: {
+          color: "black"
+        },
         subtitle: {
           color: "#556072"
         },
@@ -150,7 +190,7 @@ export const Base = {
         button: {
           active: {
             ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
-            borderRadius: 8
+            borderRadius: "8px"
           },
           inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
         }

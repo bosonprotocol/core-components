@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { OfferFullDescription } from "../../common/OfferFullDescription/OfferFullDescription";
@@ -10,7 +10,6 @@ import { OnClickBuyOrSwapHandler } from "../../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
 import { BosonLogo } from "../../common/BosonLogo";
 
-const colors = theme.colors.light;
 type Props = OnClickBuyOrSwapHandler & {
   onBackClick: () => void;
   offer: Offer;

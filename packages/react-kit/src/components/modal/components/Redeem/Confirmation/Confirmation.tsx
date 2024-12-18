@@ -15,7 +15,7 @@ import { useAddPendingTransactionWithContext } from "../../../../../hooks/transa
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { poll } from "../../../../../lib/promises/promises";
 
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { useChatContext } from "../../../../chat/ChatProvider/ChatContext";
 import InitializeChatWithSuccess from "../../../../chat/InitializeChatWithSuccess";
 import { useChatStatus } from "../../../../chat/useChatStatus";
@@ -44,7 +44,6 @@ import {
 import { NonModalProps } from "../../../nonModal/NonModal";
 import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
 import { extractUserFriendlyError } from "../../../../../lib/errors/transactions";
-const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)`
   background-color: ${colors.greyLight};
