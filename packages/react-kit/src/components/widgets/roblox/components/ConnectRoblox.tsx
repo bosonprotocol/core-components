@@ -54,6 +54,7 @@ const IconWrapper = styled.div`
   background-color: inherit;
 `;
 const CardTitle = styled(Typography)``;
+const iconClass = "icon";
 const StepWrapperGrid = styled(Grid)<{
   $theme: ConnectRobloxProps["theme"];
   $isActive: StepProps["isActive"];
@@ -65,7 +66,7 @@ const StepWrapperGrid = styled(Grid)<{
   min-height: 100%;
   align-self: stretch;
   background-color: ${({ $theme }) => $theme.backgroundColor};
-  svg {
+  svg.${iconClass} {
     ${({ $name, $theme, $isActive }) => {
       if ($name === "roblox") {
         return css`
@@ -217,9 +218,13 @@ const Step = forwardRef<HTMLDivElement, StepProps>(
       >
         <IconWrapper>
           {isDone ? (
-            <CheckCircle size={41} color={itemTheme.check.color} />
+            <CheckCircle
+              size={41}
+              color={itemTheme.check.color}
+              className={iconClass}
+            />
           ) : (
-            Icon
+            React.cloneElement(Icon, { className: iconClass })
           )}
         </IconWrapper>
         <CardTitle
