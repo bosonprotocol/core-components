@@ -14,7 +14,7 @@ type CardCTAProps = {
 };
 
 const StyledGrid = styled(Grid)`
-  background: ${colors.lightGrey};
+  background: ${colors.greyLight};
 `;
 
 const IconContainer = styled(Grid)`

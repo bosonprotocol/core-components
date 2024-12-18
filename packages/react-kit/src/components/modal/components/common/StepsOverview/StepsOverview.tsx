@@ -35,9 +35,9 @@ const StyledCommitStepWrapper = styled(CommitStepWrapper)`
     font-size: 1rem;
   }
   [data-step] {
-    color: ${colors.accent};
+    color: ${colors.violet};
     &:after {
-      background: ${colors.primary};
+      background: ${colors.green};
     }
   }
 `;

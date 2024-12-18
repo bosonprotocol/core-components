@@ -69,8 +69,8 @@ export const CustomTheme = {
       borderRadius: "4px",
       hover: {
         borderColor: colors.red,
-        backgroundColor: colors.primary,
-        color: colors.darkRed
+        backgroundColor: colors.green,
+        color: colors.redDark
       },
       checked: {
         borderColor: "#ff00d4",

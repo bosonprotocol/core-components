@@ -47,7 +47,7 @@ import { extractUserFriendlyError } from "../../../../../lib/errors/transactions
 const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)`
-  background-color: ${colors.lightGrey};
+  background-color: ${colors.greyLight};
 `;
 
 const StyledRedeemButton = styled(ThemedButton)``;
@@ -320,7 +320,7 @@ ${FormModel.formFields.walletAddress.placeholder}: ${message.deliveryDetails.wal
             margin="1.5rem 0"
             padding="1.5rem"
           >
-            <Warning color={colors.darkOrange} size={16} />
+            <Warning color={colors.orangeDark} size={16} />
             <Typography fontWeight="600" fontSize="1rem" lineHeight="1.5rem">
               rNFTs are burned upon redemption to prevent double spend
             </Typography>

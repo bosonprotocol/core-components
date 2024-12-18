@@ -5,10 +5,10 @@ import { BaseCheckbox, BaseCheckboxProps } from "./BaseCheckbox";
 
 const colors = theme.colors.light;
 export const bosonCheckboxTheme = {
-  backgroundColor: colors.lightGrey,
+  backgroundColor: colors.greyLight,
   borderColor: colors.border,
   hover: {
-    borderColor: colors.secondary
+    borderColor: colors.violet
   },
   error: {
     borderColor: colors.orange

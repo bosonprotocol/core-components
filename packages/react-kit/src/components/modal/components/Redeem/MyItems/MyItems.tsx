@@ -50,7 +50,7 @@ export function MyItems({
           <h3 style={{ width: "100%", flex: 1 }}>Manage your exchanges</h3>
         ),
         contentStyle: {
-          background: colors.lightGrey
+          background: colors.greyLight
         },
         footerComponent: <BosonLogo />
       }

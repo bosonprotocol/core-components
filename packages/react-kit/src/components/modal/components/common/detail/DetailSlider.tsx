@@ -54,7 +54,7 @@ const GlideSlides = styled.div<{ $highlightActive: boolean }>`
       ${({ $highlightActive }) =>
         $highlightActive &&
         css`
-          /* border: 1px solid ${colors.darkGrey}; */
+          /* border: 1px solid ${colors.greyDark}; */
           border: 4px solid ${colors.blue};
         `}
     }

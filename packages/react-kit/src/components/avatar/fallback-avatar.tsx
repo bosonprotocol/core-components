@@ -6,9 +6,9 @@ import { theme } from "../../theme";
 const colors = theme.colors.light;
 
 const AddressImageContainer = styled.div<{ $avatarSize: number }>`
-  border: ${({ $avatarSize }) => $avatarSize / 40}px solid ${colors.lightGrey};
+  border: ${({ $avatarSize }) => $avatarSize / 40}px solid ${colors.greyLight};
   border-radius: 50%;
-  background-color: ${colors.lightGrey};
+  background-color: ${colors.greyLight};
   margin-bottom: 5px;
   display: flex;
 `;

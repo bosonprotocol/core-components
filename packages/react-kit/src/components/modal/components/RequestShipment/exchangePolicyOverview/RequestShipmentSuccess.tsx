@@ -46,7 +46,7 @@ export const RequestShipmentSuccess = ({
         padding="1.5rem 1rem"
         style={{
           borderRadius: "0.25rem",
-          border: `2px solid ${colors.lightGrey}`
+          border: `2px solid ${colors.greyLight}`
         }}
       >
         <Typography fontSize="1rem" fontWeight={600}>
@@ -56,7 +56,7 @@ export const RequestShipmentSuccess = ({
           fontSize="0.875rem"
           fontWeight={400}
           textAlign="center"
-          color={colors.darkGrey}
+          color={colors.greyDark}
         >
           Your product will arrive in 3-5 working days. <br /> You don't have to
           do anything else.
@@ -64,7 +64,7 @@ export const RequestShipmentSuccess = ({
       </Grid>
       <div
         style={{
-          border: `1px solid ${colors.lightGrey}`,
+          border: `1px solid ${colors.greyLight}`,
           width: "calc(100% + 2rem * 2)"
         }}
       />

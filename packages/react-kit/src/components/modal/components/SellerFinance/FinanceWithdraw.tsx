@@ -36,7 +36,7 @@ import {
 const colors = theme.colors.light;
 
 const MaxLimitWrapper = styled.div`
-  color: ${colors.lightGrey};
+  color: ${colors.greyLight};
   margin-top: 0.25rem;
 `;
 

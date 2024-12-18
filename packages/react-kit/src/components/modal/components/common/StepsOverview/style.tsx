@@ -7,7 +7,7 @@ const colors = theme.colors.light;
 export const CommitStep = styled.div`
   position: relative;
   padding: 1rem;
-  background: ${colors.lightGrey};
+  background: ${colors.greyLight};
   &:not(:last-child) {
     &:before {
       position: absolute;
@@ -20,7 +20,7 @@ export const CommitStep = styled.div`
       transform: translate(-50%, 0);
       border-left: 30rem solid transparent;
       border-right: 30rem solid transparent;
-      border-top: 1rem solid ${colors.lightGrey};
+      border-top: 1rem solid ${colors.greyLight};
     }
 
     &:after {
@@ -55,7 +55,7 @@ export const CommitStep = styled.div`
         left: initial;
         transform: translate(0%, -50%);
         border-top: 10rem solid transparent;
-        border-left: 1rem solid ${colors.lightGrey};
+        border-left: 1rem solid ${colors.greyLight};
         border-bottom: 10rem solid transparent;
         border-right: none;
       }

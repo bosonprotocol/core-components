@@ -5,16 +5,16 @@ const colors = theme.colors.light;
 export const cssVars = css`
   --l: 50%;
   --headerBgColor: ${colors.white};
-  --headerTextColor: ${colors.darkGrey};
-  --primary: ${colors.primary};
-  --secondary: ${colors.lightGrey};
-  --accent: ${colors.accent};
+  --headerTextColor: ${colors.greyDark};
+  --primary: ${colors.green};
+  --secondary: ${colors.greyLight};
+  --accent: ${colors.violet};
   --accentDark: ${colors.arsenic};
   --textColor: ${colors.black};
-  --primaryBgColor: ${colors.primaryBgColor};
+  --primaryBgColor: ${colors.white};
   --footerBgColor: ${colors.black};
   --footerTextColor: ${colors.white};
-  --buttonBgColor: ${colors.primary};
+  --buttonBgColor: ${colors.green};
   --buttonTextColor: ${colors.black};
 `;
 

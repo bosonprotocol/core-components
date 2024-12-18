@@ -80,7 +80,7 @@ export default function OfferPolicyDetails({
         </>
       ),
       version: isExchangePolicyValid ? "v1" : "(Non-standard)",
-      color: isExchangePolicyValid ? undefined : colors.accent
+      color: isExchangePolicyValid ? undefined : colors.violet
     },
     rNFTLicense: {
       title: "License Agreement",
@@ -113,7 +113,7 @@ export default function OfferPolicyDetails({
         </Typography>
       )
     ) : (
-      <Typography tag="p" color={colors.accent} style={{ textAlign: "right" }}>
+      <Typography tag="p" color={colors.violet} style={{ textAlign: "right" }}>
         <CircleWavyQuestion size={20}></CircleWavyQuestion> Unknown
       </Typography>
     );
@@ -126,7 +126,7 @@ export default function OfferPolicyDetails({
       </Typography>
       <Typography
         fontSize="1.25rem"
-        color={colors.darkGrey}
+        color={colors.greyDark}
         margin="0 0 2rem 0"
       >
         Boson Exchange Policies combine protocol variables and the underlying

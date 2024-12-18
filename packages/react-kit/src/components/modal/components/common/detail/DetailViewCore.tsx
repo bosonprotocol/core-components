@@ -186,7 +186,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
             onClick={onPurchaseOverview}
           >
             <CommitAndRedeemButton>How it works?</CommitAndRedeemButton>
-            <Info color={colors.secondary} size={24} />
+            <Info color={colors.violet} size={24} />
           </div>
         </Grid>
         {bottomChildren && (

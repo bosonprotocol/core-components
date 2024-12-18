@@ -72,7 +72,7 @@ export function RedeemSuccess({
           </Grid>
         ),
         contentStyle: {
-          background: colors.lightGrey
+          background: colors.greyLight
         },
         footerComponent: <BosonLogo />
       }
@@ -175,7 +175,7 @@ export function RedeemSuccess({
                 </div>
               </Grid>
               <Grid
-                style={{ background: colors.lightGrey, padding: "1.5rem" }}
+                style={{ background: colors.greyLight, padding: "1.5rem" }}
                 justifyContent="flex-start"
                 gap="1rem"
               >

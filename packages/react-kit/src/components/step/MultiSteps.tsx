@@ -31,12 +31,12 @@ export function MultiSteps({
   disableInactiveSteps = false,
   isRightArrowEnabled = false,
   hideArrows = false,
-  enabledArrowColor = colors.darkGrey,
-  disabledArrowColor = colors.lightArrowColor,
+  enabledArrowColor = colors.greyDark,
+  disabledArrowColor = colors.greyLight2,
   stepInactiveDotColor = "#d3d5db",
   stepInactiveBackgroundColor = colors.white,
-  stepInactiveHoverDotColor = colors.darkGrey,
-  stepInactiveHoverBackgroundColor = colors.lightGrey,
+  stepInactiveHoverDotColor = colors.greyDark,
+  stepInactiveHoverBackgroundColor = colors.greyLight,
   stepActiveBackgroundColor = colors.black,
   stepActiveDotsColor = colors.green, // TODO: var(--primary) in boson Dapp
   stepDoneBackgroundColor = colors.green, // TODO: var(--primary) in boson Dapp

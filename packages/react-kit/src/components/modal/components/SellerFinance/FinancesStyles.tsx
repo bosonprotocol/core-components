@@ -14,7 +14,7 @@ export const InputWrapper = styled(Grid)<{ $hasError?: boolean }>`
   margin-top: -1rem;
   padding: 1.125rem 1rem;
   max-height: 3.5rem;
-  background: ${colors.darkGrey};
+  background: ${colors.greyDark};
   ${({ $hasError }) =>
     $hasError &&
     `

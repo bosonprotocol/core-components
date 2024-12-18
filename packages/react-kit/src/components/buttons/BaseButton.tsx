@@ -80,7 +80,7 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
           &:disabled {
             background-color: ${props.theme.disabled?.background ||
             "transparent"};
-            color: ${props.theme.disabled?.color || colors.darkGrey};
+            color: ${props.theme.disabled?.color || colors.greyDark};
             border-color: transparent;
             cursor: not-allowed;
             opacity: 0.5;
@@ -88,8 +88,8 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
         `
       : css`
           &:disabled {
-            background-color: ${colors.lightGrey};
-            color: ${colors.darkGrey};
+            background-color: ${colors.greyLight};
+            color: ${colors.greyDark};
             border-color: transparent;
             cursor: not-allowed;
             opacity: 0.5;

@@ -9,7 +9,7 @@ const Headers = styled.div.attrs({ className: "headers" })<{
 }>`
   display: flex;
   gap: 1rem;
-  background-color: ${colors.lightGrey};
+  background-color: ${colors.greyLight};
   position: relative;
   ${({ $withFullViewportWidth }) =>
     $withFullViewportWidth &&
@@ -20,7 +20,7 @@ const Headers = styled.div.attrs({ className: "headers" })<{
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        background-color: ${colors.lightGrey};
+        background-color: ${colors.greyLight};
         height: 100%;
         min-height: 20px;
         z-index: -1;
@@ -31,7 +31,7 @@ const InnerHeaders = styled.div`
   width: 100%;
   display: flex;
   gap: 1rem;
-  background-color: ${colors.lightGrey};
+  background-color: ${colors.greyLight};
   overflow-x: auto;
 `;
 const Content = styled.div`

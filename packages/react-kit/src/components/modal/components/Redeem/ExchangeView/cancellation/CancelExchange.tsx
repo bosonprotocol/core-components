@@ -46,9 +46,9 @@ const Line = styled.hr`
 
 const Info = styled.div`
   padding: 1.5rem;
-  background-color: ${colors.lightGrey};
+  background-color: ${colors.greyLight};
   margin: 2rem 0;
-  color: ${colors.darkGrey};
+  color: ${colors.greyDark};
   display: flex;
   align-items: center;
 `;

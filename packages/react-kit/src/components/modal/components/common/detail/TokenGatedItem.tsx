@@ -301,7 +301,7 @@ export const TokenGatedItem = ({
   const rangeText = (
     <span
       style={{
-        color: colors.darkGrey,
+        color: colors.greyDark,
         fontSize: "12px",
         fontWeight: 600,
         lineHeight: "18px",

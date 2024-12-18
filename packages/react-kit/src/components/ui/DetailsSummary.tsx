@@ -12,7 +12,7 @@ const IconWrapper = styled.div`
   flex-shrink: 0;
   border-radius: 1.25rem;
   border: 2px solid ${colors.border};
-  background: ${colors.lightGrey};
+  background: ${colors.greyLight};
 `;
 
 const Details = styled.details<Pick<DetailsSummaryProps, "$paddingSides">>`

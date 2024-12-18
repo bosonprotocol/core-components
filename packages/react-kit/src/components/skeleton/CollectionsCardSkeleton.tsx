@@ -19,7 +19,7 @@ const ImagesContainer = styled.div`
   position: relative;
   /* REMs gives bad height here on smaller views */
   height: 208px;
-  background-color: ${colors.lightGrey};
+  background-color: ${colors.greyLight};
 `;
 
 const BottomCard = styled.div`
@@ -54,7 +54,7 @@ export const CollectionsCardSkeleton = (props: SkeletonCardProps) => {
             $width="140px"
             $height="102px"
             $borderRadius="0px"
-            $backgroundColor={theme.colors.light.darkGrey}
+            $backgroundColor={theme.colors.light.greyDark}
           />
         </ImageOne>
         <ImageTwo>
@@ -62,7 +62,7 @@ export const CollectionsCardSkeleton = (props: SkeletonCardProps) => {
             $width="60px"
             $height="50px"
             $borderRadius="0px"
-            $backgroundColor={theme.colors.light.darkGrey}
+            $backgroundColor={theme.colors.light.greyDark}
           />
         </ImageTwo>
         <ImageThree>
@@ -70,7 +70,7 @@ export const CollectionsCardSkeleton = (props: SkeletonCardProps) => {
             $width="60px"
             $height="50px"
             $borderRadius="0px"
-            $backgroundColor={theme.colors.light.darkGrey}
+            $backgroundColor={theme.colors.light.greyDark}
           />
         </ImageThree>
       </ImagesContainer>

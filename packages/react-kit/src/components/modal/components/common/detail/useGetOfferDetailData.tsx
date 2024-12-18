@@ -209,14 +209,14 @@ export const useGetOfferDetailData = ({
         ) : (
           <Typography
             tag="p"
-            color={colors.accent}
+            color={colors.violet}
             fontSize={fontSizeExchangePolicy}
             alignItems="center"
           >
             {customisedExchangePolicy}
             <ArrowSquareOut
               size={20}
-              color={colors.accent}
+              color={colors.violet}
               onClick={() => handleShowExchangePolicy()}
               style={{ cursor: "pointer", minWidth: "20px" }}
             />
@@ -226,12 +226,12 @@ export const useGetOfferDetailData = ({
         <>
           <CircleWavyQuestion
             size={20}
-            color={colors.accent}
+            color={colors.violet}
           ></CircleWavyQuestion>{" "}
-          <span style={{ color: colors.accent }}>Unknown </span>
+          <span style={{ color: colors.violet }}>Unknown </span>
           <ArrowSquareOut
             size={20}
-            color={colors.accent}
+            color={colors.violet}
             onClick={() => handleShowExchangePolicy()}
             style={{ cursor: "pointer" }}
           />

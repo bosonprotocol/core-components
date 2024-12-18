@@ -34,7 +34,7 @@ const Close = styled(X)`
   }
 
   line {
-    stroke: ${colors.darkGrey};
+    stroke: ${colors.greyDark};
   }
 `;
 

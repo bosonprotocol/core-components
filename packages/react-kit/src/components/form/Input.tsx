@@ -3,14 +3,14 @@ import { theme } from "../../theme";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 const colors = theme.colors.light;
 const bosonTheme = {
-  background: colors.lightGrey,
+  background: colors.greyLight,
   borderColor: colors.border,
   borderRadius: 0,
   focus: {
     caretColor: "initial"
   },
   hover: {
-    borderColor: colors.lightGrey
+    borderColor: colors.greyLight
   },
   error: {
     borderColor: colors.orange,

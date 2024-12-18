@@ -36,7 +36,7 @@ export const ProductCardSkeleton = (props: SkeletonCardProps) => {
           $width="100%"
           $height="340px"
           $borderRadius="0px"
-          $backgroundColor={theme.colors.light.darkGrey}
+          $backgroundColor={theme.colors.light.greyDark}
         />
       </ProductCardImageWrapperStyled>
       <ProductCardBottom>

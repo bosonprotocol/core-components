@@ -144,7 +144,7 @@ export function ExchangeView({
           </Grid>
         ),
         contentStyle: {
-          background: colors.lightGrey
+          background: colors.greyLight
         },
         footerComponent: <BosonLogo />
       }

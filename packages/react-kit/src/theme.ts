@@ -1,47 +1,37 @@
 import "styled-components";
+/*eslint sort-keys: "error"*/
 
 export const theme = {
-  colors: {
-    light: {
-      primary: "#02F3A2",
-      secondary: "#7829F9",
-      accent: "#7829F9",
-      darkNavy: "#1E1E1E",
-      black: "#09182C",
-      lightGrey: "#F1F3F9",
-      darkGrey: "#556072",
-      white: "#ffffff",
-      green: "#02F3A2",
-      red: "#FC386A",
-      blue: "#0299EE",
-      orange: "#FC6838",
-      lime: "#B6F952",
-      torquise: "#06F7D5",
-      border: "#5560720f",
-      arsenic: "#3a364f",
-      primaryBgColor: "#FFFFFF",
-      darkOrange: "darkorange",
-      froly: "#F46A6A",
-      bosonSkyBlue: "#51BEFA",
-      navy: "#222539",
-      grey2: "#D3D5DB",
-      grey: "grey",
-      grey3: "#A1A1A1",
-      darkRed: "darkred",
-      cyan: "#00FFFF",
-      lightArrowColor: "#dedfe3",
-      darkGreyTimeStamp: "#E8EAF1",
-      lightGrey2: "#eff0f7",
-      greyText: "rgba(28, 13, 24, 0.75)"
-    }
-  },
   borders: {
     // in px
-    small: 8,
-    medium: 12,
     big: 16,
-    large: 32
+    large: 32,
+    medium: 12,
+    small: 8
   } as const,
+  colors: {
+    light: {
+      arsenic: "#3a364f",
+      black: "#09182C",
+      blue: "#0299EE",
+      border: "#5560720f",
+      bosonSkyBlue: "#51BEFA",
+      cyan: "#00FFFF",
+      froly: "#F46A6A",
+      green: "#02F3A2",
+      grey: "grey",
+      greyDark: "#556072",
+      greyLight: "#F1F3F9",
+      greyLight2: "#dedfe3",
+      orange: "#FC6838",
+      orangeDark: "darkorange",
+      red: "#FC386A",
+      redDark: "darkred",
+      torquise: "#06F7D5",
+      violet: "#7829F9",
+      white: "#ffffff"
+    }
+  },
   mobile: "768px",
   tablet: "1024px",
   transition: {

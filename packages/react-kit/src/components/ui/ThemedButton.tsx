@@ -53,8 +53,8 @@ export const bosonButtonThemes = ({
     },
     bosonPrimary: {
       color: colors.black,
-      background: colors.primary,
-      borderColor: colors.primary,
+      background: colors.green,
+      borderColor: colors.green,
       borderWidth: 2,
       hover: {
         background: colors.black,
@@ -63,34 +63,34 @@ export const bosonButtonThemes = ({
       }
     },
     secondary: {
-      color: withBosonStyle ? colors.secondary : "var(--accent)",
-      borderColor: withBosonStyle ? colors.secondary : "var(--accent)",
+      color: withBosonStyle ? colors.violet : "var(--accent)",
+      borderColor: withBosonStyle ? colors.violet : "var(--accent)",
       borderWidth: 2,
       hover: {
-        background: withBosonStyle ? colors.secondary : "var(--accent)",
+        background: withBosonStyle ? colors.violet : "var(--accent)",
         color: colors.white
       }
     },
     bosonSecondary: {
-      color: colors.secondary,
-      borderColor: colors.secondary,
+      color: colors.violet,
+      borderColor: colors.violet,
       borderWidth: 2,
       hover: {
-        background: colors.secondary,
+        background: colors.violet,
         color: colors.white
       }
     },
     secondaryInverted: {
       background: "transparent",
-      color: colors.secondary,
+      color: colors.violet,
       hover: {
-        background: colors.lightGrey,
+        background: colors.greyLight,
         color: colors.black
       }
     },
     accentInvertedNoBorder: {
       background: "transparent",
-      color: colors.accent,
+      color: colors.violet,
       hover: {
         background: colors.black,
         color: colors.white
@@ -98,8 +98,8 @@ export const bosonButtonThemes = ({
     },
     accentInverted: {
       background: "transparent",
-      color: colors.accent,
-      borderColor: colors.accent,
+      color: colors.violet,
+      borderColor: colors.violet,
       borderWidth: 2,
       hover: {
         background: colors.black,
@@ -118,19 +118,19 @@ export const bosonButtonThemes = ({
     },
     bosonSecondaryInverse: {
       color: colors.white,
-      borderColor: colors.secondary,
-      background: colors.secondary,
+      borderColor: colors.violet,
+      background: colors.violet,
       borderWidth: 2,
       hover: {
-        color: colors.secondary,
-        borderColor: colors.secondary,
+        color: colors.violet,
+        borderColor: colors.violet,
         background: colors.white
       }
     },
     bosonSecondaryInverseBlack: {
       color: colors.white,
-      borderColor: colors.secondary,
-      background: colors.secondary,
+      borderColor: colors.violet,
+      background: colors.violet,
       borderWidth: 2,
       hover: {
         color: colors.white,
@@ -155,7 +155,7 @@ export const bosonButtonThemes = ({
       }
     },
     ghostSecondary: {
-      color: colors.secondary,
+      color: colors.violet,
       borderColor: colors.border,
       hover: {
         background: colors.border
@@ -174,7 +174,7 @@ export const bosonButtonThemes = ({
     blankSecondary: {
       color: "var(--accent)",
       hover: {
-        borderColor: colors.secondary,
+        borderColor: colors.violet,
         background: colors.border,
         color: colors.black
       }
@@ -182,9 +182,9 @@ export const bosonButtonThemes = ({
     blankSecondaryOutline: {
       color: "var(--accent)",
       borderWidth: 2,
-      borderColor: colors.secondary,
+      borderColor: colors.violet,
       hover: {
-        borderColor: colors.secondary,
+        borderColor: colors.violet,
         background: colors.border,
         color: colors.black
       }
@@ -193,7 +193,7 @@ export const bosonButtonThemes = ({
       color: colors.black,
       borderWidth: 2,
       hover: {
-        borderColor: colors.secondary,
+        borderColor: colors.violet,
         background: colors.border,
         color: colors.black
       }

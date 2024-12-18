@@ -8,7 +8,7 @@ export const InputWrapper = styled.div<{ disabled?: boolean }>`
   gap: 1rem;
   height: 2.5rem;
   left: 1.25rem;
-  background: ${({ theme }) => theme?.colors?.light.lightGrey};
+  background: ${({ theme }) => theme?.colors?.light.greyLight};
   ${({ disabled }) =>
     disabled &&
     css`
@@ -20,7 +20,7 @@ export const InputField = styled.input`
   border: none;
   height: 1.563rem;
   width: 100%;
-  background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
+  background-color: ${({ theme }) => theme?.colors?.light.greyLight};
   font-size: 1rem;
   line-height: 150%;
   vertical-align: middle;

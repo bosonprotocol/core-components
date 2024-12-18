@@ -60,7 +60,7 @@ export const Base = {
     productsGridProps: {
       theme: {
         style: {
-          background: colors.lightGrey,
+          background: colors.greyLight,
           paddingTop: "5rem",
           paddingBottom: "5rem"
         },
@@ -88,7 +88,7 @@ export const Base = {
           subtitle: {
             style: {
               marginBottom: "32px",
-              color: colors.darkGrey
+              color: colors.greyDark
             }
           }
         },
@@ -102,7 +102,7 @@ export const Base = {
           subtitle: {
             style: {
               marginBottom: "32px",
-              color: colors.darkGrey
+              color: colors.greyDark
             }
           }
         }
@@ -128,14 +128,14 @@ export const Base = {
       theme: {
         stepsBackgroundSides: "white",
         backgroundColor: "white",
-        lineBetweenStepsColor: colors.lightGrey,
+        lineBetweenStepsColor: colors.greyLight,
         robloxCard: {
           padding: "24px",
           title: {
             color: colors.black
           },
           subtitle: {
-            color: colors.darkGrey
+            color: colors.greyDark
           },
           check: {
             color: colors.green
@@ -146,7 +146,7 @@ export const Base = {
               stroke: "black"
             },
             inactive: {
-              backgroundColor: colors.lightGrey,
+              backgroundColor: colors.greyLight,
               stroke: "black"
             }
           },
@@ -167,7 +167,7 @@ export const Base = {
             color: colors.black
           },
           subtitle: {
-            color: colors.darkGrey
+            color: colors.greyDark
           },
           check: {
             color: colors.green
@@ -178,7 +178,7 @@ export const Base = {
               stroke: "black"
             },
             inactive: {
-              backgroundColor: colors.lightGrey,
+              backgroundColor: colors.greyLight,
               stroke: "black"
             }
           },
@@ -202,7 +202,7 @@ export const Base = {
           disconnectBackgroundColor: colors.green,
           disconnectColor: "black",
           optionProps: {
-            backgroundColor: colors.accent,
+            backgroundColor: colors.violet,
             borderRadius: "8px",
             color: colors.white,
             hoverColor: colors.white,
@@ -224,7 +224,7 @@ export const Base = {
             color: colors.black
           },
           subtitle: {
-            color: colors.darkGrey
+            color: colors.greyDark
           },
           check: {
             color: colors.green
@@ -235,7 +235,7 @@ export const Base = {
               stroke: "black"
             },
             inactive: {
-              backgroundColor: colors.lightGrey,
+              backgroundColor: colors.greyLight,
               stroke: "black"
             }
           },

@@ -68,7 +68,7 @@ export const FieldInput = styled.input<{
     &:focus,
     &:hover {
       border: 1px solid
-        ${(props) => props.theme?.hover?.borderColor || colors.lightGrey};
+        ${(props) => props.theme?.hover?.borderColor || colors.greyLight};
       caret-color: ${(props) => props.theme?.focus?.caretColor || "initial"};
     }
   }
@@ -94,7 +94,7 @@ export const FieldInput = styled.input<{
         &:focus {
           border: 1px solid
             ${(props) =>
-              props.theme?.error?.focus?.borderColor || colors.lightGrey};
+              props.theme?.error?.focus?.borderColor || colors.greyLight};
           caret-color: ${(props) =>
             props.theme?.error?.focus?.caretColor || colors.orange};
         }
@@ -167,7 +167,7 @@ export const FileUploadWrapper = styled.div<{
     }
   }
 
-  background: ${({ theme }) => theme?.background || colors.lightGrey};
+  background: ${({ theme }) => theme?.background || colors.greyLight};
   ${({ theme }) =>
     theme.borderRadius !== undefined &&
     css`
@@ -189,7 +189,7 @@ export const FileUploadWrapper = styled.div<{
   &:focus,
   &:hover {
     border: 1px solid
-      ${({ theme }) => theme?.hover?.borderColor || colors.lightGrey};
+      ${({ theme }) => theme?.hover?.borderColor || colors.greyLight};
   }
 
   /* prettier-ignore */
@@ -210,7 +210,7 @@ export const PdfOnlyLabel = styled.label<{ $disabled?: boolean }>`
   margin-top: 1rem;
   gap: 0.25rem;
   padding: 0.656rem 1.25rem;
-  background: ${colors.lightGrey};
+  background: ${colors.greyLight};
   font-size: 0.875rem;
   ${({ $disabled }) =>
     $disabled
@@ -303,7 +303,7 @@ export const FieldTextArea = styled.textarea<{ $error: any }>`
     &:focus,
     &:hover {
       border: 1px solid
-        ${(props) => props.theme?.hover?.borderColor || colors.lightGrey};
+        ${(props) => props.theme?.hover?.borderColor || colors.greyLight};
       caret-color: ${(props) => props.theme?.focus?.caretColor || "initial"};
     }
   }
@@ -329,7 +329,7 @@ export const FieldTextArea = styled.textarea<{ $error: any }>`
         &:focus {
           border: 1px solid
             ${(props) =>
-              props.theme?.error?.focus?.borderColor || colors.lightGrey};
+              props.theme?.error?.focus?.borderColor || colors.greyLight};
           caret-color: ${(props) =>
             props.theme?.error?.focus?.caretColor || colors.orange};
         }
@@ -369,7 +369,7 @@ export const FormFieldWrapper = styled(Grid)`
     margin: 0;
     font-weight: 400;
     font-size: 0.75rem;
-    color: ${colors.darkGrey};
+    color: ${colors.greyDark};
   }
 `;
 
@@ -447,7 +447,7 @@ export const CheckboxWrapper = styled.label<{
     height: 1.5rem;
 
     background-color: ${({ theme }) =>
-      theme?.backgroundColor || colors.lightGrey};
+      theme?.backgroundColor || colors.greyLight};
     border: 1px solid ${({ theme }) => theme?.borderColor};
     ${({ theme }) =>
       theme?.color &&
@@ -513,11 +513,11 @@ export const CheckboxWrapper = styled.label<{
 `;
 
 export const VideoPreview = styled.video`
-  background: ${colors.lightGrey};
+  background: ${colors.greyLight};
   height: 100%;
   width: 100%;
   object-fit: contain;
 `;
 export const ImagePreview = styled.img`
-  background: ${colors.lightGrey};
+  background: ${colors.greyLight};
 `;

@@ -44,15 +44,15 @@ const customStyles = (
       alignContent: "center",
       padding: "0.4rem 1rem",
       boxShadow: "none",
-      background: colors.lightGrey,
+      background: colors.greyLight,
       ...customTheme?.control,
       border: state.isFocused
-        ? customTheme?.control?.focus?.border ?? `1px solid ${colors.secondary}`
+        ? customTheme?.control?.focus?.border ?? `1px solid ${colors.violet}`
         : !checkIfValueIsEmpty(error)
           ? customTheme?.control?.error?.border ?? `1px solid ${colors.orange}`
           : customTheme?.control?.border ?? `1px solid ${colors.border}`,
       ":hover": {
-        borderColor: colors.secondary,
+        borderColor: colors.violet,
         borderWidth: "1px",
         ...customTheme?.control?.hover
       },
@@ -77,11 +77,11 @@ const customStyles = (
         : customTheme?.option?.opacity ?? "1",
       background:
         state.isOptionSelected || state.isSelected || state.isFocused
-          ? customTheme?.option?.selected?.background ?? colors.lightGrey
+          ? customTheme?.option?.selected?.background ?? colors.greyLight
           : customTheme?.option?.background ?? colors.white,
       color:
         state.isOptionSelected || state.isSelected
-          ? customTheme?.option?.selected?.color ?? colors.secondary
+          ? customTheme?.option?.selected?.color ?? colors.violet
           : customTheme?.option?.color ?? colors.black,
       ...(state.isDisabled && customTheme?.option?.disabled),
       ...((state.isOptionSelected || state.isSelected) &&

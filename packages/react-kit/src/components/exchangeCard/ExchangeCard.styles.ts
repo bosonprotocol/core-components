@@ -64,7 +64,7 @@ export const ExchangeCardPrice = styled.div`
   line-height: 150%;
   text-align: right;
   margin-bottom: 0.25rem;
-  color: ${({ theme }) => theme?.colors?.light.darkGrey};
+  color: ${({ theme }) => theme?.colors?.light.greyDark};
 `;
 
 export const ExchangeCarData = styled.div`
@@ -224,7 +224,7 @@ export const CommittedBottomText = styled.p`
   margin: 0;
   padding: 0 1.5rem 1.5rem 1.5rem;
   letter-spacing: 0.5px;
-  color: ${theme.colors.light.darkGrey};
+  color: ${theme.colors.light.greyDark};
 `;
 
 export const ExchangeImageWrapper = styled.div`

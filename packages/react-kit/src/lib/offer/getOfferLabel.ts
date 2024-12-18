@@ -16,22 +16,22 @@ export const OFFER_LABEL_TYPES = {
     display: true,
     name: "HOT",
     emoji: "🔥",
-    color: colors.darkGrey,
-    background: colors.lightGrey
+    color: colors.greyDark,
+    background: colors.greyLight
   },
   COMING_SOON: {
     display: true,
     name: "COMING_SOON",
     emoji: "⏱️",
-    color: colors.darkGrey,
-    background: colors.lightGrey
+    color: colors.greyDark,
+    background: colors.greyLight
   },
   EXPIRING_SOON: {
     display: true,
     name: "EXPIRING_SOON",
     emoji: "⏱️",
-    color: colors.darkGrey,
-    background: colors.lightGrey
+    color: colors.greyDark,
+    background: colors.greyLight
   },
   EXPIRED: {
     display: true,

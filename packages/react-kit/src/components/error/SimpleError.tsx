@@ -23,8 +23,8 @@ export type SimpleErrorProps = GridProps & {
 export function SimpleError({
   errorMessage,
   children,
-  backgroundColor = colors.lightGrey,
-  warningColor = colors.darkOrange,
+  backgroundColor = colors.greyLight,
+  warningColor = colors.orangeDark,
   ...rest
 }: SimpleErrorProps) {
   return (

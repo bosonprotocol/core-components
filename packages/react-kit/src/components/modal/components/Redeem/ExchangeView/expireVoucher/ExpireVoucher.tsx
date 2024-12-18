@@ -43,7 +43,7 @@ const Content = styled.div`
 `;
 
 const ButtonsWrapper = styled.div`
-  border-top: 1px solid ${colors.lightGrey};
+  border-top: 1px solid ${colors.greyLight};
   padding-top: 2rem;
 `;
 const Line = styled.hr`
@@ -106,7 +106,7 @@ export default function ExpireVoucher({
           tag="p"
           textAlign="left"
           margin="0"
-          color={colors.darkGrey}
+          color={colors.greyDark}
           width="100%"
           style={{
             width: "100%"

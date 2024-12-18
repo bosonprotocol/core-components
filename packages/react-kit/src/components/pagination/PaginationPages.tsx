@@ -4,7 +4,7 @@ import { theme } from "../../theme";
 
 const Span = styled.span`
   font-size: 0.75rem;
-  color: ${theme.colors.light.darkGrey};
+  color: ${theme.colors.light.greyDark};
   &:not(:last-of-type) {
     margin-right: 1rem;
   }

@@ -170,7 +170,7 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
                 as="li"
                 key={bundleItem.metadataUri}
                 style={{
-                  color: colors.darkGrey
+                  color: colors.greyDark
                 }}
               >
                 {videoSrc ? (

@@ -43,7 +43,7 @@ export interface TooltipProps extends Omit<TippyProps, "children"> {
 const Button = styled.button`
   all: unset;
   display: flex;
-  color: ${theme.colors.light.darkGrey};
+  color: ${theme.colors.light.greyDark};
   background-color: transparent;
   margin: 0 0.5rem;
   :hover {

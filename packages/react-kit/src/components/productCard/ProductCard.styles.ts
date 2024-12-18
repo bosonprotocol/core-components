@@ -10,7 +10,7 @@ export const ProductCardLabelWrapper = styled.div`
   left: 0.5rem;
   background: white;
   font-weight: 600;
-  color: ${({ theme }) => theme?.colors?.light.darkGrey};
+  color: ${({ theme }) => theme?.colors?.light.greyDark};
   z-index: 1;
 `;
 
@@ -37,7 +37,7 @@ export const ProductCardCreatorName = styled.div`
   font-weight: 600;
   font-size: 0.625rem;
   line-height: 150%;
-  color: ${({ theme }) => theme?.colors?.light.darkGrey};
+  color: ${({ theme }) => theme?.colors?.light.greyDark};
   flex: none;
   order: 1;
   flex-grow: 0;
@@ -46,7 +46,7 @@ export const ProductCardCreatorName = styled.div`
   > span {
     font-weight: 600;
     font-size: 0.625rem;
-    color: ${({ theme }) => theme?.colors?.light.darkGrey};
+    color: ${({ theme }) => theme?.colors?.light.greyDark};
   }
 `;
 
@@ -81,7 +81,7 @@ export const ProductCardPrice = styled.div`
   line-height: 150%;
   text-align: right;
   margin-bottom: 0.25rem;
-  color: ${({ theme }) => theme?.colors?.light.darkGrey};
+  color: ${({ theme }) => theme?.colors?.light.greyDark};
 `;
 
 export const ProductCardBottom = styled.div.attrs({ className: "bottom" })`
@@ -184,7 +184,7 @@ export const BottomText = styled.p`
   line-height: 0.975rem;
   margin: 0;
   letter-spacing: 0.5px;
-  color: ${theme.colors.light.darkGrey};
+  color: ${theme.colors.light.greyDark};
 `;
 
 export const ProductCardImageWrapper = styled.div`

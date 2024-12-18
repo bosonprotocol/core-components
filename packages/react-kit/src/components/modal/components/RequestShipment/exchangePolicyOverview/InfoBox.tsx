@@ -36,7 +36,7 @@ export const InfoBox = ({
       style={wrapperStyle}
       className={className}
     >
-      <Info color={colors.secondary} weight="bold" {...iconProps} />
+      <Info color={colors.violet} weight="bold" {...iconProps} />
       <Typography fontSize="0.875rem" {...messageProps}>
         {message}
       </Typography>

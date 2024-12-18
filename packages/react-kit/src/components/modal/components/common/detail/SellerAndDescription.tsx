@@ -24,7 +24,7 @@ const Container = styled(Grid)`
     }
   }
   .description {
-    color: ${colors.accent};
+    color: ${colors.violet};
     font-weight: 600;
     font-size: 0.875rem;
     justify-content: flex-end;
@@ -72,7 +72,7 @@ export function SellerAndDescription({
         <LoadingBubble
           $width="100%"
           $height="30px"
-          $backgroundColor={colors.darkGrey}
+          $backgroundColor={colors.greyDark}
           style={{ flex: "initial" }}
         />
       ) : (
@@ -80,7 +80,7 @@ export function SellerAndDescription({
           <span style={{ textAlign: "right" }}>
             View full offer description
           </span>
-          <StyledTextAlignLeft size={30} color={colors.accent} />
+          <StyledTextAlignLeft size={30} color={colors.violet} />
         </div>
       )}
     </Container>

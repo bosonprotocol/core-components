@@ -23,7 +23,7 @@ export function FormField({
   children,
   style = {},
   valueToCopy,
-  copyIconColor = colors.secondary,
+  copyIconColor = colors.violet,
   ...rest
 }: FormFieldProps) {
   return (
