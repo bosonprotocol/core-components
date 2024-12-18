@@ -326,7 +326,7 @@ export const BosonTheme = {
     accountDrawerDisconnectBorderRadius: "12px",
     walletBorderRadius: "12px",
     walletIconBorderRadius: "0px",
-    walletBackgroundColor: "var(--secondaryBgColor)",
+    walletBackgroundColor: colors.secondary,
     walletColor: colors.white,
     walletHoverFocusBackgroundColor: colors.black,
     walletHoverColor: colors.white,

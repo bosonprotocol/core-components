@@ -122,12 +122,12 @@ export function OfferVariantView({
           />
         ),
         contentStyle: {
-          background: isCommitting ? colors.white : colors.lightGrey
+          background: `var(--primaryBgColor)`
         },
         footerComponent: <BosonLogo />
       }
     });
-  }, [dispatch, isCommitting]);
+  }, [dispatch]);
   const hasVariations = !!selectedVariant.variations?.length;
   const innerOnGetProviderProps = useCallback(
     (providerProps: DetailContextProps) => {
