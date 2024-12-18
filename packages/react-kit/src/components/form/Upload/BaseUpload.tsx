@@ -455,7 +455,6 @@ function BaseUpload({
           <Grid>
             <PdfOnlyLabel
               htmlFor={`file-${name}`}
-              $disabled={disabled}
               style={{ ...theme?.uploadButton }}
             >
               Upload file <Upload size={20} />
