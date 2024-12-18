@@ -2,7 +2,6 @@ import React, { ComponentProps } from "react";
 import UploadedFile from "./UploadedFile";
 import { UploadFileType } from "../types";
 import { css, styled } from "styled-components";
-import { Grid } from "../../ui/Grid";
 
 interface Props
   extends Pick<
