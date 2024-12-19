@@ -9,7 +9,7 @@ on:
 jobs:
   lint-build-test:
     name: Lint, build and test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       JOB_LINT: ${{ steps.lint.outcome }}
       JOB_TEST: ${{ steps.test.outcome }}
