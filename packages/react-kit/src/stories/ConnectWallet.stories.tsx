@@ -23,13 +23,11 @@ import { ReduxProvider } from "../components/widgets/ReduxProvider";
 import { BlockNumberProvider } from "../hooks/contracts/useBlockNumber";
 
 const successButtonTheme: ConnectWalletProps["connectWalletButtonTheme"] = {
-  ...bosonButtonThemes({ withBosonStyle: false })["primary"],
+  ...bosonButtonThemes()["primary"],
   color: "inherit",
   background: "var(--buttonBgColor)"
 };
-const errorButtonTheme = bosonButtonThemes({ withBosonStyle: false })[
-  "orangeInverse"
-];
+const errorButtonTheme = bosonButtonThemes()["orangeInverse"];
 
 const envName =
   (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
@@ -151,7 +149,7 @@ const Component = ({
                           rightConnectedChild={rightConnectedChild}
                           connectWalletButtonTheme={{
                             ...(connectWalletSuccessButtonThemeKey
-                              ? bosonButtonThemes({ withBosonStyle: false })[
+                              ? bosonButtonThemes()[
                                   connectWalletSuccessButtonThemeKey
                                 ]
                               : successButtonTheme),
@@ -160,7 +158,7 @@ const Component = ({
                           }}
                           connectedButtonTheme={{
                             ...(connectWalletSuccessButtonThemeKey
-                              ? bosonButtonThemes({ withBosonStyle: false })[
+                              ? bosonButtonThemes()[
                                   connectWalletSuccessButtonThemeKey
                                 ]
                               : successButtonTheme),
@@ -169,7 +167,7 @@ const Component = ({
                           }}
                           errorButtonTheme={{
                             ...(connectWalletErrorButtonThemeKey
-                              ? bosonButtonThemes({ withBosonStyle: false })[
+                              ? bosonButtonThemes()[
                                   connectWalletErrorButtonThemeKey
                                 ]
                               : errorButtonTheme),
@@ -183,7 +181,7 @@ const Component = ({
                           backgroundColor={accountDrawerBackgroundColor}
                           buyCryptoTheme={{
                             ...(accountDrawerBuyCryptoThemeKey
-                              ? bosonButtonThemes({ withBosonStyle: false })[
+                              ? bosonButtonThemes()[
                                   accountDrawerBuyCryptoThemeKey
                                 ]
                               : successButtonTheme),
@@ -212,9 +210,9 @@ const Component = ({
                               buttonProps: {
                                 theme: {
                                   ...(magicLoginButtonThemeKey
-                                    ? bosonButtonThemes({
-                                        withBosonStyle: false
-                                      })[magicLoginButtonThemeKey]
+                                    ? bosonButtonThemes()[
+                                        magicLoginButtonThemeKey
+                                      ]
                                     : successButtonTheme),
                                   borderRadius: magicLoginButtonBorderRadiusPx
                                 }
@@ -223,15 +221,13 @@ const Component = ({
                             connectionErrorProps: {
                               tryAgainTheme:
                                 connectionErrorTryAgainButtonThemeKey
-                                  ? bosonButtonThemes({
-                                      withBosonStyle: false
-                                    })[connectionErrorTryAgainButtonThemeKey]
+                                  ? bosonButtonThemes()[
+                                      connectionErrorTryAgainButtonThemeKey
+                                    ]
                                   : successButtonTheme,
                               backToWalletSelectionTheme:
                                 connectionErrorBackToWalletSelectionButtonThemeKey
-                                  ? bosonButtonThemes({
-                                      withBosonStyle: false
-                                    })[
+                                  ? bosonButtonThemes()[
                                       connectionErrorBackToWalletSelectionButtonThemeKey
                                     ]
                                   : successButtonTheme
@@ -314,12 +310,12 @@ export const BosonTheme = {
   args: {
     ...BASE_ARGS,
     textColor: colors.black,
-    chainSelectorBackgroundColor: "var(--buttonBgColor)",
+    chainSelectorBackgroundColor: colors.green,
     connectWalletBorderRadius: undefined,
     connectWalletSuccessButtonThemeKey: undefined,
     connectWalletErrorButtonThemeKey: "orangeInverse",
     accountDrawerBuyCryptoBorderRadiusPx: "0",
-    accountDrawerBackgroundColor: "var(--primaryBgColor)",
+    accountDrawerBackgroundColor: colors.white,
     accountDrawerBuyCryptoThemeKey: undefined,
     accountDrawerDisconnectBackgroundColor: colors.green,
     accountDrawerDisconnectColor: colors.black,

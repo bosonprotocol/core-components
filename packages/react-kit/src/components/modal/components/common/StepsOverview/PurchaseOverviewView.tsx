@@ -2,7 +2,7 @@ import { ArrowLeft } from "phosphor-react";
 import React, { useEffect } from "react";
 import { PurchaseOverviewInner } from "./PurchaseOverview";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { Grid } from "../../../../ui/Grid";
 import { BosonLogo } from "../BosonLogo";
 
@@ -35,7 +35,7 @@ export function PurchaseOverviewView({ onBackClick }: Props) {
           </Grid>
         ),
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
         footerComponent: null
       }

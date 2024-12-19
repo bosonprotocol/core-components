@@ -2,6 +2,7 @@ import { createGlobalStyle } from "styled-components";
 import { breakpoint } from "../../lib/ui/breakpoint";
 import { zIndex } from "../ui/zIndex";
 import { cssVars } from "./ResetStylesForNonWidgets";
+import { getCssVar } from "../../theme";
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -47,7 +48,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
 
-    color: var(--textColor);
+    color: ${getCssVar("--main-text-color")};
 
     font-family: "Plus Jakarta Sans";
     font-style: normal;

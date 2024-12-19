@@ -25,22 +25,12 @@ const SellerContainer = styled.div<{ $hasCursorPointer: boolean }>`
   gap: 10px;
 `;
 
-const SellerInfo = styled.div<{ $withBosonStyles?: boolean }>`
+const SellerInfo = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
   align-items: center;
-
-  ${({ $withBosonStyles }) =>
-    $withBosonStyles
-      ? css`
-          color: ${colors.violet};
-          font-family: "Plus Jakarta Sans";
-        `
-      : css`
-          color: var(--accent);
-        `};
-
+  color: ${colors.violet};
   font-style: normal;
   font-size: 0.875rem;
   font-weight: 600;
@@ -70,7 +60,6 @@ const SellerID: React.FC<
     accountImageSize?: number;
     withProfileImage: boolean;
     withProfileText?: boolean;
-    withBosonStyles?: boolean;
     onClick?: null | undefined | React.MouseEventHandler<HTMLDivElement>;
   } & GridProps &
     Omit<React.HTMLAttributes<HTMLDivElement>, "onClick">
@@ -82,7 +71,6 @@ const SellerID: React.FC<
   onClick,
   accountImageSize,
   withProfileText = true,
-  withBosonStyles = false,
   ...rest
 }) => {
   const { ipfsGateway } = useIpfsContext();
@@ -134,10 +122,7 @@ const SellerID: React.FC<
           </ImageContainer>
         )}
         {withProfileText && userId && (
-          <SellerInfo
-            data-testid="seller-info"
-            $withBosonStyles={withBosonStyles}
-          >
+          <SellerInfo data-testid="seller-info">
             {isSeller
               ? lens?.name
                 ? lens?.name

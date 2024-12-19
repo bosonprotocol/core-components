@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Exchange } from "../../../../../types/exchange";
 import { Confirmation, ConfirmationProps } from "./Confirmation";
 import { NonModalProps, useNonModalContext } from "../../../nonModal/NonModal";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { RedeemHeader } from "../RedeemHeader";
 import { useAccount } from "../../../../../hooks/connection/connection";
 import {
@@ -38,7 +38,7 @@ export function ConfirmationView({
       payload: {
         headerComponent: RedeemHeader,
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         }
       }
     });

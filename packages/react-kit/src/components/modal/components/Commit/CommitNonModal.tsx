@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAccount } from "../../../../hooks/connection/connection";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
-import { colors } from "../../../../theme";
+import { colors, getCssVar } from "../../../../theme";
 import { Exchange } from "../../../../types/exchange";
 import { VariantV1 } from "../../../../types/variants";
 import Loading from "../../../ui/loading/LoadingWrapper";
@@ -53,7 +53,7 @@ export function CommitWrapper({ hideModal, ...props }: CommitNonModalProps) {
       hideModal={hideModal}
       footerComponent={<BosonLogo />}
       contentStyle={{
-        background: colors.white
+        background: getCssVar("--background-accent-color")
       }}
       lookAndFeel={props.lookAndFeel}
       showConnectButton={!props.withExternalSigner}

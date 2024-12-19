@@ -303,7 +303,6 @@ export default function InnerCommitDetailView(
             <Button
               size="regular"
               variant="accentInverted"
-              withBosonStyle
               style={{
                 width: "100%"
               }}
@@ -357,7 +356,6 @@ export default function InnerCommitDetailView(
                       onPendingSignature={onCommitPendingSignature}
                       onPendingTransaction={onCommitPendingTransaction}
                       onSuccess={onCommitSuccess}
-                      withBosonStyle
                       extraInfo="Step 1/2"
                       id="commit"
                     />

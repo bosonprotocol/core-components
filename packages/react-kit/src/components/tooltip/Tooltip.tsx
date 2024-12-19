@@ -74,7 +74,7 @@ export const Tooltip = ({
       {...rest}
     >
       {wrap ? (
-        <Button type="button" theme={theme}>
+        <Button type="button">
           {children ? children : <Question size={size} weight={weight} />}
         </Button>
       ) : (

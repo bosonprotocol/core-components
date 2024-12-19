@@ -53,7 +53,6 @@ export const ProductCardCreatorName = styled.div`
 export const ProductCardTitle = styled(Typography).attrs({
   className: "title"
 })`
-  color: ${colors.black};
   word-break: break-word;
   overflow: hidden;
   display: -webkit-box;

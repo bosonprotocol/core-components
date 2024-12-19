@@ -69,9 +69,7 @@ export default function TransactionSubmittedModal({ action, txHash }: Props) {
         </Typography>
       </a>
 
-      <StyledButton onClick={hideModal} withBosonStyle>
-        Close
-      </StyledButton>
+      <StyledButton onClick={hideModal}>Close</StyledButton>
     </Grid>
   );
 }

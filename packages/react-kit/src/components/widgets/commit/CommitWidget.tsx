@@ -2,13 +2,13 @@ import React, { ComponentType } from "react";
 import { CSSProperties } from "styled-components";
 import { ButtonProps } from "../../buttons/Button";
 import { CommitNonModalProps } from "../../modal/components/Commit/CommitNonModal";
-import GlobalStyle from "../../styles/GlobalStyle";
 import { MarginContainer } from "../MarginContainer";
 import { CommitModalWithOffer } from "./CommitModalWithOffer";
 import {
   CommitWidgetProviders,
   CommitWidgetProvidersProps
 } from "./CommitWidgetProviders";
+import { GlobalStyledThemed } from "../../styles/GlobalStyledThemed";
 
 type CommitProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
@@ -43,7 +43,7 @@ export function CommitWidget(props: CommitWidgetProps) {
   return (
     <MarginContainer {...props}>
       <CommitWidgetProviders {...props} withReduxProvider>
-        <GlobalStyle />
+        <GlobalStyledThemed />
         <CommitModalWithOffer {...props} hideModal={props.closeWidgetClick} />
       </CommitWidgetProviders>
     </MarginContainer>

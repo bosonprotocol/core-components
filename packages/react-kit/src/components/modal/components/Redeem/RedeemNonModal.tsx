@@ -21,7 +21,7 @@ import { FormModel } from "./RedeemFormModel";
 
 import { useAccount } from "../../../../hooks/connection/connection";
 import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
-import { colors } from "../../../../theme";
+import { colors, getCssVar } from "../../../../theme";
 import { Loading } from "../../../ui/loading/Loading";
 import { useConfigContext } from "../../../config/ConfigContext";
 import { Typography } from "../../../ui/Typography";
@@ -124,7 +124,7 @@ export function PublicRedeemNonModal({
       footerComponent={<BosonLogo />}
       showConnectButton={!props.withExternalSigner}
       contentStyle={{
-        background: colors.white
+        background: getCssVar("--background-accent-color")
       }}
     >
       <RedeemNonModal hideModal={hideModal} {...props} />

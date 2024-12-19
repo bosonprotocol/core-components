@@ -7,7 +7,7 @@ import OfferPolicyDetails, {
   OfferPolicyDetailsProps
 } from "../../../../offerPolicy/OfferPolicyDetails";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { BosonLogo } from "../../common/BosonLogo";
 
 interface Props {
@@ -41,7 +41,7 @@ export function CommitOfferPolicyView({
           </Grid>
         ),
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
         footerComponent: <BosonLogo />
       }

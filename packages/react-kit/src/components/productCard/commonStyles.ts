@@ -1,10 +1,10 @@
 import { css } from "styled-components";
-import { colors } from "../../theme";
+import { getCssVar } from "../../theme";
 
 export const cardWrapperStyles = css`
   padding: 0px;
   isolation: isolate;
   width: 100%;
   box-shadow: 0px 4.31783px 107.946px rgba(21, 30, 52, 0.1);
-  background: ${colors.white};
+  background: ${getCssVar("--background-accent-color")};
 `;

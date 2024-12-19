@@ -5,7 +5,7 @@ import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import License from "../../../../license/License";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { colors } from "../../../../../theme";
+import { getCssVar } from "../../../../../theme";
 import { BosonLogo } from "../../common/BosonLogo";
 
 interface Props {
@@ -29,7 +29,7 @@ export function LicenseAgreementView({ onBackClick, offer }: Props) {
           </Grid>
         ),
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
         footerComponent: <BosonLogo />
       }

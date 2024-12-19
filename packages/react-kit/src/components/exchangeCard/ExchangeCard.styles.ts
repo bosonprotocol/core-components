@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { colors } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { ExchangeCardStatus } from "./types";
 import { ProductCardLabelWrapper } from "../productCard/ProductCard.styles";
 
@@ -88,7 +88,7 @@ export const ExchangeCardBottomContent = styled.div`
   padding: 1rem 1.5rem;
   box-sizing: border-box;
   align-items: flex-start;
-  border-top: 2px solid ${colors.border};
+  border-top: 2px solid ${getCssVar("--border-color")};
 `;
 
 export const ExchangeCardWrapper = styled.div<{

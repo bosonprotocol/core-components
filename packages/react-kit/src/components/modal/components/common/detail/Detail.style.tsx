@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { Grid } from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
 import { zIndex } from "../../../../ui/zIndex";
@@ -210,7 +210,7 @@ const tableBorder = css`
     tr {
       &:not(:last-child) {
         td {
-          border-bottom: 1px solid ${colors.border};
+          border-bottom: 1px solid ${getCssVar("--border-color")};
         }
       }
     }
@@ -306,7 +306,7 @@ export const Table = styled.table<{
         }`
         : css`
             td {
-              border-bottom: 1px solid ${colors.border};
+              border-bottom: 1px solid ${getCssVar("--border-color")};
             }
           `}
   }
@@ -476,8 +476,8 @@ export const BosonExclusiveContainer = styled.div`
     position: absolute;
     bottom: 0;
     padding: 0.25rem 1rem;
-    background-color: ${colors.black};
-    color: ${colors.white};
+    background-color: ${getCssVar("--background-accent-color")};
+    color: ${getCssVar("--main-text-color")};
     width: auto;
     font-size: 0.75rem;
     font-style: normal;
@@ -494,7 +494,7 @@ export const BaseWidget = styled.div`
   align-content: flex-start;
   flex-wrap: wrap;
   width: 100%;
-  background: ${colors.white};
+  background: ${getCssVar("--background-accent-color")};
   font-family: "Plus Jakarta Sans";
   details:not(details:nth-last-of-type(1)):not([open]) > summary {
     border-bottom: none;
@@ -535,7 +535,7 @@ const miniButton = css`
 `;
 export const OpenSeaButton = styled.a<{ $disabled: boolean }>`
   z-index: ${zIndex.OfferStatus};
-  border: 2px solid ${colors.border};
+  border: 2px solid ${getCssVar("--border-color")};
   padding: 1rem;
   ${miniButton}
 
@@ -602,5 +602,5 @@ export const Break = styled.span`
   display: block;
   width: 100%;
   height: 2px;
-  background: ${colors.border};
+  background: ${getCssVar("--border-color")};
 `;

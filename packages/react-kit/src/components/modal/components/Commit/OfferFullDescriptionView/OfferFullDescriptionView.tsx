@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { OfferFullDescription } from "../../common/OfferFullDescription/OfferFullDescription";
@@ -36,7 +36,7 @@ export function OfferFullDescriptionView({
           </Grid>
         ),
         contentStyle: {
-          background: colors.white,
+          background: getCssVar("--background-accent-color"),
           padding: 0
         },
         footerComponent: <BosonLogo />

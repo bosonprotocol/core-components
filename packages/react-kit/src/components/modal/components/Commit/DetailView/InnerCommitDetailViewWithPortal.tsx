@@ -94,7 +94,6 @@ export function InnerCommitDetailViewWithPortal(
             <Button
               size="regular"
               variant="accentInverted"
-              withBosonStyle
               style={{
                 width: "100%"
               }}

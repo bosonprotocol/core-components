@@ -1,14 +1,14 @@
 import { TextAlignLeft } from "phosphor-react";
 import React from "react";
 import styled from "styled-components";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import SellerID from "../../../../avatar/SellerID";
 import { Grid } from "../../../../ui/Grid";
 import { Offer } from "../../../../../types/offer";
 import { LoadingBubble } from "../../../../skeleton/common";
 
 const Container = styled(Grid)`
-  background: ${colors.white};
+  background: ${getCssVar("--background-accent-color")};
   padding: 1rem;
   flex-direction: column;
   .seller-id {
@@ -33,7 +33,7 @@ const Container = styled(Grid)`
     align-items: center;
 
     &:hover {
-      background: ${colors.border};
+      background: ${getCssVar("--border-color")};
       cursor: pointer;
     }
   }

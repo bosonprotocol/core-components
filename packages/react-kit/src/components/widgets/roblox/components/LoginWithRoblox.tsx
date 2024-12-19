@@ -1,20 +1,18 @@
 import { useRobloxConfigContext } from "../../../../hooks/roblox/context/useRobloxConfigContext";
 import { BaseButton } from "../../../buttons/BaseButton";
 import React from "react";
-import { CardThemeProps } from "./types";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { useAccount } from "../../../../hooks";
+import { getCssVar } from "../../../../theme";
 
 export type LoginWithRobloxProps = {
   onLoggedIn?: () => unknown;
   onDisconecctWallet?: () => unknown;
-  robloxButtonTheme: CardThemeProps["button"];
   sellerId: string;
 };
 export const LoginWithRoblox = ({
   onLoggedIn,
   onDisconecctWallet,
-  robloxButtonTheme,
   sellerId
 }: LoginWithRobloxProps) => {
   const { backendOrigin } = useRobloxConfigContext();
@@ -32,7 +30,11 @@ export const LoginWithRoblox = ({
   });
   return (
     <BaseButton
-      theme={robloxButtonTheme.active}
+      theme={{
+        background: getCssVar("--main-accent-color"),
+        color: getCssVar("--button-text-color"),
+        borderRadius: getCssVar("--button-border-radius")
+      }}
       onClick={() => {
         window.open(`${backendOrigin}/login`, "_blank");
         const id = setInterval(async () => {

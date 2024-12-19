@@ -58,52 +58,10 @@ export const Base = {
 
     productsGridProps: {
       theme: {
-        style: {
-          background: colors.greyLight,
-          paddingTop: "5rem",
-          paddingBottom: "5rem"
-        },
         commitButton: {
           color: "green",
           layout: "horizontal",
           shape: "rounded"
-        },
-        purchasedProducts: {
-          title: {
-            style: {
-              margin: 0,
-              marginBottom: "32px",
-              color: colors.black
-            }
-          }
-        },
-        availableProducts: {
-          title: {
-            style: {
-              margin: 0,
-              color: colors.black
-            }
-          },
-          subtitle: {
-            style: {
-              marginBottom: "32px",
-              color: colors.greyDark
-            }
-          }
-        },
-        unavailabeProducts: {
-          title: {
-            style: {
-              margin: 0,
-              color: colors.black
-            }
-          },
-          subtitle: {
-            style: {
-              marginBottom: "32px",
-              color: colors.greyDark
-            }
-          }
         }
       }
     },
@@ -128,38 +86,6 @@ export const Base = {
         stepsBackgroundSides: "white",
         backgroundColor: "white",
         lineBetweenStepsColor: colors.greyLight,
-        robloxCard: {
-          padding: "24px",
-          title: {
-            color: colors.black
-          },
-          subtitle: {
-            color: colors.greyDark
-          },
-          check: {
-            color: colors.green
-          },
-          number: {
-            active: {
-              backgroundColor: colors.green,
-              stroke: "black"
-            },
-            inactive: {
-              backgroundColor: colors.greyLight,
-              stroke: "black"
-            }
-          },
-          button: {
-            active: {
-              ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
-              borderRadius: "8px"
-            },
-            inactive: {
-              ...bosonButtonThemes({ withBosonStyle: true })["white"],
-              borderRadius: "8px"
-            }
-          }
-        },
         walletCard: {
           padding: "24px",
           title: {
@@ -183,20 +109,18 @@ export const Base = {
           },
           button: {
             active: {
-              ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
+              ...bosonButtonThemes()["bosonPrimary"],
               borderRadius: "8px"
             },
             inactive: {
-              ...bosonButtonThemes({ withBosonStyle: true })["white"],
+              ...bosonButtonThemes()["white"],
               borderRadius: "8px"
             }
           }
         },
         walletPanel: {
           backgroundColor: "white",
-          buyCryptoTheme: bosonButtonThemes({ withBosonStyle: true })[
-            "bosonPrimary"
-          ],
+          buyCryptoTheme: bosonButtonThemes()["bosonPrimary"],
           disconnectBorderRadius: "8px",
           disconnectBackgroundColor: colors.green,
           disconnectColor: "black",
@@ -209,12 +133,8 @@ export const Base = {
             iconBorderRadius: "8px"
           },
           connectionErrorProps: {
-            backToWalletSelectionTheme: bosonButtonThemes({
-              withBosonStyle: true
-            })["orangeInverse"],
-            tryAgainTheme: bosonButtonThemes({ withBosonStyle: true })[
-              "orangeInverse"
-            ]
+            backToWalletSelectionTheme: bosonButtonThemes()["orangeInverse"],
+            tryAgainTheme: bosonButtonThemes()["orangeInverse"]
           }
         },
         signUpCard: {
@@ -240,11 +160,11 @@ export const Base = {
           },
           button: {
             active: {
-              ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
+              ...bosonButtonThemes()["bosonPrimary"],
               borderRadius: "8px"
             },
             inactive: {
-              ...bosonButtonThemes({ withBosonStyle: true })["white"],
+              ...bosonButtonThemes()["white"],
               borderRadius: "8px"
             }
           }

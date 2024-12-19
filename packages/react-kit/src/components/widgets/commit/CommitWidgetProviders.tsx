@@ -29,9 +29,15 @@ import {
   RobloxProvider,
   RobloxProviderProps
 } from "../../../hooks/roblox/context/RobloxProvider";
+import {
+  BosonThemeProvider,
+  BosonThemeProviderProps,
+  useBosonTheme
+} from "../BosonThemeProvider";
 
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
+  BosonThemeProviderProps &
   RedemptionProviderProps &
   RobloxProviderProps &
   ConvertionRateProviderProps &
@@ -61,38 +67,44 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
         },
         [withReduxProvider, props.withWeb3React]
       );
+      const { themeKey: storyBookThemeKey } =
+        useBosonTheme({
+          throwOnError: false
+        }) || {};
       return (
-        <WithReduxProvider
-          withCustomReduxContext={withCustomReduxContext}
-          withReduxProvider={withReduxProvider}
-        >
-          <Web3Provider {...props} infuraKey={infuraKey}>
-            <ConfigProvider
-              magicLinkKey={magicLinkKey}
-              infuraKey={infuraKey}
-              withCustomReduxContext={withCustomReduxContext}
-              {...props}
-            >
-              <BlockNumberProvider>
-                <BosonProvider {...props}>
-                  <WithUpdaters>
-                    <ChatProvider>
-                      <IpfsProvider {...props}>
-                        <ConvertionRateProvider>
-                          <RedemptionProvider {...props}>
-                            <RobloxProvider {...props}>
-                              <ModalProvider>{children}</ModalProvider>
-                            </RobloxProvider>
-                          </RedemptionProvider>
-                        </ConvertionRateProvider>
-                      </IpfsProvider>
-                    </ChatProvider>
-                  </WithUpdaters>
-                </BosonProvider>
-              </BlockNumberProvider>
-            </ConfigProvider>
-          </Web3Provider>
-        </WithReduxProvider>
+        <BosonThemeProvider theme={props.theme || storyBookThemeKey}>
+          <WithReduxProvider
+            withCustomReduxContext={withCustomReduxContext}
+            withReduxProvider={withReduxProvider}
+          >
+            <Web3Provider {...props} infuraKey={infuraKey}>
+              <ConfigProvider
+                magicLinkKey={magicLinkKey}
+                infuraKey={infuraKey}
+                withCustomReduxContext={withCustomReduxContext}
+                {...props}
+              >
+                <BlockNumberProvider>
+                  <BosonProvider {...props}>
+                    <WithUpdaters>
+                      <ChatProvider>
+                        <IpfsProvider {...props}>
+                          <ConvertionRateProvider>
+                            <RedemptionProvider {...props}>
+                              <RobloxProvider {...props}>
+                                <ModalProvider>{children}</ModalProvider>
+                              </RobloxProvider>
+                            </RedemptionProvider>
+                          </ConvertionRateProvider>
+                        </IpfsProvider>
+                      </ChatProvider>
+                    </WithUpdaters>
+                  </BosonProvider>
+                </BlockNumberProvider>
+              </ConfigProvider>
+            </Web3Provider>
+          </WithReduxProvider>
+        </BosonThemeProvider>
       );
     }
   );

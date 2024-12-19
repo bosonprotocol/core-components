@@ -15,7 +15,6 @@ import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
 import { ProductType } from "../../../productCard/const";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
-import { ButtonThemeProps } from "./types";
 import { BosonRobloxExchange } from "../../../../hooks/roblox/backend.types";
 import { Typography } from "../../../ui/Typography";
 import { isTruthy } from "../../../../types/helpers";
@@ -40,7 +39,6 @@ export type RobloxExchangesGridProps = {
   isLoading: boolean;
   numProducts?: number;
   raiseDisputeForExchangeUrl: string;
-  walletButtonTheme: ButtonThemeProps;
   handleRequestShipment: (robloxExchange: BosonRobloxExchange) => void;
   handleCancellation: (robloxExchange: BosonRobloxExchange) => void;
   exchanges: BosonRobloxExchange[] | undefined;
@@ -50,7 +48,6 @@ export const RobloxExchangesGrid = ({
   numProducts,
   raiseDisputeForExchangeUrl,
   exchanges,
-  walletButtonTheme,
   handleRequestShipment,
   handleCancellation
 }: RobloxExchangesGridProps) => {
@@ -155,10 +152,7 @@ export const RobloxExchangesGrid = ({
                 }
                 isConnected={!!address}
                 CTAIfDisconnected={
-                  <ConnectWalletWithLogic
-                    buttonThemeProps={walletButtonTheme}
-                    connectWalletButtonDisabled={false}
-                  />
+                  <ConnectWalletWithLogic connectWalletButtonDisabled={false} />
                 }
               />
             );

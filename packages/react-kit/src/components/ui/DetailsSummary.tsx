@@ -1,7 +1,7 @@
 import { CaretDown, CaretUp } from "phosphor-react";
 import React, { ReactElement, ReactNode, useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
-import { colors } from "../../theme";
+import { getCssVar } from "../../theme";
 import { Grid } from "./Grid";
 
 const IconWrapper = styled.div`
@@ -10,14 +10,14 @@ const IconWrapper = styled.div`
   align-items: flex-start;
   flex-shrink: 0;
   border-radius: 1.25rem;
-  border: 2px solid ${colors.border};
-  background: ${colors.greyLight};
+  border: 2px solid ${getCssVar("--border-color")};
+  background: ${getCssVar("--background-color")};
 `;
 
 const Details = styled.details<Pick<DetailsSummaryProps, "$paddingSides">>`
   width: 100%;
   &[open]:last-of-type {
-    border-bottom: 2px solid ${colors.border};
+    border-bottom: 2px solid ${getCssVar("--border-color")};
   }
   summary {
     cursor: pointer;
@@ -31,8 +31,8 @@ const Details = styled.details<Pick<DetailsSummaryProps, "$paddingSides">>`
     padding-left: ${({ $paddingSides }) => $paddingSides};
     padding-right: ${({ $paddingSides }) => $paddingSides};
 
-    border-top: 2px solid ${colors.border};
-    border-bottom: 2px solid ${colors.border};
+    border-top: 2px solid ${getCssVar("--border-color")};
+    border-bottom: 2px solid ${getCssVar("--border-color")};
 
     font-size: 1rem;
     font-weight: 600;

@@ -100,7 +100,6 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
             decimals={offer.exchangeToken.decimals}
             tag="h3"
             convert
-            withBosonStyles
             withAsterisk={false}
           />
         </Grid>

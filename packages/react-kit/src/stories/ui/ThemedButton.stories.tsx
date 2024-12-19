@@ -56,8 +56,7 @@ export const Primary = {
     ...BASE_ARGS,
     disabled: false,
     isLoading: false,
-    themeVal: "primary",
-    withBosonStyle: false
+    themeVal: "primary"
   }
 };
 
@@ -66,8 +65,7 @@ export const BosonPrimary = {
     ...BASE_ARGS,
     disabled: false,
     isLoading: false,
-    themeVal: "bosonPrimary",
-    withBosonStyle: true
+    themeVal: "bosonPrimary"
   }
 };
 
@@ -76,8 +74,7 @@ export const Secondary = {
     ...BASE_ARGS,
     disabled: false,
     isLoading: false,
-    themeVal: "secondary",
-    withBosonStyle: false
+    themeVal: "secondary"
   }
 };
 
@@ -86,8 +83,7 @@ export const BosonSecondary = {
     ...BASE_ARGS,
     disabled: false,
     isLoading: false,
-    themeVal: "secondary",
-    withBosonStyle: true
+    themeVal: "secondary"
   }
 };
 
@@ -96,7 +92,6 @@ export const AccentFiil = {
     ...BASE_ARGS,
     disabled: false,
     isLoading: false,
-    themeVal: "accentFill",
-    withBosonStyle: true
+    themeVal: "accentFill"
   }
 };

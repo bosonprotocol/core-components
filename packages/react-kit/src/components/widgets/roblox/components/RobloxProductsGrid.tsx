@@ -14,17 +14,14 @@ import {
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
-import {
-  CommitButtonView,
-  CommitButtonViewProps
-} from "../../../buttons/CommitButtonView";
+import { CommitButtonViewProps } from "../../../buttons/CommitButtonView";
 import { ProductType } from "../../../productCard/const";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
-import { ButtonThemeProps } from "./types";
 import { BosonRobloxProductWithAvailability } from "../../../../hooks/roblox/backend.types";
 import { Typography } from "../../../ui/Typography";
 import { isTruthy } from "../../../../types/helpers";
 import { LoginWithRoblox } from "./LoginWithRoblox";
+import { ThemedCommitButtonView } from "../../../buttons/ThemedCommitButtonView";
 
 const commonCardStyles = css`
   background: transparent;
@@ -45,8 +42,6 @@ export type RobloxProductsGridProps = {
   isLoading: boolean;
   products: BosonRobloxProductWithAvailability[] | undefined;
   numProducts?: number;
-  walletButtonTheme: ButtonThemeProps;
-  robloxButtonTheme: ButtonThemeProps;
   commitButtonTheme:
     | Pick<CommitButtonViewProps, "color" | "layout" | "shape">
     | undefined;
@@ -59,8 +54,6 @@ export const RobloxProductsGrid = ({
   isLoading,
   numProducts,
   products,
-  walletButtonTheme,
-  robloxButtonTheme,
   commitButtonTheme,
   currencyColor,
   handleSetBundleUuid,
@@ -131,17 +124,13 @@ export const RobloxProductsGrid = ({
                 }}
                 CTAOnHover={
                   !isLoggedInWithRoblox ? (
-                    <LoginWithRoblox
-                      sellerId={seller.id}
-                      robloxButtonTheme={robloxButtonTheme}
-                    />
+                    <LoginWithRoblox sellerId={seller.id} />
                   ) : !address ? (
                     <ConnectWalletWithLogic
-                      buttonThemeProps={walletButtonTheme}
                       connectWalletButtonDisabled={false}
                     />
                   ) : (
-                    <CommitButtonView
+                    <ThemedCommitButtonView
                       onClick={() => {
                         if (isProductV1(offer) && productUuid) {
                           handleSetProductUuid?.(productUuid);
@@ -149,7 +138,7 @@ export const RobloxProductsGrid = ({
                           handleSetBundleUuid?.(bundleUuid);
                         }
                       }}
-                      color={commitButtonTheme?.color}
+                      // color={commitButtonTheme?.color}
                       shape={commitButtonTheme?.shape}
                       layout={commitButtonTheme?.layout}
                     />

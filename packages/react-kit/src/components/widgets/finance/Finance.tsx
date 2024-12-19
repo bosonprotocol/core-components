@@ -361,8 +361,7 @@ export default function Finance({
                       availableAmount: fund.availableAmount,
                       reload: reloadData
                     },
-                    "auto",
-                    "dark"
+                    "auto"
                   );
                 }}
               >
@@ -385,8 +384,7 @@ export default function Finance({
                       exchangeToken: fund.token.address,
                       reload: reloadData
                     },
-                    "auto",
-                    "dark"
+                    "auto"
                   );
                 }}
               >

@@ -1,6 +1,6 @@
 import React, { ButtonHTMLAttributes, forwardRef } from "react";
 
-import { colors } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { BaseButton, BaseButtonTheme } from "../buttons/BaseButton";
 import { ButtonSize } from "./buttonSize";
 
@@ -28,20 +28,12 @@ export const bosonButtonThemeKeys = [
   "escalate",
   "accentFill"
 ] as const;
-export const bosonButtonThemes = ({
-  withBosonStyle
-}: {
-  withBosonStyle?: boolean;
-}) => {
+export const bosonButtonThemes = () => {
   return {
     primary: {
-      color: withBosonStyle ? colors.black : "var(--textColor)",
-      background: withBosonStyle
-        ? colors.green
-        : `var(--accentNoDefault, ${colors.green})`,
-      borderColor: withBosonStyle
-        ? colors.green
-        : `var(--accentNoDefault, ${colors.green})`,
+      color: getCssVar("--button-text-color"),
+      background: getCssVar("--main-accent-color"),
+      borderColor: getCssVar("--main-accent-color"),
       borderWidth: 2,
       hover: {
         background: colors.black,
@@ -61,11 +53,11 @@ export const bosonButtonThemes = ({
       }
     },
     secondary: {
-      color: withBosonStyle ? colors.violet : "var(--accent)",
-      borderColor: withBosonStyle ? colors.violet : "var(--accent)",
+      color: colors.violet,
+      borderColor: colors.violet,
       borderWidth: 2,
       hover: {
-        background: withBosonStyle ? colors.violet : "var(--accent)",
+        background: colors.violet,
         color: colors.white
       }
     },
@@ -149,7 +141,7 @@ export const bosonButtonThemes = ({
       borderWidth: 2,
       hover: {
         background: colors.border,
-        color: "var(--accent)"
+        color: colors.violet
       }
     },
     ghostSecondary: {
@@ -170,7 +162,7 @@ export const bosonButtonThemes = ({
       }
     },
     blankSecondary: {
-      color: "var(--accent)",
+      color: colors.violet,
       hover: {
         borderColor: colors.violet,
         background: colors.border,
@@ -178,7 +170,7 @@ export const bosonButtonThemes = ({
       }
     },
     blankSecondaryOutline: {
-      color: "var(--accent)",
+      color: colors.violet,
       borderWidth: 2,
       borderColor: colors.violet,
       hover: {
@@ -260,17 +252,12 @@ export type IButton = ButtonHTMLAttributes<HTMLButtonElement> & {
   step?: number;
   isLoading?: boolean;
   tooltip?: string;
-  withBosonStyle?: boolean;
 };
 
 const ThemedButton = forwardRef<HTMLButtonElement, IButton>(
-  ({ themeVal = "primary", withBosonStyle = false, ...rest }, ref) => {
+  ({ themeVal = "primary", ...rest }, ref) => {
     return (
-      <BaseButton
-        {...rest}
-        ref={ref}
-        theme={bosonButtonThemes({ withBosonStyle })[themeVal]}
-      />
+      <BaseButton {...rest} ref={ref} theme={bosonButtonThemes()[themeVal]} />
     );
   }
 );

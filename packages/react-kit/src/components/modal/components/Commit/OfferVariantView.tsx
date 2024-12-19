@@ -27,6 +27,7 @@ import { UseGetOfferDetailDataProps } from "../common/detail/useGetOfferDetailDa
 import { BosonLogo } from "../common/BosonLogo";
 import { PhygitalLabel } from "../../../productCard/ProductCard";
 import { useIsPhygital } from "../../../../hooks/offer/useIsPhygital";
+import { getCssVar } from "../../../../theme";
 
 const ImageWrapper = styled.div`
   container-type: inline-size;
@@ -120,7 +121,7 @@ export function OfferVariantView({
           />
         ),
         contentStyle: {
-          background: `var(--primaryBgColor)`
+          background: getCssVar("--background-accent-color")
         },
         footerComponent: <BosonLogo />
       }

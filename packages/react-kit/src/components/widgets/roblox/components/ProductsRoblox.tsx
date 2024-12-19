@@ -1,4 +1,4 @@
-import { CSSProperties } from "styled-components";
+import styled, { CSSProperties } from "styled-components";
 import React, { useState } from "react";
 import { Typography, TypographyProps } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
@@ -20,18 +20,16 @@ import {
 import { CancelExchange } from "../../../modal/components/Redeem/ExchangeView/cancellation/CancelExchange";
 import NonModal from "../../../modal/nonModal/NonModal";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
+import { getCssVar } from "../../../../theme";
 
-const Wrapper = Grid;
+const Wrapper = styled(Grid).attrs({
+  paddingTop: "5rem",
+  paddingBottom: "5rem"
+})`
+  background-color: ${getCssVar("--background-color")};
+`;
 const ContentWrapper = Grid;
 
-type SectionThemeProps = Partial<{
-  title: {
-    style: Partial<TypographyProps["style"]>;
-  };
-  subtitle: {
-    style: Partial<TypographyProps["style"]>;
-  };
-}>;
 export type ProductsRobloxProps = {
   requestShipmentProps: Pick<
     RequestShipmentModalProps,
@@ -43,15 +41,9 @@ export type ProductsRobloxProps = {
     | "parentOrigin"
     | "signatures"
   >;
-  walletButtonTheme: RobloxProductsGridProps["walletButtonTheme"];
-  robloxButtonTheme: RobloxProductsGridProps["robloxButtonTheme"];
   sellerId: string;
   theme?: Partial<{
-    style: Partial<TypographyProps["style"]>;
     commitButton: RobloxProductsGridProps["commitButtonTheme"];
-    purchasedProducts: Omit<SectionThemeProps, "subtitle">;
-    availableProducts: SectionThemeProps;
-    unavailabeProducts: SectionThemeProps;
     currencyColor: CSSProperties["color"];
   }>;
   maxWidth?: CSSProperties["maxWidth"];
@@ -64,8 +56,6 @@ export const ProductsRoblox = ({
   raiseDisputeForExchangeUrl,
   theme,
   maxWidth,
-  walletButtonTheme,
-  robloxButtonTheme,
   requestShipmentProps: {
     deliveryInfoHandler,
     postDeliveryInfoUrl,
@@ -142,7 +132,7 @@ export const ProductsRoblox = ({
     setBundleUuid("");
   };
   return (
-    <Wrapper style={theme?.style} justifyContent="center" alignItems="center">
+    <Wrapper justifyContent="center" alignItems="center">
       <ContentWrapper
         flexDirection="column"
         alignItems="flex-start"
@@ -184,15 +174,11 @@ export const ProductsRoblox = ({
         ) : robloxLoggedInData?.isLoggedIn ? (
           <>
             <Grid flexDirection="column" alignItems="flex-start">
-              <Typography
-                tag="h3"
-                style={theme?.purchasedProducts?.title?.style}
-              >
+              <Typography tag="h3" marginBottom="32px" margin="0">
                 Purchased Products
               </Typography>
 
               <RobloxExchangesGrid
-                walletButtonTheme={walletButtonTheme}
                 raiseDisputeForExchangeUrl={raiseDisputeForExchangeUrl}
                 exchanges={purchasedProducts}
                 handleCancellation={(robloxExchange) => {
@@ -214,19 +200,17 @@ export const ProductsRoblox = ({
               />
             </Grid>
             <Grid flexDirection="column" alignItems="flex-start">
-              <Typography
-                tag="h3"
-                style={theme?.availableProducts?.title?.style}
-              >
+              <Typography tag="h3" margin="0">
                 Available Products
               </Typography>
-              <Typography style={theme?.availableProducts?.subtitle?.style}>
+              <Typography
+                marginBottom="32px"
+                color={getCssVar("--sub-text-color")}
+              >
                 Following products are available for you based on the Roblox
                 inventory you have
               </Typography>
               <RobloxProductsGrid
-                walletButtonTheme={walletButtonTheme}
-                robloxButtonTheme={robloxButtonTheme}
                 commitButtonTheme={theme?.commitButton}
                 products={availableProducts}
                 handleSetProductUuid={handleSetProductUuid}
@@ -237,19 +221,17 @@ export const ProductsRoblox = ({
               />
             </Grid>
             <Grid flexDirection="column" alignItems="flex-start">
-              <Typography
-                tag="h3"
-                style={theme?.unavailabeProducts?.title?.style}
-              >
+              <Typography tag="h3" margin={0}>
                 Unavailable products
               </Typography>
-              <Typography style={theme?.unavailabeProducts?.subtitle?.style}>
+              <Typography
+                marginBottom="32px"
+                color={getCssVar("--sub-text-color")}
+              >
                 Other products that can be purchased when you have the right
                 Roblox inventory item.
               </Typography>
               <RobloxProductsGrid
-                walletButtonTheme={walletButtonTheme}
-                robloxButtonTheme={robloxButtonTheme}
                 commitButtonTheme={theme?.commitButton}
                 products={unavailableProducts}
                 handleSetProductUuid={handleSetProductUuid}
@@ -263,19 +245,17 @@ export const ProductsRoblox = ({
         ) : showProductsPreLogin && !robloxLoggedInData?.isLoggedIn ? (
           <>
             <Grid flexDirection="column" alignItems="flex-start">
-              <Typography
-                tag="h3"
-                style={theme?.unavailabeProducts?.title?.style}
-              >
+              <Typography tag="h3" margin="0">
                 Roblox exclusives
               </Typography>
-              <Typography style={theme?.unavailabeProducts?.subtitle?.style}>
+              <Typography
+                marginBottom="32px"
+                color={getCssVar("--sub-text-color")}
+              >
                 Other products that can be purchased when you have the right
                 Roblox inventory item.
               </Typography>
               <RobloxProductsGrid
-                walletButtonTheme={walletButtonTheme}
-                robloxButtonTheme={robloxButtonTheme}
                 commitButtonTheme={theme?.commitButton}
                 products={robloxExclusives}
                 isLoading={robloxExclusivesLoading}

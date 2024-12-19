@@ -108,7 +108,6 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
               decimals={offer.exchangeToken.decimals}
               tag="h3"
               convert
-              withBosonStyles
               withAsterisk={showPriceAsterisk}
             />
             {priceSibling}

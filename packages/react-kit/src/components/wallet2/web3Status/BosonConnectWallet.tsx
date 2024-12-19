@@ -5,10 +5,11 @@ import { Portal } from "../../portal/Portal";
 import { AccountDrawer } from "../accountDrawer";
 import { Typography } from "../../ui/Typography";
 import { BaseButtonTheme } from "../../buttons/BaseButton";
+import { getCssVar } from "../../../theme";
 
 const defaultBorderRadiusPx = 12;
 const defaultBorderRadius = `${defaultBorderRadiusPx}px` as const;
-const bosonThemes = bosonButtonThemes({ withBosonStyle: true });
+const bosonThemes = bosonButtonThemes();
 const customBosonPrimaryTheme = {
   ...bosonThemes["bosonPrimary"],
   borderRadius: defaultBorderRadius
@@ -30,7 +31,7 @@ export const BosonConnectWallet = () => {
       />
       <Portal>
         <AccountDrawer
-          backgroundColor="white"
+          backgroundColor={getCssVar("--background-accent-color")}
           buyCryptoTheme={customBosonPrimaryTheme}
           disconnectBorderRadius={defaultBorderRadius}
           disconnectBackgroundColor={customBosonPrimaryTheme.background}

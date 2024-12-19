@@ -11,7 +11,7 @@ import useRefundData from "../../../../../../hooks/useRefundData";
 import { extractUserFriendlyError } from "../../../../../../lib/errors/transactions";
 import { useDisplayFloatWithConfig } from "../../../../../../lib/price/prices";
 import { poll } from "../../../../../../lib/promises/promises";
-import { colors } from "../../../../../../theme";
+import { colors, getCssVar } from "../../../../../../theme";
 import {
   CancelButton,
   ICancelButton
@@ -60,7 +60,7 @@ const SuccessIcon = styled(CheckCircle).attrs({ color: colors.green })`
 `;
 
 const ButtonsSection = styled.div`
-  border-top: 2px solid ${colors.border};
+  border-top: 2px solid ${getCssVar("--border-color")};
   padding-top: 2rem;
   display: flex;
   justify-content: space-between;

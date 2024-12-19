@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { colors } from "../../theme";
+import { isTruthy } from "../../types/helpers";
 
 export const cssVars = css`
   --l: 50%;
@@ -8,13 +9,25 @@ export const cssVars = css`
   --primary: ${colors.green};
   --secondary: ${colors.greyLight};
   --accent: ${colors.violet};
-  --accentDark: ${colors.arsenic};
   --textColor: ${colors.black};
-  --primaryBgColor: ${colors.white};
   --footerBgColor: ${colors.black};
   --footerTextColor: ${colors.white};
   --buttonBgColor: ${colors.green};
   --buttonTextColor: ${colors.black};
+
+  ${({ theme }) =>
+    Object.keys(theme)
+      .filter((key) => key.startsWith("--"))
+      .map((key) => {
+        const value = theme[key];
+        if (!value) {
+          return null;
+        }
+        return css`
+          ${key}:${value};
+        `;
+      })
+      .filter(isTruthy)};
 `;
 
 export const ResetStylesForNonWidgets = styled.div`

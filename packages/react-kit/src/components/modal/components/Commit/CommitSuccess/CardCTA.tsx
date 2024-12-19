@@ -9,7 +9,6 @@ type CardCTAProps = {
   text: string;
   icon: ReactElement;
   cta: ReactElement;
-  theme?: "light" | "dark";
 };
 
 const StyledGrid = styled(Grid)`

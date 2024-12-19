@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { useDisplayFloatWithConfig } from "../../lib/price/prices";
 import { breakpoint } from "../../lib/ui/breakpoint";
-import { colors } from "../../theme";
 import {
   Currencies,
   CurrencyDisplay
@@ -15,17 +14,11 @@ import ConvertedPrice from "./ConvertedPrice";
 
 import { useConvertedPrice } from "./useConvertedPrice";
 
-const Root = styled.div<{ $withBosonStyles: boolean }>`
+const Root = styled.div`
   display: flex;
   gap: 0.25rem;
   align-items: center;
   width: inherit;
-  ${({ $withBosonStyles }) =>
-    $withBosonStyles
-      ? css`
-          color: ${colors.black};
-        `
-      : ""}
   h3,
   h4 {
     padding-left: 2.5rem;
@@ -61,7 +54,6 @@ interface IProps {
   currencySymbol: string;
   convert?: boolean;
   isExchange?: boolean;
-  withBosonStyles?: boolean;
   tag?: keyof JSX.IntrinsicElements;
   withAsterisk?: boolean;
 }
@@ -73,7 +65,6 @@ export default function Price({
   convert = false,
   isExchange = false,
   tag = "h4",
-  withBosonStyles = false,
   withAsterisk,
   ...rest
 }: IProps) {
@@ -86,7 +77,7 @@ export default function Price({
   const displayFloat = useDisplayFloatWithConfig();
 
   return (
-    <Root {...rest} $withBosonStyles={withBosonStyles} data-testid="price">
+    <Root {...rest} data-testid="price">
       {price ? (
         <Grid
           alignItems="baseline"

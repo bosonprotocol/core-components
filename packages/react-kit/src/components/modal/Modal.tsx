@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 import { createPortal } from "react-dom";
 import styled, { css } from "styled-components";
 
-import { colors } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { ModalType, Store } from "./ModalContext";
 import { Typography } from "../ui/Typography";
 import ThemedButton from "../ui/ThemedButton";
@@ -76,16 +76,9 @@ const sizeToMargin = {
   }
 } as const;
 
-const background = {
-  primaryBgColor: "var(--primaryBgColor)",
-  dark: `${colors.black}`,
-  light: `${colors.white}`
-} as const;
-
 const Wrapper = styled.div<{
   $modalType: ModalType | string;
   $size: Props["size"];
-  $themeVal: Props["theme"];
   $maxWidths: Props["maxWidths"];
 }>`
   display: flex;
@@ -93,17 +86,8 @@ const Wrapper = styled.div<{
   max-height: inherit;
   position: relative;
   z-index: ${zIndex.Modal};
-  color: ${({ $themeVal }) => {
-    switch ($themeVal) {
-      case "dark":
-        return colors.white;
-      default:
-        return colors.black;
-    }
-  }};
-  background-color: ${({ $themeVal }) => {
-    return background[$themeVal as keyof typeof background] || colors.white;
-  }};
+  color: ${getCssVar("--main-text-color")};
+  background-color: ${getCssVar("--background-accent-color")};
   border: var(--secondary);
   ${({ $maxWidths }) => {
     if (!$maxWidths) {
@@ -179,7 +163,7 @@ const Header = styled(Typography)<{ $title?: string }>`
   text-align: left;
   padding: 1rem 2rem;
   display: flex;
-  border-bottom: 2px solid ${colors.border};
+  border-bottom: 2px solid ${getCssVar("--border-color")};
   align-items: center;
   justify-content: ${(props) => {
     return props.$title ? "space-between" : "flex-end";
@@ -189,7 +173,7 @@ const Header = styled(Typography)<{ $title?: string }>`
 `;
 
 const FooterWrapper = styled.div`
-  border-top: 2px solid ${colors.border};
+  border-top: 2px solid ${getCssVar("--border-color")};
 `;
 
 const HeaderWithTitle = styled(Header)`
@@ -218,7 +202,6 @@ interface Props {
   contentStyle?: CSSProperties;
   size: NonNullable<Store["modalSize"]>;
   maxWidths: Store["modalMaxWidth"];
-  theme: NonNullable<Store["theme"]>;
   closable?: boolean;
   modalType: ModalType;
 }
@@ -231,7 +214,6 @@ export default function Modal({
   footerComponent: FooterComponent,
   size,
   maxWidths,
-  theme,
   contentStyle,
   closable = true,
   modalType
@@ -243,12 +225,7 @@ export default function Modal({
   };
   return createPortal(
     <Root data-testid="modal">
-      <Wrapper
-        $size={size}
-        $modalType={modalType}
-        $themeVal={theme}
-        $maxWidths={maxWidths}
-      >
+      <Wrapper $size={size} $modalType={modalType} $maxWidths={maxWidths}>
         {HeaderComponent ? (
           <Header tag="div" margin="0">
             {HeaderComponent}

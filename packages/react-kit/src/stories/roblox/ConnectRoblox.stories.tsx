@@ -87,14 +87,10 @@ export const Base = {
       stepsBackgroundSides: "white",
       walletPanel: {
         backgroundColor: "white",
-        buyCryptoTheme: bosonButtonThemes({ withBosonStyle: true })[
-          "bosonPrimary"
-        ],
+        buyCryptoTheme: bosonButtonThemes()["bosonPrimary"],
         connectionErrorProps: {
-          backToWalletSelectionTheme: bosonButtonThemes({
-            withBosonStyle: true
-          })["bosonPrimary"],
-          tryAgainTheme: bosonButtonThemes({ withBosonStyle: true })["orange"]
+          backToWalletSelectionTheme: bosonButtonThemes()["bosonPrimary"],
+          tryAgainTheme: bosonButtonThemes()["orange"]
         },
         disconnectBackgroundColor: "grey",
         disconnectBorderRadius: "8px",
@@ -131,10 +127,10 @@ export const Base = {
         },
         button: {
           active: {
-            ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
+            ...bosonButtonThemes()["bosonPrimary"],
             borderRadius: "8px"
           },
-          inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
+          inactive: bosonButtonThemes()["white"]
         }
       },
       walletCard: {
@@ -160,10 +156,10 @@ export const Base = {
         },
         button: {
           active: {
-            ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
+            ...bosonButtonThemes()["bosonPrimary"],
             borderRadius: "8px"
           },
-          inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
+          inactive: bosonButtonThemes()["white"]
         }
       },
       signUpCard: {
@@ -189,10 +185,10 @@ export const Base = {
         },
         button: {
           active: {
-            ...bosonButtonThemes({ withBosonStyle: true })["bosonPrimary"],
+            ...bosonButtonThemes()["bosonPrimary"],
             borderRadius: "8px"
           },
-          inactive: bosonButtonThemes({ withBosonStyle: true })["white"]
+          inactive: bosonButtonThemes()["white"]
         }
       }
     }

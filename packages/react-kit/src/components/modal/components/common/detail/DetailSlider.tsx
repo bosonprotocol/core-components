@@ -11,7 +11,7 @@ import React, {
 
 import styled, { css } from "styled-components";
 import { breakpointNumbers } from "../../../../../lib/ui/breakpoint";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { Grid } from "../../../../ui/Grid";
 import { IpfsImage } from "../../../../ui/IpfsImage";
 import Video from "../../../../ui/Video";
@@ -41,7 +41,7 @@ const Container = styled.div`
 `;
 
 const GlideSlides = styled.div<{ $highlightActive: boolean }>`
-  background: ${colors.white};
+  background: ${getCssVar("--background-accent-color")};
   > * {
     align-self: center;
   }

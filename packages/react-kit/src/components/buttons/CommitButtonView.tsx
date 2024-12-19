@@ -92,7 +92,6 @@ export const CommitButtonView = forwardRef<
           }}
           themeVal={colorToVariant[color] || "primary"}
           variant={null}
-          withBosonStyle
           $color={color}
           $shape={shape}
         >

@@ -3,15 +3,18 @@ import { withThemeFromJSXProvider } from "@storybook/addon-themes";
 import GlobalStyle from "../src/components/styles/GlobalStyle";
 import { ThemeProvider } from "styled-components";
 
-import { colors } from "../src/theme";
+import { themes } from "../src/theme";
+import { BosonThemeProvider } from "../src/components/widgets/BosonThemeProvider";
 
 const WithTheme = withThemeFromJSXProvider({
-  Provider: ThemeProvider,
+  Provider: BosonThemeProvider,
   GlobalStyles: GlobalStyle,
   themes: {
-    theme: colors // TODO: is this correct?
-  },
-  defaultTheme: "theme"
+    light: "light",
+    blackAndWhite: "blackAndWhite",
+    dark: "dark"
+  } as any,
+  defaultTheme: "light"
 });
 
 const preview: Preview = {

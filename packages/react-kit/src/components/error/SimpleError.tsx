@@ -2,7 +2,7 @@ import { Warning } from "phosphor-react";
 import React, { ReactNode } from "react";
 import styled, { CSSProperties } from "styled-components";
 
-import { colors } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { Grid, GridProps } from "../ui/Grid";
 import { Typography } from "../ui/Typography";
 
@@ -22,7 +22,7 @@ export type SimpleErrorProps = GridProps & {
 export function SimpleError({
   errorMessage,
   children,
-  backgroundColor = colors.greyLight,
+  backgroundColor = getCssVar("--background-color"),
   warningColor = colors.orangeDark,
   ...rest
 }: SimpleErrorProps) {

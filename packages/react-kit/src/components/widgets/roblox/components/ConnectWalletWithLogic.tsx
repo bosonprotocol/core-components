@@ -4,22 +4,29 @@ import { BaseButton } from "../../../buttons/BaseButton";
 import { useAccount } from "../../../../hooks";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 import { StyledPower } from "./styles";
-import { ButtonThemeProps } from "./types";
+import { getCssVar } from "../../../../theme";
 
 export type ConnectWalletWithLogicProps = {
   connectWalletButtonDisabled: boolean;
-  buttonThemeProps: ButtonThemeProps;
 };
 export const ConnectWalletWithLogic = ({
-  connectWalletButtonDisabled,
-  buttonThemeProps
+  connectWalletButtonDisabled
 }: ConnectWalletWithLogicProps) => {
   const { address } = useAccount();
   const disconnect = useDisconnect();
 
   return address ? (
     <BaseButton
-      theme={buttonThemeProps.inactive}
+      theme={{
+        background: getCssVar("--background-accent-color"),
+        color: getCssVar("--button-text-color"),
+        borderRadius: getCssVar("--button-border-radius"),
+        borderColor: getCssVar("--button-text-color"),
+        hover: {
+          background: getCssVar("--main-accent-color"),
+          color: getCssVar("--button-text-color")
+        }
+      }}
       onClick={() => disconnect({ isUserDisconnecting: true })}
     >
       Disconnect Account <StyledPower size={20} />
@@ -27,9 +34,36 @@ export const ConnectWalletWithLogic = ({
   ) : (
     <ConnectWallet
       connectWalletButtonDisabled={connectWalletButtonDisabled}
-      connectWalletButtonTheme={buttonThemeProps.active}
-      connectedButtonTheme={buttonThemeProps.active}
-      errorButtonTheme={buttonThemeProps.active}
+      connectWalletButtonTheme={{
+        background: getCssVar("--main-accent-color"),
+        color: getCssVar("--button-text-color"),
+        borderRadius: getCssVar("--button-border-radius"),
+        hover: {
+          background: getCssVar("--background-color"),
+          color: getCssVar("--button-text-color"),
+          borderColor: getCssVar("--button-text-color")
+        }
+      }}
+      connectedButtonTheme={{
+        background: getCssVar("--main-accent-color"),
+        color: getCssVar("--button-text-color"),
+        borderRadius: getCssVar("--button-border-radius"),
+        hover: {
+          background: getCssVar("--background-color"),
+          color: getCssVar("--button-text-color"),
+          borderColor: getCssVar("--button-text-color")
+        }
+      }}
+      errorButtonTheme={{
+        background: getCssVar("--main-accent-color"),
+        color: getCssVar("--button-text-color"),
+        borderRadius: getCssVar("--button-border-radius"),
+        hover: {
+          background: getCssVar("--background-color"),
+          color: getCssVar("--button-text-color"),
+          borderColor: getCssVar("--button-text-color")
+        }
+      }}
       connectWalletChild="Connect Account"
     />
   );

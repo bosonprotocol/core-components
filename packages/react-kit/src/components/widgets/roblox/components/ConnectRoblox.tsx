@@ -30,16 +30,13 @@ import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";
 import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges";
 import { LoginWithRoblox } from "./LoginWithRoblox";
 import { AccountDrawerProps } from "../../../wallet2/accountDrawer";
+import { getCssVar } from "../../../../theme";
 
-const Wrapper = styled(Grid)<{
-  $backgroundColor: CSSProperties["backgroundColor"];
-}>`
+const Wrapper = styled(Grid)`
   container-type: inline-size;
   display: flex;
   flex-direction: row;
-  ${({ $backgroundColor }) => css`
-    background-color: ${$backgroundColor};
-  `}
+  background-color: ${getCssVar("--background-accent-color")};
 `;
 
 const StyledPower = styled(Power)`
@@ -56,81 +53,33 @@ const IconWrapper = styled.div`
 const CardTitle = styled(Typography)``;
 const iconClass = "icon";
 const StepWrapperGrid = styled(Grid)<{
-  $theme: ConnectRobloxProps["theme"];
   $isActive: StepProps["isActive"];
   $isDone: StepProps["isDone"];
-  $name: StepProps["name"];
   $itemWidthPx: number;
 }>`
   max-width: 22.125rem;
   min-height: 100%;
   align-self: stretch;
-  background-color: ${({ $theme }) => $theme.backgroundColor};
+  background-color: ${getCssVar("--background-accent-color")};
+  padding: 24px;
   svg.${iconClass} {
-    ${({ $name, $theme, $isActive }) => {
-      if ($name === "roblox") {
-        return css`
-          path:first-child {
-            fill: ${$isActive
-              ? $theme.robloxCard.number.active.backgroundColor
-              : $theme.robloxCard.number.inactive.backgroundColor};
-          }
-          path:last-child {
-            stroke: ${$isActive
-              ? $theme.robloxCard.number.active.stroke
-              : $theme.robloxCard.number.inactive.stroke};
-          }
-        `;
-      }
-      if ($name === "wallet") {
-        return css`
-          path:first-child {
-            fill: ${$isActive
-              ? $theme.walletCard.number.active.backgroundColor
-              : $theme.walletCard.number.inactive.backgroundColor};
-          }
-          path:last-child {
-            stroke: ${$isActive
-              ? $theme.walletCard.number.active.stroke
-              : $theme.walletCard.number.inactive.stroke};
-          }
-        `;
-      }
-      if ($name === "signup") {
-        return css`
-          path:first-child {
-            fill: ${$isActive
-              ? $theme.signUpCard.number.active.backgroundColor
-              : $theme.signUpCard.number.inactive.backgroundColor};
-          }
-          path:last-child {
-            stroke: ${$isActive
-              ? $theme.signUpCard.number.active.stroke
-              : $theme.signUpCard.number.inactive.stroke};
-          }
-        `;
-      }
-      return "";
+    ${({ $isActive }) => {
+      return css`
+        path:first-child {
+          // background of the number
+          fill: ${$isActive
+            ? getCssVar("--main-accent-color")
+            : getCssVar("--background-color")};
+        }
+        path:last-child {
+          // number
+          stroke: ${$isActive
+            ? getCssVar("--button-text-color")
+            : getCssVar("--main-text-color")};
+        }
+      `;
     }}
   }
-  ${({ $name, $theme }) => {
-    if ($name === "roblox") {
-      return css`
-        padding: ${$theme.robloxCard.padding};
-      `;
-    }
-    if ($name === "wallet") {
-      return css`
-        padding: ${$theme.walletCard.padding};
-      `;
-    }
-    if ($name === "signup") {
-      return css`
-        padding: ${$theme.signUpCard.padding};
-      `;
-    }
-    return "";
-  }}
 
   &:nth-of-type(1) ${IconWrapper} {
     &::after {
@@ -140,7 +89,7 @@ const StepWrapperGrid = styled(Grid)<{
       left: 100%;
       width: calc(2 * ${({ $itemWidthPx }) => $itemWidthPx + "px"});
       height: 2px;
-      background-color: ${({ $theme }) => $theme.lineBetweenStepsColor};
+      background-color: ${getCssVar("--background-color")};
     }
   }
   @container (width < 692px) {
@@ -150,31 +99,16 @@ const StepWrapperGrid = styled(Grid)<{
   }
 `;
 
-type StepProps = Pick<ConnectRobloxProps, "theme"> & {
-  itemTheme: CardThemeProps;
+type StepProps = {
   icon: ReactElement;
   title: string;
   subtitle: string;
   isActive: boolean;
   isDone: boolean;
   button: ReactElement;
-  name: "roblox" | "wallet" | "signup";
 };
 const Step = forwardRef<HTMLDivElement, StepProps>(
-  (
-    {
-      icon: Icon,
-      title,
-      subtitle,
-      isActive,
-      isDone,
-      theme,
-      name,
-      itemTheme,
-      button: Button
-    },
-    ref
-  ) => {
+  ({ icon: Icon, title, subtitle, isActive, isDone, button: Button }, ref) => {
     const itemRef = useRef<HTMLDivElement>(null);
     const [itemWidthPx, setItemWidthPx] = useState(0);
 
@@ -210,17 +144,15 @@ const Step = forwardRef<HTMLDivElement, StepProps>(
         flexDirection="column"
         alignItems="center"
         justifyContent="flex-start"
-        $theme={theme}
         $isActive={isActive}
         $isDone={isDone}
         $itemWidthPx={itemWidthPx}
-        $name={name}
       >
         <IconWrapper>
           {isDone ? (
             <CheckCircle
               size={41}
-              color={itemTheme.check.color}
+              color={getCssVar("--main-accent-color")}
               className={iconClass}
             />
           ) : (
@@ -231,7 +163,6 @@ const Step = forwardRef<HTMLDivElement, StepProps>(
           tag="h4"
           margin={0}
           textAlign="center"
-          color={itemTheme.title.color}
           // @ts-expect-error textWrap is supported by browser
           style={{ textWrap: "balance" }}
         >
@@ -240,7 +171,7 @@ const Step = forwardRef<HTMLDivElement, StepProps>(
         <Typography
           tag="p"
           margin="0.25rem 0 1rem 0"
-          color={itemTheme.subtitle.color}
+          color={getCssVar("--sub-text-color")}
           textAlign="center"
           // @ts-expect-error textWrap is supported by browser
           style={{ textWrap: "pretty", flexGrow: 1 }}
@@ -260,7 +191,6 @@ export type ConnectRobloxProps = {
     backgroundColor: CSSProperties["backgroundColor"];
     stepsBackgroundSides: CSSProperties["backgroundColor"];
     lineBetweenStepsColor: CSSProperties["backgroundColor"];
-    robloxCard: CardThemeProps;
     walletCard: CardThemeProps;
     walletPanel: Pick<
       AccountDrawerProps,
@@ -409,15 +339,9 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
     }, [address, isRobloxLoggedIn]);
     const isConnectWalletStepActive = activeStep >= 1 || !!address;
     return (
-      <Wrapper
-        justifyContent="center"
-        $backgroundColor={theme.stepsBackgroundSides}
-      >
+      <Wrapper justifyContent="center">
         <Step
           ref={ref}
-          name="roblox"
-          theme={theme}
-          itemTheme={theme.robloxCard}
           isActive={true}
           isDone={isRobloxLoggedIn}
           icon={
@@ -446,7 +370,11 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
           button={
             isRobloxLoggedIn ? (
               <BaseButton
-                theme={theme.robloxCard.button.inactive}
+                theme={{
+                  background: getCssVar("--background-accent-color"),
+                  color: getCssVar("--button-text-color"),
+                  borderRadius: getCssVar("--button-border-radius")
+                }}
                 onClick={async () => {
                   await robloxLogoutAsync();
                 }}
@@ -455,7 +383,6 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
               </BaseButton>
             ) : (
               <LoginWithRoblox
-                robloxButtonTheme={theme.robloxCard.button}
                 sellerId={sellerId}
                 onLoggedIn={() => {
                   nextLatestActiveStep(1);
@@ -468,9 +395,6 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
           }
         />
         <Step
-          name="wallet"
-          theme={theme}
-          itemTheme={theme.walletCard}
           isActive={isConnectWalletStepActive}
           isDone={!!address}
           icon={
@@ -500,9 +424,6 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
           }
         />
         <Step
-          name="signup"
-          theme={theme}
-          itemTheme={theme.signUpCard}
           isActive={activeStep === 2}
           isDone={isSignUpDone}
           icon={

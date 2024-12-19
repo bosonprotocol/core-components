@@ -1,5 +1,5 @@
 import React, { Fragment, ReactNode } from "react";
-import { colors } from "../../../theme";
+import { colors, getCssVar } from "../../../theme";
 import styled from "styled-components";
 import { X } from "phosphor-react";
 import { Grid } from "../../ui/Grid";
@@ -16,7 +16,7 @@ const Wrapper = styled.div<{ $flexWrap: string }>`
   padding: 1rem 1rem 1rem 2rem;
   display: flex;
   flex-wrap: ${({ $flexWrap }) => $flexWrap};
-  border-bottom: 2px solid ${colors.border};
+  border-bottom: 2px solid ${getCssVar("--border-color")};
   align-items: flex-end;
   justify-content: space-between;
   gap: 0.5rem;

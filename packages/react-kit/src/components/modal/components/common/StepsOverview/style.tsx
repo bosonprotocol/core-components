@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 
 export const CommitStep = styled.div`
   position: relative;
   padding: 1rem;
-  background: ${colors.greyLight};
+  background: ${getCssVar("--background-color")};
   &:not(:last-child) {
     &:before {
       position: absolute;
@@ -18,7 +18,7 @@ export const CommitStep = styled.div`
       transform: translate(-50%, 0);
       border-left: 30rem solid transparent;
       border-right: 30rem solid transparent;
-      border-top: 1rem solid ${colors.greyLight};
+      border-top: 1rem solid ${getCssVar("--background-color")};
     }
 
     &:after {
@@ -32,7 +32,7 @@ export const CommitStep = styled.div`
       transform: translate(-50%, 0);
       border-left: 30rem solid transparent;
       border-right: 30rem solid transparent;
-      border-top: 1rem solid ${colors.white};
+      border-top: 1rem solid ${getCssVar("--background-accent-color")};
       z-index: 1;
     }
   }

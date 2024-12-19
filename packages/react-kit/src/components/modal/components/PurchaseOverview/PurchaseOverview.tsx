@@ -1,6 +1,6 @@
 import React from "react";
 import { CSSProperties } from "styled-components";
-import { colors } from "../../../../theme";
+import { colors, getCssVar } from "../../../../theme";
 import { MarginContainer } from "../../../widgets/MarginContainer";
 import NonModal from "../../nonModal/NonModal";
 import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
@@ -22,7 +22,7 @@ export const PurchaseOverview: React.FC<PurchaseOverviewProps> = ({
         hideModal={hideModal}
         footerComponent={null}
         contentStyle={{
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         }}
         lookAndFeel={lookAndFeel}
         showConnectButton={false}

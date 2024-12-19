@@ -83,7 +83,7 @@ const CurrencyDisplayValue = styled.span<{
     line-height: ${$height}px;
     font-size: ${$fontSize ? $fontSize : `${(Number($height) - 5) / 16}rem`};
     padding-left: ${$gap !== undefined ? $gap : "1rem"};
-    color: ${$color !== undefined ? $color : "#09182c"};
+    color: ${$color !== undefined ? $color : "inherit"};
   `}
   display: flex;
   text-align: right;

@@ -9,7 +9,7 @@ import {
 import React, { useEffect } from "react";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { getOpenSeaUrl } from "../../../../../lib/opensea/getOpenSeaUrl";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import { Grid } from "../../../../ui/Grid";
@@ -56,7 +56,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
           </Grid>
         ),
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
         footerComponent: <BosonLogo />
       }

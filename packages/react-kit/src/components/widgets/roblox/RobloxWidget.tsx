@@ -25,9 +25,6 @@ export type RobloxWidgetProps = {
     | "configId"
     | "envName"
     | "requestShipmentProps"
-    | "walletButtonTheme"
-    | "robloxButtonTheme"
-    | "commitButtonTheme"
     | ProductKeysThatGoToConfig
   >;
   configProps: Omit<
@@ -69,8 +66,6 @@ export const RobloxWidget = ({
         />
         <ProductsRoblox
           {...productsGridProps}
-          walletButtonTheme={connectProps.theme.walletCard.button}
-          robloxButtonTheme={connectProps.theme.robloxCard.button}
           requestShipmentProps={configProps}
           sellerId={sellerId}
           raiseDisputeForExchangeUrl={raiseDisputeForExchangeUrl}

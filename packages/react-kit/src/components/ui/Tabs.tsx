@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import { colors } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { Grid } from "./Grid";
 
 const Headers = styled.div.attrs({ className: "headers" })<{
@@ -8,7 +8,7 @@ const Headers = styled.div.attrs({ className: "headers" })<{
 }>`
   display: flex;
   gap: 1rem;
-  background-color: ${colors.greyLight};
+  background-color: ${getCssVar("--background-accent-color")};
   position: relative;
   ${({ $withFullViewportWidth }) =>
     $withFullViewportWidth &&
@@ -19,7 +19,7 @@ const Headers = styled.div.attrs({ className: "headers" })<{
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        background-color: ${colors.greyLight};
+        background-color: ${getCssVar("--background-accent-color")};
         height: 100%;
         min-height: 20px;
         z-index: -1;
@@ -30,7 +30,7 @@ const InnerHeaders = styled.div`
   width: 100%;
   display: flex;
   gap: 1rem;
-  background-color: ${colors.greyLight};
+  background-color: ${getCssVar("--background-accent-color")};
   overflow-x: auto;
 `;
 const Content = styled.div`

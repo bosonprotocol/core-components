@@ -4,7 +4,7 @@ import { Typography } from "../../../../ui/Typography";
 import { ArrowLeft } from "phosphor-react";
 import ContractualAgreement from "../../../../contractualAgreement/ContractualAgreement";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { BosonLogo } from "../../common/BosonLogo";
 
@@ -30,7 +30,7 @@ export function ContractualAgreementView({ onBackClick, offer }: Props) {
           </Grid>
         ),
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
         footerComponent: <BosonLogo />
       }
