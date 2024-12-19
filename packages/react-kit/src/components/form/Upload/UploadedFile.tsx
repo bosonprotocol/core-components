@@ -44,7 +44,7 @@ interface Props extends Pick<UploadProps, "theme" | "disabled"> {
   fileSize: number;
   base64Content?: string;
   showSize: boolean;
-  color: "grey" | "white";
+  alignToLeft?: boolean;
   errorMessage: unknown;
   isPdfOnly?: boolean;
   handleRemoveFile?: () => void;
@@ -55,7 +55,6 @@ interface Props extends Pick<UploadProps, "theme" | "disabled"> {
 export default function UploadedFile({
   fileName,
   fileSize,
-  color,
   base64Content,
   showSize,
   isPdfOnly,
@@ -64,6 +63,7 @@ export default function UploadedFile({
   theme,
   disabled,
   style,
+  alignToLeft,
   errorMessage
 }: Props) {
   const FileContent = useCallback(() => {
@@ -109,7 +109,7 @@ export default function UploadedFile({
     <Grid>
       <AttachmentContainer
         $isPdfFile={isPdfOnly}
-        $isLeftAligned={color === "white"}
+        $isLeftAligned={alignToLeft ?? false}
       >
         {base64Content ? (
           <a

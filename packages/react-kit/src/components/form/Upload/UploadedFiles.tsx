@@ -45,7 +45,7 @@ export default function UploadedFiles({
             key={`${file?.name || ""}_${index}`}
             fileName={file?.name || `file_${index}`}
             fileSize={Number(file?.size || 0)}
-            color="white"
+            alignToLeft
             handleRemoveFile={() => handleRemoveFile(index)}
             showSize
           />
