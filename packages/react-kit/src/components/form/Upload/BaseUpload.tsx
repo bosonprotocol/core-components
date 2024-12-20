@@ -394,7 +394,6 @@ function BaseUpload({
                         />
                       ) : isPdfOnly ? (
                         <UploadedSinglePdfFile
-                          disabled={disabled}
                           fileName={preview}
                           onXClick={(e) => {
                             e.preventDefault();
@@ -451,7 +450,7 @@ function BaseUpload({
             handleRemoveFile={handleRemoveFile}
           />
         )}
-        {isPdfOnly && !disabled && (
+        {isPdfOnly && (
           <Grid>
             <PdfOnlyLabel
               htmlFor={`file-${name}`}
