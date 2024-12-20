@@ -455,6 +455,7 @@ function BaseUpload({
             <PdfOnlyLabel
               htmlFor={`file-${name}`}
               style={{ ...theme?.uploadButton }}
+              $disabled={disabled}
             >
               Upload file <Upload size={20} />
             </PdfOnlyLabel>
