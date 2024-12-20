@@ -30,6 +30,10 @@ import {
   RedeemButtonWrapper
 } from "./ExchangeCard.styles";
 import { ExchangeCardStatus } from "./types";
+import {
+  ProductCardTitle,
+  ProductCardTitleWrapper
+} from "../productCard/ProductCard.styles";
 export type { ExchangeCardStatus } from "./types";
 interface Base {
   id: string;
@@ -187,24 +191,28 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
                 onAvatarNameClick?.();
               }}
             >
-              <ExchangeCreatorAvatar>
-                <img src={avatar} alt="avatar" />
-              </ExchangeCreatorAvatar>
+              <ProductCardTitleWrapper>
+                <ProductCardTitle fontSize={"0.75rem"} fontWeight={"600"}>
+                  {title}
+                </ProductCardTitle>
+              </ProductCardTitleWrapper>
               <ExchangeCreatorName data-avatarname="exchange-card">
                 {avatarName}
               </ExchangeCreatorName>
             </ExchangeCreator>
-            <ExchangeTitle>{title}</ExchangeTitle>
           </ExchangeCarData>
           <ExchangeCardPriceWrapper>
-            <ExchangeCardPrice>Price</ExchangeCardPrice>
             <CurrencyDisplay
               value={price}
               currency={currency}
+              fontSize={"0.875rem"}
+              iconSize={16}
+              gap={"0.3125rem"}
               style={{
                 wordBreak: "break-all",
-                alignItems: "flex-start",
-                justifyContent: "flex-end"
+                alignItems: "center",
+                justifyContent: "center",
+                paddingTop: "0.25rem"
               }}
             />
           </ExchangeCardPriceWrapper>

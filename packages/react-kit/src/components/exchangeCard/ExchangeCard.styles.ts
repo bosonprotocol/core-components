@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import { theme } from "../../theme";
 import { ExchangeCardStatus } from "./types";
 import { ProductCardLabelWrapper } from "../productCard/ProductCard.styles";
+import { Grid } from "../ui/Grid";
 
 const topSpace = "1rem";
 const sideSpace = "1rem";
@@ -32,7 +33,7 @@ export const ExchangeCreatorName = styled.div`
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 150%;
-  color: ${({ theme }) => theme?.colors?.light.accent};
+  color: ${({ theme }) => theme?.colors?.light.darkGrey};
   flex: none;
   order: 1;
   flex-grow: 0;
@@ -48,12 +49,7 @@ export const ExchangeTitle = styled.div`
   word-break: break-word;
 `;
 
-export const ExchangeCardPriceWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-  max-width: 50%;
-  min-width: 44%;
+export const ExchangeCardPriceWrapper = styled(Grid)`
   span {
     padding-left: 0.5rem;
   }
@@ -89,6 +85,7 @@ export const ExchangeCardBottomContent = styled.div`
   box-sizing: border-box;
   align-items: flex-start;
   border-top: 2px solid ${theme.colors.light.border};
+  flex-direction: column;
 `;
 
 export const ExchangeCardWrapper = styled.div<{
