@@ -254,7 +254,11 @@ export default function NonModal({
             {children}
           </NonModalContext.Provider>
         </Content>
-        {FooterComponent && <FooterWrapper>{FooterComponent}</FooterWrapper>}
+        {FooterComponent ? (
+          <FooterWrapper>{FooterComponent}</FooterWrapper>
+        ) : (
+          <div style={{ width: "947px", maxWidth: "100vw" }} />
+        )}
       </Wrapper>
     </Container>
   );

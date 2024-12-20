@@ -104,35 +104,6 @@ export const Base = {
           iconBorderRadius: "8px"
         }
       },
-      robloxCard: {
-        padding: 0,
-        title: {
-          color: "black"
-        },
-        subtitle: {
-          color: "#556072"
-        },
-        check: {
-          color: "#02F3A2"
-        },
-        number: {
-          active: {
-            backgroundColor: "#02F3A2",
-            stroke: "black"
-          },
-          inactive: {
-            backgroundColor: "#F1F3F9",
-            stroke: "black"
-          }
-        },
-        button: {
-          active: {
-            ...bosonButtonThemes()["bosonPrimary"],
-            borderRadius: "8px"
-          },
-          inactive: bosonButtonThemes()["white"]
-        }
-      },
       walletCard: {
         padding: 0,
         title: {

@@ -21,8 +21,9 @@ export const Labels = styled.div`
 `;
 
 export const Label = styled.div<{ $background: string; $color: string }>`
-  background: ${(props) => props.$background || colors.greyLight};
-  color: ${(props) => props.$color || colors.greyDark};
+  background: ${(props) =>
+    props.$background || getCssVar("--background-color")};
+  color: ${(props) => props.$color || getCssVar("--sub-text-color")};
   padding: 0.5rem 1rem;
   font-family: "Plus Jakarta Sans";
   font-style: normal;
@@ -38,7 +39,7 @@ export const Label = styled.div<{ $background: string; $color: string }>`
 export const CommitStep = styled.div`
   position: relative;
   padding: 1rem;
-  background: ${colors.greyLight};
+  background: ${getCssVar("--background-color")};
   &:not(:last-child) {
     &:before {
       position: absolute;
@@ -51,7 +52,7 @@ export const CommitStep = styled.div`
       transform: translate(-50%, 0);
       border-left: 30rem solid transparent;
       border-right: 30rem solid transparent;
-      border-top: 1rem solid ${colors.greyLight};
+      border-top: 1rem solid ${getCssVar("--background-color")};
     }
 
     &:after {
@@ -65,7 +66,7 @@ export const CommitStep = styled.div`
       transform: translate(-50%, 0);
       border-left: 30rem solid transparent;
       border-right: 30rem solid transparent;
-      border-top: 1rem solid ${colors.white};
+      border-top: 1rem solid ${getCssVar("--background-accent-color")};
       z-index: 1;
     }
   }
@@ -86,7 +87,7 @@ export const CommitStep = styled.div`
         left: initial;
         transform: translate(0%, -50%);
         border-top: 10rem solid transparent;
-        border-left: 1rem solid ${colors.greyLight};
+        border-left: 1rem solid ${getCssVar("--background-color")};
         border-bottom: 10rem solid transparent;
         border-right: none;
       }
@@ -103,7 +104,7 @@ export const CommitStep = styled.div`
         left: initial;
         transform: translate(0%, -50%);
         border-top: 10rem solid transparent;
-        border-left: 1rem solid ${colors.white};
+        border-left: 1rem solid ${getCssVar("--background-accent-color")};
         border-bottom: 10rem solid transparent;
         border-right: none;
         z-index: 1;
@@ -495,6 +496,7 @@ export const BaseWidget = styled.div`
   flex-wrap: wrap;
   width: 100%;
   background: ${getCssVar("--background-accent-color")};
+  border: 2px solid ${getCssVar("--border-color")};
   font-family: "Plus Jakarta Sans";
   details:not(details:nth-last-of-type(1)):not([open]) > summary {
     border-bottom: none;
@@ -503,14 +505,6 @@ export const BaseWidget = styled.div`
     padding-left: 2rem;
     padding-right: 2rem;
   }
-
-  box-shadow: 0px 4.318px 107.946px rgba(21, 30, 52, 0.1);
-  box-shadow:
-    0px 0px 0px rgba(0, 0, 0, 0.05),
-    0px 0px 16px rgba(0, 0, 0, 0.05),
-    0px 0px 32px rgba(0, 0, 0, 0.05),
-    0px 0px 64px rgba(0, 0, 0, 0.05),
-    0px 0px 128px rgba(0, 0, 0, 0.05);
 
   > div {
     width: 100%;

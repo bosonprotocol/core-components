@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { colors, getCssVar } from "../../../../../theme";
+import { getCssVar } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { OfferFullDescription } from "../../common/OfferFullDescription/OfferFullDescription";
@@ -13,13 +13,15 @@ import { BosonLogo } from "../../common/BosonLogo";
 type Props = OnClickBuyOrSwapHandler & {
   onBackClick: () => void;
   offer: Offer;
+  showBosonLogoInFooter: boolean;
 } & Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick">;
 
 export function OfferFullDescriptionView({
   onBackClick,
   offer,
   onExchangePolicyClick,
-  onClickBuyOrSwap
+  onClickBuyOrSwap,
+  showBosonLogoInFooter
 }: Props) {
   const dispatch = useNonModalContext();
   useEffect(() => {
@@ -39,11 +41,11 @@ export function OfferFullDescriptionView({
           background: getCssVar("--background-accent-color"),
           padding: 0
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, offer.metadata?.name]);
+  }, [dispatch, offer.metadata?.name, showBosonLogoInFooter]);
   return (
     <OfferFullDescription
       includeOverviewTab

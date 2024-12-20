@@ -15,13 +15,15 @@ interface Props
     Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick"> {
   onBackClick: () => void;
   exchange: Exchange | null;
+  showBosonLogoInFooter: boolean;
 }
 
 export function ExchangeFullDescriptionView({
   onBackClick,
   exchange,
   onExchangePolicyClick,
-  onClickBuyOrSwap
+  onClickBuyOrSwap,
+  showBosonLogoInFooter
 }: Props) {
   const dispatch = useNonModalContext();
   useEffect(() => {
@@ -43,11 +45,11 @@ export function ExchangeFullDescriptionView({
           background: colors.white,
           padding: 0
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, exchange?.offer.metadata?.name]);
+  }, [dispatch, exchange?.offer.metadata?.name, showBosonLogoInFooter]);
   return (
     <>
       {!exchange ? (

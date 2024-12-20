@@ -9,10 +9,19 @@ export const cssVarsKeys = {
   "--sub-text-color": "--sub-text-color",
   "--border-color": "--border-color",
   "--main-accent-color": "--main-accent-color",
+  "--main-accent-hover-color": "--main-accent-hover-color",
   "--secondary-accent-color": "--secondary-accent-color",
-  "--button-text-color": "--button-text-color",
+  "--secondary-accent-hover-color": "--secondary-accent-hover-color",
+  "--tertiary-accent-color": "--tertiary-accent-color",
+  "--tertiary-accent-hover-color": "--tertiary-accent-hover-color",
+  "--main-button-text-color": "--main-button-text-color",
+  "--main-button-text-hover-color": "--main-button-text-hover-color",
+  "--secondary-button-text-color": "--secondary-button-text-color",
+  "--secondary-button-text-hover-color": "--secondary-button-text-hover-color",
+  "--tertiary-button-text-color": "--tertiary-button-text-color",
+  "--tertiary-button-text-hover-color": "--tertiary-button-text-hover-color",
   "--button-border-radius": "--button-border-radius"
-} as const;
+};
 const otherThemeKeys = {
   backgroundButtonPrimaryName: "backgroundButtonPrimaryName"
 } as const;
@@ -42,8 +51,17 @@ export const themes = {
     "--sub-text-color": colors.greyDark,
     "--border-color": colors.border,
     "--main-accent-color": colors.green,
-    "--secondary-accent-color": colors.violet,
-    "--button-text-color": colors.blackPure,
+    "--main-accent-hover-color": colors.black,
+    "--secondary-accent-color": colors.white,
+    "--secondary-accent-hover-color": colors.greyLight,
+    "--tertiary-accent-color": colors.white,
+    "--tertiary-accent-hover-color": colors.greyLight,
+    "--main-button-text-color": colors.blackPure,
+    "--main-button-text-hover-color": colors.white,
+    "--secondary-button-text-color": colors.black,
+    "--secondary-button-text-hover-color": colors.black,
+    "--tertiary-button-text-color": colors.black,
+    "--tertiary-button-text-hover-color": colors.black,
     backgroundButtonPrimaryName: "green"
   },
   blackAndWhite: {
@@ -54,8 +72,17 @@ export const themes = {
     "--sub-text-color": colors.greyDark2,
     "--border-color": colors.border,
     "--main-accent-color": colors.blackPure,
-    "--secondary-accent-color": colors.black2,
-    "--button-text-color": colors.white,
+    "--main-accent-hover-color": colors.black,
+    "--secondary-accent-color": colors.white,
+    "--secondary-accent-hover-color": colors.greyLight,
+    "--tertiary-accent-color": colors.white,
+    "--tertiary-accent-hover-color": colors.greyLight,
+    "--main-button-text-color": colors.white,
+    "--main-button-text-hover-color": colors.white,
+    "--secondary-button-text-color": colors.black,
+    "--secondary-button-text-hover-color": colors.white,
+    "--tertiary-button-text-color": colors.black,
+    "--tertiary-button-text-hover-color": colors.white,
     backgroundButtonPrimaryName: "black"
   },
   dark: {
@@ -66,8 +93,17 @@ export const themes = {
     "--sub-text-color": colors.greyLight3,
     "--border-color": colors.border,
     "--main-accent-color": colors.white,
-    "--secondary-accent-color": colors.black2,
-    "--button-text-color": colors.blackPure,
+    "--main-accent-hover-color": colors.black,
+    "--secondary-accent-color": colors.black,
+    "--secondary-accent-hover-color": colors.greyLight,
+    "--tertiary-accent-color": colors.black,
+    "--tertiary-accent-hover-color": colors.greyLight,
+    "--main-button-text-color": colors.blackPure,
+    "--main-button-text-hover-color": colors.white,
+    "--secondary-button-text-color": colors.white,
+    "--secondary-button-text-hover-color": colors.black, // differs from figma because it's not readable there
+    "--tertiary-button-text-color": colors.white,
+    "--tertiary-button-text-hover-color": colors.black, // differs from figma because it's not readable there
     backgroundButtonPrimaryName: "white"
   }
 } as const satisfies Themes;

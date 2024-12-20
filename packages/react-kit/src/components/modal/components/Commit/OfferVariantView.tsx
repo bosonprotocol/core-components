@@ -68,7 +68,8 @@ export type OfferVariantViewProps = OnClickBuyOrSwapHandler &
     selectedVariant: VariantV1;
     setSelectedVariant: Dispatch<SetStateAction<VariantV1 | undefined>>;
     allVariants: VariantV1[];
-    showBosonLogo?: boolean;
+    showBosonLogo: boolean;
+    showBosonLogoInFooter: boolean;
     disableVariationsSelects?: boolean;
     loadingViewFullDescription: boolean;
   };
@@ -87,6 +88,7 @@ export function OfferVariantView({
   showBosonLogo,
   disableVariationsSelects,
   loadingViewFullDescription,
+  showBosonLogoInFooter,
   onCommit,
   onExchangePolicyClick,
   onLicenseAgreementClick,
@@ -123,10 +125,10 @@ export function OfferVariantView({
         contentStyle: {
           background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
-  }, [dispatch]);
+  }, [dispatch, showBosonLogoInFooter]);
   const hasVariations = !!selectedVariant.variations?.length;
   const innerOnGetProviderProps = useCallback(
     (providerProps: DetailContextProps) => {

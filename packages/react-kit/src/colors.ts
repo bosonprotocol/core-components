@@ -2,8 +2,8 @@
 
 export const colors = {
   arsenic: "#3a364f",
-  black: "#09182C",
-  black2: "#1e1e1e",
+  black: "#1e1e1e",
+  black2: "#1A1A1A",
   blackPure: "#000000",
   blue: "#0299EE",
   border: "#5560720f",

@@ -15,7 +15,7 @@ import { zIndex } from "../ui/zIndex";
 import Error from "./Error";
 import type { BaseProps, SupportedReactSelectProps } from "./types";
 import { SelectDataProps } from "./types";
-import { colors } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
 import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
 export type { Country as CountryCode } from "react-phone-number-input";
@@ -43,13 +43,14 @@ const customStyles = (
       alignContent: "center",
       padding: "0.4rem 1rem",
       boxShadow: "none",
-      background: colors.greyLight,
+      background: getCssVar("--background-color"),
       ...customTheme?.control,
       border: state.isFocused
         ? customTheme?.control?.focus?.border ?? `1px solid ${colors.violet}`
         : !checkIfValueIsEmpty(error)
           ? customTheme?.control?.error?.border ?? `1px solid ${colors.orange}`
-          : customTheme?.control?.border ?? `1px solid ${colors.border}`,
+          : customTheme?.control?.border ??
+            `1px solid ${getCssVar("--border-color")}`,
       ":hover": {
         borderColor: colors.violet,
         borderWidth: "1px",

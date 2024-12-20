@@ -7,7 +7,7 @@ import OfferPolicyDetails, {
   OfferPolicyDetailsProps
 } from "../../../../offerPolicy/OfferPolicyDetails";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { colors } from "../../../../../theme";
+import { getCssVar } from "../../../../../theme";
 import { BosonLogo } from "../../common/BosonLogo";
 
 interface Props {
@@ -15,13 +15,15 @@ interface Props {
   offer: Exchange["offer"] | null | undefined;
   onContractualAgreementClick: OfferPolicyDetailsProps["onContractualAgreementClick"];
   onLicenseAgreementClick: OfferPolicyDetailsProps["onLicenseAgreementClick"];
+  showBosonLogoInFooter: boolean;
 }
 
 export function RedeemOfferPolicyView({
   onBackClick,
   offer,
   onContractualAgreementClick,
-  onLicenseAgreementClick
+  onLicenseAgreementClick,
+  showBosonLogoInFooter
 }: Props) {
   const offerName = offer?.metadata?.name || "";
   const dispatch = useNonModalContext();
@@ -41,13 +43,13 @@ export function RedeemOfferPolicyView({
           </Grid>
         ),
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, offerName]);
+  }, [dispatch, offerName, showBosonLogoInFooter]);
   return (
     <>
       {offer ? (

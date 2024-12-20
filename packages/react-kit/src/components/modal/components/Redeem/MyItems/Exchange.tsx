@@ -39,7 +39,6 @@ interface Props {
 const ExchangeCardWrapper = styled.div`
   [data-card="exchange-card"] {
     height: 500px;
-    color: ${colors.black};
     [data-image-wrapper] {
       img {
         object-fit: contain;

@@ -10,6 +10,7 @@ import { CommitWidgetProps } from "../commit/CommitWidget";
 import { Typography } from "../../ui/Typography";
 import { AccountDrawer } from "../../wallet2/accountDrawer";
 import { Portal } from "../../portal/Portal";
+import { getCssVar } from "../../../theme";
 export * from "./components/types";
 
 const Wrapper = Grid;
@@ -89,16 +90,16 @@ export const RobloxWidget = ({
             connectionErrorProps:
               connectProps.theme.walletPanel.connectionErrorProps,
             PrivacyPolicy: () => (
-              <Typography
-                style={{ color: "rgb(9, 24, 44)", fontSize: "0.75rem" }}
-                display="block"
-              >
+              <Typography style={{ fontSize: "0.75rem" }} display="block">
                 By connecting a wallet, you agree to Boson App 's{" "}
                 <a
                   href="https://bosonapp.io/#/terms-and-conditions"
                   target="_blank"
                   rel="noreferrer noopener"
-                  style={{ fontSize: "inherit" }}
+                  style={{
+                    fontSize: "inherit",
+                    color: getCssVar("--sub-text-color")
+                  }}
                 >
                   Terms & Conditions
                 </a>{" "}
@@ -107,7 +108,10 @@ export const RobloxWidget = ({
                   href="https://bosonapp.io/#/privacy-policy"
                   target="_blank"
                   rel="noreferrer noopener"
-                  style={{ fontSize: "inherit" }}
+                  style={{
+                    fontSize: "inherit",
+                    color: getCssVar("--sub-text-color")
+                  }}
                 >
                   Privacy Policy
                 </a>

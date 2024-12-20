@@ -13,7 +13,7 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import Select, { components } from "react-select";
 import styled from "styled-components";
-import { colors } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { zIndex } from "../ui/zIndex";
 
 import Error from "./Error";
@@ -42,10 +42,10 @@ const customStyles = {
         borderColor: colors.violet,
         borderWidth: "1px"
       },
-      background: colors.greyLight,
+      background: getCssVar("--background-color"),
       border: state.isFocused
         ? `1px solid ${colors.violet}`
-        : `1px solid ${colors.border}`,
+        : `1px solid ${getCssVar("--border-color")}`,
       ...before
     };
   },
@@ -112,8 +112,8 @@ export const PhoneWrapper = styled.div`
     width: 100%;
     padding: 1rem;
     gap: 0.5rem;
-    background: ${colors.greyLight};
-    border: 1px solid ${colors.border};
+    background: ${getCssVar("--background-color")};
+    border: 1px solid ${getCssVar("--border-color")};
     border-radius: 0;
     outline: none;
     font-family: "Plus Jakarta Sans";

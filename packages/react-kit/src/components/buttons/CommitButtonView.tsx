@@ -60,7 +60,7 @@ export type CommitButtonViewProps = {
 };
 
 const colorToVariant = {
-  green: "bosonPrimary",
+  green: "primary",
   black: "black",
   white: "white"
 } as const;

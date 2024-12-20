@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { Typography } from "../../components/ui/Typography";
 import { breakpoint } from "../../lib/ui/breakpoint";
-import { colors } from "../../theme";
+import { getCssVar } from "../../theme";
 import { zIndex } from "./zIndex";
 
 const StepWrapper = styled.div`
@@ -32,7 +32,7 @@ const StepWrapper = styled.div`
       height: 50%;
       top: 50%;
       left: 0%;
-      background: var(--primary, ${colors.green});
+      background: ${getCssVar("--main-accent-color")};
     }
   }
   [data-testid="step-title"] {

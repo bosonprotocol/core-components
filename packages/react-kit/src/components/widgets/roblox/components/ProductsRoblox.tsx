@@ -147,6 +147,7 @@ export const ProductsRoblox = ({
             lookAndFeel="regular"
             hideModal={clearSelection}
             withExternalSigner={false}
+            showBosonLogoInFooter={false}
           />
         ) : exchangeToCancel ? (
           <NonModal

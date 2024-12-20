@@ -4,16 +4,21 @@ import { Typography } from "../../../../ui/Typography";
 import { ArrowLeft } from "phosphor-react";
 import ContractualAgreement from "../../../../contractualAgreement/ContractualAgreement";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { colors, getCssVar } from "../../../../../theme";
+import { getCssVar } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { BosonLogo } from "../../common/BosonLogo";
 
 interface Props {
   onBackClick: () => void;
   offer: Offer | null;
+  showBosonLogoInFooter: boolean;
 }
 
-export function ContractualAgreementView({ onBackClick, offer }: Props) {
+export function ContractualAgreementView({
+  onBackClick,
+  offer,
+  showBosonLogoInFooter
+}: Props) {
   const offerId = offer?.id;
   const dispatch = useNonModalContext();
   useEffect(() => {
@@ -32,11 +37,11 @@ export function ContractualAgreementView({ onBackClick, offer }: Props) {
         contentStyle: {
           background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, showBosonLogoInFooter]);
   return (
     <>
       {offer ? (

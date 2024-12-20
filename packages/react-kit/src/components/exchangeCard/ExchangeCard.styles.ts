@@ -44,7 +44,6 @@ export const ExchangeTitle = styled.div`
   font-weight: 600;
   font-size: 1.25rem;
   line-height: 150%;
-  color: ${colors.black};
   word-break: break-word;
 `;
 
@@ -64,7 +63,7 @@ export const ExchangeCardPrice = styled.div`
   line-height: 150%;
   text-align: right;
   margin-bottom: 0.25rem;
-  color: ${colors.greyDark};
+  color: ${getCssVar("--sub-text-color")};
 `;
 
 export const ExchangeCarData = styled.div`
@@ -79,7 +78,7 @@ export const ExchangeCardBottom = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: ${colors.white};
+  background: ${getCssVar("--background-accent-color")};
 `;
 export const ExchangeCardBottomContent = styled.div`
   display: flex;
@@ -107,7 +106,7 @@ export const ExchangeCardWrapper = styled.div<{
   border: 1px solid rgba(85, 96, 114, 0.15);
   box-shadow: 0px 4.31783px 107.946px rgba(21, 30, 52, 0.1);
   cursor: pointer;
-  background: ${colors.white};
+  background: ${getCssVar("--background-accent-color")};
   [data-image-wrapper] {
     position: static;
     padding-top: 0;

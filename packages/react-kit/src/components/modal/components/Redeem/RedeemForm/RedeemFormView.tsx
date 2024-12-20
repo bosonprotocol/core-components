@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import RedeemForm from "./RedeemForm";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { Exchange } from "../../../../../types/exchange";
-import { colors } from "../../../../../theme";
+import { getCssVar } from "../../../../../theme";
 import { useAccount } from "../../../../../hooks/connection/connection";
 import { RedeemHeader } from "../RedeemHeader";
 import { BosonLogo } from "../../common/BosonLogo";
@@ -13,6 +13,7 @@ interface Props {
   onNextClick: () => void;
   onBackClick: () => void;
   setConnectedWalletAddress: () => void;
+  showBosonLogoInFooter: boolean;
 }
 
 export default function RedeemFormView({
@@ -20,7 +21,8 @@ export default function RedeemFormView({
   isValid,
   onNextClick,
   onBackClick,
-  setConnectedWalletAddress
+  setConnectedWalletAddress,
+  showBosonLogoInFooter
 }: Props) {
   const { address } = useAccount();
   const dispatch = useNonModalContext();
@@ -29,12 +31,12 @@ export default function RedeemFormView({
       payload: {
         headerComponent: RedeemHeader,
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
-  }, [dispatch]);
+  }, [dispatch, showBosonLogoInFooter]);
   return (
     <>
       {!exchange ? (

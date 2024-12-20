@@ -106,10 +106,12 @@ export type RedeemNonModalProps = Pick<
     parentOrigin?: string | null;
     signatures?: string[] | undefined | null;
     withExternalSigner: boolean | undefined | null;
+    showBosonLogoInFooter?: boolean;
   };
 
 export function PublicRedeemNonModal({
   hideModal,
+  showBosonLogoInFooter = true,
   ...props
 }: RedeemNonModalProps) {
   return (
@@ -121,13 +123,17 @@ export function PublicRedeemNonModal({
           Redeem your item
         </Typography>
       }
-      footerComponent={<BosonLogo />}
+      footerComponent={showBosonLogoInFooter ? <BosonLogo /> : null}
       showConnectButton={!props.withExternalSigner}
       contentStyle={{
         background: getCssVar("--background-accent-color")
       }}
     >
-      <RedeemNonModal hideModal={hideModal} {...props} />
+      <RedeemNonModal
+        hideModal={hideModal}
+        showBosonLogoInFooter={showBosonLogoInFooter}
+        {...props}
+      />
     </NonModal>
   );
 }
@@ -179,7 +185,8 @@ function RedeemNonModal({
   redemptionConfirmedHandler,
   onClickBuyOrSwap,
   signatures,
-  parentOrigin
+  parentOrigin,
+  showBosonLogoInFooter = true
 }: RedeemNonModalProps) {
   const areSignaturesMandatory = !!(
     postDeliveryInfoUrl ||
@@ -362,6 +369,7 @@ function RedeemNonModal({
             <Form>
               {currentStep === ActiveStep.STEPS_OVERVIEW ? (
                 <StepsOverview
+                  showBosonLogoInFooter={showBosonLogoInFooter}
                   onNextClick={() => {
                     if (selectedExchange) {
                       setExchange(selectedExchange);
@@ -385,6 +393,7 @@ function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.MY_ITEMS ? (
                 <MyItems
+                  showBosonLogoInFooter={showBosonLogoInFooter}
                   sellerIds={sellerIds}
                   exchangeState={exchangeState}
                   onExchangeCardClick={(exchange) => {
@@ -415,6 +424,7 @@ function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.EXCHANGE_VIEW ? (
                 <ExchangeView
+                  showBosonLogoInFooter={showBosonLogoInFooter}
                   onHouseClick={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onNextClick={() => setActiveStep(ActiveStep.REDEEM_FORM)}
                   onExchangePolicyClick={(...args) => {
@@ -437,14 +447,11 @@ function RedeemNonModal({
                     setActiveStep(ActiveStep.EXPIRE_VOUCHER_VIEW);
                     exchangeViewOnExpireVoucherClick?.();
                   }}
-                  isValid={isRedeemFormOK}
                   exchangeId={exchange?.id || selectedExchange?.id || ""}
                   onRaiseDisputeClick={() => {
                     handleRaiseDispute(exchange?.id);
                     exchangeViewOnRaiseDisputeClick?.();
                   }}
-                  fairExchangePolicyRules={fairExchangePolicyRules}
-                  defaultDisputeResolverId={defaultDisputeResolverId}
                   loadingViewFullDescription={loadingViewFullDescription}
                   onGetDetailViewProviderProps={onGetDetailViewProviderProps}
                   onContractualAgreementClick={onContractualAgreementClick}
@@ -454,6 +461,7 @@ function RedeemNonModal({
                 providerPropsRef.current ? (
                 <DetailViewProvider {...providerPropsRef.current}>
                   <ExchangeFullDescriptionView
+                    showBosonLogoInFooter={showBosonLogoInFooter}
                     onBackClick={goToPreviousStep}
                     exchange={exchange || selectedExchange || null}
                     onExchangePolicyClick={(...args) => {
@@ -464,6 +472,7 @@ function RedeemNonModal({
                 </DetailViewProvider>
               ) : currentStep === ActiveStep.EXPIRE_VOUCHER_VIEW ? (
                 <ExpireVoucherView
+                  showBosonLogoInFooter={showBosonLogoInFooter}
                   onBackClick={goToPreviousStep}
                   exchange={exchange}
                   onSuccess={(...args) => {
@@ -473,6 +482,7 @@ function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.CANCELLATION_VIEW ? (
                 <CancellationView
+                  showBosonLogoInFooter={showBosonLogoInFooter}
                   onBackClick={goToPreviousStep}
                   exchange={exchange || selectedExchange || null}
                   onSuccess={(...args) => {
@@ -487,6 +497,7 @@ function RedeemNonModal({
                 <PurchaseOverviewView onBackClick={goToPreviousStep} />
               ) : currentStep === ActiveStep.REDEEM_FORM ? (
                 <RedeemFormView
+                  showBosonLogoInFooter={showBosonLogoInFooter}
                   onBackClick={goToPreviousStep}
                   exchange={exchange || selectedExchange || null}
                   onNextClick={() =>
@@ -504,6 +515,7 @@ function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.EXCHANGE_POLICY ? (
                 <RedeemOfferPolicyView
+                  showBosonLogoInFooter={showBosonLogoInFooter}
                   offer={exchange?.offer}
                   onBackClick={goToPreviousStep}
                   onContractualAgreementClick={onContractualAgreementClick}
@@ -515,9 +527,11 @@ function RedeemNonModal({
                 <ContractualAgreementView
                   exchange={exchange}
                   onBackClick={goToPreviousStep}
+                  showBosonLogoInFooter={showBosonLogoInFooter}
                 />
               ) : currentStep === ActiveStep.LICENSE_AGREEMENT ? (
                 <LicenseAgreementView
+                  showBosonLogoInFooter={showBosonLogoInFooter}
                   offer={exchange?.offer}
                   onBackClick={goToPreviousStep}
                 />
@@ -533,6 +547,7 @@ function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.REDEEM_SUCESS ? (
                 <RedeemSuccess
+                  showBosonLogoInFooter={showBosonLogoInFooter}
                   onHouseClick={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onClickDone={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   exchangeId={exchange?.id || ""}

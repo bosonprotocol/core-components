@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAccount } from "../../../../hooks/connection/connection";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
-import { colors, getCssVar } from "../../../../theme";
+import { getCssVar } from "../../../../theme";
 import { Exchange } from "../../../../types/exchange";
 import { VariantV1 } from "../../../../types/variants";
 import Loading from "../../../ui/loading/LoadingWrapper";
@@ -35,6 +35,7 @@ export type CommitNonModalProps = Pick<
 > & {
   variants?: VariantV1[];
   showBosonLogo?: boolean;
+  showBosonLogoInFooter?: boolean;
   defaultSelectedOfferId?: string;
   disableVariationsSelects?: boolean;
   isLoading: boolean;
@@ -47,7 +48,11 @@ export type CommitNonModalProps = Pick<
   lookAndFeel: "regular" | "modal";
 };
 
-export function CommitWrapper({ hideModal, ...props }: CommitNonModalProps) {
+export function CommitWrapper({
+  hideModal,
+  showBosonLogoInFooter = true,
+  ...props
+}: CommitNonModalProps) {
   return (
     <NonModal
       hideModal={hideModal}
@@ -58,14 +63,18 @@ export function CommitWrapper({ hideModal, ...props }: CommitNonModalProps) {
       lookAndFeel={props.lookAndFeel}
       showConnectButton={!props.withExternalSigner}
     >
-      <CommitNonModal {...props} />
+      <CommitNonModal
+        {...props}
+        showBosonLogoInFooter={showBosonLogoInFooter}
+      />
     </NonModal>
   );
 }
 
 function CommitNonModal({
   variants,
-  showBosonLogo,
+  showBosonLogo = false,
+  showBosonLogoInFooter = true,
   defaultSelectedOfferId,
   disableVariationsSelects,
   isLoading,
@@ -173,6 +182,7 @@ function CommitNonModal({
     <>
       {currentStep === CommitStep.OFFER_VIEW ? (
         <OfferVariantView
+          showBosonLogoInFooter={showBosonLogoInFooter}
           showBosonLogo={showBosonLogo}
           allVariants={variants ?? [selectedVariant]}
           selectedVariant={selectedVariant}
@@ -206,6 +216,7 @@ function CommitNonModal({
         providerPropsRef.current ? (
         <DetailViewProvider {...providerPropsRef.current}>
           <OfferFullDescriptionView
+            showBosonLogoInFooter={showBosonLogoInFooter}
             onBackClick={goToPreviousStep}
             onExchangePolicyClick={(...args) => {
               setActiveStep(CommitStep.EXCHANGE_POLICY);
@@ -219,6 +230,7 @@ function CommitNonModal({
         <PurchaseOverviewView onBackClick={goToPreviousStep} />
       ) : currentStep === CommitStep.EXCHANGE_POLICY ? (
         <CommitOfferPolicyView
+          showBosonLogoInFooter={showBosonLogoInFooter}
           offer={selectedVariant.offer}
           onBackClick={goToPreviousStep}
           onContractualAgreementClick={() =>
@@ -230,16 +242,19 @@ function CommitNonModal({
         />
       ) : currentStep === CommitStep.CONTRACTUAL_AGREEMENT ? (
         <ContractualAgreementView
+          showBosonLogoInFooter={showBosonLogoInFooter}
           offer={selectedVariant.offer}
           onBackClick={goToPreviousStep}
         />
       ) : currentStep === CommitStep.LICENSE_AGREEMENT ? (
         <LicenseAgreementView
+          showBosonLogoInFooter={showBosonLogoInFooter}
           offer={selectedVariant.offer}
           onBackClick={goToPreviousStep}
         />
       ) : currentStep === CommitStep.COMMIT_SUCESS ? (
         <CommitSuccess
+          showBosonLogoInFooter={showBosonLogoInFooter}
           onHouseClick={() => setActiveStep(CommitStep.OFFER_VIEW)}
           exchangeId={exchangeInfo?.exchangeId ?? ""}
           commitHash={exchangeInfo?.txHash}

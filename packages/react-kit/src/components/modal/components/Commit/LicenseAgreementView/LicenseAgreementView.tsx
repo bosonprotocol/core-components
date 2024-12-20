@@ -11,9 +11,14 @@ import { BosonLogo } from "../../common/BosonLogo";
 interface Props {
   onBackClick: () => void;
   offer: Exchange["offer"] | null;
+  showBosonLogoInFooter: boolean;
 }
 
-export function LicenseAgreementView({ onBackClick, offer }: Props) {
+export function LicenseAgreementView({
+  onBackClick,
+  offer,
+  showBosonLogoInFooter
+}: Props) {
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
@@ -31,11 +36,11 @@ export function LicenseAgreementView({ onBackClick, offer }: Props) {
         contentStyle: {
           background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, showBosonLogoInFooter]);
   return (
     <>
       {offer ? (

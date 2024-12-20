@@ -6,7 +6,7 @@ import Loading from "../../../../ui/loading/LoadingWrapper";
 import Exchanges from "./Exchanges";
 import { ExchangesStates, WithExchangesData } from "./WithExchangesData";
 import { Exchange } from "../../../../../types/exchange";
-import { colors } from "../../../../../theme";
+import { getCssVar } from "../../../../../theme";
 import { GridContainer } from "../../../../ui/GridContainer";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { useNonModalContext } from "../../../nonModal/NonModal";
@@ -22,6 +22,7 @@ export type MyItemsProps = {
   isValid: boolean;
   sellerIds?: string[];
   exchangeState?: subgraph.ExchangeState;
+  showBosonLogoInFooter: boolean;
 };
 
 const ExchangesWithData = WithExchangesData(Exchanges);
@@ -33,7 +34,8 @@ export function MyItems({
   onRaiseDisputeClick,
   onAvatarClick,
   sellerIds,
-  exchangeState
+  exchangeState,
+  showBosonLogoInFooter
 }: MyItemsProps) {
   const { address } = useAccount();
   const { data: buyers, isLoading } = useBuyers({
@@ -48,12 +50,12 @@ export function MyItems({
           <h3 style={{ width: "100%", flex: 1 }}>Manage your exchanges</h3>
         ),
         contentStyle: {
-          background: colors.greyLight
+          background: getCssVar("--background-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
-  }, [dispatch]);
+  }, [dispatch, showBosonLogoInFooter]);
   return (
     <>
       {isLoading ? (
@@ -77,7 +79,7 @@ export function MyItems({
               <>
                 <GridContainer
                   itemsPerRow={{
-                    xs: 4,
+                    xs: 2,
                     s: 4,
                     m: 4,
                     l: 4,

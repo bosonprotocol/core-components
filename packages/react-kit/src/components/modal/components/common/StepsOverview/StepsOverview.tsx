@@ -7,7 +7,7 @@ import { CommitStep } from "./style";
 import Step from "../../../../ui/Step";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { RedeemHeader } from "../../Redeem/RedeemHeader";
 import { BosonLogo } from "../BosonLogo";
 
@@ -36,28 +36,32 @@ const StyledCommitStepWrapper = styled(CommitStepWrapper)`
   [data-step] {
     color: ${colors.violet};
     &:after {
-      background: ${colors.green};
+      background: ${getCssVar("--main-accent-color")};
     }
   }
 `;
 
 interface Props {
   onNextClick: () => void;
+  showBosonLogoInFooter: boolean;
 }
 
-export default function StepsOverview({ onNextClick }: Props) {
+export default function StepsOverview({
+  onNextClick,
+  showBosonLogoInFooter
+}: Props) {
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
         headerComponent: RedeemHeader,
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
-  }, [dispatch]);
+  }, [dispatch, showBosonLogoInFooter]);
 
   return (
     <>

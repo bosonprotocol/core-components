@@ -24,9 +24,15 @@ type Props = {
   onHouseClick: () => void;
   exchangeId: string;
   commitHash: string | undefined;
+  showBosonLogoInFooter: boolean;
 };
 
-export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
+export function CommitSuccess({
+  onHouseClick,
+  exchangeId,
+  commitHash,
+  showBosonLogoInFooter
+}: Props) {
   const { config } = useConfigContext();
   const {
     data: exchanges,
@@ -58,11 +64,11 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
         contentStyle: {
           background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, showBosonLogoInFooter]);
   const exploreTxUrl = config.getTxExplorerUrl?.(commitHash, false);
   return (
     <>

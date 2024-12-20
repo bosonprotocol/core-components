@@ -17,11 +17,13 @@ export interface CancellationViewProps {
   exchange: Exchange | null;
   onBackClick: CancelExchangeProps["onBackClick"];
   onSuccess: CancelExchangeProps["onSuccess"];
+  showBosonLogoInFooter: boolean;
 }
 
 export const CancellationView: React.FC<CancellationViewProps> = ({
   exchange,
-  onBackClick
+  onBackClick,
+  showBosonLogoInFooter
 }) => {
   const { address } = useAccount();
   const dispatch = useNonModalContext();
@@ -51,10 +53,10 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
         contentStyle: {
           background: colors.white
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
-  }, [dispatch, isCancelModeOnly, onBackClick]);
+  }, [dispatch, isCancelModeOnly, onBackClick, showBosonLogoInFooter]);
   return (
     <>
       {!exchange ? (

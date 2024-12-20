@@ -31,6 +31,7 @@ import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges"
 import { LoginWithRoblox } from "./LoginWithRoblox";
 import { AccountDrawerProps } from "../../../wallet2/accountDrawer";
 import { getCssVar } from "../../../../theme";
+import ThemedButton from "../../../ui/ThemedButton";
 
 const Wrapper = styled(Grid)`
   container-type: inline-size;
@@ -74,7 +75,7 @@ const StepWrapperGrid = styled(Grid)<{
         path:last-child {
           // number
           stroke: ${$isActive
-            ? getCssVar("--button-text-color")
+            ? getCssVar("--main-button-text-color")
             : getCssVar("--main-text-color")};
         }
       `;
@@ -369,18 +370,14 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
           subtitle="Depending on your inventory you will see which exclusive products you can buy."
           button={
             isRobloxLoggedIn ? (
-              <BaseButton
-                theme={{
-                  background: getCssVar("--background-accent-color"),
-                  color: getCssVar("--button-text-color"),
-                  borderRadius: getCssVar("--button-border-radius")
-                }}
+              <ThemedButton
+                themeVal="primary"
                 onClick={async () => {
                   await robloxLogoutAsync();
                 }}
               >
                 Logout Roblox <StyledPower size={20} />
-              </BaseButton>
+              </ThemedButton>
             ) : (
               <LoginWithRoblox
                 sellerId={sellerId}
@@ -417,10 +414,7 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
           title="Create an account"
           subtitle="Linking your Roblox account to your wallet to signal your permission."
           button={
-            <ConnectWalletWithLogic
-              buttonThemeProps={theme.walletCard.button}
-              connectWalletButtonDisabled={false}
-            />
+            <ConnectWalletWithLogic connectWalletButtonDisabled={false} />
           }
         />
         <Step

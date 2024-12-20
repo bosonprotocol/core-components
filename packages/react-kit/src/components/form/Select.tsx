@@ -3,7 +3,7 @@ import React from "react";
 import { useField } from "formik";
 import Select, { GroupBase, StylesConfig } from "react-select";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
-import { colors } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { zIndex } from "../ui/zIndex";
 
 import Error from "./Error";
@@ -30,7 +30,7 @@ const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
       borderRadius: 0,
       padding: "0.4rem 0.25rem",
       boxShadow: "none",
-      background: colors.greyLight,
+      background: getCssVar("--background-color"),
       ...customTheme?.control,
       border: state.isFocused
         ? customTheme?.control?.focus?.border ?? `1px solid ${colors.violet}`

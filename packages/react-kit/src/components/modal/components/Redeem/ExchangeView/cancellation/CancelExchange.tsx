@@ -44,7 +44,7 @@ const Line = styled.hr`
 
 const Info = styled.div`
   padding: 1.5rem;
-  background-color: ${colors.greyLight};
+  background-color: ${getCssVar("--background-color")};
   margin: 2rem 0;
   color: ${colors.greyDark};
   display: flex;

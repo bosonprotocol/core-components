@@ -6,15 +6,12 @@ import { ButtonSize } from "./buttonSize";
 
 export const bosonButtonThemeKeys = [
   "primary",
-  "bosonPrimary",
   "secondary",
-  "bosonSecondary",
+  "tertiary",
   "secondaryInverted",
-  "accentInvertedNoBorder",
   "accentInverted",
   "orangeInverse",
-  "bosonSecondaryInverse",
-  "bosonSecondaryInverseBlack",
+  "violet",
   "orange",
   "outline",
   "ghostSecondary",
@@ -31,59 +28,50 @@ export const bosonButtonThemeKeys = [
 export const bosonButtonThemes = () => {
   return {
     primary: {
-      color: getCssVar("--button-text-color"),
+      color: getCssVar("--main-button-text-color"),
       background: getCssVar("--main-accent-color"),
       borderColor: getCssVar("--main-accent-color"),
       borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
-        background: colors.black,
-        color: colors.white,
-        borderColor: colors.black
-      }
-    },
-    bosonPrimary: {
-      color: colors.black,
-      background: colors.green,
-      borderColor: colors.green,
-      borderWidth: 2,
-      hover: {
-        background: colors.black,
-        color: colors.white,
-        borderColor: colors.black
+        background: getCssVar("--main-accent-hover-color"),
+        color: getCssVar("--main-button-text-hover-color"),
+        borderColor: getCssVar("--main-accent-hover-color")
       }
     },
     secondary: {
-      color: colors.violet,
-      borderColor: colors.violet,
+      color: getCssVar("--secondary-button-text-color"),
+      background: getCssVar("--secondary-accent-color"),
+      borderColor: getCssVar("--secondary-button-text-color"),
       borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
-        background: colors.violet,
-        color: colors.white
+        background: getCssVar("--secondary-accent-hover-color"),
+        color: getCssVar("--secondary-button-text-hover-color"),
+        borderColor: getCssVar("--secondary-accent-hover-color")
       }
     },
-    bosonSecondary: {
-      color: colors.violet,
-      borderColor: colors.violet,
+    tertiary: {
+      color: getCssVar("--tertiary-button-text-color"),
+      background: getCssVar("--tertiary-accent-color"),
+      borderColor: getCssVar("--tertiary-button-text-color"),
       borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
-        background: colors.violet,
-        color: colors.white
+        background: getCssVar("--tertiary-accent-hover-color"),
+        color: getCssVar("--tertiary-button-text-hover-color"),
+        borderColor: getCssVar("--tertiary-accent-hover-color")
       }
     },
     secondaryInverted: {
+      // TODO: not actually inverted from secondary
       background: "transparent",
       color: colors.violet,
+      borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
         background: colors.greyLight,
         color: colors.black
-      }
-    },
-    accentInvertedNoBorder: {
-      background: "transparent",
-      color: colors.violet,
-      hover: {
-        background: colors.black,
-        color: colors.white
       }
     },
     accentInverted: {
@@ -91,6 +79,7 @@ export const bosonButtonThemes = () => {
       color: colors.violet,
       borderColor: colors.violet,
       borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
         background: colors.black,
         color: colors.white,
@@ -101,27 +90,18 @@ export const bosonButtonThemes = () => {
       color: colors.orange,
       borderColor: colors.orange,
       borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
         background: colors.orange,
         color: colors.white
       }
     },
-    bosonSecondaryInverse: {
+    violet: {
       color: colors.white,
       borderColor: colors.violet,
       background: colors.violet,
       borderWidth: 2,
-      hover: {
-        color: colors.violet,
-        borderColor: colors.violet,
-        background: colors.white
-      }
-    },
-    bosonSecondaryInverseBlack: {
-      color: colors.white,
-      borderColor: colors.violet,
-      background: colors.violet,
-      borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
         color: colors.white,
         borderColor: colors.black,
@@ -131,6 +111,8 @@ export const bosonButtonThemes = () => {
     orange: {
       color: colors.orange,
       borderColor: colors.border,
+      borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
         background: colors.border
       }
@@ -139,6 +121,7 @@ export const bosonButtonThemes = () => {
       color: colors.black,
       borderColor: colors.border,
       borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
         background: colors.border,
         color: colors.violet
@@ -147,22 +130,28 @@ export const bosonButtonThemes = () => {
     ghostSecondary: {
       color: colors.violet,
       borderColor: colors.border,
+      borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
         background: colors.border
       }
     },
     blank: {
       color: `${colors.black}4d`,
+      background: "transparent",
+      borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
         color: colors.black
       },
-      background: "transparent",
       disabled: {
         background: "transparent"
       }
     },
     blankSecondary: {
       color: colors.violet,
+      borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
         borderColor: colors.violet,
         background: colors.border,
@@ -172,6 +161,7 @@ export const bosonButtonThemes = () => {
     blankSecondaryOutline: {
       color: colors.violet,
       borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       borderColor: colors.violet,
       hover: {
         borderColor: colors.violet,
@@ -182,6 +172,7 @@ export const bosonButtonThemes = () => {
     blankOutline: {
       color: colors.black,
       borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
         borderColor: colors.violet,
         background: colors.border,
@@ -192,6 +183,7 @@ export const bosonButtonThemes = () => {
       color: colors.black,
       background: colors.white,
       borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       borderColor: colors.border,
       hover: {
         color: colors.white,
@@ -202,6 +194,7 @@ export const bosonButtonThemes = () => {
       color: colors.white,
       background: colors.black,
       borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       borderColor: colors.black,
       hover: {
         color: colors.black,
@@ -212,6 +205,7 @@ export const bosonButtonThemes = () => {
       color: colors.black,
       borderColor: colors.orange,
       borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
         background: colors.orange,
         color: colors.white
@@ -222,6 +216,7 @@ export const bosonButtonThemes = () => {
       background: colors.orange,
       borderColor: colors.orange,
       borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
         background: colors.black,
         color: colors.white,
@@ -233,6 +228,7 @@ export const bosonButtonThemes = () => {
       background: colors.violet,
       borderColor: "transparent",
       borderWidth: 2,
+      borderRadius: getCssVar("--button-border-radius"),
       hover: {
         background: colors.black,
         color: colors.white,
@@ -253,12 +249,10 @@ export type IButton = ButtonHTMLAttributes<HTMLButtonElement> & {
   isLoading?: boolean;
   tooltip?: string;
 };
-
+const bosonThemes = bosonButtonThemes();
 const ThemedButton = forwardRef<HTMLButtonElement, IButton>(
   ({ themeVal = "primary", ...rest }, ref) => {
-    return (
-      <BaseButton {...rest} ref={ref} theme={bosonButtonThemes()[themeVal]} />
-    );
+    return <BaseButton {...rest} ref={ref} theme={bosonThemes[themeVal]} />;
   }
 );
 

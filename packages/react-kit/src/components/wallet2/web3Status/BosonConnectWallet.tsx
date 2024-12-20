@@ -11,14 +11,14 @@ const defaultBorderRadiusPx = 12;
 const defaultBorderRadius = `${defaultBorderRadiusPx}px` as const;
 const bosonThemes = bosonButtonThemes();
 const customBosonPrimaryTheme = {
-  ...bosonThemes["bosonPrimary"],
+  ...bosonThemes["primary"],
   borderRadius: defaultBorderRadius
 } satisfies BaseButtonTheme;
-const custombosonSecondaryInverseBlackTheme = {
-  ...bosonThemes["bosonSecondaryInverseBlack"],
+const secondaryTheme = {
+  ...bosonThemes["secondary"],
   borderRadius: defaultBorderRadius
 } satisfies BaseButtonTheme;
-const bosonPrimaryTheme = bosonThemes["bosonPrimary"] satisfies BaseButtonTheme;
+const bosonPrimaryTheme = bosonThemes["primary"] satisfies BaseButtonTheme;
 const orangeTheme = bosonThemes["orange"] satisfies BaseButtonTheme;
 
 export const BosonConnectWallet = () => {
@@ -39,13 +39,12 @@ export const BosonConnectWallet = () => {
           walletModalProps={{
             withMagicLogin: true,
             optionProps: {
-              backgroundColor: custombosonSecondaryInverseBlackTheme.background,
-              color: custombosonSecondaryInverseBlackTheme.color,
+              backgroundColor: secondaryTheme.background,
+              color: secondaryTheme.color,
               borderRadius: defaultBorderRadius,
               iconBorderRadius: defaultBorderRadius,
-              hoverFocusBackgroundColor:
-                custombosonSecondaryInverseBlackTheme.hover?.background,
-              hoverColor: custombosonSecondaryInverseBlackTheme.hover?.color
+              hoverFocusBackgroundColor: secondaryTheme.hover?.background,
+              hoverColor: secondaryTheme.hover?.color
             },
             magicLoginButtonProps: {
               buttonProps: {
@@ -54,19 +53,19 @@ export const BosonConnectWallet = () => {
             },
             connectionErrorProps: {
               tryAgainTheme: customBosonPrimaryTheme,
-              backToWalletSelectionTheme: custombosonSecondaryInverseBlackTheme
+              backToWalletSelectionTheme: secondaryTheme
             },
             PrivacyPolicy: () => (
-              <Typography
-                style={{ color: "rgb(9, 24, 44)", fontSize: "0.75rem" }}
-                display="block"
-              >
+              <Typography style={{ fontSize: "0.75rem" }} display="block">
                 By connecting a wallet, you agree to Boson App 's{" "}
                 <a
                   href="https://bosonapp.io/#/terms-and-conditions"
                   target="_blank"
                   rel="noreferrer noopener"
-                  style={{ fontSize: "inherit" }}
+                  style={{
+                    fontSize: "inherit",
+                    color: getCssVar("--sub-text-color")
+                  }}
                 >
                   Terms & Conditions
                 </a>{" "}
@@ -75,7 +74,10 @@ export const BosonConnectWallet = () => {
                   href="https://bosonapp.io/#/privacy-policy"
                   target="_blank"
                   rel="noreferrer noopener"
-                  style={{ fontSize: "inherit" }}
+                  style={{
+                    fontSize: "inherit",
+                    color: getCssVar("--sub-text-color")
+                  }}
                 >
                   Privacy Policy
                 </a>

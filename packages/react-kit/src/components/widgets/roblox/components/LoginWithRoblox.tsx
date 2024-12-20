@@ -3,7 +3,10 @@ import { BaseButton } from "../../../buttons/BaseButton";
 import React from "react";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { useAccount } from "../../../../hooks";
-import { getCssVar } from "../../../../theme";
+import { bosonButtonThemes } from "../../../ui/ThemedButton";
+
+const bosonThemes = bosonButtonThemes();
+const primaryButtonTheme = bosonThemes["primary"];
 
 export type LoginWithRobloxProps = {
   onLoggedIn?: () => unknown;
@@ -30,11 +33,7 @@ export const LoginWithRoblox = ({
   });
   return (
     <BaseButton
-      theme={{
-        background: getCssVar("--main-accent-color"),
-        color: getCssVar("--button-text-color"),
-        borderRadius: getCssVar("--button-border-radius")
-      }}
+      theme={primaryButtonTheme}
       onClick={() => {
         window.open(`${backendOrigin}/login`, "_blank");
         const id = setInterval(async () => {

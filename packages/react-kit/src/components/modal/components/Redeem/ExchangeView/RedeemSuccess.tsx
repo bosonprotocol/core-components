@@ -30,12 +30,14 @@ type Props = {
   onClickDone: () => void;
   onHouseClick: () => void;
   exchangeId: string;
+  showBosonLogoInFooter: boolean;
 };
 
 export function RedeemSuccess({
   onClickDone,
   onHouseClick,
-  exchangeId
+  exchangeId,
+  showBosonLogoInFooter
 }: Props) {
   const { postDeliveryInfoUrl } = useRedemptionContext();
   const {
@@ -72,11 +74,11 @@ export function RedeemSuccess({
         contentStyle: {
           background: colors.greyLight
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, showBosonLogoInFooter]);
   return (
     <>
       {isFetching ? (
