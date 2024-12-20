@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/browser";
 import { useField } from "formik";
-import { Image, Trash, VideoCamera, FilePdf, Upload, X } from "phosphor-react";
+import { Image, Trash, VideoCamera, FilePdf, Upload } from "phosphor-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { loadAndSetMedia } from "../../../lib/base64/base64";
 import { bytesToSize } from "../../../lib/bytes/bytesToSize";
@@ -441,6 +441,10 @@ function BaseUpload({
           )}
         {multiple && (
           <UploadedFiles
+            style={{ ...style, ...theme?.overrides }}
+            theme={theme?.triggerTheme}
+            handleChooseFile={handleChooseFile}
+            errorMessage={errorMessage}
             files={files}
             isPdfOnly={isPdfOnly}
             handleRemoveFile={handleRemoveFile}
@@ -450,8 +454,9 @@ function BaseUpload({
           <Grid>
             <PdfOnlyLabel
               htmlFor={`file-${name}`}
-              $disabled={disabled}
               style={{ ...theme?.uploadButton }}
+              $disabled={disabled}
+              $marginTop={files.length > 0 ? "1rem" : undefined}
             >
               Upload file <Upload size={20} />
             </PdfOnlyLabel>
