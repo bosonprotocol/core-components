@@ -204,15 +204,22 @@ export const FieldFileUpload = styled(FieldInput)`
   display: none;
 `;
 
-export const PdfOnlyLabel = styled.label<{ $disabled?: boolean }>`
+export const PdfOnlyLabel = styled.label<{
+  $disabled?: boolean;
+  $marginTop?: CSSProperties["marginTop"];
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 1rem;
   gap: 0.25rem;
   padding: 0.656rem 1.25rem;
   background: ${colors.lightGrey};
   font-size: 0.875rem;
+  ${({ $marginTop }) =>
+    $marginTop !== undefined &&
+    css`
+      margin-top: ${$marginTop};
+    `}
   ${({ $disabled }) =>
     $disabled
       ? css`
