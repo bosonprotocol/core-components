@@ -34,6 +34,7 @@ import {
   BosonThemeProviderProps,
   useBosonTheme
 } from "../BosonThemeProvider";
+import { GlobalStyledThemed } from "../../styles/GlobalStyledThemed";
 
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
@@ -45,6 +46,7 @@ export type CommitWidgetProvidersProps = IpfsProviderProps &
   BosonProviderProps &
   WithReduxProviderProps & {
     children: ReactNode;
+    withGlobalStyle: boolean;
   };
 
 const { infuraKey, magicLinkKey } = CONFIG;
@@ -54,7 +56,13 @@ export const CommitWidgetReduxProvider = ReduxProvider;
 
 export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
   withQueryClientProvider(
-    ({ children, withReduxProvider, withCustomReduxContext, ...props }) => {
+    ({
+      children,
+      withReduxProvider,
+      withCustomReduxContext,
+      withGlobalStyle,
+      ...props
+    }) => {
       const WithUpdaters = useCallback(
         ({ children: updatersChildren }: { children: ReactNode }) => {
           return withReduxProvider ? (
@@ -73,6 +81,7 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
         }) || {};
       return (
         <BosonThemeProvider theme={props.theme || storyBookThemeKey}>
+          {withGlobalStyle && <GlobalStyledThemed />}
           <WithReduxProvider
             withCustomReduxContext={withCustomReduxContext}
             withReduxProvider={withReduxProvider}

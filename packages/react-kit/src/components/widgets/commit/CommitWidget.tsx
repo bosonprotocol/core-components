@@ -8,7 +8,6 @@ import {
   CommitWidgetProviders,
   CommitWidgetProvidersProps
 } from "./CommitWidgetProviders";
-import { GlobalStyledThemed } from "../../styles/GlobalStyledThemed";
 
 type CommitProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
@@ -42,8 +41,7 @@ export type CommitWidgetProps = CommitProps &
 export function CommitWidget(props: CommitWidgetProps) {
   return (
     <MarginContainer {...props}>
-      <CommitWidgetProviders {...props} withReduxProvider>
-        <GlobalStyledThemed />
+      <CommitWidgetProviders {...props} withReduxProvider withGlobalStyle>
         <CommitModalWithOffer {...props} hideModal={props.closeWidgetClick} />
       </CommitWidgetProviders>
     </MarginContainer>
