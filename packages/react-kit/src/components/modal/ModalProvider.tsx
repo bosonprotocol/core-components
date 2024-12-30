@@ -32,10 +32,6 @@ const RenderModalComponent = ({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       size={store.modalSize || initalState.store.modalSize!}
       maxWidths={store.modalMaxWidth || initalState.store.modalMaxWidth}
-      theme={
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        store.theme || initalState.store.theme!
-      }
       hideModal={hideModal}
       title={store.modalProps?.title}
       headerComponent={store.modalProps?.headerComponent}
@@ -64,7 +60,6 @@ export function ModalProvider({ children }: Props) {
       modalType: ModalType,
       modalProps?: Store["modalProps"],
       modalSize?: Store["modalSize"],
-      theme?: Store["theme"],
       modalMaxWidth?: Store["modalMaxWidth"]
     ) => {
       setStore({
@@ -72,8 +67,7 @@ export function ModalProvider({ children }: Props) {
         modalType,
         modalProps,
         modalSize,
-        modalMaxWidth,
-        theme
+        modalMaxWidth
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
