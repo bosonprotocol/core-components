@@ -76,7 +76,8 @@ export const Base = {
       sendDeliveryInfoThroughXMTP: true,
       raiseDisputeForExchangeUrl:
         "https://drcenter-staging.on.fleek.co/#/exchange/{id}/raise-dispute",
-      showProductsPreLogin: true
+      showProductsPreLogin: true,
+      withGlobalStyle: false
     },
     connectProps: {
       brand: "GYMSHARK"
