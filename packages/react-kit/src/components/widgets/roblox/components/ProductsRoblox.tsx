@@ -44,7 +44,6 @@ export type ProductsRobloxProps = {
   sellerId: string;
   theme?: Partial<{
     commitButton: RobloxProductsGridProps["commitButtonTheme"];
-    currencyColor: CSSProperties["color"];
   }>;
   maxWidth?: CSSProperties["maxWidth"];
   raiseDisputeForExchangeUrl: string;
@@ -218,7 +217,6 @@ export const ProductsRoblox = ({
                 handleSetBundleUuid={handleSetBundleUuid}
                 isLoading={availableProductLoading}
                 isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}
-                currencyColor={theme?.currencyColor}
               />
             </Grid>
             <Grid flexDirection="column" alignItems="flex-start">
@@ -239,7 +237,6 @@ export const ProductsRoblox = ({
                 handleSetBundleUuid={handleSetBundleUuid}
                 isLoading={unavailableProductsLoading}
                 isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}
-                currencyColor={theme?.currencyColor}
               />
             </Grid>
           </>
@@ -261,7 +258,6 @@ export const ProductsRoblox = ({
                 products={robloxExclusives}
                 isLoading={robloxExclusivesLoading}
                 isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}
-                currencyColor={theme?.currencyColor}
               />
             </Grid>
           </>

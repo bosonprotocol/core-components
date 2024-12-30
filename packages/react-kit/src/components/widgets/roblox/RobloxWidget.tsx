@@ -11,7 +11,12 @@ import { Typography } from "../../ui/Typography";
 import { AccountDrawer } from "../../wallet2/accountDrawer";
 import { Portal } from "../../portal/Portal";
 import { getCssVar } from "../../../theme";
+import { bosonButtonThemes } from "../../ui/ThemedButton";
 export * from "./components/types";
+
+const bosonThemes = bosonButtonThemes();
+const primaryButtonTheme = bosonThemes["primary"];
+const orangeInverseButtonTheme = bosonThemes["orangeInverse"];
 
 const Wrapper = Grid;
 type ProductKeysThatGoToConfig =
@@ -75,20 +80,27 @@ export const RobloxWidget = ({
       </Wrapper>
       <Portal>
         <AccountDrawer
-          backgroundColor={connectProps.theme?.walletPanel.backgroundColor}
-          buyCryptoTheme={connectProps.theme?.walletPanel.buyCryptoTheme}
-          disconnectBorderRadius={
-            connectProps.theme.walletPanel.disconnectBorderRadius
-          }
-          disconnectBackgroundColor={
-            connectProps.theme.walletPanel.disconnectBackgroundColor
-          }
-          disconnectColor={connectProps.theme.walletPanel.disconnectColor}
+          backgroundColor={getCssVar("--background-accent-color")}
+          buyCryptoTheme={primaryButtonTheme}
+          disconnectBorderRadius={undefined}
+          disconnectBackgroundColor={undefined}
+          disconnectColor={undefined}
           walletModalProps={{
             withMagicLogin: false,
-            optionProps: connectProps.theme.walletPanel.optionProps,
-            connectionErrorProps:
-              connectProps.theme.walletPanel.connectionErrorProps,
+            optionProps: {
+              backgroundColor: getCssVar("--secondary-accent-color"),
+              borderRadius: getCssVar("--button-border-radius"),
+              color: getCssVar("--secondary-button-text-color"),
+              hoverColor: getCssVar("--secondary-button-text-hover-color"),
+              hoverFocusBackgroundColor: getCssVar(
+                "--secondary-accent-hover-color"
+              ),
+              iconBorderRadius: getCssVar("--button-border-radius")
+            },
+            connectionErrorProps: {
+              backToWalletSelectionTheme: orangeInverseButtonTheme,
+              tryAgainTheme: orangeInverseButtonTheme
+            },
             PrivacyPolicy: () => (
               <Typography style={{ fontSize: "0.75rem" }} display="block">
                 By connecting a wallet, you agree to Boson App 's{" "}

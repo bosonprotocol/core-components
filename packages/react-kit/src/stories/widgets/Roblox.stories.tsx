@@ -4,9 +4,7 @@ import {
 } from "../../components/widgets/roblox/RobloxWidget";
 import React from "react";
 import { Meta } from "@storybook/react";
-import { bosonButtonThemes } from "../../components/ui/ThemedButton";
 import { createGlobalStyle } from "styled-components";
-import { colors } from "../../theme";
 
 const GlobalStyle = createGlobalStyle`
     #storybook-root,[data-rk], [scale="1"] {
@@ -81,95 +79,7 @@ export const Base = {
       showProductsPreLogin: true
     },
     connectProps: {
-      brand: "GYMSHARK",
-      theme: {
-        stepsBackgroundSides: "white",
-        backgroundColor: "white",
-        lineBetweenStepsColor: colors.greyLight,
-        walletCard: {
-          padding: "24px",
-          title: {
-            color: colors.black
-          },
-          subtitle: {
-            color: colors.greyDark
-          },
-          check: {
-            color: colors.green
-          },
-          number: {
-            active: {
-              backgroundColor: colors.green,
-              stroke: "black"
-            },
-            inactive: {
-              backgroundColor: colors.greyLight,
-              stroke: "black"
-            }
-          },
-          button: {
-            active: {
-              ...bosonButtonThemes()["bosonPrimary"],
-              borderRadius: "8px"
-            },
-            inactive: {
-              ...bosonButtonThemes()["white"],
-              borderRadius: "8px"
-            }
-          }
-        },
-        walletPanel: {
-          backgroundColor: "white",
-          buyCryptoTheme: bosonButtonThemes()["bosonPrimary"],
-          disconnectBorderRadius: "8px",
-          disconnectBackgroundColor: colors.green,
-          disconnectColor: "black",
-          optionProps: {
-            backgroundColor: colors.violet,
-            borderRadius: "8px",
-            color: colors.white,
-            hoverColor: colors.white,
-            hoverFocusBackgroundColor: colors.black,
-            iconBorderRadius: "8px"
-          },
-          connectionErrorProps: {
-            backToWalletSelectionTheme: bosonButtonThemes()["orangeInverse"],
-            tryAgainTheme: bosonButtonThemes()["orangeInverse"]
-          }
-        },
-        signUpCard: {
-          padding: "24px",
-          title: {
-            color: colors.black
-          },
-          subtitle: {
-            color: colors.greyDark
-          },
-          check: {
-            color: colors.green
-          },
-          number: {
-            active: {
-              backgroundColor: colors.green,
-              stroke: "black"
-            },
-            inactive: {
-              backgroundColor: colors.greyLight,
-              stroke: "black"
-            }
-          },
-          button: {
-            active: {
-              ...bosonButtonThemes()["bosonPrimary"],
-              borderRadius: "8px"
-            },
-            inactive: {
-              ...bosonButtonThemes()["white"],
-              borderRadius: "8px"
-            }
-          }
-        }
-      }
+      brand: "GYMSHARK"
     }
   } satisfies RobloxWidgetProps
 };

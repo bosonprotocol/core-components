@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import React from "react";
+import { getCssVar } from "../../../../../theme";
 type SVGProps = Omit<React.SVGProps<SVGSVGElement>, "ref">;
 
 const StyledSvg = styled.svg`
   > * {
-    fill: var(--textColor);
+    fill: ${getCssVar("--main-text-color")};
   }
 `;
 

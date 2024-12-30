@@ -6,16 +6,14 @@ import React, {
   useRef,
   useState
 } from "react";
-import { css, CSSProperties, styled } from "styled-components";
+import { css, styled } from "styled-components";
 import { Grid } from "../../../ui/Grid";
 import { Typography } from "../../../ui/Typography";
-import { BaseButton } from "../../../buttons/BaseButton";
 import { useAccount } from "../../../../hooks";
 import { CheckCircle, Power } from "phosphor-react";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { useRobloxLogout } from "../../../../hooks/roblox/useRobloxLogout";
 import { useRobloxConfigContext } from "../../../../hooks/roblox/context/useRobloxConfigContext";
-import { CardThemeProps } from "./types";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
 import { useGetRobloxWalletAuth } from "../../../../hooks/roblox/useGetRobloxWalletAuth";
 import { useRobloxBackendLogin } from "../../../../hooks/roblox/useRobloxBackendLogin";
@@ -29,7 +27,6 @@ import {
 import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";
 import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges";
 import { LoginWithRoblox } from "./LoginWithRoblox";
-import { AccountDrawerProps } from "../../../wallet2/accountDrawer";
 import { getCssVar } from "../../../../theme";
 import ThemedButton from "../../../ui/ThemedButton";
 
@@ -188,40 +185,11 @@ const Step = forwardRef<HTMLDivElement, StepProps>(
 export type ConnectRobloxProps = {
   sellerId: string;
   brand: string;
-  theme: {
-    backgroundColor: CSSProperties["backgroundColor"];
-    stepsBackgroundSides: CSSProperties["backgroundColor"];
-    lineBetweenStepsColor: CSSProperties["backgroundColor"];
-    walletCard: CardThemeProps;
-    walletPanel: Pick<
-      AccountDrawerProps,
-      | "backgroundColor"
-      | "buyCryptoTheme"
-      | "disconnectBackgroundColor"
-      | "disconnectBorderRadius"
-      | "disconnectColor"
-    > & {
-      optionProps: Pick<
-        AccountDrawerProps["walletModalProps"]["optionProps"],
-        | "backgroundColor"
-        | "borderRadius"
-        | "color"
-        | "hoverColor"
-        | "hoverFocusBackgroundColor"
-        | "iconBorderRadius"
-      >;
-      connectionErrorProps: Pick<
-        AccountDrawerProps["walletModalProps"]["connectionErrorProps"],
-        "backToWalletSelectionTheme" | "tryAgainTheme"
-      >;
-    };
-    signUpCard: CardThemeProps;
-  };
 };
 
 type ActiveStep = 0 | 1 | 2;
 export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
-  ({ brand, theme, sellerId }, ref) => {
+  ({ brand, sellerId }, ref) => {
     const { address = "" } = useAccount();
     const [isSignUpDone, setSignUpDone] = useState<boolean>(false);
     const [activeStep, setActiveStep] = useState<ActiveStep>(0);
@@ -440,8 +408,8 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
           title="Get access to exclusives!"
           subtitle={`Now you can purchase ${brand} exclusives that are available to you.`}
           button={
-            <BaseButton
-              theme={theme.signUpCard.button.inactive}
+            <ThemedButton
+              themeVal="secondary"
               disabled={activeStep !== 2}
               onClick={() => {
                 setSignUpDone(true);
@@ -449,7 +417,7 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
               }}
             >
               Sign up
-            </BaseButton>
+            </ThemedButton>
           }
         />
       </Wrapper>

@@ -1,5 +1,5 @@
 import { GridContainer } from "../../../ui/GridContainer";
-import { IProductCard, ProductCard } from "../../../productCard/ProductCard";
+import { ProductCard } from "../../../productCard/ProductCard";
 import styled, { css } from "styled-components";
 import { Currencies } from "../../../currencyDisplay/CurrencyDisplay";
 import { useAccount, useIpfsContext } from "../../../../hooks";
@@ -48,14 +48,12 @@ export type RobloxProductsGridProps = {
   handleSetProductUuid?: (uuid: string) => void;
   handleSetBundleUuid?: (uuid: string) => void;
   isLoggedInWithRoblox: boolean;
-  currencyColor: IProductCard["currencyColor"];
 };
 export const RobloxProductsGrid = ({
   isLoading,
   numProducts,
   products,
   commitButtonTheme,
-  currencyColor,
   handleSetBundleUuid,
   handleSetProductUuid,
   isLoggedInWithRoblox
@@ -105,7 +103,6 @@ export const RobloxProductsGrid = ({
                 }
                 avatarName=""
                 currency={exchangeToken.symbol as Currencies}
-                currencyColor={currencyColor}
                 price={utils.formatUnits(price || "0", exchangeToken.decimals)}
                 isHoverDisabled
                 isImageFitCover

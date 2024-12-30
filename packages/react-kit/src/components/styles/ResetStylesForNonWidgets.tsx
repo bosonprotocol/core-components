@@ -4,16 +4,9 @@ import { isTruthy } from "../../types/helpers";
 
 export const cssVars = css`
   --l: 50%;
-  --headerBgColor: ${colors.white};
-  --headerTextColor: ${colors.greyDark};
   --primary: ${colors.green};
   --secondary: ${colors.greyLight};
   --accent: ${colors.violet};
-  --textColor: ${colors.black};
-  --footerBgColor: ${colors.black};
-  --footerTextColor: ${colors.white};
-  --buttonBgColor: ${colors.green};
-  --buttonTextColor: ${colors.black};
 
   ${({ theme }) =>
     Object.keys(theme)
