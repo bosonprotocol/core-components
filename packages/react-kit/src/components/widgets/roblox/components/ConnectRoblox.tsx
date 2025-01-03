@@ -339,7 +339,7 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
           button={
             isRobloxLoggedIn ? (
               <ThemedButton
-                themeVal="primary"
+                themeVal="secondary"
                 onClick={async () => {
                   await robloxLogoutAsync();
                 }}

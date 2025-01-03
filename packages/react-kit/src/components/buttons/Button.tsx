@@ -21,6 +21,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         themeVal = "primary";
         break;
       }
+      case "secondaryFill": {
+        themeVal = "secondary";
+        break;
+      }
       case "secondaryInverted": {
         themeVal = "secondaryInverted";
         break;

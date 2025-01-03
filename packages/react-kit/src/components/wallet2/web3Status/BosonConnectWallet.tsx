@@ -64,7 +64,8 @@ export const BosonConnectWallet = () => {
                   rel="noreferrer noopener"
                   style={{
                     fontSize: "inherit",
-                    color: getCssVar("--sub-text-color")
+                    color: getCssVar("--sub-text-color"),
+                    textDecoration: "underline"
                   }}
                 >
                   Terms & Conditions
@@ -76,7 +77,8 @@ export const BosonConnectWallet = () => {
                   rel="noreferrer noopener"
                   style={{
                     fontSize: "inherit",
-                    color: getCssVar("--sub-text-color")
+                    color: getCssVar("--sub-text-color"),
+                    textDecoration: "underline"
                   }}
                 >
                   Privacy Policy
