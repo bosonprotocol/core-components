@@ -22,15 +22,9 @@ export const cssVarsKeys = {
   "--tertiary-button-text-hover-color": "--tertiary-button-text-hover-color",
   "--button-border-radius": "--button-border-radius"
 };
-const otherThemeKeys = {
-  backgroundButtonPrimaryName: "backgroundButtonPrimaryName"
-} as const;
 
 type CssVarKeys = keyof typeof cssVarsKeys;
-export type ThemePalette = Record<
-  CssVarKeys | keyof typeof otherThemeKeys,
-  string
->;
+export type ThemePalette = Record<CssVarKeys, string>;
 export type Theme = "blackAndWhite" | "dark" | "light";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -75,8 +69,7 @@ export const getThemes = ({ roundness }: { roundness: Roundness }) => {
       "--secondary-button-text-color": colors.black,
       "--secondary-button-text-hover-color": colors.black,
       "--tertiary-button-text-color": colors.black,
-      "--tertiary-button-text-hover-color": colors.black,
-      backgroundButtonPrimaryName: "green"
+      "--tertiary-button-text-hover-color": colors.black
     },
     blackAndWhite: {
       ...varsWithSameValuesAccrossThemes,
@@ -96,8 +89,7 @@ export const getThemes = ({ roundness }: { roundness: Roundness }) => {
       "--secondary-button-text-color": colors.black,
       "--secondary-button-text-hover-color": colors.white,
       "--tertiary-button-text-color": colors.black,
-      "--tertiary-button-text-hover-color": colors.white,
-      backgroundButtonPrimaryName: "black"
+      "--tertiary-button-text-hover-color": colors.white
     },
     dark: {
       ...varsWithSameValuesAccrossThemes,
@@ -117,8 +109,7 @@ export const getThemes = ({ roundness }: { roundness: Roundness }) => {
       "--secondary-button-text-color": colors.white,
       "--secondary-button-text-hover-color": colors.black, // differs from figma because it's not readable there
       "--tertiary-button-text-color": colors.white,
-      "--tertiary-button-text-hover-color": colors.black, // differs from figma because it's not readable there
-      backgroundButtonPrimaryName: "white"
+      "--tertiary-button-text-hover-color": colors.black // differs from figma because it's not readable there
     }
   } as const satisfies Themes;
 };

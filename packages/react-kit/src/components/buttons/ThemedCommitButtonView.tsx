@@ -1,18 +1,33 @@
 import React from "react";
 import { CommitButtonView, CommitButtonViewProps } from "./CommitButtonView";
 import { useBosonTheme } from "../widgets/BosonThemeProvider";
-import { useTheme } from "styled-components";
 
-export type ThemedCommitButtonViewProps = Omit<CommitButtonViewProps, "color">;
+export type ThemedCommitButtonViewProps = Omit<
+  CommitButtonViewProps,
+  "color" | "shape"
+>;
 export const ThemedCommitButtonView = (props: ThemedCommitButtonViewProps) => {
-  const themeFromStyledComponents = useTheme();
-  const { theme, themeKey } = useBosonTheme();
-  console.log("ThemedCommitButtonView theme", {
-    themeKey,
-    themeFromStyledComponents,
-    theme
-  });
+  const { roundness, themeKey } = useBosonTheme();
+  const commitButtonTheme: Pick<
+    CommitButtonViewProps,
+    "color" | "layout" | "shape"
+  > = {
+    shape:
+      roundness === "min" ? "sharp" : roundness === "mid" ? "rounded" : "pill",
+    layout: "horizontal",
+    color:
+      themeKey === "light"
+        ? "green"
+        : themeKey === "blackAndWhite"
+          ? "white"
+          : "black"
+  };
   return (
-    <CommitButtonView {...props} color={theme.backgroundButtonPrimaryName} />
+    <CommitButtonView
+      {...props}
+      color={commitButtonTheme?.color}
+      shape={commitButtonTheme?.shape}
+      layout={commitButtonTheme?.layout}
+    />
   );
 };

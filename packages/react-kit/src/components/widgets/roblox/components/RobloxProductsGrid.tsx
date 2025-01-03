@@ -14,7 +14,6 @@ import {
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
-import { CommitButtonViewProps } from "../../../buttons/CommitButtonView";
 import { ProductType } from "../../../productCard/const";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
 import { BosonRobloxProductWithAvailability } from "../../../../hooks/roblox/backend.types";
@@ -42,9 +41,6 @@ export type RobloxProductsGridProps = {
   isLoading: boolean;
   products: BosonRobloxProductWithAvailability[] | undefined;
   numProducts?: number;
-  commitButtonTheme:
-    | Pick<CommitButtonViewProps, "color" | "layout" | "shape">
-    | undefined;
   handleSetProductUuid?: (uuid: string) => void;
   handleSetBundleUuid?: (uuid: string) => void;
   isLoggedInWithRoblox: boolean;
@@ -53,7 +49,6 @@ export const RobloxProductsGrid = ({
   isLoading,
   numProducts,
   products,
-  commitButtonTheme,
   handleSetBundleUuid,
   handleSetProductUuid,
   isLoggedInWithRoblox
@@ -135,9 +130,6 @@ export const RobloxProductsGrid = ({
                           handleSetBundleUuid?.(bundleUuid);
                         }
                       }}
-                      // color={commitButtonTheme?.color}
-                      shape={commitButtonTheme?.shape}
-                      layout={commitButtonTheme?.layout}
                     />
                   )
                 }

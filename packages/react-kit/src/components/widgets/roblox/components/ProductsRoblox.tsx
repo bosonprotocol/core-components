@@ -44,10 +44,6 @@ export type ProductsRobloxProps = {
     | "signatures"
   >;
   sellerId: string;
-  theme?: Partial<{
-    commitButton: RobloxProductsGridProps["commitButtonTheme"];
-  }>;
-  maxWidth?: CSSProperties["maxWidth"];
   raiseDisputeForExchangeUrl: string;
   showProductsPreLogin: boolean;
 };
@@ -55,8 +51,6 @@ export type ProductsRobloxProps = {
 export const ProductsRoblox = ({
   sellerId,
   raiseDisputeForExchangeUrl,
-  theme,
-  maxWidth,
   requestShipmentProps: {
     deliveryInfoHandler,
     postDeliveryInfoUrl,
@@ -134,12 +128,7 @@ export const ProductsRoblox = ({
   };
   return (
     <Wrapper justifyContent="center" alignItems="center">
-      <ContentWrapper
-        flexDirection="column"
-        alignItems="flex-start"
-        gap="5rem"
-        maxWidth={maxWidth}
-      >
+      <ContentWrapper flexDirection="column" alignItems="flex-start" gap="5rem">
         {productUuid || bundleUuid ? (
           <CommitModalWithOffer
             sellerId={sellerId}
@@ -213,7 +202,6 @@ export const ProductsRoblox = ({
                 inventory you have
               </Typography>
               <RobloxProductsGrid
-                commitButtonTheme={theme?.commitButton}
                 products={availableProducts}
                 handleSetProductUuid={handleSetProductUuid}
                 handleSetBundleUuid={handleSetBundleUuid}
@@ -233,7 +221,6 @@ export const ProductsRoblox = ({
                 Roblox inventory item.
               </Typography>
               <RobloxProductsGrid
-                commitButtonTheme={theme?.commitButton}
                 products={unavailableProducts}
                 handleSetProductUuid={handleSetProductUuid}
                 handleSetBundleUuid={handleSetBundleUuid}
@@ -256,7 +243,6 @@ export const ProductsRoblox = ({
                 Roblox inventory item.
               </Typography>
               <RobloxProductsGrid
-                commitButtonTheme={theme?.commitButton}
                 products={robloxExclusives}
                 isLoading={robloxExclusivesLoading}
                 isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}

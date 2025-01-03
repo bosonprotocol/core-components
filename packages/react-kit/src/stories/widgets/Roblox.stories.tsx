@@ -54,15 +54,6 @@ export const Base = {
   args: {
     ...BASE_ARGS,
 
-    productsGridProps: {
-      theme: {
-        commitButton: {
-          color: "green",
-          layout: "horizontal",
-          shape: "rounded"
-        }
-      }
-    },
     configProps: {
       configId: "testing-80002-0",
       envName: "testing",

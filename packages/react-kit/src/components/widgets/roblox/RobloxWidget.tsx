@@ -27,14 +27,6 @@ type ProductKeysThatGoToConfig =
   | "showProductsPreLogin";
 export type RobloxWidgetProps = {
   connectProps: Omit<ConnectRobloxProps, "sellerId">;
-  productsGridProps: Omit<
-    ProductsRobloxProps,
-    | "backendOrigin"
-    | "configId"
-    | "envName"
-    | "requestShipmentProps"
-    | ProductKeysThatGoToConfig
-  >;
   configProps: Omit<
     CommitWidgetProvidersProps,
     | "withWeb3React"
@@ -48,7 +40,6 @@ export type RobloxWidgetProps = {
 };
 export const RobloxWidget = ({
   connectProps,
-  productsGridProps,
   configProps: {
     sellerId,
     raiseDisputeForExchangeUrl,
@@ -78,7 +69,6 @@ export const RobloxWidget = ({
           sellerId={sellerId}
         />
         <ProductsRoblox
-          {...productsGridProps}
           requestShipmentProps={configProps}
           sellerId={sellerId}
           raiseDisputeForExchangeUrl={raiseDisputeForExchangeUrl}

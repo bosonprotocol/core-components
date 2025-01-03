@@ -13,6 +13,7 @@ type ThemeContextType<T extends Theme> = {
   theme: ReturnType<typeof getThemes>[T];
   setTheme: React.Dispatch<React.SetStateAction<T>>;
   themeKey: T;
+  roundness: Roundness;
 };
 
 const BosonThemeContext = createContext<ThemeContextType<Theme> | null>(null);
@@ -55,7 +56,8 @@ export const BosonThemeProvider = <T extends Theme>({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           setTheme,
-          themeKey: theme
+          themeKey: theme,
+          roundness
         }}
       >
         {children}
