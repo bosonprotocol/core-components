@@ -1,19 +1,21 @@
 import type { Preview } from "@storybook/react";
 import { withThemeFromJSXProvider } from "@storybook/addon-themes";
 import GlobalStyle from "../src/components/styles/GlobalStyle";
-import { ThemeProvider } from "styled-components";
 
-import { themes } from "../src/theme";
+import { getThemes } from "../src/theme";
 import { BosonThemeProvider } from "../src/components/widgets/BosonThemeProvider";
 
+const themes = Object.keys(getThemes({ roundness: "min" })).reduce(
+  (acum, current) => {
+    acum[current] = current;
+    return acum;
+  },
+  {}
+) as any;
 const WithTheme = withThemeFromJSXProvider({
   Provider: BosonThemeProvider,
   GlobalStyles: GlobalStyle,
-  themes: {
-    light: "light",
-    blackAndWhite: "blackAndWhite",
-    dark: "dark"
-  } as any,
+  themes: themes,
   defaultTheme: "light"
 });
 

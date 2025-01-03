@@ -79,8 +79,12 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
         useBosonTheme({
           throwOnError: false
         }) || {};
+      console.log("CommitWidgetProviders", props.roundness);
       return (
-        <BosonThemeProvider theme={props.theme || storyBookThemeKey}>
+        <BosonThemeProvider
+          theme={props.theme || storyBookThemeKey}
+          roundness={props.roundness}
+        >
           {withGlobalStyle && <GlobalStyledThemed />}
           <WithReduxProvider
             withCustomReduxContext={withCustomReduxContext}

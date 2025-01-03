@@ -5,8 +5,10 @@ import {
   ProductsRoblox,
   ProductsRobloxProps
 } from "./components/ProductsRoblox";
-import { CommitWidgetProviders } from "../commit/CommitWidgetProviders";
-import { CommitWidgetProps } from "../commit/CommitWidget";
+import {
+  CommitWidgetProviders,
+  CommitWidgetProvidersProps
+} from "../commit/CommitWidgetProviders";
 import { Typography } from "../../ui/Typography";
 import { AccountDrawer } from "../../wallet2/accountDrawer";
 import { Portal } from "../../portal/Portal";
@@ -34,8 +36,12 @@ export type RobloxWidgetProps = {
     | ProductKeysThatGoToConfig
   >;
   configProps: Omit<
-    CommitWidgetProps,
-    "lookAndFeel" | "withWeb3React" | "withCustomReduxContext"
+    CommitWidgetProvidersProps,
+    | "withWeb3React"
+    | "withCustomReduxContext"
+    | "withReduxProvider"
+    | "withGlobalStyle"
+    | "children"
   > &
     Pick<ProductsRobloxProps, ProductKeysThatGoToConfig> &
     ProductsRobloxProps["requestShipmentProps"];
@@ -59,11 +65,12 @@ export const RobloxWidget = ({
       withReduxProvider={true}
       withWeb3React={true}
       withMagicLink={false}
+      withGlobalStyle={true}
     >
       <Wrapper
         flexDirection="column"
         alignItems="center"
-        justifyContent="center"
+        justifyContent="flex-start"
       >
         <ConnectRoblox
           {...connectProps}

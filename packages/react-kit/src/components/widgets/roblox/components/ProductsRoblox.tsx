@@ -1,6 +1,6 @@
 import styled, { CSSProperties } from "styled-components";
 import React, { useState } from "react";
-import { Typography, TypographyProps } from "../../../ui/Typography";
+import { Typography } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
 import { CommitModalWithOffer } from "../../commit/CommitModalWithOffer";
 import {
@@ -24,8 +24,10 @@ import { getCssVar } from "../../../../theme";
 
 const Wrapper = styled(Grid).attrs({
   paddingTop: "5rem",
-  paddingBottom: "5rem"
+  paddingBottom: "5rem",
+  alignItems: "flex-start"
 })`
+  flex: 1;
   background-color: ${getCssVar("--background-color")};
 `;
 const ContentWrapper = Grid;

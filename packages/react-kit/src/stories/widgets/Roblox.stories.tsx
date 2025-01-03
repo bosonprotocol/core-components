@@ -77,7 +77,7 @@ export const Base = {
       raiseDisputeForExchangeUrl:
         "https://drcenter-staging.on.fleek.co/#/exchange/{id}/raise-dispute",
       showProductsPreLogin: true,
-      withGlobalStyle: false
+      roundness: "mid"
     },
     connectProps: {
       brand: "GYMSHARK"
