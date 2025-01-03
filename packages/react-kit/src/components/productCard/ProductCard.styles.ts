@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { colors } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { cardWrapperStyles } from "./commonStyles";
 import { Typography } from "../ui/Typography";
 import { zIndex } from "../ui/zIndex";
@@ -156,6 +156,7 @@ export const ProductCardWrapper = styled.div<{
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: ${getCssVar("--modal-border-radius")};
     ${({ $isImageFitCover }) =>
       $isImageFitCover
         ? css`
@@ -235,6 +236,6 @@ export const ProductTypeWrapper = styled.div`
   align-items: center;
   gap: 0.25rem;
   padding: 0.1563rem 0.25rem;
-  border-radius: 2px;
+  border-radius: ${getCssVar("--button-border-radius")};
   margin-top: 0.5rem;
 `;

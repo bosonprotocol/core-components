@@ -497,6 +497,7 @@ export const BaseWidget = styled.div`
   width: 100%;
   background: ${getCssVar("--background-accent-color")};
   border: 2px solid ${getCssVar("--border-color")};
+  border-radius: ${getCssVar("--modal-border-radius")};
   font-family: "Plus Jakarta Sans";
   details:not(details:nth-last-of-type(1)):not([open]) > summary {
     border-bottom: none;

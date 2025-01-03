@@ -46,7 +46,7 @@ const GlideSlides = styled.div<{ $highlightActive: boolean }>`
     align-self: center;
   }
   .glide__slide {
-    border-radius: 8px;
+    border-radius: ${getCssVar("--modal-border-radius")};
     /* &--active, */
     .active {
       ${({ $highlightActive }) =>

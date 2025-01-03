@@ -20,7 +20,8 @@ export const cssVarsKeys = {
   "--secondary-button-text-hover-color": "--secondary-button-text-hover-color",
   "--tertiary-button-text-color": "--tertiary-button-text-color",
   "--tertiary-button-text-hover-color": "--tertiary-button-text-hover-color",
-  "--button-border-radius": "--button-border-radius"
+  "--button-border-radius": "--button-border-radius",
+  "--modal-border-radius": "--modal-border-radius"
 };
 
 type CssVarKeys = keyof typeof cssVarsKeys;
@@ -48,7 +49,13 @@ export const getThemes = ({ roundness }: { roundness: Roundness }) => {
         ? ("2px" as `${string}px`)
         : roundness === "mid"
           ? ("8px" as `${string}px`)
-          : ("32px" as `${string}px`)
+          : ("32px" as `${string}px`),
+    "--modal-border-radius":
+      roundness === "min"
+        ? ("4px" as `${string}px`)
+        : roundness === "mid"
+          ? ("12px" as `${string}px`)
+          : ("24px" as `${string}px`)
   } as const;
   return {
     light: {

@@ -92,6 +92,8 @@ const Wrapper = styled.div<{
   color: ${getCssVar("--main-text-color")};
   background-color: ${getCssVar("--background-accent-color")};
   border: var(--secondary);
+  border-radius: ${getCssVar("--modal-border-radius")};
+  overflow: hidden;
   ${({ $maxWidths }) => {
     if (!$maxWidths) {
       return "";
