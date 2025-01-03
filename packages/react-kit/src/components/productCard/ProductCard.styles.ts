@@ -3,6 +3,10 @@ import { colors, getCssVar } from "../../theme";
 import { cardWrapperStyles } from "./commonStyles";
 import { Typography } from "../ui/Typography";
 import { zIndex } from "../ui/zIndex";
+import {
+  applyNonTouchDeviceStyles,
+  applyTouchDeviceStyles
+} from "../../lib/ui/touchDevice";
 
 export const ProductCardLabelWrapper = styled.div`
   position: absolute;
@@ -206,17 +210,19 @@ const CTAstartState = css`
   opacity: 0;
   bottom: 30px;
 `;
+const CTAendState = css`
+  opacity: 1;
+  bottom: 70px;
+`;
 export const CTAOnHoverContainer = styled.div<{ $isHovered: boolean }>`
   @keyframes appear {
     from {
       ${CTAstartState}
     }
     to {
-      opacity: 1;
-      bottom: 70px;
+      ${CTAendState}
     }
   }
-  ${CTAstartState}
   position: absolute;
   z-index: ${zIndex.OfferCard};
   ${({ $isHovered }) => {
@@ -227,6 +233,12 @@ export const CTAOnHoverContainer = styled.div<{ $isHovered: boolean }>`
     }
     return "";
   }};
+  ${applyTouchDeviceStyles(css`
+    ${CTAendState}
+  `)}
+  ${applyNonTouchDeviceStyles(css`
+    ${CTAstartState}
+  `)}
 `;
 
 export const ProductTypeWrapper = styled.div`

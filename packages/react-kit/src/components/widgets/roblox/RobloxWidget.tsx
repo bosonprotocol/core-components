@@ -86,12 +86,12 @@ export const RobloxWidget = ({
             withMagicLogin: false,
             optionProps: {
               backgroundColor: getCssVar("--secondary-accent-color"),
-              borderRadius: getCssVar("--button-border-radius"),
-              color: getCssVar("--secondary-button-text-color"),
-              hoverColor: getCssVar("--secondary-button-text-hover-color"),
               hoverFocusBackgroundColor: getCssVar(
                 "--secondary-accent-hover-color"
               ),
+              borderRadius: getCssVar("--button-border-radius"),
+              color: getCssVar("--secondary-button-text-color"),
+              hoverColor: getCssVar("--secondary-button-text-hover-color"),
               iconBorderRadius: getCssVar("--button-border-radius")
             },
             connectionErrorProps: {

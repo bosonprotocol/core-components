@@ -88,7 +88,7 @@ export const getThemes = ({ roundness }: { roundness: Roundness }) => {
       "--main-accent-color": colors.blackPure,
       "--main-accent-hover-color": colors.black,
       "--secondary-accent-color": colors.white,
-      "--secondary-accent-hover-color": colors.greyLight,
+      "--secondary-accent-hover-color": colors.greyDark, // it should be greyLight but it's not readable
       "--tertiary-accent-color": colors.white,
       "--tertiary-accent-hover-color": colors.greyLight,
       "--main-button-text-color": colors.white,
