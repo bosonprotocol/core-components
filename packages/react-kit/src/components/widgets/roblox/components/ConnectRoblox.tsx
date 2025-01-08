@@ -184,12 +184,17 @@ const Step = forwardRef<HTMLDivElement, StepProps>(
 
 export type ConnectRobloxProps = {
   sellerId: string;
-  brand: string;
+  step3: {
+    title: string;
+    subtitle: string;
+    buttonText: string;
+    callback: (() => void) | (() => Promise<void>);
+  };
 };
 
 type ActiveStep = 0 | 1 | 2;
 export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
-  ({ brand, sellerId }, ref) => {
+  ({ step3, sellerId }, ref) => {
     const { address = "" } = useAccount();
     const [isSignUpDone, setSignUpDone] = useState<boolean>(false);
     const [activeStep, setActiveStep] = useState<ActiveStep>(0);
@@ -405,18 +410,18 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
               />
             </svg>
           }
-          title="Get access to exclusives!"
-          subtitle={`Now you can purchase ${brand} exclusives that are available to you.`}
+          title={step3.title}
+          subtitle={step3.subtitle}
           button={
             <ThemedButton
               themeVal="secondary"
               disabled={activeStep !== 2}
-              onClick={() => {
+              onClick={async () => {
+                await step3.callback();
                 setSignUpDone(true);
-                // TODO: what to do here?
               }}
             >
-              Sign up
+              {step3.buttonText}
             </ThemedButton>
           }
         />

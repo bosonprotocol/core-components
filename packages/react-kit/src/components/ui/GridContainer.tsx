@@ -107,9 +107,9 @@ const GridContainerDiv = styled.div<InnerGridProps>`
   ${({ $width }) => (isDefined($width) ? `width:${$width}` : "")};
 `;
 type DivProps = HTMLAttributes<ElementRef<"div">>;
-type Props = DivProps & GridProps;
+export type GridContainerProps = DivProps & GridProps;
 
-export const GridContainer = forwardRef<ElementRef<"div">, Props>(
+export const GridContainer = forwardRef<ElementRef<"div">, GridContainerProps>(
   (props, ref) => {
     const { transientProps, otherProps } = getTransientCustomProps<
       InnerGridProps,

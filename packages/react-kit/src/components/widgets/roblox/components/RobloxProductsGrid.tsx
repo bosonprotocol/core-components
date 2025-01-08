@@ -1,4 +1,4 @@
-import { GridContainer } from "../../../ui/GridContainer";
+import { GridContainer, GridContainerProps } from "../../../ui/GridContainer";
 import { ProductCard } from "../../../productCard/ProductCard";
 import styled, { css } from "styled-components";
 import { Currencies } from "../../../currencyDisplay/CurrencyDisplay";
@@ -41,6 +41,7 @@ export type RobloxProductsGridProps = {
   isLoading: boolean;
   products: BosonRobloxProductWithAvailability[] | undefined;
   numProducts?: number;
+  itemsPerRow: GridContainerProps["itemsPerRow"];
   handleSetProductUuid?: (uuid: string) => void;
   handleSetBundleUuid?: (uuid: string) => void;
   isLoggedInWithRoblox: boolean;
@@ -48,6 +49,7 @@ export type RobloxProductsGridProps = {
 export const RobloxProductsGrid = ({
   isLoading,
   numProducts,
+  itemsPerRow,
   products,
   handleSetBundleUuid,
   handleSetProductUuid,
@@ -56,7 +58,12 @@ export const RobloxProductsGrid = ({
   const { address } = useAccount();
   const { ipfsImageGateway } = useIpfsContext();
   return (
-    <GridContainer columnGap="2rem" rowGap="2rem" width="100%">
+    <GridContainer
+      columnGap="2rem"
+      rowGap="2rem"
+      width="100%"
+      itemsPerRow={itemsPerRow}
+    >
       {isLoading ? (
         new Array(numProducts || 3).fill(null).map((_, index) => {
           return <TransparentSkeletonProductCard key={index} />;

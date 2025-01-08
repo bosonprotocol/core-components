@@ -24,7 +24,8 @@ const Wrapper = Grid;
 type ProductKeysThatGoToConfig =
   | "sellerId"
   | "raiseDisputeForExchangeUrl"
-  | "showProductsPreLogin";
+  | "showProductsPreLogin"
+  | "layout";
 export type RobloxWidgetProps = {
   connectProps: Omit<ConnectRobloxProps, "sellerId">;
   configProps: Omit<
@@ -44,6 +45,7 @@ export const RobloxWidget = ({
     sellerId,
     raiseDisputeForExchangeUrl,
     showProductsPreLogin,
+    layout,
     ...configProps
   }
 }: RobloxWidgetProps) => {
@@ -69,6 +71,7 @@ export const RobloxWidget = ({
           sellerId={sellerId}
         />
         <ProductsRoblox
+          layout={layout}
           requestShipmentProps={configProps}
           sellerId={sellerId}
           raiseDisputeForExchangeUrl={raiseDisputeForExchangeUrl}

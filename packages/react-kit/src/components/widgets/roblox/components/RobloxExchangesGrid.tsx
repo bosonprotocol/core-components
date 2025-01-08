@@ -1,4 +1,4 @@
-import { GridContainer } from "../../../ui/GridContainer";
+import { GridContainer, GridContainerProps } from "../../../ui/GridContainer";
 import styled, { css } from "styled-components";
 import { Currencies } from "../../../currencyDisplay/CurrencyDisplay";
 import { useAccount, useIpfsContext } from "../../../../hooks";
@@ -38,6 +38,7 @@ const TransparentSkeletonProductCard = styled(ProductCardSkeleton)`
 export type RobloxExchangesGridProps = {
   isLoading: boolean;
   numProducts?: number;
+  itemsPerRow: GridContainerProps["itemsPerRow"];
   raiseDisputeForExchangeUrl: string;
   handleRequestShipment: (robloxExchange: BosonRobloxExchange) => void;
   handleCancellation: (robloxExchange: BosonRobloxExchange) => void;
@@ -46,6 +47,7 @@ export type RobloxExchangesGridProps = {
 export const RobloxExchangesGrid = ({
   isLoading,
   numProducts,
+  itemsPerRow,
   raiseDisputeForExchangeUrl,
   exchanges,
   handleRequestShipment,
@@ -54,7 +56,12 @@ export const RobloxExchangesGrid = ({
   const { address } = useAccount();
   const { ipfsImageGateway } = useIpfsContext();
   return (
-    <GridContainer columnGap="2rem" rowGap="2rem" width="100%">
+    <GridContainer
+      columnGap="2rem"
+      rowGap="2rem"
+      width="100%"
+      itemsPerRow={itemsPerRow}
+    >
       {isLoading ? (
         new Array(numProducts || 3).fill(null).map((_, index) => {
           return <TransparentSkeletonProductCard key={index} />;

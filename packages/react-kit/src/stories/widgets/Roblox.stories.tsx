@@ -68,10 +68,18 @@ export const Base = {
       raiseDisputeForExchangeUrl:
         "https://drcenter-staging.on.fleek.co/#/exchange/{id}/raise-dispute",
       showProductsPreLogin: true,
-      roundness: "mid"
+      roundness: "mid",
+      layout: "vertical"
     },
     connectProps: {
-      brand: "GYMSHARK"
+      step3: {
+        title: "Get access to exclusives!",
+        subtitle: `Now you can purchase GYMSHARK exclusives that are available to you.`,
+        buttonText: "Sign up",
+        callback: async () => {
+          console.log("callback");
+        }
+      }
     }
   } satisfies RobloxWidgetProps
 };

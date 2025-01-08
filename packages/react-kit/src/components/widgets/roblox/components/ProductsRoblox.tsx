@@ -21,6 +21,7 @@ import { CancelExchange } from "../../../modal/components/Redeem/ExchangeView/ca
 import NonModal from "../../../modal/nonModal/NonModal";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { getCssVar } from "../../../../theme";
+import { GridContainerProps } from "../../../ui/GridContainer";
 
 const Wrapper = styled(Grid).attrs({
   paddingTop: "5rem",
@@ -46,6 +47,7 @@ export type ProductsRobloxProps = {
   sellerId: string;
   raiseDisputeForExchangeUrl: string;
   showProductsPreLogin: boolean;
+  layout: "vertical" | "horizontal";
 };
 
 export const ProductsRoblox = ({
@@ -60,7 +62,8 @@ export const ProductsRoblox = ({
     parentOrigin,
     signatures
   },
-  showProductsPreLogin
+  showProductsPreLogin,
+  layout
 }: ProductsRobloxProps) => {
   const { address } = useAccount();
   const { showModal } = useModal();
@@ -126,6 +129,13 @@ export const ProductsRoblox = ({
     setProductUuid("");
     setBundleUuid("");
   };
+  const itemsPerRow = {
+    xs: 1,
+    s: layout === "vertical" ? 1 : 2,
+    m: layout === "vertical" ? 2 : 3,
+    l: layout === "vertical" ? 2 : 4,
+    xl: layout === "vertical" ? 2 : 5
+  } satisfies GridContainerProps["itemsPerRow"];
   return (
     <Wrapper justifyContent="center" alignItems="center">
       <ContentWrapper flexDirection="column" alignItems="flex-start" gap="5rem">
@@ -170,6 +180,7 @@ export const ProductsRoblox = ({
               </Typography>
 
               <RobloxExchangesGrid
+                itemsPerRow={itemsPerRow}
                 raiseDisputeForExchangeUrl={raiseDisputeForExchangeUrl}
                 exchanges={purchasedProducts}
                 handleCancellation={(robloxExchange) => {
@@ -202,6 +213,7 @@ export const ProductsRoblox = ({
                 inventory you have
               </Typography>
               <RobloxProductsGrid
+                itemsPerRow={itemsPerRow}
                 products={availableProducts}
                 handleSetProductUuid={handleSetProductUuid}
                 handleSetBundleUuid={handleSetBundleUuid}
@@ -221,6 +233,7 @@ export const ProductsRoblox = ({
                 Roblox inventory item.
               </Typography>
               <RobloxProductsGrid
+                itemsPerRow={itemsPerRow}
                 products={unavailableProducts}
                 handleSetProductUuid={handleSetProductUuid}
                 handleSetBundleUuid={handleSetBundleUuid}
@@ -243,6 +256,7 @@ export const ProductsRoblox = ({
                 Roblox inventory item.
               </Typography>
               <RobloxProductsGrid
+                itemsPerRow={itemsPerRow}
                 products={robloxExclusives}
                 isLoading={robloxExclusivesLoading}
                 isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}
