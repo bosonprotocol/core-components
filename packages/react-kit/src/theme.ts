@@ -45,13 +45,13 @@ export const roundnessKeys = {
 export const getThemes = ({ roundness }: { roundness: Roundness }) => {
   const varsWithSameValuesAccrossThemes = {
     "--button-border-radius":
-      roundness === "min"
+      roundness === "min" || !roundness
         ? ("2px" as `${string}px`)
         : roundness === "mid"
           ? ("8px" as `${string}px`)
           : ("32px" as `${string}px`),
     "--modal-border-radius":
-      roundness === "min"
+      roundness === "min" || !roundness
         ? ("4px" as `${string}px`)
         : roundness === "mid"
           ? ("12px" as `${string}px`)
