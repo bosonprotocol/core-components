@@ -7,6 +7,7 @@ import {
   ErrorFragment
 } from "@bosonprotocol/common";
 import { TokenInfoManager } from "../utils/tokenInfoManager";
+import { Biconomy } from "../meta-tx/biconomy";
 
 export class BaseCoreSDK {
   protected _web3Lib: Web3LibAdapter;
@@ -90,6 +91,28 @@ export class BaseCoreSDK {
       metaTxApiKey,
       contractAddress
     };
+  }
+
+  protected async assertAndGetMetaTxConfig2(
+    overrides: Partial<{
+      verifierAddress: string;
+      metaTxConfig: Partial<Omit<MetaTxConfig, "apiIds"> & { apiId: string }>;
+      metaTransactionMethod: string;
+    }> = {}
+  ) {
+    const ret = this.assertAndGetMetaTxConfig(overrides);
+
+    // Check the meta-tx gateway is ready and accepts relaying transaction to the targeted contract
+    const biconomy = new Biconomy(
+      ret.metaTxRelayerUrl,
+      ret.metaTxApiKey,
+      ret.metaTxApiId
+    );
+    const ready = await biconomy.check({
+      contract: ret.contractAddress
+    });
+
+    return ready ? ret : undefined;
   }
 }
 

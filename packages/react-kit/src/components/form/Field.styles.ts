@@ -133,7 +133,6 @@ export const FileUploadWrapper = styled.div<{
   position: relative;
   overflow: hidden;
   display: flex;
-  justify-content: center;
   padding: 0.5rem;
   align-items: center;
 
@@ -143,11 +142,13 @@ export const FileUploadWrapper = styled.div<{
           width: 100%;
           flex-direction: row;
           cursor: default;
+          justify-content: start;
         `
       : css`
           width: 8rem;
           height: 8rem;
           flex-direction: column;
+          justify-content: center;
         `}
 
   img {
@@ -201,15 +202,22 @@ export const FieldFileUpload = styled(FieldInput)`
   display: none;
 `;
 
-export const PdfOnlyLabel = styled.label<{ $disabled?: boolean }>`
+export const PdfOnlyLabel = styled.label<{
+  $disabled?: boolean;
+  $marginTop?: CSSProperties["marginTop"];
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 1rem;
   gap: 0.25rem;
   padding: 0.656rem 1.25rem;
   background: ${colors.greyLight};
   font-size: 0.875rem;
+  ${({ $marginTop }) =>
+    $marginTop !== undefined &&
+    css`
+      margin-top: ${$marginTop};
+    `}
   ${({ $disabled }) =>
     $disabled
       ? css`

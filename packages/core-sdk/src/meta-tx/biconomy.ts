@@ -189,4 +189,30 @@ export class Biconomy {
     }
     return resubmittedResponse;
   }
+
+  public async check(
+    args: {
+      contract?: string;
+    } = {}
+  ): Promise<boolean> {
+    const url = `${
+      this._relayerUrl
+    }/ready?apiKey=${this._apiKey || ""}&apiId=${this._apiId || ""}&contract=${args.contract || ""}`;
+    try {
+      const response = await _fetch(url, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json;charset=UTF-8",
+          "Access-Control-Allow-Origin": "*"
+        }
+      });
+      if (!response.ok) {
+        return false;
+      }
+      const json = (await response.json()) as { ready: boolean };
+      return json?.ready || false;
+    } catch (e) {
+      return false;
+    }
+  }
 }
