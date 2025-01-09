@@ -2,7 +2,13 @@ import { subgraph } from "@bosonprotocol/core-sdk";
 import * as Sentry from "@sentry/browser";
 import { BigNumberish, ethers, providers } from "ethers";
 import { ArrowsLeftRight, Info, Spinner } from "phosphor-react";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import toast from "react-hot-toast";
 import styled, { css } from "styled-components";
 import {
@@ -32,9 +38,10 @@ import { useDetailViewContext } from "../../common/detail/DetailViewProvider";
 import { DetailViewProps } from "../../common/detail/types";
 import { useBuyers } from "../../../../../hooks/useBuyers";
 import { CommitRedeemSteps } from "./CommitRedeemSteps";
-import { RedeemWhatsNext } from "./RedeemWhatsNext";
+import { RedeemWhatsNext, RedeemWhatsNextProps } from "./RedeemWhatsNext";
 import { useOpenAccountDrawer } from "../../../../wallet2/accountDrawer";
 import { colors } from "../../../../../colors";
+import { RequestShipmentModalProps } from "../../RequestShipment/RequestShipmentModal";
 
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
 
@@ -86,7 +93,8 @@ export type InnerCommitDetailViewProps = Omit<
     onAlreadyOwnOfferClick?: () => void;
   },
   "children" | "hasSellerEnoughFunds"
->;
+> &
+  Pick<RedeemWhatsNextProps, "requestShipmentProps">;
 export default function InnerCommitDetailView(
   props: InnerCommitDetailViewProps
 ) {
@@ -95,7 +103,9 @@ export default function InnerCommitDetailView(
     onCommit,
     onCommitting,
     onAlreadyOwnOfferClick,
-    selectedVariant
+    selectedVariant,
+    exchange,
+    requestShipmentProps
   } = props;
   const { offer } = selectedVariant;
   const {
@@ -108,6 +118,22 @@ export default function InnerCommitDetailView(
     hasSellerEnoughFunds,
     swapParams
   } = useDetailViewContext();
+  const externalExchangeId = exchange?.id;
+  const [exchangeId, setExchangeId] = useState<string | undefined>(
+    externalExchangeId
+  );
+  const handleSetExchangeId = useCallback(
+    (newExchangeId: string) => {
+      setStatus("success");
+      setExchangeId(newExchangeId);
+    },
+    [externalExchangeId]
+  );
+  useEffect(() => {
+    if (externalExchangeId) {
+      handleSetExchangeId(externalExchangeId);
+    }
+  }, [externalExchangeId, handleSetExchangeId]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [status, setStatus] = useState<
     | "initial-state"
@@ -195,7 +221,7 @@ export default function InnerCommitDetailView(
     receipt: ethers.providers.TransactionReceipt,
     { exchangeId }: { exchangeId: BigNumberish }
   ) => {
-    setStatus("success");
+    handleSetExchangeId(exchangeId.toString());
     let createdExchange: subgraph.ExchangeFieldsFragment;
     await poll(
       async () => {
@@ -383,12 +409,17 @@ export default function InnerCommitDetailView(
                         id="commit"
                       />
                     ) : ( */}
+                    {/* {exchangeId && ( */}
                     <CommitRedeemSteps
                       offerId={offer.id}
                       status={"pending-signature"}
                     >
-                      <RedeemWhatsNext exchangeId="" />
+                      <RedeemWhatsNext
+                        exchangeId={exchangeId || ""}
+                        requestShipmentProps={requestShipmentProps}
+                      />
                     </CommitRedeemSteps>
+                    {/* )} */}
                     {/* )} */}
                   </>
                 )}

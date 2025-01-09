@@ -2,7 +2,7 @@ import React from "react";
 import { Image as AccountImage } from "@davatar/react";
 import styled, { css } from "styled-components";
 import { Grid, GridProps } from "../../components/ui/Grid";
-import { colors } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../types/offer";
 import { MediaSet } from "../../lib/lens/generated";
@@ -30,7 +30,7 @@ const SellerInfo = styled.div`
   flex-direction: row;
   width: 100%;
   align-items: center;
-  color: ${colors.violet};
+  color: ${getCssVar("--secondary-button-text-color")};
   font-style: normal;
   font-size: 0.875rem;
   font-weight: 600;

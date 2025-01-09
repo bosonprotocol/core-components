@@ -86,7 +86,7 @@ export function WalletModal({
   return (
     <Wrapper data-testid="wallet-modal">
       <Grid justifyContent="space-between" marginBottom="16px">
-        Connect a wallet
+        Connect account
       </Grid>
       {activationState.status === ActivationStatus.ERROR ? (
         <ConnectionErrorView {...connectionErrorProps} />

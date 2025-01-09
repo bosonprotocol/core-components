@@ -556,18 +556,6 @@ export const RedeemLeftButton = styled.button`
   color: ${colors.black};
 `;
 
-export const CommitAndRedeemButton = styled(Typography)`
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%;
-  color: ${colors.violet};
-  cursor: pointer;
-  transition: color 150ms ease-in-out;
-  &:hover {
-    color: ${colors.violet};
-  }
-`;
-
 export const RaiseProblemButton = styled(ThemedButton)`
   width: 100%;
   display: flex;

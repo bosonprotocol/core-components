@@ -56,7 +56,6 @@ export type ExchangeViewProps = OnClickBuyOrSwapHandler &
     onHouseClick: () => void;
     onNextClick: () => void;
     onCancelExchange: () => void;
-    onPurchaseOverview: () => void;
     onViewFullDescription: () => void;
     onExpireVoucherClick: () => void;
     onRaiseDisputeClick: () => void;
@@ -80,7 +79,6 @@ export function ExchangeView({
   onNextClick,
   onCancelExchange,
   onExchangePolicyClick,
-  onPurchaseOverview,
   onViewFullDescription,
   onExpireVoucherClick,
   onRaiseDisputeClick,
@@ -248,7 +246,6 @@ export function ExchangeView({
               onRedeem={onNextClick}
               onExpireVoucherClick={onExpireVoucherClick}
               onRaiseDisputeClick={onRaiseDisputeClick}
-              onPurchaseOverview={onPurchaseOverview}
               onCancelExchangeClick={onCancelExchange}
               onContractualAgreementClick={onContractualAgreementClick}
               showPriceAsterisk={false}

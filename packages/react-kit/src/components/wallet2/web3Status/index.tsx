@@ -67,7 +67,7 @@ function Web3StatusInner({
   connectedButtonTheme,
   connectWalletButtonTheme,
   connectWalletButtonDisabled,
-  connectWalletChild = <>Connect Wallet</>,
+  connectWalletChild = <>Connect account</>,
   showStatusIcon = true,
   wrongNetworkChild = <>Wrong network</>,
   leftConnectWalletChild,

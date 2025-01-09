@@ -75,6 +75,7 @@ export const RobloxExchangesGrid = ({
             if (!(isProductV1(offer) || isBundle(offer))) {
               return null;
             }
+
             const { exchangeToken } = offer;
             const { mainImage } = getOfferDetails(offer);
             const imageOptimizationOptions = {

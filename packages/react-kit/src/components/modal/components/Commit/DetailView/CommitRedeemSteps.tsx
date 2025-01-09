@@ -1,24 +1,26 @@
-import { css, styled } from "styled-components";
+import { css, CSSProperties, styled } from "styled-components";
 import { Grid } from "../../../../ui/Grid";
 import React, { ReactNode } from "react";
 import { Checks, Package, ShoppingCartSimple } from "phosphor-react";
 import { Typography } from "../../../../ui/Typography";
-import { colors } from "../../../../../colors";
+import { getCssVar } from "../../../../../theme";
 
-const IconWrapper = styled.div<{ $isDisabled?: boolean }>`
+const IconWrapper = styled.div<{
+  $isDisabled?: boolean;
+  $backgroundColor: CSSProperties["backgroundColor"];
+}>`
   display: grid;
   align-content: center;
   justify-content: center;
   min-width: 40px;
   min-height: 40px;
-  background-color: black;
   border-radius: 8px;
-  ${({ $isDisabled }) => {
+  ${({ $isDisabled, $backgroundColor }) => {
     return $isDisabled
-      ? css`
-          background-color: ${colors.greyLight};
-        `
-      : "";
+      ? css``
+      : css`
+          background-color: ${$backgroundColor};
+        `;
   }};
 `;
 const Wrapper = styled(Grid)`
@@ -27,7 +29,7 @@ const Wrapper = styled(Grid)`
     &::after {
       content: "";
       position: absolute;
-      background-color: ${colors.greyLight};
+      background-color: ${getCssVar("--background-color")};
       bottom: -62%;
       left: 50%;
       height: 18px;
@@ -52,8 +54,11 @@ export const CommitRedeemSteps = ({
     <Wrapper flexDirection="column" alignItems="flex-start" gap="2rem">
       {status === "pending-signature" ? (
         <Grid justifyContent="flex-start" gap="1rem">
-          <IconWrapper>
-            <ShoppingCartSimple color="white" size={iconSize} />
+          <IconWrapper $backgroundColor={getCssVar("--main-text-color")}>
+            <ShoppingCartSimple
+              color={getCssVar("--background-accent-color")}
+              size={iconSize}
+            />
           </IconWrapper>
           <Typography fontSize="0.875rem" fontWeight={600}>
             Confirm transaction to buy this product
@@ -61,7 +66,7 @@ export const CommitRedeemSteps = ({
         </Grid>
       ) : status === "success" ? (
         <Grid justifyContent="flex-start" gap="1rem">
-          <IconWrapper>
+          <IconWrapper $backgroundColor="transparent">
             <Checks color="black" size={iconSize} />
           </IconWrapper>
           <Typography fontSize="0.875rem" fontWeight={600}>
@@ -71,22 +76,32 @@ export const CommitRedeemSteps = ({
       ) : null}
       {status === "pending-signature" ? (
         <Grid justifyContent="flex-start" gap="1rem" style={{ opacity: 0.5 }}>
-          <IconWrapper $isDisabled={true}>
-            <Package color="black" size={iconSize} />
+          <IconWrapper
+            $isDisabled={true}
+            $backgroundColor={getCssVar("--background-color")}
+          >
+            <Package color={getCssVar("--sub-text-color")} size={iconSize} />
           </IconWrapper>
           <Grid flexDirection="column" alignItems="flex-start">
             <Typography fontSize="0.875rem" fontWeight={600}>
               Request shipment (redeem)
             </Typography>
-            <Typography fontSize="0.75rem" fontWeight={400}>
+            <Typography
+              fontSize="0.75rem"
+              fontWeight={400}
+              color={getCssVar("--sub-text-color")}
+            >
               You can redeem your product now or later.
             </Typography>
           </Grid>
         </Grid>
       ) : status === "success" ? (
         <Grid justifyContent="flex-start" gap="1rem">
-          <IconWrapper>
-            <Package color="white" size={iconSize} />
+          <IconWrapper $backgroundColor={getCssVar("--main-text-color")}>
+            <Package
+              color={getCssVar("--background-accent-color")}
+              size={iconSize}
+            />
           </IconWrapper>
           <Typography fontSize="0.875rem" fontWeight={600}>
             Ship, Trade or Hold

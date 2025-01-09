@@ -7,6 +7,8 @@ import { Grid } from "../../../../ui/Grid";
 import { Offer } from "../../../../../types/offer";
 import { LoadingBubble } from "../../../../skeleton/common";
 
+const DescriptionButton = styled.div``;
+
 const Container = styled(Grid)`
   background: ${getCssVar("--background-accent-color")};
   padding: 1rem;
@@ -21,8 +23,8 @@ const Container = styled(Grid)`
       height: 1.5rem;
     }
   }
-  .description {
-    color: ${colors.violet};
+  ${DescriptionButton} {
+    color: ${getCssVar("--secondary-button-text-color")};
     font-weight: 600;
     font-size: 0.875rem;
     justify-content: flex-end;
@@ -74,12 +76,15 @@ export function SellerAndDescription({
           style={{ flex: "initial" }}
         />
       ) : (
-        <div onClick={onViewFullDescription} className="description">
+        <DescriptionButton onClick={onViewFullDescription}>
           <span style={{ textAlign: "right" }}>
             View full offer description
           </span>
-          <StyledTextAlignLeft size={30} color={colors.violet} />
-        </div>
+          <StyledTextAlignLeft
+            size={30}
+            color={getCssVar("--secondary-button-text-color")}
+          />
+        </DescriptionButton>
       )}
     </Container>
   );

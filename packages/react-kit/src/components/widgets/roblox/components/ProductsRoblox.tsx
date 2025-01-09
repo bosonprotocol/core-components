@@ -4,8 +4,6 @@ import { Typography } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
 import { CommitModalWithOffer } from "../../commit/CommitModalWithOffer";
 import { RobloxProductsGrid } from "./RobloxProductsGrid";
-import { useModal } from "../../../modal/useModal";
-import { RequestShipmentModalProps } from "../../../modal/components/RequestShipment/RequestShipmentModal";
 import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";
 import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges";
 import { useAccount } from "../../../../hooks";
@@ -19,6 +17,9 @@ import NonModal from "../../../modal/nonModal/NonModal";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { getCssVar } from "../../../../theme";
 import { GridContainerProps } from "../../../ui/GridContainer";
+import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
+import { subgraph } from "@bosonprotocol/core-sdk";
+import { CommitNonModalProps } from "../../../modal/components/Commit/CommitNonModal";
 
 const Wrapper = styled(Grid).attrs({
   paddingTop: "5rem",
@@ -31,16 +32,7 @@ const Wrapper = styled(Grid).attrs({
 const ContentWrapper = Grid;
 
 export type ProductsRobloxProps = {
-  requestShipmentProps: Pick<
-    RequestShipmentModalProps,
-    | "postDeliveryInfoUrl"
-    | "deliveryInfoHandler"
-    | "redemptionSubmittedHandler"
-    | "redemptionConfirmedHandler"
-    | "forcedAccount"
-    | "parentOrigin"
-    | "signatures"
-  >;
+  requestShipmentProps: CommitNonModalProps["requestShipmentProps"];
   sellerId: string;
   raiseDisputeForExchangeUrl: string;
   showProductsPreLogin: boolean;
@@ -50,20 +42,11 @@ export type ProductsRobloxProps = {
 export const ProductsRoblox = ({
   sellerId,
   raiseDisputeForExchangeUrl,
-  requestShipmentProps: {
-    deliveryInfoHandler,
-    postDeliveryInfoUrl,
-    redemptionSubmittedHandler,
-    redemptionConfirmedHandler,
-    forcedAccount,
-    parentOrigin,
-    signatures
-  },
+  requestShipmentProps,
   showProductsPreLogin,
   layout
 }: ProductsRobloxProps) => {
   const { address } = useAccount();
-  const { showModal } = useModal();
   const { data: robloxLoggedInData } = useIsRobloxLoggedIn({
     sellerId,
     options: {
@@ -105,6 +88,7 @@ export const ProductsRoblox = ({
       userWallet: address ?? "",
       options: { enabled: !!address }
     });
+  const [exchange, setExchange] = useState<subgraph.ExchangeFieldsFragment>();
   const [productUuid, setProductUuid] = useState<string>("");
   const [bundleUuid, setBundleUuid] = useState<string>("");
   const [exchangeToCancel, setExchangeToCancel] =
@@ -112,19 +96,34 @@ export const ProductsRoblox = ({
 
   const resetExchangeToCancel = () => setExchangeToCancel(undefined);
 
-  const handleSetProductUuid = (selectedProductUuid: string) => {
+  const handleSetProductUuid = ({
+    selectedProductUuid,
+    exchange
+  }: {
+    selectedProductUuid: string;
+    exchange?: subgraph.ExchangeFieldsFragment;
+  }) => {
     setProductUuid(selectedProductUuid);
     setBundleUuid("");
     resetExchangeToCancel();
+    setExchange(exchange);
   };
-  const handleSetBundleUuid = (selectedBundleUuid: string) => {
+  const handleSetBundleUuid = ({
+    selectedBundleUuid,
+    exchange
+  }: {
+    selectedBundleUuid: string;
+    exchange?: subgraph.ExchangeFieldsFragment;
+  }) => {
     setProductUuid("");
     setBundleUuid(selectedBundleUuid);
     resetExchangeToCancel();
+    setExchange(exchange);
   };
   const clearSelection = () => {
     setProductUuid("");
     setBundleUuid("");
+    setExchange(undefined);
   };
   const itemsPerRow = {
     xs: 1,
@@ -141,6 +140,8 @@ export const ProductsRoblox = ({
             sellerId={sellerId}
             productUuid={productUuid}
             bundleUuid={bundleUuid}
+            exchange={exchange}
+            requestShipmentProps={requestShipmentProps}
             lookAndFeel="regular"
             hideModal={clearSelection}
             withExternalSigner={false}
@@ -184,16 +185,18 @@ export const ProductsRoblox = ({
                   setExchangeToCancel(robloxExchange);
                 }}
                 handleRequestShipment={(robloxExchange) => {
-                  showModal("REQUEST_SHIPMENT", {
-                    exchange: robloxExchange,
-                    deliveryInfoHandler,
-                    parentOrigin,
-                    postDeliveryInfoUrl,
-                    redemptionConfirmedHandler,
-                    redemptionSubmittedHandler,
-                    signatures,
-                    forcedAccount
-                  });
+                  const { offer } = robloxExchange;
+                  if (isProductV1(offer)) {
+                    handleSetProductUuid({
+                      selectedProductUuid: offer.metadata.product.uuid,
+                      exchange: robloxExchange
+                    });
+                  } else if (isBundle(offer)) {
+                    handleSetBundleUuid({
+                      selectedBundleUuid: offer.metadata.bundleUuid,
+                      exchange: robloxExchange
+                    });
+                  }
                 }}
                 isLoading={purchasedProductsLoading}
               />
@@ -212,8 +215,12 @@ export const ProductsRoblox = ({
               <RobloxProductsGrid
                 itemsPerRow={itemsPerRow}
                 products={availableProducts}
-                handleSetProductUuid={handleSetProductUuid}
-                handleSetBundleUuid={handleSetBundleUuid}
+                handleSetProductUuid={(uuid) =>
+                  handleSetProductUuid({ selectedProductUuid: uuid })
+                }
+                handleSetBundleUuid={(uuid) =>
+                  handleSetBundleUuid({ selectedBundleUuid: uuid })
+                }
                 isLoading={availableProductLoading}
                 isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}
               />
@@ -232,8 +239,12 @@ export const ProductsRoblox = ({
               <RobloxProductsGrid
                 itemsPerRow={itemsPerRow}
                 products={unavailableProducts}
-                handleSetProductUuid={handleSetProductUuid}
-                handleSetBundleUuid={handleSetBundleUuid}
+                handleSetProductUuid={(uuid) =>
+                  handleSetProductUuid({ selectedProductUuid: uuid })
+                }
+                handleSetBundleUuid={(uuid) =>
+                  handleSetBundleUuid({ selectedBundleUuid: uuid })
+                }
                 isLoading={unavailableProductsLoading}
                 isLoggedInWithRoblox={!!robloxLoggedInData?.isLoggedIn}
               />

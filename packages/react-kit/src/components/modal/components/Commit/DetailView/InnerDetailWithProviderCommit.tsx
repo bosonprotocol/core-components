@@ -12,7 +12,6 @@ import { QuantityDisplay } from "./common/QuantityDisplay";
 export type InnerDetailWithProviderCommitProps =
   | Omit<InnerCommitDetailViewProps, "priceSibling">
   | Omit<InnerDetailViewWithPortalProps, "priceSibling">;
-
 export const InnerDetailWithProviderCommit: React.FC<
   InnerDetailWithProviderCommitProps
 > = (props) => {

@@ -26,8 +26,8 @@ import { mockedDeliveryAddress } from "../../../widgets/redemption/const";
 import { checkSignatures } from "../Redeem/checkSignatures";
 import Loading from "../../../ui/loading/LoadingWrapper";
 import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
-import { BosonRobloxExchange } from "../../../../hooks/roblox/backend.types";
 import { RequestShipmentSuccess } from "./exchangePolicyOverview/RequestShipmentSuccess";
+import { subgraph } from "@bosonprotocol/core-sdk";
 
 const Wrapper = styled.div``;
 
@@ -47,7 +47,7 @@ export type RequestShipmentModalProps = Pick<
   | "redemptionSubmittedHandler"
   | "redemptionConfirmedHandler"
 > & {
-  exchange: BosonRobloxExchange;
+  exchange: subgraph.ExchangeFieldsFragment;
   forcedAccount?: string;
   parentOrigin?: string | null;
   signatures?: string[] | null;

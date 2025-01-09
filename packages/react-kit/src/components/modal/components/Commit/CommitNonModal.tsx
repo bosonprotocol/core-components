@@ -7,7 +7,6 @@ import { VariantV1 } from "../../../../types/variants";
 import Loading from "../../../ui/loading/LoadingWrapper";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import { BosonLogo } from "../common/BosonLogo";
-import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
 import {
   DetailContextProps,
   DetailViewProvider
@@ -31,7 +30,10 @@ enum CommitStep {
 
 export type CommitNonModalProps = Pick<
   OfferVariantViewProps,
-  "onClickBuyOrSwap" | "onAlreadyOwnOfferClick"
+  | "onClickBuyOrSwap"
+  | "onAlreadyOwnOfferClick"
+  | "exchange"
+  | "requestShipmentProps"
 > & {
   variants?: VariantV1[];
   showBosonLogo?: boolean;
@@ -41,7 +43,6 @@ export type CommitNonModalProps = Pick<
   isLoading: boolean;
   hideModal?: NonModalProps["hideModal"];
   onExchangePolicyClick?: OfferVariantViewProps["onExchangePolicyClick"];
-  offerViewOnPurchaseOverview?: OfferVariantViewProps["onPurchaseOverview"];
   offerViewOnViewFullDescription?: OfferVariantViewProps["onViewFullDescription"];
   forcedAccount?: string;
   withExternalSigner?: boolean | undefined | null;
@@ -80,9 +81,10 @@ function CommitNonModal({
   defaultSelectedOfferId,
   disableVariationsSelects,
   isLoading,
+  exchange,
+  requestShipmentProps,
   onExchangePolicyClick,
   onAlreadyOwnOfferClick,
-  offerViewOnPurchaseOverview,
   offerViewOnViewFullDescription,
   onClickBuyOrSwap,
   forcedAccount
@@ -184,6 +186,8 @@ function CommitNonModal({
     <>
       {currentStep === CommitStep.OFFER_VIEW ? (
         <OfferVariantView
+          requestShipmentProps={requestShipmentProps}
+          exchange={exchange}
           showBosonLogoInFooter={showBosonLogoInFooter}
           showBosonLogo={showBosonLogo}
           allVariants={variants ?? [selectedVariant]}
@@ -194,10 +198,6 @@ function CommitNonModal({
           onExchangePolicyClick={(...args) => {
             setActiveStep(CommitStep.EXCHANGE_POLICY);
             onExchangePolicyClick?.(...args);
-          }}
-          onPurchaseOverview={() => {
-            setActiveStep(CommitStep.PURCHASE_OVERVIEW);
-            offerViewOnPurchaseOverview?.();
           }}
           onViewFullDescription={() => {
             setActiveStep(CommitStep.OFFER_FULL_DESCRIPTION);
@@ -228,8 +228,6 @@ function CommitNonModal({
             onClickBuyOrSwap={onClickBuyOrSwap}
           />
         </DetailViewProvider>
-      ) : currentStep === CommitStep.PURCHASE_OVERVIEW ? (
-        <PurchaseOverviewView onBackClick={goToPreviousStep} />
       ) : currentStep === CommitStep.EXCHANGE_POLICY ? (
         <CommitOfferPolicyView
           showBosonLogoInFooter={showBosonLogoInFooter}

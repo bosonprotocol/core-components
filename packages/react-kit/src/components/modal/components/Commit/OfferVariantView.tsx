@@ -20,7 +20,10 @@ import { ResponsiveVariationSelects } from "../common/VariationSelects";
 import DetailSlider from "../common/detail/DetailSlider";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import { SlickSlider, initialSettings } from "../common/detail/SlickSlider";
-import { CommitDetailViewWithProvider } from "./DetailView/CommitDetailViewWithProvider";
+import {
+  CommitDetailViewWithProvider,
+  CommitDetailViewWithProviderProps
+} from "./DetailView/CommitDetailViewWithProvider";
 import { DetailContextProps } from "../common/detail/DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../common/detail/useGetOfferDetailData";
@@ -28,6 +31,7 @@ import { BosonLogo } from "../common/BosonLogo";
 import { PhygitalLabel } from "../../../productCard/ProductCard";
 import { useIsPhygital } from "../../../../hooks/offer/useIsPhygital";
 import { getCssVar } from "../../../../theme";
+import { InnerCommitDetailViewProps } from "./DetailView/InnerCommitDetailView";
 
 const ImageWrapper = styled.div`
   container-type: inline-size;
@@ -58,9 +62,9 @@ const PreviewSlickSlider = styled(SlickSlider)`
 `;
 
 export type OfferVariantViewProps = OnClickBuyOrSwapHandler &
-  Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick"> & {
+  Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick" | "exchange"> &
+  Pick<InnerCommitDetailViewProps, "requestShipmentProps"> & {
     onCommit: (exchangeId: string, txHash: string) => void;
-    onPurchaseOverview: () => void;
     onViewFullDescription: () => void;
     onLicenseAgreementClick: () => void;
     onGetDetailViewProviderProps: (providerProps: DetailContextProps) => void;
@@ -89,10 +93,11 @@ export function OfferVariantView({
   disableVariationsSelects,
   loadingViewFullDescription,
   showBosonLogoInFooter,
+  exchange,
+  requestShipmentProps,
   onCommit,
   onExchangePolicyClick,
   onLicenseAgreementClick,
-  onPurchaseOverview,
   onViewFullDescription,
   onGetDetailViewProviderProps,
   onClickBuyOrSwap,
@@ -236,8 +241,9 @@ export function OfferVariantView({
                 onCommit(...args);
                 setIsComitting(false);
               }}
+              requestShipmentProps={requestShipmentProps}
+              exchange={exchange ?? undefined}
               onCommitting={() => setIsComitting(true)}
-              onPurchaseOverview={onPurchaseOverview}
               showPriceAsterisk={false}
               onGetProviderProps={innerOnGetProviderProps}
               onClickBuyOrSwap={onClickBuyOrSwap}

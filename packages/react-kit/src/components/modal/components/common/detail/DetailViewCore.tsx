@@ -4,7 +4,6 @@ import { createPortal } from "react-dom";
 import styled from "styled-components";
 import Logo from "../../../../../assets/logo.svg";
 import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
-import { colors } from "../../../../../theme";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import Price from "../../../../price/Price";
 import { DetailsSummary } from "../../../../ui/DetailsSummary";
@@ -13,7 +12,6 @@ import {
   BaseWidget,
   BosonExclusiveContainer,
   Break,
-  CommitAndRedeemButton,
   WidgetUpperGrid
 } from "./Detail.style";
 import DetailTable from "./DetailTable";
@@ -62,7 +60,6 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
       showPriceAsterisk,
       isBosonExclusive,
       onExchangePolicyClick,
-      onPurchaseOverview,
       onClickBuyOrSwap
     },
     ref
@@ -167,25 +164,6 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
             inheritColor={false}
           />
         </DetailsSummary>
-        <Grid
-          justifyContent="center"
-          alignItems="center"
-          marginTop="12px"
-          marginBottom="12px"
-        >
-          <div
-            style={{
-              cursor: "pointer",
-              display: "flex",
-              gap: "0.1rem",
-              alignItems: "center"
-            }}
-            onClick={onPurchaseOverview}
-          >
-            <CommitAndRedeemButton>How it works?</CommitAndRedeemButton>
-            <Info color={colors.violet} size={24} />
-          </div>
-        </Grid>
         {bottomChildren && (
           <>
             <Break />

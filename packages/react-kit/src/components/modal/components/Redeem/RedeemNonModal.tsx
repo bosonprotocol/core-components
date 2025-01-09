@@ -35,7 +35,6 @@ import {
 } from "../../../widgets/redemption/provider/RedemptionWidgetContext";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import { BosonLogo } from "../common/BosonLogo";
-import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
 import StepsOverview from "../common/StepsOverview/StepsOverview";
 import { ExchangeFullDescriptionView } from "./ExchangeView/ExchangeFullDescriptionView/ExchangeFullDescriptionView";
 import { ExchangeView, ExchangeViewProps } from "./ExchangeView/ExchangeView";
@@ -63,7 +62,6 @@ enum ActiveStep {
   STEPS_OVERVIEW,
   MY_ITEMS,
   EXCHANGE_VIEW,
-  PURCHASE_OVERVIEW,
   REDEEM_FORM,
   REDEEM_FORM_CONFIRMATION,
   REDEEM_SUCESS,
@@ -94,7 +92,6 @@ export type RedeemNonModalProps = Pick<
     myItemsOnRaiseDisputeClick?: MyItemsProps["onRaiseDisputeClick"];
     myItemsOnAvatarClick?: MyItemsProps["onAvatarClick"];
     onExchangePolicyClick?: ExchangeViewProps["onExchangePolicyClick"];
-    exchangeViewOnPurchaseOverview?: ExchangeViewProps["onPurchaseOverview"];
     exchangeViewOnViewFullDescription?: ExchangeViewProps["onViewFullDescription"];
     exchangeViewOnCancelExchange?: ExchangeViewProps["onCancelExchange"];
     exchangeViewOnExpireVoucherClick?: ExchangeViewProps["onExpireVoucherClick"];
@@ -169,7 +166,6 @@ function RedeemNonModal({
   myItemsOnRaiseDisputeClick,
   myItemsOnAvatarClick,
   onExchangePolicyClick,
-  exchangeViewOnPurchaseOverview,
   exchangeViewOnViewFullDescription,
   exchangeViewOnCancelExchange,
   exchangeViewOnExpireVoucherClick,
@@ -431,10 +427,6 @@ function RedeemNonModal({
                     setActiveStep(ActiveStep.EXCHANGE_POLICY);
                     onExchangePolicyClick?.(...args);
                   }}
-                  onPurchaseOverview={() => {
-                    setActiveStep(ActiveStep.PURCHASE_OVERVIEW);
-                    exchangeViewOnPurchaseOverview?.();
-                  }}
                   onViewFullDescription={() => {
                     setActiveStep(ActiveStep.EXCHANGE_FULL_DESCRIPTION);
                     exchangeViewOnViewFullDescription?.();
@@ -493,8 +485,6 @@ function RedeemNonModal({
                     cancellationViewOnSuccess?.(...args);
                   }}
                 />
-              ) : currentStep === ActiveStep.PURCHASE_OVERVIEW ? (
-                <PurchaseOverviewView onBackClick={goToPreviousStep} />
               ) : currentStep === ActiveStep.REDEEM_FORM ? (
                 <RedeemFormView
                   showBosonLogoInFooter={showBosonLogoInFooter}

@@ -8,25 +8,43 @@ import { useConfigContext, useExchanges } from "../../../../../hooks";
 import { getOpenSeaUrl } from "../../../../../lib/opensea/getOpenSeaUrl";
 import dayjs from "dayjs";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
-import { colors } from "../../../../../colors";
+import { getCssVar } from "../../../../../theme";
+import { useModal } from "../../../useModal";
+import { RequestShipmentModalProps } from "../../RequestShipment/RequestShipmentModal";
 
 const Wrapper = styled(Grid)`
-  background-color: ${colors.white};
+  background-color: ${getCssVar("--background-accent-color")};
   box-shadow: 0px 4.318px 40px 0px rgba(21, 30, 52, 0.1);
   padding: 1rem;
   margin: 1rem 0;
 `;
 
 const InfoWrapper = styled(Grid)`
-  background-color: ${colors.greyLight};
+  background-color: ${getCssVar("--background-color")};
   border-radius: 0.25rem;
   padding: 0.5rem 1rem;
 `;
 
 export type RedeemWhatsNextProps = {
   exchangeId: string;
+  requestShipmentProps:
+    | Pick<
+        RequestShipmentModalProps,
+        | "postDeliveryInfoUrl"
+        | "deliveryInfoHandler"
+        | "redemptionSubmittedHandler"
+        | "redemptionConfirmedHandler"
+        | "forcedAccount"
+        | "parentOrigin"
+        | "signatures"
+      >
+    | undefined;
 };
-export const RedeemWhatsNext = ({ exchangeId }: RedeemWhatsNextProps) => {
+export const RedeemWhatsNext = ({
+  exchangeId,
+  requestShipmentProps
+}: RedeemWhatsNextProps) => {
+  const { showModal } = useModal();
   const { config, dateFormat } = useConfigContext();
   const { data: exchanges } = useExchanges(
     {
@@ -50,7 +68,18 @@ export const RedeemWhatsNext = ({ exchangeId }: RedeemWhatsNextProps) => {
     <Wrapper flexDirection="column" alignItems="flex-start" gap="1rem">
       <Typography fontWeight={600}>What's next?</Typography>
       <Grid gap="2rem">
-        <Button>Request shipment</Button>
+        {exchange && requestShipmentProps && (
+          <Button
+            onClick={() => {
+              showModal("REQUEST_SHIPMENT", {
+                exchange,
+                ...requestShipmentProps
+              });
+            }}
+          >
+            Request shipment
+          </Button>
+        )}
         {exchange && (
           <a
             href={getOpenSeaUrl({
@@ -66,17 +95,17 @@ export const RedeemWhatsNext = ({ exchangeId }: RedeemWhatsNextProps) => {
         )}
       </Grid>
       <InfoWrapper gap="0.8438rem">
-        <Info color={colors.violet} size={18} />
+        <Info color={getCssVar("--main-accent-color")} size={18} />
         <Grid flexDirection="column" alignItems="flex-start">
           <Typography
-            color={colors.greyDark}
+            color={getCssVar("--main-text-color")}
             fontSize="0.75rem"
             fontWeight={600}
           >
             Holding your NFT
           </Typography>
           <Typography
-            color={colors.greyDark}
+            color={getCssVar("--sub-text-color")}
             fontSize="0.75rem"
             fontWeight={600}
             opacity={0.5}

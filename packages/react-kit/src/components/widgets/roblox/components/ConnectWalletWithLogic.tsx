@@ -1,7 +1,6 @@
 import React from "react";
 import { ConnectWallet } from "../../../wallet2/web3Status";
-import { useAccount } from "../../../../hooks";
-import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
+import { useAccount, useOpenAccountDrawer } from "../../../../hooks";
 import { StyledPower } from "./styles";
 import ThemedButton, { bosonButtonThemes } from "../../../ui/ThemedButton";
 
@@ -17,14 +16,11 @@ export const ConnectWalletWithLogic = ({
   connectWalletButtonDisabled
 }: ConnectWalletWithLogicProps) => {
   const { address } = useAccount();
-  const disconnect = useDisconnect();
+  const [, openAccountDrawer] = useOpenAccountDrawer();
 
   return address ? (
-    <ThemedButton
-      themeVal="secondary"
-      onClick={() => disconnect({ isUserDisconnecting: true })}
-    >
-      Disconnect Account <StyledPower size={20} />
+    <ThemedButton themeVal="secondary" onClick={() => openAccountDrawer()}>
+      Disconnect account <StyledPower size={20} />
     </ThemedButton>
   ) : (
     <ConnectWallet
@@ -32,7 +28,7 @@ export const ConnectWalletWithLogic = ({
       connectWalletButtonTheme={primaryButtonTheme}
       connectedButtonTheme={secondaryButtonTheme}
       errorButtonTheme={orangeButtonTheme}
-      connectWalletChild="Connect Account"
+      connectWalletChild="Connect account"
     />
   );
 };
