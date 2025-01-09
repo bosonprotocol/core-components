@@ -1,12 +1,9 @@
-import styled, { CSSProperties } from "styled-components";
+import styled from "styled-components";
 import React, { useState } from "react";
 import { Typography } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
 import { CommitModalWithOffer } from "../../commit/CommitModalWithOffer";
-import {
-  RobloxProductsGrid,
-  RobloxProductsGridProps
-} from "./RobloxProductsGrid";
+import { RobloxProductsGrid } from "./RobloxProductsGrid";
 import { useModal } from "../../../modal/useModal";
 import { RequestShipmentModalProps } from "../../../modal/components/RequestShipment/RequestShipmentModal";
 import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";

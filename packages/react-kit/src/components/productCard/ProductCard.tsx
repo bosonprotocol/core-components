@@ -21,6 +21,7 @@ import {
 import { ProductType } from "./const";
 import { Grid } from "../ui/Grid";
 import { CircleHalf } from "phosphor-react";
+import { isMobile } from "../../lib/userAgent/userAgent";
 
 export const PhygitalLabel = () => {
   return (
@@ -114,7 +115,7 @@ export const ProductCard = (props: IProductCard) => {
     >
       <ProductCardImageWrapper>
         <Image {...imageProps} />
-        {CTAOnHover && (
+        {CTAOnHover && !isMobile && (
           <CTAOnHoverContainer $isHovered={isHovered}>
             {CTAOnHover}
           </CTAOnHoverContainer>

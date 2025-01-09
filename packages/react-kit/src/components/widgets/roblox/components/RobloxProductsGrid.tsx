@@ -21,6 +21,7 @@ import { Typography } from "../../../ui/Typography";
 import { isTruthy } from "../../../../types/helpers";
 import { LoginWithRoblox } from "./LoginWithRoblox";
 import { ThemedCommitButtonView } from "../../../buttons/ThemedCommitButtonView";
+import { isMobile } from "../../../../lib/userAgent/userAgent";
 
 const commonCardStyles = css`
   background: transparent;
@@ -57,6 +58,7 @@ export const RobloxProductsGrid = ({
 }: RobloxProductsGridProps) => {
   const { address } = useAccount();
   const { ipfsImageGateway } = useIpfsContext();
+  console.log({ isMobile });
   return (
     <GridContainer
       columnGap="2rem"
@@ -92,7 +94,13 @@ export const RobloxProductsGrid = ({
               ipfsImageGateway,
               imageOptimizationOptions
             );
-
+            const onCardClick = () => {
+              if (isProductV1(offer) && productUuid) {
+                handleSetProductUuid?.(productUuid);
+              } else if (isBundle(offer) && bundleUuid) {
+                handleSetBundleUuid?.(bundleUuid);
+              }
+            };
             return (
               <TransparentProductCard
                 key={key}
@@ -121,6 +129,7 @@ export const RobloxProductsGrid = ({
                     errorIcon: <CameraSlash size={32} color={colors.white} />
                   }
                 }}
+                onCardClick={isMobile ? onCardClick : undefined}
                 CTAOnHover={
                   !isLoggedInWithRoblox ? (
                     <LoginWithRoblox sellerId={seller.id} />
@@ -129,15 +138,7 @@ export const RobloxProductsGrid = ({
                       connectWalletButtonDisabled={false}
                     />
                   ) : (
-                    <ThemedCommitButtonView
-                      onClick={() => {
-                        if (isProductV1(offer) && productUuid) {
-                          handleSetProductUuid?.(productUuid);
-                        } else if (isBundle(offer) && bundleUuid) {
-                          handleSetBundleUuid?.(bundleUuid);
-                        }
-                      }}
-                    />
+                    <ThemedCommitButtonView onClick={onCardClick} />
                   )
                 }
               />
