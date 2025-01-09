@@ -1,8 +1,7 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
-import { Provider } from "@bosonprotocol/ethers-sdk";
 import * as Sentry from "@sentry/browser";
 import { BigNumberish, ethers, providers } from "ethers";
-import { ArrowRight, ArrowsLeftRight, Spinner } from "phosphor-react";
+import { ArrowsLeftRight, Info, Spinner } from "phosphor-react";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import styled, { css } from "styled-components";
@@ -16,10 +15,8 @@ import {
   getHasUserRejectedTx
 } from "../../../../../lib/errors/transactions";
 import { poll } from "../../../../../lib/promises/promises";
-import { colors, getCssVar } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import { useConfigContext } from "../../../../config/ConfigContext";
-import { CommitButton } from "../../../../cta/offer/CommitButton";
 import SuccessTransactionToast from "../../../../toasts/SuccessTransactionToast";
 import { Grid } from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
@@ -34,7 +31,10 @@ import { BuyOrSwapContainer } from "../../common/detail/BuyOrSwapContainer";
 import { useDetailViewContext } from "../../common/detail/DetailViewProvider";
 import { DetailViewProps } from "../../common/detail/types";
 import { useBuyers } from "../../../../../hooks/useBuyers";
+import { CommitRedeemSteps } from "./CommitRedeemSteps";
+import { RedeemWhatsNext } from "./RedeemWhatsNext";
 import { useOpenAccountDrawer } from "../../../../wallet2/accountDrawer";
+import { colors } from "../../../../../colors";
 
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
 
@@ -109,6 +109,13 @@ export default function InnerCommitDetailView(
     swapParams
   } = useDetailViewContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [status, setStatus] = useState<
+    | "initial-state"
+    | "pending-signature"
+    | "pending-transaction"
+    | "error"
+    | "success"
+  >("initial-state");
   const [
     isCommittingFromNotConnectedWallet,
     setIsCommittingFromNotConnectedWallet
@@ -127,6 +134,7 @@ export default function InnerCommitDetailView(
   const onCommitPendingSignature = () => {
     setIsLoading(true);
     showModal("WAITING_FOR_CONFIRMATION");
+    setStatus("pending-signature");
   };
   const isVoidedOffer = !!offer.voidedAt;
   const isPreview = !offer.id;
@@ -169,6 +177,7 @@ export default function InnerCommitDetailView(
     actionName?: ActionName | undefined
   ) => {
     setCommitType(actionName);
+    setStatus("pending-transaction");
     if (actionName && actionName === "approveExchangeToken") {
       showModal("TRANSACTION_SUBMITTED", {
         action: "Approve ERC20 Token",
@@ -186,6 +195,7 @@ export default function InnerCommitDetailView(
     receipt: ethers.providers.TransactionReceipt,
     { exchangeId }: { exchangeId: BigNumberish }
   ) => {
+    setStatus("success");
     let createdExchange: subgraph.ExchangeFieldsFragment;
     await poll(
       async () => {
@@ -227,6 +237,7 @@ export default function InnerCommitDetailView(
     error: Error,
     { txResponse }: { txResponse: providers.TransactionResponse | undefined }
   ) => {
+    setStatus("error");
     console.error("onError", error);
     setIsLoading(false);
     const hasUserRejectedTx = getHasUserRejectedTx(error);
@@ -275,20 +286,33 @@ export default function InnerCommitDetailView(
       topChildren={
         address && !!userCommittedOffersLength ? (
           <Grid
+            width="auto"
+            gap="0.5rem"
+            padding="1rem"
             alignItems="center"
-            justifyContent="space-between"
+            justifyContent="flex-start"
             style={{
-              ...(onAlreadyOwnOfferClick && { cursor: "pointer" })
+              ...(onAlreadyOwnOfferClick && { cursor: "pointer" }),
+              border: `1px solid ${colors.green}`,
+              borderRadius: "4px",
+              marginLeft: "2rem",
+              marginRight: "2rem"
             }}
             onClick={() => onAlreadyOwnOfferClick?.()}
           >
-            <p style={{ color: colors.orange, margin: 0, fontSize: "0.75rem" }}>
-              You already own {userCommittedOffersLength}{" "}
-              <b>{offer.metadata?.name}</b> rNFT
-            </p>
-            {onAlreadyOwnOfferClick && (
-              <ArrowRight size={18} color={colors.orange} />
-            )}
+            <Info
+              color={colors.green}
+              style={{ minWidth: "24px", minHeight: "24px" }}
+            />
+            <Grid flexDirection="column" alignItems="flex-start" width="auto">
+              <Typography fontSize="0.75rem" fontWeight={600}>
+                Last time you bought this product was -
+              </Typography>
+              <Typography fontSize="0.75rem" fontWeight={400}>
+                You purchased a total of {userCommittedOffersLength} of this
+                item.
+              </Typography>
+            </Grid>
           </Grid>
         ) : null
       }
@@ -337,28 +361,35 @@ export default function InnerCommitDetailView(
                   </ThemedButton>
                 ) : (
                   <>
-                    <CommitButton
-                      coreSdkConfig={{
-                        envName: protocolConfig.envName,
-                        configId: protocolConfig.configId,
-                        web3Provider: signer?.provider as Provider,
-                        metaTx: protocolConfig.metaTx
-                      }}
-                      variant="primaryFill"
-                      isPauseCommitting={!address}
-                      buttonRef={commitButtonRef}
-                      onGetSignerAddress={handleOnGetSignerAddress}
-                      disabled={!!isCommitDisabled}
+                    {/* {status === "initial-state" || status === "error" ? (
+                      <CommitButton
+                        coreSdkConfig={{
+                          envName: protocolConfig.envName,
+                          configId: protocolConfig.configId,
+                          web3Provider: signer?.provider as Provider,
+                          metaTx: protocolConfig.metaTx
+                        }}
+                        isPauseCommitting={!address}
+                        buttonRef={commitButtonRef}
+                        onGetSignerAddress={handleOnGetSignerAddress}
+                        disabled={!!isCommitDisabled}
+                        offerId={offer.id}
+                        exchangeToken={offer.exchangeToken.address}
+                        price={offer.price}
+                        onError={onCommitError}
+                        onPendingSignature={onCommitPendingSignature}
+                        onPendingTransaction={onCommitPendingTransaction}
+                        onSuccess={onCommitSuccess}
+                        id="commit"
+                      />
+                    ) : ( */}
+                    <CommitRedeemSteps
                       offerId={offer.id}
-                      exchangeToken={offer.exchangeToken.address}
-                      price={offer.price}
-                      onError={onCommitError}
-                      onPendingSignature={onCommitPendingSignature}
-                      onPendingTransaction={onCommitPendingTransaction}
-                      onSuccess={onCommitSuccess}
-                      extraInfo="Step 1/2"
-                      id="commit"
-                    />
+                      status={"pending-signature"}
+                    >
+                      <RedeemWhatsNext exchangeId="" />
+                    </CommitRedeemSteps>
+                    {/* )} */}
                   </>
                 )}
               </CommitButtonWrapper>
@@ -367,7 +398,7 @@ export default function InnerCommitDetailView(
                 marginTop="0.25rem"
                 style={{ display: "block" }}
               >
-                By proceeding to Commit, I agree to the{" "}
+                By proceeding to Buy, I agree to the{" "}
                 <span
                   style={{
                     fontSize: "inherit",

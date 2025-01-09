@@ -184,6 +184,7 @@ export const useNonModalContext = () => {
 
 export interface NonModalProps {
   hideModal?: (data?: unknown | undefined | null) => void;
+  withLeftArrowButton?: boolean;
   headerComponent?: ReactNode;
   footerComponent?: ReactNode;
   contentStyle?: CSSProperties;
@@ -197,6 +198,7 @@ export interface NonModalProps {
 
 export default function NonModal({
   children,
+  withLeftArrowButton,
   hideModal,
   headerComponent,
   footerComponent,
@@ -246,6 +248,7 @@ export default function NonModal({
       <Wrapper $size={size} $maxWidths={maxWidths}>
         <Header
           HeaderComponent={HeaderComponent}
+          withLeftArrowButton={!!withLeftArrowButton}
           closable={closable}
           handleOnClose={handleOnClose}
           showConnectButton={showConnectButton}

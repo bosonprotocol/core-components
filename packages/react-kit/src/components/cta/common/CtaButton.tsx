@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
@@ -11,7 +11,7 @@ import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides
 import { useMetaTx } from "../../../hooks/useMetaTx";
 
 type Props<T> = CtaButtonProps<T> & {
-  defaultLabel?: string;
+  defaultLabel?: ReactNode;
   actions: Action[];
   successPayload: T | ((receipt: providers.TransactionReceipt) => T);
 };

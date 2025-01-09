@@ -8,6 +8,11 @@ import { CtaButton } from "../common/CtaButton";
 import { CtaButtonProps } from "../common/types";
 import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
 import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
+import { BosonLogo } from "../../modal/components/common/BosonLogo";
+import { Typography } from "../../ui/Typography";
+import { Grid } from "../../ui/Grid";
+import { bosonButtonThemes } from "../../ui/ThemedButton";
+import { BaseButtonTheme } from "../../buttons/BaseButton";
 
 type AdditionalProps = {
   /**
@@ -26,15 +31,32 @@ type SuccessPayload = {
   exchangeId: BigNumberish;
 };
 
-type Props = AdditionalProps & CtaButtonProps<SuccessPayload>;
+type Props = AdditionalProps &
+  Omit<CtaButtonProps<SuccessPayload>, "variant" | "theme">;
 
+const commitButtonTheme = {
+  ...bosonButtonThemes()["primary"],
+  svg: {
+    path: {
+      fill: "black"
+    }
+  },
+  hover: {
+    ...bosonButtonThemes()["primary"].hover,
+    svg: {
+      fill: "unset",
+      path: {
+        fill: "white"
+      }
+    }
+  }
+} satisfies BaseButtonTheme;
 export const CommitButton = withQueryClientProvider(
   ({
     offerId,
     exchangeToken,
     price,
     isPauseCommitting = false,
-    variant = "primaryFill",
     onGetSignerAddress,
     ...restProps
   }: Props) => {
@@ -89,8 +111,19 @@ export const CommitButton = withQueryClientProvider(
 
     return (
       <CtaButton
-        variant={variant}
-        defaultLabel="Commit to Buy"
+        variant={null}
+        theme={commitButtonTheme}
+        defaultLabel={
+          <Grid justifyContent="center" alignItems="center" gap="0.375rem">
+            <Typography fontWeight={700} fontSize="0.9375rem">
+              Buy with
+            </Typography>{" "}
+            <BosonLogo
+              svgImageProps={{ width: "", height: "19px" }}
+              gridProps={{ padding: 0 }}
+            />
+          </Grid>
+        }
         successPayload={(receipt) => ({
           exchangeId: coreSdk.getCommittedExchangeIdFromLogs(
             receipt.logs

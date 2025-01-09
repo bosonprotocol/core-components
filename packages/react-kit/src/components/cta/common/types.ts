@@ -4,6 +4,7 @@ import { providers } from "ethers";
 import React, { RefObject } from "react";
 import { CoreSdkConfig } from "../../../hooks/core-sdk/useCoreSdk";
 import { ButtonProps } from "../../buttons/Button";
+import { BaseButtonTheme } from "../../buttons/BaseButton";
 
 type WriteContractFn = () => Promise<TransactionResponse>;
 type SignMetaTxFn = () => Promise<metaTx.handler.SignedMetaTx>;
@@ -77,7 +78,7 @@ export type CtaButtonProps<T> = Omit<ButtonProps, "onError"> & {
     }
   ) => void;
   children?: React.ReactNode;
-  variant?: ButtonProps["variant"];
+
   className?: string;
   buttonRef?: RefObject<HTMLButtonElement>;
-};
+} & ({ variant?: ButtonProps["variant"] } | { theme: BaseButtonTheme });

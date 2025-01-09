@@ -1,7 +1,7 @@
 import React, { Fragment, ReactNode } from "react";
 import { colors, getCssVar } from "../../../theme";
 import styled from "styled-components";
-import { X } from "phosphor-react";
+import { ArrowLeft, X } from "phosphor-react";
 import { Grid } from "../../ui/Grid";
 import ThemedButton from "../../ui/ThemedButton";
 import { useBreakpoints } from "../../../hooks/useBreakpoints";
@@ -40,6 +40,7 @@ const Close = styled(X)`
 type HeaderProps = {
   HeaderComponent: ReactNode;
   closable: boolean;
+  withLeftArrowButton: boolean;
   handleOnClose: () => void;
   showConnectButton: boolean;
 };
@@ -47,6 +48,7 @@ type HeaderProps = {
 const Header: React.FC<HeaderProps> = ({
   HeaderComponent,
   closable,
+  withLeftArrowButton,
   handleOnClose,
   showConnectButton
 }) => {
@@ -55,9 +57,19 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <Wrapper $flexWrap={isLteXS ? "wrap" : "nowrap"}>
       <InnerContainer>
+        {closable && withLeftArrowButton && (
+          <ThemedButton
+            data-close
+            themeVal="blank"
+            onClick={handleOnClose}
+            id="close"
+          >
+            <ArrowLeft size={32} />
+          </ThemedButton>
+        )}
         {HeaderComponent}
         {showConnectButton && !isLteXS && <BosonConnectWallet />}
-        {closable && (
+        {closable && !withLeftArrowButton && (
           <ThemedButton
             data-close
             themeVal="blank"

@@ -9,6 +9,7 @@ export const colors = {
   border: "#5560720f",
   bosonSkyBlue: "#51BEFA",
   cyan: "#00FFFF",
+  darkShade: "#333033",
   froly: "#F46A6A",
   green: "#02F3A2",
   grey: "grey",
