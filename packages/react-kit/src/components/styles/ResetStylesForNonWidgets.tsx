@@ -1,23 +1,30 @@
-import styled from "styled-components";
-import { theme } from "../../theme";
-const colors = theme.colors.light;
+import styled, { css } from "styled-components";
+import { colors } from "../../theme";
+import { isTruthy } from "../../types/helpers";
+
+export const cssVars = css`
+  --l: 50%;
+  --primary: ${colors.green};
+  --secondary: ${colors.greyLight};
+  --accent: ${colors.violet};
+
+  ${({ theme }) =>
+    Object.keys(theme)
+      .filter((key) => key.startsWith("--"))
+      .map((key) => {
+        const value = theme[key];
+        if (!value) {
+          return null;
+        }
+        return css`
+          ${key}:${value};
+        `;
+      })
+      .filter(isTruthy)};
+`;
 
 export const ResetStylesForNonWidgets = styled.div`
   // TODO: check if we can avoid this by using shadow dom (react-shadow for example)
   color: ${colors.black};
-  --l: 50%;
-  --headerBgColor: ${colors.white};
-  --headerTextColor: ${colors.darkGrey};
-  --primary: ${colors.primary};
-  --secondary: ${colors.lightGrey};
-  --accent: ${colors.accent};
-  --accentNoDefault: initial;
-  --accentDark: ${colors.arsenic};
-  --textColor: ${colors.black};
-  --primaryBgColor: ${colors.primaryBgColor};
-  --secondaryBgColor: ${colors.secondary};
-  --footerBgColor: ${colors.black};
-  --footerTextColor: ${colors.white};
-  --buttonBgColor: ${colors.primary};
-  --buttonTextColor: ${colors.black};
+  ${cssVars}
 `;

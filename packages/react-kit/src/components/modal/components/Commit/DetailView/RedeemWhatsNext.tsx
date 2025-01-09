@@ -3,14 +3,12 @@ import { Grid } from "../../../../ui/Grid";
 import { Typography } from "../../../../ui/Typography";
 import React from "react";
 import { Button } from "../../../../buttons/Button";
-import { theme } from "../../../../../theme";
 import { Info } from "phosphor-react";
 import { useConfigContext, useExchanges } from "../../../../../hooks";
 import { getOpenSeaUrl } from "../../../../../lib/opensea/getOpenSeaUrl";
 import dayjs from "dayjs";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
-
-const colors = theme.colors.light;
+import { colors } from "../../../../../colors";
 
 const Wrapper = styled(Grid)`
   background-color: ${colors.white};
@@ -20,7 +18,7 @@ const Wrapper = styled(Grid)`
 `;
 
 const InfoWrapper = styled(Grid)`
-  background-color: ${colors.lightGrey};
+  background-color: ${colors.greyLight};
   border-radius: 0.25rem;
   padding: 0.5rem 1rem;
 `;
@@ -68,17 +66,17 @@ export const RedeemWhatsNext = ({ exchangeId }: RedeemWhatsNextProps) => {
         )}
       </Grid>
       <InfoWrapper gap="0.8438rem">
-        <Info color={colors.secondary} size={18} />
+        <Info color={colors.violet} size={18} />
         <Grid flexDirection="column" alignItems="flex-start">
           <Typography
-            color={colors.darkGrey}
+            color={colors.greyDark}
             fontSize="0.75rem"
             fontWeight={600}
           >
             Holding your NFT
           </Typography>
           <Typography
-            color={colors.darkGrey}
+            color={colors.greyDark}
             fontSize="0.75rem"
             fontWeight={600}
             opacity={0.5}

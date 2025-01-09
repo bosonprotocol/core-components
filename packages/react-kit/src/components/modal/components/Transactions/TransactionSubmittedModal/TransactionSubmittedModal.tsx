@@ -7,11 +7,10 @@ import { Grid } from "../../../../ui/Grid";
 import { Typography } from "../../../../ui/Typography";
 import { GenericModalProps } from "../../../ModalContext";
 import { useModal } from "../../../useModal";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 
-const colors = theme.colors.light;
 const StyledArrowCircleUp = styled(ArrowCircleUp)`
   * {
     stroke-width: 2px;
@@ -64,15 +63,13 @@ export default function TransactionSubmittedModal({ action, txHash }: Props) {
           fontSize="1rem"
           lineHeight="150%"
           margin="0.5rem 0 1.5rem 0"
-          color={colors.secondary}
+          color={colors.violet}
         >
           View on Explorer
         </Typography>
       </a>
 
-      <StyledButton onClick={hideModal} withBosonStyle>
-        Close
-      </StyledButton>
+      <StyledButton onClick={hideModal}>Close</StyledButton>
     </Grid>
   );
 }

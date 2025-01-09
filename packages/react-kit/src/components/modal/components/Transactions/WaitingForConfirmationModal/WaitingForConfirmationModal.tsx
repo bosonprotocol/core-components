@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 
 import { Grid } from "../../../../ui/Grid";
 import Loading from "../../../../ui/loading/LoadingWrapper";
 import { Typography } from "../../../../ui/Typography";
 import { GenericModalProps } from "../../../ModalContext";
 import { useModal } from "../../../useModal";
-const colors = theme.colors.light;
+
 interface Props {
   action: string;
 }
@@ -46,7 +46,7 @@ export default function WaitingForConfirmationModal({ action }: Props) {
         fontWeight="600"
         fontSize="1rem"
         lineHeight="150%"
-        color={colors.darkGrey}
+        color={colors.greyDark}
         margin="0.5rem 0 1.5rem 0"
       >
         {action}
@@ -55,7 +55,7 @@ export default function WaitingForConfirmationModal({ action }: Props) {
         fontWeight="400"
         fontSize="0.75rem"
         lineHeight="150%"
-        color={colors.darkGrey}
+        color={colors.greyDark}
       >
         Confirm this transaction into your wallet
       </Typography>

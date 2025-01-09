@@ -13,14 +13,15 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import Select, { components } from "react-select";
 import styled from "styled-components";
-import { theme } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { zIndex } from "../ui/zIndex";
 
 import Error from "./Error";
 import { FieldInput } from "./Field.styles";
 import type { InputProps } from "./types";
 import { SelectDataProps } from "./types";
-const colors = theme.colors.light;
+import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
+
 const customStyles = {
   control: (provided: any, state: any) => {
     const before = state.selectProps.label
@@ -38,13 +39,13 @@ const customStyles = {
       padding: "0.4rem 0.25rem",
       boxShadow: "none",
       ":hover": {
-        borderColor: colors.secondary,
+        borderColor: colors.violet,
         borderWidth: "1px"
       },
-      background: colors.lightGrey,
+      background: getCssVar("--background-color"),
       border: state.isFocused
-        ? `1px solid ${colors.secondary}`
-        : `1px solid ${colors.border}`,
+        ? `1px solid ${colors.violet}`
+        : `1px solid ${getCssVar("--border-color")}`,
       ...before
     };
   },
@@ -60,12 +61,10 @@ const customStyles = {
     opacity: state.isDisabled ? "0.5" : "1",
     background:
       state.isOptionSelected || state.isSelected || state.isFocused
-        ? colors.lightGrey
+        ? colors.greyLight
         : colors.white,
     color:
-      state.isOptionSelected || state.isSelected
-        ? colors.secondary
-        : colors.black
+      state.isOptionSelected || state.isSelected ? colors.violet : colors.black
   }),
   indicatorSeparator: () => ({
     display: "none"
@@ -88,6 +87,7 @@ export const ControlGrid = styled.div`
   }
 `;
 export const OptionGrid = styled.div`
+  font-size: revert;
   display: grid;
   grid-auto-columns: 1fr;
   grid-template-columns: 2em 1fr;
@@ -112,8 +112,8 @@ export const PhoneWrapper = styled.div`
     width: 100%;
     padding: 1rem;
     gap: 0.5rem;
-    background: ${colors.lightGrey};
-    border: 1px solid ${colors.border};
+    background: ${getCssVar("--background-color")};
+    border: 1px solid ${getCssVar("--border-color")};
     border-radius: 0;
     outline: none;
     font-family: "Plus Jakarta Sans";
@@ -122,7 +122,10 @@ export const PhoneWrapper = styled.div`
 `;
 
 const handleCountry = () => {
-  const countryCode = (navigator?.language || "")?.toUpperCase() as CountryCode;
+  const countryCode = (navigator?.languages || [])
+    .find((language) => language.includes("-"))
+    ?.split("-")?.[1]
+    ?.toUpperCase() as CountryCode;
   if (isSupportedCountry(countryCode as CountryCode)) return countryCode;
   return undefined;
 };
@@ -181,9 +184,13 @@ export default function Phone({ name, ...props }: InputProps) {
     }
   }, [field.value, initialized]); // eslint-disable-line
 
+  const { jsx, selectClassName } = useFixSelectFontSize({
+    selectClassName: "phone-select"
+  });
   return (
     <>
-      <PhoneWrapper>
+      {jsx}
+      <PhoneWrapper className={selectClassName}>
         {/* @ts-ignore */}
         <PhoneInput
           country={countryCode}
@@ -231,7 +238,10 @@ export default function Phone({ name, ...props }: InputProps) {
                                 label={props.label}
                               />
                             ) : (
-                              <GlobeHemisphereWest />
+                              <GlobeHemisphereWest
+                                width={"22px"}
+                                height={"22px"}
+                              />
                             )}
                             {props.label}
                           </OptionGrid>
@@ -239,6 +249,7 @@ export default function Phone({ name, ...props }: InputProps) {
                       );
                     }
                   }}
+                  menuPosition="fixed"
                 />
               </div>
             </>

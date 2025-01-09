@@ -1,13 +1,12 @@
 import React, { Fragment, ReactNode } from "react";
-import { theme } from "../../../theme";
+import { colors, getCssVar } from "../../../theme";
 import styled from "styled-components";
 import { ArrowLeft, X } from "phosphor-react";
 import { Grid } from "../../ui/Grid";
-import ConnectButton from "../../wallet/ConnectButton";
 import ThemedButton from "../../ui/ThemedButton";
 import { useBreakpoints } from "../../../hooks/useBreakpoints";
+import { BosonConnectWallet } from "../../wallet2/web3Status/BosonConnectWallet";
 
-const colors = theme.colors.light;
 const Wrapper = styled.div<{ $flexWrap: string }>`
   box-sizing: border-box;
   container-type: inline-size;
@@ -17,7 +16,7 @@ const Wrapper = styled.div<{ $flexWrap: string }>`
   padding: 1rem 1rem 1rem 2rem;
   display: flex;
   flex-wrap: ${({ $flexWrap }) => $flexWrap};
-  border-bottom: 2px solid ${colors.border};
+  border-bottom: 2px solid ${getCssVar("--border-color")};
   align-items: flex-end;
   justify-content: space-between;
   gap: 0.5rem;
@@ -34,7 +33,7 @@ const Close = styled(X)`
   }
 
   line {
-    stroke: ${colors.darkGrey};
+    stroke: ${colors.greyDark};
   }
 `;
 
@@ -69,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({
           </ThemedButton>
         )}
         {HeaderComponent}
-        {showConnectButton && !isLteXS && <ConnectButton showChangeWallet />}
+        {showConnectButton && !isLteXS && <BosonConnectWallet />}
         {closable && !withLeftArrowButton && (
           <ThemedButton
             data-close
@@ -84,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({
 
       {showConnectButton && isLteXS && (
         <Grid justifyContent="flex-end">
-          <ConnectButton showChangeWallet />
+          <BosonConnectWallet />
         </Grid>
       )}
     </Wrapper>

@@ -11,8 +11,7 @@ import useRefundData from "../../../../../../hooks/useRefundData";
 import { extractUserFriendlyError } from "../../../../../../lib/errors/transactions";
 import { useDisplayFloatWithConfig } from "../../../../../../lib/price/prices";
 import { poll } from "../../../../../../lib/promises/promises";
-import { theme } from "../../../../../../theme";
-import { Exchange } from "../../../../../../types/exchange";
+import { colors, getCssVar } from "../../../../../../theme";
 import {
   CancelButton,
   ICancelButton
@@ -23,21 +22,16 @@ import SuccessTransactionToast from "../../../../../toasts/SuccessTransactionToa
 import { Grid } from "../../../../../ui/Grid";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import { Spinner } from "../../../../../ui/loading/Spinner";
-import {
-  RedemptionWidgetAction,
-  useRedemptionContext
-} from "../../../../../widgets/redemption/provider/RedemptionContext";
 import DetailTable from "../../../common/detail/DetailTable";
-
-const colors = theme.colors.light;
 
 export interface CancelExchangeProps
   extends Pick<
     ICancelButton,
     "onSuccess" | "onError" | "onPendingSignature" | "onPendingTransaction"
   > {
-  exchange: Exchange;
+  exchange: subgraph.ExchangeFieldsFragment;
   onBackClick: () => void;
+  showBackButton: boolean;
 }
 
 const Line = styled.hr`
@@ -50,9 +44,9 @@ const Line = styled.hr`
 
 const Info = styled.div`
   padding: 1.5rem;
-  background-color: ${colors.lightGrey};
+  background-color: ${getCssVar("--background-color")};
   margin: 2rem 0;
-  color: ${colors.darkGrey};
+  color: ${colors.greyDark};
   display: flex;
   align-items: center;
 `;
@@ -66,7 +60,7 @@ const SuccessIcon = styled(CheckCircle).attrs({ color: colors.green })`
 `;
 
 const ButtonsSection = styled.div`
-  border-top: 2px solid ${colors.border};
+  border-top: 2px solid ${getCssVar("--border-color")};
   padding-top: 2rem;
   display: flex;
   justify-content: space-between;
@@ -93,13 +87,13 @@ export function CancelExchange({
   onBackClick,
   onError,
   onPendingSignature,
-  onPendingTransaction
+  onPendingTransaction,
+  showBackButton
 }: CancelExchangeProps) {
   const [cancelSuccess, setCancelSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cancelError, setCancelError] = useState<Error | null>(null);
   const { offer } = exchange;
-
   const displayFloat = useDisplayFloatWithConfig();
   const coreSDK = useCoreSDKWithContext();
 
@@ -110,8 +104,6 @@ export function CancelExchange({
     exchange,
     exchange.offer.price
   );
-  const { widgetAction } = useRedemptionContext();
-  const isCancelModeOnly = widgetAction === RedemptionWidgetAction.CANCEL_FORM;
   return (
     <>
       <DetailTable
@@ -260,7 +252,7 @@ export function CancelExchange({
             </Grid>
           </CancelButton>
         </CancelButtonWrapper>
-        {!isCancelModeOnly && (
+        {showBackButton && (
           <ThemedButton themeVal="blankOutline" onClick={() => onBackClick()}>
             Back
           </ThemedButton>

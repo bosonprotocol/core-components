@@ -1,28 +1,39 @@
 import React, { ReactNode, useState } from "react";
 import {
   Currencies,
-  CurrencyDisplay
+  CurrencyDisplay,
+  CurrencyDisplayProps
 } from "../currencyDisplay/CurrencyDisplay";
 import { IBaseImage, Image } from "../image/Image";
 import { Tooltip, TooltipProps } from "../tooltip/Tooltip";
 import {
   ProductCardBottom,
   ProductCardBottomContent,
-  TopLeftRibbon,
   ProductCardCreatorName,
   ProductCardImageWrapper,
   ProductCardTitle,
   ProductCardTitleWrapper,
   ProductCardWrapper,
-  CTAOnHoverContainer
+  CTAOnHoverContainer,
+  ProductTypeWrapper
 } from "./ProductCard.styles";
 
 import { ProductType } from "./const";
 import { Grid } from "../ui/Grid";
+import { CircleHalf } from "phosphor-react";
+import { isMobile } from "../../lib/userAgent/userAgent";
 
-interface IProductCard {
+export const PhygitalLabel = () => {
+  return (
+    <ProductTypeWrapper>
+      <CircleHalf />
+      Phygital
+    </ProductTypeWrapper>
+  );
+};
+
+export interface IProductCard {
   asterisk?: boolean;
-  avatar: string;
   onAvatarError?: React.ReactEventHandler<HTMLImageElement> | undefined;
   avatarName: JSX.Element | string;
   bottomText?: string;
@@ -32,9 +43,8 @@ interface IProductCard {
   imageProps: IBaseImage;
   isHoverDisabled?: boolean;
   onAvatarNameClick?: () => void;
-  onCardClick?: (id: string | number) => void;
+  onCardClick?: () => void;
   price: string;
-  productId: string;
   productType?: ProductType;
   title: string;
   tooltip?: string;
@@ -42,6 +52,8 @@ interface IProductCard {
   CTAOnHover?: ReactNode;
   hideCreatorName?: boolean;
   isImageFitCover?: boolean;
+  className?: string;
+  currencyColor?: CurrencyDisplayProps["color"];
 }
 
 const Wrapper = ({
@@ -63,10 +75,6 @@ const Wrapper = ({
   return <>{children}</>;
 };
 
-export const PhygitalLabel = ({ ...rest }) => {
-  return <TopLeftRibbon {...rest} data-text="Phygital" />;
-};
-
 export const ProductCard = (props: IProductCard) => {
   const {
     avatarName,
@@ -77,13 +85,15 @@ export const ProductCard = (props: IProductCard) => {
     isHoverDisabled = false,
     onCardClick,
     price,
-    productId,
     title,
     tooltip = "",
     tooltipProps = {},
     CTAOnHover,
     hideCreatorName = false,
-    isImageFitCover = false
+    isImageFitCover = false,
+    className,
+    productType,
+    currencyColor
   } = props;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -96,19 +106,22 @@ export const ProductCard = (props: IProductCard) => {
       $isImageFitCover={isImageFitCover}
       onClick={(e) => {
         e.preventDefault();
-        onCardClick?.(productId);
+        onCardClick?.();
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      className={className}
+      $isClickable={!!onCardClick}
     >
       <ProductCardImageWrapper>
         <Image {...imageProps} />
+        {CTAOnHover && !isMobile && (
+          <CTAOnHoverContainer $isHovered={isHovered}>
+            {CTAOnHover}
+          </CTAOnHoverContainer>
+        )}
       </ProductCardImageWrapper>
-      {CTAOnHover && (
-        <CTAOnHoverContainer $isHovered={isHovered}>
-          {CTAOnHover}
-        </CTAOnHoverContainer>
-      )}
+
       <ProductCardBottom>
         <ProductCardBottomContent>
           <Grid flexDirection="column">
@@ -128,6 +141,7 @@ export const ProductCard = (props: IProductCard) => {
               value={price}
               currency={currency}
               fontSize={"0.875rem"}
+              color={currencyColor}
               iconSize={16}
               gap={"0.3125rem"}
               style={{
@@ -138,6 +152,12 @@ export const ProductCard = (props: IProductCard) => {
               }}
             />
           </Wrapper>
+          {productType === ProductType.phygital && (
+            <ProductTypeWrapper>
+              <CircleHalf />
+              Phygital
+            </ProductTypeWrapper>
+          )}
         </ProductCardBottomContent>
       </ProductCardBottom>
     </ProductCardWrapper>

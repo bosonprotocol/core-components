@@ -7,11 +7,11 @@ import React from "react";
 import { breakpoint } from "../../../lib/ui/breakpoint";
 import { Connection, ConnectionType } from "../../connection/types";
 import useENSAvatar from "../../../hooks/ens/useENSAvatar";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import { Unicon } from "../unicon";
 import { useHasSocks } from "../../../hooks/uniswap/useSocksBalance";
 import { SvgImage } from "../../ui/SvgImage";
-const colors = theme.colors.light;
+
 const IconWrapper = styled.div<{ size?: number }>`
   position: relative;
   ${flexColumnNoWrap};

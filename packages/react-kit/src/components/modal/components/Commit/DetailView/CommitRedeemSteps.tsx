@@ -3,8 +3,7 @@ import { Grid } from "../../../../ui/Grid";
 import React, { ReactNode } from "react";
 import { Checks, Package, ShoppingCartSimple } from "phosphor-react";
 import { Typography } from "../../../../ui/Typography";
-import { theme } from "../../../../../theme";
-const colors = theme.colors.light;
+import { colors } from "../../../../../colors";
 
 const IconWrapper = styled.div<{ $isDisabled?: boolean }>`
   display: grid;
@@ -17,7 +16,7 @@ const IconWrapper = styled.div<{ $isDisabled?: boolean }>`
   ${({ $isDisabled }) => {
     return $isDisabled
       ? css`
-          background-color: ${colors.lightGrey};
+          background-color: ${colors.greyLight};
         `
       : "";
   }};
@@ -28,7 +27,7 @@ const Wrapper = styled(Grid)`
     &::after {
       content: "";
       position: absolute;
-      background-color: ${colors.lightGrey};
+      background-color: ${colors.greyLight};
       bottom: -62%;
       left: 50%;
       height: 18px;

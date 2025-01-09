@@ -5,7 +5,7 @@ import React, {
   createContext,
   useMemo
 } from "react";
-import { theme } from "../../../theme";
+import { colors, getCssVar } from "../../../theme";
 import { ReactNode } from "react";
 import styled, { css } from "styled-components";
 
@@ -15,7 +15,6 @@ import { zIndex } from "../../ui/zIndex";
 import { breakpoint } from "../../../lib/ui/breakpoint";
 import { Content } from "./styles";
 
-const colors = theme.colors.light;
 const Root = styled.div`
   position: relative;
   top: 0;
@@ -81,15 +80,8 @@ const sizeToMargin = {
   }
 } as const;
 
-const background = {
-  primaryBgColor: "var(--primaryBgColor)",
-  dark: `${colors.black}`,
-  light: `${colors.white}`
-} as const;
-
 const Wrapper = styled.div<{
   $size: NonModalProps["size"];
-  $themeVal: NonModalProps["theme"];
   $maxWidths: NonModalProps["maxWidths"];
 }>`
   display: flex;
@@ -97,18 +89,11 @@ const Wrapper = styled.div<{
   max-height: inherit;
   position: relative;
   z-index: ${zIndex.Modal};
-  color: ${({ $themeVal }) => {
-    switch ($themeVal) {
-      case "dark":
-        return colors.white;
-      default:
-        return colors.black;
-    }
-  }};
-  background-color: ${({ $themeVal }) => {
-    return background[$themeVal as keyof typeof background] || colors.white;
-  }};
+  color: ${getCssVar("--main-text-color")};
+  background-color: ${getCssVar("--background-accent-color")};
   border: var(--secondary);
+  border-radius: ${getCssVar("--modal-border-radius")};
+  overflow: hidden;
   ${({ $maxWidths }) => {
     if (!$maxWidths) {
       return "";
@@ -205,7 +190,6 @@ export interface NonModalProps {
   contentStyle?: CSSProperties;
   size?: NonNullable<Store["modalSize"]>;
   maxWidths?: Store["modalMaxWidth"];
-  theme?: NonNullable<Store["theme"]>;
   closable?: boolean;
   lookAndFeel?: "modal" | "regular";
   children: ReactNode;
@@ -220,7 +204,6 @@ export default function NonModal({
   footerComponent,
   size = "auto",
   maxWidths = null,
-  theme = "light",
   contentStyle: _contentStyle,
   closable = true,
   lookAndFeel = "modal",
@@ -262,7 +245,7 @@ export default function NonModal({
   }, [lookAndFeel]);
   return (
     <Container>
-      <Wrapper $size={size} $themeVal={theme} $maxWidths={maxWidths}>
+      <Wrapper $size={size} $maxWidths={maxWidths}>
         <Header
           HeaderComponent={HeaderComponent}
           withLeftArrowButton={!!withLeftArrowButton}
@@ -276,7 +259,11 @@ export default function NonModal({
             {children}
           </NonModalContext.Provider>
         </Content>
-        {FooterComponent && <FooterWrapper>{FooterComponent}</FooterWrapper>}
+        {FooterComponent ? (
+          <FooterWrapper>{FooterComponent}</FooterWrapper>
+        ) : (
+          <div style={{ width: "947px", maxWidth: "100vw" }} />
+        )}
       </Wrapper>
     </Container>
   );

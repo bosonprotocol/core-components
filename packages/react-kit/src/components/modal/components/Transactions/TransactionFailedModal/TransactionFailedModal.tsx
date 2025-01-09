@@ -4,9 +4,9 @@ import React, { useEffect } from "react";
 import { Grid } from "../../../../ui/Grid";
 import { Typography } from "../../../../ui/Typography";
 import { useModal } from "../../../useModal";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { GenericModalProps } from "../../../ModalContext";
-const colors = theme.colors.light;
+
 export default function TransactionFailedModal({
   errorMessage,
   detailedErrorMessage

@@ -2,7 +2,7 @@ import React from "react";
 import { Image as AccountImage } from "@davatar/react";
 import styled, { css } from "styled-components";
 import { Grid, GridProps } from "../../components/ui/Grid";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../types/offer";
 import { MediaSet } from "../../lib/lens/generated";
@@ -11,7 +11,7 @@ import { getLensProfilePictureUrl } from "../../lib/lens/profile";
 import { getOfferDetails } from "../../lib/offer/getOfferDetails";
 import { useIpfsContext } from "../ipfs/IpfsContext";
 import { useAccount } from "../../hooks/connection/connection";
-const colors = theme.colors.light;
+
 const AddressContainer = styled(Grid)`
   gap: 10px;
   margin: 0;
@@ -25,22 +25,12 @@ const SellerContainer = styled.div<{ $hasCursorPointer: boolean }>`
   gap: 10px;
 `;
 
-const SellerInfo = styled.div<{ $withBosonStyles?: boolean }>`
+const SellerInfo = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
   align-items: center;
-
-  ${({ $withBosonStyles }) =>
-    $withBosonStyles
-      ? css`
-          color: ${colors.secondary};
-          font-family: "Plus Jakarta Sans";
-        `
-      : css`
-          color: var(--accent);
-        `};
-
+  color: ${colors.violet};
   font-style: normal;
   font-size: 0.875rem;
   font-weight: 600;
@@ -70,7 +60,6 @@ const SellerID: React.FC<
     accountImageSize?: number;
     withProfileImage: boolean;
     withProfileText?: boolean;
-    withBosonStyles?: boolean;
     onClick?: null | undefined | React.MouseEventHandler<HTMLDivElement>;
   } & GridProps &
     Omit<React.HTMLAttributes<HTMLDivElement>, "onClick">
@@ -82,7 +71,6 @@ const SellerID: React.FC<
   onClick,
   accountImageSize,
   withProfileText = true,
-  withBosonStyles = false,
   ...rest
 }) => {
   const { ipfsGateway } = useIpfsContext();
@@ -134,10 +122,7 @@ const SellerID: React.FC<
           </ImageContainer>
         )}
         {withProfileText && userId && (
-          <SellerInfo
-            data-testid="seller-info"
-            $withBosonStyles={withBosonStyles}
-          >
+          <SellerInfo data-testid="seller-info">
             {isSeller
               ? lens?.name
                 ? lens?.name

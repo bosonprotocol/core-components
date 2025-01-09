@@ -1,20 +1,18 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
 import { Grid } from "../../../../ui/Grid";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { Typography } from "../../../../ui/Typography";
-const colors = theme.colors.light;
 
 type CardCTAProps = {
   title: string;
   text: string;
   icon: ReactElement;
   cta: ReactElement;
-  theme?: "light" | "dark";
 };
 
 const StyledGrid = styled(Grid)`
-  background: ${colors.lightGrey};
+  background: ${colors.greyLight};
 `;
 
 const IconContainer = styled(Grid)`

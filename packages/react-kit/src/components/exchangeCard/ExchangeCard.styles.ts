@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { theme } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { ExchangeCardStatus } from "./types";
 import { ProductCardLabelWrapper } from "../productCard/ProductCard.styles";
 
@@ -32,7 +32,7 @@ export const ExchangeCreatorName = styled.div`
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 150%;
-  color: ${({ theme }) => theme?.colors?.light.accent};
+  color: ${colors.violet};
   flex: none;
   order: 1;
   flex-grow: 0;
@@ -44,7 +44,6 @@ export const ExchangeTitle = styled.div`
   font-weight: 600;
   font-size: 1.25rem;
   line-height: 150%;
-  color: ${({ theme }) => theme?.colors?.light.black};
   word-break: break-word;
 `;
 
@@ -64,7 +63,7 @@ export const ExchangeCardPrice = styled.div`
   line-height: 150%;
   text-align: right;
   margin-bottom: 0.25rem;
-  color: ${({ theme }) => theme?.colors?.light.darkGrey};
+  color: ${getCssVar("--sub-text-color")};
 `;
 
 export const ExchangeCarData = styled.div`
@@ -79,7 +78,7 @@ export const ExchangeCardBottom = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: ${theme?.colors?.light.white};
+  background: ${getCssVar("--background-accent-color")};
 `;
 export const ExchangeCardBottomContent = styled.div`
   display: flex;
@@ -88,7 +87,7 @@ export const ExchangeCardBottomContent = styled.div`
   padding: 1rem 1.5rem;
   box-sizing: border-box;
   align-items: flex-start;
-  border-top: 2px solid ${theme.colors.light.border};
+  border-top: 2px solid ${getCssVar("--border-color")};
 `;
 
 export const ExchangeCardWrapper = styled.div<{
@@ -107,7 +106,7 @@ export const ExchangeCardWrapper = styled.div<{
   border: 1px solid rgba(85, 96, 114, 0.15);
   box-shadow: 0px 4.31783px 107.946px rgba(21, 30, 52, 0.1);
   cursor: pointer;
-  background: ${theme.colors.light.white};
+  background: ${getCssVar("--background-accent-color")};
   [data-image-wrapper] {
     position: static;
     padding-top: 0;
@@ -200,19 +199,19 @@ export const ExchangeStatus = styled.div<{
     switch ($status) {
       case "REDEEMED":
       case "CANCELLED":
-        return theme.colors.light.primary;
+        return colors.green;
       case "COMMITTED":
-        return theme.colors.light.accent;
+        return colors.violet;
       default:
-        return theme.colors.light.white;
+        return colors.white;
     }
   }};
   color: ${({ $status }) => {
     switch ($status) {
       case "COMMITTED":
-        return theme.colors.light.white;
+        return colors.white;
       default:
-        return theme.colors.light.black;
+        return colors.black;
     }
   }};
 `;
@@ -224,7 +223,7 @@ export const CommittedBottomText = styled.p`
   margin: 0;
   padding: 0 1.5rem 1.5rem 1.5rem;
   letter-spacing: 0.5px;
-  color: ${theme.colors.light.darkGrey};
+  color: ${colors.greyDark};
 `;
 
 export const ExchangeImageWrapper = styled.div`

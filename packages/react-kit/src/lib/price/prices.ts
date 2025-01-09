@@ -1,7 +1,7 @@
 import { BigNumber, utils } from "ethers";
 import { useCallback } from "react";
-import { Offer } from "../../types/offer";
 import { useConfigContext } from "../../components/config/ConfigContext";
+import { subgraph } from "@bosonprotocol/core-sdk";
 
 interface Options {
   fixed?: number;
@@ -81,11 +81,16 @@ interface CalcPercentage {
   formatted: string;
 }
 const MUL_VALUE = 100_000_000;
+type AllowedKeys = "buyerCancelPenalty" | "sellerDeposit";
+type OfferSubset = Pick<
+  subgraph.OfferFieldsFragment,
+  AllowedKeys | "exchangeToken" | "price"
+>;
 export const getCalcPercentage =
   (displayFloat: ReturnType<typeof useDisplayFloat>) =>
-  (offer: Offer, key: string): CalcPercentage => {
+  (offer: OfferSubset, key: AllowedKeys): CalcPercentage => {
     try {
-      const value = offer?.[key as keyof Offer] || "0";
+      const value = offer?.[key as AllowedKeys] || "0";
       const formatted = BigNumber.from(value).eq(0)
         ? "0"
         : utils.formatUnits(

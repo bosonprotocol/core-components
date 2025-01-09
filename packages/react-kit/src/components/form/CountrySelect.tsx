@@ -15,11 +15,11 @@ import { zIndex } from "../ui/zIndex";
 import Error from "./Error";
 import type { BaseProps, SupportedReactSelectProps } from "./types";
 import { SelectDataProps } from "./types";
-import { theme as importedTheme } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
+import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
 export type { Country as CountryCode } from "react-phone-number-input";
 
-const colors = importedTheme.colors.light;
 const customStyles = (
   error: unknown,
   customTheme: CountrySelectProps["theme"]
@@ -43,15 +43,16 @@ const customStyles = (
       alignContent: "center",
       padding: "0.4rem 1rem",
       boxShadow: "none",
-      background: colors.lightGrey,
+      background: getCssVar("--background-color"),
       ...customTheme?.control,
       border: state.isFocused
-        ? customTheme?.control?.focus?.border ?? `1px solid ${colors.secondary}`
+        ? customTheme?.control?.focus?.border ?? `1px solid ${colors.violet}`
         : !checkIfValueIsEmpty(error)
           ? customTheme?.control?.error?.border ?? `1px solid ${colors.orange}`
-          : customTheme?.control?.border ?? `1px solid ${colors.border}`,
+          : customTheme?.control?.border ??
+            `1px solid ${getCssVar("--border-color")}`,
       ":hover": {
-        borderColor: colors.secondary,
+        borderColor: colors.violet,
         borderWidth: "1px",
         ...customTheme?.control?.hover
       },
@@ -76,11 +77,11 @@ const customStyles = (
         : customTheme?.option?.opacity ?? "1",
       background:
         state.isOptionSelected || state.isSelected || state.isFocused
-          ? customTheme?.option?.selected?.background ?? colors.lightGrey
+          ? customTheme?.option?.selected?.background ?? colors.greyLight
           : customTheme?.option?.background ?? colors.white,
       color:
         state.isOptionSelected || state.isSelected
-          ? customTheme?.option?.selected?.color ?? colors.secondary
+          ? customTheme?.option?.selected?.color ?? colors.violet
           : customTheme?.option?.color ?? colors.black,
       ...(state.isDisabled && customTheme?.option?.disabled),
       ...((state.isOptionSelected || state.isSelected) &&
@@ -137,6 +138,7 @@ const ControlGrid = styled.div`
   }
 `;
 const OptionGrid = styled.div`
+  font-size: revert;
   display: grid;
   grid-auto-columns: 1fr;
   grid-template-columns: 2em 1fr;
@@ -217,10 +219,13 @@ export function CountrySelect({
       setInitialized(true);
     }
   }, [field.value, initialized]); // eslint-disable-line
-
+  const { jsx, selectClassName } = useFixSelectFontSize({
+    selectClassName: "country-select"
+  });
   return (
     <>
-      <PhoneWrapper>
+      {jsx}
+      <PhoneWrapper className={selectClassName}>
         <PhoneInput
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           inputComponent={forwardRef((props, ref) => (
@@ -273,7 +278,10 @@ export function CountrySelect({
                                   label=""
                                 />
                               ) : (
-                                <GlobeHemisphereWest />
+                                <GlobeHemisphereWest
+                                  width={"22px"}
+                                  height={"22px"}
+                                />
                               )}
                               {props.children as any}
                             </ControlGrid>
@@ -299,6 +307,7 @@ export function CountrySelect({
                         );
                       }
                     }}
+                    menuPosition="fixed"
                   />
                 </div>
               </>

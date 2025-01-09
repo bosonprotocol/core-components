@@ -2,10 +2,9 @@ import { Warning } from "phosphor-react";
 import React, { ReactNode } from "react";
 import styled, { CSSProperties } from "styled-components";
 
-import { theme } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { Grid, GridProps } from "../ui/Grid";
 import { Typography } from "../ui/Typography";
-const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)<{
   $background: CSSProperties["backgroundColor"];
@@ -23,8 +22,8 @@ export type SimpleErrorProps = GridProps & {
 export function SimpleError({
   errorMessage,
   children,
-  backgroundColor = colors.lightGrey,
-  warningColor = colors.darkOrange,
+  backgroundColor = getCssVar("--background-color"),
+  warningColor = colors.orangeDark,
   ...rest
 }: SimpleErrorProps) {
   return (

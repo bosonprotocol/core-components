@@ -22,8 +22,16 @@ const pickedProps = {
   marginRight: true,
   marginBottom: true,
   marginLeft: true,
+  paddingTop: true,
+  paddingRight: true,
+  paddingBottom: true,
+  paddingLeft: true,
   width: true,
-  height: true
+  height: true,
+  maxWidth: true,
+  minWidth: true,
+  maxHeight: true,
+  minHeight: true
 } as const;
 type IGrid = Pick<CSSProperties, keyof typeof pickedProps>;
 
@@ -31,6 +39,12 @@ type InnerGridProps = Record<`$${keyof IGrid}`, IGrid[keyof IGrid]>;
 
 const Container = styled.div<InnerGridProps>`
   ${({ $width }) => (isDefined($width) ? `width:${$width};` : "width: 100%;")}
+  ${({ $maxWidth }) => (isDefined($maxWidth) ? `max-width:${$maxWidth}` : "")};
+  ${({ $minWidth }) => (isDefined($minWidth) ? `min-width:${$minWidth}` : "")};
+  ${({ $maxHeight }) =>
+    isDefined($maxHeight) ? `max-height:${$maxHeight}` : ""};
+  ${({ $minHeight }) =>
+    isDefined($minHeight) ? `min-height:${$minHeight}` : ""};
   height: ${({ $height }) => (isDefined($height) ? $height : "initial")};
   display: flex;
   align-items: ${({ $alignItems }) =>
@@ -62,6 +76,14 @@ const Container = styled.div<InnerGridProps>`
     isDefined($marginBottom) ? `margin-bottom:${$marginBottom};` : ""}
   ${({ $marginLeft }) =>
     isDefined($marginLeft) ? `margin-left:${$marginLeft};` : ""}
+  ${({ $paddingTop }) =>
+    isDefined($paddingTop) ? `padding-top:${$paddingTop};` : ""}
+  ${({ $paddingRight }) =>
+    isDefined($paddingRight) ? `padding-right:${$paddingRight};` : ""}
+  ${({ $paddingBottom }) =>
+    isDefined($paddingBottom) ? `padding-bottom:${$paddingBottom};` : ""}
+  ${({ $paddingLeft }) =>
+    isDefined($paddingLeft) ? `padding-left:${$paddingLeft};` : ""}
   ${({ $alignSelf }) =>
     isDefined($alignSelf) ? `align-self:${$alignSelf};` : ""}
   ${({ $justifySelf }) =>

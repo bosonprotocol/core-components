@@ -1,6 +1,5 @@
 import React, { ReactNode, useCallback } from "react";
 import { useProvider } from "../../../hooks/connection/connection";
-import { useIsWindowVisible } from "../../../hooks/uniswap/useIsWindowVisible";
 import { CONFIG } from "../../../lib/config/config";
 import { Updaters } from "../../../state/updaters";
 import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
@@ -12,7 +11,6 @@ import {
 import { IpfsProvider, IpfsProviderProps } from "../../ipfs/IpfsProvider";
 import { ModalProvider } from "../../modal/ModalProvider";
 import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
-import { WalletConnectionProviderProps } from "../../wallet/WalletConnectionProvider";
 import {
   ReduxProvider,
   WithReduxProvider,
@@ -21,14 +19,34 @@ import {
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "../finance/convertion-rate/ConvertionRateProvider";
+import { Web3Provider, Web3ProviderProps } from "../../wallet2/web3Provider";
+import { BlockNumberProvider } from "../../../hooks/contracts/useBlockNumber";
+import {
+  RedemptionProvider,
+  RedemptionProviderProps
+} from "../redemption/provider/RedemptionProvider";
+import {
+  RobloxProvider,
+  RobloxProviderProps
+} from "../../../hooks/roblox/context/RobloxProvider";
+import {
+  BosonThemeProvider,
+  BosonThemeProviderProps,
+  useBosonTheme
+} from "../BosonThemeProvider";
+import { GlobalStyledThemed } from "../../styles/GlobalStyledThemed";
 
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
+  BosonThemeProviderProps &
+  RedemptionProviderProps &
+  RobloxProviderProps &
   ConvertionRateProviderProps &
-  Omit<WalletConnectionProviderProps, "children" | "envName"> &
+  Omit<Web3ProviderProps, "infuraKey"> &
   BosonProviderProps &
   WithReduxProviderProps & {
     children: ReactNode;
+    withGlobalStyle: boolean;
   };
 
 const { infuraKey, magicLinkKey } = CONFIG;
@@ -38,67 +56,82 @@ export const CommitWidgetReduxProvider = ReduxProvider;
 
 export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
   withQueryClientProvider(
-    ({ children, withReduxProvider, withCustomReduxContext, ...props }) => {
-      const isWindowVisible = useIsWindowVisible();
+    ({
+      children,
+      withReduxProvider,
+      withCustomReduxContext,
+      withGlobalStyle,
+      ...props
+    }) => {
       const WithUpdaters = useCallback(
         ({ children: updatersChildren }: { children: ReactNode }) => {
           return withReduxProvider ? (
-            <UpdatersWrapper
-              isWindowVisible={isWindowVisible}
-              withWeb3React={props.withWeb3React}
-            >
+            <UpdatersWrapper withWeb3React={props.withWeb3React}>
               {updatersChildren}
             </UpdatersWrapper>
           ) : (
             <>{updatersChildren}</>
           );
         },
-        [withReduxProvider, isWindowVisible, props.withWeb3React]
+        [withReduxProvider, props.withWeb3React]
       );
+      const { themeKey: storyBookThemeKey } =
+        useBosonTheme({
+          throwOnError: false
+        }) || {};
+      console.log("CommitWidgetProviders", props.roundness);
       return (
-        <WithReduxProvider
-          withCustomReduxContext={withCustomReduxContext}
-          withReduxProvider={withReduxProvider}
+        <BosonThemeProvider
+          theme={props.theme || storyBookThemeKey}
+          roundness={props.roundness}
         >
-          <ConfigProvider
-            magicLinkKey={magicLinkKey}
-            infuraKey={infuraKey}
+          {withGlobalStyle && <GlobalStyledThemed />}
+          <WithReduxProvider
             withCustomReduxContext={withCustomReduxContext}
-            {...props}
+            withReduxProvider={withReduxProvider}
           >
-            <BosonProvider {...props}>
-              <WithUpdaters>
-                <ChatProvider>
-                  <IpfsProvider {...props}>
-                    <ConvertionRateProvider>
-                      <ModalProvider>{children}</ModalProvider>
-                    </ConvertionRateProvider>
-                  </IpfsProvider>
-                </ChatProvider>
-              </WithUpdaters>
-            </BosonProvider>
-          </ConfigProvider>
-        </WithReduxProvider>
+            <Web3Provider {...props} infuraKey={infuraKey}>
+              <ConfigProvider
+                magicLinkKey={magicLinkKey}
+                infuraKey={infuraKey}
+                withCustomReduxContext={withCustomReduxContext}
+                {...props}
+              >
+                <BlockNumberProvider>
+                  <BosonProvider {...props}>
+                    <WithUpdaters>
+                      <ChatProvider>
+                        <IpfsProvider {...props}>
+                          <ConvertionRateProvider>
+                            <RedemptionProvider {...props}>
+                              <RobloxProvider {...props}>
+                                <ModalProvider>{children}</ModalProvider>
+                              </RobloxProvider>
+                            </RedemptionProvider>
+                          </ConvertionRateProvider>
+                        </IpfsProvider>
+                      </ChatProvider>
+                    </WithUpdaters>
+                  </BosonProvider>
+                </BlockNumberProvider>
+              </ConfigProvider>
+            </Web3Provider>
+          </WithReduxProvider>
+        </BosonThemeProvider>
       );
     }
   );
 
 function UpdatersWrapper({
   children,
-  isWindowVisible,
   withWeb3React
 }: {
   children: ReactNode;
-  isWindowVisible: boolean;
   withWeb3React: boolean;
 }) {
   const provider = useProvider();
   return (
-    <Updaters
-      isWindowVisible={isWindowVisible}
-      provider={provider}
-      withWeb3React={withWeb3React}
-    >
+    <Updaters provider={provider} withWeb3React={withWeb3React}>
       {children}
     </Updaters>
   );

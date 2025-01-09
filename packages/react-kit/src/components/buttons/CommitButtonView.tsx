@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, forwardRef } from "react";
+import React, { forwardRef } from "react";
 import { Button } from "./Button";
 import Logo from "../../assets/logo.svg";
 import styled, { CSSProperties, css } from "styled-components";
@@ -32,20 +32,6 @@ const StyledButton = styled(Button)<{
     fill: ${({ $color }) => ($color === "black" ? "black" : "white")};
   }
 `;
-const Tagline = styled.div`
-  margin-top: 3px;
-  cursor: pointer;
-  color: black;
-  text-shadow:
-    0.07em 0 white,
-    0 0.07em white,
-    -0.07em 0 white,
-    0 -0.07em white,
-    -0.07em -0.07em white,
-    -0.07em 0.07em white,
-    0.07em -0.07em white,
-    0.07em 0.07em white;
-`;
 
 const Wrapper = styled.div`
   width: fit-content;
@@ -71,11 +57,10 @@ export type CommitButtonViewProps = {
   minHeight?: CSSProperties["minHeight"];
   color?: "green" | "black" | "white";
   shape?: "sharp" | "rounded" | "pill";
-  onTaglineClick?: MouseEventHandler<HTMLDivElement>;
 };
 
 const colorToVariant = {
-  green: "bosonPrimary",
+  green: "primary",
   black: "black",
   white: "white"
 } as const;
@@ -92,7 +77,6 @@ export const CommitButtonView = forwardRef<
       minHeight,
       layout = "horizontal",
       color = "green",
-      onTaglineClick,
       shape = "sharp"
     },
     ref
@@ -108,15 +92,14 @@ export const CommitButtonView = forwardRef<
           }}
           themeVal={colorToVariant[color] || "primary"}
           variant={null}
-          withBosonStyle
           $color={color}
           $shape={shape}
         >
           <Grid
             flexDirection={layout === "horizontal" ? "row" : "column"}
-            gap="1rem"
+            gap="0.375rem"
           >
-            Buy Physical NFT with
+            Buy with
             <SvgImage
               src={Logo}
               width={`${logoWidthPx}px`}
@@ -124,10 +107,6 @@ export const CommitButtonView = forwardRef<
             />
           </Grid>
         </StyledButton>
-
-        <Tagline role="button" onClick={onTaglineClick}>
-          What is a physical NFT?
-        </Tagline>
       </Wrapper>
     );
   }

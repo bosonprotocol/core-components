@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import Price from "../../../../price/Price";
@@ -21,7 +21,6 @@ import {
 } from "../detail/useGetOfferDetailData";
 import { Exchange } from "../../../../../types/exchange";
 import { PhygitalProduct } from "../detail/PhygitalProduct";
-const colors = theme.colors.light;
 
 const StyledPrice = styled(Price)`
   h3 {
@@ -101,7 +100,6 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
             decimals={offer.exchangeToken.decimals}
             tag="h3"
             convert
-            withBosonStyles
             withAsterisk={false}
           />
         </Grid>

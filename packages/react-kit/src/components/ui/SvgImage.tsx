@@ -1,7 +1,10 @@
 import React from "react";
 import { CSSProperties } from "styled-components";
 
-export type SvgImageProps = Pick<CSSProperties, "width" | "height"> & {
+export type SvgImageProps = Pick<
+  CSSProperties,
+  "width" | "height" | "color"
+> & {
   src: string | React.FC | undefined;
   alt?: string;
   style?: CSSProperties;

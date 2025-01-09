@@ -1,9 +1,7 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
-import { Provider } from "@bosonprotocol/ethers-sdk";
-import { useAccountModal } from "@rainbow-me/rainbowkit";
 import * as Sentry from "@sentry/browser";
 import { BigNumberish, ethers, providers } from "ethers";
-import { ArrowRight, ArrowsLeftRight, Info, Spinner } from "phosphor-react";
+import { ArrowsLeftRight, Info, Spinner } from "phosphor-react";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import styled, { css } from "styled-components";
@@ -17,10 +15,8 @@ import {
   getHasUserRejectedTx
 } from "../../../../../lib/errors/transactions";
 import { poll } from "../../../../../lib/promises/promises";
-import { theme } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import { useConfigContext } from "../../../../config/ConfigContext";
-import { CommitButton } from "../../../../cta/offer/CommitButton";
 import SuccessTransactionToast from "../../../../toasts/SuccessTransactionToast";
 import { Grid } from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
@@ -37,7 +33,8 @@ import { DetailViewProps } from "../../common/detail/types";
 import { useBuyers } from "../../../../../hooks/useBuyers";
 import { CommitRedeemSteps } from "./CommitRedeemSteps";
 import { RedeemWhatsNext } from "./RedeemWhatsNext";
-const colors = theme.colors.light;
+import { useOpenAccountDrawer } from "../../../../wallet2/accountDrawer";
+import { colors } from "../../../../../colors";
 
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
 
@@ -133,7 +130,7 @@ export default function InnerCommitDetailView(
   const coreSDK = useCoreSDKWithContext();
   const commitButtonRef = useRef<HTMLButtonElement>(null);
   const { address } = useAccount();
-  const { openAccountModal } = useAccountModal();
+  const [, openAccountDrawer] = useOpenAccountDrawer();
   const onCommitPendingSignature = () => {
     setIsLoading(true);
     showModal("WAITING_FOR_CONFIRMATION");
@@ -330,7 +327,6 @@ export default function InnerCommitDetailView(
             <Button
               size="regular"
               variant="accentInverted"
-              withBosonStyle
               style={{
                 width: "100%"
               }}
@@ -355,7 +351,7 @@ export default function InnerCommitDetailView(
                   if (!address) {
                     saveItemInStorage("isConnectWalletFromCommit", true);
                     setIsCommittingFromNotConnectedWallet(true);
-                    openAccountModal?.();
+                    openAccountDrawer();
                   }
                 }}
               >
@@ -384,7 +380,6 @@ export default function InnerCommitDetailView(
                         onPendingSignature={onCommitPendingSignature}
                         onPendingTransaction={onCommitPendingTransaction}
                         onSuccess={onCommitSuccess}
-                        withBosonStyle
                         id="commit"
                       />
                     ) : ( */}

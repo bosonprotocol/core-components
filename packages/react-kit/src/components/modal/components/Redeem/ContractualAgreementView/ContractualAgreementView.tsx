@@ -4,16 +4,20 @@ import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import ContractualAgreement from "../../../../contractualAgreement/ContractualAgreement";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { theme } from "../../../../../theme";
+import { getCssVar } from "../../../../../theme";
 import { BosonLogo } from "../../common/BosonLogo";
 
-const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;
+  showBosonLogoInFooter: boolean;
 }
 
-export function ContractualAgreementView({ onBackClick, exchange }: Props) {
+export function ContractualAgreementView({
+  onBackClick,
+  exchange,
+  showBosonLogoInFooter
+}: Props) {
   const offer = exchange?.offer;
   const offerId = offer?.id;
   const dispatch = useNonModalContext();
@@ -31,13 +35,13 @@ export function ContractualAgreementView({ onBackClick, exchange }: Props) {
           </Grid>
         ),
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, showBosonLogoInFooter]);
   return (
     <>
       {exchange ? (

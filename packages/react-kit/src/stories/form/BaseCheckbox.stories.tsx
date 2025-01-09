@@ -2,9 +2,8 @@ import React from "react";
 import { BaseCheckbox, BaseCheckboxProps } from "../../components/form";
 import { Formik } from "formik";
 import type { Meta } from "@storybook/react";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { bosonCheckboxTheme } from "../../components/form/Checkbox";
-const colors = theme.colors.light;
 
 const inputName = "test";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -69,8 +68,8 @@ export const CustomTheme = {
       borderRadius: "4px",
       hover: {
         borderColor: colors.red,
-        backgroundColor: colors.primary,
-        color: colors.darkRed
+        backgroundColor: colors.green,
+        color: colors.redDark
       },
       checked: {
         borderColor: "#ff00d4",

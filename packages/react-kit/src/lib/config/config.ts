@@ -23,5 +23,7 @@ if (!infuraKey) {
 export const CONFIG = {
   magicLinkKey,
   infuraKey,
-  rpcUrls: getRpcUrls(infuraKey)
+  rpcUrls: getRpcUrls(infuraKey),
+  defaultDisputeResolutionPeriodDays: 15,
+  minimumDisputePeriodInDays: 30
 } as const;

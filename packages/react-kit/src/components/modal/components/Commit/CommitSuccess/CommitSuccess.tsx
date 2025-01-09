@@ -9,7 +9,7 @@ import {
 import React, { useEffect } from "react";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { getOpenSeaUrl } from "../../../../../lib/opensea/getOpenSeaUrl";
-import { theme } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import { Grid } from "../../../../ui/Grid";
@@ -20,15 +20,19 @@ import { useNonModalContext } from "../../../nonModal/NonModal";
 import { CardCTA } from "./CardCTA";
 import { BosonLogo } from "../../common/BosonLogo";
 
-const colors = theme.colors.light;
-
 type Props = {
   onHouseClick: () => void;
   exchangeId: string;
   commitHash: string | undefined;
+  showBosonLogoInFooter: boolean;
 };
 
-export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
+export function CommitSuccess({
+  onHouseClick,
+  exchangeId,
+  commitHash,
+  showBosonLogoInFooter
+}: Props) {
   const { config } = useConfigContext();
   const {
     data: exchanges,
@@ -58,13 +62,13 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
           </Grid>
         ),
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, showBosonLogoInFooter]);
   const exploreTxUrl = config.getTxExplorerUrl?.(commitHash, false);
   return (
     <>
@@ -100,7 +104,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
             }}
           >
             <CardCTA
-              icon={<Wallet color={colors.secondary} size={20} />}
+              icon={<Wallet color={colors.violet} size={20} />}
               title="Hold"
               text="You can now hold on to your redeemable NFT and trade, transfer or redeem it in the future"
               cta={
@@ -110,7 +114,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                     target="__blank"
                     style={{
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      color: colors.secondary, // @ts-ignore
+                      color: colors.violet, // @ts-ignore
                       textWrap: "balance"
                     }}
                   >
@@ -120,7 +124,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                       : "Etherscan"}{" "}
                     <ArrowSquareUpRight
                       style={{ verticalAlign: "text-bottom" }}
-                      color={colors.secondary}
+                      color={colors.violet}
                       size={20}
                     />
                   </a>
@@ -128,7 +132,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
               }
             />
             <CardCTA
-              icon={<CurrencyCircleDollar color={colors.secondary} size={20} />}
+              icon={<CurrencyCircleDollar color={colors.violet} size={20} />}
               title="Trade or Transfer"
               text="You can transfer or easily trade your rNFT on the secondary market for example OpenSea"
               cta={
@@ -141,7 +145,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                     })}
                     target="__blank"
                     style={{
-                      color: colors.secondary,
+                      color: colors.violet,
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-ignore
                       textWrap: "balance"
@@ -150,7 +154,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                     Trade on OpenSea{" "}
                     <ArrowSquareUpRight
                       style={{ verticalAlign: "text-bottom" }}
-                      color={colors.secondary}
+                      color={colors.violet}
                       size={20}
                     />
                   </a>
@@ -158,7 +162,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
               }
             />
             <CardCTA
-              icon={<Package color={colors.secondary} size={20} />}
+              icon={<Package color={colors.violet} size={20} />}
               title="Redeem"
               text="Redeem your rNFT to receive underlying item. The rNFT will be destroyed in the process."
               cta={
@@ -168,14 +172,14 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                     target="__blank"
                     style={{
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      color: colors.secondary, // @ts-ignore
+                      color: colors.violet, // @ts-ignore
                       textWrap: "balance"
                     }}
                   >
                     Go to Redeem site{" "}
                     <ArrowSquareUpRight
                       style={{ verticalAlign: "text-bottom" }}
-                      color={colors.secondary}
+                      color={colors.violet}
                       size={20}
                     />
                   </a>

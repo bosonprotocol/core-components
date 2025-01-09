@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 // all css variables can be found in src/components/app/index.tsx
 export const useCSSVariable = (
-  variableName: "--primary" | "--secondary" | "--accent" | "--accentDark"
+  variableName: "--primary" | "--secondary" | "--accent"
 ) => {
   const [value, setValue] = useState<string>();
   useEffect(() => {

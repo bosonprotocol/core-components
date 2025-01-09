@@ -13,16 +13,14 @@ import { shouldAcceptVersionUpdate } from "./utils";
 import { useInterval } from "../../hooks/uniswap/useInterval";
 import { useFetchListCallback } from "../../hooks/uniswap/useFetchListCallback";
 import { providers } from "ethers";
+import { useIsWindowVisible } from "../../hooks";
 
 export type ListsUpdaterProps = {
-  isWindowVisible: boolean;
   provider: providers.FallbackProvider | providers.JsonRpcProvider;
 };
-export function ListsUpdater({
-  isWindowVisible,
-  provider
-}: ListsUpdaterProps): null {
+export function ListsUpdater({ provider }: ListsUpdaterProps): null {
   const dispatch = useAppDispatch();
+  const isWindowVisible = useIsWindowVisible();
 
   // get all loaded lists, and the active urls
   const lists = useAllLists();

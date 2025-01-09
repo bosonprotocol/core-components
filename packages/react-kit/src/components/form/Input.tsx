@@ -1,16 +1,16 @@
 import React from "react";
-import { theme } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { BaseInput, BaseInputProps } from "./BaseInput";
-const colors = theme.colors.light;
+
 const bosonTheme = {
-  background: colors.lightGrey,
-  borderColor: colors.border,
+  background: getCssVar("--background-color"),
+  borderColor: getCssVar("--border-color"),
   borderRadius: 0,
   focus: {
     caretColor: "initial"
   },
   hover: {
-    borderColor: colors.lightGrey
+    borderColor: getCssVar("--background-color")
   },
   error: {
     borderColor: colors.orange,

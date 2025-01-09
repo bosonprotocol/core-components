@@ -8,11 +8,11 @@ import styled, { css, CSSProperties, RuleSet } from "styled-components";
 
 import { Tooltip } from "../tooltip/Tooltip";
 import * as Styles from "../ui/styles";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { Loading } from "../ui/loading/Loading";
 import { ButtonSize } from "../ui/buttonSize";
-import { AddDollarPrefixToKeys } from "../../types/helpers";
-const colors = theme.colors.light;
+import { AddDollarPrefixToKeys, AnyString } from "../../types/helpers";
+
 type ButtonWithThemePropsType = AddDollarPrefixToKeys<{
   size: ButtonSizeProp;
   fill: boolean | undefined;
@@ -23,7 +23,10 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
   border-style: solid;
   border-color: ${(props) => props.theme?.borderColor || "transparent"};
   border-width: ${(props) => props.theme?.borderWidth || 0}px;
-  border-radius: ${(props) => props.theme?.borderRadius || 0}px;
+  border-radius: ${(props) =>
+    typeof props.theme?.borderRadius === "number"
+      ? `${props.theme.borderRadius || 0}px`
+      : props.theme?.borderRadius};
   ${(props) =>
     props.theme?.boxShadow ? `box-shadow: ${props.theme.boxShadow}` : ""};
   color: ${(props) => props.theme?.color || "#000000"};
@@ -116,7 +119,7 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
           &:disabled {
             background-color: ${props.theme.disabled?.background ||
             "transparent"};
-            color: ${props.theme.disabled?.color || colors.darkGrey};
+            color: ${props.theme.disabled?.color || colors.greyDark};
             border-color: transparent;
             cursor: not-allowed;
             opacity: 0.5;
@@ -124,8 +127,8 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
         `
       : css`
           &:disabled {
-            background-color: ${colors.lightGrey};
-            color: ${colors.darkGrey};
+            background-color: ${colors.greyLight};
+            color: ${colors.greyDark};
             border-color: transparent;
             cursor: not-allowed;
             opacity: 0.5;
@@ -156,7 +159,7 @@ type SvgTheme = Partial<{
 export type BaseButtonTheme = {
   background?: CSSProperties["backgroundColor"];
   borderColor?: CSSProperties["borderColor"];
-  borderRadius?: CSSProperties["borderRadius"];
+  borderRadius?: `${string}px` | AnyString;
   borderWidth?: CSSProperties["borderWidth"];
   boxShadow?: CSSProperties["boxShadow"];
   color?: CSSProperties["color"];

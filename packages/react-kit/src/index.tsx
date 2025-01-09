@@ -50,6 +50,7 @@ export * from "./components/queryClient/withQueryClientProvider";
 export * from "./components/queryClient/QueryClientProviderCustom";
 export * from "./components/scroll/ScrollToID";
 export * from "./components/scroll/ScrollToTop";
+export * from "./components/styles/GlobalStyledThemed";
 export * from "./components/searchBar/SearchBar";
 export * from "./components/skeleton/CollectionsCardSkeleton";
 export { LoadingBubble } from "./components/skeleton/common";
@@ -71,7 +72,6 @@ export {
 export * from "./components/ui/Typography";
 export { Video, VideoProps } from "./components/ui/Video";
 export * from "./components/ui/zIndex";
-export { default as ConnectButton } from "./components/wallet/ConnectButton";
 export * from "./components/wallet2/accountDrawer/index";
 export * from "./components/wallet2/selector/ChainSelector";
 export * from "./components/wallet2/web3Provider/index";

@@ -15,7 +15,7 @@ import { useAddPendingTransactionWithContext } from "../../../../../hooks/transa
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { poll } from "../../../../../lib/promises/promises";
 
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { useChatContext } from "../../../../chat/ChatProvider/ChatContext";
 import InitializeChatWithSuccess from "../../../../chat/InitializeChatWithSuccess";
 import { useChatStatus } from "../../../../chat/useChatStatus";
@@ -42,15 +42,11 @@ import {
   DeliveryInfoMessage
 } from "../../../../../hooks/callbacks/types";
 import { NonModalProps } from "../../../nonModal/NonModal";
-import {
-  RedemptionWidgetAction,
-  useRedemptionContext
-} from "../../../../widgets/redemption/provider/RedemptionContext";
+import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
 import { extractUserFriendlyError } from "../../../../../lib/errors/transactions";
-const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)`
-  background-color: ${colors.lightGrey};
+  background-color: ${colors.greyLight};
 `;
 
 const StyledRedeemButton = styled(ThemedButton)``;
@@ -66,12 +62,14 @@ export interface ConfirmationProps
   buyerId: string;
   sellerId: string;
   sellerAddress: string;
+  redemptionInfoAcceptedInitial: boolean;
+  resumeRedemptionInitial: boolean;
   onBackClick: () => void;
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
   hideModal?: NonModalProps["hideModal"];
 }
 
-export default function Confirmation({
+export function Confirmation({
   onBackClick,
   exchangeId,
   offerId,
@@ -84,12 +82,12 @@ export default function Confirmation({
   onPendingSignature,
   onPendingTransaction,
   setIsLoading: setLoading,
-  hideModal
+  hideModal,
+  redemptionInfoAcceptedInitial,
+  resumeRedemptionInitial
 }: ConfirmationProps) {
   const { envName, configId } = useEnvContext();
   const {
-    widgetAction,
-    setWidgetAction,
     deliveryInfoHandler,
     redemptionSubmittedHandler,
     redemptionConfirmedHandler,
@@ -106,10 +104,10 @@ export default function Confirmation({
   );
   const [redeemError, setRedeemError] = useState<Error | null>(null);
   const [redemptionInfoAccepted, setRedemptionInfoAccepted] = useState<boolean>(
-    widgetAction === RedemptionWidgetAction.CONFIRM_REDEEM
+    redemptionInfoAcceptedInitial
   );
   const [resumeRedemption, setResumeRedemption] = useState<boolean>(
-    widgetAction === RedemptionWidgetAction.CONFIRM_REDEEM
+    resumeRedemptionInitial
   );
   const { chatInitializationStatus } = useChatStatus();
   const showSuccessInitialization =
@@ -230,13 +228,6 @@ export default function Confirmation({
     }
     return { resume };
   };
-  const handleOnBackClick = () => {
-    if (widgetAction === RedemptionWidgetAction.CONFIRM_REDEEM) {
-      // As the redemption will be edited again, switch the widgetAction to REDEEM_FORM
-      setWidgetAction(RedemptionWidgetAction.REDEEM_FORM);
-    }
-    onBackClick();
-  };
 
   const sendDeliveryDetailsToChat = async (message: DeliveryInfoMessage) => {
     let resume = true;
@@ -310,7 +301,7 @@ ${FormModel.formFields.walletAddress.placeholder}: ${message.deliveryDetails.wal
         <Grid flexDirection="row" flexBasis="0">
           <ThemedButton
             themeVal="blankSecondary"
-            onClick={handleOnBackClick}
+            onClick={onBackClick}
             disabled={
               isLoading || (redemptionInfoAccepted && !resumeRedemption)
             }
@@ -328,7 +319,7 @@ ${FormModel.formFields.walletAddress.placeholder}: ${message.deliveryDetails.wal
             margin="1.5rem 0"
             padding="1.5rem"
           >
-            <Warning color={colors.darkOrange} size={16} />
+            <Warning color={colors.orangeDark} size={16} />
             <Typography fontWeight="600" fontSize="1rem" lineHeight="1.5rem">
               rNFTs are burned upon redemption to prevent double spend
             </Typography>
@@ -349,6 +340,11 @@ ${FormModel.formFields.walletAddress.placeholder}: ${message.deliveryDetails.wal
               deliveryDetails: values,
               ...redemptionInfo
             };
+            console.log({
+              redemptionInfoAccepted,
+              resume,
+              sendDeliveryInfoThroughXMTP
+            });
             if (!redemptionInfoAccepted) {
               setIsLoading(true);
               setRedemptionInfoError(null);
@@ -426,7 +422,7 @@ ${FormModel.formFields.walletAddress.placeholder}: ${message.deliveryDetails.wal
                 txResponse: context.txResponse,
                 provider: signer?.provider
               });
-              console.error("Error while redeeming", error, errorMessage);
+
               error.message = errorMessage;
               const message = {
                 redemptionInfo,
@@ -551,7 +547,7 @@ ${FormModel.formFields.walletAddress.placeholder}: ${message.deliveryDetails.wal
         </div>
         <ThemedButton
           themeVal="outline"
-          onClick={handleOnBackClick}
+          onClick={onBackClick}
           disabled={isLoading || (redemptionInfoAccepted && !resumeRedemption)}
         >
           Back

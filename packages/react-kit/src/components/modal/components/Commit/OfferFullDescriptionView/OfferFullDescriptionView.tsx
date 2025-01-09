@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { theme } from "../../../../../theme";
+import { getCssVar } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { OfferFullDescription } from "../../common/OfferFullDescription/OfferFullDescription";
@@ -10,17 +10,18 @@ import { OnClickBuyOrSwapHandler } from "../../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
 import { BosonLogo } from "../../common/BosonLogo";
 
-const colors = theme.colors.light;
 type Props = OnClickBuyOrSwapHandler & {
   onBackClick: () => void;
   offer: Offer;
+  showBosonLogoInFooter: boolean;
 } & Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick">;
 
 export function OfferFullDescriptionView({
   onBackClick,
   offer,
   onExchangePolicyClick,
-  onClickBuyOrSwap
+  onClickBuyOrSwap,
+  showBosonLogoInFooter
 }: Props) {
   const dispatch = useNonModalContext();
   useEffect(() => {
@@ -37,14 +38,14 @@ export function OfferFullDescriptionView({
           </Grid>
         ),
         contentStyle: {
-          background: colors.white,
+          background: getCssVar("--background-accent-color"),
           padding: 0
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, offer.metadata?.name]);
+  }, [dispatch, offer.metadata?.name, showBosonLogoInFooter]);
   return (
     <OfferFullDescription
       includeOverviewTab

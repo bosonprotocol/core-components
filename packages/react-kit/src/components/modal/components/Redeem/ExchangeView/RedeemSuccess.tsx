@@ -10,7 +10,7 @@ import { Typography } from "../../../../ui/Typography";
 import DetailOpenSea from "../../common/DetailOpenSea";
 import { useFormikContext } from "formik";
 import { FormType } from "../RedeemFormModel";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import Video from "../../../../ui/Video";
 import { Button } from "../../../../buttons/Button";
 import { GridContainer } from "../../../../ui/GridContainer";
@@ -18,8 +18,6 @@ import { useRedemptionContext } from "../../../../widgets/redemption/provider/Re
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { RedeemHeader } from "../RedeemHeader";
 import { BosonLogo } from "../../common/BosonLogo";
-
-const colors = theme.colors.light;
 
 const ImageWrapper = styled.div`
   position: relative;
@@ -32,12 +30,14 @@ type Props = {
   onClickDone: () => void;
   onHouseClick: () => void;
   exchangeId: string;
+  showBosonLogoInFooter: boolean;
 };
 
 export function RedeemSuccess({
   onClickDone,
   onHouseClick,
-  exchangeId
+  exchangeId,
+  showBosonLogoInFooter
 }: Props) {
   const { postDeliveryInfoUrl } = useRedemptionContext();
   const {
@@ -72,13 +72,13 @@ export function RedeemSuccess({
           </Grid>
         ),
         contentStyle: {
-          background: colors.lightGrey
+          background: colors.greyLight
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, showBosonLogoInFooter]);
   return (
     <>
       {isFetching ? (
@@ -175,7 +175,7 @@ export function RedeemSuccess({
                 </div>
               </Grid>
               <Grid
-                style={{ background: colors.lightGrey, padding: "1.5rem" }}
+                style={{ background: colors.greyLight, padding: "1.5rem" }}
                 justifyContent="flex-start"
                 gap="1rem"
               >

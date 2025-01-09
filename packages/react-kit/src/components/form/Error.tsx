@@ -1,9 +1,8 @@
 import React from "react";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 
 import { Typography } from "../ui/Typography";
 import type { ErrorProps } from "./types";
-const colors = theme.colors.light;
 
 export default function Error({ display = false, message = "" }: ErrorProps) {
   if (!display) {

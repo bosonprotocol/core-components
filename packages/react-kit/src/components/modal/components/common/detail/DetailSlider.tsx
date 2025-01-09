@@ -11,14 +11,12 @@ import React, {
 
 import styled, { css } from "styled-components";
 import { breakpointNumbers } from "../../../../../lib/ui/breakpoint";
-import { theme } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { Grid } from "../../../../ui/Grid";
 import { IpfsImage } from "../../../../ui/IpfsImage";
 import Video from "../../../../ui/Video";
 import { zIndex } from "../../../../ui/zIndex";
 import { GlideSlide } from "./Detail.style";
-
-const colors = theme.colors.light;
 
 const SLIDER_OPTIONS = {
   type: "carousel",
@@ -43,18 +41,18 @@ const Container = styled.div`
 `;
 
 const GlideSlides = styled.div<{ $highlightActive: boolean }>`
-  background: ${colors.white};
+  background: ${getCssVar("--background-accent-color")};
   > * {
     align-self: center;
   }
   .glide__slide {
-    border-radius: 8px;
+    border-radius: ${getCssVar("--modal-border-radius")};
     /* &--active, */
     .active {
       ${({ $highlightActive }) =>
         $highlightActive &&
         css`
-          /* border: 1px solid ${colors.darkGrey}; */
+          /* border: 1px solid ${colors.greyDark}; */
           border: 4px solid ${colors.blue};
         `}
     }

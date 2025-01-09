@@ -16,7 +16,7 @@ import { useErc721TokenUris } from "../../../../../hooks/contracts/erc721/useErc
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { nativeOnChain } from "../../../../../lib/const/tokens";
 import { useGetTokenUriImages } from "../../../../../hooks/contracts/useGetTokenUriImages";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import { PortfolioLogo } from "../../../../logo/PortfolioLogo";
@@ -25,7 +25,6 @@ import ThemedButton from "../../../../ui/ThemedButton";
 import { BuyOrSwapContainer } from "./BuyOrSwapContainer";
 import { useDetailViewContext } from "./DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "./types";
-const colors = theme.colors.light;
 
 type Props = OnClickBuyOrSwapHandler & {
   offer: Offer;
@@ -301,7 +300,7 @@ export const TokenGatedItem = ({
   const rangeText = (
     <span
       style={{
-        color: colors.darkGrey,
+        color: colors.greyDark,
         fontSize: "12px",
         fontWeight: 600,
         lineHeight: "18px",

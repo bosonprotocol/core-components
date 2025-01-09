@@ -9,7 +9,6 @@ import React, {
 import styled from "styled-components";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { breakpoint } from "../../../../lib/ui/breakpoint";
-import { theme } from "../../../../theme";
 import { isTruthy } from "../../../../types/helpers";
 import { VariantV1 } from "../../../../types/variants";
 import { Grid } from "../../../ui/Grid";
@@ -28,8 +27,8 @@ import { UseGetOfferDetailDataProps } from "../common/detail/useGetOfferDetailDa
 import { BosonLogo } from "../common/BosonLogo";
 import { PhygitalLabel } from "../../../productCard/ProductCard";
 import { useIsPhygital } from "../../../../hooks/offer/useIsPhygital";
+import { getCssVar } from "../../../../theme";
 
-const colors = theme.colors.light;
 const ImageWrapper = styled.div`
   container-type: inline-size;
   position: relative;
@@ -69,7 +68,8 @@ export type OfferVariantViewProps = OnClickBuyOrSwapHandler &
     selectedVariant: VariantV1;
     setSelectedVariant: Dispatch<SetStateAction<VariantV1 | undefined>>;
     allVariants: VariantV1[];
-    showBosonLogo?: boolean;
+    showBosonLogo: boolean;
+    showBosonLogoInFooter: boolean;
     disableVariationsSelects?: boolean;
     loadingViewFullDescription: boolean;
   };
@@ -88,6 +88,7 @@ export function OfferVariantView({
   showBosonLogo,
   disableVariationsSelects,
   loadingViewFullDescription,
+  showBosonLogoInFooter,
   onCommit,
   onExchangePolicyClick,
   onLicenseAgreementClick,
@@ -122,12 +123,12 @@ export function OfferVariantView({
           />
         ),
         contentStyle: {
-          background: isCommitting ? colors.white : colors.lightGrey
+          background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
-  }, [dispatch, isCommitting]);
+  }, [dispatch, showBosonLogoInFooter]);
   const hasVariations = !!selectedVariant.variations?.length;
   const innerOnGetProviderProps = useCallback(
     (providerProps: DetailContextProps) => {

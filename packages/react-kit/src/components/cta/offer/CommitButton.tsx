@@ -35,14 +35,14 @@ type Props = AdditionalProps &
   Omit<CtaButtonProps<SuccessPayload>, "variant" | "theme">;
 
 const commitButtonTheme = {
-  ...bosonButtonThemes({ withBosonStyle: false })["primary"],
+  ...bosonButtonThemes()["primary"],
   svg: {
     path: {
       fill: "black"
     }
   },
   hover: {
-    ...bosonButtonThemes({ withBosonStyle: false })["primary"].hover,
+    ...bosonButtonThemes()["primary"].hover,
     svg: {
       fill: "unset",
       path: {

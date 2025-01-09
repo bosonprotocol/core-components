@@ -1,8 +1,8 @@
 import { fn } from "@storybook/test";
-import { MultiSteps, theme } from "../../index";
+import { colors, MultiSteps } from "../../index";
 import React from "react";
 import { Meta } from "@storybook/react";
-const colors = theme.colors.light;
+
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Visual Components/MultiSteps",
@@ -47,12 +47,12 @@ const BASE_ARGS = {
     { name: "Create profile", steps: 2 },
     { name: "Summary of profile creation", steps: 1 }
   ],
-  enabledArrowColor: colors.darkGrey,
-  disabledArrowColor: colors.lightArrowColor,
+  enabledArrowColor: colors.greyDark,
+  disabledArrowColor: colors.greyLight2,
   stepInactiveDotColor: "#d3d5db",
   stepInactiveBackgroundColor: colors.white,
-  stepInactiveHoverDotColor: colors.darkGrey,
-  stepInactiveHoverBackgroundColor: colors.lightGrey,
+  stepInactiveHoverDotColor: colors.greyDark,
+  stepInactiveHoverBackgroundColor: colors.greyLight,
   stepActiveBackgroundColor: colors.black,
   stepActiveDotsColor: colors.green,
   stepDoneBackgroundColor: colors.green,
@@ -70,12 +70,12 @@ export const BosonTheme = {
 export const CustomTheme = {
   args: {
     ...BASE_ARGS,
-    enabledArrowColor: colors.darkOrange,
+    enabledArrowColor: colors.orangeDark,
     disabledArrowColor: colors.orange,
     stepInactiveDotColor: colors.arsenic,
     stepInactiveBackgroundColor: colors.blue,
     stepInactiveHoverDotColor: colors.cyan,
-    stepInactiveHoverBackgroundColor: colors.darkRed,
+    stepInactiveHoverBackgroundColor: colors.redDark,
     stepActiveBackgroundColor: colors.torquise,
     stepActiveDotsColor: colors.froly,
     stepDoneBackgroundColor: "#eeee00",

@@ -1,5 +1,5 @@
 import styled, { CSSProperties, css } from "styled-components";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 
 export const ImageWrapper = styled.div<{ $hide?: boolean }>`
   display: ${({ $hide }) => ($hide ? "none !important" : undefined)};
@@ -39,7 +39,7 @@ export const ImagePlaceholder = styled.div<{
   top: 0;
   height: 100%;
   width: 100%;
-  background-color: ${theme.colors.light.darkGrey};
+  background-color: ${colors.greyDark};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -49,7 +49,7 @@ export const ImagePlaceholder = styled.div<{
     ${buttonText}
     font-size: inherit;
     line-height: 1;
-    color: ${theme.colors.light.white};
+    color: ${colors.white};
     padding: 1rem;
     text-align: center;
   }
@@ -59,6 +59,7 @@ export const ImageErrorText = styled.div`
   ${buttonText}
   font-size: inherit;
   line-height: 1;
-  color: ${theme.colors.light.white};
+  color: ${colors.white};
   text-align: center;
+  padding: 0.5rem;
 `;

@@ -1,9 +1,8 @@
-import { fn } from "@storybook/test";
 import {
   CountryCode,
   CountrySelect,
   CountrySelectProps,
-  theme
+  colors
 } from "../../index";
 import React from "react";
 import { Meta } from "@storybook/react";
@@ -28,7 +27,7 @@ const countries: CountryCode[] = [
   "KR",
   "LU"
 ];
-const colors = theme.colors.light;
+
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Visual Components/Selects/CountrySelect",
@@ -39,7 +38,7 @@ export default {
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
-  args: { onClick: fn() },
+  // args: { onClick: fn() },
   argTypes: {
     name: {
       table: {

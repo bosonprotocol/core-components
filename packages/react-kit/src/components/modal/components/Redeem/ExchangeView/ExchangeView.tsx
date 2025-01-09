@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import { theme } from "../../../../../theme";
+import { getCssVar } from "../../../../../theme";
 import { isTruthy } from "../../../../../types/helpers";
 import { VariantV1 } from "../../../../../types/variants";
 import { Grid } from "../../../../ui/Grid";
@@ -23,8 +23,6 @@ import { SlickSlider, initialSettings } from "../../common/detail/SlickSlider";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
 import { getOfferVariations } from "../../../../../lib/offer/getOfferVariations";
 import { BosonLogo } from "../../common/BosonLogo";
-
-const colors = theme.colors.light;
 
 const ImageWrapper = styled.div`
   container-type: inline-size;
@@ -66,10 +64,8 @@ export type ExchangeViewProps = OnClickBuyOrSwapHandler &
     onGetDetailViewProviderProps: (providerProps: DetailContextProps) => void;
     showBosonLogo?: boolean;
     exchangeId: string;
-    fairExchangePolicyRules: string;
-    defaultDisputeResolverId: string;
-    isValid: boolean;
     loadingViewFullDescription: boolean;
+    showBosonLogoInFooter: boolean;
   };
 
 const SLIDER_OPTIONS = {
@@ -89,9 +85,7 @@ export function ExchangeView({
   onExpireVoucherClick,
   onRaiseDisputeClick,
   exchangeId,
-  fairExchangePolicyRules,
-  defaultDisputeResolverId,
-  isValid,
+  showBosonLogoInFooter,
   onClickBuyOrSwap,
   loadingViewFullDescription,
   onContractualAgreementClick,
@@ -144,13 +138,13 @@ export function ExchangeView({
           </Grid>
         ),
         contentStyle: {
-          background: colors.lightGrey
+          background: getCssVar("--background-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, offer]);
+  }, [dispatch, offer, showBosonLogoInFooter]);
   const innerOnGetProviderProps = useCallback(
     (providerProps: DetailContextProps) => {
       onGetDetailViewProviderProps(providerProps);

@@ -25,11 +25,12 @@ export enum Currencies {
   WETH = "WETH"
 }
 
-interface CurrencyDisplayProps {
+export interface CurrencyDisplayProps {
   value?: string;
   currency: Currencies;
   height?: number;
   fontSize?: number | string;
+  color?: CSSProperties["color"];
   iconSize?: number;
   gap?: number | string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,6 +43,7 @@ export const CurrencyDisplay = ({
   height = 25,
   fontSize,
   iconSize,
+  color,
   gap,
   ...rest
 }: CurrencyDisplayProps) => {
@@ -52,7 +54,12 @@ export const CurrencyDisplay = ({
     >
       <CurrencyLogo currency={currency} size={iconSize || height} />
       {value && (
-        <CurrencyDisplayValue $height={height} $fontSize={fontSize} $gap={gap}>
+        <CurrencyDisplayValue
+          $height={height}
+          $fontSize={fontSize}
+          $gap={gap}
+          $color={color}
+        >
           {value}
         </CurrencyDisplayValue>
       )}
@@ -70,13 +77,14 @@ const CurrencyDisplayValue = styled.span<{
   $height: CSSProperties["height"];
   $fontSize?: CSSProperties["fontSize"];
   $gap?: CSSProperties["gap"];
+  $color?: CSSProperties["color"];
 }>`
-  ${({ $height, $fontSize, $gap }) => css`
+  ${({ $height, $fontSize, $gap, $color }) => css`
     line-height: ${$height}px;
     font-size: ${$fontSize ? $fontSize : `${(Number($height) - 5) / 16}rem`};
     padding-left: ${$gap !== undefined ? $gap : "1rem"};
+    color: ${$color !== undefined ? $color : "inherit"};
   `}
-  color: #09182c;
   display: flex;
   text-align: right;
   align-items: center;

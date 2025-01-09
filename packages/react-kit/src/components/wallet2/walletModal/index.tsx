@@ -52,10 +52,8 @@ export type WalletModalProps = {
   > & { iconBorderRadius: CSSProperties["borderRadius"] };
   withMagicLogin?: boolean;
   connectionErrorProps: ConnectionErrorViewProps;
-} & (
-  | { withMagicLogin: true; magicLoginButtonProps: MagicLoginButtonProps }
-  | { withMagicLogin?: false; magicLoginButtonProps?: undefined }
-);
+  magicLoginButtonProps?: MagicLoginButtonProps;
+};
 export function WalletModal({
   PrivacyPolicy,
   magicLoginButtonProps,

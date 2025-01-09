@@ -11,19 +11,17 @@ import {
   getCalcPercentage,
   useDisplayFloat
 } from "../../../../../lib/price/prices";
-import { Exchange } from "../../../../../types/exchange";
-import { Offer } from "../../../../../types/offer";
 import { Typography } from "../../../../ui/Typography";
 import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { DetailViewProps } from "./types";
-import { theme } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 
 const fontSizeExchangePolicy = "0.625rem";
-const colors = theme.colors.light;
+
 export type UseGetOfferDetailDataProps = {
   defaultCurrencySymbol: string;
-  offer: Offer;
-  exchange?: Exchange | null;
+  offer: subgraph.OfferFieldsFragment;
+  exchange?: subgraph.ExchangeFieldsFragment | null;
   onExchangePolicyClick: DetailViewProps["onExchangePolicyClick"];
   exchangePolicyCheckResult: offers.CheckExchangePolicyResult | undefined;
 };
@@ -107,7 +105,7 @@ export const useGetOfferDetailData = ({
               </>
             ),
             value: (
-              <Typography tag="p">
+              <Typography tag="p" color={getCssVar("--sub-text-color")}>
                 {canBeRedeemedFrom.format(dayMonthYearFormat)}
               </Typography>
             )
@@ -133,7 +131,7 @@ export const useGetOfferDetailData = ({
         </>
       ),
       value: (
-        <Typography tag="p">
+        <Typography tag="p" color={getCssVar("--sub-text-color")}>
           {offer.voucherRedeemableUntilDate !== "0" || exchange?.validUntilDate
             ? redeemableUntil
             : `${redeemableForXDays} day${redeemableForXDays === 1 ? "" : "s"}`}
@@ -156,7 +154,7 @@ export const useGetOfferDetailData = ({
         </>
       ),
       value: (
-        <Typography tag="p">
+        <Typography tag="p" color={getCssVar("--sub-text-color")}>
           {sellerFormatted}{" "}
           <span style={{ opacity: 0.5 }}>{offer.exchangeToken.symbol}</span>
         </Typography>
@@ -176,7 +174,7 @@ export const useGetOfferDetailData = ({
         </>
       ),
       value: (
-        <Typography tag="p">
+        <Typography tag="p" color={getCssVar("--sub-text-color")}>
           {formatted}{" "}
           <span style={{ opacity: 0.5 }}>{offer.exchangeToken.symbol}</span>
         </Typography>
@@ -197,7 +195,11 @@ export const useGetOfferDetailData = ({
       ),
       value: exchangePolicyCheckResult ? (
         exchangePolicyCheckResult.isValid ? (
-          <Typography tag="p" alignItems="center">
+          <Typography
+            tag="p"
+            alignItems="center"
+            color={getCssVar("--sub-text-color")}
+          >
             <span style={{ fontSize: fontSizeExchangePolicy }}>
               {`${buyerAndSellerAgreementIncluding} ${exchangePolicyLabel}`}
             </span>
@@ -211,14 +213,14 @@ export const useGetOfferDetailData = ({
         ) : (
           <Typography
             tag="p"
-            color={colors.accent}
+            color={getCssVar("--sub-text-color")}
             fontSize={fontSizeExchangePolicy}
             alignItems="center"
           >
             {customisedExchangePolicy}
             <ArrowSquareOut
               size={20}
-              color={colors.accent}
+              color={getCssVar("--sub-text-color")}
               onClick={() => handleShowExchangePolicy()}
               style={{ cursor: "pointer", minWidth: "20px" }}
             />
@@ -228,12 +230,12 @@ export const useGetOfferDetailData = ({
         <>
           <CircleWavyQuestion
             size={20}
-            color={colors.accent}
+            color={getCssVar("--sub-text-color")}
           ></CircleWavyQuestion>{" "}
-          <span style={{ color: colors.accent }}>Unknown </span>
+          <span style={{ color: colors.violet }}>Unknown </span>
           <ArrowSquareOut
             size={20}
-            color={colors.accent}
+            color={getCssVar("--sub-text-color")}
             onClick={() => handleShowExchangePolicy()}
             style={{ cursor: "pointer" }}
           />

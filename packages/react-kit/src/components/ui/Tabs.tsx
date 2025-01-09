@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import { theme } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { Grid } from "./Grid";
 
-const colors = theme.colors.light;
 const Headers = styled.div.attrs({ className: "headers" })<{
   $withFullViewportWidth: boolean;
 }>`
   display: flex;
   gap: 1rem;
-  background-color: ${colors.lightGrey};
+  background-color: ${getCssVar("--background-accent-color")};
   position: relative;
   ${({ $withFullViewportWidth }) =>
     $withFullViewportWidth &&
@@ -20,7 +19,7 @@ const Headers = styled.div.attrs({ className: "headers" })<{
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        background-color: ${colors.lightGrey};
+        background-color: ${getCssVar("--background-accent-color")};
         height: 100%;
         min-height: 20px;
         z-index: -1;
@@ -31,7 +30,7 @@ const InnerHeaders = styled.div`
   width: 100%;
   display: flex;
   gap: 1rem;
-  background-color: ${colors.lightGrey};
+  background-color: ${getCssVar("--background-accent-color")};
   overflow-x: auto;
 `;
 const Content = styled.div`

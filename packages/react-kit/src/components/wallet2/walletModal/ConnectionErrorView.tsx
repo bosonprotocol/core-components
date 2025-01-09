@@ -9,10 +9,10 @@ import {
   ActivationStatus,
   useActivationState
 } from "../../connection/activate";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import { Grid } from "../../ui/Grid";
 import { BaseButton, BaseButtonProps } from "../../buttons/BaseButton";
-const colors = theme.colors.light;
+
 const Wrapper = styled.div`
   ${flexColumnNoWrap};
   align-items: center;

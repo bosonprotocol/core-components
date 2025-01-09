@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import { theme } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { Grid } from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
 import { zIndex } from "../../../../ui/zIndex";
@@ -8,7 +8,6 @@ import { zIndex } from "../../../../ui/zIndex";
 import frameImage from "../../../../../assets/frame.png";
 import { buttonText } from "../../../../ui/styles";
 import { Typography } from "../../../../ui/Typography";
-const colors = theme.colors.light;
 
 export const ChartWrapper = styled.div`
   canvas {
@@ -22,8 +21,9 @@ export const Labels = styled.div`
 `;
 
 export const Label = styled.div<{ $background: string; $color: string }>`
-  background: ${(props) => props.$background || colors.lightGrey};
-  color: ${(props) => props.$color || colors.darkGrey};
+  background: ${(props) =>
+    props.$background || getCssVar("--background-color")};
+  color: ${(props) => props.$color || getCssVar("--sub-text-color")};
   padding: 0.5rem 1rem;
   font-family: "Plus Jakarta Sans";
   font-style: normal;
@@ -39,7 +39,7 @@ export const Label = styled.div<{ $background: string; $color: string }>`
 export const CommitStep = styled.div`
   position: relative;
   padding: 1rem;
-  background: ${colors.lightGrey};
+  background: ${getCssVar("--background-color")};
   &:not(:last-child) {
     &:before {
       position: absolute;
@@ -52,7 +52,7 @@ export const CommitStep = styled.div`
       transform: translate(-50%, 0);
       border-left: 30rem solid transparent;
       border-right: 30rem solid transparent;
-      border-top: 1rem solid ${colors.lightGrey};
+      border-top: 1rem solid ${getCssVar("--background-color")};
     }
 
     &:after {
@@ -66,7 +66,7 @@ export const CommitStep = styled.div`
       transform: translate(-50%, 0);
       border-left: 30rem solid transparent;
       border-right: 30rem solid transparent;
-      border-top: 1rem solid ${colors.white};
+      border-top: 1rem solid ${getCssVar("--background-accent-color")};
       z-index: 1;
     }
   }
@@ -87,7 +87,7 @@ export const CommitStep = styled.div`
         left: initial;
         transform: translate(0%, -50%);
         border-top: 10rem solid transparent;
-        border-left: 1rem solid ${colors.lightGrey};
+        border-left: 1rem solid ${getCssVar("--background-color")};
         border-bottom: 10rem solid transparent;
         border-right: none;
       }
@@ -104,7 +104,7 @@ export const CommitStep = styled.div`
         left: initial;
         transform: translate(0%, -50%);
         border-top: 10rem solid transparent;
-        border-left: 1rem solid ${colors.white};
+        border-left: 1rem solid ${getCssVar("--background-accent-color")};
         border-bottom: 10rem solid transparent;
         border-right: none;
         z-index: 1;
@@ -211,7 +211,7 @@ const tableBorder = css`
     tr {
       &:not(:last-child) {
         td {
-          border-bottom: 1px solid ${colors.border};
+          border-bottom: 1px solid ${getCssVar("--border-color")};
         }
       }
     }
@@ -278,7 +278,7 @@ export const Table = styled.table<{
             color: inherit;
           `
         : css`
-            color: ${colors.darkGrey};
+            color: ${colors.greyDark};
           `}
   }
   tr {
@@ -307,7 +307,7 @@ export const Table = styled.table<{
         }`
         : css`
             td {
-              border-bottom: 1px solid ${colors.border};
+              border-bottom: 1px solid ${getCssVar("--border-color")};
             }
           `}
   }
@@ -477,8 +477,8 @@ export const BosonExclusiveContainer = styled.div`
     position: absolute;
     bottom: 0;
     padding: 0.25rem 1rem;
-    background-color: ${colors.black};
-    color: ${colors.white};
+    background-color: ${getCssVar("--background-accent-color")};
+    color: ${getCssVar("--main-text-color")};
     width: auto;
     font-size: 0.75rem;
     font-style: normal;
@@ -495,7 +495,9 @@ export const BaseWidget = styled.div`
   align-content: flex-start;
   flex-wrap: wrap;
   width: 100%;
-  background: ${colors.white};
+  background: ${getCssVar("--background-accent-color")};
+  border: 2px solid ${getCssVar("--border-color")};
+  border-radius: ${getCssVar("--modal-border-radius")};
   font-family: "Plus Jakarta Sans";
   details:not(details:nth-last-of-type(1)):not([open]) > summary {
     border-bottom: none;
@@ -504,14 +506,6 @@ export const BaseWidget = styled.div`
     padding-left: 2rem;
     padding-right: 2rem;
   }
-
-  box-shadow: 0px 4.318px 107.946px rgba(21, 30, 52, 0.1);
-  box-shadow:
-    0px 0px 0px rgba(0, 0, 0, 0.05),
-    0px 0px 16px rgba(0, 0, 0, 0.05),
-    0px 0px 32px rgba(0, 0, 0, 0.05),
-    0px 0px 64px rgba(0, 0, 0, 0.05),
-    0px 0px 128px rgba(0, 0, 0, 0.05);
 
   > div {
     width: 100%;
@@ -536,7 +530,7 @@ const miniButton = css`
 `;
 export const OpenSeaButton = styled.a<{ $disabled: boolean }>`
   z-index: ${zIndex.OfferStatus};
-  border: 2px solid ${colors.border};
+  border: 2px solid ${getCssVar("--border-color")};
   padding: 1rem;
   ${miniButton}
 
@@ -555,7 +549,7 @@ export const RedeemLeftButton = styled.button`
   cursor: pointer;
   transition: all 150ms ease-in-out;
   &:hover {
-    background: ${colors.lightGrey};
+    background: ${colors.greyLight};
   }
 
   ${miniButton}
@@ -566,11 +560,11 @@ export const CommitAndRedeemButton = styled(Typography)`
   font-style: normal;
   font-weight: 600;
   line-height: 150%;
-  color: ${colors.accent};
+  color: ${colors.violet};
   cursor: pointer;
   transition: color 150ms ease-in-out;
   &:hover {
-    color: ${colors.secondary};
+    color: ${colors.violet};
   }
 `;
 
@@ -583,12 +577,12 @@ export const RaiseProblemButton = styled(ThemedButton)`
   padding: 0.75rem 1rem;
 
   font-weight: 600;
-  color: ${colors.accent};
+  color: ${colors.violet};
   cursor: pointer;
   transition: all 150ms ease-in-out;
   &:hover:not(:disabled) {
     color: ${colors.red};
-    background: ${colors.lightGrey};
+    background: ${colors.greyLight};
   }
   svg {
     margin-left: 1rem;
@@ -596,12 +590,12 @@ export const RaiseProblemButton = styled(ThemedButton)`
 `;
 export const StyledCancelButton = RaiseProblemButton;
 export const ContactSellerButton = styled(RaiseProblemButton)`
-  color: ${colors.accent};
+  color: ${colors.violet};
 `;
 
 export const Break = styled.span`
   display: block;
   width: 100%;
   height: 2px;
-  background: ${colors.border};
+  background: ${getCssVar("--border-color")};
 `;

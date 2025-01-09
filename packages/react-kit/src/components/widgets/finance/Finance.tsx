@@ -20,7 +20,7 @@ import { useModal } from "../../modal/useModal";
 import { Tooltip } from "../../tooltip/Tooltip";
 import { Grid } from "../../ui/Grid";
 import { Typography } from "../../ui/Typography";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import { Button } from "../../buttons/Button";
 import PaginationPages from "../../pagination/PaginationPages";
 import Loading from "../../ui/loading/LoadingWrapper";
@@ -33,7 +33,7 @@ import { ExchangeTokensProps } from "./exchange-tokens/useExchangeTokens";
 import ThemedButton from "../../ui/ThemedButton";
 import { useAccount } from "../../../hooks/connection/connection";
 dayjs.extend(isBetween);
-const colors = theme.colors.light;
+
 const BosonButton = Button;
 
 const Table = styled.table`
@@ -41,7 +41,7 @@ const Table = styled.table`
   border-collapse: collapse;
   th {
     font-weight: 600;
-    color: ${colors.darkGrey};
+    color: ${colors.greyDark};
     :not([data-sortable]) {
       cursor: default !important;
     }
@@ -78,7 +78,7 @@ const Table = styled.table`
     tr {
       &:hover {
         td {
-          background-color: ${colors.darkGrey}08;
+          background-color: ${colors.greyDark}08;
           cursor: pointer;
         }
       }
@@ -127,14 +127,14 @@ const Pagination = styled.div`
 `;
 const Span = styled.span`
   font-size: 0.75rem;
-  color: ${colors.darkGrey};
+  color: ${colors.greyDark};
   &:not(:last-of-type) {
     margin-right: 1rem;
   }
 `;
 
 const WithdrawButton = styled(ThemedButton)`
-  color: ${colors.secondary};
+  color: ${colors.violet};
   border-color: transparent;
 `;
 const WarningWrapper = styled(Grid)`
@@ -361,8 +361,7 @@ export default function Finance({
                       availableAmount: fund.availableAmount,
                       reload: reloadData
                     },
-                    "auto",
-                    "dark"
+                    "auto"
                   );
                 }}
               >
@@ -385,8 +384,7 @@ export default function Finance({
                       exchangeToken: fund.token.address,
                       reload: reloadData
                     },
-                    "auto",
-                    "dark"
+                    "auto"
                   );
                 }}
               >
@@ -594,12 +592,10 @@ export default function Finance({
                   themeVal="blank"
                   style={{
                     color:
-                      pageNumber === pageIndex
-                        ? colors.secondary
-                        : colors.black,
+                      pageNumber === pageIndex ? colors.violet : colors.black,
                     background:
                       pageNumber === pageIndex
-                        ? colors.lightGrey
+                        ? colors.greyLight
                         : "transparent"
                   }}
                   onClick={() => gotoPage(pageNumber)}

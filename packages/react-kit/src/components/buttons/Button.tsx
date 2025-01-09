@@ -5,24 +5,20 @@ import React from "react";
 export type ButtonProps = IButton & {
   variant?:
     | "primaryFill" // default
-    | "primaryInverted" // ?
     | "secondaryFill" // Dispute - Escalate
     | "secondaryInverted" // Dispute - Refuse, ProgressBar Cancel, Back to home page, Remove variant, Batch void, Void
     | "accentFill" // cookie
     | "accentInverted" // Dispute - Copy email, Upload File, Header Sell/Seller Hub, Create Product Draft - Start Fresh, ...
-    | "accentInvertedNoBorder"
     | null;
   loading?: boolean;
 };
 
 export const variantToThemeKey = {
   primaryFill: "primary",
-  primaryInverted: "secondary",
-  secondaryFill: "bosonSecondaryInverse",
+  secondaryFill: "secondary",
   secondaryInverted: "secondaryInverted",
   accentFill: "accentFill",
-  accentInverted: "accentInverted",
-  accentInvertedNoBorder: "accentInvertedNoBorder"
+  accentInverted: "accentInverted"
 } satisfies Record<NonNullable<ButtonProps["variant"]>, IButton["themeVal"]>;
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -30,7 +26,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const themeVal: IButton["themeVal"] = variant
       ? variantToThemeKey[variant] || props.themeVal
       : props.themeVal;
-    console.log({ themeVal, theme: props.theme, variant });
     return (
       <ThemedButton
         {...props}
