@@ -41,12 +41,13 @@ import { CommitRedeemSteps } from "./CommitRedeemSteps";
 import { RedeemWhatsNext, RedeemWhatsNextProps } from "./RedeemWhatsNext";
 import { useOpenAccountDrawer } from "../../../../wallet2/accountDrawer";
 import { colors } from "../../../../../colors";
-import { RequestShipmentModalProps } from "../../RequestShipment/RequestShipmentModal";
-import { CommitButton } from "../../../../cta/offer/CommitButton";
 import { Provider } from "@bosonprotocol/ethers-sdk";
-import { useBosonTheme } from "../../../../widgets/BosonThemeProvider";
-import { colorToVariant } from "../../../../buttons/commit/const";
 import { ThemedCommitButton } from "../../../../cta/offer/ThemedCommitButton";
+import { getCssVar } from "../../../../../theme";
+import dayjs from "dayjs";
+import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
+import { LabelType, labelValueToText } from "../../../../exchangeCard/const";
+import { ExchangeStatus } from "../../../../exchangeCard/ExchangeCard.styles";
 
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
 
@@ -147,7 +148,7 @@ export default function InnerCommitDetailView(
     | "error"
     | "success"
   >("initial-state");
-  console.log({ exchangeId, status });
+
   const [
     isCommittingFromNotConnectedWallet,
     setIsCommittingFromNotConnectedWallet
@@ -305,155 +306,173 @@ export default function InnerCommitDetailView(
     { enabled: !!address }
   );
   const buyer = buyers?.[0];
-  const userCommittedOffersLength = useMemo(
+  const userCommittedOffers = useMemo(
     () =>
       buyer
-        ? offer.exchanges?.filter((elem) => elem?.buyer?.id === buyer.id).length
-        : 0,
+        ? offer.exchanges
+            ?.filter((elem) => elem?.buyer?.id === buyer.id)
+            // exchanges with latest committedDate first
+            .sort((a, b) => (a.committedDate > b.committedDate ? -1 : 1))
+        : undefined,
     [offer, buyer]
   );
   return (
-    <InnerDetailViewWithPortal
-      {...props}
-      topChildren={
-        address && !!userCommittedOffersLength ? (
+    <>
+      <>
+        {address && !!userCommittedOffers ? (
           <Grid
-            width="auto"
             gap="0.5rem"
             padding="1rem"
+            marginBottom="1rem"
             alignItems="center"
             justifyContent="flex-start"
             style={{
               ...(onAlreadyOwnOfferClick && { cursor: "pointer" }),
-              border: `1px solid ${colors.green}`,
+              border: `1px solid ${colors.border}`,
               borderRadius: "4px",
-              marginLeft: "2rem",
-              marginRight: "2rem"
+              backgroundColor: getCssVar("--background-color")
             }}
             onClick={() => onAlreadyOwnOfferClick?.()}
           >
             <Info
-              color={colors.green}
+              color={getCssVar("--main-text-color")}
               style={{ minWidth: "24px", minHeight: "24px" }}
             />
             <Grid flexDirection="column" alignItems="flex-start" width="auto">
               <Typography fontSize="0.75rem" fontWeight={600}>
-                Last time you bought this product was -
+                Last time you bought this product was on{" "}
+                {dayjs(
+                  getDateTimestamp(userCommittedOffers[0]?.committedDate || "")
+                ).format("MMMM D, YYYY")}
               </Typography>
               <Typography fontSize="0.75rem" fontWeight={400}>
-                You purchased a total of {userCommittedOffersLength} of this
-                item.
+                You purchased a total of {userCommittedOffers.length || 0} of
+                this item.
               </Typography>
             </Grid>
           </Grid>
-        ) : null
-      }
-    >
-      {isNotCommittableOffer && isBuyerInsufficientFunds && (
-        <Grid marginBottom="1rem">
-          <BuyOrSwapContainer
-            swapParams={swapParams}
-            onClickBuyOrSwap={onClickBuyOrSwap}
-            style={{ padding: 0 }}
-          >
-            <Button
-              size="regular"
-              variant="accentInverted"
-              style={{
-                width: "100%"
-              }}
-              {...(onClickBuyOrSwap && {
-                onClick: () => onClickBuyOrSwap({ swapParams })
-              })}
-            >
-              Buy or Swap {tokenOrCoinSymbol} <SwapArrows size={24} />
-            </Button>
-          </BuyOrSwapContainer>
-        </Grid>
-      )}
-      {!isBuyerInsufficientFunds && (
-        <Grid flexDirection="column" alignItems="center" margin="1.5rem 0">
-          <CommitWrapper justifyContent="space-between">
-            <Grid flexDirection="column" alignItems="center">
-              <CommitButtonWrapper
-                disabled={!!isCommitDisabled}
-                role="button"
-                $pointerEvents={!address ? "none" : "all"}
-                onClick={() => {
-                  if (!address) {
-                    saveItemInStorage("isConnectWalletFromCommit", true);
-                    setIsCommittingFromNotConnectedWallet(true);
-                    openAccountDrawer();
-                  }
-                }}
+        ) : null}
+        <InnerDetailViewWithPortal
+          {...props}
+          topChildren={null}
+          priceSibling={
+            status === "success" ? (
+              // TODO: if exchange is in a different state what do we do?
+              <ExchangeStatus $status={subgraph.ExchangeState.COMMITTED}>
+                {labelValueToText[LabelType.purchased]}
+              </ExchangeStatus>
+            ) : (
+              props.priceSibling
+            )
+          }
+        >
+          {isNotCommittableOffer && isBuyerInsufficientFunds && (
+            <Grid marginBottom="1rem">
+              <BuyOrSwapContainer
+                swapParams={swapParams}
+                onClickBuyOrSwap={onClickBuyOrSwap}
+                style={{ padding: 0 }}
               >
-                {balanceLoading && address ? (
-                  <ThemedButton disabled>
-                    <Spinner />
-                  </ThemedButton>
-                ) : (
-                  <>
-                    {status === "initial-state" || status === "error" ? (
-                      <ThemedCommitButton
-                        coreSdkConfig={{
-                          envName: protocolConfig.envName,
-                          configId: protocolConfig.configId,
-                          web3Provider: signer?.provider as Provider,
-                          metaTx: protocolConfig.metaTx
-                        }}
-                        isPauseCommitting={!address}
-                        buttonRef={commitButtonRef}
-                        onGetSignerAddress={handleOnGetSignerAddress}
-                        disabled={!!isCommitDisabled}
-                        offerId={offer.id}
-                        exchangeToken={offer.exchangeToken.address}
-                        price={offer.price}
-                        onError={onCommitError}
-                        onPendingSignature={onCommitPendingSignature}
-                        onPendingTransaction={onCommitPendingTransaction}
-                        onSuccess={onCommitSuccess}
-                        id="commit"
-                      />
-                    ) : (
-                      exchangeId && (
-                        <CommitRedeemSteps
-                          offerId={offer.id}
-                          status={"pending-signature"}
-                        >
-                          <RedeemWhatsNext
-                            exchangeId={exchangeId}
-                            requestShipmentProps={requestShipmentProps}
-                          />
-                        </CommitRedeemSteps>
-                      )
-                    )}
-                  </>
-                )}
-              </CommitButtonWrapper>
-              <Typography
-                fontSize="0.8rem"
-                marginTop="0.25rem"
-                style={{ display: "block" }}
-              >
-                By proceeding to Buy, I agree to the{" "}
-                <span
+                <Button
+                  size="regular"
+                  variant="accentInverted"
                   style={{
-                    fontSize: "inherit",
-                    cursor: "pointer",
-                    textDecoration: "underline"
+                    width: "100%"
                   }}
-                  onClick={() => {
-                    onLicenseAgreementClick();
-                  }}
+                  {...(onClickBuyOrSwap && {
+                    onClick: () => onClickBuyOrSwap({ swapParams })
+                  })}
                 >
-                  rNFT Terms
-                </span>
-                .
-              </Typography>
+                  Buy or Swap {tokenOrCoinSymbol} <SwapArrows size={24} />
+                </Button>
+              </BuyOrSwapContainer>
             </Grid>
-          </CommitWrapper>
-        </Grid>
-      )}
-    </InnerDetailViewWithPortal>
+          )}
+          {!isBuyerInsufficientFunds && (
+            <Grid flexDirection="column" alignItems="center" margin="1.5rem 0">
+              <CommitWrapper justifyContent="space-between">
+                <Grid flexDirection="column" alignItems="center">
+                  <CommitButtonWrapper
+                    disabled={!!isCommitDisabled}
+                    role="button"
+                    $pointerEvents={!address ? "none" : "all"}
+                    onClick={() => {
+                      if (!address) {
+                        saveItemInStorage("isConnectWalletFromCommit", true);
+                        setIsCommittingFromNotConnectedWallet(true);
+                        openAccountDrawer();
+                      }
+                    }}
+                  >
+                    {balanceLoading && address ? (
+                      <ThemedButton disabled>
+                        <Spinner />
+                      </ThemedButton>
+                    ) : (
+                      <>
+                        {status === "initial-state" || status === "error" ? (
+                          <ThemedCommitButton
+                            coreSdkConfig={{
+                              envName: protocolConfig.envName,
+                              configId: protocolConfig.configId,
+                              web3Provider: signer?.provider as Provider,
+                              metaTx: protocolConfig.metaTx
+                            }}
+                            isPauseCommitting={!address}
+                            buttonRef={commitButtonRef}
+                            onGetSignerAddress={handleOnGetSignerAddress}
+                            disabled={!!isCommitDisabled}
+                            offerId={offer.id}
+                            exchangeToken={offer.exchangeToken.address}
+                            price={offer.price}
+                            onError={onCommitError}
+                            onPendingSignature={onCommitPendingSignature}
+                            onPendingTransaction={onCommitPendingTransaction}
+                            onSuccess={onCommitSuccess}
+                            id="commit"
+                          />
+                        ) : (
+                          exchangeId && (
+                            <CommitRedeemSteps
+                              offerId={offer.id}
+                              status={"pending-signature"}
+                            >
+                              <RedeemWhatsNext
+                                exchangeId={exchangeId}
+                                requestShipmentProps={requestShipmentProps}
+                              />
+                            </CommitRedeemSteps>
+                          )
+                        )}
+                      </>
+                    )}
+                  </CommitButtonWrapper>
+                  <Typography
+                    fontSize="0.8rem"
+                    marginTop="0.25rem"
+                    style={{ display: "block" }}
+                  >
+                    By proceeding to Buy, I agree to the{" "}
+                    <span
+                      style={{
+                        fontSize: "inherit",
+                        cursor: "pointer",
+                        textDecoration: "underline"
+                      }}
+                      onClick={() => {
+                        onLicenseAgreementClick();
+                      }}
+                    >
+                      rNFT Terms
+                    </span>
+                    .
+                  </Typography>
+                </Grid>
+              </CommitWrapper>
+            </Grid>
+          )}
+        </InnerDetailViewWithPortal>
+      </>
+    </>
   );
 }

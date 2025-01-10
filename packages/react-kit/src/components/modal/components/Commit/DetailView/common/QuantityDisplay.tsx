@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import { useBreakpoints } from "../../../../../../hooks/useBreakpoints";
 import { isOfferHot } from "../../../../../../lib/offer/getOfferLabel";
-import { colors } from "../../../../../../theme";
 import { Grid } from "../../../../../ui/Grid";
 import { Typography } from "../../../../../ui/Typography";
 
