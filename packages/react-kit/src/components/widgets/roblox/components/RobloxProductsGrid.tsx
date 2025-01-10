@@ -12,11 +12,11 @@ import {
   getImageUrl
 } from "../../../../lib/images/images";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
-import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
+import { Bundle, isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
 import { ProductType } from "../../../productCard/const";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
-import { BosonRobloxProductWithAvailability } from "../../../../hooks/roblox/backend.types";
+import { BosonRobloxProductWithAvailability } from "@bosonprotocol/roblox-sdk";
 import { Typography } from "../../../ui/Typography";
 import { isTruthy } from "../../../../types/helpers";
 import { LoginWithRoblox } from "./LoginWithRoblox";
@@ -83,7 +83,13 @@ export const RobloxProductsGrid = ({
             if (!(isProductV1(offer) || isBundle(offer))) {
               return null;
             }
-            const bundleUuid = isBundle(offer) ? offer.metadata.bundleUuid : "";
+            // if(isProductV1(offer)){
+            //   offer.metadata
+            // }
+            const bundleUuid = isBundle(offer)
+              ? // TODO: remove cast once @bosonprotocol/roblox-sdk uses the same version of @bosonprotocol/core-sdk that we use
+                (offer as Bundle).metadata.bundleUuid
+              : "";
 
             const { mainImage } = getOfferDetails(offer);
             const imageOptimizationOptions = {

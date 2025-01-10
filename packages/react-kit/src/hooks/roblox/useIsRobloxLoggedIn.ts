@@ -3,7 +3,7 @@ import { useRobloxLocalStorage } from "./useRobloxLocalStorage";
 import { robloxQueryKeys } from "./const";
 import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
 import { mutationKeys } from "./mutationKeys";
-import { GetLoggedInResponse } from "./backend.types";
+import { GetLoggedInResponse } from "@bosonprotocol/roblox-sdk";
 
 type UseIsRobloxLoggedInProps = {
   sellerId: string;

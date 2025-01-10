@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { GetExchangesResponse } from "./backend.types";
+import { GetExchangesResponse } from "@bosonprotocol/roblox-sdk";
 import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
 
 type UseRobloxProductsProps = {

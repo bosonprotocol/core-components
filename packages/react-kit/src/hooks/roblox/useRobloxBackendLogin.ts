@@ -1,6 +1,6 @@
 import { formatBytes32String } from "ethers/lib/utils";
 import { useAccount, useWeb3SignTypedData } from "../connection/connection";
-import { GetLoggedInResponse } from "./backend.types";
+import { GetLoggedInResponse } from "@bosonprotocol/roblox-sdk";
 import { useMutation } from "react-query";
 import { useDisconnect } from "../connection/useDisconnect";
 import { usePostRobloxWalletAuth } from "./usePostRobloxWalletAuth";

@@ -15,7 +15,7 @@ import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
 import { ProductType } from "../../../productCard/const";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
-import { BosonRobloxExchange } from "../../../../hooks/roblox/backend.types";
+import { BosonRobloxExchange } from "@bosonprotocol/roblox-sdk";
 import { Typography } from "../../../ui/Typography";
 import { isTruthy } from "../../../../types/helpers";
 import { ExchangeCard } from "../../../exchangeCard/ExchangeCard";

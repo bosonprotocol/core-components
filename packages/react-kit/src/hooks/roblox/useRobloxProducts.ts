@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "react-query";
-import { GetProductsResponse } from "./backend.types";
+import { GetProductsResponse } from "@bosonprotocol/roblox-sdk";
 import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
 import { mutationKeys } from "./mutationKeys";
 
