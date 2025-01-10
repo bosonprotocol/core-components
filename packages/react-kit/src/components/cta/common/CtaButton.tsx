@@ -53,7 +53,7 @@ export function CtaButton<T>({
     onPendingSignature,
     onPendingTransaction
   });
-  console.log("CtaButton", { variant, ButtonComponent, defaultLabel });
+
   return (
     <ButtonComponent
       variant={variant}

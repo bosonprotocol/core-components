@@ -147,6 +147,7 @@ export default function InnerCommitDetailView(
     | "error"
     | "success"
   >("initial-state");
+  console.log({ exchangeId, status });
   const [
     isCommittingFromNotConnectedWallet,
     setIsCommittingFromNotConnectedWallet
@@ -226,7 +227,6 @@ export default function InnerCommitDetailView(
     receipt: ethers.providers.TransactionReceipt,
     { exchangeId }: { exchangeId: BigNumberish }
   ) => {
-    handleSetExchangeId(exchangeId.toString());
     let createdExchange: subgraph.ExchangeFieldsFragment;
     await poll(
       async () => {
@@ -248,16 +248,17 @@ export default function InnerCommitDetailView(
         />
       ));
     } else {
-      const showDetailWidgetModal = () => {
+      const handleOnCommit = () => {
         onCommit(exchangeId.toString(), receipt.transactionHash);
+        handleSetExchangeId(exchangeId.toString());
       };
-      showDetailWidgetModal();
+      handleOnCommit();
       toast((t) => (
         <SuccessTransactionToast
           t={t}
           action={`Commit to offer: ${offer.metadata?.name}`}
           onViewDetails={() => {
-            showDetailWidgetModal();
+            handleOnCommit();
           }}
         />
       ));

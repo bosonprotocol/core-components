@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAccount } from "../../../../hooks/connection/connection";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 import { getCssVar } from "../../../../theme";
-import { Exchange } from "../../../../types/exchange";
 import { VariantV1 } from "../../../../types/variants";
 import Loading from "../../../ui/loading/LoadingWrapper";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
@@ -11,7 +10,6 @@ import {
   DetailContextProps,
   DetailViewProvider
 } from "../common/detail/DetailViewProvider";
-import { CommitSuccess } from "./CommitSuccess/CommitSuccess";
 import { ContractualAgreementView } from "./ContractualAgreementView/ContractualAgreementView";
 import { LicenseAgreementView } from "./LicenseAgreementView/LicenseAgreementView";
 import { OfferFullDescriptionView } from "./OfferFullDescriptionView/OfferFullDescriptionView";
@@ -21,7 +19,6 @@ import { OfferVariantView, OfferVariantViewProps } from "./OfferVariantView";
 enum CommitStep {
   OFFER_VIEW,
   PURCHASE_OVERVIEW,
-  COMMIT_SUCESS,
   EXCHANGE_POLICY,
   CONTRACTUAL_AGREEMENT,
   LICENSE_AGREEMENT,
@@ -100,11 +97,6 @@ function CommitNonModal({
       firstNotVoidedVariant ??
       firstVariant
     : firstNotVoidedVariant ?? firstVariant;
-
-  const [exchangeInfo, setExchangeInfo] = useState<{
-    exchangeId: Exchange["id"];
-    txHash: string;
-  } | null>(null);
 
   const [selectedVariant, setSelectedVariant] = useState<VariantV1 | undefined>(
     defaultVariant
@@ -206,10 +198,6 @@ function CommitNonModal({
           onLicenseAgreementClick={() =>
             setActiveStep(CommitStep.LICENSE_AGREEMENT)
           }
-          onCommit={(exchangeId, txHash) => {
-            setActiveStep(CommitStep.COMMIT_SUCESS);
-            setExchangeInfo({ exchangeId, txHash });
-          }}
           onGetDetailViewProviderProps={onGetDetailViewProviderProps}
           onClickBuyOrSwap={onClickBuyOrSwap}
           onAlreadyOwnOfferClick={onAlreadyOwnOfferClick}
@@ -251,13 +239,6 @@ function CommitNonModal({
           showBosonLogoInFooter={showBosonLogoInFooter}
           offer={selectedVariant.offer}
           onBackClick={goToPreviousStep}
-        />
-      ) : currentStep === CommitStep.COMMIT_SUCESS ? (
-        <CommitSuccess
-          showBosonLogoInFooter={showBosonLogoInFooter}
-          onHouseClick={() => setActiveStep(CommitStep.OFFER_VIEW)}
-          exchangeId={exchangeInfo?.exchangeId ?? ""}
-          commitHash={exchangeInfo?.txHash}
         />
       ) : (
         <p>Something went wrong...please try again</p>

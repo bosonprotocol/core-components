@@ -5,7 +5,7 @@ import { CommitView } from "./CommitView";
 import { CommitButtonViewProps } from "./types";
 import { colorToVariant } from "./const";
 import { buttonBorderRadius } from "../../../borders";
-import { useBosonTheme } from "../../widgets/BosonThemeProvider";
+
 const StyledButton = styled(Button)<{
   $color: CommitButtonViewProps["color"];
   $shape: CommitButtonViewProps["shape"];
@@ -68,8 +68,6 @@ export const CommitButtonView = forwardRef<
     },
     ref
   ) => {
-    const { themeKey } = useBosonTheme();
-    console.log("CommitButtonView", { themeKey });
     return (
       <Wrapper ref={ref} data-test="commit-button-view">
         <StyledButton

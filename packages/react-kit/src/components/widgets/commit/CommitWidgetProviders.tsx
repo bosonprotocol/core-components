@@ -79,7 +79,7 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
         useBosonTheme({
           throwOnError: false
         }) || {};
-      console.log("CommitWidgetProviders", props.roundness);
+
       return (
         <BosonThemeProvider
           theme={props.theme || storyBookThemeKey}
