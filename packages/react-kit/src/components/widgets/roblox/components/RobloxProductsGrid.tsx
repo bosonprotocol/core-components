@@ -20,7 +20,7 @@ import { BosonRobloxProductWithAvailability } from "../../../../hooks/roblox/bac
 import { Typography } from "../../../ui/Typography";
 import { isTruthy } from "../../../../types/helpers";
 import { LoginWithRoblox } from "./LoginWithRoblox";
-import { ThemedCommitButtonView } from "../../../buttons/ThemedCommitButtonView";
+import { ThemedCommitButtonView } from "../../../buttons/commit/ThemedCommitButtonView";
 import { isMobile } from "../../../../lib/userAgent/userAgent";
 
 const commonCardStyles = css`
@@ -58,7 +58,7 @@ export const RobloxProductsGrid = ({
 }: RobloxProductsGridProps) => {
   const { address } = useAccount();
   const { ipfsImageGateway } = useIpfsContext();
-  console.log({ isMobile });
+
   return (
     <GridContainer
       columnGap="2rem"

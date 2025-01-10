@@ -42,6 +42,11 @@ import { RedeemWhatsNext, RedeemWhatsNextProps } from "./RedeemWhatsNext";
 import { useOpenAccountDrawer } from "../../../../wallet2/accountDrawer";
 import { colors } from "../../../../../colors";
 import { RequestShipmentModalProps } from "../../RequestShipment/RequestShipmentModal";
+import { CommitButton } from "../../../../cta/offer/CommitButton";
+import { Provider } from "@bosonprotocol/ethers-sdk";
+import { useBosonTheme } from "../../../../widgets/BosonThemeProvider";
+import { colorToVariant } from "../../../../buttons/commit/const";
+import { ThemedCommitButton } from "../../../../cta/offer/ThemedCommitButton";
 
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
 
@@ -387,8 +392,8 @@ export default function InnerCommitDetailView(
                   </ThemedButton>
                 ) : (
                   <>
-                    {/* {status === "initial-state" || status === "error" ? (
-                      <CommitButton
+                    {status === "initial-state" || status === "error" ? (
+                      <ThemedCommitButton
                         coreSdkConfig={{
                           envName: protocolConfig.envName,
                           configId: protocolConfig.configId,
@@ -408,19 +413,19 @@ export default function InnerCommitDetailView(
                         onSuccess={onCommitSuccess}
                         id="commit"
                       />
-                    ) : ( */}
-                    {/* {exchangeId && ( */}
-                    <CommitRedeemSteps
-                      offerId={offer.id}
-                      status={"pending-signature"}
-                    >
-                      <RedeemWhatsNext
-                        exchangeId={exchangeId || ""}
-                        requestShipmentProps={requestShipmentProps}
-                      />
-                    </CommitRedeemSteps>
-                    {/* )} */}
-                    {/* )} */}
+                    ) : (
+                      exchangeId && (
+                        <CommitRedeemSteps
+                          offerId={offer.id}
+                          status={"pending-signature"}
+                        >
+                          <RedeemWhatsNext
+                            exchangeId={exchangeId}
+                            requestShipmentProps={requestShipmentProps}
+                          />
+                        </CommitRedeemSteps>
+                      )
+                    )}
                   </>
                 )}
               </CommitButtonWrapper>

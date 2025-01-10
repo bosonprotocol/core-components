@@ -10,7 +10,10 @@ import {
   CommitWidgetProvidersProps
 } from "../commit/CommitWidgetProviders";
 import { Typography } from "../../ui/Typography";
-import { AccountDrawer } from "../../wallet2/accountDrawer";
+import {
+  AccountDrawer,
+  useCloseAccountDrawer
+} from "../../wallet2/accountDrawer";
 import { Portal } from "../../portal/Portal";
 import { getCssVar } from "../../../theme";
 import { bosonButtonThemes } from "../../ui/ThemedButton";
@@ -50,7 +53,7 @@ export const RobloxWidget = ({
   }
 }: RobloxWidgetProps) => {
   const singleStepConnectRobloxRef = useRef<HTMLDivElement>(null);
-
+  const closeAccountDrawer = useCloseAccountDrawer();
   return (
     <CommitWidgetProviders
       {...configProps}
@@ -85,6 +88,7 @@ export const RobloxWidget = ({
           disconnectBorderRadius={undefined}
           disconnectBackgroundColor={undefined}
           disconnectColor={undefined}
+          onUserDisconnect={closeAccountDrawer}
           walletModalProps={{
             withMagicLogin: false,
             optionProps: {

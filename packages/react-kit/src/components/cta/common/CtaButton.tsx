@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { providers } from "ethers";
 
-import { Button } from "../../buttons/Button";
+import { Button, ButtonProps } from "../../buttons/Button";
 import { useCtaClickHandler, Action } from "../../../hooks/useCtaClickHandler";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
@@ -11,6 +11,9 @@ import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides
 import { useMetaTx } from "../../../hooks/useMetaTx";
 
 type Props<T> = CtaButtonProps<T> & {
+  buttonComponent?: React.ElementType<
+    ButtonProps & Record<`$${string}`, unknown>
+  >;
   defaultLabel?: ReactNode;
   actions: Action[];
   successPayload: T | ((receipt: providers.TransactionReceipt) => T);
@@ -33,6 +36,7 @@ export function CtaButton<T>({
   variant = "secondaryFill",
   buttonRef,
   coreSdkConfig,
+  buttonComponent: ButtonComponent = Button,
   ...rest
 }: Props<T>) {
   const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
@@ -49,9 +53,9 @@ export function CtaButton<T>({
     onPendingSignature,
     onPendingTransaction
   });
-
+  console.log("CtaButton", { variant, ButtonComponent, defaultLabel });
   return (
-    <Button
+    <ButtonComponent
       variant={variant}
       size={size}
       disabled={disabled}
@@ -77,6 +81,6 @@ export function CtaButton<T>({
           </>
         )}
       </ButtonTextWrapper>
-    </Button>
+    </ButtonComponent>
   );
 }

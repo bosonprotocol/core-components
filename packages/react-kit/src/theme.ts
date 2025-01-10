@@ -1,5 +1,6 @@
 import "styled-components";
 import { colors } from "./colors";
+import { buttonBorderRadius } from "./borders";
 export { colors } from "./colors";
 
 export const cssVarsKeys = {
@@ -46,10 +47,8 @@ export const getThemes = ({ roundness }: { roundness: Roundness }) => {
   const varsWithSameValuesAccrossThemes = {
     "--button-border-radius":
       roundness === "min" || !roundness
-        ? ("2px" as `${string}px`)
-        : roundness === "mid"
-          ? ("8px" as `${string}px`)
-          : ("32px" as `${string}px`),
+        ? buttonBorderRadius["min"]
+        : buttonBorderRadius[roundness] || buttonBorderRadius["min"],
     "--modal-border-radius":
       roundness === "min" || !roundness
         ? ("4px" as `${string}px`)

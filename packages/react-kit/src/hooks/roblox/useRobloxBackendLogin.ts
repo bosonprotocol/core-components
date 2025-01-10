@@ -98,8 +98,6 @@ export const useRobloxBackendLogin = ({
     },
     {
       ...options,
-      retry: 3,
-      retryDelay: 1000,
       onSettled: (data, error) => {
         if (data) {
           console.log("useSignTypedData success", data);

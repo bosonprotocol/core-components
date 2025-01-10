@@ -47,7 +47,6 @@ export const BosonThemeProvider = <T extends Theme>({
     }
   }, [externallySelectedTheme, themesWithRoundness]);
   const selectedTheme = themesWithRoundness[theme];
-  console.log("BosonThemeProvider", { roundness, selectedTheme });
   return (
     <ThemeProvider theme={selectedTheme}>
       <BosonThemeContext.Provider

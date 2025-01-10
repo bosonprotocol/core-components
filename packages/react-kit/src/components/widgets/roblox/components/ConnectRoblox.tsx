@@ -214,7 +214,7 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
       options: { enabled: false }
     });
     const disconnectWallet = useCallback(() => {
-      console.log("disconnectWallet()");
+      console.trace("disconnectWallet()");
       // setIsSigning(false);
       // setIsWalletAuthenticated(false);
       // const domain = backendOrigin
@@ -267,14 +267,14 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
         robloxLoggedInData
       ],
       options: {
-        onError: () => {
+        onError: (...args) => {
+          console.error("robloxBackendLoginAsync error", { ...args });
           disconnectWallet();
         }
       }
     });
     const isWalletAuthenticated =
       isWalletAuthenticatedSigned || isAuthChecked?.walletAuth;
-    console.log({ isWalletAuthenticated });
 
     useQuery(
       [robloxLoggedInData, address, isAuthChecked],
@@ -286,7 +286,7 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
         }
       },
       {
-        staleTime: Infinity, // TODO: correct?
+        staleTime: Infinity,
         enabled:
           !!robloxLoggedInData?.isLoggedIn &&
           !!address &&

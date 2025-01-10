@@ -8,11 +8,25 @@ import { CtaButton } from "../common/CtaButton";
 import { CtaButtonProps } from "../common/types";
 import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
 import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
-import { BosonLogo } from "../../modal/components/common/BosonLogo";
-import { Typography } from "../../ui/Typography";
-import { Grid } from "../../ui/Grid";
-import { bosonButtonThemes } from "../../ui/ThemedButton";
-import { BaseButtonTheme } from "../../buttons/BaseButton";
+import styled from "styled-components";
+import { Button } from "../../buttons/Button";
+import { CommitView } from "../../buttons/commit/CommitView";
+import { CommitButtonViewProps } from "../../buttons/commit/types";
+import { AddDollarPrefixToKeys } from "../../../types/helpers";
+
+const StyledButton = styled(Button)<{
+  $color: CommitButtonViewProps["color"];
+}>`
+  svg * {
+    fill: black;
+  }
+  &:not(:disabled) svg * {
+    fill: ${({ $color }) => ($color === "black" ? "white" : "black")};
+  }
+  &:hover:not(:disabled) * {
+    fill: ${({ $color }) => ($color === "black" ? "black" : "white")};
+  }
+`;
 
 type AdditionalProps = {
   /**
@@ -30,27 +44,15 @@ type AdditionalProps = {
 type SuccessPayload = {
   exchangeId: BigNumberish;
 };
+export type CommitButtonStylingProps = Omit<
+  CommitButtonViewProps,
+  "shape" | "color"
+> &
+  AddDollarPrefixToKeys<Required<Pick<CommitButtonViewProps, "color">>>;
+export type CommitButtonProps = AdditionalProps &
+  Omit<CtaButtonProps<SuccessPayload>, "variant" | "theme"> &
+  CommitButtonStylingProps;
 
-type Props = AdditionalProps &
-  Omit<CtaButtonProps<SuccessPayload>, "variant" | "theme">;
-
-const commitButtonTheme = {
-  ...bosonButtonThemes()["primary"],
-  svg: {
-    path: {
-      fill: "black"
-    }
-  },
-  hover: {
-    ...bosonButtonThemes()["primary"].hover,
-    svg: {
-      fill: "unset",
-      path: {
-        fill: "white"
-      }
-    }
-  }
-} satisfies BaseButtonTheme;
 export const CommitButton = withQueryClientProvider(
   ({
     offerId,
@@ -58,8 +60,11 @@ export const CommitButton = withQueryClientProvider(
     price,
     isPauseCommitting = false,
     onGetSignerAddress,
+    minHeight,
+    minWidth,
+    layout,
     ...restProps
-  }: Props) => {
+  }: CommitButtonProps) => {
     const coreSdk = useCoreSdkOverrides({
       coreSdkConfig: restProps.coreSdkConfig
     });
@@ -112,18 +117,12 @@ export const CommitButton = withQueryClientProvider(
     return (
       <CtaButton
         variant={null}
-        theme={commitButtonTheme}
-        defaultLabel={
-          <Grid justifyContent="center" alignItems="center" gap="0.375rem">
-            <Typography fontWeight={700} fontSize="0.9375rem">
-              Buy with
-            </Typography>{" "}
-            <BosonLogo
-              svgImageProps={{ width: "", height: "19px" }}
-              gridProps={{ padding: 0 }}
-            />
-          </Grid>
-        }
+        buttonComponent={StyledButton}
+        style={{
+          minWidth,
+          minHeight
+        }}
+        defaultLabel={<CommitView layout={layout || "horizontal"} />}
         successPayload={(receipt) => ({
           exchangeId: coreSdk.getCommittedExchangeIdFromLogs(
             receipt.logs

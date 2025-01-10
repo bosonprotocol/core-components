@@ -1,11 +1,12 @@
 import React from "react";
-import { CommitButtonView, CommitButtonViewProps } from "./CommitButtonView";
-import { useBosonTheme } from "../widgets/BosonThemeProvider";
+import { CommitButtonView } from "./CommitButtonView";
+import { useBosonTheme } from "../../widgets/BosonThemeProvider";
+import { CommitButtonViewProps } from "./types";
 
 export type ThemedCommitButtonViewProps = Omit<
   CommitButtonViewProps,
-  "color" | "shape"
->;
+  "color" | "shape" | "onClick"
+> & { onClick?: CommitButtonViewProps["onClick"] };
 export const ThemedCommitButtonView = (props: ThemedCommitButtonViewProps) => {
   const { roundness, themeKey } = useBosonTheme();
   const commitButtonTheme: Pick<
@@ -19,8 +20,8 @@ export const ThemedCommitButtonView = (props: ThemedCommitButtonViewProps) => {
       themeKey === "light"
         ? "green"
         : themeKey === "blackAndWhite"
-          ? "white"
-          : "black"
+          ? "black"
+          : "white"
   };
   return (
     <CommitButtonView
