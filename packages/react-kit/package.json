@@ -18,7 +18,7 @@
     "@bosonprotocol/core-sdk": "^1.42.0-alpha.2",
     "@bosonprotocol/ethers-sdk": "^1.15.1-alpha.8",
     "@bosonprotocol/ipfs-storage": "^1.12.0",
-    "@bosonprotocol/roblox-sdk": "^1.0.0-alpha.1",
+    "@bosonprotocol/roblox-sdk": "^1.0.0-alpha.5",
     "@davatar/react": "1.11.1",
     "@ethersproject/units": "5.6.0",
     "@glidejs/glide": "3.6.0",
