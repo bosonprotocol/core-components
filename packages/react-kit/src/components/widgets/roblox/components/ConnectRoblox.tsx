@@ -29,6 +29,7 @@ import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges"
 import { LoginWithRoblox } from "./LoginWithRoblox";
 import { getCssVar } from "../../../../theme";
 import ThemedButton from "../../../ui/ThemedButton";
+import { maxWidthStepper } from "./styles";
 
 const Wrapper = styled(Grid)`
   container-type: inline-size;
@@ -55,7 +56,7 @@ const StepWrapperGrid = styled(Grid)<{
   $isDone: StepProps["isDone"];
   $itemWidthPx: number;
 }>`
-  max-width: 22.125rem;
+  max-width: ${maxWidthStepper};
   min-height: 100%;
   align-self: stretch;
   background-color: ${getCssVar("--background-accent-color")};

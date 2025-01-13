@@ -24,6 +24,7 @@ export * from "./components/cta/funds/WithdrawAllFundsButton";
 export * from "./components/cta/funds/WithdrawFundsButton";
 export * from "./components/cta/offer/BatchVoidButton";
 export * from "./components/cta/offer/CommitButton";
+export * from "./components/cta/offer/ThemedCommitButton";
 export * from "./components/cta/offer/CreateOfferButton";
 export * from "./components/cta/offer/VoidButton";
 export * from "./components/currencyDisplay/CurrencyDisplay";

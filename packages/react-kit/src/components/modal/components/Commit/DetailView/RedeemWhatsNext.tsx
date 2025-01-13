@@ -8,9 +8,37 @@ import { useConfigContext, useExchanges } from "../../../../../hooks";
 import { getOpenSeaUrl } from "../../../../../lib/opensea/getOpenSeaUrl";
 import dayjs from "dayjs";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
-import { getCssVar } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { useModal } from "../../../useModal";
 import { RequestShipmentModalProps } from "../../RequestShipment/RequestShipmentModal";
+import ThemedButton from "../../../../ui/ThemedButton";
+
+const DividerWrapper = styled.div`
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &::after {
+    content: "OR";
+    position: absolute;
+    padding: 0 1rem;
+    background: ${getCssVar("--background-accent-color")};
+    color: color-mix(
+      in srgb,
+      ${getCssVar("--sub-text-color")} 50%,
+      transparent 50%
+    );
+    font-weight: 736;
+  }
+
+  hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid ${getCssVar("--sub-text-color")};
+    opacity: 0.5;
+  }
+`;
 
 const Wrapper = styled(Grid)`
   background-color: ${getCssVar("--background-accent-color")};
@@ -67,35 +95,45 @@ export const RedeemWhatsNext = ({
   return (
     <Wrapper flexDirection="column" alignItems="flex-start" gap="1rem">
       <Typography fontWeight={600}>What's next?</Typography>
-      <Grid gap="2rem">
-        {exchange && requestShipmentProps && (
-          <Button
-            onClick={() => {
-              showModal("REQUEST_SHIPMENT", {
-                exchange,
-                ...requestShipmentProps
-              });
-            }}
-          >
-            Request shipment
-          </Button>
-        )}
-        {exchange && (
-          <a
-            href={getOpenSeaUrl({
-              configId: config.configId,
-              envName: config.envName,
-              exchange
-            })}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Button themeVal="blankSecondaryOutline">Trade Physical NFT</Button>
-          </a>
-        )}
-      </Grid>
+      {exchange && (
+        <>
+          <Grid gap="2rem">
+            {requestShipmentProps && (
+              <Button
+                style={{ flex: "1 1 50%" }}
+                onClick={() => {
+                  showModal("REQUEST_SHIPMENT", {
+                    exchange,
+                    ...requestShipmentProps
+                  });
+                }}
+              >
+                Request shipment
+              </Button>
+            )}
+
+            <a
+              href={getOpenSeaUrl({
+                configId: config.configId,
+                envName: config.envName,
+                exchange
+              })}
+              target="_blank"
+              rel="noreferrer"
+              style={{ flex: "1 1 50%" }}
+            >
+              <ThemedButton themeVal="secondary" style={{ width: "100%" }}>
+                Trade Physical NFT
+              </ThemedButton>
+            </a>
+          </Grid>
+          <DividerWrapper>
+            <hr />
+          </DividerWrapper>
+        </>
+      )}
       <InfoWrapper gap="0.8438rem">
-        <Info color={getCssVar("--main-accent-color")} size={18} />
+        <Info color={colors.violet} size={18} />
         <Grid flexDirection="column" alignItems="flex-start">
           <Typography
             color={getCssVar("--main-text-color")}
@@ -113,7 +151,7 @@ export const RedeemWhatsNext = ({
             You can request shipment or trade the NFT later. Feel free to leave
             this modal and return until{" "}
             {voucherRedeemableUntilDate
-              ? voucherRedeemableUntilDate.format(dateFormat)
+              ? voucherRedeemableUntilDate.format("MMMM D, YYYY")
               : "-"}
             .
           </Typography>

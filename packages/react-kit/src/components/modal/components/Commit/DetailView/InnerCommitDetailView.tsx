@@ -319,7 +319,7 @@ export default function InnerCommitDetailView(
   return (
     <>
       <>
-        {address && !!userCommittedOffers ? (
+        {address && !!userCommittedOffers && !exchangeId ? (
           <Grid
             gap="0.5rem"
             padding="1rem"
@@ -409,48 +409,44 @@ export default function InnerCommitDetailView(
                         <Spinner />
                       </ThemedButton>
                     ) : (
-                      <>
-                        {status === "initial-state" || status === "error" ? (
-                          <ThemedCommitButton
-                            coreSdkConfig={{
-                              envName: protocolConfig.envName,
-                              configId: protocolConfig.configId,
-                              web3Provider: signer?.provider as Provider,
-                              metaTx: protocolConfig.metaTx
-                            }}
-                            isPauseCommitting={!address}
-                            buttonRef={commitButtonRef}
-                            onGetSignerAddress={handleOnGetSignerAddress}
-                            disabled={!!isCommitDisabled}
-                            offerId={offer.id}
-                            exchangeToken={offer.exchangeToken.address}
-                            price={offer.price}
-                            onError={onCommitError}
-                            onPendingSignature={onCommitPendingSignature}
-                            onPendingTransaction={onCommitPendingTransaction}
-                            onSuccess={onCommitSuccess}
-                            id="commit"
-                          />
-                        ) : (
-                          exchangeId && (
-                            <CommitRedeemSteps
-                              offerId={offer.id}
-                              status={"pending-signature"}
-                            >
-                              <RedeemWhatsNext
-                                exchangeId={exchangeId}
-                                requestShipmentProps={requestShipmentProps}
-                              />
-                            </CommitRedeemSteps>
-                          )
-                        )}
-                      </>
+                      <ThemedCommitButton
+                        coreSdkConfig={{
+                          envName: protocolConfig.envName,
+                          configId: protocolConfig.configId,
+                          web3Provider: signer?.provider as Provider,
+                          metaTx: protocolConfig.metaTx
+                        }}
+                        isPauseCommitting={!address}
+                        buttonRef={commitButtonRef}
+                        onGetSignerAddress={handleOnGetSignerAddress}
+                        disabled={!!isCommitDisabled}
+                        offerId={offer.id}
+                        exchangeToken={offer.exchangeToken.address}
+                        price={offer.price}
+                        onError={onCommitError}
+                        onPendingSignature={onCommitPendingSignature}
+                        onPendingTransaction={onCommitPendingTransaction}
+                        onSuccess={onCommitSuccess}
+                        id="commit"
+                      />
                     )}
                   </CommitButtonWrapper>
+                  {exchangeId && (
+                    <CommitRedeemSteps
+                      offerId={offer.id}
+                      status={"pending-signature"}
+                    >
+                      <RedeemWhatsNext
+                        exchangeId={exchangeId}
+                        requestShipmentProps={requestShipmentProps}
+                      />
+                    </CommitRedeemSteps>
+                  )}
                   <Typography
                     fontSize="0.8rem"
                     marginTop="0.25rem"
                     style={{ display: "block" }}
+                    color={getCssVar("--sub-text-color")}
                   >
                     By proceeding to Buy, I agree to the{" "}
                     <span

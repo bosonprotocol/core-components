@@ -17,6 +17,7 @@ import {
 import { Portal } from "../../portal/Portal";
 import { getCssVar } from "../../../theme";
 import { bosonButtonThemes } from "../../ui/ThemedButton";
+import { RobloxProvider } from "../../../hooks/roblox/context/RobloxProvider";
 export * from "./components/types";
 
 const bosonThemes = bosonButtonThemes();
@@ -63,82 +64,84 @@ export const RobloxWidget = ({
       withMagicLink={false}
       withGlobalStyle={true}
     >
-      <Wrapper
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="flex-start"
-      >
-        <ConnectRoblox
-          {...connectProps}
-          ref={singleStepConnectRobloxRef}
-          sellerId={sellerId}
-        />
-        <ProductsRoblox
-          layout={layout}
-          requestShipmentProps={configProps}
-          sellerId={sellerId}
-          raiseDisputeForExchangeUrl={raiseDisputeForExchangeUrl}
-          showProductsPreLogin={showProductsPreLogin}
-        />
-      </Wrapper>
-      <Portal>
-        <AccountDrawer
-          backgroundColor={getCssVar("--background-accent-color")}
-          buyCryptoTheme={primaryButtonTheme}
-          disconnectBorderRadius={undefined}
-          disconnectBackgroundColor={undefined}
-          disconnectColor={undefined}
-          onUserDisconnect={closeAccountDrawer}
-          walletModalProps={{
-            withMagicLogin: false,
-            optionProps: {
-              backgroundColor: getCssVar("--secondary-accent-color"),
-              hoverFocusBackgroundColor: getCssVar(
-                "--secondary-accent-hover-color"
-              ),
-              borderRadius: getCssVar("--button-border-radius"),
-              color: getCssVar("--secondary-button-text-color"),
-              hoverColor: getCssVar("--secondary-button-text-hover-color"),
-              iconBorderRadius: getCssVar("--button-border-radius")
-            },
-            connectionErrorProps: {
-              backToWalletSelectionTheme: orangeInverseButtonTheme,
-              tryAgainTheme: orangeInverseButtonTheme
-            },
-            PrivacyPolicy: () => (
-              <Typography style={{ fontSize: "0.75rem" }} display="block">
-                By connecting a wallet, you agree to Boson App 's{" "}
-                <a
-                  href="https://bosonapp.io/#/terms-and-conditions"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  style={{
-                    fontSize: "inherit",
-                    color: getCssVar("--sub-text-color"),
-                    textDecoration: "underline"
-                  }}
-                >
-                  Terms & Conditions
-                </a>{" "}
-                and consent to its{" "}
-                <a
-                  href="https://bosonapp.io/#/privacy-policy"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  style={{
-                    fontSize: "inherit",
-                    color: getCssVar("--sub-text-color"),
-                    textDecoration: "underline"
-                  }}
-                >
-                  Privacy Policy
-                </a>
-                . (Last Updated 18 August 2023)
-              </Typography>
-            )
-          }}
-        />
-      </Portal>
+      <RobloxProvider>
+        <Wrapper
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="flex-start"
+        >
+          <ConnectRoblox
+            {...connectProps}
+            ref={singleStepConnectRobloxRef}
+            sellerId={sellerId}
+          />
+          <ProductsRoblox
+            layout={layout}
+            requestShipmentProps={configProps}
+            sellerId={sellerId}
+            raiseDisputeForExchangeUrl={raiseDisputeForExchangeUrl}
+            showProductsPreLogin={showProductsPreLogin}
+          />
+        </Wrapper>
+        <Portal>
+          <AccountDrawer
+            backgroundColor={getCssVar("--background-accent-color")}
+            buyCryptoTheme={primaryButtonTheme}
+            disconnectBorderRadius={undefined}
+            disconnectBackgroundColor={undefined}
+            disconnectColor={undefined}
+            onUserDisconnect={closeAccountDrawer}
+            walletModalProps={{
+              withMagicLogin: false,
+              optionProps: {
+                backgroundColor: getCssVar("--secondary-accent-color"),
+                hoverFocusBackgroundColor: getCssVar(
+                  "--secondary-accent-hover-color"
+                ),
+                borderRadius: getCssVar("--button-border-radius"),
+                color: getCssVar("--secondary-button-text-color"),
+                hoverColor: getCssVar("--secondary-button-text-hover-color"),
+                iconBorderRadius: getCssVar("--button-border-radius")
+              },
+              connectionErrorProps: {
+                backToWalletSelectionTheme: orangeInverseButtonTheme,
+                tryAgainTheme: orangeInverseButtonTheme
+              },
+              PrivacyPolicy: () => (
+                <Typography style={{ fontSize: "0.75rem" }} display="block">
+                  By connecting a wallet, you agree to Boson App 's{" "}
+                  <a
+                    href="https://bosonapp.io/#/terms-and-conditions"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    style={{
+                      fontSize: "inherit",
+                      color: getCssVar("--sub-text-color"),
+                      textDecoration: "underline"
+                    }}
+                  >
+                    Terms & Conditions
+                  </a>{" "}
+                  and consent to its{" "}
+                  <a
+                    href="https://bosonapp.io/#/privacy-policy"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    style={{
+                      fontSize: "inherit",
+                      color: getCssVar("--sub-text-color"),
+                      textDecoration: "underline"
+                    }}
+                  >
+                    Privacy Policy
+                  </a>
+                  . (Last Updated 18 August 2023)
+                </Typography>
+              )
+            }}
+          />
+        </Portal>
+      </RobloxProvider>
     </CommitWidgetProviders>
   );
 };

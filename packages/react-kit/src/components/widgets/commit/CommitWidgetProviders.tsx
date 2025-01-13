@@ -26,10 +26,6 @@ import {
   RedemptionProviderProps
 } from "../redemption/provider/RedemptionProvider";
 import {
-  RobloxProvider,
-  RobloxProviderProps
-} from "../../../hooks/roblox/context/RobloxProvider";
-import {
   BosonThemeProvider,
   BosonThemeProviderProps,
   useBosonTheme
@@ -40,7 +36,6 @@ export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   BosonThemeProviderProps &
   RedemptionProviderProps &
-  RobloxProviderProps &
   ConvertionRateProviderProps &
   Omit<Web3ProviderProps, "infuraKey"> &
   BosonProviderProps &
@@ -104,9 +99,7 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
                         <IpfsProvider {...props}>
                           <ConvertionRateProvider>
                             <RedemptionProvider {...props}>
-                              <RobloxProvider {...props}>
-                                <ModalProvider>{children}</ModalProvider>
-                              </RobloxProvider>
+                              <ModalProvider>{children}</ModalProvider>
                             </RedemptionProvider>
                           </ConvertionRateProvider>
                         </IpfsProvider>

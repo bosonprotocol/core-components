@@ -4,7 +4,7 @@ import { Grid } from "../../../../ui/Grid";
 import { FairExchangePolicy } from "./FairExchangePolicy";
 import { Button } from "../../../../buttons/Button";
 import { InfoBox } from "./InfoBox";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 
 const Wrapper = styled(Grid)``;
 
@@ -41,7 +41,7 @@ export const ExchangePolicyOverview = ({
         message="If you don't want to receive your item right away, you can request shipment at a later stage as well."
         customTheme={{
           wrapperStyle: {
-            backgroundColor: colors.greyLight
+            backgroundColor: getCssVar("--background-color")
           },
           iconProps: {
             size: 24,

@@ -6,3 +6,5 @@ export const StyledPower = styled(Power)`
     stroke: initial;
   }
 `;
+
+export const maxWidthStepper = "22.125rem";

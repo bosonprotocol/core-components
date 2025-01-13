@@ -20,6 +20,7 @@ import { GridContainerProps } from "../../../ui/GridContainer";
 import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { CommitNonModalProps } from "../../../modal/components/Commit/CommitNonModal";
+import { maxWidthStepper } from "./styles";
 
 const Wrapper = styled(Grid).attrs({
   paddingTop: "5rem",
@@ -29,7 +30,12 @@ const Wrapper = styled(Grid).attrs({
   flex: 1;
   background-color: ${getCssVar("--background-color")};
 `;
-const ContentWrapper = Grid;
+const ContentWrapper = styled(Grid)`
+  max-width: calc(${maxWidthStepper} * 3);
+  > * {
+    width: 100%;
+  }
+`;
 
 export type ProductsRobloxProps = {
   requestShipmentProps: CommitNonModalProps["requestShipmentProps"];

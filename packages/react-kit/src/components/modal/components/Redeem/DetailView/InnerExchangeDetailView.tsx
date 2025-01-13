@@ -11,7 +11,7 @@ import type { ExtendedExchange } from "../../../../../hooks/useExchanges";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
 import { titleCase } from "../../../../../lib/string/formatText";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import { Grid } from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
@@ -143,6 +143,7 @@ export default function InnerExchangeDetailView(
                       display: "block",
                       marginTop: "0.25rem"
                     }}
+                    color={getCssVar("--sub-text-color")}
                   >
                     By proceeding to Redeem, I agree to the{" "}
                     <span
