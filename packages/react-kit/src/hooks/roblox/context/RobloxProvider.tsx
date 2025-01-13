@@ -8,7 +8,6 @@ export type RobloxProviderProps = {
 };
 export const RobloxProvider: React.FC<RobloxProviderProps> = ({ children }) => {
   const { configId, envName } = useEnvContext();
-  // TODO: change this to the actual backend origin from @bosonprotocol/roblox-sdk
   const backendOrigin =
     // @ts-expect-error import.meta.env only exists in vite environments
     import.meta?.env?.STORYBOOK_ROBLOX_BACKEND_ORIGIN ||
