@@ -11,7 +11,7 @@ import { RobloxExchangesGrid } from "./RobloxExchangesGrid";
 import {
   BosonRobloxExchange,
   ProductAvailabilityStatus
-} from "../../../../hooks/roblox/backend.types";
+} from "@bosonprotocol/roblox-sdk";
 import { CancelExchange } from "../../../modal/components/Redeem/ExchangeView/cancellation/CancelExchange";
 import NonModal from "../../../modal/nonModal/NonModal";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
