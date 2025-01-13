@@ -4,7 +4,6 @@ import {
 } from "../../components/widgets/roblox/components/ConnectRoblox";
 import React from "react";
 import { Meta } from "@storybook/react";
-import { bosonButtonThemes } from "../../components/ui/ThemedButton";
 import { createGlobalStyle } from "styled-components";
 import { EnvironmentType, getEnvConfigs } from "@bosonprotocol/core-sdk";
 import { CommitWidgetProviders } from "../../components/widgets/commit/CommitWidgetProviders";
@@ -32,8 +31,9 @@ const ConnectRobloxWrapper = (props: ConnectRobloxProps) => {
       withCustomReduxContext={false}
       withReduxProvider={true}
       withWeb3React={true}
+      withGlobalStyle={false}
       sendDeliveryInfoThroughXMTP
-      backendOrigin="http://localhost:3336"
+      roundness="min"
     >
       <ConnectRoblox {...props} />
     </CommitWidgetProviders>
@@ -79,89 +79,14 @@ const BASE_ARGS = {} as const;
 export const Base = {
   args: {
     ...BASE_ARGS,
-    brand: "GYMSHARK",
     sellerId: "4",
-    theme: {
-      backgroundColor: "white",
-      lineBetweenStepsColor: "grey",
-      stepsBackgroundSides: "white",
-      walletPanel: {
-        backgroundColor: "white",
-        buyCryptoTheme: bosonButtonThemes()["bosonPrimary"],
-        connectionErrorProps: {
-          backToWalletSelectionTheme: bosonButtonThemes()["bosonPrimary"],
-          tryAgainTheme: bosonButtonThemes()["orange"]
-        },
-        disconnectBackgroundColor: "grey",
-        disconnectBorderRadius: "8px",
-        disconnectColor: "grey",
-        optionProps: {
-          backgroundColor: "violet",
-          borderRadius: "8px",
-          color: "white",
-          hoverColor: "white",
-          hoverFocusBackgroundColor: "black",
-          iconBorderRadius: "8px"
-        }
+    step3: {
+      buttonText: "Step 3 button text",
+      callback: () => {
+        console.log("Step 3 button clicked");
       },
-      walletCard: {
-        padding: 0,
-        title: {
-          color: "black"
-        },
-        subtitle: {
-          color: "#556072"
-        },
-        check: {
-          color: "#02F3A2"
-        },
-        number: {
-          active: {
-            backgroundColor: "#02F3A2",
-            stroke: "black"
-          },
-          inactive: {
-            backgroundColor: "#F1F3F9",
-            stroke: "black"
-          }
-        },
-        button: {
-          active: {
-            ...bosonButtonThemes()["bosonPrimary"],
-            borderRadius: "8px"
-          },
-          inactive: bosonButtonThemes()["white"]
-        }
-      },
-      signUpCard: {
-        padding: 0,
-        title: {
-          color: "black"
-        },
-        subtitle: {
-          color: "#556072"
-        },
-        check: {
-          color: "#02F3A2"
-        },
-        number: {
-          active: {
-            backgroundColor: "#02F3A2",
-            stroke: "black"
-          },
-          inactive: {
-            backgroundColor: "#F1F3F9",
-            stroke: "black"
-          }
-        },
-        button: {
-          active: {
-            ...bosonButtonThemes()["bosonPrimary"],
-            borderRadius: "8px"
-          },
-          inactive: bosonButtonThemes()["white"]
-        }
-      }
+      title: "Step 3 title",
+      subtitle: "Step 3 subtitle"
     }
   } satisfies ConnectRobloxProps
 };
