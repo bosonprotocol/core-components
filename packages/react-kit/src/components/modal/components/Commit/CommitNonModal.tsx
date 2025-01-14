@@ -108,11 +108,10 @@ function CommitNonModal({
   const [selectedVariant, setSelectedVariant] = useState<VariantV1 | undefined>(
     defaultVariant
   );
-  useEffect(() => {
-    if (defaultVariant) {
-      setSelectedVariant(defaultVariant);
-    }
-  }, [defaultVariant]);
+
+  if (defaultVariant && defaultVariant !== selectedVariant) {
+    setSelectedVariant(defaultVariant);
+  }
 
   const [{ currentStep }, setStep] = useState<{
     previousStep: CommitStep[];
