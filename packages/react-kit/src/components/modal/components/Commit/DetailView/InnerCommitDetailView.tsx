@@ -392,46 +392,7 @@ export default function InnerCommitDetailView(
             <Grid flexDirection="column" alignItems="center" margin="1.5rem 0">
               <CommitWrapper justifyContent="space-between">
                 <Grid flexDirection="column" alignItems="center">
-                  <CommitButtonWrapper
-                    disabled={!!isCommitDisabled}
-                    role="button"
-                    $pointerEvents={!address ? "none" : "all"}
-                    onClick={() => {
-                      if (!address) {
-                        saveItemInStorage("isConnectWalletFromCommit", true);
-                        setIsCommittingFromNotConnectedWallet(true);
-                        openAccountDrawer();
-                      }
-                    }}
-                  >
-                    {balanceLoading && address ? (
-                      <ThemedButton disabled>
-                        <Spinner />
-                      </ThemedButton>
-                    ) : (
-                      <ThemedCommitButton
-                        coreSdkConfig={{
-                          envName: protocolConfig.envName,
-                          configId: protocolConfig.configId,
-                          web3Provider: signer?.provider as Provider,
-                          metaTx: protocolConfig.metaTx
-                        }}
-                        isPauseCommitting={!address}
-                        buttonRef={commitButtonRef}
-                        onGetSignerAddress={handleOnGetSignerAddress}
-                        disabled={!!isCommitDisabled}
-                        offerId={offer.id}
-                        exchangeToken={offer.exchangeToken.address}
-                        price={offer.price}
-                        onError={onCommitError}
-                        onPendingSignature={onCommitPendingSignature}
-                        onPendingTransaction={onCommitPendingTransaction}
-                        onSuccess={onCommitSuccess}
-                        id="commit"
-                      />
-                    )}
-                  </CommitButtonWrapper>
-                  {exchangeId && (
+                  {exchangeId ? (
                     <CommitRedeemSteps
                       offerId={offer.id}
                       status={"pending-signature"}
@@ -441,6 +402,46 @@ export default function InnerCommitDetailView(
                         requestShipmentProps={requestShipmentProps}
                       />
                     </CommitRedeemSteps>
+                  ) : (
+                    <CommitButtonWrapper
+                      disabled={!!isCommitDisabled}
+                      role="button"
+                      $pointerEvents={!address ? "none" : "all"}
+                      onClick={() => {
+                        if (!address) {
+                          saveItemInStorage("isConnectWalletFromCommit", true);
+                          setIsCommittingFromNotConnectedWallet(true);
+                          openAccountDrawer();
+                        }
+                      }}
+                    >
+                      {balanceLoading && address ? (
+                        <ThemedButton disabled>
+                          <Spinner />
+                        </ThemedButton>
+                      ) : (
+                        <ThemedCommitButton
+                          coreSdkConfig={{
+                            envName: protocolConfig.envName,
+                            configId: protocolConfig.configId,
+                            web3Provider: signer?.provider as Provider,
+                            metaTx: protocolConfig.metaTx
+                          }}
+                          isPauseCommitting={!address}
+                          buttonRef={commitButtonRef}
+                          onGetSignerAddress={handleOnGetSignerAddress}
+                          disabled={!!isCommitDisabled}
+                          offerId={offer.id}
+                          exchangeToken={offer.exchangeToken.address}
+                          price={offer.price}
+                          onError={onCommitError}
+                          onPendingSignature={onCommitPendingSignature}
+                          onPendingTransaction={onCommitPendingTransaction}
+                          onSuccess={onCommitSuccess}
+                          id="commit"
+                        />
+                      )}
+                    </CommitButtonWrapper>
                   )}
                   <Typography
                     fontSize="0.8rem"
