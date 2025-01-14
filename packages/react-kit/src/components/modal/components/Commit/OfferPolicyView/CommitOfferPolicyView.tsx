@@ -34,7 +34,7 @@ export function CommitOfferPolicyView({
         onArrowLeftClick: onBackClick,
         headerComponent: (
           <Grid gap="1rem" style={{ flex: "1" }} justifyContent="space-between">
-            <Typography tag="h3" style={{ flex: "1 1" }}>
+            <Typography tag="h3" style={{ flex: "1 1" }} margin={0}>
               {offerName}
             </Typography>
             {showBosonLogoInHeader && <ThemedBosonLogo />}
