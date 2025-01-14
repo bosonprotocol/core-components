@@ -133,12 +133,13 @@ export const ProductsRoblox = ({
     setExchange(undefined);
   };
   const itemsPerRow = {
-    xs: 1,
+    xs: layout === "vertical" ? 1 : 2,
     s: layout === "vertical" ? 1 : 2,
     m: layout === "vertical" ? 2 : 3,
     l: layout === "vertical" ? 2 : 4,
     xl: layout === "vertical" ? 2 : 5
   } satisfies GridContainerProps["itemsPerRow"];
+  console.log({ layout, itemsPerRow });
   return (
     <Wrapper justifyContent="center" alignItems="center">
       <ContentWrapper flexDirection="column" alignItems="flex-start" gap="5rem">
