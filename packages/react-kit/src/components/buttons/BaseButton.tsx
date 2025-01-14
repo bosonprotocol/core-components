@@ -39,28 +39,28 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
       css`
         ${props.theme.svg.fill &&
         css`
-          fill: ${props.theme.svg.fill} !important;
+          fill: ${props.theme.svg.fill};
         `};
         line {
           ${props.theme.svg.line?.stroke &&
           css`
-            stroke: ${props.theme.svg.line.stroke} !important;
+            stroke: ${props.theme.svg.line.stroke};
           `};
         }
         polyline {
           ${props.theme.svg.polyline?.stroke &&
           css`
-            stroke: ${props.theme.svg.polyline?.stroke} !important;
+            stroke: ${props.theme.svg.polyline?.stroke};
           `};
         }
         path {
           ${props.theme.svg.path?.stroke &&
           css`
-            stroke: ${props.theme.svg.path.stroke} !important;
+            stroke: ${props.theme.svg.path.stroke};
           `};
           ${props.theme.svg.path?.fill &&
           css`
-            fill: ${props.theme.svg.path.fill} !important;
+            fill: ${props.theme.svg.path.fill};
           `};
         }
       `}
@@ -71,6 +71,18 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
           width: 100%;
         `
       : ""};
+
+  ${(props) => {
+    props.className === "closeeeee" &&
+      console.log(
+        "baseButton",
+        props.className,
+        props,
+        props.theme?.hover,
+        props.theme.hover?.svg?.line?.stroke
+      );
+    return "";
+  }}
   ${(props) =>
     props.theme?.hover &&
     css`
@@ -78,28 +90,28 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
         background-color: ${props.theme?.hover.background};
         ${props.theme?.hover.color &&
         css`
-          color: ${props.theme.hover.color} !important;
-          svg {
-            fill: ${props.theme.hover?.svg?.fill ||
-            props.theme.hover.color} !important;
-            line {
-              stroke: ${props.theme.hover?.svg?.line?.stroke ||
-              props.theme.hover.color} !important;
-            }
-            polyline {
-              stroke: ${props.theme.hover?.svg?.polyline?.stroke ||
-              props.theme.hover.color} !important;
-            }
-            path {
-              stroke: ${props.theme.hover?.svg?.path?.stroke ||
-              props.theme.hover.color} !important;
-              ${props.theme.hover?.svg?.path?.fill &&
-              css`
-                fill: ${props.theme.hover?.svg?.path?.fill} !important;
-              `};
-            }
-          }
+          color: ${props.theme.hover.color};
         `};
+
+        svg {
+          fill: ${props.theme.hover?.svg?.fill || props.theme.hover.color};
+          line {
+            stroke: ${props.theme.hover?.svg?.line?.stroke ||
+            props.theme.hover.color};
+          }
+          polyline {
+            stroke: ${props.theme.hover?.svg?.polyline?.stroke ||
+            props.theme.hover.color};
+          }
+          path {
+            stroke: ${props.theme.hover?.svg?.path?.stroke ||
+            props.theme.hover.color};
+            ${props.theme.hover?.svg?.path?.fill &&
+            css`
+              fill: ${props.theme.hover?.svg?.path?.fill};
+            `};
+          }
+        }
         ${props.theme?.hover.borderColor &&
         css`
           border-color: ${props.theme.hover.borderColor};

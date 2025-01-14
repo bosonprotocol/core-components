@@ -1,11 +1,12 @@
 import React, { Fragment, ReactNode } from "react";
-import { colors, getCssVar } from "../../../theme";
+import { getCssVar } from "../../../theme";
 import styled from "styled-components";
 import { ArrowLeft, X } from "phosphor-react";
 import { Grid } from "../../ui/Grid";
-import ThemedButton from "../../ui/ThemedButton";
+import { bosonButtonThemes } from "../../ui/ThemedButton";
 import { useBreakpoints } from "../../../hooks/useBreakpoints";
 import { BosonConnectWallet } from "../../wallet2/web3Status/BosonConnectWallet";
+import { BaseButton, BaseButtonTheme } from "../../buttons/BaseButton";
 
 const Wrapper = styled.div<{ $flexWrap: string }>`
   box-sizing: border-box;
@@ -26,15 +27,62 @@ const Wrapper = styled.div<{ $flexWrap: string }>`
     align-self: center;
   }
 `;
-
+const closeTheme = {
+  ...bosonButtonThemes().blank,
+  svg: {
+    line: {
+      stroke: getCssVar("--main-text-color")
+    }
+  },
+  hover: {
+    svg: {
+      line: {
+        stroke: `color-mix(
+          in srgb,
+          ${getCssVar("--main-text-color")} 50%,
+          transparent 50%
+        )`
+      }
+    }
+  }
+} satisfies BaseButtonTheme;
 const Close = styled(X)`
+  color: unset;
   && {
     stroke: unset;
   }
-
-  line {
-    stroke: ${colors.greyDark};
+`;
+const arrowLeftTheme = {
+  ...bosonButtonThemes().blank,
+  svg: {
+    line: {
+      stroke: getCssVar("--main-text-color")
+    },
+    polyline: {
+      stroke: getCssVar("--main-text-color")
+    }
+  },
+  hover: {
+    svg: {
+      line: {
+        stroke: `color-mix(
+          in srgb,
+          ${getCssVar("--main-text-color")} 50%,
+          transparent 50%
+        )`
+      },
+      polyline: {
+        stroke: `color-mix(
+          in srgb,
+          ${getCssVar("--main-text-color")} 50%,
+          transparent 50%
+        )`
+      }
+    }
   }
+} satisfies BaseButtonTheme;
+const StyledArrowLeft = styled(ArrowLeft)`
+  color: unset;
 `;
 
 type HeaderProps = {
@@ -58,26 +106,27 @@ const Header: React.FC<HeaderProps> = ({
     <Wrapper $flexWrap={isLteXS ? "wrap" : "nowrap"}>
       <InnerContainer>
         {closable && withLeftArrowButton && (
-          <ThemedButton
+          <BaseButton
             data-close
-            themeVal="blank"
+            theme={arrowLeftTheme}
             onClick={handleOnClose}
             id="close"
           >
-            <ArrowLeft size={32} />
-          </ThemedButton>
+            <StyledArrowLeft size={32} />
+          </BaseButton>
         )}
         {HeaderComponent}
         {showConnectButton && !isLteXS && <BosonConnectWallet />}
         {closable && !withLeftArrowButton && (
-          <ThemedButton
+          <BaseButton
             data-close
-            themeVal="blank"
+            theme={closeTheme}
             onClick={handleOnClose}
             id="close"
+            className="closeeeee"
           >
             <Close size={32} />
-          </ThemedButton>
+          </BaseButton>
         )}
       </InnerContainer>
 

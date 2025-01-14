@@ -42,7 +42,8 @@ export type CommitNonModalProps = Pick<
   onExchangePolicyClick?: OfferVariantViewProps["onExchangePolicyClick"];
   offerViewOnViewFullDescription?: OfferVariantViewProps["onViewFullDescription"];
   forcedAccount?: string;
-  withExternalSigner?: boolean | undefined | null;
+  withExternalSigner?: boolean | null;
+  showConnectButton?: boolean;
   lookAndFeel: "regular" | "modal";
   withLeftArrowButton?: boolean;
 };
@@ -61,7 +62,14 @@ export function CommitWrapper({
       }}
       withLeftArrowButton={props.withLeftArrowButton}
       lookAndFeel={props.lookAndFeel}
-      showConnectButton={!props.withExternalSigner}
+      showConnectButton={
+        props.withExternalSigner === undefined ||
+        props.withExternalSigner === null
+          ? props.showConnectButton === undefined
+            ? false
+            : props.showConnectButton
+          : !props.withExternalSigner
+      }
     >
       <CommitNonModal
         {...props}

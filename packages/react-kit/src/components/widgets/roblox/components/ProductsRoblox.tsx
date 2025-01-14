@@ -150,8 +150,9 @@ export const ProductsRoblox = ({
             requestShipmentProps={requestShipmentProps}
             lookAndFeel="regular"
             hideModal={clearSelection}
-            withExternalSigner={false}
+            showConnectButton={false}
             showBosonLogoInFooter={false}
+            withLeftArrowButton={true}
           />
         ) : exchangeToCancel ? (
           <NonModal
@@ -161,6 +162,7 @@ export const ProductsRoblox = ({
               resetExchangeToCancel();
             }}
             closable
+            withLeftArrowButton
           >
             <CancelExchange
               exchange={exchangeToCancel}
