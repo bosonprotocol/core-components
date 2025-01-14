@@ -278,7 +278,7 @@ export const Table = styled.table<{
             color: inherit;
           `
         : css`
-            color: ${colors.greyDark};
+            color: ${getCssVar("--sub-text-color")};
           `}
   }
   tr {

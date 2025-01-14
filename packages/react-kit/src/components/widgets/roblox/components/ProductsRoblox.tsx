@@ -21,6 +21,7 @@ import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { CommitNonModalProps } from "../../../modal/components/Commit/CommitNonModal";
 import { maxWidthStepper } from "./styles";
+import { ThemedBosonLogo } from "../../../modal/components/common/ThemedBosonLogo";
 
 const Wrapper = styled(Grid).attrs({
   paddingTop: "5rem",
@@ -151,12 +152,21 @@ export const ProductsRoblox = ({
             lookAndFeel="regular"
             hideModal={clearSelection}
             showConnectButton={false}
-            showBosonLogoInFooter={false}
+            showBosonLogoInHeader={true}
             withLeftArrowButton={true}
           />
         ) : exchangeToCancel ? (
           <NonModal
             showConnectButton={false}
+            headerComponent={
+              <Grid
+                gap="1rem"
+                style={{ flex: "1 1" }}
+                justifyContent="flex-end"
+              >
+                <ThemedBosonLogo />
+              </Grid>
+            }
             lookAndFeel="regular"
             hideModal={() => {
               resetExchangeToCancel();

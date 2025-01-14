@@ -160,7 +160,7 @@ type Action = {
 
 type State = Pick<
   NonModalProps,
-  "headerComponent" | "contentStyle" | "footerComponent"
+  "headerComponent" | "contentStyle" | "footerComponent" | "onArrowLeftClick"
 >;
 
 const reducer = (state: State, action: Action): State => {
@@ -184,6 +184,7 @@ export const useNonModalContext = () => {
 
 export interface NonModalProps {
   hideModal?: (data?: unknown | undefined | null) => void;
+  onArrowLeftClick?: null | (() => unknown);
   withLeftArrowButton?: boolean;
   headerComponent?: ReactNode;
   footerComponent?: ReactNode;
@@ -200,6 +201,7 @@ export default function NonModal({
   children,
   withLeftArrowButton,
   hideModal,
+  onArrowLeftClick,
   headerComponent,
   footerComponent,
   size = "auto",
@@ -209,23 +211,33 @@ export default function NonModal({
   lookAndFeel = "modal",
   showConnectButton
 }: NonModalProps) {
-  const handleOnClose = () => {
+  const handleOnCloseClick = () => {
     if (closable && hideModal) {
       hideModal();
     }
   };
+
   const [
     {
       headerComponent: HeaderComponent,
       footerComponent: FooterComponent,
-      contentStyle
+      contentStyle,
+      onArrowLeftClick: onArrowLeftClickFromReducer
     },
     dispatch
   ] = useReducer(reducer, {
     headerComponent,
     footerComponent,
-    contentStyle: _contentStyle
+    contentStyle: _contentStyle,
+    onArrowLeftClick
   });
+  const handleOnArrowLeftClick = () => {
+    if (onArrowLeftClickFromReducer) {
+      onArrowLeftClickFromReducer();
+    } else {
+      handleOnCloseClick();
+    }
+  };
   const Container = useMemo(() => {
     return ({ children }: { children: ReactNode }) => {
       return lookAndFeel === "modal" ? (
@@ -233,7 +245,7 @@ export default function NonModal({
           {children}
           <RootBG
             onClick={() => {
-              handleOnClose();
+              handleOnCloseClick();
             }}
           />
         </Root>
@@ -250,7 +262,8 @@ export default function NonModal({
           HeaderComponent={HeaderComponent}
           withLeftArrowButton={!!withLeftArrowButton}
           closable={closable}
-          handleOnClose={handleOnClose}
+          handleOnCloseClick={handleOnCloseClick}
+          handleOnArrowLeftClick={handleOnArrowLeftClick}
           showConnectButton={showConnectButton}
         />
 

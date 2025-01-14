@@ -34,7 +34,7 @@ export type CommitNonModalProps = Pick<
 > & {
   variants?: VariantV1[];
   showBosonLogo?: boolean;
-  showBosonLogoInFooter?: boolean;
+  showBosonLogoInHeader?: boolean;
   defaultSelectedOfferId?: string;
   disableVariationsSelects?: boolean;
   isLoading: boolean;
@@ -50,13 +50,12 @@ export type CommitNonModalProps = Pick<
 
 export function CommitWrapper({
   hideModal,
-  showBosonLogoInFooter = true,
+  showBosonLogoInHeader = true,
   ...props
 }: CommitNonModalProps) {
   return (
     <NonModal
       hideModal={hideModal}
-      footerComponent={<BosonLogo />}
       contentStyle={{
         background: getCssVar("--background-accent-color")
       }}
@@ -73,7 +72,7 @@ export function CommitWrapper({
     >
       <CommitNonModal
         {...props}
-        showBosonLogoInFooter={showBosonLogoInFooter}
+        showBosonLogoInHeader={showBosonLogoInHeader}
       />
     </NonModal>
   );
@@ -82,7 +81,7 @@ export function CommitWrapper({
 function CommitNonModal({
   variants,
   showBosonLogo = false,
-  showBosonLogoInFooter = true,
+  showBosonLogoInHeader = true,
   defaultSelectedOfferId,
   disableVariationsSelects,
   isLoading,
@@ -188,7 +187,7 @@ function CommitNonModal({
         <OfferVariantView
           requestShipmentProps={requestShipmentProps}
           exchange={exchange}
-          showBosonLogoInFooter={showBosonLogoInFooter}
+          showBosonLogoInHeader={showBosonLogoInHeader}
           showBosonLogo={showBosonLogo}
           allVariants={variants ?? [selectedVariant]}
           selectedVariant={selectedVariant}
@@ -214,7 +213,7 @@ function CommitNonModal({
         providerPropsRef.current ? (
         <DetailViewProvider {...providerPropsRef.current}>
           <OfferFullDescriptionView
-            showBosonLogoInFooter={showBosonLogoInFooter}
+            showBosonLogoInHeader={showBosonLogoInHeader}
             onBackClick={goToPreviousStep}
             onExchangePolicyClick={(...args) => {
               setActiveStep(CommitStep.EXCHANGE_POLICY);
@@ -226,7 +225,7 @@ function CommitNonModal({
         </DetailViewProvider>
       ) : currentStep === CommitStep.EXCHANGE_POLICY ? (
         <CommitOfferPolicyView
-          showBosonLogoInFooter={showBosonLogoInFooter}
+          showBosonLogoInHeader={showBosonLogoInHeader}
           offer={selectedVariant.offer}
           onBackClick={goToPreviousStep}
           onContractualAgreementClick={() =>
@@ -238,13 +237,13 @@ function CommitNonModal({
         />
       ) : currentStep === CommitStep.CONTRACTUAL_AGREEMENT ? (
         <ContractualAgreementView
-          showBosonLogoInFooter={showBosonLogoInFooter}
+          showBosonLogoInHeader={showBosonLogoInHeader}
           offer={selectedVariant.offer}
           onBackClick={goToPreviousStep}
         />
       ) : currentStep === CommitStep.LICENSE_AGREEMENT ? (
         <LicenseAgreementView
-          showBosonLogoInFooter={showBosonLogoInFooter}
+          showBosonLogoInHeader={showBosonLogoInHeader}
           offer={selectedVariant.offer}
           onBackClick={goToPreviousStep}
         />

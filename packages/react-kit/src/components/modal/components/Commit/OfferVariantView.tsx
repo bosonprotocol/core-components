@@ -24,11 +24,11 @@ import { CommitDetailViewWithProvider } from "./DetailView/CommitDetailViewWithP
 import { DetailContextProps } from "../common/detail/DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../common/detail/useGetOfferDetailData";
-import { BosonLogo } from "../common/BosonLogo";
 import { PhygitalLabel } from "../../../productCard/ProductCard";
 import { useIsPhygital } from "../../../../hooks/offer/useIsPhygital";
 import { getCssVar } from "../../../../theme";
 import { InnerCommitDetailViewProps } from "./DetailView/InnerCommitDetailView";
+import { ThemedBosonLogo } from "../common/ThemedBosonLogo";
 
 const ImageWrapper = styled.div`
   container-type: inline-size;
@@ -69,7 +69,7 @@ export type OfferVariantViewProps = OnClickBuyOrSwapHandler &
     setSelectedVariant: Dispatch<SetStateAction<VariantV1 | undefined>>;
     allVariants: VariantV1[];
     showBosonLogo: boolean;
-    showBosonLogoInFooter: boolean;
+    showBosonLogoInHeader: boolean;
     disableVariationsSelects?: boolean;
     loadingViewFullDescription: boolean;
   };
@@ -88,7 +88,7 @@ export function OfferVariantView({
   showBosonLogo,
   disableVariationsSelects,
   loadingViewFullDescription,
-  showBosonLogoInFooter,
+  showBosonLogoInHeader,
   exchange,
   requestShipmentProps,
   onExchangePolicyClick,
@@ -115,20 +115,18 @@ export function OfferVariantView({
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: null,
         headerComponent: (
-          <Grid
-            gap="1rem"
-            style={{ flex: "1 1" }}
-            justifyContent="flex-start"
-          />
+          <Grid gap="1rem" style={{ flex: "1 1" }} justifyContent="flex-end">
+            {showBosonLogoInHeader && <ThemedBosonLogo />}
+          </Grid>
         ),
         contentStyle: {
           background: getCssVar("--background-accent-color")
-        },
-        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
+        }
       }
     });
-  }, [dispatch, showBosonLogoInFooter]);
+  }, [dispatch, showBosonLogoInHeader]);
   const hasVariations = !!selectedVariant.variations?.length;
   const innerOnGetProviderProps = useCallback(
     (providerProps: DetailContextProps) => {

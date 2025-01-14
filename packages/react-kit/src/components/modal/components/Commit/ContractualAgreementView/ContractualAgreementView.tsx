@@ -6,42 +6,51 @@ import ContractualAgreement from "../../../../contractualAgreement/ContractualAg
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { getCssVar } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
-import { BosonLogo } from "../../common/BosonLogo";
+import {
+  defaultThemedBosonLogoProps,
+  ThemedBosonLogo
+} from "../../common/ThemedBosonLogo";
 
 interface Props {
   onBackClick: () => void;
   offer: Offer | null;
-  showBosonLogoInFooter: boolean;
+  showBosonLogoInHeader: boolean;
 }
 
 export function ContractualAgreementView({
   onBackClick,
   offer,
-  showBosonLogoInFooter
+  showBosonLogoInHeader
 }: Props) {
   const offerId = offer?.id;
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: onBackClick,
         headerComponent: (
-          <Grid gap="1rem" justifyContent="flex-start" style={{ flex: "1 1" }}>
-            <ArrowLeft
-              onClick={onBackClick}
-              size={32}
-              style={{ cursor: "pointer" }}
-            />
+          <Grid
+            gap="1rem"
+            justifyContent="space-between"
+            style={{ flex: "1 1" }}
+          >
             <Typography tag="h3">Contractual Agreement</Typography>
+            {showBosonLogoInHeader && (
+              <ThemedBosonLogo
+                gridProps={{
+                  ...defaultThemedBosonLogoProps.gridProps,
+                  flex: 1
+                }}
+              />
+            )}
           </Grid>
         ),
         contentStyle: {
           background: getCssVar("--background-accent-color")
-        },
-        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
+        }
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, showBosonLogoInFooter]);
+  }, [dispatch, onBackClick, showBosonLogoInHeader]);
   return (
     <>
       {offer ? (

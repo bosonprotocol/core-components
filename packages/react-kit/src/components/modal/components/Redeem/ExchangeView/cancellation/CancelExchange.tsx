@@ -38,7 +38,7 @@ const Line = styled.hr`
   all: unset;
   display: block;
   width: 100%;
-  border-bottom: 2px solid ${colors.black};
+  border-bottom: 2px solid ${getCssVar("--main-text-color")};
   margin: 1rem 0;
 `;
 
@@ -46,7 +46,7 @@ const Info = styled.div`
   padding: 1.5rem;
   background-color: ${getCssVar("--background-color")};
   margin: 2rem 0;
-  color: ${colors.greyDark};
+  color: ${getCssVar("--sub-text-color")};
   display: flex;
   align-items: center;
 `;
@@ -253,7 +253,7 @@ export function CancelExchange({
           </CancelButton>
         </CancelButtonWrapper>
         {showBackButton && (
-          <ThemedButton themeVal="blankOutline" onClick={() => onBackClick()}>
+          <ThemedButton themeVal="secondary" onClick={() => onBackClick()}>
             Back
           </ThemedButton>
         )}

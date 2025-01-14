@@ -14,7 +14,7 @@ const Wrapper = styled.div<{ $flexWrap: string }>`
   position: relative;
   width: 100%;
   text-align: left;
-  padding: 1rem 1rem 1rem 2rem;
+  padding: 1rem 2rem;
   display: flex;
   flex-wrap: ${({ $flexWrap }) => $flexWrap};
   border-bottom: 2px solid ${getCssVar("--border-color")};
@@ -29,6 +29,8 @@ const Wrapper = styled.div<{ $flexWrap: string }>`
 `;
 const closeTheme = {
   ...bosonButtonThemes().blank,
+  padding: 0,
+  borderWidth: 0,
   svg: {
     line: {
       stroke: getCssVar("--main-text-color")
@@ -54,6 +56,8 @@ const Close = styled(X)`
 `;
 const arrowLeftTheme = {
   ...bosonButtonThemes().blank,
+  padding: 0,
+  borderWidth: 0,
   svg: {
     line: {
       stroke: getCssVar("--main-text-color")
@@ -89,7 +93,8 @@ type HeaderProps = {
   HeaderComponent: ReactNode;
   closable: boolean;
   withLeftArrowButton: boolean;
-  handleOnClose: () => void;
+  handleOnCloseClick: () => void;
+  handleOnArrowLeftClick: () => void;
   showConnectButton: boolean;
 };
 
@@ -97,7 +102,8 @@ const Header: React.FC<HeaderProps> = ({
   HeaderComponent,
   closable,
   withLeftArrowButton,
-  handleOnClose,
+  handleOnCloseClick,
+  handleOnArrowLeftClick,
   showConnectButton
 }) => {
   const { isLteXS } = useBreakpoints();
@@ -109,7 +115,7 @@ const Header: React.FC<HeaderProps> = ({
           <BaseButton
             data-close
             theme={arrowLeftTheme}
-            onClick={handleOnClose}
+            onClick={handleOnArrowLeftClick}
             id="close"
           >
             <StyledArrowLeft size={32} />
@@ -121,7 +127,7 @@ const Header: React.FC<HeaderProps> = ({
           <BaseButton
             data-close
             theme={closeTheme}
-            onClick={handleOnClose}
+            onClick={handleOnCloseClick}
             id="close"
             className="closeeeee"
           >

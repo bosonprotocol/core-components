@@ -9,13 +9,14 @@ import OfferPolicyDetails, {
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { getCssVar } from "../../../../../theme";
 import { BosonLogo } from "../../common/BosonLogo";
+import { ThemedBosonLogo } from "../../common/ThemedBosonLogo";
 
 interface Props {
   onBackClick: () => void;
   offer: Exchange["offer"] | null | undefined;
   onContractualAgreementClick: OfferPolicyDetailsProps["onContractualAgreementClick"];
   onLicenseAgreementClick: OfferPolicyDetailsProps["onLicenseAgreementClick"];
-  showBosonLogoInFooter: boolean;
+  showBosonLogoInHeader: boolean;
 }
 
 export function CommitOfferPolicyView({
@@ -23,33 +24,28 @@ export function CommitOfferPolicyView({
   offer,
   onContractualAgreementClick,
   onLicenseAgreementClick,
-  showBosonLogoInFooter
+  showBosonLogoInHeader
 }: Props) {
   const offerName = offer?.metadata?.name || "";
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: onBackClick,
         headerComponent: (
-          <Grid gap="1rem" style={{ flex: "1" }}>
-            <ArrowLeft
-              onClick={onBackClick}
-              size={32}
-              style={{ cursor: "pointer", flexShrink: 0 }}
-            />
+          <Grid gap="1rem" style={{ flex: "1" }} justifyContent="space-between">
             <Typography tag="h3" style={{ flex: "1 1" }}>
               {offerName}
             </Typography>
+            {showBosonLogoInHeader && <ThemedBosonLogo />}
           </Grid>
         ),
         contentStyle: {
           background: getCssVar("--background-accent-color")
-        },
-        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
+        }
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, offerName, showBosonLogoInFooter]);
+  }, [dispatch, offerName, onBackClick, showBosonLogoInHeader]);
   return (
     <>
       {offer ? (

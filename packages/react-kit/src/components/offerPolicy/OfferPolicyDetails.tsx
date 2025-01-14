@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { colors } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { Grid } from "../ui/Grid";
 import ThemedButton from "../ui/ThemedButton";
 import { Typography } from "../ui/Typography";
@@ -125,7 +125,7 @@ export default function OfferPolicyDetails({
       </Typography>
       <Typography
         fontSize="1.25rem"
-        color={colors.greyDark}
+        color={getCssVar("--sub-text-color")}
         margin="0 0 2rem 0"
       >
         Boson Exchange Policies combine protocol variables and the underlying

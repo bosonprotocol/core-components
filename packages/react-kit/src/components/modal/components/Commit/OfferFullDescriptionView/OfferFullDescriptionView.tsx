@@ -8,12 +8,12 @@ import { ArrowLeft } from "phosphor-react";
 import { Typography } from "../../../../ui/Typography";
 import { OnClickBuyOrSwapHandler } from "../../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
-import { BosonLogo } from "../../common/BosonLogo";
+import { ThemedBosonLogo } from "../../common/ThemedBosonLogo";
 
 type Props = OnClickBuyOrSwapHandler & {
   onBackClick: () => void;
   offer: Offer;
-  showBosonLogoInFooter: boolean;
+  showBosonLogoInHeader: boolean;
 } & Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick">;
 
 export function OfferFullDescriptionView({
@@ -21,31 +21,30 @@ export function OfferFullDescriptionView({
   offer,
   onExchangePolicyClick,
   onClickBuyOrSwap,
-  showBosonLogoInFooter
+  showBosonLogoInHeader
 }: Props) {
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: onBackClick,
         headerComponent: (
-          <Grid gap="1rem" style={{ flex: "1 1" }} justifyContent="flex-start">
-            <ArrowLeft
-              onClick={onBackClick}
-              size={32}
-              style={{ cursor: "pointer" }}
-            />
+          <Grid
+            gap="1rem"
+            style={{ flex: "1 1" }}
+            justifyContent="space-between"
+          >
             <Typography tag="h3">{offer.metadata?.name || ""}</Typography>
+            {showBosonLogoInHeader && <ThemedBosonLogo />}
           </Grid>
         ),
         contentStyle: {
           background: getCssVar("--background-accent-color"),
           padding: 0
-        },
-        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
+        }
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, offer.metadata?.name, showBosonLogoInFooter]);
+  }, [dispatch, offer.metadata?.name, onBackClick, showBosonLogoInHeader]);
   return (
     <OfferFullDescription
       includeOverviewTab

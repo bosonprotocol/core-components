@@ -3,15 +3,16 @@ import ReactComponent from "../../../../assets/logo.svg";
 import { Grid, GridProps } from "../../../ui/Grid";
 import { SvgImage, SvgImageProps } from "../../../ui/SvgImage";
 
+export type BosonLogoProps = {
+  className?: string;
+  gridProps?: GridProps;
+  svgImageProps?: Omit<SvgImageProps, "src">;
+};
 export function BosonLogo({
   gridProps,
   svgImageProps,
   className
-}: {
-  className?: string;
-  gridProps?: GridProps;
-  svgImageProps?: Omit<SvgImageProps, "src">;
-} = {}) {
+}: BosonLogoProps = {}) {
   return (
     <Grid
       justifyContent="center"
