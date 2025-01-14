@@ -20,7 +20,8 @@ import Error from "./Error";
 import { FieldInput } from "./Field.styles";
 import type { InputProps } from "./types";
 import { SelectDataProps } from "./types";
-import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
+import { useFixSelectFont } from "../../hooks/form/useFixSelectFont";
+import { inputStyles } from "./styles";
 
 const customStyles = {
   control: (provided: any, state: any) => {
@@ -42,7 +43,7 @@ const customStyles = {
         borderColor: colors.violet,
         borderWidth: "1px"
       },
-      background: getCssVar("--background-color"),
+      background: inputStyles.background,
       border: state.isFocused
         ? `1px solid ${colors.violet}`
         : `1px solid ${getCssVar("--border-color")}`,
@@ -112,8 +113,9 @@ export const PhoneWrapper = styled.div`
     width: 100%;
     padding: 1rem;
     gap: 0.5rem;
-    background: ${getCssVar("--background-color")};
+    background: ${getCssVar("--background-accent-color")};
     border: 1px solid ${getCssVar("--border-color")};
+    color: ${getCssVar("--main-text-color")};
     border-radius: 0;
     outline: none;
     font-family: "Plus Jakarta Sans";
@@ -184,7 +186,7 @@ export default function Phone({ name, ...props }: InputProps) {
     }
   }, [field.value, initialized]); // eslint-disable-line
 
-  const { jsx, selectClassName } = useFixSelectFontSize({
+  const { jsx, selectClassName } = useFixSelectFont({
     selectClassName: "phone-select"
   });
   return (

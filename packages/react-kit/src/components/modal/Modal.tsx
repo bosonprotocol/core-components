@@ -87,8 +87,7 @@ const Wrapper = styled.div<{
   position: relative;
   z-index: ${zIndex.Modal};
   color: ${getCssVar("--main-text-color")};
-  background-color: ${getCssVar("--background-accent-color")};
-  border: var(--secondary);
+  background-color: ${getCssVar("--background-color")};
   border-radius: ${getCssVar("--modal-border-radius")};
   overflow: hidden;
   ${({ $maxWidths }) => {

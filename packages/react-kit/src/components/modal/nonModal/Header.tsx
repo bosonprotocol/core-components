@@ -17,7 +17,7 @@ const Wrapper = styled.div<{ $flexWrap: string }>`
   padding: 1rem 2rem;
   display: flex;
   flex-wrap: ${({ $flexWrap }) => $flexWrap};
-  border-bottom: 2px solid ${getCssVar("--border-color")};
+  border-bottom: 2px solid ${getCssVar("--background-accent-color")};
   align-items: flex-end;
   justify-content: space-between;
   gap: 0.5rem;

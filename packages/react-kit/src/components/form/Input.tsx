@@ -1,11 +1,16 @@
 import React from "react";
 import { colors, getCssVar } from "../../theme";
 import { BaseInput, BaseInputProps } from "./BaseInput";
+import { inputStyles } from "./styles";
 
 const bosonTheme = {
-  background: getCssVar("--background-color"),
+  background: inputStyles.background,
   borderColor: getCssVar("--border-color"),
+  color: inputStyles.color,
   borderRadius: 0,
+  placeholder: {
+    color: inputStyles.placeholder.color
+  },
   focus: {
     caretColor: "initial"
   },

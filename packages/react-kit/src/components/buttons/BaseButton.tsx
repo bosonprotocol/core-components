@@ -33,10 +33,10 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
   background-color: ${(props) => props.theme?.background || "transparent"};
 
   svg {
-    stroke: ${(props) => props.theme?.color || "#000000"};
     ${(props) =>
       props.theme.svg &&
       css`
+        stroke: ${(props) => props.theme?.svg.stroke};
         ${props.theme.svg.fill &&
         css`
           fill: ${props.theme.svg.fill};
@@ -94,18 +94,15 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
         `};
 
         svg {
-          fill: ${props.theme.hover?.svg?.fill || props.theme.hover.color};
+          fill: ${props.theme.hover?.svg?.fill};
           line {
-            stroke: ${props.theme.hover?.svg?.line?.stroke ||
-            props.theme.hover.color};
+            stroke: ${props.theme.hover?.svg?.line?.stroke};
           }
           polyline {
-            stroke: ${props.theme.hover?.svg?.polyline?.stroke ||
-            props.theme.hover.color};
+            stroke: ${props.theme.hover?.svg?.polyline?.stroke};
           }
           path {
-            stroke: ${props.theme.hover?.svg?.path?.stroke ||
-            props.theme.hover.color};
+            stroke: ${props.theme.hover?.svg?.path?.stroke};
             ${props.theme.hover?.svg?.path?.fill &&
             css`
               fill: ${props.theme.hover?.svg?.path?.fill};
@@ -155,6 +152,7 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
 `;
 
 type SvgTheme = Partial<{
+  stroke: CSSProperties["color"];
   fill: CSSProperties["color"];
   line: Partial<{
     stroke: CSSProperties["color"];

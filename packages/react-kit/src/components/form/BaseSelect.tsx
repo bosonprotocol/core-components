@@ -6,7 +6,7 @@ import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
 import { colors } from "../../theme";
 import { zIndex } from "../ui/zIndex";
 import type { BaseSelectProps, SelectDataProps } from "./types";
-import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
+import { useFixSelectFont } from "../../hooks/form/useFixSelectFont";
 
 const customStyles = (error: any) => ({
   control: (provided: any, state: any) => ({
@@ -56,7 +56,7 @@ export default function BaseSelect({
   const handleChange = (option: SingleValue<SelectDataProps>) => {
     onChange?.(option);
   };
-  const { jsx, selectClassName } = useFixSelectFontSize({
+  const { jsx, selectClassName } = useFixSelectFont({
     selectClassName: "boson-base-select"
   });
   return (

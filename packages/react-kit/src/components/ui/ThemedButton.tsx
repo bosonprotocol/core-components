@@ -137,12 +137,16 @@ export const bosonButtonThemes = () => {
       }
     },
     blank: {
-      color: `${colors.black}4d`,
+      color: `color-mix(
+  in srgb,
+  ${getCssVar("--main-text-color")} 30%,
+  transparent 70%
+)`,
       background: "transparent",
       borderWidth: 1,
       borderRadius: getCssVar("--button-border-radius"),
       hover: {
-        color: colors.black
+        color: getCssVar("--main-text-color")
       },
       disabled: {
         background: "transparent"
@@ -170,13 +174,13 @@ export const bosonButtonThemes = () => {
       }
     },
     blankOutline: {
-      color: colors.black,
+      color: getCssVar("--main-text-color"),
       borderWidth: 1,
       borderRadius: getCssVar("--button-border-radius"),
       hover: {
         borderColor: colors.violet,
         background: colors.border,
-        color: colors.black
+        color: getCssVar("--main-text-color")
       }
     },
     white: {

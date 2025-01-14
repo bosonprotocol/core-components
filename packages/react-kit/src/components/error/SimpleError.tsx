@@ -35,7 +35,7 @@ export function SimpleError({
       $background={backgroundColor}
       {...rest}
     >
-      <Warning color={warningColor} size={16} />
+      <Warning color={warningColor} size={16} style={{ minWidth: "1rem" }} />
       {children ? (
         children
       ) : (

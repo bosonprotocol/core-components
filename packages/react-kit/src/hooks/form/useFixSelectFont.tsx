@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
+import { inputStyles } from "../../components/form/styles";
 
-export const useFixSelectFontSize = ({
+export const useFixSelectFont = ({
   selectClassName
 }: {
   selectClassName: string;
@@ -22,6 +23,12 @@ export const useFixSelectFontSize = ({
       <style>{`.${selectClassName}{
         [class*="-placeholder"],[class*="-singleValue"],[class*="-option"]{
           font-size: ${inputFontSize.current};
+        }
+        [class*="-singleValue"]{
+          color: ${inputStyles.color};
+        }
+        [class*="-placeholder"]{
+          color: ${inputStyles.placeholder.color};
         }
       }`}</style>
     ),

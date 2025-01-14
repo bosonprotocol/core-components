@@ -17,7 +17,8 @@ import type { BaseProps, SupportedReactSelectProps } from "./types";
 import { SelectDataProps } from "./types";
 import { colors, getCssVar } from "../../theme";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
-import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
+import { useFixSelectFont } from "../../hooks/form/useFixSelectFont";
+import { inputStyles } from "./styles";
 export type { Country as CountryCode } from "react-phone-number-input";
 
 const customStyles = (
@@ -43,7 +44,7 @@ const customStyles = (
       alignContent: "center",
       padding: "0.4rem 1rem",
       boxShadow: "none",
-      background: getCssVar("--background-color"),
+      background: inputStyles.background,
       ...customTheme?.control,
       border: state.isFocused
         ? customTheme?.control?.focus?.border ?? `1px solid ${colors.violet}`
@@ -219,7 +220,7 @@ export function CountrySelect({
       setInitialized(true);
     }
   }, [field.value, initialized]); // eslint-disable-line
-  const { jsx, selectClassName } = useFixSelectFontSize({
+  const { jsx, selectClassName } = useFixSelectFont({
     selectClassName: "country-select"
   });
   return (

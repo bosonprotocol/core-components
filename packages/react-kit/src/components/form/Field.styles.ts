@@ -14,6 +14,10 @@ export type InputTheme = {
   background: CSSProperties["backgroundColor"];
   borderColor: CSSProperties["borderColor"];
   borderRadius: CSSProperties["borderRadius"];
+  color: CSSProperties["color"];
+  placeholder: {
+    color: CSSProperties["color"];
+  };
   focus: {
     caretColor: CSSProperties["caretColor"];
   };
@@ -58,7 +62,19 @@ export const FieldInput = styled.input<{
   background: ${(props) => props.theme?.background || "transparent"};
   border: 1px solid ${(props) => props.theme?.borderColor || colors.border};
   border-radius: ${(props) => props.theme?.borderRadius || 0}px;
+  color: ${(props) => props.theme?.color};
   outline: none;
+
+  &::placeholder {
+    color: ${(props) => props.theme?.placeholder?.color};
+    opacity: 1;
+  }
+  &:-ms-input-placeholder {
+    color: ${(props) => props.theme?.placeholder?.color};
+  }
+  &::-ms-input-placeholder {
+    color: ${(props) => props.theme?.placeholder?.color};
+  }
 
   ${transition}
 

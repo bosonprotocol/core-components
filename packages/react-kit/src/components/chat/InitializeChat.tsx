@@ -5,7 +5,7 @@ import { Grid } from "../ui/Grid";
 import ThemedButton from "../ui/ThemedButton";
 import { Typography } from "../ui/Typography";
 import { Spinner } from "../ui/loading/Spinner";
-import { colors } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { useChatContext } from "./ChatProvider/ChatContext";
 import { useAccount } from "../../hooks/connection/connection";
 import { BosonConnectWallet } from "../wallet2/web3Status/BosonConnectWallet";
@@ -13,7 +13,7 @@ import { BosonConnectWallet } from "../wallet2/web3Status/BosonConnectWallet";
 const Info = styled(Grid)`
   display: flex;
   justify-content: space-between;
-  background-color: ${colors.greyLight};
+  background-color: ${getCssVar("--background-color")};
   padding: 1.5rem;
 `;
 
@@ -61,9 +61,13 @@ export default function InitializeChat({ isError = false }: Props) {
           <ThemedButton
             type="button"
             themeVal="accentFill"
-            style={{
-              color: colors.white
-            }}
+            style={
+              isInitializing
+                ? undefined
+                : {
+                    color: colors.white
+                  }
+            }
             disabled={isInitializing}
             onClick={() => {
               initialize();

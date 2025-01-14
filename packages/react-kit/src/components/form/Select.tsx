@@ -8,7 +8,7 @@ import { zIndex } from "../ui/zIndex";
 
 import Error from "./Error";
 import type { SelectDataProps, SelectProps } from "./types";
-import { useFixSelectFontSize } from "../../hooks/form/useFixSelectFontSize";
+import { useFixSelectFont } from "../../hooks/form/useFixSelectFont";
 export type { SelectProps } from "./types";
 
 const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
@@ -139,7 +139,7 @@ export default function SelectComponent<
       helpers.setTouched(true);
     }
   };
-  const { jsx, selectClassName } = useFixSelectFontSize({
+  const { jsx, selectClassName } = useFixSelectFont({
     selectClassName: "boson-select"
   });
   return (

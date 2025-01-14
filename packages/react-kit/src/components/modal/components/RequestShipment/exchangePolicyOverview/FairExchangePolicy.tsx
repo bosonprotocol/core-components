@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import styled, { css } from "styled-components";
 import { CONFIG } from "../../../../../lib/config/config";
 import { Typography } from "../../../../ui/Typography";
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { onlyFairExchangePolicyLabel } from "../../../../../lib/const/policies";
 
 const InfoTitleWrapper = styled.div`
@@ -36,7 +36,7 @@ const InfoListItem = styled.li`
 
   p {
     margin: 0;
-    color: ${colors.greyDark};
+    color: ${getCssVar("--sub-text-color")};
   }
 `;
 

@@ -15,7 +15,7 @@ import { useAddPendingTransactionWithContext } from "../../../../../hooks/transa
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { poll } from "../../../../../lib/promises/promises";
 
-import { colors } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { useChatContext } from "../../../../chat/ChatProvider/ChatContext";
 import InitializeChatWithSuccess from "../../../../chat/InitializeChatWithSuccess";
 import { useChatStatus } from "../../../../chat/useChatStatus";
@@ -46,7 +46,7 @@ import { useRedemptionContext } from "../../../../widgets/redemption/provider/Re
 import { extractUserFriendlyError } from "../../../../../lib/errors/transactions";
 
 const StyledGrid = styled(Grid)`
-  background-color: ${colors.greyLight};
+  background-color: ${getCssVar("--background-color")};
 `;
 
 const StyledRedeemButton = styled(ThemedButton)``;
@@ -319,7 +319,11 @@ ${FormModel.formFields.walletAddress.placeholder}: ${message.deliveryDetails.wal
             margin="1.5rem 0"
             padding="1.5rem"
           >
-            <Warning color={colors.orangeDark} size={16} />
+            <Warning
+              color={colors.orangeDark}
+              size={16}
+              style={{ minWidth: "1rem" }}
+            />
             <Typography fontWeight="600" fontSize="1rem" lineHeight="1.5rem">
               rNFTs are burned upon redemption to prevent double spend
             </Typography>

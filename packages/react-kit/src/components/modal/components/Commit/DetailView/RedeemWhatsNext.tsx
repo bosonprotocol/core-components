@@ -102,10 +102,15 @@ export const RedeemWhatsNext = ({
               <Button
                 style={{ flex: "1 1 50%" }}
                 onClick={() => {
-                  showModal("REQUEST_SHIPMENT", {
-                    exchange,
-                    ...requestShipmentProps
-                  });
+                  showModal(
+                    "REQUEST_SHIPMENT",
+                    {
+                      exchange,
+                      ...requestShipmentProps
+                    },
+                    "auto",
+                    { xs: "550px" }
+                  );
                 }}
               >
                 Request shipment
