@@ -139,7 +139,6 @@ export const ProductsRoblox = ({
     l: layout === "vertical" ? 2 : 4,
     xl: layout === "vertical" ? 2 : 5
   } satisfies GridContainerProps["itemsPerRow"];
-  console.log({ layout, itemsPerRow });
   return (
     <Wrapper justifyContent="center" alignItems="center">
       <ContentWrapper flexDirection="column" alignItems="flex-start" gap="5rem">
