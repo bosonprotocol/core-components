@@ -41,12 +41,10 @@ const Wrapper = styled(Grid)`
 
 const iconSize = 24;
 export type CommitRedeemStepsProps = {
-  offerId: string;
   status: "pending-transaction" | "pending-signature" | "success";
-  children: ReactNode;
+  children?: ReactNode;
 };
 export const CommitRedeemSteps = ({
-  offerId,
   status,
   children
 }: CommitRedeemStepsProps) => {

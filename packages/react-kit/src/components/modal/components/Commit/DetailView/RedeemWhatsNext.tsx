@@ -73,7 +73,7 @@ export const RedeemWhatsNext = ({
   requestShipmentProps
 }: RedeemWhatsNextProps) => {
   const { showModal } = useModal();
-  const { config, dateFormat } = useConfigContext();
+  const { config } = useConfigContext();
   const { data: exchanges } = useExchanges(
     {
       id: exchangeId

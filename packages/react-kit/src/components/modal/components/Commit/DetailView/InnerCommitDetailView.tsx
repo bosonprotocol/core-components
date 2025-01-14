@@ -393,15 +393,13 @@ export default function InnerCommitDetailView(
               <CommitWrapper justifyContent="space-between">
                 <Grid flexDirection="column" alignItems="center">
                   {exchangeId ? (
-                    <CommitRedeemSteps
-                      offerId={offer.id}
-                      status={"pending-signature"}
-                    >
+                    <>
+                      <CommitRedeemSteps status={"pending-signature"} />
                       <RedeemWhatsNext
                         exchangeId={exchangeId}
                         requestShipmentProps={requestShipmentProps}
                       />
-                    </CommitRedeemSteps>
+                    </>
                   ) : (
                     <CommitButtonWrapper
                       disabled={!!isCommitDisabled}
