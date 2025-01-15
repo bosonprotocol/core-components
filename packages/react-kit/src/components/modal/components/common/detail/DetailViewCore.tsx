@@ -27,8 +27,7 @@ import { TokenGatedItem } from "./TokenGatedItem";
 import { DetailViewProps } from "./types";
 import { useGetOfferDetailData } from "./useGetOfferDetailData";
 import { SvgImage } from "../../../../ui/SvgImage";
-import { filterRobloxProduct } from "@bosonprotocol/roblox-sdk";
-import { isProductV1 } from "../../../../../lib/offer/filter";
+import { getIsOfferRobloxGated } from "../../../../../lib/roblox/getIsOfferRobloxGated";
 
 const StyledPrice = styled(Price)`
   h3 {
@@ -91,14 +90,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
     const closeDetailsRef = useRef(true);
     const isPhygital = useIsPhygital({ offer });
     const robloxGatedAssetId = useMemo(() => {
-      if (offer.metadata && isProductV1(offer) && offer.condition) {
-        return filterRobloxProduct(
-          offer.metadata,
-          offer.condition,
-          offer.condition?.tokenAddress
-        );
-      }
-      return "";
+      return getIsOfferRobloxGated({ offer });
     }, [offer]);
     return (
       <Widget>
@@ -131,78 +123,31 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
         {children}
         {offer.condition && (
           <>
-            {robloxGatedAssetId ? (
-              <DetailsSummary
-                summaryText="Roblox gated offer"
-                icon={
-                  isConditionMet ? (
-                    <LockOpen size={iconSize} />
-                  ) : (
-                    <Lock size={iconSize} />
-                  )
-                }
-                onSetOpen={(open) => {
-                  if (open && closeDetailsRef.current) {
-                    setDetailsOpen(false);
-                    closeDetailsRef.current = false;
-                  }
-                }}
-              >
-                {isConditionMet ? (
-                  <Grid
-                    flexDirection="column"
-                    alignItems="flex-start"
-                    style={{ display: "inline-block" }}
-                  >
-                    You can buy this item because you own
-                    <a
-                      href={`https://www.roblox.com/catalog/${robloxGatedAssetId}/`}
-                      style={{ margin: "0 0 0 4px" }}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      this roblox item
-                    </a>
-                  </Grid>
+            <DetailsSummary
+              summaryText={
+                robloxGatedAssetId ? "Roblox gated offer" : "Token gated offer"
+              }
+              icon={
+                isConditionMet ? (
+                  <LockOpen size={iconSize} />
                 ) : (
-                  <Grid flexDirection="column" alignItems="flex-start">
-                    You need &b
-                    <a
-                      href={`https://www.roblox.com/catalog/${robloxGatedAssetId}/`}
-                      style={{ margin: "0 0 0 4px" }}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      this roblox item
-                    </a>{" "}
-                    to buy this
-                  </Grid>
-                )}
-              </DetailsSummary>
-            ) : (
-              <DetailsSummary
-                summaryText="Token gated offer"
-                icon={
-                  isConditionMet ? (
-                    <LockOpen size={iconSize} />
-                  ) : (
-                    <Lock size={iconSize} />
-                  )
+                  <Lock size={iconSize} />
+                )
+              }
+              onSetOpen={(open) => {
+                if (open && closeDetailsRef.current) {
+                  setDetailsOpen(false);
+                  closeDetailsRef.current = false;
                 }
-                onSetOpen={(open) => {
-                  if (open && closeDetailsRef.current) {
-                    setDetailsOpen(false);
-                    closeDetailsRef.current = false;
-                  }
-                }}
-              >
-                <TokenGatedItem
-                  offer={offer}
-                  isConditionMet={isConditionMet}
-                  onClickBuyOrSwap={onClickBuyOrSwap}
-                />
-              </DetailsSummary>
-            )}
+              }}
+            >
+              <TokenGatedItem
+                offer={offer}
+                isConditionMet={isConditionMet}
+                onClickBuyOrSwap={onClickBuyOrSwap}
+                robloxGatedAssetId={robloxGatedAssetId}
+              />
+            </DetailsSummary>
           </>
         )}
         {isPhygital && (

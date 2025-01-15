@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
@@ -21,6 +21,7 @@ import {
 } from "../detail/useGetOfferDetailData";
 import { Exchange } from "../../../../../types/exchange";
 import { PhygitalProduct } from "../detail/PhygitalProduct";
+import { getIsOfferRobloxGated } from "../../../../../lib/roblox/getIsOfferRobloxGated";
 
 const StyledPrice = styled(Price)`
   h3 {
@@ -71,6 +72,9 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
     exchangePolicyCheckResult
   });
   const isPhygital = useIsPhygital({ offer });
+  const robloxGatedAssetId = useMemo(() => {
+    return getIsOfferRobloxGated({ offer });
+  }, [offer]);
   return (
     <Grid
       flexDirection="column"
@@ -108,11 +112,14 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
       {offer.condition && (
         <>
           <TokenGatedGrid>
-            <Typography tag="h3">Token gated offer</Typography>
+            <Typography tag="h3">
+              {robloxGatedAssetId ? "Roblox gated offer" : "Token gated offer"}
+            </Typography>
             <TokenGatedItem
               offer={offer}
               isConditionMet={isConditionMet}
               onClickBuyOrSwap={onClickBuyOrSwap}
+              robloxGatedAssetId={robloxGatedAssetId}
             />
           </TokenGatedGrid>
           <Break />

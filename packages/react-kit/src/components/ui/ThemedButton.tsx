@@ -159,7 +159,7 @@ export const bosonButtonThemes = () => {
       hover: {
         borderColor: colors.violet,
         background: colors.border,
-        color: colors.black
+        color: getCssVar("--main-text-color")
       }
     },
     blankSecondaryOutline: {
@@ -170,7 +170,7 @@ export const bosonButtonThemes = () => {
       hover: {
         borderColor: colors.violet,
         background: colors.border,
-        color: colors.black
+        color: getCssVar("--main-text-color")
       }
     },
     blankOutline: {
@@ -206,7 +206,7 @@ export const bosonButtonThemes = () => {
       }
     },
     warning: {
-      color: colors.black,
+      color: getCssVar("--main-text-color"),
       borderColor: colors.orange,
       borderWidth: 1,
       borderRadius: getCssVar("--button-border-radius"),
@@ -216,7 +216,7 @@ export const bosonButtonThemes = () => {
       }
     },
     escalate: {
-      color: colors.black,
+      color: getCssVar("--main-text-color"),
       background: colors.orange,
       borderColor: colors.orange,
       borderWidth: 1,
@@ -228,7 +228,7 @@ export const bosonButtonThemes = () => {
       }
     },
     accentFill: {
-      color: colors.black,
+      color: getCssVar("--main-text-color"),
       background: colors.violet,
       borderColor: "transparent",
       borderWidth: 1,

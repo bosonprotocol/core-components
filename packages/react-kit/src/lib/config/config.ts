@@ -25,5 +25,9 @@ export const CONFIG = {
   infuraKey,
   rpcUrls: getRpcUrls(infuraKey),
   defaultDisputeResolutionPeriodDays: 15,
-  minimumDisputePeriodInDays: 30
+  minimumDisputePeriodInDays: 30,
+  roblox: {
+    getItemDetailsWebsite: ({ itemId }: { itemId: string }) =>
+      `https://www.roblox.com/catalog/${itemId}/`
+  }
 } as const;
