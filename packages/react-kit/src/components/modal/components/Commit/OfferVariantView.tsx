@@ -29,7 +29,7 @@ import { useIsPhygital } from "../../../../hooks/offer/useIsPhygital";
 import { getCssVar } from "../../../../theme";
 import { InnerCommitDetailViewProps } from "./DetailView/InnerCommitDetailView";
 import { HeaderView } from "../../nonModal/headers/HeaderView";
-
+console.log();
 const ImageWrapper = styled.div`
   container-type: inline-size;
   position: relative;
