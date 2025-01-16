@@ -46,6 +46,7 @@ export function MyItems({
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: null,
         headerComponent: (
           <h3 style={{ width: "100%", flex: 1 }}>Manage your exchanges</h3>
         ),

@@ -29,6 +29,7 @@ export function ExchangeFullDescriptionView({
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: null,
         headerComponent: (
           <Grid style={{ flex: "1" }} gap="1rem">
             <ArrowLeft

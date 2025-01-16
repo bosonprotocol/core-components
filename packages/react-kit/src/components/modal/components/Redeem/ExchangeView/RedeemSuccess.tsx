@@ -61,6 +61,7 @@ export function RedeemSuccess({
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: null,
         headerComponent: (
           <Grid style={{ flex: "1" }}>
             <House

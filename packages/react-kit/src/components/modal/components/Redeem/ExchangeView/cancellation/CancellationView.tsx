@@ -32,6 +32,7 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: null,
         headerComponent: isCancelModeOnly ? (
           <Grid gap="1rem" style={{ flex: "1" }}>
             <Typography tag="h3" style={{ flex: "1 1" }}>

@@ -22,6 +22,7 @@ export function LicenseAgreementView({
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: null,
         headerComponent: (
           <Grid style={{ flex: "1" }} gap="1rem" justifyContent="flex-start">
             <ArrowLeft

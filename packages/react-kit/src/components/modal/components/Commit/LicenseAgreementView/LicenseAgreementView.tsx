@@ -29,7 +29,8 @@ export function LicenseAgreementView({
         ),
         contentStyle: {
           background: getCssVar("--background-accent-color")
-        }
+        },
+        footerComponent: null
       }
     });
   }, [dispatch, showBosonLogoInHeader, onBackClick]);

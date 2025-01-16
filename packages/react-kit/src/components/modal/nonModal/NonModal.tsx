@@ -154,7 +154,7 @@ export enum ActionKind {
 }
 
 type Action = {
-  payload: State;
+  payload: Required<State>;
 };
 
 type State = Pick<

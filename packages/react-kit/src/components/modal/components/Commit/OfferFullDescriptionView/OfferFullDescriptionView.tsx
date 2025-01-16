@@ -34,7 +34,8 @@ export function OfferFullDescriptionView({
         contentStyle: {
           background: getCssVar("--background-accent-color"),
           padding: 0
-        }
+        },
+        footerComponent: null
       }
     });
   }, [

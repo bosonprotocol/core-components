@@ -54,6 +54,7 @@ export default function StepsOverview({
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: null,
         headerComponent: RedeemHeader,
         contentStyle: {
           background: getCssVar("--background-accent-color")

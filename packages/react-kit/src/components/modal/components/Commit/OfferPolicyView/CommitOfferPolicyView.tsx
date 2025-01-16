@@ -36,7 +36,8 @@ export function CommitOfferPolicyView({
         ),
         contentStyle: {
           background: getCssVar("--background-accent-color")
-        }
+        },
+        footerComponent: null
       }
     });
   }, [

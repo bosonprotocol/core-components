@@ -126,6 +126,7 @@ export function ExchangeView({
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: null,
         headerComponent: (
           <Grid gap="1rem" style={{ flex: "1" }}>
             <House
