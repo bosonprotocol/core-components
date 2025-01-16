@@ -279,7 +279,7 @@ export const TokenGatedItem = ({
     },
     { enabled: !!(erc1155Uri && erc1155Uri[0] && tokenIdForImage) }
   );
-  const { data: { Name: RobloxItemName = "" } = {} } = useRobloxGetItemDetails({
+  const { data: { name: robloxItemName = "" } = {} } = useRobloxGetItemDetails({
     itemId: robloxGatedAssetId || "",
     options: {
       enabled: !!robloxGatedAssetId
@@ -445,7 +445,7 @@ export const TokenGatedItem = ({
               width="auto"
             >
               <Grid flexDirection="column" alignItems="flex-start">
-                {RobloxItemName || erc1155Info} {rangeText}
+                {robloxItemName || erc1155Info} {rangeText}
               </Grid>
             </Grid>
           </Grid>
