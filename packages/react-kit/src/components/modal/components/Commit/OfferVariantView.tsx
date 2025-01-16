@@ -4,7 +4,8 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useState
+  useState,
+  useEffect
 } from "react";
 import styled from "styled-components";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
