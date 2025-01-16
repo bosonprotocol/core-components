@@ -33,7 +33,6 @@ const BASE_ARGS = {
   withExternalSigner: false,
   lookAndFeel: "modal",
   withMagicLink: true,
-  requestShipmentProps: undefined,
   roundness: "min",
   sendDeliveryInfoThroughXMTP: true,
   withGlobalStyle: true

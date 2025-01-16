@@ -19,10 +19,10 @@ import { getCssVar } from "../../../../theme";
 import { GridContainerProps } from "../../../ui/GridContainer";
 import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { subgraph } from "@bosonprotocol/core-sdk";
-import { CommitNonModalProps } from "../../../modal/components/Commit/CommitNonModal";
 import { maxWidthStepper } from "./styles";
 import { ThemedBosonLogo } from "../../../modal/components/common/ThemedBosonLogo";
 import { productsPageSize, purchasedProductsPageSize } from "./const";
+import { OfferVariantViewProps } from "../../../modal/components/Commit/OfferVariantView";
 
 const Wrapper = styled(Grid).attrs({
   paddingTop: "5rem",
@@ -40,7 +40,7 @@ const ContentWrapper = styled(Grid)`
 `;
 
 export type ProductsRobloxProps = {
-  requestShipmentProps: CommitNonModalProps["requestShipmentProps"];
+  requestShipmentProps: OfferVariantViewProps["requestShipmentProps"];
   sellerId: string;
   raiseDisputeForExchangeUrl: string;
   showProductsPreLogin: boolean;
@@ -169,7 +169,9 @@ export const ProductsRoblox = ({
             productUuid={productUuid}
             bundleUuid={bundleUuid}
             exchange={exchange}
-            requestShipmentProps={requestShipmentProps}
+            forcedAccount={requestShipmentProps?.forcedAccount}
+            signatures={requestShipmentProps?.signatures}
+            parentOrigin={requestShipmentProps?.parentOrigin}
             lookAndFeel="regular"
             hideModal={clearSelection}
             showConnectButton={false}

@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useAccount } from "../../../../hooks/connection/connection";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 import { getCssVar } from "../../../../theme";
 import { VariantV1 } from "../../../../types/variants";
 import Loading from "../../../ui/loading/LoadingWrapper";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
-import { BosonLogo } from "../common/BosonLogo";
 import {
   DetailContextProps,
   DetailViewProvider
@@ -27,10 +26,7 @@ enum CommitStep {
 
 export type CommitNonModalProps = Pick<
   OfferVariantViewProps,
-  | "onClickBuyOrSwap"
-  | "onAlreadyOwnOfferClick"
-  | "exchange"
-  | "requestShipmentProps"
+  "onClickBuyOrSwap" | "onAlreadyOwnOfferClick" | "exchange"
 > & {
   variants?: VariantV1[];
   showBosonLogo?: boolean;
@@ -46,7 +42,7 @@ export type CommitNonModalProps = Pick<
   showConnectButton?: boolean;
   lookAndFeel: "regular" | "modal";
   withLeftArrowButton?: boolean;
-};
+} & OfferVariantViewProps["requestShipmentProps"];
 
 export function CommitWrapper({
   hideModal,
@@ -86,12 +82,13 @@ function CommitNonModal({
   disableVariationsSelects,
   isLoading,
   exchange,
-  requestShipmentProps,
   onExchangePolicyClick,
   onAlreadyOwnOfferClick,
   offerViewOnViewFullDescription,
   onClickBuyOrSwap,
-  forcedAccount
+  forcedAccount,
+  parentOrigin,
+  signatures
 }: CommitNonModalProps) {
   const firstVariant = variants?.[0];
   const firstNotVoidedVariant = variants?.find(
@@ -184,7 +181,11 @@ function CommitNonModal({
     <>
       {currentStep === CommitStep.OFFER_VIEW ? (
         <OfferVariantView
-          requestShipmentProps={requestShipmentProps}
+          requestShipmentProps={{
+            forcedAccount,
+            parentOrigin,
+            signatures
+          }}
           exchange={exchange}
           showBosonLogoInHeader={showBosonLogoInHeader}
           showBosonLogo={showBosonLogo}
