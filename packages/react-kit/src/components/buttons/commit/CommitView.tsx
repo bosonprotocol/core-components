@@ -18,8 +18,8 @@ export const CommitView = ({ layout = "horizontal" }: CommitViewProps) => {
       Buy with
       <SvgImage
         src={Logo}
-        width={`${logoWidthPx}px`}
-        height={`${(logoWidthPx * 218) / 947}px`}
+        width={logoWidthPx}
+        height={(logoWidthPx * 218) / 947}
       />
     </Grid>
   );

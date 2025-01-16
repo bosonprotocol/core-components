@@ -1,3 +1,4 @@
+export * from "./BosonThemeProvider";
 export { RedemptionWidgetAction } from "./redemption/provider/RedemptionWidgetContext";
 
 export * from "./finance/FinanceWidget";

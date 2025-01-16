@@ -50,6 +50,7 @@ export * from "./components/queryClient/QueryClientProviderCustom";
 export * from "./components/scroll/ScrollToID";
 export * from "./components/scroll/ScrollToTop";
 export * from "./components/styles/GlobalStyledThemed";
+export * from "./components/styles/ResetStylesForNonWidgets";
 export * from "./components/searchBar/SearchBar";
 export * from "./components/skeleton/CollectionsCardSkeleton";
 export { LoadingBubble } from "./components/skeleton/common";

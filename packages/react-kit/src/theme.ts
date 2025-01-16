@@ -25,7 +25,7 @@ export const cssVarsKeys = {
   "--modal-border-radius": "--modal-border-radius"
 };
 
-type CssVarKeys = keyof typeof cssVarsKeys;
+export type CssVarKeys = keyof typeof cssVarsKeys;
 export type ThemePalette = Record<CssVarKeys, string>;
 export type Theme = "blackAndWhite" | "dark" | "light";
 

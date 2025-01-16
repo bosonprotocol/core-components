@@ -27,6 +27,7 @@ import { useDetailViewContext } from "./DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "./types";
 import { CONFIG } from "../../../../../lib/config/config";
 import { useRobloxGetItemDetails } from "../../../../../hooks/roblox/useRobloxGetItemDetails";
+import { remToPx } from "../../../../../lib/numbers/numbers";
 
 type TokenGatedItemProps = OnClickBuyOrSwapHandler & {
   offer: Offer;
@@ -41,8 +42,8 @@ const Wrapper = styled(Grid)`
     }
   }
 `;
-
-const imageSize = "2.5rem";
+const imageSizeRem = 2.5;
+const imageSize = `${imageSizeRem}rem`;
 const ErcImage = styled.img`
   border-radius: 9999px;
   background-color: #f1f3f9;
@@ -290,7 +291,7 @@ export const TokenGatedItem = ({
         {chainId && currency ? (
           <PortfolioLogo
             chainId={chainId as ChainId}
-            size={imageSize}
+            size={remToPx(imageSizeRem)}
             currencies={[currency]}
           />
         ) : erc721Image?.[0]?.[0] ? (

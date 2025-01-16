@@ -22,7 +22,7 @@ export function BosonLogo({
     >
       <SvgImage
         src={ReactComponent}
-        height="24px"
+        height={24}
         {...svgImageProps}
         style={{ maxWidth: "100%", ...svgImageProps?.style }}
       />

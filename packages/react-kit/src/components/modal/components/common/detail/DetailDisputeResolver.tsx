@@ -21,8 +21,8 @@ export const DetailDisputeResolver = {
     return (
       <SvgImage
         src={ReactComponent}
-        width="100"
-        height="18"
+        width={100}
+        height={18}
         color={getCssVar("--sub-text-color")}
       />
     );

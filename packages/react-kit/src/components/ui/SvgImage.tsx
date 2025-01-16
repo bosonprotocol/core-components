@@ -1,18 +1,60 @@
 import React from "react";
-import { CSSProperties } from "styled-components";
+import { useQuery } from "react-query";
+import styled, { CSSProperties } from "styled-components";
 
-export type SvgImageProps = Pick<
-  CSSProperties,
-  "width" | "height" | "color"
-> & {
+export type SvgImageProps = Pick<CSSProperties, "color"> & {
+  width?: number;
+  height?: number;
   src: string | React.FC | undefined;
   alt?: string;
   style?: CSSProperties;
   id?: string;
 };
 
+const SvgWrapper = styled.div`
+  > * {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 export const SvgImage: React.FC<SvgImageProps> = ({ src, ...rest }) => {
+  const { data: svgHtml, isLoading } = useQuery(
+    [src],
+    async () => {
+      if (typeof src !== "string") {
+        return;
+      }
+      const response = await fetch(src);
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch SVG: ${response.statusText}, svg: ${src}`
+        );
+      }
+      const svgText = await response.text();
+      return svgText;
+    },
+    {
+      enabled: typeof src === "string",
+      staleTime: Infinity
+    }
+  );
   if (typeof src === "string") {
+    if (isLoading) {
+      return <></>;
+    }
+    if (svgHtml) {
+      const { width, height, color, style, ...restProps } = rest;
+      const fixedWidth = width === undefined ? width : `${width}px`;
+      const fixedHeight = height === undefined ? height : `${height}px`;
+      return (
+        <SvgWrapper
+          dangerouslySetInnerHTML={{ __html: svgHtml }}
+          {...restProps}
+          style={{ ...style, width: fixedWidth, height: fixedHeight, color }}
+        />
+      );
+    }
     // eslint-disable-next-line jsx-a11y/alt-text
     return <img src={src} {...rest} />;
   }

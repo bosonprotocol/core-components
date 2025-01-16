@@ -43,3 +43,7 @@ export const isNumeric = (strNumber: string) => {
     !isNaN(parseFloat(strNumber))
   ); // ...and ensure strings of whitespace fail
 };
+
+export function remToPx(rem: number, rootFontSize = 16) {
+  return rem * rootFontSize;
+}
