@@ -104,7 +104,16 @@
     "copy-assets": "copyfiles -u 2 \"src/assets/**/*\" dist/esm/assets/ && copyfiles -u 2 \"src/assets/**/*\" dist/cjs/assets/",
     "postbuild": "npm run copy-assets",
     "tsc": "tsc",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
+    "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.+(js|ts|tsx)": [
+      "eslint --fix ."
+    ],
+    "*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write ."
+    ]
   },
   "eslintConfig": {
     "extends": [
