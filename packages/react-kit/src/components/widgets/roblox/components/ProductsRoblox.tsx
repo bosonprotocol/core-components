@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Typography } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
 import { CommitModalWithOffer } from "../../commit/CommitModalWithOffer";
@@ -22,6 +22,7 @@ import { subgraph } from "@bosonprotocol/core-sdk";
 import { CommitNonModalProps } from "../../../modal/components/Commit/CommitNonModal";
 import { maxWidthStepper } from "./styles";
 import { ThemedBosonLogo } from "../../../modal/components/common/ThemedBosonLogo";
+import { productsPageSize, purchasedProductsPageSize } from "./const";
 
 const Wrapper = styled(Grid).attrs({
   paddingTop: "5rem",
@@ -60,10 +61,20 @@ export const ProductsRoblox = ({
       enabled: !!showProductsPreLogin
     }
   });
-  const { data: robloxProducts, isLoading } = useRobloxProducts({
+  const {
+    data: robloxProductsInPage,
+    isLoading,
+    fetchNextPage: fetchNextPageProducts,
+    refetch: refetchProducts,
+    hasNextPage: hasNextPageProducts
+  } = useRobloxProducts({
     sellerId,
+    pageSize: productsPageSize,
     options: { enabled: true }
   });
+  const robloxProducts = useMemo(() => {
+    return robloxProductsInPage?.pages?.flatMap((page) => page) || [];
+  }, [robloxProductsInPage]);
   const robloxExclusives = robloxProducts;
   const robloxExclusivesLoading = isLoading;
   const availableProducts = robloxProducts?.filter((robloxProduct) =>
@@ -89,12 +100,22 @@ export const ProductsRoblox = ({
   );
   const unavailableProductsLoading = isLoading;
   const availableProductLoading = isLoading;
-  const { data: purchasedProducts, isLoading: purchasedProductsLoading } =
-    useRobloxExchanges({
-      sellerId,
-      userWallet: address ?? "",
-      options: { enabled: !!address }
-    });
+
+  const {
+    data: purchasedProductsInPage,
+    isLoading: purchasedProductsLoading,
+    fetchNextPage: fetchNextPagePurchasedProducts,
+    hasNextPage: hasNextPagePurchasedProducts,
+    refetch: refetchPurchasedProducts
+  } = useRobloxExchanges({
+    sellerId,
+    userWallet: address ?? "",
+    pageSize: purchasedProductsPageSize,
+    options: { enabled: !!address }
+  });
+  const purchasedProducts = useMemo(() => {
+    return purchasedProductsInPage?.pages?.flatMap((page) => page) || [];
+  }, [purchasedProductsInPage]);
   const [exchange, setExchange] = useState<subgraph.ExchangeFieldsFragment>();
   const [productUuid, setProductUuid] = useState<string>("");
   const [bundleUuid, setBundleUuid] = useState<string>("");
@@ -196,6 +217,10 @@ export const ProductsRoblox = ({
               </Typography>
 
               <RobloxExchangesGrid
+                numProducts={purchasedProductsPageSize}
+                fetchNextPage={fetchNextPagePurchasedProducts}
+                hasNextPage={hasNextPagePurchasedProducts}
+                refetch={refetchPurchasedProducts}
                 itemsPerRow={itemsPerRow}
                 raiseDisputeForExchangeUrl={raiseDisputeForExchangeUrl}
                 exchanges={purchasedProducts}
@@ -231,6 +256,9 @@ export const ProductsRoblox = ({
                 inventory you have
               </Typography>
               <RobloxProductsGrid
+                fetchNextPage={fetchNextPageProducts}
+                hasNextPage={hasNextPageProducts}
+                refetch={refetchProducts}
                 itemsPerRow={itemsPerRow}
                 products={availableProducts}
                 handleSetProductUuid={(uuid) =>
@@ -255,6 +283,9 @@ export const ProductsRoblox = ({
                 Roblox inventory item.
               </Typography>
               <RobloxProductsGrid
+                fetchNextPage={fetchNextPageProducts}
+                hasNextPage={hasNextPageProducts}
+                refetch={refetchProducts}
                 itemsPerRow={itemsPerRow}
                 products={unavailableProducts}
                 handleSetProductUuid={(uuid) =>
@@ -282,6 +313,9 @@ export const ProductsRoblox = ({
                 Roblox inventory item.
               </Typography>
               <RobloxProductsGrid
+                fetchNextPage={fetchNextPageProducts}
+                hasNextPage={hasNextPageProducts}
+                refetch={refetchProducts}
                 itemsPerRow={itemsPerRow}
                 products={robloxExclusives}
                 isLoading={robloxExclusivesLoading}

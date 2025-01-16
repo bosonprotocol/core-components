@@ -1,10 +1,12 @@
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { GetExchangesResponse } from "@bosonprotocol/roblox-sdk";
 import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
+import { mutationKeys } from "./mutationKeys";
 
 type UseRobloxProductsProps = {
   sellerId: string;
   userWallet: string;
+  pageSize: number;
   options: {
     enabled?: boolean;
   };
@@ -12,15 +14,21 @@ type UseRobloxProductsProps = {
 export const useRobloxExchanges = ({
   sellerId,
   userWallet,
+  pageSize,
   options
 }: UseRobloxProductsProps) => {
   const { backendOrigin } = useRobloxConfigContext();
-  const queryKey = ["roblox-exchanges", backendOrigin, sellerId, userWallet];
-  return useQuery(
+  const queryKey = mutationKeys.getExchanges({
+    backendOrigin,
+    pageSize,
+    sellerId,
+    userWallet
+  });
+  return useInfiniteQuery(
     queryKey,
-    async () => {
+    async ({ pageParam = 0 }) => {
       const response = await fetch(
-        `${backendOrigin}/exchanges?bosonSellerId=${sellerId}&userWallet=${userWallet}`
+        `${backendOrigin}/exchanges?bosonSellerId=${sellerId}&userWallet=${userWallet}&first=${pageSize}&skip=${pageParam}`
       );
       if (!response.ok) {
         throw new Error(
@@ -30,6 +38,12 @@ export const useRobloxExchanges = ({
       const data = (await response.json()) as GetExchangesResponse;
       return data;
     },
-    options
+    {
+      ...options,
+      getNextPageParam: (lastPage, pages) => {
+        const result = lastPage.length === pageSize ? pages.length : undefined;
+        return result;
+      }
+    }
   );
 };

@@ -1,24 +1,30 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useInfiniteQuery, useQueryClient } from "react-query";
 import { GetProductsResponse } from "@bosonprotocol/roblox-sdk";
 import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
 import { mutationKeys } from "./mutationKeys";
 
 type UseRobloxProductsProps = {
   sellerId: string;
+  pageSize: number;
   options: { enabled?: boolean };
 };
 export const useRobloxProducts = ({
   sellerId,
+  pageSize,
   options = {}
 }: UseRobloxProductsProps) => {
   const queryClient = useQueryClient();
   const { backendOrigin } = useRobloxConfigContext();
-  const queryKey = mutationKeys.getProducts({ backendOrigin, sellerId });
-  return useQuery(
+  const queryKey = mutationKeys.getProducts({
+    backendOrigin,
+    sellerId,
+    pageSize
+  });
+  return useInfiniteQuery(
     queryKey,
-    async () => {
+    async ({ pageParam = 0 }) => {
       const response = await fetch(
-        `${backendOrigin}/products?bosonSellerId=${sellerId}`,
+        `${backendOrigin}/products?bosonSellerId=${sellerId}&first=${pageSize}&skip=${pageParam}`,
         { credentials: "include" } // required to include Cookie in the request
       );
       if (!response.ok) {
@@ -36,6 +42,12 @@ export const useRobloxProducts = ({
       }
       return data;
     },
-    options
+    {
+      ...options,
+      getNextPageParam: (lastPage, pages) => {
+        const result = lastPage.length === pageSize ? pages.length : undefined;
+        return result;
+      }
+    }
   );
 };

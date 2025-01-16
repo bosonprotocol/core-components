@@ -30,6 +30,7 @@ import { LoginWithRoblox } from "./LoginWithRoblox";
 import { getCssVar } from "../../../../theme";
 import ThemedButton from "../../../ui/ThemedButton";
 import { maxWidthStepper } from "./styles";
+import { productsPageSize, purchasedProductsPageSize } from "./const";
 
 const Wrapper = styled(Grid)`
   container-type: inline-size;
@@ -207,11 +208,13 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
     )[2];
     const { refetch: loadBosonProducts } = useRobloxProducts({
       sellerId,
+      pageSize: productsPageSize,
       options: { enabled: false }
     });
     const { refetch: loadBosonExchanges } = useRobloxExchanges({
       sellerId,
       userWallet: address,
+      pageSize: purchasedProductsPageSize,
       options: { enabled: false }
     });
     const disconnectWallet = useCallback(() => {

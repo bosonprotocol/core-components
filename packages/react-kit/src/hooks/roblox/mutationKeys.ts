@@ -7,11 +7,32 @@ interface GetMutationKey
 export const mutationKeys = {
   getProducts: ({
     backendOrigin,
-    sellerId
+    sellerId,
+    pageSize
   }: {
     backendOrigin: string;
     sellerId: string;
-  }) => ["roblox-products", backendOrigin, sellerId] as const,
+    pageSize: number;
+  }) =>
+    ["roblox-products", backendOrigin, sellerId, pageSize.toString()] as const,
+  getExchanges: ({
+    backendOrigin,
+    sellerId,
+    userWallet,
+    pageSize
+  }: {
+    backendOrigin: string;
+    sellerId: string;
+    userWallet: string;
+    pageSize: number;
+  }) =>
+    [
+      "roblox-exchanges",
+      backendOrigin,
+      sellerId,
+      userWallet,
+      pageSize.toString()
+    ] as const,
   getWalletAuth: ({ backendOrigin }: { backendOrigin: string }) =>
     ["get-wallet-auth", backendOrigin] as const
 } as const satisfies GetMutationKey;

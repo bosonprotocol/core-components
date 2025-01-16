@@ -201,7 +201,11 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
       <ExchangeCardBottom>
         <ExchangeCardBottomContent
           ref={(div) => {
-            !!div?.clientHeight && !height && setHeight(div.clientHeight);
+            !!div?.clientHeight &&
+              div.clientHeight !== height &&
+              setHeight(
+                height ? Math.min(div.clientHeight, height) : div.clientHeight
+              );
           }}
         >
           <ExchangeCarData>

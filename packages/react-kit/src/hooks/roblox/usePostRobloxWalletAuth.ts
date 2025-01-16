@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "react-query";
 import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
 import { mutationKeys } from "./mutationKeys";
+import { productsPageSize } from "../../components/widgets/roblox/components/const";
 
 type UsePostRobloxWalletAuthProps = {
   sellerId: string;
@@ -39,7 +40,8 @@ export const usePostRobloxWalletAuth = () => {
           queryClient.invalidateQueries(
             mutationKeys.getProducts({
               backendOrigin,
-              sellerId: variables.sellerId
+              sellerId: variables.sellerId,
+              pageSize: productsPageSize
             })
           );
         }

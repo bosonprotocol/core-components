@@ -4,6 +4,7 @@ import { robloxQueryKeys } from "./const";
 import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
 import { mutationKeys } from "./mutationKeys";
 import { GetLoggedInResponse } from "@bosonprotocol/roblox-sdk";
+import { productsPageSize } from "../../components/widgets/roblox/components/const";
 
 type UseIsRobloxLoggedInProps = {
   sellerId: string;
@@ -42,7 +43,11 @@ export const useIsRobloxLoggedIn = ({
       },
       onSettled: () => {
         queryClient.invalidateQueries(
-          mutationKeys.getProducts({ backendOrigin, sellerId })
+          mutationKeys.getProducts({
+            backendOrigin,
+            sellerId,
+            pageSize: productsPageSize
+          })
         );
       }
     }
