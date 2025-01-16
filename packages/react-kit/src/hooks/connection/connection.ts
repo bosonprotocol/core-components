@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-// source: https://wagmi.sh/react/ethers-adapters
-
 import { useMemo } from "react";
 import { useUser } from "../../components/magicLink/UserContext";
 import {
@@ -52,6 +49,7 @@ export function useChainId(): number | undefined {
   let magicChainId: number | undefined;
   let magicError: unknown;
   try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     magicChainId = useMagicChainId();
   } catch (error) {
     magicError = error; // error if the provider is not there
@@ -90,6 +88,7 @@ export function useProvider():
     throw error;
   }
   try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     magicProvider = useMagicProvider();
   } catch (magicError) {
     error = magicError; // error if the provider is not there
@@ -116,6 +115,7 @@ export function useSigner(): Signer | undefined {
   let magicProvider: providers.Web3Provider | undefined, magicError: unknown;
 
   try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     magicProvider = useMagicProvider();
   } catch (err) {
     magicError = err; // error if the provider is not there

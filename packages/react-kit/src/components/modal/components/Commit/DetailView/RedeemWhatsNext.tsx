@@ -74,13 +74,7 @@ export type RedeemWhatsNextProps = {
   requestShipmentProps:
     | Pick<
         RequestShipmentModalProps,
-        | "postDeliveryInfoUrl"
-        | "deliveryInfoHandler"
-        | "redemptionSubmittedHandler"
-        | "redemptionConfirmedHandler"
-        | "forcedAccount"
-        | "parentOrigin"
-        | "signatures"
+        "forcedAccount" | "parentOrigin" | "signatures"
       >
     | undefined;
 };

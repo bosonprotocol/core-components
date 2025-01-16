@@ -1,5 +1,5 @@
-import React from "react";
-import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
+import React, { ReactElement } from "react";
+import { Meta } from "@storybook/react";
 
 import {
   RedemptionWidget,
@@ -15,21 +15,18 @@ import { RedemptionWidgetAction } from "../../components/widgets";
 export default {
   title: "Widgets/Redemption",
   component: RedemptionWidget
-} as ComponentMeta<typeof RedemptionWidget>;
+} as Meta<typeof RedemptionWidget>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof RedemptionWidget> = (args) => (
-  <RedemptionWidget {...args} />
-);
+const Template = (args) => <RedemptionWidget {...args} />;
 
-const wrapper = (Story: Story) => (
+const wrapper = (Story: () => ReactElement) => (
   <div>
     <Story />
   </div>
 );
 
-export const Redemption: ComponentStory<typeof RedemptionWidget> =
-  Template.bind({});
+export const Redemption = Template.bind({});
 
 const envName =
   (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
@@ -77,8 +74,7 @@ Redemption.args = {
 
 Redemption.decorators = [(Story) => wrapper(Story)];
 
-export const RedemptionCallbacks: ComponentStory<typeof RedemptionWidget> =
-  Template.bind({});
+export const RedemptionCallbacks = Template.bind({});
 
 RedemptionCallbacks.args = {
   ...Redemption.args,
@@ -94,9 +90,7 @@ RedemptionCallbacks.args = {
   ...BASE_ARGS
 } satisfies RedemptionWidgetProps;
 
-export const RedemptionCallbacksThenClose: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionCallbacksThenClose = Template.bind({});
 
 RedemptionCallbacksThenClose.args = {
   ...Redemption.args,
@@ -107,9 +101,7 @@ RedemptionCallbacksThenClose.args = {
   ...BASE_ARGS
 } satisfies RedemptionWidgetProps;
 
-export const RedemptionCallbacksRedeemConfirm: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionCallbacksRedeemConfirm = Template.bind({});
 
 RedemptionCallbacksRedeemConfirm.args = {
   ...Redemption.args,
@@ -126,9 +118,7 @@ RedemptionCallbacksRedeemConfirm.args = {
   ...BASE_ARGS
 } satisfies RedemptionWidgetProps;
 
-export const RedemptionCallbacksFailure: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionCallbacksFailure = Template.bind({});
 
 RedemptionCallbacksFailure.args = {
   ...Redemption.args,
@@ -139,9 +129,7 @@ RedemptionCallbacksFailure.args = {
   ...BASE_ARGS
 } satisfies RedemptionWidgetProps;
 
-export const RedemptionCallbacksFailure2: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionCallbacksFailure2 = Template.bind({});
 
 RedemptionCallbacksFailure2.args = {
   ...Redemption.args,
@@ -155,9 +143,7 @@ RedemptionCallbacksFailure2.args = {
   ...BASE_ARGS
 } satisfies RedemptionWidgetProps;
 
-export const RedemptionCallbacksFailure3: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionCallbacksFailure3 = Template.bind({});
 
 RedemptionCallbacksFailure3.args = {
   ...Redemption.args,
@@ -181,9 +167,7 @@ RedemptionCallbacksFailure3.args = {
   ...BASE_ARGS
 } satisfies RedemptionWidgetProps;
 
-export const RedemptionCallbacksFailure4: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionCallbacksFailure4 = Template.bind({});
 
 RedemptionCallbacksFailure4.args = {
   ...Redemption.args,
@@ -207,8 +191,7 @@ RedemptionCallbacksFailure4.args = {
   ...BASE_ARGS
 } satisfies RedemptionWidgetProps;
 
-export const RedemptionHandlers: ComponentStory<typeof RedemptionWidget> =
-  Template.bind({});
+export const RedemptionHandlers = Template.bind({});
 
 RedemptionHandlers.args = {
   ...Redemption.args,
@@ -238,9 +221,7 @@ RedemptionHandlers.args = {
   ...BASE_ARGS
 } satisfies RedemptionWidgetProps;
 
-export const RedemptionHandlersNoResume: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionHandlersNoResume = Template.bind({});
 
 RedemptionHandlersNoResume.args = {
   ...Redemption.args,
@@ -255,9 +236,7 @@ RedemptionHandlersNoResume.args = {
   ...BASE_ARGS
 } satisfies RedemptionWidgetProps;
 
-export const RedemptionHandlersFailure1: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionHandlersFailure1 = Template.bind({});
 
 RedemptionHandlersFailure1.args = {
   ...Redemption.args,
@@ -272,9 +251,7 @@ RedemptionHandlersFailure1.args = {
   ...BASE_ARGS
 } satisfies RedemptionWidgetProps;
 
-export const RedemptionHandlersFailure2: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionHandlersFailure2 = Template.bind({});
 
 RedemptionHandlersFailure2.args = {
   ...Redemption.args,
@@ -285,9 +262,7 @@ RedemptionHandlersFailure2.args = {
   ...BASE_ARGS
 } satisfies RedemptionWidgetProps;
 
-export const RedemptionHandlersFailure3: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionHandlersFailure3 = Template.bind({});
 
 RedemptionHandlersFailure3.args = {
   ...Redemption.args,
@@ -307,9 +282,7 @@ RedemptionHandlersFailure3.args = {
   ...BASE_ARGS
 } satisfies RedemptionWidgetProps;
 
-export const RedemptionHandlersFailure4: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionHandlersFailure4 = Template.bind({});
 
 RedemptionHandlersFailure4.args = {
   ...Redemption.args,

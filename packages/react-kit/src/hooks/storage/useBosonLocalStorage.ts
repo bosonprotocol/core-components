@@ -7,7 +7,6 @@ import {
 } from "./useLocalStorage";
 
 export type GetItemFromStorageKey =
-  | "wagmi.store"
   | "isChainUnsupported"
   | "tracing-url"
   | "isConnectWalletFromCommit"

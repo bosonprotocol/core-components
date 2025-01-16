@@ -18,10 +18,7 @@ import { getHasBuyerTransferInfos } from "../../../../lib/offer/filter";
 import { BuyerTransferInfo } from "../../../../lib/bundle/const";
 import { Form, Formik, FormikProps } from "formik";
 import { FormModel } from "../Redeem/RedeemFormModel";
-import {
-  RedemptionContextProps,
-  useRedemptionContext
-} from "../../../widgets/redemption/provider/RedemptionContext";
+import { useRedemptionContext } from "../../../widgets/redemption/provider/RedemptionContext";
 import { mockedDeliveryAddress } from "../../../widgets/redemption/const";
 import { checkSignatures } from "../Redeem/checkSignatures";
 import Loading from "../../../ui/loading/LoadingWrapper";
@@ -40,13 +37,7 @@ enum ActiveStep {
   REDEEM_FORM_CONFIRMATION,
   REDEEM_SUCESS
 }
-export type RequestShipmentModalProps = Pick<
-  RedemptionContextProps,
-  | "postDeliveryInfoUrl"
-  | "deliveryInfoHandler"
-  | "redemptionSubmittedHandler"
-  | "redemptionConfirmedHandler"
-> & {
+export type RequestShipmentModalProps = {
   exchange: subgraph.ExchangeFieldsFragment;
   forcedAccount?: string;
   parentOrigin?: string | null;
@@ -57,11 +48,7 @@ export const RequestShipmentModal = ({
   exchange,
   parentOrigin,
   signatures,
-  forcedAccount,
-  deliveryInfoHandler,
-  postDeliveryInfoUrl,
-  redemptionConfirmedHandler,
-  redemptionSubmittedHandler
+  forcedAccount
 }: RequestShipmentModalProps) => {
   const { offer } = exchange;
   const offerId = offer.id;
@@ -115,7 +102,13 @@ export const RequestShipmentModal = ({
       formRef.current.validateForm();
     }
   }, [step]);
-  const { deliveryInfo: initialDeliveryInfo } = useRedemptionContext();
+  const {
+    deliveryInfo: initialDeliveryInfo,
+    postDeliveryInfoUrl,
+    deliveryInfoHandler,
+    redemptionConfirmedHandler,
+    redemptionSubmittedHandler
+  } = useRedemptionContext();
   const doFetchSellersFromSellerIds = !!sellerId;
   const sellerIds = useMemo(() => [sellerId], [sellerId]);
   const {
