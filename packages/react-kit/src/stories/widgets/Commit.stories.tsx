@@ -1,5 +1,5 @@
-import React from "react";
-import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
+import React, { ReactElement } from "react";
+import { Meta } from "@storybook/react";
 
 import {
   CommitWidget,
@@ -10,14 +10,12 @@ import { EnvironmentType, getEnvConfigs } from "@bosonprotocol/core-sdk";
 export default {
   title: "Widgets/Commit",
   component: CommitWidget
-} as ComponentMeta<typeof CommitWidget>;
+} as Meta<typeof CommitWidget>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof CommitWidget> = (args) => (
-  <CommitWidget {...args} />
-);
+const Template = (args) => <CommitWidget {...args} />;
 
-const wrapper = (Story: Story) => (
+const wrapper = (Story: () => ReactElement) => (
   <div>
     <Story />
   </div>
@@ -26,7 +24,7 @@ const envName =
   (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
 const envConfig = getEnvConfigs(envName);
 
-export const Commit: ComponentStory<typeof CommitWidget> = Template.bind({});
+export const Commit = Template.bind({});
 const BASE_ARGS = {
   envName,
   configId: envConfig[0].configId,
@@ -34,7 +32,11 @@ const BASE_ARGS = {
   withCustomReduxContext: false,
   withExternalSigner: false,
   lookAndFeel: "modal",
-  withMagicLink: true
+  withMagicLink: true,
+  requestShipmentProps: undefined,
+  roundness: "min",
+  sendDeliveryInfoThroughXMTP: true,
+  withGlobalStyle: true
 } as const;
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Commit.args = {
@@ -69,8 +71,7 @@ Commit.args = {
 
 Commit.decorators = [(Story) => wrapper(Story)];
 
-export const CommitTokenGated_ERC20: ComponentStory<typeof CommitWidget> =
-  Template.bind({});
+export const CommitTokenGated_ERC20 = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitTokenGated_ERC20.args = {
@@ -107,9 +108,7 @@ CommitTokenGated_ERC20.args = {
 
 CommitTokenGated_ERC20.decorators = [(Story) => wrapper(Story)];
 
-export const CommitWithColorAndSizeVariations: ComponentStory<
-  typeof CommitWidget
-> = Template.bind({});
+export const CommitWithColorAndSizeVariations = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitWithColorAndSizeVariations.args = {
@@ -143,8 +142,7 @@ CommitWithColorAndSizeVariations.args = {
 
 CommitWithColorAndSizeVariations.decorators = [(Story) => wrapper(Story)];
 
-export const CommitTokenGated_ERC721: ComponentStory<typeof CommitWidget> =
-  Template.bind({});
+export const CommitTokenGated_ERC721 = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitTokenGated_ERC721.args = {
@@ -181,8 +179,7 @@ CommitTokenGated_ERC721.args = {
 
 CommitTokenGated_ERC721.decorators = [(Story) => wrapper(Story)];
 
-export const CommitTokenGated_ERC721_2: ComponentStory<typeof CommitWidget> =
-  Template.bind({});
+export const CommitTokenGated_ERC721_2 = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitTokenGated_ERC721_2.args = {
@@ -219,8 +216,7 @@ CommitTokenGated_ERC721_2.args = {
 
 CommitTokenGated_ERC721_2.decorators = [(Story) => wrapper(Story)];
 
-export const CommitTokenGated_ERC1155: ComponentStory<typeof CommitWidget> =
-  Template.bind({});
+export const CommitTokenGated_ERC1155 = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitTokenGated_ERC1155.args = {
@@ -257,9 +253,7 @@ CommitTokenGated_ERC1155.args = {
 
 CommitTokenGated_ERC1155.decorators = [(Story) => wrapper(Story)];
 
-export const CommitBundle: ComponentStory<typeof CommitWidget> = Template.bind(
-  {}
-);
+export const CommitBundle = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CommitBundle.args = {
