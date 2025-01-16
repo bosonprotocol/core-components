@@ -128,13 +128,10 @@ export default function InnerCommitDetailView(
   const [exchangeId, setExchangeId] = useState<string | undefined>(
     externalExchangeId
   );
-  const handleSetExchangeId = useCallback(
-    (newExchangeId: string) => {
-      setStatus("success");
-      setExchangeId(newExchangeId);
-    },
-    [externalExchangeId]
-  );
+  const handleSetExchangeId = useCallback((newExchangeId: string) => {
+    setStatus("success");
+    setExchangeId(newExchangeId);
+  }, []);
   useEffect(() => {
     if (externalExchangeId) {
       handleSetExchangeId(externalExchangeId);

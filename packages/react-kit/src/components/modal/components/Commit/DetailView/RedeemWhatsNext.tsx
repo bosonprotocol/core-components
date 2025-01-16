@@ -41,10 +41,26 @@ const DividerWrapper = styled.div`
 `;
 
 const Wrapper = styled(Grid)`
+  container-type: inline-size;
   background-color: ${getCssVar("--background-accent-color")};
   box-shadow: 0px 4.318px 40px 0px rgba(21, 30, 52, 0.1);
   padding: 1rem;
   margin: 1rem 0;
+`;
+const containerBreakpoint = "400px";
+const CtaGrid = styled(Grid)`
+  flex-direction: column;
+  gap: 1rem;
+  > * {
+    width: 100%;
+  }
+  @container (width > ${containerBreakpoint}) {
+    flex-direction: row;
+    gap: 2rem;
+    > * {
+      flex: 1 1 100%;
+    }
+  }
 `;
 
 const InfoWrapper = styled(Grid)`
@@ -97,7 +113,7 @@ export const RedeemWhatsNext = ({
       <Typography fontWeight={600}>What's next?</Typography>
       {exchange && (
         <>
-          <Grid gap="2rem">
+          <CtaGrid>
             {requestShipmentProps && (
               <Button
                 style={{ flex: "1 1 50%" }}
@@ -131,7 +147,7 @@ export const RedeemWhatsNext = ({
                 Trade Physical NFT
               </ThemedButton>
             </a>
-          </Grid>
+          </CtaGrid>
           <DividerWrapper>
             <hr />
           </DividerWrapper>
