@@ -21,9 +21,8 @@ import { FormModel } from "./RedeemFormModel";
 
 import { useAccount } from "../../../../hooks/connection/connection";
 import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
-import { colors, getCssVar } from "../../../../theme";
+import { getCssVar } from "../../../../theme";
 import { Loading } from "../../../ui/loading/Loading";
-import { useConfigContext } from "../../../config/ConfigContext";
 import { Typography } from "../../../ui/Typography";
 import {
   RedemptionContextProps,
@@ -225,9 +224,6 @@ function RedeemNonModal({
     previousStep: getPreviousSteps(widgetAction),
     currentStep: getInitialStep(widgetAction, showRedemptionOverview)
   });
-
-  const { config: coreConfig } = useConfigContext();
-  const defaultDisputeResolverId = coreConfig?.defaultDisputeResolverId;
 
   const setActiveStep = (newCurrentStep: ActiveStep) => {
     setStep((prev) => ({

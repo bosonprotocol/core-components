@@ -105,7 +105,7 @@ const getSellersByIds =
  * This hook returns the current seller or sellers in a list. It will return more than one
  * seller if you have more than one Lens profile and you had sent your Lens NFT that
  * identifies your profile to another user.
- * @param
+ * @param arg0 -
  * @returns
  */
 export function useCurrentSellers(

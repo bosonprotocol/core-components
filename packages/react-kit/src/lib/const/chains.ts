@@ -137,8 +137,8 @@ export type SupportedL2ChainId = (typeof L2_CHAIN_IDS)[number];
 
 /**
  * Get the priority of a chainId based on its relevance to the user.
- * @param {ChainId} chainId - The chainId to determine the priority for.
- * @returns {number} The priority of the chainId, the lower the priority, the earlier it should be displayed, with base of MAINNET=0.
+ * @param ChainId - chainId - The chainId to determine the priority for.
+ * @returns number The priority of the chainId, the lower the priority, the earlier it should be displayed, with base of MAINNET=0.
  */
 export function getChainPriority(chainId: number): number {
   switch (chainId) {

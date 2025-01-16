@@ -12,6 +12,7 @@ export const connectWallet = async (chainId?: string) => {
   try {
     const currentChainId = window.ethereum
       ? Number(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           await (window.ethereum as any)?.request({ method: "eth_chainId" })
         )
       : undefined;

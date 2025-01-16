@@ -109,10 +109,10 @@
   },
   "lint-staged": {
     "*.+(js|ts|tsx)": [
-      "eslint --fix ."
+      "eslint --fix packages/react-kit/. --ignore-path packages/react-kit/.eslintignore"
     ],
-    "*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write ."
+    "*.{js,jsx,ts,tsx,json,css,scss}": [
+      "prettier --write packages/react-kit/."
     ]
   },
   "eslintConfig": {

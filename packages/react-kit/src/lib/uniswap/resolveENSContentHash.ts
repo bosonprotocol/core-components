@@ -59,8 +59,8 @@ function resolverContract(
 
 /**
  * Fetches and decodes the result of an ENS contenthash lookup on mainnet to a URI
- * @param ensName to resolve
- * @param provider provider to use to fetch the data
+ * @param ensName - to resolve
+ * @param provider - provider to use to fetch the data
  */
 export default async function resolveENSContentHash(
   ensName: string,

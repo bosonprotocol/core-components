@@ -162,10 +162,10 @@ export function getChainInfo(
 /**
  * Overloaded method for returning ChainInfo given a chainID
  * Return type varies depending on input type:
- * number | undefined -> returns chaininfo | undefined
- * ChainId -> returns L1ChainInfo | L2ChainInfo
- * SupportedL1ChainId -> returns L1ChainInfo
- * SupportedL2ChainId -> returns L2ChainInfo
+ * number | undefined -\> returns chaininfo | undefined
+ * ChainId -\> returns L1ChainInfo | L2ChainInfo
+ * SupportedL1ChainId -\> returns L1ChainInfo
+ * SupportedL2ChainId -\> returns L2ChainInfo
  */
 export function getChainInfo(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

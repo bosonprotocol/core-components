@@ -7,7 +7,6 @@ import { zIndex } from "../../../../ui/zIndex";
 
 import frameImage from "../../../../../assets/frame.png";
 import { buttonText } from "../../../../ui/styles";
-import { Typography } from "../../../../ui/Typography";
 
 export const ChartWrapper = styled.div`
   canvas {

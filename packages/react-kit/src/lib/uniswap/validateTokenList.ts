@@ -59,7 +59,7 @@ async function validate(
 
 /**
  * Validates a token list.
- * @param json the TokenList to validate
+ * @param json - the TokenList to validate
  */
 export async function validateTokenList(json: TokenList): Promise<TokenList> {
   try {

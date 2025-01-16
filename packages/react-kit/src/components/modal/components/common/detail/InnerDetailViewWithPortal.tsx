@@ -4,7 +4,6 @@ import { Grid } from "../../../../ui/Grid";
 import { DetailViewCore } from "./DetailViewCore";
 import { DetailViewProps } from "./types";
 import { useIsBosonExclusive } from "../../../../../hooks/offer/useIsBosonExclusive";
-import { getCssVar } from "../../../../../theme";
 
 const BosonExclusive = styled.div<{
   $hasVariations: boolean;

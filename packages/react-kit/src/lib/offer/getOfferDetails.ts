@@ -97,7 +97,7 @@ export const getOfferDetails = (
       (productV1ItemMetadataEntity?.shipping || isProductV1(offer)
         ? (offer.metadata as ProductV1Sub).shipping
         : undefined
-      )?.supportedJurisdictions?.map((jurisdiction: any) => ({
+      )?.supportedJurisdictions?.map((jurisdiction) => ({
         name: jurisdiction.label,
         value: jurisdiction.deliveryTime
       })) || []

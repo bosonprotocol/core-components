@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useState
 } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { breakpoint } from "../../../../lib/ui/breakpoint";
 import { isTruthy } from "../../../../types/helpers";

@@ -38,3 +38,4 @@ scripts/abi-signatures.csv
 
 # temp directory
 /temp
+storybook-static

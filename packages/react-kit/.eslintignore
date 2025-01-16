@@ -27,3 +27,6 @@ storybook-static
 .env
 *storybook.log
 dist
+
+packages/react-kit/src/lib/uniswap/__generated__
+packages/react-kit/src/lib/lens/generated.ts
