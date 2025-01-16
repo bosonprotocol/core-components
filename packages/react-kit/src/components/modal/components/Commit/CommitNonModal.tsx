@@ -167,7 +167,7 @@ function CommitNonModal({
   if (!address && forcedAccount) {
     return (
       <>
-        <p>Please connect your wallet</p>
+        <p>Please connect your account</p>
         {forcedAccount && <p>(expected account: {forcedAccount})</p>}
       </>
     );

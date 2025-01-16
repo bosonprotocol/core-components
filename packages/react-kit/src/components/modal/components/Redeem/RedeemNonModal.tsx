@@ -296,7 +296,7 @@ function RedeemNonModal({
   if (!address) {
     return (
       <>
-        <p>Please connect your wallet</p>
+        <p>Please connect your account</p>
         {forcedAccount && <p>(expected account: {forcedAccount})</p>}
       </>
     );

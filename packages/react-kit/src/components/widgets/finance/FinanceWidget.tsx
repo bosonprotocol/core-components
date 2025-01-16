@@ -111,7 +111,7 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
     }
 
     if (!address) {
-      return <p style={{ textAlign: "center" }}>Please connect your wallet</p>;
+      return <p style={{ textAlign: "center" }}>Please connect your account</p>;
     }
 
     if (!sellerIdToUse) {

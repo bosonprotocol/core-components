@@ -346,7 +346,7 @@ export default function Finance({
                 tooltip={
                   address
                     ? "This action is restricted to only the assistant wallet"
-                    : "Please connect your wallet"
+                    : "Please connect your account"
                 }
                 onClick={() => {
                   showModal(
@@ -371,7 +371,7 @@ export default function Finance({
                 variant="accentInverted"
                 size="small"
                 disabled={!address}
-                tooltip={"Please connect your wallet"}
+                tooltip={"Please connect your account"}
                 onClick={() => {
                   showModal(
                     "FINANCE_DEPOSIT_MODAL",
@@ -452,7 +452,7 @@ export default function Finance({
   }, [pageCount, pageIndex]);
 
   if (!address) {
-    return <p style={{ textAlign: "center" }}>Please connect your wallet</p>;
+    return <p style={{ textAlign: "center" }}>Please connect your account</p>;
   }
 
   if (!isFundsInitialized || isLoadingSellerData || isLoadingExchangesTokens) {
