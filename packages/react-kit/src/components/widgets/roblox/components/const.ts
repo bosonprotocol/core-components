@@ -1,2 +1,2 @@
-export const productsPageSize = 1;
-export const purchasedProductsPageSize = 1;
+export const productsPageSize = 4;
+export const purchasedProductsPageSize = 4;
