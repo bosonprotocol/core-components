@@ -25,7 +25,7 @@ export default function RedeemFormView({
   showBosonLogoInFooter
 }: Props) {
   const { address } = useAccount();
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {

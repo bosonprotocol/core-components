@@ -50,7 +50,7 @@ export default function StepsOverview({
   onNextClick,
   showBosonLogoInFooter
 }: Props) {
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {

@@ -23,7 +23,7 @@ export function ContractualAgreementView({
   showBosonLogoInHeader
 }: Props) {
   const offerId = offer?.id;
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {

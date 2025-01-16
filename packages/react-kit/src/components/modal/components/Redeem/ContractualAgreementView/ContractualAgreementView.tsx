@@ -20,7 +20,7 @@ export function ContractualAgreementView({
 }: Props) {
   const offer = exchange?.offer;
   const offerId = offer?.id;
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {

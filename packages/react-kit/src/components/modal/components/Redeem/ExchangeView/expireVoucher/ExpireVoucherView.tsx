@@ -20,7 +20,7 @@ export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
   onSuccess,
   showBosonLogoInFooter
 }) => {
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {

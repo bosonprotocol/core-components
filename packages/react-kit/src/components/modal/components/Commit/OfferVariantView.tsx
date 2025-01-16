@@ -28,7 +28,7 @@ import { PhygitalLabel } from "../../../productCard/ProductCard";
 import { useIsPhygital } from "../../../../hooks/offer/useIsPhygital";
 import { getCssVar } from "../../../../theme";
 import { InnerCommitDetailViewProps } from "./DetailView/InnerCommitDetailView";
-import { ThemedBosonLogo } from "../common/ThemedBosonLogo";
+import { HeaderView } from "../../nonModal/headers/HeaderView";
 
 const ImageWrapper = styled.div`
   container-type: inline-size;
@@ -111,22 +111,28 @@ export function OfferVariantView({
     );
   }, [offerImg, images]);
 
-  const dispatch = useNonModalContext();
+  const { dispatch, showConnectButton } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
         onArrowLeftClick: null,
         headerComponent: (
-          <Grid gap="1rem" style={{ flex: "1 1" }} justifyContent="flex-end">
-            {showBosonLogoInHeader && <ThemedBosonLogo />}
-          </Grid>
+          <HeaderView
+            text={offer.metadata?.name || ""}
+            showBosonLogoInHeader={showBosonLogoInHeader}
+          />
         ),
         contentStyle: {
           background: getCssVar("--background-accent-color")
         }
       }
     });
-  }, [dispatch, showBosonLogoInHeader]);
+  }, [
+    dispatch,
+    offer.metadata?.name,
+    showBosonLogoInHeader,
+    showConnectButton
+  ]);
   const hasVariations = !!selectedVariant.variations?.length;
   const innerOnGetProviderProps = useCallback(
     (providerProps: DetailContextProps) => {
@@ -215,9 +221,6 @@ export function OfferVariantView({
           justifyContent="flex-start"
           alignItems="flex-start"
         >
-          <Typography tag="h3" marginTop="0" marginBottom="1rem">
-            {offer.metadata?.name || ""}
-          </Typography>
           {hasVariations && (
             <ResponsiveVariationSelects
               selectedVariant={selectedVariant}

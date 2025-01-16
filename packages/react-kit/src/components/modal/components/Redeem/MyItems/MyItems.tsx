@@ -42,7 +42,7 @@ export function MyItems({
     wallet: address
   });
   const buyerId = buyers?.[0]?.id;
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {

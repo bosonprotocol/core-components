@@ -27,6 +27,7 @@ import {
 import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
 import { Web3Provider, Web3ProviderProps } from "../../wallet2/web3Provider";
 import { BlockNumberProvider } from "../../../hooks/contracts/useBlockNumber";
+import { RobloxProvider } from "../../../hooks/roblox/context/RobloxProvider";
 
 export type RedemptionWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
@@ -58,29 +59,31 @@ export const RedemptionWidgetProviders: React.FC<RedemptionWidgetProvidersProps>
             {...props}
             infuraKey={infuraKey}
           >
-            <BlockNumberProvider>
-              <BosonProvider {...props}>
-                <GlobalStyle />
-                <SignerProvider
-                  parentOrigin={parentOrigin}
-                  withExternalSigner={props.withExternalSigner}
-                >
-                  <ChatProvider>
-                    <IpfsProvider {...props}>
-                      <ConvertionRateProvider>
-                        <ModalProvider>
-                          <RedemptionProvider {...props}>
-                            <RedemptionWidgetProvider {...props}>
-                              {children}
-                            </RedemptionWidgetProvider>
-                          </RedemptionProvider>
-                        </ModalProvider>
-                      </ConvertionRateProvider>
-                    </IpfsProvider>
-                  </ChatProvider>
-                </SignerProvider>
-              </BosonProvider>
-            </BlockNumberProvider>
+            <RobloxProvider>
+              <BlockNumberProvider>
+                <BosonProvider {...props}>
+                  <GlobalStyle />
+                  <SignerProvider
+                    parentOrigin={parentOrigin}
+                    withExternalSigner={props.withExternalSigner}
+                  >
+                    <ChatProvider>
+                      <IpfsProvider {...props}>
+                        <ConvertionRateProvider>
+                          <ModalProvider>
+                            <RedemptionProvider {...props}>
+                              <RedemptionWidgetProvider {...props}>
+                                {children}
+                              </RedemptionWidgetProvider>
+                            </RedemptionProvider>
+                          </ModalProvider>
+                        </ConvertionRateProvider>
+                      </IpfsProvider>
+                    </ChatProvider>
+                  </SignerProvider>
+                </BosonProvider>
+              </BlockNumberProvider>
+            </RobloxProvider>
           </ConfigProvider>
         </Web3Provider>
       </WithReduxProvider>

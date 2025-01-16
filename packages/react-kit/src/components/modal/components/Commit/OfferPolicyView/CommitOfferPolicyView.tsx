@@ -27,25 +27,36 @@ export function CommitOfferPolicyView({
   showBosonLogoInHeader
 }: Props) {
   const offerName = offer?.metadata?.name || "";
-  const dispatch = useNonModalContext();
+  const { dispatch, showConnectButton } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
         onArrowLeftClick: onBackClick,
         headerComponent: (
-          <Grid gap="1rem" style={{ flex: "1" }} justifyContent="space-between">
-            <Typography tag="h3" style={{ flex: "1 1" }} margin={0}>
-              {offerName}
-            </Typography>
-            {showBosonLogoInHeader && <ThemedBosonLogo />}
-          </Grid>
+          <>
+            <Typography tag="h3">{offer?.metadata?.name || ""}</Typography>
+            <Grid
+              gap="1rem"
+              style={{ flex: "1 1" }}
+              justifyContent={showConnectButton ? "center" : "flex-end"}
+            >
+              {showBosonLogoInHeader && <ThemedBosonLogo />}
+            </Grid>
+          </>
         ),
         contentStyle: {
           background: getCssVar("--background-accent-color")
         }
       }
     });
-  }, [dispatch, offerName, onBackClick, showBosonLogoInHeader]);
+  }, [
+    dispatch,
+    offer?.metadata?.name,
+    offerName,
+    onBackClick,
+    showBosonLogoInHeader,
+    showConnectButton
+  ]);
   return (
     <>
       {offer ? (

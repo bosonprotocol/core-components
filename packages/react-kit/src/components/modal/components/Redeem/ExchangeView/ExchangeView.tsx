@@ -122,7 +122,7 @@ export function ExchangeView({
     );
   }, [offerImg, images]);
 
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {

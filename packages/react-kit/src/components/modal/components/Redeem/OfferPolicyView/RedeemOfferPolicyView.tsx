@@ -26,7 +26,7 @@ export function RedeemOfferPolicyView({
   showBosonLogoInFooter
 }: Props) {
   const offerName = offer?.metadata?.name || "";
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {

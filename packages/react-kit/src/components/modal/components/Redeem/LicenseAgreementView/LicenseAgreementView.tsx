@@ -18,7 +18,7 @@ export function LicenseAgreementView({
   offer,
   showBosonLogoInFooter
 }: Props) {
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {

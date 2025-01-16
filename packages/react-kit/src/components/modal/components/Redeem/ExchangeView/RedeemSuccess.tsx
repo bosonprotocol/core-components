@@ -57,7 +57,7 @@ export function RedeemSuccess({
   const offer = exchange?.offer;
 
   const offerDetails = offer ? getOfferDetails(offer) : undefined;
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {

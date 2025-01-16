@@ -26,7 +26,7 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
   showBosonLogoInFooter
 }) => {
   const { address } = useAccount();
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   const { widgetAction } = useRedemptionWidgetContext();
   const isCancelModeOnly = widgetAction === RedemptionWidgetAction.CANCEL_FORM;
   useEffect(() => {

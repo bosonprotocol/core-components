@@ -170,9 +170,9 @@ const reducer = (state: State, action: Action): State => {
   };
 };
 
-const NonModalContext = createContext<React.Dispatch<Action> | undefined>(
-  undefined
-);
+const NonModalContext = createContext<
+  { dispatch: React.Dispatch<Action>; showConnectButton: boolean } | undefined
+>(undefined);
 export const useNonModalContext = () => {
   const context = useContext(NonModalContext);
   if (!context) {
@@ -256,27 +256,27 @@ export default function NonModal({
   }, [lookAndFeel]);
   return (
     <Container>
-      <Wrapper $size={size} $maxWidths={maxWidths}>
-        <Header
-          HeaderComponent={HeaderComponent}
-          withLeftArrowButton={!!withLeftArrowButton}
-          closable={closable}
-          handleOnCloseClick={handleOnCloseClick}
-          handleOnArrowLeftClick={handleOnArrowLeftClick}
-          showConnectButton={showConnectButton}
-        />
+      <NonModalContext.Provider value={{ dispatch, showConnectButton }}>
+        <Wrapper $size={size} $maxWidths={maxWidths}>
+          <Header
+            HeaderComponent={HeaderComponent}
+            withLeftArrowButton={
+              !!withLeftArrowButton || !!onArrowLeftClickFromReducer
+            }
+            closable={closable}
+            handleOnCloseClick={handleOnCloseClick}
+            handleOnArrowLeftClick={handleOnArrowLeftClick}
+            showConnectButton={showConnectButton}
+          />
 
-        <Content style={contentStyle}>
-          <NonModalContext.Provider value={dispatch}>
-            {children}
-          </NonModalContext.Provider>
-        </Content>
-        {FooterComponent ? (
-          <FooterWrapper>{FooterComponent}</FooterWrapper>
-        ) : (
-          <div style={{ width: "947px", maxWidth: "100vw" }} />
-        )}
-      </Wrapper>
+          <Content style={contentStyle}>{children}</Content>
+          {FooterComponent ? (
+            <FooterWrapper>{FooterComponent}</FooterWrapper>
+          ) : (
+            <div style={{ width: "947px", maxWidth: "100vw" }} />
+          )}
+        </Wrapper>
+      </NonModalContext.Provider>
     </Container>
   );
 }

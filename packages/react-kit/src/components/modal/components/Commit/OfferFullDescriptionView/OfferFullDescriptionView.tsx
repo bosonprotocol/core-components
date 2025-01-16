@@ -4,11 +4,11 @@ import { Offer } from "../../../../../types/offer";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { OfferFullDescription } from "../../common/OfferFullDescription/OfferFullDescription";
 import { Grid } from "../../../../ui/Grid";
-import { ArrowLeft } from "phosphor-react";
 import { Typography } from "../../../../ui/Typography";
 import { OnClickBuyOrSwapHandler } from "../../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
 import { ThemedBosonLogo } from "../../common/ThemedBosonLogo";
+import { HeaderView } from "../../../nonModal/headers/HeaderView";
 
 type Props = OnClickBuyOrSwapHandler & {
   onBackClick: () => void;
@@ -23,20 +23,16 @@ export function OfferFullDescriptionView({
   onClickBuyOrSwap,
   showBosonLogoInHeader
 }: Props) {
-  const dispatch = useNonModalContext();
+  const { dispatch, showConnectButton } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
         onArrowLeftClick: onBackClick,
         headerComponent: (
-          <Grid
-            gap="1rem"
-            style={{ flex: "1 1" }}
-            justifyContent="space-between"
-          >
-            <Typography tag="h3">{offer.metadata?.name || ""}</Typography>
-            {showBosonLogoInHeader && <ThemedBosonLogo />}
-          </Grid>
+          <HeaderView
+            text={offer.metadata?.name || ""}
+            showBosonLogoInHeader={showBosonLogoInHeader}
+          />
         ),
         contentStyle: {
           background: getCssVar("--background-accent-color"),
@@ -44,7 +40,13 @@ export function OfferFullDescriptionView({
         }
       }
     });
-  }, [dispatch, offer.metadata?.name, onBackClick, showBosonLogoInHeader]);
+  }, [
+    dispatch,
+    offer.metadata?.name,
+    onBackClick,
+    showBosonLogoInHeader,
+    showConnectButton
+  ]);
   return (
     <OfferFullDescription
       includeOverviewTab

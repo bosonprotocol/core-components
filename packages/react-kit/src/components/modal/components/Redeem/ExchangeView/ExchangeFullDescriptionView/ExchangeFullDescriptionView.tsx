@@ -25,7 +25,7 @@ export function ExchangeFullDescriptionView({
   onClickBuyOrSwap,
   showBosonLogoInFooter
 }: Props) {
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {

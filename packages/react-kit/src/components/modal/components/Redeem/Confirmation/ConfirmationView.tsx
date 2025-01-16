@@ -31,7 +31,7 @@ export function ConfirmationView({
   const sellerAddress = exchange?.seller?.assistant
     ? getAddress(exchange.seller.assistant)
     : "";
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   const { address } = useAccount();
   useEffect(() => {
     dispatch({
