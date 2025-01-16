@@ -3,11 +3,8 @@ import { getCssVar } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { OfferFullDescription } from "../../common/OfferFullDescription/OfferFullDescription";
-import { Grid } from "../../../../ui/Grid";
-import { Typography } from "../../../../ui/Typography";
 import { OnClickBuyOrSwapHandler } from "../../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
-import { ThemedBosonLogo } from "../../common/ThemedBosonLogo";
 import { HeaderView } from "../../../nonModal/headers/HeaderView";
 
 type Props = OnClickBuyOrSwapHandler & {

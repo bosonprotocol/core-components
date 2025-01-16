@@ -1,15 +1,11 @@
 import React, { useEffect } from "react";
-import { Grid } from "../../../../ui/Grid";
-import { Typography } from "../../../../ui/Typography";
-import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import OfferPolicyDetails, {
   OfferPolicyDetailsProps
 } from "../../../../offerPolicy/OfferPolicyDetails";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { getCssVar } from "../../../../../theme";
-import { BosonLogo } from "../../common/BosonLogo";
-import { ThemedBosonLogo } from "../../common/ThemedBosonLogo";
+import { HeaderView } from "../../../nonModal/headers/HeaderView";
 
 interface Props {
   onBackClick: () => void;
@@ -33,16 +29,10 @@ export function CommitOfferPolicyView({
       payload: {
         onArrowLeftClick: onBackClick,
         headerComponent: (
-          <>
-            <Typography tag="h3">{offer?.metadata?.name || ""}</Typography>
-            <Grid
-              gap="1rem"
-              style={{ flex: "1 1" }}
-              justifyContent={showConnectButton ? "center" : "flex-end"}
-            >
-              {showBosonLogoInHeader && <ThemedBosonLogo />}
-            </Grid>
-          </>
+          <HeaderView
+            text={offer?.metadata?.name || ""}
+            showBosonLogoInHeader={showBosonLogoInHeader}
+          />
         ),
         contentStyle: {
           background: getCssVar("--background-accent-color")
