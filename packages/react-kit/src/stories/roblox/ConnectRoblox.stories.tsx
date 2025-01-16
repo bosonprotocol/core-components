@@ -49,18 +49,8 @@ export default {
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
-  args: {
-    // onClick: fn()
-  },
-  argTypes: {
-    // disabled: { control: "boolean" },
-    // size: {
-    //   control: "select",
-    //   options: ["small", "regular", "large"]
-    // },
-    // children: { control: "text" },
-    // tooltip: { control: "text" }
-  },
+  args: {},
+  argTypes: {},
   decorators: [
     (Story) => {
       return (

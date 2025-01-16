@@ -31,6 +31,7 @@ import {
   useBosonTheme
 } from "../BosonThemeProvider";
 import { GlobalStyledThemed } from "../../styles/GlobalStyledThemed";
+import { RobloxProvider } from "../../../hooks/roblox/context/RobloxProvider";
 
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
@@ -92,21 +93,23 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
                 withCustomReduxContext={withCustomReduxContext}
                 {...props}
               >
-                <BlockNumberProvider>
-                  <BosonProvider {...props}>
-                    <WithUpdaters>
-                      <ChatProvider>
-                        <IpfsProvider {...props}>
-                          <ConvertionRateProvider>
-                            <RedemptionProvider {...props}>
-                              <ModalProvider>{children}</ModalProvider>
-                            </RedemptionProvider>
-                          </ConvertionRateProvider>
-                        </IpfsProvider>
-                      </ChatProvider>
-                    </WithUpdaters>
-                  </BosonProvider>
-                </BlockNumberProvider>
+                <RobloxProvider>
+                  <BlockNumberProvider>
+                    <BosonProvider {...props}>
+                      <WithUpdaters>
+                        <ChatProvider>
+                          <IpfsProvider {...props}>
+                            <ConvertionRateProvider>
+                              <RedemptionProvider {...props}>
+                                <ModalProvider>{children}</ModalProvider>
+                              </RedemptionProvider>
+                            </ConvertionRateProvider>
+                          </IpfsProvider>
+                        </ChatProvider>
+                      </WithUpdaters>
+                    </BosonProvider>
+                  </BlockNumberProvider>
+                </RobloxProvider>
               </ConfigProvider>
             </Web3Provider>
           </WithReduxProvider>
