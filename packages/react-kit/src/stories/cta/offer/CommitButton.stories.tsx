@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 import { CommitButton } from "../../../components/cta/offer/CommitButton";
 
@@ -17,11 +17,9 @@ export default {
       }
     }
   }
-} as ComponentMeta<typeof CommitButton>;
+} as Meta<typeof CommitButton>;
 
-const Template: ComponentStory<typeof CommitButton> = (
-  args: Parameters<typeof CommitButton>[0]
-) => {
+const Template = (args: Parameters<typeof CommitButton>[0]) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const provider = hooks.useProvider();
 
@@ -36,11 +34,9 @@ const Template: ComponentStory<typeof CommitButton> = (
   );
 };
 
-export const Simple: ComponentStory<typeof CommitButton> = Template.bind({});
-export const WithStep: ComponentStory<typeof CommitButton> = Template.bind({});
-export const WithMetaTx: ComponentStory<typeof CommitButton> = Template.bind(
-  {}
-);
+export const Simple = Template.bind({});
+export const WithStep = Template.bind({});
+export const WithMetaTx = Template.bind({});
 
 Simple.args = {
   coreSdkConfig: {
