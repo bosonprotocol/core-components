@@ -16,23 +16,13 @@ import { Bundle, isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
 import { ProductType } from "../../../productCard/const";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
-import {
-  BosonRobloxProductWithAvailability,
-  GetProductsResponse
-} from "@bosonprotocol/roblox-sdk";
+import { BosonRobloxProductWithAvailability } from "@bosonprotocol/roblox-sdk";
 import { Typography } from "../../../ui/Typography";
 import { isTruthy } from "../../../../types/helpers";
 import { LoginWithRoblox } from "./LoginWithRoblox";
 import { ThemedCommitButtonView } from "../../../buttons/commit/ThemedCommitButtonView";
 import { isMobile } from "../../../../lib/userAgent/userAgent";
-import {
-  FetchNextPageOptions,
-  InfiniteData,
-  InfiniteQueryObserverResult,
-  QueryObserverResult,
-  RefetchOptions,
-  RefetchQueryFilters
-} from "react-query";
+
 import InfiniteScroll from "react-infinite-scroll-component";
 const Wrapper = styled.div`
   width: 100%;
@@ -64,12 +54,8 @@ export type RobloxProductsGridProps = {
   handleSetProductUuid?: (uuid: string) => void;
   handleSetBundleUuid?: (uuid: string) => void;
   isLoggedInWithRoblox: boolean;
-  fetchNextPage: (
-    options?: FetchNextPageOptions
-  ) => Promise<InfiniteQueryObserverResult<GetProductsResponse, unknown>>;
-  refetch: <TPageData>(
-    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
-  ) => Promise<QueryObserverResult<InfiniteData<GetProductsResponse>, unknown>>;
+  fetchNextPage: () => Promise<unknown> | unknown;
+  refetch: () => Promise<unknown> | unknown;
   hasNextPage: boolean | undefined;
 };
 export const RobloxProductsGrid = ({

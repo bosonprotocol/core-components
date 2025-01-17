@@ -28,7 +28,7 @@ export const useRobloxExchanges = ({
     queryKey,
     async ({ pageParam = 0 }) => {
       const response = await fetch(
-        `${backendOrigin}/exchanges?bosonSellerId=${sellerId}&userWallet=${userWallet}&first=${pageSize}&skip=${pageParam}`
+        `${backendOrigin}/exchanges?${new URLSearchParams({ bosonSellerId: sellerId, first: pageSize.toString(), skip: (pageParam * pageSize).toString(), userWallet }).toString()}`
       );
       if (!response.ok) {
         throw new Error(
@@ -40,8 +40,8 @@ export const useRobloxExchanges = ({
     },
     {
       ...options,
-      getNextPageParam: (lastPage, pages) => {
-        const result = lastPage.length === pageSize ? pages.length : undefined;
+      getNextPageParam: ({ hasMore }, pages) => {
+        const result = hasMore ? pages.length : undefined;
         return result;
       }
     }

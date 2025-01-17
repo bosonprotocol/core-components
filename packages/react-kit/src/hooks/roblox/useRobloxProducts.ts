@@ -1,16 +1,21 @@
 import { useInfiniteQuery, useQueryClient } from "react-query";
-import { GetProductsResponse } from "@bosonprotocol/roblox-sdk";
+import {
+  GetProductsResponse,
+  ProductAvailabilityStatus
+} from "@bosonprotocol/roblox-sdk";
 import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
 import { mutationKeys } from "./mutationKeys";
 
 type UseRobloxProductsProps = {
   sellerId: string;
   pageSize: number;
+  statuses: ProductAvailabilityStatus["status"][]; //only=AVAILABLE,POTENTIALLY
   options: { enabled?: boolean };
 };
 export const useRobloxProducts = ({
   sellerId,
   pageSize,
+  statuses,
   options = {}
 }: UseRobloxProductsProps) => {
   const queryClient = useQueryClient();
@@ -18,13 +23,14 @@ export const useRobloxProducts = ({
   const queryKey = mutationKeys.getProducts({
     backendOrigin,
     sellerId,
-    pageSize
+    pageSize,
+    statuses
   });
   return useInfiniteQuery(
     queryKey,
     async ({ pageParam = 0 }) => {
       const response = await fetch(
-        `${backendOrigin}/products?bosonSellerId=${sellerId}&first=${pageSize}&skip=${pageParam}`,
+        `${backendOrigin}/products?${new URLSearchParams({ bosonSellerId: sellerId, first: pageSize.toString(), skip: (pageParam * pageSize).toString(), only: statuses.join(",") }).toString()}`,
         { credentials: "include" } // required to include Cookie in the request
       );
       if (!response.ok) {
@@ -33,7 +39,11 @@ export const useRobloxProducts = ({
         );
       }
       const data = (await response.json()) as GetProductsResponse;
-      if (data.some((product) => product.availability.status === "PENDING")) {
+      if (
+        data.products.some(
+          (product) => product.availability.status === "PENDING"
+        )
+      ) {
         console.log(
           "Some products are in PENDING state. Refresh products in a short while..."
         );
@@ -44,8 +54,8 @@ export const useRobloxProducts = ({
     },
     {
       ...options,
-      getNextPageParam: (lastPage, pages) => {
-        const result = lastPage.length === pageSize ? pages.length : undefined;
+      getNextPageParam: ({ hasMore }, pages) => {
+        const result = hasMore ? pages.length : undefined;
         return result;
       }
     }

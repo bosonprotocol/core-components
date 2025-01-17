@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Typography } from "../../../ui/Typography";
 import { Grid } from "../../../ui/Grid";
 import { CommitModalWithOffer } from "../../commit/CommitModalWithOffer";
@@ -8,10 +8,7 @@ import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";
 import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges";
 import { useAccount } from "../../../../hooks";
 import { RobloxExchangesGrid } from "./RobloxExchangesGrid";
-import {
-  BosonRobloxExchange,
-  ProductAvailabilityStatus
-} from "@bosonprotocol/roblox-sdk";
+import { BosonRobloxExchange } from "@bosonprotocol/roblox-sdk";
 import { CancelExchange } from "../../../modal/components/Redeem/ExchangeView/cancellation/CancelExchange";
 import NonModal from "../../../modal/nonModal/NonModal";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
@@ -62,44 +59,59 @@ export const ProductsRoblox = ({
     }
   });
   const {
-    data: robloxProductsInPage,
-    isLoading,
-    fetchNextPage: fetchNextPageProducts,
-    refetch: refetchProducts,
-    hasNextPage: hasNextPageProducts
+    data: availableRobloxProductsInPage,
+    isLoading: availableProductLoading,
+    fetchNextPage: fetchNextPageAvailableProducts,
+    refetch: refetchAvailableProducts,
+    hasNextPage: hasNextPageAvailableProducts
   } = useRobloxProducts({
     sellerId,
     pageSize: productsPageSize,
+    statuses: ["AVAILABLE", "POTENTIALLY", "PENDING"],
     options: { enabled: true }
   });
-  const robloxProducts = useMemo(() => {
-    return robloxProductsInPage?.pages?.flatMap((page) => page) || [];
-  }, [robloxProductsInPage]);
-  const robloxExclusives = robloxProducts;
-  const robloxExclusivesLoading = isLoading;
-  const availableProducts = robloxProducts?.filter((robloxProduct) =>
-    (
-      [
-        "AVAILABLE",
-        "POTENTIALLY",
-        "PENDING"
-      ] satisfies ProductAvailabilityStatus["status"][]
-    )
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .includes(robloxProduct.availability.status as any)
-  );
-  const unavailableProducts = robloxProducts?.filter((robloxProduct) =>
-    (
-      [
-        "NOT_AVAILABLE",
-        "UNKNOWN"
-      ] satisfies ProductAvailabilityStatus["status"][]
-    )
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .includes(robloxProduct.availability.status as any)
-  );
-  const unavailableProductsLoading = isLoading;
-  const availableProductLoading = isLoading;
+  const availableProducts = useMemo(() => {
+    return (
+      availableRobloxProductsInPage?.pages?.flatMap((page) => page.products) ||
+      []
+    );
+  }, [availableRobloxProductsInPage]);
+  const {
+    data: robloxUnavailableProductsInPage,
+    isLoading: unavailableProductsLoading,
+    fetchNextPage: fetchNextPageUnavailableProducts,
+    refetch: refetchUnavailableProducts,
+    hasNextPage: hasNextPageUnavailableProducts
+  } = useRobloxProducts({
+    sellerId,
+    pageSize: productsPageSize,
+    statuses: ["NOT_AVAILABLE", "UNKNOWN"],
+    options: { enabled: true }
+  });
+  const robloxUnavailableProducts = useMemo(() => {
+    return (
+      robloxUnavailableProductsInPage?.pages?.flatMap(
+        (page) => page.products
+      ) || []
+    );
+  }, [robloxUnavailableProductsInPage]);
+
+  const robloxExclusives = useMemo(() => {
+    return robloxUnavailableProducts.concat(availableProducts);
+  }, [robloxUnavailableProducts]);
+  const unavailableProducts = robloxUnavailableProducts;
+  const robloxExclusivesLoading =
+    unavailableProductsLoading || availableProductLoading;
+  const hasNextPageProducts =
+    hasNextPageAvailableProducts || hasNextPageUnavailableProducts;
+  const refetchProducts = useCallback(() => {
+    refetchAvailableProducts();
+    refetchUnavailableProducts();
+  }, []);
+  const fetchNextPageProducts = useCallback(() => {
+    fetchNextPageAvailableProducts();
+    fetchNextPageUnavailableProducts();
+  }, []);
 
   const {
     data: purchasedProductsInPage,
@@ -114,7 +126,9 @@ export const ProductsRoblox = ({
     options: { enabled: !!address }
   });
   const purchasedProducts = useMemo(() => {
-    return purchasedProductsInPage?.pages?.flatMap((page) => page) || [];
+    return (
+      purchasedProductsInPage?.pages?.flatMap((page) => page.exchanges) || []
+    );
   }, [purchasedProductsInPage]);
   const [exchange, setExchange] = useState<subgraph.ExchangeFieldsFragment>();
   const [productUuid, setProductUuid] = useState<string>("");
@@ -258,9 +272,9 @@ export const ProductsRoblox = ({
                 inventory you have
               </Typography>
               <RobloxProductsGrid
-                fetchNextPage={fetchNextPageProducts}
-                hasNextPage={hasNextPageProducts}
-                refetch={refetchProducts}
+                fetchNextPage={fetchNextPageAvailableProducts}
+                hasNextPage={hasNextPageAvailableProducts}
+                refetch={refetchAvailableProducts}
                 itemsPerRow={itemsPerRow}
                 products={availableProducts}
                 handleSetProductUuid={(uuid) =>
@@ -285,9 +299,9 @@ export const ProductsRoblox = ({
                 Roblox inventory item.
               </Typography>
               <RobloxProductsGrid
-                fetchNextPage={fetchNextPageProducts}
-                hasNextPage={hasNextPageProducts}
-                refetch={refetchProducts}
+                fetchNextPage={fetchNextPageUnavailableProducts}
+                hasNextPage={hasNextPageUnavailableProducts}
+                refetch={refetchUnavailableProducts}
                 itemsPerRow={itemsPerRow}
                 products={unavailableProducts}
                 handleSetProductUuid={(uuid) =>

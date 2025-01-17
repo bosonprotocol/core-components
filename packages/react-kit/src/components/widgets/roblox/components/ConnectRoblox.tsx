@@ -209,6 +209,7 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
     const { refetch: loadBosonProducts } = useRobloxProducts({
       sellerId,
       pageSize: productsPageSize,
+      statuses: [],
       options: { enabled: false }
     });
     const { refetch: loadBosonExchanges } = useRobloxExchanges({
@@ -218,7 +219,7 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
       options: { enabled: false }
     });
     const disconnectWallet = useCallback(() => {
-      console.trace("disconnectWallet()");
+      console.log("disconnectWallet()");
       // setIsSigning(false);
       // setIsWalletAuthenticated(false);
       // const domain = backendOrigin

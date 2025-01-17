@@ -47,7 +47,8 @@ export const useIsRobloxLoggedIn = ({
             backendOrigin,
             sellerId,
             pageSize: productsPageSize
-          })
+          }),
+          { exact: false }
         );
       }
     }

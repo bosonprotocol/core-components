@@ -2,19 +2,21 @@
 interface GetMutationKey
   // This any will be infered, it is more like generic, will be never seen as any in use
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  extends Record<string, (...args: any[]) => readonly [string, ...string[]]> {}
+  extends Record<string, (...args: any[]) => readonly [string, ...unknown[]]> {}
 
 export const mutationKeys = {
   getProducts: ({
     backendOrigin,
     sellerId,
-    pageSize
+    pageSize,
+    statuses
   }: {
     backendOrigin: string;
     sellerId: string;
     pageSize: number;
+    statuses?: string[];
   }) =>
-    ["roblox-products", backendOrigin, sellerId, pageSize.toString()] as const,
+    ["roblox-products", backendOrigin, sellerId, pageSize, statuses] as const,
   getExchanges: ({
     backendOrigin,
     sellerId,
@@ -31,7 +33,7 @@ export const mutationKeys = {
       backendOrigin,
       sellerId,
       userWallet,
-      pageSize.toString()
+      pageSize
     ] as const,
   getWalletAuth: ({ backendOrigin }: { backendOrigin: string }) =>
     ["get-wallet-auth", backendOrigin] as const
