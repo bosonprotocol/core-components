@@ -71,6 +71,7 @@ export const Base = {
     ...BASE_ARGS,
     sellerId: "4",
     step3: {
+      titleForMobile: "Exclusives",
       buttonText: "Step 3 button text",
       callback: () => {
         console.log("Step 3 button clicked");

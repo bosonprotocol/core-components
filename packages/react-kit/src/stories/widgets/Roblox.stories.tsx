@@ -72,6 +72,7 @@ export const Base = {
     },
     connectProps: {
       step3: {
+        titleForMobile: "Exclusives",
         title: "Get access to exclusives!",
         subtitle: `Now you can purchase GYMSHARK exclusives that are available to you.`,
         buttonText: "Sign up",
