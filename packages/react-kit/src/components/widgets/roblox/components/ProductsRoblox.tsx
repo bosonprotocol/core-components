@@ -18,7 +18,7 @@ import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { maxWidthStepper } from "./styles";
 import { ThemedBosonLogo } from "../../../modal/components/common/ThemedBosonLogo";
-import { productsPageSize, purchasedProductsPageSize } from "./const";
+import { productsPageSize, purchasedProductsPageSize, statuses } from "./const";
 import { OfferVariantViewProps } from "../../../modal/components/Commit/OfferVariantView";
 
 const Wrapper = styled(Grid).attrs({
@@ -67,7 +67,7 @@ export const ProductsRoblox = ({
   } = useRobloxProducts({
     sellerId,
     pageSize: productsPageSize,
-    statuses: ["AVAILABLE", "POTENTIALLY", "PENDING"],
+    statuses: statuses.availableProducts,
     options: { enabled: true }
   });
   const availableProducts = useMemo(() => {
@@ -85,7 +85,7 @@ export const ProductsRoblox = ({
   } = useRobloxProducts({
     sellerId,
     pageSize: productsPageSize,
-    statuses: ["NOT_AVAILABLE", "UNKNOWN"],
+    statuses: statuses.unavailableProducts,
     options: { enabled: true }
   });
   const robloxUnavailableProducts = useMemo(() => {

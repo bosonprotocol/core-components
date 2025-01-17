@@ -9,7 +9,9 @@ import { mutationKeys } from "./mutationKeys";
 type UseRobloxProductsProps = {
   sellerId: string;
   pageSize: number;
-  statuses: ProductAvailabilityStatus["status"][]; //only=AVAILABLE,POTENTIALLY
+  statuses:
+    | ProductAvailabilityStatus["status"][]
+    | Readonly<ProductAvailabilityStatus["status"][]>;
   options: { enabled?: boolean };
 };
 export const useRobloxProducts = ({

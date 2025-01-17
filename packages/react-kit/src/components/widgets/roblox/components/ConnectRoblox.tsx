@@ -30,7 +30,7 @@ import { LoginWithRoblox } from "./LoginWithRoblox";
 import { getCssVar } from "../../../../theme";
 import ThemedButton from "../../../ui/ThemedButton";
 import { maxWidthStepper } from "./styles";
-import { productsPageSize, purchasedProductsPageSize } from "./const";
+import { productsPageSize, purchasedProductsPageSize, statuses } from "./const";
 
 const Wrapper = styled(Grid)`
   container-type: inline-size;
@@ -206,10 +206,16 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
       [ROBLOX_OAUTH_COOKIE_NAME, WEB3AUTH_COOKIE_NAME],
       { doNotUpdate: true }
     )[2];
-    const { refetch: loadBosonProducts } = useRobloxProducts({
+    const { refetch: loadAvailableBosonProducts } = useRobloxProducts({
       sellerId,
       pageSize: productsPageSize,
-      statuses: [],
+      statuses: statuses.availableProducts,
+      options: { enabled: false }
+    });
+    const { refetch: loadUnavailableBosonProducts } = useRobloxProducts({
+      sellerId,
+      pageSize: productsPageSize,
+      statuses: statuses.unavailableProducts,
       options: { enabled: false }
     });
     const { refetch: loadBosonExchanges } = useRobloxExchanges({
@@ -229,13 +235,15 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
       const sameSite = isHttps ? "none" : undefined;
       removeCookie?.(WEB3AUTH_COOKIE_NAME, { path: "/", sameSite }); // TODO: no domain?
       disconnect({ isUserDisconnecting: false });
-      loadBosonProducts(); // Refresh products
+      loadAvailableBosonProducts(); // Refresh products
+      loadUnavailableBosonProducts(); // Refresh products
       loadBosonExchanges(); // Refresh exchanges
     }, [
       removeCookie,
       disconnect,
       backendOrigin,
-      loadBosonProducts,
+      loadAvailableBosonProducts,
+      loadUnavailableBosonProducts,
       loadBosonExchanges
     ]);
     const { data: robloxLoggedInData } = useIsRobloxLoggedIn({

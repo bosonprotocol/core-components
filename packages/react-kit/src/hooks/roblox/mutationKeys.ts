@@ -14,7 +14,7 @@ export const mutationKeys = {
     backendOrigin: string;
     sellerId: string;
     pageSize: number;
-    statuses?: string[];
+    statuses?: string[] | Readonly<string[]>;
   }) =>
     ["roblox-products", backendOrigin, sellerId, pageSize, statuses] as const,
   getExchanges: ({
