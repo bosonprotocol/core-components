@@ -407,8 +407,11 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
     useEffect(() => {
       if (!robloxLoggedInData?.isLoggedIn) {
         setActiveStep(0);
+      } else if (!address) {
+        setActiveStep(1);
       }
-    }, [robloxLoggedInData?.isLoggedIn]);
+    }, [robloxLoggedInData?.isLoggedIn, address]);
+
     useQuery(
       [robloxLoggedInData, address, isAuthChecked],
       () => {
