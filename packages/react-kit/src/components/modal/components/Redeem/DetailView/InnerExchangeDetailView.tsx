@@ -11,7 +11,7 @@ import type { ExtendedExchange } from "../../../../../hooks/useExchanges";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
 import { titleCase } from "../../../../../lib/string/formatText";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import { theme } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import { Grid } from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";
@@ -24,7 +24,6 @@ import {
 } from "../../common/detail/Detail.style";
 import { InnerDetailViewWithPortal } from "../../common/detail/InnerDetailViewWithPortal";
 import { DetailViewProps } from "../../common/detail/types";
-const colors = theme.colors.light;
 
 const RedeemButton = styled(Button)`
   padding: 1rem;
@@ -144,6 +143,7 @@ export default function InnerExchangeDetailView(
                       display: "block",
                       marginTop: "0.25rem"
                     }}
+                    color={getCssVar("--sub-text-color")}
                   >
                     By proceeding to Redeem, I agree to the{" "}
                     <span
@@ -191,12 +191,12 @@ export default function InnerExchangeDetailView(
           >
             <Typography
               tag="p"
-              style={{ color: colors.darkGrey, margin: 0 }}
+              style={{ color: colors.greyDark, margin: 0 }}
               fontSize="0.75rem"
             >
               You can withdraw your funds here
             </Typography>
-            <ArrowRight size={18} color={colors.darkGrey} />
+            <ArrowRight size={18} color={colors.greyDark} />
           </Grid>
         ) : isToRedeem ? (
           <RedeemLeftButton style={{ paddingTop: 0, paddingBottom: 0 }}>

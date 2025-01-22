@@ -52,10 +52,9 @@ export default {
                 <Story
                   args={{
                     ...args,
-                    saveButtonTheme: bosonButtonThemes({
-                      withBosonStyle: false
+                    saveButtonTheme:
                       // @ts-expect-error saveButtonThemeKey is not a valid prop name of Upload but saveButtonTheme is so we get the theme from the key
-                    })[args.saveButtonThemeKey]
+                      bosonButtonThemes()[args.saveButtonThemeKey]
                   }}
                 />
               </Formik>

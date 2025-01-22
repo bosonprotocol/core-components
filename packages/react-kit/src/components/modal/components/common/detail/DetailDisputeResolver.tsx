@@ -2,6 +2,7 @@ import React from "react";
 import { Typography } from "../../../../ui/Typography";
 import ReactComponent from "../../../../../assets/redeemeum.svg";
 import { SvgImage } from "../../../../ui/SvgImage";
+import { getCssVar } from "../../../../../theme";
 
 export const DetailDisputeResolver = {
   name: "Dispute resolver",
@@ -17,6 +18,13 @@ export const DetailDisputeResolver = {
     </>
   ),
   value: () => {
-    return <SvgImage src={ReactComponent} width="100" height="18" />;
+    return (
+      <SvgImage
+        src={ReactComponent}
+        width={100}
+        height={18}
+        color={getCssVar("--sub-text-color")}
+      />
+    );
   }
 };

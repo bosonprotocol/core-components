@@ -23,7 +23,6 @@ export type Store = {
   modalMaxWidth?: Partial<
     Record<ModalSize, React.CSSProperties["maxWidth"]>
   > | null;
-  theme?: "light" | "dark";
 };
 export type GenericModalProps<T extends keyof typeof MODAL_TYPES> =
   Parameters<(typeof MODAL_COMPONENTS)[T]> extends [infer P, ...any[]]
@@ -35,7 +34,6 @@ export interface ModalContextType {
     modalType: T,
     modalProps?: GenericModalProps<T>,
     modalSize?: Store["modalSize"],
-    theme?: Store["theme"],
     modalMaxWidth?: Store["modalMaxWidth"]
   ) => void;
   hideModal: (data?: unknown | undefined | null) => void;
@@ -45,7 +43,6 @@ export interface ModalContextType {
       modalProps: GenericModalProps<T>;
       modalSize?: Store["modalSize"];
       modalMaxWidth?: Store["modalMaxWidth"];
-      theme?: Store["theme"];
     }
   ) => void;
 
@@ -60,8 +57,7 @@ export const initalState: ModalContextType = {
     modalType: null,
     modalProps: {} as any,
     modalSize: "l",
-    modalMaxWidth: null,
-    theme: "light"
+    modalMaxWidth: null
   } as const
 };
 

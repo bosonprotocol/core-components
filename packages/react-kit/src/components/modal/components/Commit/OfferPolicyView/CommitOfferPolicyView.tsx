@@ -1,54 +1,53 @@
 import React, { useEffect } from "react";
-import { Grid } from "../../../../ui/Grid";
-import { Typography } from "../../../../ui/Typography";
-import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import OfferPolicyDetails, {
   OfferPolicyDetailsProps
 } from "../../../../offerPolicy/OfferPolicyDetails";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { theme } from "../../../../../theme";
-import { BosonLogo } from "../../common/BosonLogo";
+import { getCssVar } from "../../../../../theme";
+import { HeaderView } from "../../../nonModal/headers/HeaderView";
 
-const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
   offer: Exchange["offer"] | null | undefined;
   onContractualAgreementClick: OfferPolicyDetailsProps["onContractualAgreementClick"];
   onLicenseAgreementClick: OfferPolicyDetailsProps["onLicenseAgreementClick"];
+  showBosonLogoInHeader: boolean;
 }
 
 export function CommitOfferPolicyView({
   onBackClick,
   offer,
   onContractualAgreementClick,
-  onLicenseAgreementClick
+  onLicenseAgreementClick,
+  showBosonLogoInHeader
 }: Props) {
   const offerName = offer?.metadata?.name || "";
-  const dispatch = useNonModalContext();
+  const { dispatch, showConnectButton } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: onBackClick,
         headerComponent: (
-          <Grid gap="1rem" style={{ flex: "1" }}>
-            <ArrowLeft
-              onClick={onBackClick}
-              size={32}
-              style={{ cursor: "pointer", flexShrink: 0 }}
-            />
-            <Typography tag="h3" style={{ flex: "1 1" }}>
-              {offerName}
-            </Typography>
-          </Grid>
+          <HeaderView
+            text={offer?.metadata?.name || ""}
+            showBosonLogoInHeader={showBosonLogoInHeader}
+          />
         ),
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: null
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, offerName]);
+  }, [
+    dispatch,
+    offer?.metadata?.name,
+    offerName,
+    onBackClick,
+    showBosonLogoInHeader,
+    showConnectButton
+  ]);
   return (
     <>
       {offer ? (

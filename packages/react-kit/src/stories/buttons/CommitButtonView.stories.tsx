@@ -1,7 +1,25 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
-import { CommitButtonView } from "../../components/buttons/CommitButtonView";
+import { CommitButtonView } from "../../components/buttons/commit/CommitButtonView";
+import { BosonThemeProvider } from "../../components/widgets/BosonThemeProvider";
+import { withThemeFromJSXProvider } from "@storybook/addon-themes";
+import { getThemes } from "../../theme";
+import GlobalStyle from "../../components/styles/GlobalStyle";
+
+const themes = Object.keys({
+  light: getThemes({ roundness: "min" })["light"]
+}).reduce((acum, current) => {
+  acum[current] = current;
+  return acum;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+}, {}) as any;
+const WithLightThemeOnly = withThemeFromJSXProvider({
+  Provider: BosonThemeProvider,
+  GlobalStyles: GlobalStyle,
+  themes: themes,
+  defaultTheme: "light"
+});
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -20,15 +38,14 @@ export default {
       options: ["sharp", "rounded", "pill"],
       control: { type: "radio" }
     }
-  }
-} as ComponentMeta<typeof CommitButtonView>;
+  },
+  decorators: [WithLightThemeOnly]
+} as Meta<typeof CommitButtonView>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof CommitButtonView> = (args) => (
-  <CommitButtonView {...args} />
-);
+const Template = (args) => <CommitButtonView {...args} />;
 
-export const Base: ComponentStory<typeof CommitButtonView> = Template.bind({});
+export const Base = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Base.args = {

@@ -1,9 +1,8 @@
 import styled, { css } from "styled-components";
 
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { transition } from "../ui/styles";
 import { zIndex } from "../ui/zIndex";
-const colors = theme.colors.light;
 
 export const Picker = styled.div`
   width: 100%;
@@ -92,7 +91,7 @@ export const TimeSelectorElement = styled.div<{ active: boolean }>`
   ${({ active }) =>
     active
       ? css`
-          background: ${colors.secondary};
+          background: ${colors.violet};
         `
       : css`
           background: ${colors.white};
@@ -116,7 +115,7 @@ export const CalendarRow = styled.div`
 export const CalendarHeader = styled(CalendarFlex)`
   margin-bottom: 0.5rem;
   > div {
-    color: ${colors.darkGrey};
+    color: ${colors.greyDark};
     font-size: 0.875rem;
     font-weight: 600;
   }
@@ -148,7 +147,7 @@ export const CalendarDay = styled(CalendarCell)`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: ${colors.lightGrey};
+    background: ${colors.greyLight};
     border-radius: 50%;
     width: 0;
     height: 0;
@@ -182,7 +181,7 @@ export const CalendarDay = styled(CalendarCell)`
     active &&
     css`
       &:after {
-        background: ${colors.secondary};
+        background: ${colors.violet};
         width: 2.25rem;
         height: 2.25rem;
         z-index: 2;
@@ -197,7 +196,7 @@ export const CalendarDay = styled(CalendarCell)`
     !active &&
     css`
       &:after {
-        background: ${colors.secondary};
+        background: ${colors.violet};
         width: 1.75rem;
         height: 1.75rem;
         z-index: 2;

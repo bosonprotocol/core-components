@@ -41,4 +41,5 @@ class TokenLogoLookupTable {
   }
 }
 
-export default new TokenLogoLookupTable();
+const tokenLogoLookupTable = new TokenLogoLookupTable();
+export default tokenLogoLookupTable;

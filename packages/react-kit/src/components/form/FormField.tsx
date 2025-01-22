@@ -3,7 +3,7 @@ import isObject from "lodash/isObject";
 import mapValues from "lodash/mapValues";
 import { Copy } from "phosphor-react";
 import toast from "react-hot-toast";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 
 import { Tooltip } from "../tooltip/Tooltip";
 import { Grid } from "../ui/Grid";
@@ -11,8 +11,6 @@ import { Typography } from "../ui/Typography";
 import { CopyButton, FormFieldWrapper } from "./Field.styles";
 import type { FormFieldProps } from "./types";
 export type { FormFieldProps } from "./types";
-
-const colors = theme.colors.light;
 
 export function FormField({
   title,
@@ -23,7 +21,7 @@ export function FormField({
   children,
   style = {},
   valueToCopy,
-  copyIconColor = colors.secondary,
+  copyIconColor = colors.violet,
   ...rest
 }: FormFieldProps) {
   return (

@@ -7,7 +7,7 @@ import mockedAvatar from "../../../../../assets/frame.png";
 import { ExchangeCard } from "../../../../exchangeCard/ExchangeCard";
 import { Currencies } from "../../../../currencyDisplay/CurrencyDisplay";
 import { exchanges } from "@bosonprotocol/core-sdk";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { getLensProfilePictureUrl } from "../../../../../lib/lens/profile";
 import { calcPrice } from "../../../../../lib/price/prices";
 import { useIpfsContext } from "../../../../ipfs/IpfsContext";
@@ -26,8 +26,6 @@ import {
 import { ExchangeCardStatus } from "../../../../exchangeCard/types";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
 
-const colors = theme.colors.light;
-
 interface Props {
   offer: ExtendedExchange["offer"];
   exchange: ExtendedExchange;
@@ -41,7 +39,6 @@ interface Props {
 const ExchangeCardWrapper = styled.div`
   [data-card="exchange-card"] {
     height: 500px;
-    color: ${colors.black};
     [data-image-wrapper] {
       img {
         object-fit: contain;
@@ -176,6 +173,7 @@ export default function Exchange({
         price={price}
         currency={offer.exchangeToken.symbol as Currencies}
         {...createSpecificCardConfig()}
+        isConnected={true}
       />
     </ExchangeCardWrapper>
   );

@@ -1,42 +1,39 @@
 import React, { useEffect } from "react";
-import { Grid } from "../../../../ui/Grid";
-import { Typography } from "../../../../ui/Typography";
-import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import License from "../../../../license/License";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { theme } from "../../../../../theme";
-import { BosonLogo } from "../../common/BosonLogo";
+import { getCssVar } from "../../../../../theme";
+import { HeaderView } from "../../../nonModal/headers/HeaderView";
 
-const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
   offer: Exchange["offer"] | null;
+  showBosonLogoInHeader: boolean;
 }
 
-export function LicenseAgreementView({ onBackClick, offer }: Props) {
-  const dispatch = useNonModalContext();
+export function LicenseAgreementView({
+  onBackClick,
+  offer,
+  showBosonLogoInHeader
+}: Props) {
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: onBackClick,
         headerComponent: (
-          <Grid gap="1rem" justifyContent="flex-start" style={{ flex: "1 1" }}>
-            <ArrowLeft
-              onClick={onBackClick}
-              size={32}
-              style={{ cursor: "pointer" }}
-            />
-            <Typography tag="h3">License Agreement</Typography>
-          </Grid>
+          <HeaderView
+            text={"License Agreement"}
+            showBosonLogoInHeader={showBosonLogoInHeader}
+          />
         ),
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: null
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, showBosonLogoInHeader, onBackClick]);
   return (
     <>
       {offer ? (

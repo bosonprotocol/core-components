@@ -8,11 +8,11 @@ import styled, { css, CSSProperties, RuleSet } from "styled-components";
 
 import { Tooltip } from "../tooltip/Tooltip";
 import * as Styles from "../ui/styles";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { Loading } from "../ui/loading/Loading";
 import { ButtonSize } from "../ui/buttonSize";
-import { AddDollarPrefixToKeys } from "../../types/helpers";
-const colors = theme.colors.light;
+import { AddDollarPrefixToKeys, AnyString } from "../../types/helpers";
+
 type ButtonWithThemePropsType = AddDollarPrefixToKeys<{
   size: ButtonSizeProp;
   fill: boolean | undefined;
@@ -23,13 +23,47 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
   border-style: solid;
   border-color: ${(props) => props.theme?.borderColor || "transparent"};
   border-width: ${(props) => props.theme?.borderWidth || 0}px;
-  border-radius: ${(props) => props.theme?.borderRadius || 0}px;
+  border-radius: ${(props) =>
+    typeof props.theme?.borderRadius === "number"
+      ? `${props.theme.borderRadius || 0}px`
+      : props.theme?.borderRadius};
   ${(props) =>
     props.theme?.boxShadow ? `box-shadow: ${props.theme.boxShadow}` : ""};
   color: ${(props) => props.theme?.color || "#000000"};
   background-color: ${(props) => props.theme?.background || "transparent"};
+
   svg {
-    stroke: ${(props) => props.theme?.color || "#000000"};
+    ${(props) =>
+      props.theme.svg &&
+      css`
+        stroke: ${(props) => props.theme?.svg.stroke};
+        ${props.theme.svg.fill &&
+        css`
+          fill: ${props.theme.svg.fill};
+        `};
+        line {
+          ${props.theme.svg.line?.stroke &&
+          css`
+            stroke: ${props.theme.svg.line.stroke};
+          `};
+        }
+        polyline {
+          ${props.theme.svg.polyline?.stroke &&
+          css`
+            stroke: ${props.theme.svg.polyline?.stroke};
+          `};
+        }
+        path {
+          ${props.theme.svg.path?.stroke &&
+          css`
+            stroke: ${props.theme.svg.path.stroke};
+          `};
+          ${props.theme.svg.path?.fill &&
+          css`
+            fill: ${props.theme.svg.path.fill};
+          `};
+        }
+      `}
   }
   ${(props) =>
     props.$fill
@@ -37,6 +71,7 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
           width: 100%;
         `
       : ""};
+
   ${(props) =>
     props.theme?.hover &&
     css`
@@ -44,20 +79,25 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
         background-color: ${props.theme?.hover.background};
         ${props.theme?.hover.color &&
         css`
-          color: ${props.theme.hover.color} !important;
-          svg {
-            fill: ${props.theme.hover.color} !important;
-            line {
-              stroke: ${props.theme.hover.color} !important;
-            }
-            polyline {
-              stroke: ${props.theme.hover.color} !important;
-            }
-            path {
-              stroke: ${props.theme.hover.color} !important;
-            }
-          }
+          color: ${props.theme.hover.color};
         `};
+
+        svg {
+          fill: ${props.theme.hover?.svg?.fill};
+          line {
+            stroke: ${props.theme.hover?.svg?.line?.stroke};
+          }
+          polyline {
+            stroke: ${props.theme.hover?.svg?.polyline?.stroke};
+          }
+          path {
+            stroke: ${props.theme.hover?.svg?.path?.stroke};
+            ${props.theme.hover?.svg?.path?.fill &&
+            css`
+              fill: ${props.theme.hover?.svg?.path?.fill};
+            `};
+          }
+        }
         ${props.theme?.hover.borderColor &&
         css`
           border-color: ${props.theme.hover.borderColor};
@@ -77,7 +117,7 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
           &:disabled {
             background-color: ${props.theme.disabled?.background ||
             "transparent"};
-            color: ${props.theme.disabled?.color || colors.darkGrey};
+            color: ${props.theme.disabled?.color || colors.greyDark};
             border-color: transparent;
             cursor: not-allowed;
             opacity: 0.5;
@@ -85,8 +125,8 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
         `
       : css`
           &:disabled {
-            background-color: ${colors.lightGrey};
-            color: ${colors.darkGrey};
+            background-color: ${colors.greyLight};
+            color: ${colors.greyDark};
             border-color: transparent;
             cursor: not-allowed;
             opacity: 0.5;
@@ -100,19 +140,36 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
   }}
 `;
 
+type SvgTheme = Partial<{
+  stroke: CSSProperties["color"];
+  fill: CSSProperties["color"];
+  line: Partial<{
+    stroke: CSSProperties["color"];
+  }>;
+  polyline: Partial<{
+    stroke: CSSProperties["color"];
+  }>;
+  path: Partial<{
+    stroke: CSSProperties["color"];
+    fill: CSSProperties["color"];
+  }>;
+}>;
+
 export type BaseButtonTheme = {
   background?: CSSProperties["backgroundColor"];
   borderColor?: CSSProperties["borderColor"];
-  borderRadius?: CSSProperties["borderRadius"];
+  borderRadius?: `${string}px` | AnyString;
   borderWidth?: CSSProperties["borderWidth"];
   boxShadow?: CSSProperties["boxShadow"];
   color?: CSSProperties["color"];
   padding?: CSSProperties["padding"];
   gap?: CSSProperties["gap"];
+  svg?: SvgTheme;
   hover?: {
     background?: CSSProperties["backgroundColor"];
     borderColor?: CSSProperties["borderColor"];
     color?: CSSProperties["color"];
+    svg?: SvgTheme;
   };
   disabled?: {
     background?: CSSProperties["backgroundColor"];

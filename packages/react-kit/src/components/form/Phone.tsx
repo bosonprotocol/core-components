@@ -3,7 +3,7 @@
 import { useField, useFormikContext } from "formik";
 import { GlobeHemisphereWest } from "phosphor-react";
 import React, { useCallback, useEffect, useState } from "react";
-import type { Country as CountryCode } from "react-phone-number-input";
+import type { Country as CountryCode, Value } from "react-phone-number-input";
 import PhoneInput, {
   formatPhoneNumberIntl,
   getCountryCallingCode,
@@ -13,14 +13,16 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import Select, { components } from "react-select";
 import styled from "styled-components";
-import { theme } from "../../theme";
+import { colors, getCssVar } from "../../theme";
 import { zIndex } from "../ui/zIndex";
 
 import Error from "./Error";
 import { FieldInput } from "./Field.styles";
 import type { InputProps } from "./types";
 import { SelectDataProps } from "./types";
-const colors = theme.colors.light;
+import { useFixSelectFont } from "../../hooks/form/useFixSelectFont";
+import { inputStyles } from "./styles";
+
 const customStyles = {
   control: (provided: any, state: any) => {
     const before = state.selectProps.label
@@ -38,13 +40,13 @@ const customStyles = {
       padding: "0.4rem 0.25rem",
       boxShadow: "none",
       ":hover": {
-        borderColor: colors.secondary,
+        borderColor: colors.violet,
         borderWidth: "1px"
       },
-      background: colors.lightGrey,
+      background: inputStyles.background,
       border: state.isFocused
-        ? `1px solid ${colors.secondary}`
-        : `1px solid ${colors.border}`,
+        ? `1px solid ${colors.violet}`
+        : `1px solid ${getCssVar("--border-color")}`,
       ...before
     };
   },
@@ -60,12 +62,10 @@ const customStyles = {
     opacity: state.isDisabled ? "0.5" : "1",
     background:
       state.isOptionSelected || state.isSelected || state.isFocused
-        ? colors.lightGrey
+        ? colors.greyLight
         : colors.white,
     color:
-      state.isOptionSelected || state.isSelected
-        ? colors.secondary
-        : colors.black
+      state.isOptionSelected || state.isSelected ? colors.violet : colors.black
   }),
   indicatorSeparator: () => ({
     display: "none"
@@ -88,6 +88,7 @@ export const ControlGrid = styled.div`
   }
 `;
 export const OptionGrid = styled.div`
+  font-size: revert;
   display: grid;
   grid-auto-columns: 1fr;
   grid-template-columns: 2em 1fr;
@@ -112,8 +113,9 @@ export const PhoneWrapper = styled.div`
     width: 100%;
     padding: 1rem;
     gap: 0.5rem;
-    background: ${colors.lightGrey};
-    border: 1px solid ${colors.border};
+    background: ${getCssVar("--background-accent-color")};
+    border: 1px solid ${getCssVar("--border-color")};
+    color: ${getCssVar("--main-text-color")};
     border-radius: 0;
     outline: none;
     font-family: "Plus Jakarta Sans";
@@ -122,14 +124,19 @@ export const PhoneWrapper = styled.div`
 `;
 
 const handleCountry = () => {
-  const countryCode = (navigator?.language || "")?.toUpperCase() as CountryCode;
+  const countryCode = (navigator?.languages || [])
+    .find((language) => language.includes("-"))
+    ?.split("-")?.[1]
+    ?.toUpperCase() as CountryCode;
   if (isSupportedCountry(countryCode as CountryCode)) return countryCode;
   return undefined;
 };
 
-export default function Phone({ name, ...props }: InputProps) {
+export type PhoneProps = InputProps;
+
+export default function Phone({ name, ...props }: PhoneProps) {
   const [initialized, setInitialized] = useState<boolean>(false);
-  const [phone, setPhone] = useState<string | undefined>(undefined);
+  const [phone, setPhone] = useState<Value | undefined>(undefined);
   const [countryCode, setCountryCode] = useState<CountryCode | undefined>(
     handleCountry()
   );
@@ -146,7 +153,7 @@ export default function Phone({ name, ...props }: InputProps) {
         ? getCountryCallingCode(countryCode as CountryCode)
         : false;
       const newValue = formatPhoneNumberIntl(
-        `${callingCode ? `+${callingCode}` : ""}${value}`
+        `${callingCode ? `+${callingCode}` : ""}${value}` as Value
       );
 
       if (!isValidPhoneNumber(newValue)) {
@@ -174,21 +181,26 @@ export default function Phone({ name, ...props }: InputProps) {
     if (!initialized && field.value) {
       const parsed = parsePhoneNumber(field.value);
       setInitialized(true);
-      setPhone(parsed?.nationalNumber || "");
+      setPhone((parsed?.nationalNumber || "") as Value);
       if (parsed?.country) {
         setCountryCode(parsed?.country as CountryCode);
       }
     }
   }, [field.value, initialized]); // eslint-disable-line
 
+  const { jsx, selectClassName } = useFixSelectFont({
+    selectClassName: "phone-select"
+  });
   return (
     <>
-      <PhoneWrapper>
-        {/* @ts-ignore */}
+      {jsx}
+      <PhoneWrapper className={selectClassName}>
         <PhoneInput
           country={countryCode}
           value={phone}
-          onChange={(value) => setPhone((value || "").replace(/\+/g, ""))}
+          onChange={(value) =>
+            setPhone((value || "").replace(/\+/g, "") as Value)
+          }
           countrySelectComponent={({ iconComponent: Icon, ...props }) => (
             <>
               <div>
@@ -231,7 +243,10 @@ export default function Phone({ name, ...props }: InputProps) {
                                 label={props.label}
                               />
                             ) : (
-                              <GlobeHemisphereWest />
+                              <GlobeHemisphereWest
+                                width={"22px"}
+                                height={"22px"}
+                              />
                             )}
                             {props.label}
                           </OptionGrid>
@@ -239,6 +254,7 @@ export default function Phone({ name, ...props }: InputProps) {
                       );
                     }
                   }}
+                  menuPosition="fixed"
                 />
               </div>
             </>

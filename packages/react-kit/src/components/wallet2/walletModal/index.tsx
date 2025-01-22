@@ -52,10 +52,8 @@ export type WalletModalProps = {
   > & { iconBorderRadius: CSSProperties["borderRadius"] };
   withMagicLogin?: boolean;
   connectionErrorProps: ConnectionErrorViewProps;
-} & (
-  | { withMagicLogin: true; magicLoginButtonProps: MagicLoginButtonProps }
-  | { withMagicLogin?: false; magicLoginButtonProps?: undefined }
-);
+  magicLoginButtonProps?: MagicLoginButtonProps;
+};
 export function WalletModal({
   PrivacyPolicy,
   magicLoginButtonProps,
@@ -88,7 +86,7 @@ export function WalletModal({
   return (
     <Wrapper data-testid="wallet-modal">
       <Grid justifyContent="space-between" marginBottom="16px">
-        Connect a wallet
+        Connect account
       </Grid>
       {activationState.status === ActivationStatus.ERROR ? (
         <ConnectionErrorView {...connectionErrorProps} />

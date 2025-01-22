@@ -2,14 +2,13 @@ import { ImageSquare, X, FilePdf } from "phosphor-react";
 import React, { useCallback } from "react";
 import styled, { css } from "styled-components";
 import { bytesToSize } from "../../../lib/bytes/bytesToSize";
-import { theme } from "../../../theme";
 
 import { Grid } from "../../ui/Grid";
 import ThemedButton from "../../ui/ThemedButton";
 import { Typography } from "../../ui/Typography";
 import { FileUploadWrapper } from "../Field.styles";
 import { UploadProps } from "../types";
-const colors = theme.colors.light;
+import { colors } from "../../../colors";
 
 const AttachmentContainer = styled.div<{
   $isLeftAligned: boolean;
@@ -19,7 +18,6 @@ const AttachmentContainer = styled.div<{
   display: flex;
   cursor: pointer;
   align-items: center;
-
   color: ${({ $isLeftAligned }) => ($isLeftAligned ? "inherit" : colors.black)};
 
   ${({ $isPdfFile, $isLeftAligned }) =>
@@ -29,7 +27,7 @@ const AttachmentContainer = styled.div<{
         `
       : css`
           padding: 1rem;
-          background-color: ${$isLeftAligned ? "inherit" : colors.lightGrey};
+          background-color: ${$isLeftAligned ? "inherit" : colors.greyLight};
           ${$isLeftAligned ? `border: 2px solid ${colors.white}` : ""};
         `}
 

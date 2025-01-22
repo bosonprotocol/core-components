@@ -63,5 +63,5 @@ class TokenSafetyLookupTable {
     }
   }
 }
-
-export default new TokenSafetyLookupTable();
+const tokenSafetyLookupTable = new TokenSafetyLookupTable();
+export default tokenSafetyLookupTable;

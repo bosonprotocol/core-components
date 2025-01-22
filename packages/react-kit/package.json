@@ -18,11 +18,11 @@
     "@bosonprotocol/core-sdk": "^1.42.0-alpha.3",
     "@bosonprotocol/ethers-sdk": "^1.15.1-alpha.9",
     "@bosonprotocol/ipfs-storage": "^1.12.0",
+    "@bosonprotocol/roblox-sdk": "^1.0.0-alpha.16",
     "@davatar/react": "1.11.1",
     "@ethersproject/units": "5.6.0",
     "@glidejs/glide": "3.6.0",
     "@metamask/jazzicon": "^2.0.0",
-    "@rainbow-me/rainbowkit": "^1.3.4",
     "@sentry/browser": "7.43.0",
     "@svgr/webpack": "^8.1.0",
     "@tippyjs/react": "4.2.6",
@@ -45,6 +45,7 @@
     "eth-revert-reason": "^1.0.3",
     "formik": "2.2.9",
     "graphql-request": "5.2.0",
+    "i": "^0.3.7",
     "jotai": "^1.13.1",
     "lodash.merge": "4.6.2",
     "lodash.uniqby": "4.7.0",
@@ -52,16 +53,20 @@
     "multicodec": "^3.2.1",
     "multiformats": "^13.1.0",
     "multihashes": "^4.0.3",
+    "nanoclone": "^0.2.1",
     "phosphor-react": "^1.4.1",
     "polished": "^4.2.2",
+    "query-string": "^9.1.1",
     "react-avatar-editor": "^13.0.2",
     "react-chartjs-2": "^5.2.0",
+    "react-cookie": "^7.2.2",
     "react-dropzone": "^14.2.3",
     "react-error-boundary": "^4.0.13",
     "react-hot-toast": "2.4.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-markdown": "8.0.6",
     "react-phone-number-input": "3.2.19",
-    "react-query": "3.39.3",
+    "react-query": "^3.39.3",
     "react-responsive": "9.0.2",
     "react-router-dom": "6.9.0",
     "react-select": "5.7.0",
@@ -79,8 +84,9 @@
     "use-async-effect": "2.2.7",
     "use-resize-observer": "^9.1.0",
     "utility-types": "3.10.0",
+    "valid-data-url": "^4.0.1",
     "viem": "^1.21.4",
-    "wagmi": "^1.4.13"
+    "zustand": "^4.4.0"
   },
   "peerDependencies": {
     "ethers": "^5.7.2",
@@ -99,7 +105,16 @@
     "copy-assets": "copyfiles -u 2 \"src/assets/**/*\" dist/esm/assets/ && copyfiles -u 2 \"src/assets/**/*\" dist/cjs/assets/",
     "postbuild": "npm run copy-assets",
     "tsc": "tsc",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
+    "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.+(js|ts|tsx)": [
+      "eslint --fix packages/react-kit/. --ignore-path packages/react-kit/.eslintignore"
+    ],
+    "*.{js,jsx,ts,tsx,json,css,scss}": [
+      "prettier --write packages/react-kit/."
+    ]
   },
   "eslintConfig": {
     "extends": [
@@ -171,7 +186,9 @@
     "eslint": "^8.10.0",
     "eslint-plugin-storybook": "^0.8.0",
     "file-loader": "^6.2.0",
+    "husky": "^9.1.7",
     "jest": "^29.6.2",
+    "lint-staged": "^15.4.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-app-rewired": "^2.2.1",

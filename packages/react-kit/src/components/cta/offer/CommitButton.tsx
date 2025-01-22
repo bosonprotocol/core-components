@@ -8,6 +8,25 @@ import { CtaButton } from "../common/CtaButton";
 import { CtaButtonProps } from "../common/types";
 import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
 import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
+import styled from "styled-components";
+import { Button } from "../../buttons/Button";
+import { CommitView } from "../../buttons/commit/CommitView";
+import { CommitButtonViewProps } from "../../buttons/commit/types";
+import { AddDollarPrefixToKeys } from "../../../types/helpers";
+
+const StyledButton = styled(Button)<{
+  $color: CommitButtonViewProps["color"];
+}>`
+  svg * {
+    fill: black;
+  }
+  &:not(:disabled) svg * {
+    fill: ${({ $color }) => ($color === "black" ? "white" : "black")};
+  }
+  &:hover:not(:disabled) * {
+    fill: ${({ $color }) => ($color === "black" ? "black" : "white")};
+  }
+`;
 
 type AdditionalProps = {
   /**
@@ -25,8 +44,14 @@ type AdditionalProps = {
 type SuccessPayload = {
   exchangeId: BigNumberish;
 };
-
-type Props = AdditionalProps & CtaButtonProps<SuccessPayload>;
+export type CommitButtonStylingProps = Omit<
+  CommitButtonViewProps,
+  "shape" | "color"
+> &
+  AddDollarPrefixToKeys<Required<Pick<CommitButtonViewProps, "color">>>;
+export type CommitButtonProps = AdditionalProps &
+  Omit<CtaButtonProps<SuccessPayload>, "variant" | "theme"> &
+  CommitButtonStylingProps;
 
 export const CommitButton = withQueryClientProvider(
   ({
@@ -34,10 +59,12 @@ export const CommitButton = withQueryClientProvider(
     exchangeToken,
     price,
     isPauseCommitting = false,
-    variant = "primaryFill",
     onGetSignerAddress,
+    minHeight,
+    minWidth,
+    layout,
     ...restProps
-  }: Props) => {
+  }: CommitButtonProps) => {
     const coreSdk = useCoreSdkOverrides({
       coreSdkConfig: restProps.coreSdkConfig
     });
@@ -89,8 +116,13 @@ export const CommitButton = withQueryClientProvider(
 
     return (
       <CtaButton
-        variant={variant}
-        defaultLabel="Commit to Buy"
+        variant={null}
+        buttonComponent={StyledButton}
+        style={{
+          minWidth,
+          minHeight
+        }}
+        defaultLabel={<CommitView layout={layout || "horizontal"} />}
         successPayload={(receipt) => ({
           exchangeId: coreSdk.getCommittedExchangeIdFromLogs(
             receipt.logs

@@ -1,6 +1,6 @@
 import { useField, useFormikContext } from "formik";
 import { KeyReturn } from "phosphor-react";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Grid } from "../ui/Grid";
 import { Typography } from "../ui/Typography";
@@ -48,9 +48,10 @@ export const BaseTagsInput = ({
   ) {
     if (event.key !== "Enter") return;
     event.preventDefault();
-    const value: string = event.target.value;
+    const target = event.target as HTMLInputElement;
+    const value: string = target.value;
     if (!value.trim()) return;
-    event.target.value = "";
+    target.value = "";
     if (!meta.touched) {
       helpers.setTouched(true);
     }
@@ -75,8 +76,30 @@ export const BaseTagsInput = ({
     validateForm();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [field.value]);
+
+  const [inputPaddingRight, setInputPaddingRight] = useState<
+    string | undefined
+  >(undefined);
   const labelRef = useRef<HTMLDivElement>(null);
   const hitEnterWidth = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (hitEnterWidth.current) {
+      setInputPaddingRight(
+        `calc(${hitEnterWidth.current.clientWidth}px + 1rem)`
+      );
+    }
+  }, []);
+  const [tagContainerPaddingLeft, setTagContainerPaddingLeft] = useState<
+    string | undefined
+  >(undefined);
+
+  useEffect(() => {
+    if (labelRef.current) {
+      setTagContainerPaddingLeft(
+        `calc(${labelRef.current.clientWidth}px + ${gap})`
+      );
+    }
+  }, []);
   return (
     <>
       <Grid gap={gap} alignItems="center">
@@ -97,7 +120,7 @@ export const BaseTagsInput = ({
             $error={errorMessage}
             {...(hitEnterWidth.current?.clientWidth && {
               style: {
-                paddingRight: `calc(${hitEnterWidth.current.clientWidth}px + 1rem)`
+                paddingRight: inputPaddingRight
               }
             })}
           />
@@ -108,11 +131,7 @@ export const BaseTagsInput = ({
       </Grid>
       <TagContainer
         $gap={gap}
-        $paddingLeft={
-          label
-            ? `calc(${labelRef.current?.clientWidth}px + ${gap})`
-            : undefined
-        }
+        $paddingLeft={label ? tagContainerPaddingLeft : undefined}
       >
         {tags.map((tag: string, index: number) => (
           <TagWrapper key={`tags-wrapper_${tag}`} theme={theme}>

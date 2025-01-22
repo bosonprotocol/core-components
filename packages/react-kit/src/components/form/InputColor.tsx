@@ -2,13 +2,11 @@ import React from "react";
 import { useField } from "formik";
 import styled from "styled-components";
 
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { transition } from "../ui/styles";
 import Error from "./Error";
 import Input from "./Input";
 import { InputColorProps } from "./types";
-
-const colors = theme.colors.light;
 
 const Container = styled.div`
   display: flex;
@@ -16,7 +14,7 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   padding: 0.5rem 1rem;
-  background: ${colors.lightGrey};
+  background: ${colors.greyLight};
   border: 1px solid ${colors.border};
   border-radius: 0;
   outline: none;
@@ -44,7 +42,7 @@ export default function InputColor({ name, ...props }: InputColorProps) {
   return (
     <>
       <Container>
-        <span style={{ color: colors.darkGrey }}>
+        <span style={{ color: colors.greyDark }}>
           {field.value?.toUpperCase() || props.placeholder}
         </span>
         <ColorPicker name={name} />

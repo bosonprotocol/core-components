@@ -9,12 +9,11 @@ import {
   ActivationStatus,
   useActivationState
 } from "../../connection/activate";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import { breakpoint } from "../../../lib/ui/breakpoint";
 import { Spinner } from "../../ui/loading/Spinner";
 import { SvgImage } from "../../ui/SvgImage";
 
-const colors = theme.colors.light;
 const OptionCardLeft = styled.div`
   ${flexColumnNoWrap};
   flex-direction: row;
@@ -133,7 +132,6 @@ export function Option({
     activationState.status === ActivationStatus.PENDING;
   const isCurrentOptionPending =
     isSomeOptionPending && activationState.connection.type === connection.type;
-
   return (
     <Wrapper
       disabled={isSomeOptionPending}

@@ -58,7 +58,6 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       maxWidths={{
         s: "50rem"
       }}
-      theme="light"
     >
       <Grid flexDirection="column">
         <ImageEditor url={url} {...rest} ref={editorRef} />

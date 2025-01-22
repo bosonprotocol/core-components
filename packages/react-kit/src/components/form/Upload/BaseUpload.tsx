@@ -4,7 +4,7 @@ import { Image, Trash, VideoCamera, FilePdf, Upload } from "phosphor-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { loadAndSetMedia } from "../../../lib/base64/base64";
 import { bytesToSize } from "../../../lib/bytes/bytesToSize";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 
 import Loading from "../../ui/loading/LoadingWrapper";
 import ThemedButton from "../../ui/ThemedButton";
@@ -29,7 +29,7 @@ import { useModal } from "../../modal/useModal";
 import { ImageEditorModal } from "./ImageEditorModal/ImageEditorModal";
 import { Grid } from "../../ui/Grid";
 import { UploadedSinglePdfFile } from "./UploadedSinglePdfFile";
-const colors = theme.colors.light;
+
 export type BaseUploadProps = UploadPropsWithNoIpfs;
 function BaseUpload({
   name,

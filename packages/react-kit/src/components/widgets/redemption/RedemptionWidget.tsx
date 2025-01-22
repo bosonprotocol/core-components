@@ -21,8 +21,7 @@ type RedemptionProps = {
   };
 
 export type RedemptionWidgetProps = RedemptionProps &
-  RedemptionWidgetProvidersProps;
-
+  Omit<RedemptionWidgetProvidersProps, "children">;
 export function RedemptionWidget(props: RedemptionWidgetProps) {
   const parentOrigin = getParentWindowOrigin();
   const sellerIds = Array.isArray(props.sellerIds)

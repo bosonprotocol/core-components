@@ -1,16 +1,16 @@
 import { TextAlignLeft } from "phosphor-react";
 import React from "react";
 import styled from "styled-components";
-import { theme } from "../../../../../theme";
+import { colors, getCssVar } from "../../../../../theme";
 import SellerID from "../../../../avatar/SellerID";
 import { Grid } from "../../../../ui/Grid";
 import { Offer } from "../../../../../types/offer";
 import { LoadingBubble } from "../../../../skeleton/common";
 
-const colors = theme.colors.light;
+const DescriptionButton = styled.div``;
 
 const Container = styled(Grid)`
-  background: ${colors.white};
+  background: ${getCssVar("--background-accent-color")};
   padding: 1rem;
   flex-direction: column;
   .seller-id {
@@ -23,8 +23,8 @@ const Container = styled(Grid)`
       height: 1.5rem;
     }
   }
-  .description {
-    color: ${colors.accent};
+  ${DescriptionButton} {
+    color: ${getCssVar("--secondary-button-text-color")};
     font-weight: 600;
     font-size: 0.875rem;
     justify-content: flex-end;
@@ -35,7 +35,7 @@ const Container = styled(Grid)`
     align-items: center;
 
     &:hover {
-      background: ${colors.border};
+      background: ${getCssVar("--border-color")};
       cursor: pointer;
     }
   }
@@ -72,16 +72,19 @@ export function SellerAndDescription({
         <LoadingBubble
           $width="100%"
           $height="30px"
-          $backgroundColor={colors.darkGrey}
+          $backgroundColor={colors.greyDark}
           style={{ flex: "initial" }}
         />
       ) : (
-        <div onClick={onViewFullDescription} className="description">
+        <DescriptionButton onClick={onViewFullDescription}>
           <span style={{ textAlign: "right" }}>
             View full offer description
           </span>
-          <StyledTextAlignLeft size={30} color={colors.accent} />
-        </div>
+          <StyledTextAlignLeft
+            size={30}
+            color={getCssVar("--secondary-button-text-color")}
+          />
+        </DescriptionButton>
       )}
     </Container>
   );

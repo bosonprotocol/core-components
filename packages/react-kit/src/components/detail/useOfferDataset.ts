@@ -4,9 +4,9 @@ import minMax from "dayjs/plugin/minMax";
 import { useMemo } from "react";
 
 import { getDateTimestamp } from "../../lib/dates/getDateTimestamp";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { Offer } from "./../../types/offer";
-const colors = theme.colors.light;
+
 dayjs.extend(minMax);
 
 const SAME_TYPES_OPTIONS = {

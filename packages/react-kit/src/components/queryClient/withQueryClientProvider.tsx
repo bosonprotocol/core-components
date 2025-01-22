@@ -1,5 +1,6 @@
 import React from "react";
 import { QueryClientProviderCustom } from "./QueryClientProviderCustom";
+import { useQueryClient } from "react-query";
 
 export const withQueryClientProvider = <P extends object>(
   WrappedComponent: React.ComponentType<P>
@@ -9,11 +10,20 @@ export const withQueryClientProvider = <P extends object>(
 
   // Return a new component
   const WithQueryClientProvider: React.FC<Props> = (props) => {
-    return (
-      <QueryClientProviderCustom>
-        <WrappedComponent {...props} />
-      </QueryClientProviderCustom>
-    );
+    let wrapWithQueryClient = false;
+    try {
+      useQueryClient();
+    } catch {
+      wrapWithQueryClient = true;
+    }
+    if (wrapWithQueryClient) {
+      return (
+        <QueryClientProviderCustom>
+          <WrappedComponent {...props} />
+        </QueryClientProviderCustom>
+      );
+    }
+    return <WrappedComponent {...props} />;
   };
 
   // Set display name for debugging purposes

@@ -1,17 +1,15 @@
 import { ChainId } from "@uniswap/sdk-core";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { getChainInfo } from "../../lib/const/chainInfo";
 import { useAssetLogoSource } from "./useAssetLogoSource";
-
-const colors = theme.colors.light;
 
 export const MissingImageLogo = styled.div<{ size?: string }>`
   --size: ${({ size }) => size};
   border-radius: 100px;
   color: ${colors.black};
-  background-color: ${colors.lightGrey};
+  background-color: ${colors.greyLight};
   font-size: calc(var(--size) / 3);
   font-weight: 500;
   height: ${({ size }) => size ?? "24px"};
@@ -34,7 +32,7 @@ const LogoImage = styled.img<{ size: string; imgLoaded?: boolean }>`
 const LogoImageWrapper = styled.div<{ size: string; imgLoaded?: boolean }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
-  background: ${({ imgLoaded }) => (imgLoaded ? "none" : colors.lightGrey)};
+  background: ${({ imgLoaded }) => (imgLoaded ? "none" : colors.greyLight)};
   transition: background-color 250ms ease-in;
   box-shadow: 0 0 1px white;
   border-radius: 50%;

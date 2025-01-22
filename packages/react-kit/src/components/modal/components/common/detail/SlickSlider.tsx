@@ -6,11 +6,10 @@ import _Slider, { Settings } from "react-slick";
 import { IpfsImage } from "../../../../ui/IpfsImage";
 import Video from "../../../../ui/Video";
 import styled, { CSSProperties, css } from "styled-components";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { ImageOptimizationOpts } from "../../../../../lib/images/images";
 export type { Settings } from "react-slick";
 
-const colors = theme.colors.light;
 const Container = styled.div<{ $alignLeft: boolean; $hasSomeActive: boolean }>`
   .slick-slider {
     position: relative;

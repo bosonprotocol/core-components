@@ -15,14 +15,17 @@ export {
 
 export type ExternalCommitDetailViewProps =
   CommitDetailViewWithProviderProps & {
-    providerProps: Omit<CommitWidgetProvidersProps, "children">;
+    providerProps: Omit<
+      CommitWidgetProvidersProps,
+      "children" | "withGlobalStyle"
+    >;
   };
 export const ExternalCommitDetailView: React.FC<
   ExternalCommitDetailViewProps
 > = (props) => {
   return (
     <ResetStylesForNonWidgets>
-      <CommitWidgetProviders {...props.providerProps}>
+      <CommitWidgetProviders {...props.providerProps} withGlobalStyle={false}>
         <CommitDetailViewWithProvider {...props} />
       </CommitWidgetProviders>
     </ResetStylesForNonWidgets>

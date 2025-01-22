@@ -16,3 +16,6 @@ export const isTruthy = <T>(x: T | Falsy): x is T => !!x;
 export type AddDollarPrefixToKeys<T> = {
   [K in keyof T as `$${string & K}`]: T[K];
 };
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type AnyString = string & {};
