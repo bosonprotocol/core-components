@@ -100,10 +100,10 @@ export function useProvider():
   const magicLinkProvider = magicProvider!; // it should always be not null at this point
   const isMagicLoggedIn = useIsMagicLoggedIn();
   return isMagicLoggedIn
-    ? magicLinkProvider ?? web3Provider
+    ? (magicLinkProvider ?? web3Provider)
     : withWeb3React
-      ? web3Provider ?? magicLinkProvider
-      : magicLinkProvider ?? web3Provider;
+      ? (web3Provider ?? magicLinkProvider)
+      : (magicLinkProvider ?? web3Provider);
 }
 
 export function useSigner(): Signer | undefined {

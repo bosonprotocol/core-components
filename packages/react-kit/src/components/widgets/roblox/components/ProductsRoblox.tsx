@@ -98,7 +98,7 @@ export const ProductsRoblox = ({
 
   const robloxExclusives = useMemo(() => {
     return robloxUnavailableProducts.concat(availableProducts);
-  }, [robloxUnavailableProducts]);
+  }, [robloxUnavailableProducts, availableProducts]);
   const unavailableProducts = robloxUnavailableProducts;
   const robloxExclusivesLoading =
     unavailableProductsLoading || availableProductLoading;
@@ -107,11 +107,11 @@ export const ProductsRoblox = ({
   const refetchProducts = useCallback(() => {
     refetchAvailableProducts();
     refetchUnavailableProducts();
-  }, []);
+  }, [refetchAvailableProducts, refetchUnavailableProducts]);
   const fetchNextPageProducts = useCallback(() => {
     fetchNextPageAvailableProducts();
     fetchNextPageUnavailableProducts();
-  }, []);
+  }, [fetchNextPageAvailableProducts, fetchNextPageUnavailableProducts]);
 
   const {
     data: purchasedProductsInPage,

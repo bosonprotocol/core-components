@@ -33,10 +33,11 @@ const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
       background: getCssVar("--background-color"),
       ...customTheme?.control,
       border: state.isFocused
-        ? customTheme?.control?.focus?.border ?? `1px solid ${colors.violet}`
+        ? (customTheme?.control?.focus?.border ?? `1px solid ${colors.violet}`)
         : !checkIfValueIsEmpty(error)
-          ? customTheme?.control?.error?.border ?? `1px solid ${colors.orange}`
-          : customTheme?.control?.border ?? `1px solid ${colors.border}`,
+          ? (customTheme?.control?.error?.border ??
+            `1px solid ${colors.orange}`)
+          : (customTheme?.control?.border ?? `1px solid ${colors.border}`),
       ":hover": {
         borderColor: colors.violet,
         borderWidth: "1px",
@@ -56,16 +57,16 @@ const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
       ...provided,
       cursor: state.isDisabled ? "not-allowed" : "pointer",
       opacity: state.isDisabled
-        ? customTheme?.option?.disabled?.opacity ?? "0.5"
-        : customTheme?.option?.opacity ?? "1",
+        ? (customTheme?.option?.disabled?.opacity ?? "0.5")
+        : (customTheme?.option?.opacity ?? "1"),
       background:
         state.isOptionSelected || state.isSelected || state.isFocused
-          ? customTheme?.option?.selected?.background ?? colors.greyLight
-          : customTheme?.option?.background ?? colors.white,
+          ? (customTheme?.option?.selected?.background ?? colors.greyLight)
+          : (customTheme?.option?.background ?? colors.white),
       color:
         state.isOptionSelected || state.isSelected
-          ? customTheme?.option?.selected?.color ?? colors.violet
-          : customTheme?.option?.color ?? colors.black,
+          ? (customTheme?.option?.selected?.color ?? colors.violet)
+          : (customTheme?.option?.color ?? colors.black),
       ...(state.isDisabled && customTheme?.option?.disabled),
       ...((state.isOptionSelected || state.isSelected) &&
         customTheme?.option?.selected),

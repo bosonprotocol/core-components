@@ -95,12 +95,12 @@ function CommitNonModal({
     (variant) => !variant.offer.voided
   );
   const defaultVariant = defaultSelectedOfferId
-    ? variants?.find(
+    ? (variants?.find(
         (variant) => variant.offer.id === defaultSelectedOfferId
       ) ??
       firstNotVoidedVariant ??
-      firstVariant
-    : firstNotVoidedVariant ?? firstVariant;
+      firstVariant)
+    : (firstNotVoidedVariant ?? firstVariant);
 
   const [selectedVariant, setSelectedVariant] = useState<VariantV1 | undefined>(
     defaultVariant

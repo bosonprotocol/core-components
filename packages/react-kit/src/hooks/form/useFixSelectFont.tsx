@@ -22,7 +22,7 @@ export const useFixSelectFont = ({
     jsx: (
       <style>{`.${selectClassName}{
         [class*="-placeholder"],[class*="-singleValue"],[class*="-option"]{
-          font-size: ${inputFontSize.current};
+          font-size: ${inputFontSize.current || "13.3333px"};
         }
         [class*="-singleValue"]{
           color: ${inputStyles.color};

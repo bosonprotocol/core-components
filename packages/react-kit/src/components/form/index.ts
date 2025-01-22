@@ -5,7 +5,7 @@ export { default as Error } from "./Error";
 export { FormField, FormFieldProps } from "./FormField";
 export * from "./BaseInput";
 export { default as Input, InputProps } from "./Input";
-export { default as Phone } from "./Phone";
+export { default as Phone, PhoneProps } from "./Phone";
 export { default as Select, SelectProps } from "./Select";
 export * from "./CountrySelect";
 export * from "./BaseTagsInput";

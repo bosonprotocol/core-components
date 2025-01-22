@@ -34,6 +34,10 @@ function getRpcUrl(
       }
       throw new Error(`chain ${localChainId} is not supported`);
     }
+    case ChainId.ZORA:
+    case ChainId.ZORA_SEPOLIA:
+    case ChainId.ROOTSTOCK:
+    case ChainId.BLAST:
     case ChainId.OPTIMISM_SEPOLIA:
     case ChainId.ARBITRUM_SEPOLIA:
       throw new Error(`${chainId} is not supported`);

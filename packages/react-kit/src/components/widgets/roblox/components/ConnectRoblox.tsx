@@ -239,7 +239,6 @@ const Step = forwardRef<HTMLDivElement, StepProps>(
           tag="h4"
           margin={0}
           textAlign="center"
-          // @ts-expect-error textWrap is supported by browser
           style={{ textWrap: "balance" }}
         >
           {title}
@@ -249,7 +248,6 @@ const Step = forwardRef<HTMLDivElement, StepProps>(
           margin="0.25rem 0 1rem 0"
           color={getCssVar("--sub-text-color")}
           textAlign="center"
-          // @ts-expect-error textWrap is supported by browser
           style={{ textWrap: "pretty", flexGrow: 1 }}
         >
           {subtitle}
@@ -290,7 +288,6 @@ const SmallStep = ({ icon: Icon, title, isActive, isDone }: SmallStepProps) => {
         tag="h4"
         margin={0}
         textAlign="center"
-        // @ts-expect-error textWrap is supported by browser
         style={{ textWrap: "balance" }}
       >
         {title}

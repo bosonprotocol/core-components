@@ -34,7 +34,7 @@ const envName =
 const envConfig = getEnvConfigs(envName);
 const config = envConfig[0];
 const configId = config.configId;
-console.log({ configId });
+
 const ColorGlobalStyle = createGlobalStyle<{ color: CSSProperties["color"] }>`
   html, body{
     color: ${({ color }) => color};

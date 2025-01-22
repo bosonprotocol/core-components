@@ -94,7 +94,7 @@ export const RedeemWhatsNext = ({
   );
   const exchange = exchanges?.[0];
   const voucherRedeemableUntilDate =
-    exchange?.validUntilDate ?? exchange?.offer.voucherRedeemableUntilDate
+    (exchange?.validUntilDate ?? exchange?.offer.voucherRedeemableUntilDate)
       ? dayjs(
           getDateTimestamp(
             exchange?.validUntilDate ??

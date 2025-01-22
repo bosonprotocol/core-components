@@ -72,17 +72,6 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
         `
       : ""};
 
-  ${(props) => {
-    props.className === "closeeeee" &&
-      console.log(
-        "baseButton",
-        props.className,
-        props,
-        props.theme?.hover,
-        props.theme.hover?.svg?.line?.stroke
-      );
-    return "";
-  }}
   ${(props) =>
     props.theme?.hover &&
     css`

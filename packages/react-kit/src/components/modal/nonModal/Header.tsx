@@ -129,7 +129,6 @@ const Header: React.FC<HeaderProps> = ({
             theme={closeTheme}
             onClick={handleOnCloseClick}
             id="close"
-            className="closeeeee"
           >
             <Close size={32} />
           </BaseButton>

@@ -344,11 +344,6 @@ ${FormModel.formFields.walletAddress.placeholder}: ${message.deliveryDetails.wal
               deliveryDetails: values,
               ...redemptionInfo
             };
-            console.log({
-              redemptionInfoAccepted,
-              resume,
-              sendDeliveryInfoThroughXMTP
-            });
             if (!redemptionInfoAccepted) {
               setIsLoading(true);
               setRedemptionInfoError(null);

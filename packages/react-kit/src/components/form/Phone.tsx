@@ -3,7 +3,7 @@
 import { useField, useFormikContext } from "formik";
 import { GlobeHemisphereWest } from "phosphor-react";
 import React, { useCallback, useEffect, useState } from "react";
-import type { Country as CountryCode } from "react-phone-number-input";
+import type { Country as CountryCode, Value } from "react-phone-number-input";
 import PhoneInput, {
   formatPhoneNumberIntl,
   getCountryCallingCode,
@@ -132,9 +132,11 @@ const handleCountry = () => {
   return undefined;
 };
 
-export default function Phone({ name, ...props }: InputProps) {
+export type PhoneProps = InputProps;
+
+export default function Phone({ name, ...props }: PhoneProps) {
   const [initialized, setInitialized] = useState<boolean>(false);
-  const [phone, setPhone] = useState<string | undefined>(undefined);
+  const [phone, setPhone] = useState<Value | undefined>(undefined);
   const [countryCode, setCountryCode] = useState<CountryCode | undefined>(
     handleCountry()
   );
@@ -151,7 +153,7 @@ export default function Phone({ name, ...props }: InputProps) {
         ? getCountryCallingCode(countryCode as CountryCode)
         : false;
       const newValue = formatPhoneNumberIntl(
-        `${callingCode ? `+${callingCode}` : ""}${value}`
+        `${callingCode ? `+${callingCode}` : ""}${value}` as Value
       );
 
       if (!isValidPhoneNumber(newValue)) {
@@ -179,7 +181,7 @@ export default function Phone({ name, ...props }: InputProps) {
     if (!initialized && field.value) {
       const parsed = parsePhoneNumber(field.value);
       setInitialized(true);
-      setPhone(parsed?.nationalNumber || "");
+      setPhone((parsed?.nationalNumber || "") as Value);
       if (parsed?.country) {
         setCountryCode(parsed?.country as CountryCode);
       }
@@ -193,11 +195,12 @@ export default function Phone({ name, ...props }: InputProps) {
     <>
       {jsx}
       <PhoneWrapper className={selectClassName}>
-        {/* @ts-ignore */}
         <PhoneInput
           country={countryCode}
           value={phone}
-          onChange={(value) => setPhone((value || "").replace(/\+/g, ""))}
+          onChange={(value) =>
+            setPhone((value || "").replace(/\+/g, "") as Value)
+          }
           countrySelectComponent={({ iconComponent: Icon, ...props }) => (
             <>
               <div>
