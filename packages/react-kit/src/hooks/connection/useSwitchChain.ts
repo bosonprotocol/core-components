@@ -26,7 +26,10 @@ function getRpcUrl(
     case ChainId.MAINNET:
     case ChainId.GOERLI:
     case ChainId.SEPOLIA:
-    case 80002:
+    case ChainId.POLYGON:
+    case 80002: // POLYGON AMOY
+    case ChainId.BASE:
+    case 84532: // BASE SEPOLIA
       return RPC_URLS[chainId][0];
     case localChainId: {
       if (localRpcUrl) {

@@ -52,6 +52,14 @@ jobs:
             -p ${{ env.PINATA_JWT }} \
             -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
 
+          echo "Pin for testing/base env..."
+          npm run pin-to-pinata -- \
+            -e testing \
+            -c testing-84532-0 \
+            -fd ${{ env.FROM_DATE }} \
+            -p ${{ env.PINATA_JWT }} \
+            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
+
           echo "Pin for staging/amoy env..."
           npm run pin-to-pinata -- \
             -e staging \
@@ -68,6 +76,14 @@ jobs:
             -p ${{ env.PINATA_JWT }} \
             -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
 
+          echo "Pin for staging/base env..."
+          npm run pin-to-pinata -- \
+            -e staging \
+            -c staging-84532-0 \
+            -fd ${{ env.FROM_DATE }} \
+            -p ${{ env.PINATA_JWT }} \
+            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
+
           echo "Pin for production/polygon env..."
           npm run pin-to-pinata -- \
             -e production \
@@ -80,6 +96,14 @@ jobs:
           npm run pin-to-pinata -- \
             -e production \
             -c production-1-0 \
+            -fd ${{ env.FROM_DATE }} \
+            -p ${{ env.PINATA_JWT }} \
+            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
+
+          echo "Pin for production/base env..."
+          npm run pin-to-pinata -- \
+            -e production \
+            -c production-8453-0 \
             -fd ${{ env.FROM_DATE }} \
             -p ${{ env.PINATA_JWT }} \
             -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}

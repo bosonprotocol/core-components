@@ -6,15 +6,18 @@
     "ipfs": "https://api.0xgraph.xyz/ipfs",
     "testing": {
       "amoy": "boson-testing-amoy",
-      "sepolia": "boson-testing-sepolia"
+      "sepolia": "boson-testing-sepolia",
+      "base": "boson-testing-base"
     },
     "staging": {
       "amoy": "boson-staging-amoy",
-      "sepolia": "boson-staging-sepolia"
+      "sepolia": "boson-staging-sepolia",
+      "base": "boson-staging-base"
     },
     "production": {
       "polygon": "boson-polygon",
-      "ethereum": "boson-ethereum"
+      "ethereum": "boson-ethereum",
+      "base": "boson-base"
     }
   },
   "dependencies": {
@@ -36,10 +39,13 @@
     "manifest:local": "npm run manifest -- local local-31337-0 && npm run codegen",
     "manifest:testing:amoy": "npm run manifest -- testing testing-80002-0 && npm run codegen",
     "manifest:testing:sepolia": "npm run manifest -- testing testing-11155111-0 && npm run codegen",
+    "manifest:testing:base": "npm run manifest -- testing testing-84532-0 && npm run codegen",
     "manifest:staging:amoy": "npm run manifest -- staging staging-80002-0 && npm run codegen",
     "manifest:staging:sepolia": "npm run manifest -- staging staging-11155111-0 && npm run codegen",
+    "manifest:staging:base": "npm run manifest -- staging staging-84532-0 && npm run codegen",
     "manifest:production:polygon": "npm run manifest -- production production-137-0 && npm run codegen",
     "manifest:production:ethereum": "npm run manifest -- production production-1-0 && npm run codegen",
+    "manifest:production:base": "npm run manifest -- production production-8453-0 && npm run codegen",
     "codegen": "graph codegen",
     "create:local": "graph create --node http://localhost:8020/ boson/corecomponents",
     "remove:local": "graph remove --node http://localhost:8020/ boson/corecomponents",
@@ -51,25 +57,37 @@
     "deploy:cmd:testing:sepolia": "run-script-os",
     "deploy:cmd:testing:sepolia:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_testing_sepolia",
     "deploy:cmd:testing:sepolia:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_testing_sepolia%",
+    "deploy:cmd:testing:base": "run-script-os",
+    "deploy:cmd:testing:base:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_testing_base",
+    "deploy:cmd:testing:base:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_testing_base%",
     "deploy:cmd:staging:amoy": "run-script-os",
     "deploy:cmd:staging:amoy:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_staging_amoy",
     "deploy:cmd:staging:amoy:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_staging_amoy%",
     "deploy:cmd:staging:sepolia": "run-script-os",
     "deploy:cmd:staging:sepolia:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_staging_sepolia",
     "deploy:cmd:staging:sepolia:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_staging_sepolia%",
+    "deploy:cmd:staging:base": "run-script-os",
+    "deploy:cmd:staging:base:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_staging_base",
+    "deploy:cmd:staging:base:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_staging_base%",
     "deploy:cmd:production:polygon": "run-script-os",
     "deploy:cmd:production:polygon:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_production_polygon",
     "deploy:cmd:production:polygon:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_production_polygon%",
     "deploy:cmd:production:ethereum": "run-script-os",
     "deploy:cmd:production:ethereum:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_production_ethereum",
     "deploy:cmd:production:ethereum:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_production_ethereum%",
+    "deploy:cmd:production:base": "run-script-os",
+    "deploy:cmd:production:base:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_production_base",
+    "deploy:cmd:production:base:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_production_base%",
     "deploy:local": "npm run manifest:local && npm run create:local && npm run deploy:cmd:local",
     "deploy:testing:amoy": "npm run manifest:testing:amoy && npm run deploy:cmd:testing:amoy && npm run post-deploy:ormi -- --env=testing_amoy",
     "deploy:testing:sepolia": "npm run manifest:testing:sepolia && npm run deploy:cmd:testing:sepolia && npm run post-deploy:ormi -- --env=testing_sepolia",
+    "deploy:testing:base": "npm run manifest:testing:base && npm run deploy:cmd:testing:base && npm run post-deploy:ormi -- --env=testing_base",
     "deploy:staging:amoy": "npm run manifest:staging:amoy && npm run deploy:cmd:staging:amoy && npm run post-deploy:ormi -- --env=staging_amoy",
     "deploy:staging:sepolia": "npm run manifest:staging:sepolia && npm run deploy:cmd:staging:sepolia && npm run post-deploy:ormi -- --env=staging_sepolia",
+    "deploy:staging:base": "npm run manifest:staging:base && npm run deploy:cmd:staging:base && npm run post-deploy:ormi -- --env=staging_base",
     "deploy:production:polygon": "npm run manifest:production:polygon && npm run deploy:cmd:production:polygon && npm run post-deploy:ormi -- --env=production_polygon",
     "deploy:production:ethereum": "npm run manifest:production:ethereum && npm run deploy:cmd:production:ethereum && npm run post-deploy:ormi -- --env=production_ethereum",
+    "deploy:production:base": "npm run manifest:production:base && npm run deploy:cmd:production:base && npm run post-deploy:ormi -- --env=production_base",
     "test": "npm run manifest:local && graph test"
   }
 }

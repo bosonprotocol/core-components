@@ -7,13 +7,14 @@ import { EnvironmentType } from "@bosonprotocol/core-sdk";
 
 export const LocalChainId = 31337;
 export const ChainId_POLYGON_AMOY = 80002;
+export const ChainId_BASE_SEPOLIA = 84532;
 
 export const UniWalletSupportedChains = [
   ChainId.MAINNET,
   // ChainId.ARBITRUM_ONE,
   // ChainId.OPTIMISM,
-  ChainId.POLYGON
-  // ChainId.BASE
+  ChainId.POLYGON,
+  ChainId.BASE
 ];
 
 export const CHAIN_IDS_TO_NAMES = {
@@ -33,6 +34,7 @@ export const CHAIN_IDS_TO_NAMES = {
   [ChainId.AVALANCHE]: "avalanche",
   [ChainId.BASE]: "base",
   [ChainId.BASE_GOERLI]: "base_goerli",
+  [ChainId_BASE_SEPOLIA]: "base_sepolia",
   [LocalChainId]: "local"
 } as const;
 
@@ -53,12 +55,14 @@ export const CHAIN_IDS_TO_FRIENDLY_NAMES = {
   [ChainId.AVALANCHE]: "Avalanche",
   [ChainId.BASE]: "Base",
   [ChainId.BASE_GOERLI]: "Base Goerli",
+  [ChainId_BASE_SEPOLIA]: "Base Sepolia",
   [LocalChainId]: "Local Hardhat"
 } as const;
 
 const SUPPORTED_CHAINS = [
   LocalChainId,
   ChainId_POLYGON_AMOY,
+  ChainId_BASE_SEPOLIA,
   ..._SUPPORTED_CHAINS
 ] as const;
 export declare type SupportedChainsType = (typeof SUPPORTED_CHAINS)[number];
@@ -94,6 +98,7 @@ export const TESTNET_CHAIN_IDS = [
   ChainId.SEPOLIA,
   ChainId.POLYGON_MUMBAI,
   ChainId_POLYGON_AMOY,
+  ChainId_BASE_SEPOLIA,
   LocalChainId
   // ChainId.ARBITRUM_GOERLI,
   // ChainId.OPTIMISM_GOERLI,
@@ -129,7 +134,8 @@ export const L2_CHAIN_IDS = [
   // ChainId.ARBITRUM_GOERLI,
   // ChainId.OPTIMISM,
   // ChainId.OPTIMISM_GOERLI
-  // ChainId.BASE,
+  ChainId.BASE,
+  ChainId_BASE_SEPOLIA
   // ChainId.BASE_GOERLI
 ] as const;
 
@@ -148,7 +154,9 @@ export function getChainPriority(chainId: number): number {
       return 0;
     case ChainId.POLYGON:
     case ChainId.POLYGON_MUMBAI:
-    case 80002:
+    case ChainId_POLYGON_AMOY:
+    case ChainId.BASE:
+    case ChainId_BASE_SEPOLIA:
       return 1;
     // case ChainId.ARBITRUM_ONE:
     // case ChainId.ARBITRUM_GOERLI:

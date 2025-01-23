@@ -85,7 +85,7 @@ describe("index entrypoint", () => {
     }
   );
 
-  test.each([1, 137, 80002, 11155111])(
+  test.each([1, 137, 80002, 11155111, 84532, 8453])(
     `Chain Id %p is available`,
     (chainId) => {
       expect(chains[chainId]).toBeTruthy();
