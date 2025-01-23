@@ -117,8 +117,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       defaultTokens: chainIdToDefaultTokens.get(84532),
       nativeCoin: chainIdToInfo.get(84532),
       getTxExplorerUrl: chainIdToGraphTx.get(84532),
-      subgraphUrl:
-        "", // TODO
+      subgraphUrl: "", // TODO
       jsonRpcUrl:
         "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs/api/v0",
@@ -210,8 +209,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       defaultTokens: chainIdToDefaultTokens.get(84532),
       nativeCoin: chainIdToInfo.get(84532),
       getTxExplorerUrl: chainIdToGraphTx.get(84532),
-      subgraphUrl:
-        "", //TODO
+      subgraphUrl: "", //TODO
       jsonRpcUrl:
         "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
@@ -299,8 +297,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       defaultTokens: chainIdToDefaultTokens.get(8453),
       nativeCoin: chainIdToInfo.get(8453),
       getTxExplorerUrl: chainIdToGraphTx.get(8453),
-      subgraphUrl:
-        "", // TODO
+      subgraphUrl: "", // TODO
       jsonRpcUrl:
         "https://base-mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e",
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
