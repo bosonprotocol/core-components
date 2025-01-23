@@ -25,9 +25,9 @@ describe("index entrypoint", () => {
     (envName) => {
       const envConfigs = getEnvConfigs(envName as EnvironmentType);
       const nbConfigs = {
-        testing: 2,
-        staging: 2,
-        production: 2
+        testing: 3,
+        staging: 3,
+        production: 3
       };
       expect(envConfigs).toBeTruthy();
       expect(envConfigs.length).toEqual(nbConfigs[envName]);
