@@ -1,8 +1,6 @@
-import { gql } from "graphql-request";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { useCoreSDKWithContext } from "../../../hooks/core-sdk/useCoreSdkWithContext";
-import { fetchSubgraph } from "../../../lib/subgraph/subgraph";
 import { useAccount } from "../../../hooks/connection/connection";
 
 function lowerCase(str: string | undefined) {
@@ -19,44 +17,12 @@ export interface SellerRolesProps {
 export function useSellerRoles(id: string) {
   const { address } = useAccount();
   const coreSDK = useCoreSDKWithContext();
-
   const { data } = useQuery(
-    ["seller-roles", { id }],
+    ["seller-roles", id, coreSDK.uuid],
     async () => {
-      const result = await fetchSubgraph<{
-        sellers: {
-          id: string;
-          admin: string;
-          clerk: string;
-          assistant: string;
-          treasury: string;
-          active: boolean;
-        }[];
-      }>(
-        coreSDK.subgraphUrl,
-        gql`
-          query GetSellerByID(
-            $id: String
-          ) {
-            sellers(
-              where: {
-                ${id ? `id: "${id}"` : ""}
-              }
-            ) {
-              id
-              admin
-              active
-              clerk
-              assistant
-              treasury
-            }
-          }
-        `,
-        {
-          id
-        }
-      );
-      return result?.sellers[0] ?? null;
+      const seller = await coreSDK.getSellerById(id);
+
+      return seller ?? null;
     },
     {
       enabled: !!id
@@ -78,6 +44,6 @@ export function useSellerRoles(id: string) {
     }),
     [data, address]
   );
-
+  console.log({ sellerProps, data });
   return { sellerRoles: sellerProps, seller: data };
 }
