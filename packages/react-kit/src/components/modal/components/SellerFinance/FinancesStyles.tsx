@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { colors } from "../../../../theme";
 
 import { Grid } from "../../../ui/Grid";
@@ -14,11 +14,11 @@ export const InputWrapper = styled(Grid)<{ $hasError?: boolean }>`
   margin-top: -1rem;
   padding: 1.125rem 1rem;
   max-height: 3.5rem;
-  background: ${colors.greyDark};
+  background: ${colors.greyLight};
   ${({ $hasError }) =>
     $hasError &&
-    `
-    border: 0.0625rem solid ${colors.red};
+    css`
+      border: 0.0625rem solid ${colors.red};
     `}
 `;
 
@@ -32,7 +32,6 @@ export const Input = styled.input`
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.5;
-  color: ${colors.white};
   &:focus {
     outline: none;
   }
