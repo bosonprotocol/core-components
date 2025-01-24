@@ -5,7 +5,9 @@ export const chainIdToInfo = new Map<ChainId, ProtocolConfig["nativeCoin"]>([
   [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [1, { decimals: "18", name: "Ether", symbol: "ETH" }],
   [11155111, { decimals: "18", name: "sETH", symbol: "sETH" }],
-  [31337, { decimals: "18", name: "Ether", symbol: "ETH" }]
+  [31337, { decimals: "18", name: "Ether", symbol: "ETH" }],
+  [84532, { decimals: "18", name: "Ether", symbol: "ETH" }],
+  [8453, { decimals: "18", name: "Ether", symbol: "ETH" }]
 ]);
 
 export const chainIdToGraphTx = new Map<
@@ -46,6 +48,24 @@ export const chainIdToGraphTx = new Map<
         return `https://etherscan.io/address/${txHash}`;
       }
       return `https://etherscan.io/tx/${txHash}`;
+    }
+  ],
+  [
+    8453,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://basescan.org/address/${txHash}`;
+      }
+      return `https://basescan.org/tx/${txHash}`;
+    }
+  ],
+  [
+    84532,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://sepolia.basescan.org/address/${txHash}`;
+      }
+      return `https://sepolia.basescan.org/tx/${txHash}`;
     }
   ],
   [31337, (txHash = "") => `${txHash}`] // TODO: add url
@@ -164,6 +184,52 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
         name: "Tether USD",
         address: "0xaA8E23Fb1079EA71e0a56F48a2aA51851D8433D0",
         decimals: "6"
+      }
+    ]
+  ],
+  [
+    84532,
+    [
+      {
+        symbol: "ETH",
+        name: "ETH",
+        address: "0x0000000000000000000000000000000000000000",
+        decimals: "18"
+      },
+      {
+        symbol: "WETH",
+        name: "Wrapped Ether",
+        address: "0x4200000000000000000000000000000000000006",
+        decimals: "18"
+      },
+      {
+        symbol: "BOSON",
+        name: "Boson Token (PoS)",
+        address: "0xd4857D5e326eee33d7bC5d2494524Dab65d55851",
+        decimals: "18"
+      }
+    ]
+  ],
+  [
+    8453,
+    [
+      {
+        symbol: "ETH",
+        name: "ETH",
+        address: "0x0000000000000000000000000000000000000000",
+        decimals: "18"
+      },
+      {
+        symbol: "WETH",
+        name: "Wrapped Ether",
+        address: "0x4200000000000000000000000000000000000006",
+        decimals: "18"
+      },
+      {
+        symbol: "BOSON",
+        name: "Boson Token (PoS)",
+        address: "", // TODO
+        decimals: "18"
       }
     ]
   ],

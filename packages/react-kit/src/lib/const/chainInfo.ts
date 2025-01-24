@@ -114,6 +114,38 @@ const CHAIN_INFO: ChainInfoMap = {
       decimals: 18
     }
   },
+  [ChainId.BASE]: {
+    networkType: NetworkType.L2,
+    blockWaitMsBeforeWarning: ms(`10m`),
+    bridge: "https://superbridge.app/base",
+    docs: "https://www.base.org",
+    explorer: "https://basescan.org/",
+    infoLink: "https://info.uniswap.org/#/base/",
+    label: "Base",
+    logoUrl: ethereumLogoUrl,
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18
+    },
+    defaultListUrl: ""
+  },
+  84532: {
+    networkType: NetworkType.L2,
+    blockWaitMsBeforeWarning: ms(`10m`),
+    bridge: "https://testnets.superbridge.app/base-sepolia",
+    docs: "https://www.base.org",
+    explorer: "https://sepolia.basescan.org/",
+    infoLink: "https://info.uniswap.org/#/base-sepolia/",
+    label: "Base Sepolia",
+    logoUrl: ethereumLogoUrl,
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18
+    },
+    defaultListUrl: ""
+  },
   [LocalChainId]: {
     networkType: NetworkType.L1,
     docs: "https://docs.uniswap.org/",
