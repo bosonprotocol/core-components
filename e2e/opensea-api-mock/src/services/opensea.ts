@@ -226,11 +226,17 @@ function getChainId(chain: string): number {
     case "sepolia": {
       return 11155111;
     }
+    case "base-sepolia": {
+      return 84532;
+    }
     case "polygon": {
       return 137;
     }
     case "mainnet": {
       return 1;
+    }
+    case "base": {
+      return 8453;
     }
     case "hardhat": {
       return 31337;

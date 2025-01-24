@@ -11,7 +11,6 @@ import { Interface } from "@ethersproject/abi";
 import { getAddress } from "@ethersproject/address";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { CreateOfferArgs } from "./types";
-import { AddressZero } from "@ethersproject/constants";
 
 export const bosonOfferHandlerIface = new Interface(abis.IBosonOfferHandlerABI);
 

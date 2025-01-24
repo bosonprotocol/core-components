@@ -103,6 +103,38 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       },
       metaTx: undefined,
       lens: undefined
+    },
+    {
+      envName: "testing",
+      chainId: 84532,
+      configId: "testing-84532-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-84532-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/testing-84532-0/offers/whitelist.json",
+      defaultDisputeResolverId: "4",
+      defaultTokens: chainIdToDefaultTokens.get(84532),
+      nativeCoin: chainIdToInfo.get(84532),
+      getTxExplorerUrl: chainIdToGraphTx.get(84532),
+      // temporary deploy on TheGraph studio until 0xgraph ready on base-sepolia
+      subgraphUrl:
+        "https://api.studio.thegraph.com/query/19713/boson-testing-base/version/latest",
+      jsonRpcUrl:
+        "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs/api/v0",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        // https://github.com/bosonprotocol/boson-protocol-contracts/pull/976
+        protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
+        priceDiscoveryClient: "0xFDD51a6DB1cE50d1C33b98782035f3cB1E7E1f14",
+        forwarder: "",
+        openseaWrapper: ""
+      },
+      metaTx: {
+        relayerUrl: "", // TODO
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: undefined
     }
   ],
   staging: [
@@ -164,6 +196,37 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       },
       metaTx: undefined,
       lens: undefined
+    },
+    {
+      envName: "staging",
+      chainId: 84532,
+      configId: "staging-84532-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-84532-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/staging-84532-0/offers/whitelist.json",
+      defaultDisputeResolverId: "4",
+      defaultTokens: chainIdToDefaultTokens.get(84532),
+      nativeCoin: chainIdToInfo.get(84532),
+      getTxExplorerUrl: chainIdToGraphTx.get(84532),
+      // temporary deploy on TheGraph studio until 0xgraph ready on base-sepolia
+      subgraphUrl:
+        "https://api.studio.thegraph.com/query/19713/boson-staging-base/version/latest",
+      jsonRpcUrl:
+        "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/976
+        protocolDiamond: "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
+        priceDiscoveryClient: "0x295044BCfB2E84eDD40fEa5970df6B26CAC9a703",
+        forwarder: ""
+      },
+      metaTx: {
+        relayerUrl: "", // TODO
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: undefined
     }
   ],
   production: [
@@ -222,6 +285,34 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         forwarder: "0x84a0856b038eaAd1cC7E297cF34A7e72685A8693" // https://docs-gasless.biconomy.io/misc/contract-addresses
       },
       metaTx: undefined,
+      lens: undefined
+    },
+    {
+      envName: "production",
+      chainId: 8453,
+      configId: "production-8453-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-8453-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-8453-0/offers/whitelist.json",
+      defaultDisputeResolverId: "", // TODO
+      defaultTokens: chainIdToDefaultTokens.get(8453),
+      nativeCoin: chainIdToInfo.get(8453),
+      getTxExplorerUrl: chainIdToGraphTx.get(8453),
+      subgraphUrl: "", // TODO
+      jsonRpcUrl:
+        "https://base-mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        protocolDiamond: "", // TODO
+        priceDiscoveryClient: "", // TODO
+        forwarder: ""
+      },
+      metaTx: {
+        relayerUrl: "", // TODO
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
       lens: undefined
     }
   ]
