@@ -19,6 +19,7 @@ export const colors = {
   greyLight2: "#dedfe3",
   greyLight3: "#cdcdcd",
   greyLight4: "#A1A1A1",
+  lime: "#B6F952",
   orange: "#FC6838",
   orangeDark: "#ff8c00", // color 'darkorange' in chrome
   red: "#FC386A",
