@@ -117,7 +117,9 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       defaultTokens: chainIdToDefaultTokens.get(84532),
       nativeCoin: chainIdToInfo.get(84532),
       getTxExplorerUrl: chainIdToGraphTx.get(84532),
-      subgraphUrl: "", // TODO
+      // temporary deploy on TheGraph studio until 0xgraph ready on base-sepolia
+      subgraphUrl:
+        "https://api.studio.thegraph.com/query/19713/boson-testing-base/version/latest",
       jsonRpcUrl:
         "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs/api/v0",
@@ -209,7 +211,9 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       defaultTokens: chainIdToDefaultTokens.get(84532),
       nativeCoin: chainIdToInfo.get(84532),
       getTxExplorerUrl: chainIdToGraphTx.get(84532),
-      subgraphUrl: "", //TODO
+      // temporary deploy on TheGraph studio until 0xgraph ready on base-sepolia
+      subgraphUrl:
+        "https://api.studio.thegraph.com/query/19713/boson-staging-base/version/latest",
       jsonRpcUrl:
         "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
