@@ -216,7 +216,8 @@ export const RobloxExchangesGrid = ({
                                 )
                                   ? raiseDisputeForExchangeUrlWithId
                                   : `https://${raiseDisputeForExchangeUrlWithId}`;
-                              window.open(urlWithHttpPrefix, "_blank");
+                              const windowToUse = window.top || window.parent;
+                              windowToUse.open(urlWithHttpPrefix, "_blank");
                             }
                           },
                           type: "button"
