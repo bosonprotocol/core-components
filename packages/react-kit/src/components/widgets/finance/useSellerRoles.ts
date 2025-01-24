@@ -44,6 +44,6 @@ export function useSellerRoles(id: string) {
     }),
     [data, address]
   );
-  console.log({ sellerProps, data });
+
   return { sellerRoles: sellerProps, seller: data };
 }
