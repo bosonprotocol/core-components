@@ -35,7 +35,7 @@ export const LoginWithRoblox = ({
     <BaseButton
       theme={primaryButtonTheme}
       onClick={() => {
-        const windowToUse = window.top || window;
+        const windowToUse = window.top || window.parent;
         windowToUse.open(`${backendOrigin}/login`, "_blank");
         const id = setInterval(async () => {
           try {
