@@ -6,6 +6,8 @@ on:
     secrets:
       ORMI_0x_GRAPH_API_KEY_TESTING:
         required: true
+      THE_GRAPH_STUDIO_DEPLOY_KEY:
+        required: true
       GH_TOKEN:
         required: true
 
