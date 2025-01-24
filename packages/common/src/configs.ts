@@ -60,7 +60,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-amoy/latest/gn",
       jsonRpcUrl:
         "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
@@ -93,7 +93,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-sepolia/latest/gn",
       jsonRpcUrl:
         "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs/api/v0",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
@@ -122,7 +122,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         "https://api.studio.thegraph.com/query/19713/boson-testing-base/version/latest",
       jsonRpcUrl:
         "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs/api/v0",
+      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         // https://github.com/bosonprotocol/boson-protocol-contracts/pull/976
@@ -155,7 +155,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         "https://api.0xgraph.xyz/api/public/da9367fc-3453-4e08-824f-19fb4281b6a1/subgraphs/boson-staging-amoy/latest/gn",
       jsonRpcUrl:
         "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         protocolDiamond: "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
@@ -216,7 +216,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         "https://api.studio.thegraph.com/query/19713/boson-staging-base/version/latest",
       jsonRpcUrl:
         "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
+      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/976
