@@ -35,14 +35,14 @@ import { RobloxProvider } from "../../../hooks/roblox/context/RobloxProvider";
 
 export type CommitWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
-  BosonThemeProviderProps &
+  Partial<BosonThemeProviderProps> &
   RedemptionProviderProps &
   ConvertionRateProviderProps &
   Omit<Web3ProviderProps, "infuraKey"> &
   BosonProviderProps &
   WithReduxProviderProps & {
     children: ReactNode;
-    withGlobalStyle: boolean;
+    withGlobalStyle?: boolean;
   };
 
 const { infuraKey, magicLinkKey } = CONFIG;
@@ -78,8 +78,8 @@ export const CommitWidgetProviders: React.FC<CommitWidgetProvidersProps> =
 
       return (
         <BosonThemeProvider
-          theme={props.theme || storyBookThemeKey}
-          roundness={props.roundness}
+          theme={props.theme || storyBookThemeKey || "light"}
+          roundness={props.roundness || "min"}
         >
           {withGlobalStyle && <GlobalStyledThemed />}
           <WithReduxProvider
