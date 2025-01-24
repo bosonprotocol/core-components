@@ -317,7 +317,8 @@ function RedeemNonModal({
     const raiseDisputeForExchangeUrlWithId =
       raiseDisputeForExchangeUrl?.replace("{id}", exchangeId || "");
     if (raiseDisputeForExchangeUrlWithId) {
-      window.open(raiseDisputeForExchangeUrlWithId, "_blank");
+      const windowToUse = window.top || window.parent;
+      windowToUse.open(raiseDisputeForExchangeUrlWithId, "_blank");
     }
   };
   const onContractualAgreementClick = () => {

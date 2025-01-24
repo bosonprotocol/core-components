@@ -79,7 +79,8 @@ export const injectedConnection: Connection = {
   // If on non-injected, non-mobile browser, prompt user to install Metamask
   overrideActivate: () => {
     if (getShouldAdvertiseMetaMask()) {
-      window.open("https://metamask.io/", "inst_metamask");
+      const windowToUse = window.top || window.parent;
+      windowToUse.open("https://metamask.io/", "inst_metamask");
       return true;
     }
     return false;
@@ -230,7 +231,8 @@ export const getCoinbaseWalletConnection = ({
     // If on a mobile browser that isn't the coinbase wallet browser, deeplink to the coinbase wallet app
     overrideActivate: () => {
       if (isMobile && !getIsInjectedMobileBrowser()) {
-        window.open("https://go.cb-w.com/mtUDhEZPy1", "cbwallet");
+        const windowToUse = window.top || window.parent;
+        windowToUse.open("https://go.cb-w.com/mtUDhEZPy1", "cbwallet");
         return true;
       }
       return false;
