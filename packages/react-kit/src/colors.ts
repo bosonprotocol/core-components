@@ -12,16 +12,17 @@ export const colors = {
   darkShade: "#333033",
   froly: "#F46A6A",
   green: "#02F3A2",
-  grey: "grey",
+  grey: "#808080", // color 'grey' in chrome
   greyDark: "#556072",
   greyDark2: "#505050",
   greyLight: "#F1F3F9",
   greyLight2: "#dedfe3",
   greyLight3: "#cdcdcd",
+  greyLight4: "#A1A1A1",
   orange: "#FC6838",
-  orangeDark: "darkorange",
+  orangeDark: "#ff8c00", // color 'darkorange' in chrome
   red: "#FC386A",
-  redDark: "darkred",
+  redDark: "#8b0000", // color 'darkred' in chrome
   torquise: "#06F7D5",
   violet: "#7829F9",
   white: "#ffffff"
