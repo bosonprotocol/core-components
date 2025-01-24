@@ -65,7 +65,7 @@ export const Base = {
       ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
       sendDeliveryInfoThroughXMTP: true,
       raiseDisputeForExchangeUrl:
-        "https://drcenter-staging.on.fleek.co/#/exchange/{id}/raise-dispute",
+        "https://drcenter-staging.on-fleek.app/#/exchange/{id}/raise-dispute",
       showProductsPreLogin: true,
       roundness: "mid",
       layout: "vertical"

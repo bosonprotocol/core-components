@@ -22,11 +22,8 @@ import { Wallet } from "phosphor-react";
 import { ReduxProvider } from "../components/widgets/ReduxProvider";
 import { BlockNumberProvider } from "../hooks/contracts/useBlockNumber";
 
-const successButtonTheme: ConnectWalletProps["connectWalletButtonTheme"] = {
-  ...bosonButtonThemes()["primary"],
-  color: "inherit",
-  background: "var(--buttonBgColor)"
-};
+const successButtonTheme: ConnectWalletProps["connectWalletButtonTheme"] =
+  bosonButtonThemes()["primary"];
 const errorButtonTheme = bosonButtonThemes()["orangeInverse"];
 
 const envName =
