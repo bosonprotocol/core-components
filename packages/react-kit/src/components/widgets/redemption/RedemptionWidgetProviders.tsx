@@ -26,7 +26,7 @@ import {
 } from "./provider/RedemptionWidgetProvider";
 import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
 import { Web3Provider, Web3ProviderProps } from "../../wallet2/web3Provider";
-import { BlockNumberProvider } from "../../../hooks/contracts/useBlockNumber";
+import { BlockNumberProvider } from "../../../hooks/contracts/BlockNumberProvider";
 import { RobloxProvider } from "../../../hooks/roblox/context/RobloxProvider";
 import {
   BosonThemeProvider,
