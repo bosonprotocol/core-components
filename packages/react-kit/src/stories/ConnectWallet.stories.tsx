@@ -20,13 +20,10 @@ import { bosonButtonThemeKeys } from "../components/ui/ThemedButton";
 import { CSSProperties, createGlobalStyle } from "styled-components";
 import { Wallet } from "phosphor-react";
 import { ReduxProvider } from "../components/widgets/ReduxProvider";
-import { BlockNumberProvider } from "../hooks/contracts/useBlockNumber";
+import { BlockNumberProvider } from "../hooks/contracts/BlockNumberProvider";
 
-const successButtonTheme: ConnectWalletProps["connectWalletButtonTheme"] = {
-  ...bosonButtonThemes()["primary"],
-  color: "inherit",
-  background: "var(--buttonBgColor)"
-};
+const successButtonTheme: ConnectWalletProps["connectWalletButtonTheme"] =
+  bosonButtonThemes()["primary"];
 const errorButtonTheme = bosonButtonThemes()["orangeInverse"];
 
 const envName =

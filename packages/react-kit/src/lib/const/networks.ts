@@ -135,6 +135,10 @@ export const FALLBACK_URLS = {
     /*TODO:QUICKNODE_BASE_GOERLI_RPC_URL,*/
     "https://base-goerli.blastapi.io/b5a802d8-151d-4443-90a7-699108dc4e01",
     "https://svc.blockdaemon.com/base/testnet/native?apiKey=zpka_1334e7c450464d06b6e33a972a7a4e57_75320f43"
+  ],
+  84532: [
+    // "Safe" URLs
+    "https://sepolia.base.org"
   ]
 };
 
@@ -200,6 +204,11 @@ export const getRpcUrls = (infuraKey: string) => ({
   [ChainId.BASE_GOERLI]: [
     `https://base-goerli.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.BASE_GOERLI]
+  ],
+  84532: [
+    // BASE_SEPOLIA
+    `https://base-sepolia.infura.io/v3/${infuraKey}`,
+    ...FALLBACK_URLS[84532]
   ],
   31337: [
     `https://mainnet.infura.io/v3/${infuraKey}`,

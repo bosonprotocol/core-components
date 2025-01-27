@@ -88,12 +88,20 @@ const stepToIcon = {
 } as const;
 
 const breakpointHorizontal = breakpoint.xs;
+const breakpointForHook = "isXXS" satisfies keyof ReturnType<
+  typeof useBreakpoints
+>;
 
-const StepsOverview = styled(Grid)`
+const StepsOverview = styled(Grid)<{ $hide: boolean }>`
   padding: 1rem;
-  ${breakpointHorizontal} {
-    display: none;
-  }
+  ${({ $hide }) => {
+    return (
+      $hide &&
+      css`
+        display: none;
+      `
+    );
+  }}
 `;
 const Wrapper = styled(Grid).attrs({
   flexDirection: "column"
@@ -461,15 +469,20 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
       icon: stepToIcon[2]
     } satisfies Partial<SmallStepProps>;
     const [showFullSteps, setShowFullSteps] = useState<boolean>(false);
-    const { isXS } = useBreakpoints();
+    const { [breakpointForHook]: breakpointToHideSmallSteps } =
+      useBreakpoints();
     useEffect(() => {
-      if (!isXS) {
+      if (!breakpointToHideSmallSteps) {
         setShowFullSteps(true);
       }
-    }, [isXS]);
+    }, [breakpointToHideSmallSteps]);
+
     return (
       <Wrapper>
-        <StepsOverview>
+        <StepsOverview
+          $hide={!breakpointToHideSmallSteps}
+          className={`steps-overview ${breakpointToHideSmallSteps ? "" : "hidden"}`} // this is so that it can be targeted from widgets
+        >
           <SmallStep {...step0Props} title="Roblox" />
           <SmallStep {...step1Props} title="Account" />
           <SmallStep {...step2Props} title={step3.titleForMobile} />

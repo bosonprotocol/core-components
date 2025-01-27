@@ -92,6 +92,7 @@ export * from "./lib/opensea/getOpenSeaUrl";
 export * from "./lib/promises/promises";
 export * from "./lib/url/url";
 export * from "./theme";
+export * from "./colors";
 export * from "./types/helpers";
 export { AuthTokenType } from "@bosonprotocol/common";
 export * from "@bosonprotocol/core-sdk";

@@ -35,7 +35,7 @@ import {
 } from "./FinancesStyles";
 
 const MaxLimitWrapper = styled.div`
-  color: ${colors.greyLight};
+  color: ${colors.greyDark};
   margin-top: 0.25rem;
 `;
 

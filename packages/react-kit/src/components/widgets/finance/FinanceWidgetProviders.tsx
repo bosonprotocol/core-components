@@ -17,51 +17,68 @@ import ConvertionRateProvider, {
 } from "./convertion-rate/ConvertionRateProvider";
 import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
 import { Web3Provider, Web3ProviderProps } from "../../wallet2/web3Provider";
-import { BlockNumberProvider } from "../../../hooks/contracts/useBlockNumber";
+import { BlockNumberProvider } from "../../../hooks/contracts/BlockNumberProvider";
+import {
+  BosonThemeProvider,
+  BosonThemeProviderProps,
+  useBosonTheme
+} from "../BosonThemeProvider";
+import { GlobalStyledThemed } from "../../styles/GlobalStyledThemed";
 
 export type FinanceWidgetProvidersProps = Omit<
   ConfigProviderProps,
   "magicLinkKey" | "infuraKey"
 > &
   Omit<Web3ProviderProps, "infuraKey"> &
+  Partial<BosonThemeProviderProps> &
   CommonWidgetTypes &
   ConvertionRateProviderProps &
   BosonProviderProps &
   WithReduxProviderProps & {
     children: ReactNode;
+    withGlobalStyle?: boolean;
   };
 
 const { infuraKey, magicLinkKey } = CONFIG;
 
 export const FinanceWidgetProviders: React.FC<FinanceWidgetProvidersProps> =
-  withQueryClientProvider(({ children, ...props }) => {
+  withQueryClientProvider(({ children, withGlobalStyle, ...props }) => {
     const parentOrigin = getParentWindowOrigin();
+    const { themeKey: storyBookThemeKey } =
+      useBosonTheme({
+        throwOnError: false
+      }) || {};
     return (
-      <WithReduxProvider
-        withCustomReduxContext={props.withCustomReduxContext}
-        withReduxProvider={props.withReduxProvider}
+      <BosonThemeProvider
+        theme={props.theme || storyBookThemeKey || "light"}
+        roundness={props.roundness || "min"}
       >
-        <Web3Provider {...props} infuraKey={infuraKey}>
-          <ConfigProvider
-            magicLinkKey={magicLinkKey}
-            infuraKey={infuraKey}
-            {...props}
-          >
-            <BlockNumberProvider>
-              <BosonProvider {...props}>
-                <GlobalStyle />
-                <SignerProvider
-                  parentOrigin={parentOrigin}
-                  withExternalSigner={props.withExternalSigner}
-                >
-                  <ConvertionRateProvider>
-                    <ModalProvider>{children}</ModalProvider>
-                  </ConvertionRateProvider>
-                </SignerProvider>
-              </BosonProvider>
-            </BlockNumberProvider>
-          </ConfigProvider>
-        </Web3Provider>
-      </WithReduxProvider>
+        {withGlobalStyle && <GlobalStyledThemed />}
+        <WithReduxProvider
+          withCustomReduxContext={props.withCustomReduxContext}
+          withReduxProvider={props.withReduxProvider}
+        >
+          <Web3Provider {...props} infuraKey={infuraKey}>
+            <ConfigProvider
+              magicLinkKey={magicLinkKey}
+              infuraKey={infuraKey}
+              {...props}
+            >
+              <BlockNumberProvider>
+                <BosonProvider {...props}>
+                  <SignerProvider
+                    parentOrigin={parentOrigin}
+                    withExternalSigner={props.withExternalSigner}
+                  >
+                    <ConvertionRateProvider>
+                      <ModalProvider>{children}</ModalProvider>
+                    </ConvertionRateProvider>
+                  </SignerProvider>
+                </BosonProvider>
+              </BlockNumberProvider>
+            </ConfigProvider>
+          </Web3Provider>
+        </WithReduxProvider>
+      </BosonThemeProvider>
     );
   });
