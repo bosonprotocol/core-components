@@ -542,7 +542,6 @@ export const CheckboxWrapper = styled.label<{
 
 export const VideoPreview = styled.video`
   background: ${colors.greyLight};
-  object-fit: contain;
 `;
 export const ImagePreview = styled.img`
   background: ${colors.greyLight};
