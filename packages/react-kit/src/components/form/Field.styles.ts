@@ -139,6 +139,7 @@ export type FileUploadWrapperTheme = Partial<{
   error: Partial<{
     borderColor: CSSProperties["borderColor"];
   }>;
+  media: Partial<Pick<CSSProperties, "objectFit">>;
   overrides: Partial<CSSProperties>;
 }>;
 export const FileUploadWrapper = styled.div<{
@@ -167,7 +168,7 @@ export const FileUploadWrapper = styled.div<{
           justify-content: center;
         `}
 
-  img {
+  img, video {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -176,7 +177,12 @@ export const FileUploadWrapper = styled.div<{
     pointer-events: none;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    ${({ theme }) => {
+      return css`
+        object-fit: ${theme?.media?.objectFit || "cover"};
+      `;
+    }}
+
     + svg {
       display: none;
     }
@@ -536,8 +542,6 @@ export const CheckboxWrapper = styled.label<{
 
 export const VideoPreview = styled.video`
   background: ${colors.greyLight};
-  height: 100%;
-  width: 100%;
   object-fit: contain;
 `;
 export const ImagePreview = styled.img`

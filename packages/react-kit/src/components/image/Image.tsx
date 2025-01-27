@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Loading } from "../ui/loading/Loading";
 
 import {
-  ImageContainer,
+  ImageHtml,
   ImageErrorText,
   ImagePlaceholder,
   ImageWrapper
@@ -62,7 +62,7 @@ export const Image: React.FC<IBaseImage> = ({
       </ImageWrapper>
       <ImageWrapper {...rest} data-image-wrapper data-image $hide={!isSuccess}>
         {children || ""}
-        <ImageContainer
+        <ImageHtml
           data-testid={dataTestId}
           src={currentSrc}
           alt={alt}

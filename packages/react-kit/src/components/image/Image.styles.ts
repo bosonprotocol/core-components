@@ -11,7 +11,7 @@ export const ImageWrapper = styled.div<{ $hide?: boolean }>`
   font-size: inherit;
 `;
 
-export const ImageContainer = styled.img`
+export const ImageHtml = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
