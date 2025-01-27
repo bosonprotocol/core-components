@@ -20,7 +20,7 @@ import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "../finance/convertion-rate/ConvertionRateProvider";
 import { Web3Provider, Web3ProviderProps } from "../../wallet2/web3Provider";
-import { BlockNumberProvider } from "../../../hooks/contracts/useBlockNumber";
+import { BlockNumberProvider } from "../../../hooks/contracts/BlockNumberProvider";
 import {
   RedemptionProvider,
   RedemptionProviderProps

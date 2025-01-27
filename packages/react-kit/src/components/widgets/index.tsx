@@ -1,5 +1,6 @@
 export * from "./BosonThemeProvider";
 export * from "./ReduxProvider";
+export {} from "../../hooks/contracts/BlockNumberProvider";
 export { RedemptionWidgetAction } from "./redemption/provider/RedemptionWidgetContext";
 
 export * from "./finance/FinanceWidget";

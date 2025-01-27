@@ -17,7 +17,7 @@ import ConvertionRateProvider, {
 } from "./convertion-rate/ConvertionRateProvider";
 import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
 import { Web3Provider, Web3ProviderProps } from "../../wallet2/web3Provider";
-import { BlockNumberProvider } from "../../../hooks/contracts/useBlockNumber";
+import { BlockNumberProvider } from "../../../hooks/contracts/BlockNumberProvider";
 import {
   BosonThemeProvider,
   BosonThemeProviderProps,
