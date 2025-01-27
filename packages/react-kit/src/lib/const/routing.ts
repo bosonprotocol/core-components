@@ -42,8 +42,10 @@ import {
   WETH_AVALANCHE,
   WETH_POLYGON,
   WETH_POLYGON_MUMBAI,
-  WRAPPED_NATIVE_CURRENCY
+  WRAPPED_NATIVE_CURRENCY,
+  WETH_POLYGON_AMOY
 } from "./tokens";
+import { ChainId_BASE_SEPOLIA, ChainId_POLYGON_AMOY } from "./chains";
 
 type ChainTokenList = {
   readonly [chainId: number]: Token[];
@@ -111,6 +113,10 @@ export const COMMON_BASES: ChainCurrencyList = {
     nativeOnChain(ChainId.BASE_GOERLI),
     WRAPPED_NATIVE_CURRENCY[ChainId.BASE_GOERLI] as Token
   ],
+  [ChainId_BASE_SEPOLIA]: [
+    nativeOnChain(ChainId_BASE_SEPOLIA),
+    WRAPPED_NATIVE_CURRENCY[ChainId_BASE_SEPOLIA] as Token
+  ],
   [ChainId.POLYGON]: [
     nativeOnChain(ChainId.POLYGON),
     WETH_POLYGON,
@@ -123,6 +129,11 @@ export const COMMON_BASES: ChainCurrencyList = {
     nativeOnChain(ChainId.POLYGON_MUMBAI),
     WRAPPED_NATIVE_CURRENCY[ChainId.POLYGON_MUMBAI] as Token,
     WETH_POLYGON_MUMBAI
+  ],
+  [ChainId_POLYGON_AMOY]: [
+    nativeOnChain(ChainId_POLYGON_AMOY),
+    WRAPPED_NATIVE_CURRENCY[ChainId_POLYGON_AMOY] as Token,
+    WETH_POLYGON_AMOY
   ],
 
   [ChainId.CELO]: [

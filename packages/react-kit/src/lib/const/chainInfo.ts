@@ -5,7 +5,13 @@ import polygonMaticLogo from "../../assets/svg/polygon-matic-logo.svg";
 import polygonSquareLogoUrl from "../../assets/svg/polygon_square_logo.svg";
 import ms from "ms";
 
-import { LocalChainId, SupportedL1ChainId, SupportedL2ChainId } from "./chains";
+import {
+  LocalChainId,
+  SupportedL1ChainId,
+  SupportedL2ChainId,
+  ChainId_POLYGON_AMOY,
+  ChainId_BASE_SEPOLIA
+} from "./chains";
 
 export const AVERAGE_L1_BLOCK_TIME = ms(`12s`);
 
@@ -99,7 +105,7 @@ const CHAIN_INFO: ChainInfoMap = {
       decimals: 18
     }
   },
-  80002: {
+  [ChainId_POLYGON_AMOY]: {
     networkType: NetworkType.L1,
     blockWaitMsBeforeWarning: ms(`10m`),
     bridge: "https://wallet.polygon.technology/polygon/bridge/deposit",
@@ -130,7 +136,7 @@ const CHAIN_INFO: ChainInfoMap = {
     },
     defaultListUrl: ""
   },
-  84532: {
+  [ChainId_BASE_SEPOLIA]: {
     networkType: NetworkType.L2,
     blockWaitMsBeforeWarning: ms(`10m`),
     bridge: "https://testnets.superbridge.app/base-sepolia",
