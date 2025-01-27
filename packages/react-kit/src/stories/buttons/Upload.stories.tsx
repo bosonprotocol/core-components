@@ -70,7 +70,14 @@ const BASE_ARGS = {
   name,
   placeholder: "",
   withEditor: false,
-  saveButtonTheme: undefined
+  saveButtonTheme: undefined,
+  theme: {
+    triggerTheme: {
+      media: {
+        objectFit: "cover"
+      }
+    }
+  }
 } as const satisfies UploadProps;
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
