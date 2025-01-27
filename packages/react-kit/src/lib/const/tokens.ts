@@ -7,6 +7,7 @@ import {
   WETH9
 } from "@uniswap/sdk-core";
 import invariant from "tiny-invariant";
+import { ChainId_BASE_SEPOLIA, ChainId_POLYGON_AMOY } from "./chains";
 
 export const NATIVE_CHAIN_ID = "NATIVE";
 
@@ -188,6 +189,14 @@ export const WBTC_OPTIMISM = new Token(
 export const WETH_POLYGON_MUMBAI = new Token(
   ChainId.POLYGON_MUMBAI,
   "0xa6fa4fb5f76172d178d61b04b0ecd319c5d1c0aa",
+  18,
+  "WETH",
+  "Wrapped Ether"
+);
+
+export const WETH_POLYGON_AMOY = new Token(
+  ChainId_POLYGON_AMOY,
+  "0x52eF3d68BaB452a294342DC3e5f464d7f610f72E",
   18,
   "WETH",
   "Wrapped Ether"
@@ -376,8 +385,8 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
       "WETH",
       "Wrapped Ether"
     ),
-    84532: new Token(
-      84532,
+    [ChainId_BASE_SEPOLIA]: new Token(
+      ChainId_BASE_SEPOLIA,
       "0x4200000000000000000000000000000000000006",
       18,
       "WETH",
@@ -418,9 +427,9 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
       "WMATIC",
       "Wrapped MATIC"
     ),
-    80002: new Token(
-      80002,
-      "0x52eF3d68BaB452a294342DC3e5f464d7f610f72E",
+    [ChainId_POLYGON_AMOY]: new Token(
+      ChainId_POLYGON_AMOY,
+      "0x778f1b662a461695633791d03a77d992c24b588a",
       18,
       "WMATIC",
       "Wrapped MATIC"
@@ -472,15 +481,16 @@ function getCeloNativeCurrency(chainId: number) {
   }
 }
 
-type NewType = 80002;
-
 export function isMatic(
   chainId: number
-): chainId is ChainId.POLYGON | ChainId.POLYGON_MUMBAI | NewType {
+): chainId is
+  | ChainId.POLYGON
+  | ChainId.POLYGON_MUMBAI
+  | typeof ChainId_POLYGON_AMOY {
   return (
     chainId === ChainId.POLYGON_MUMBAI ||
     chainId === ChainId.POLYGON ||
-    chainId === 80002
+    chainId === ChainId_POLYGON_AMOY
   );
 }
 

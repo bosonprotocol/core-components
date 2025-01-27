@@ -5,7 +5,12 @@ import { useCallback } from "react";
 import { FALLBACK_URLS, getRpcUrls } from "../../lib/const/networks";
 import { useChainId } from "./connection";
 import { useAppDispatch } from "../../state/hooks";
-import { SupportedChainsType, isSupportedChain } from "../../lib/const/chains";
+import {
+  ChainId_BASE_SEPOLIA,
+  ChainId_POLYGON_AMOY,
+  SupportedChainsType,
+  isSupportedChain
+} from "../../lib/const/chains";
 import {
   endSwitchingChain,
   startSwitchingChain
@@ -27,9 +32,9 @@ function getRpcUrl(
     case ChainId.GOERLI:
     case ChainId.SEPOLIA:
     case ChainId.POLYGON:
-    case 80002: // POLYGON AMOY
+    case ChainId_POLYGON_AMOY:
     case ChainId.BASE:
-    case 84532: // BASE SEPOLIA
+    case ChainId_BASE_SEPOLIA: // BASE SEPOLIA
       return RPC_URLS[chainId][0];
     case localChainId: {
       if (localRpcUrl) {
