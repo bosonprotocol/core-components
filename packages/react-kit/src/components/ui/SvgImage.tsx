@@ -21,6 +21,8 @@ const SvgWrapper = styled.div`
 
 export const SvgImage: React.FC<SvgImageProps> = withQueryClientProvider(
   ({ src, ...rest }) => {
+    const isStringWithSvg =
+      !!src && typeof src === "string" && src.toLowerCase().startsWith("<svg");
     const { data: svgHtml, isLoading } = useQuery(
       [src],
       async () => {
@@ -37,7 +39,7 @@ export const SvgImage: React.FC<SvgImageProps> = withQueryClientProvider(
         return svgText;
       },
       {
-        enabled: typeof src === "string",
+        enabled: isStringWithSvg,
         staleTime: Infinity
       }
     );
