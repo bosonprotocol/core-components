@@ -57,7 +57,7 @@ export const Base = {
     configProps: {
       configId: "testing-80002-0",
       envName: "testing",
-      sellerId: "6",
+      sellerId: "2",
       walletConnectProjectId:
         process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? "",
       ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,

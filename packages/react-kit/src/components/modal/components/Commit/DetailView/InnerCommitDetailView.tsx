@@ -316,7 +316,7 @@ export default function InnerCommitDetailView(
   return (
     <>
       <>
-        {address && !!userCommittedOffers && !exchangeId ? (
+        {address && !!userCommittedOffers?.length && !exchangeId ? (
           <Grid
             gap="0.5rem"
             padding="1rem"
