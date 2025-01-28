@@ -8,7 +8,6 @@ import {
 import { ModalProvider } from "../../modal/ModalProvider";
 import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 import { SignerProvider } from "../../signer/SignerProvider";
-import GlobalStyle from "../../styles/GlobalStyle";
 import { WithReduxProvider, WithReduxProviderProps } from "../ReduxProvider";
 import { getParentWindowOrigin } from "../common";
 import { CommonWidgetTypes } from "../types";
@@ -66,7 +65,6 @@ export const FinanceWidgetProviders: React.FC<FinanceWidgetProvidersProps> =
             >
               <BlockNumberProvider>
                 <BosonProvider {...props}>
-                  <GlobalStyle />
                   <SignerProvider
                     parentOrigin={parentOrigin}
                     withExternalSigner={props.withExternalSigner}
