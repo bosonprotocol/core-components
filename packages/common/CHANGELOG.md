@@ -3,24 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.30.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.29.0...@bosonprotocol/common@1.30.0) (2025-01-28)
-
-
-### Bug Fixes
-
-* set theGraphIpfsUrl accordingly to the graph platform for each environment ([#876](https://github.com/bosonprotocol/core-components/issues/876)) ([0cd4652](https://github.com/bosonprotocol/core-components/commit/0cd4652e285f92ba450631adfde714b6a536e63d))
-
-
-### Features
-
-* add usdc to default tokens ([#856](https://github.com/bosonprotocol/core-components/issues/856)) ([2dd983a](https://github.com/bosonprotocol/core-components/commit/2dd983af0d56d4e669c5fe0a42b0157a07c70c5f))
-* create roblox frontend widget ([#807](https://github.com/bosonprotocol/core-components/issues/807)) ([d124039](https://github.com/bosonprotocol/core-components/commit/d1240399dcab2be49cc253148c5a047f7fe1cff9))
-* replace Biconomy with internal metaTx gateway ([#862](https://github.com/bosonprotocol/core-components/issues/862)) ([cb34e60](https://github.com/bosonprotocol/core-components/commit/cb34e60cc876c4a14d8f23a512a42a3930648586))
-
-
-
-
-
 # [1.29.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.28.1...@bosonprotocol/common@1.29.0) (2024-11-20)
 
 
