@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.36.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.36.0...@bosonprotocol/react-kit@0.36.1) (2025-01-28)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+
+
+
+
 # [0.36.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.35.0...@bosonprotocol/react-kit@0.36.0) (2025-01-28)
 
 
