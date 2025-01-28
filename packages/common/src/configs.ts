@@ -132,7 +132,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         openseaWrapper: ""
       },
       metaTx: {
-        relayerUrl: "", // TODO
+        relayerUrl:
+          "https://meta-tx-gateway-testing-base-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: undefined
@@ -225,7 +226,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         forwarder: ""
       },
       metaTx: {
-        relayerUrl: "", // TODO
+        relayerUrl:
+          "https://meta-tx-gateway-staging-base-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: undefined
@@ -312,7 +314,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         forwarder: ""
       },
       metaTx: {
-        relayerUrl: "", // TODO
+        relayerUrl: "https://meta-tx-gateway-base-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: undefined
