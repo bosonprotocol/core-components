@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.42.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.41.0...@bosonprotocol/core-sdk@1.42.0) (2025-01-28)
+
+
+### Features
+
+* allow to switch on direct transaction when the relayer service is down ([#865](https://github.com/bosonprotocol/core-components/issues/865)) ([82ded73](https://github.com/bosonprotocol/core-components/commit/82ded73ab3f28edf7a86938c4805ce4d922e23bb))
+
+
+
+
+
 # [1.41.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.40.5...@bosonprotocol/core-sdk@1.41.0) (2024-11-20)
 
 

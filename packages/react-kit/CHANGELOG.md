@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.36.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.35.0...@bosonprotocol/react-kit@0.36.0) (2025-01-28)
+
+
+### Bug Fixes
+
+* add missing config for base-sepolia and polygon-amoy networks ([#885](https://github.com/bosonprotocol/core-components/issues/885)) ([fd50459](https://github.com/bosonprotocol/core-components/commit/fd504590f5e0844a36bc7a235e7b9e368daedcfb))
+* built and svgImage ([#884](https://github.com/bosonprotocol/core-components/issues/884)) ([9f191de](https://github.com/bosonprotocol/core-components/commit/9f191de92773be7b373717854d4ad3cc9ee34c34))
+* class name roblox for widget ([#874](https://github.com/bosonprotocol/core-components/issues/874)) ([db9f6ef](https://github.com/bosonprotocol/core-components/commit/db9f6ef2cd9906da9d082f4ade25ae710a187316))
+* finances widget get seller ([#880](https://github.com/bosonprotocol/core-components/issues/880)) ([1a8c55b](https://github.com/bosonprotocol/core-components/commit/1a8c55b2b5c5808ab12507a777c9a4a442478d0c))
+* ipfs image race condition ([#886](https://github.com/bosonprotocol/core-components/issues/886)) ([dc032ce](https://github.com/bosonprotocol/core-components/commit/dc032ceafc262b75c50d0263670e22c23759c4cc))
+* missing Base Sepolia WETH token definition ([#881](https://github.com/bosonprotocol/core-components/issues/881)) ([0065869](https://github.com/bosonprotocol/core-components/commit/0065869324b01de1b065e5d6421f20ff0cf741ad))
+* upload for videos ([#882](https://github.com/bosonprotocol/core-components/issues/882)) ([c744f8f](https://github.com/bosonprotocol/core-components/commit/c744f8ff064bb01391ddaa4918d7080331a6c4dc))
+
+
+### Features
+
+* add border width prop to loading ([#870](https://github.com/bosonprotocol/core-components/issues/870)) ([feb0f1d](https://github.com/bosonprotocol/core-components/commit/feb0f1d4a5178bc5f88d1b77ae439228628b7e64))
+* add colors ([#877](https://github.com/bosonprotocol/core-components/issues/877)) ([418a2c0](https://github.com/bosonprotocol/core-components/commit/418a2c0ca4c2d7ba523fe49af112ece4bb8257bc))
+* add colors ([#878](https://github.com/bosonprotocol/core-components/issues/878)) ([d65e2ef](https://github.com/bosonprotocol/core-components/commit/d65e2efa7c3eae2b94f47ebdf85fa95ff77e563d))
+* add missing providers to widgets ([#879](https://github.com/bosonprotocol/core-components/issues/879)) ([afd494a](https://github.com/bosonprotocol/core-components/commit/afd494a4ffc2fa9601ab3b1244b308ea4076b80e))
+* create roblox frontend widget ([#807](https://github.com/bosonprotocol/core-components/issues/807)) ([d124039](https://github.com/bosonprotocol/core-components/commit/d1240399dcab2be49cc253148c5a047f7fe1cff9))
+* enhance multi pdf file upload ([#861](https://github.com/bosonprotocol/core-components/issues/861)) ([0d675a7](https://github.com/bosonprotocol/core-components/commit/0d675a73bb065127e66ebacfe4a0c804f45677b7))
+* extract block number provider ([#883](https://github.com/bosonprotocol/core-components/issues/883)) ([704c47e](https://github.com/bosonprotocol/core-components/commit/704c47e4bf5192e8a9cffacc37408751d5d3db7a))
+* use top window to open links ([#875](https://github.com/bosonprotocol/core-components/issues/875)) ([9f45e1d](https://github.com/bosonprotocol/core-components/commit/9f45e1d7bd5cf7d3b49a02295d4365edf636f73b))
+
+
+
+
+
 # [0.35.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.34.0...@bosonprotocol/react-kit@0.35.0) (2024-11-22)
 
 ### Features
