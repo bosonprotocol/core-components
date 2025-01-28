@@ -314,7 +314,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         forwarder: ""
       },
       metaTx: {
-        relayerUrl: "https://meta-tx-gateway-base-114403180314.europe-west2.run.app",
+        relayerUrl:
+          "https://meta-tx-gateway-base-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: undefined
