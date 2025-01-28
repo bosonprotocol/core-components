@@ -65,7 +65,6 @@ export const FinanceWidgetProviders: React.FC<FinanceWidgetProvidersProps> =
             >
               <BlockNumberProvider>
                 <BosonProvider {...props}>
-                  <GlobalStyle />
                   <SignerProvider
                     parentOrigin={parentOrigin}
                     withExternalSigner={props.withExternalSigner}

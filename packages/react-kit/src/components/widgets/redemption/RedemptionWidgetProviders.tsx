@@ -78,7 +78,6 @@ export const RedemptionWidgetProviders: React.FC<RedemptionWidgetProvidersProps>
               <RobloxProvider>
                 <BlockNumberProvider>
                   <BosonProvider {...props}>
-                    <GlobalStyle />
                     <SignerProvider
                       parentOrigin={parentOrigin}
                       withExternalSigner={props.withExternalSigner}
