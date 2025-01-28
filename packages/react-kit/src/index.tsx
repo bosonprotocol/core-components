@@ -82,6 +82,7 @@ export * from "./lib/bundle/const";
 export * from "./lib/bundle/filter";
 export * from "./lib/bytes/bytesToSize";
 export * from "./lib/const/networks";
+export * from "./lib/copy/copyToClipboard";
 export * from "./lib/errors/transactions";
 export * from "./lib/ipfs/ipfs";
 export * from "./lib/magicLink/logout";
