@@ -12,9 +12,8 @@ const getBackendOrigin = ({
   configId: ConfigId;
 }) => {
   return (
-    (typeof import.meta !== "undefined" &&
-      // @ts-expect-error import.meta.env only exists in vite environments
-      import.meta.env?.STORYBOOK_ROBLOX_BACKEND_ORIGIN) ||
+    // @ts-expect-error import.meta.env only exists in vite environments
+    import.meta.env?.STORYBOOK_ROBLOX_BACKEND_ORIGIN ||
     (typeof process !== "undefined" &&
       process.env?.STORYBOOK_ROBLOX_BACKEND_ORIGIN) ||
     envConfigs[envName].find((conf) => conf.configId === configId)
