@@ -138,7 +138,7 @@ async function main() {
   let page = 0;
   let doMoreOffersExist = true;
 
-  console.log("\n1. Fetching offers to process...");
+  console.log("\n1. Fetching offers to process...", "\n\t\tsubgraphUrl", subgraphUrl);
   const subgraphSdk = getSubgraphSdk(subgraphUrl);
   let offersToProcess: Awaited<
     ReturnType<typeof subgraphSdk.getOffersMediaQuery>
