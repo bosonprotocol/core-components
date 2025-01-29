@@ -19,7 +19,11 @@ type ButtonWithThemePropsType = AddDollarPrefixToKeys<{
 }> & { theme: BaseButtonTheme };
 const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
   ${() => Styles.button};
-  ${(props) => Styles[props.$size as keyof typeof Styles]}
+  ${(props) => {
+    return props.theme.disableDefaultSizeStyles
+      ? ""
+      : Styles[props.$size as keyof typeof Styles];
+  }}
   border-style: solid;
   border-color: ${(props) => props.theme?.borderColor || "transparent"};
   border-width: ${(props) => props.theme?.borderWidth || 0}px;
@@ -178,6 +182,7 @@ export type BaseButtonTheme = {
   applyCustomStyles?: (
     buttonWithThemePropsType: ButtonWithThemePropsType
   ) => RuleSet<object>;
+  disableDefaultSizeStyles?: boolean;
 };
 type ButtonSizeProp = "small" | "regular" | "large" | ButtonSize;
 
