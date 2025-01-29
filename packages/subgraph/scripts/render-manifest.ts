@@ -74,6 +74,7 @@ const envNameToConfig: Record<
     }
   }
 };
+
 const { network, startBlock } = envNameToConfig[envName][configId] || {
   network: "",
   startBlock: 0

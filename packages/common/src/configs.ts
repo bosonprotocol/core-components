@@ -116,12 +116,11 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       defaultTokens: chainIdToDefaultTokens.get(84532),
       nativeCoin: chainIdToInfo.get(84532),
       getTxExplorerUrl: chainIdToGraphTx.get(84532),
-      // temporary deploy on TheGraph studio until 0xgraph ready on base-sepolia
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/19713/boson-testing-base/version/latest",
+        "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-base/latest/gn",
       jsonRpcUrl:
         "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs/api/v0",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
         // https://github.com/bosonprotocol/boson-protocol-contracts/pull/976
@@ -210,9 +209,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       defaultTokens: chainIdToDefaultTokens.get(84532),
       nativeCoin: chainIdToInfo.get(84532),
       getTxExplorerUrl: chainIdToGraphTx.get(84532),
-      // temporary deploy on TheGraph studio until 0xgraph ready on base-sepolia
       subgraphUrl:
-        "https://api.studio.thegraph.com/query/19713/boson-staging-base/version/latest",
+        "https://api.0xgraph.xyz/api/public/da9367fc-3453-4e08-824f-19fb4281b6a1/subgraphs/boson-staging-base/latest/gn",
       jsonRpcUrl:
         "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
@@ -297,18 +295,19 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-8453-0/sellers/blacklist.json",
       offersWhiteList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-8453-0/offers/whitelist.json",
-      defaultDisputeResolverId: "", // TODO
+      defaultDisputeResolverId: "4", // TO BE VERIFIED
       defaultTokens: chainIdToDefaultTokens.get(8453),
       nativeCoin: chainIdToInfo.get(8453),
       getTxExplorerUrl: chainIdToGraphTx.get(8453),
-      subgraphUrl: "", // TODO
+      subgraphUrl:
+        "https://api.0xgraph.xyz/api/public/b521f6b7-36c4-4117-8ad5-6b21c6eeb195/subgraphs/boson-base/latest/gn",
       jsonRpcUrl:
         "https://base-mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e",
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        protocolDiamond: "", // TODO
-        priceDiscoveryClient: "", // TODO
+        protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5", // TO BE VERIFIED
+        priceDiscoveryClient: "0xb60cf39Fb18e5111174f346d0f39521ef6531fD4", // TO BE VERIFIED
         forwarder: ""
       },
       metaTx: {

@@ -43,8 +43,6 @@ jobs:
         run: cd ./packages/subgraph && npm run deploy:staging:sepolia
         env:
           ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_STAGING }}
-      - name: Authenticate The Graph CLI # temporary deploy on TheGraph studio until 0xgraph ready on base-sepolia
-        run: npx graph auth --studio ${{ secrets.THE_GRAPH_STUDIO_DEPLOY_KEY }}
       - name: Deploy subgraph to base sepolia
         run: cd ./packages/subgraph && npm run deploy:staging:base
         env:
