@@ -162,7 +162,7 @@ type SvgTheme = Partial<{
 export type BaseButtonTheme = {
   background?: CSSProperties["backgroundColor"];
   borderColor?: CSSProperties["borderColor"];
-  borderRadius?: `${string}px` | AnyString;
+  borderRadius?: `${string}px` | AnyString | number;
   borderWidth?: CSSProperties["borderWidth"];
   boxShadow?: CSSProperties["boxShadow"];
   color?: CSSProperties["color"];
