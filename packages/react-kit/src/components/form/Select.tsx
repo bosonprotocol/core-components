@@ -25,6 +25,8 @@ const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
           }
         }
       : null;
+    const defaultBorderColor =
+      customTheme?.control?.borderColor || colors.border;
     return {
       ...provided,
       borderRadius: 0,
@@ -32,22 +34,39 @@ const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
       boxShadow: "none",
       background: getCssVar("--background-color"),
       ...customTheme?.control,
-      border: state.isFocused
-        ? (customTheme?.control?.focus?.border ?? `1px solid ${colors.violet}`)
-        : !checkIfValueIsEmpty(error)
-          ? (customTheme?.control?.error?.border ??
-            `1px solid ${colors.orange}`)
-          : (customTheme?.control?.border ?? `1px solid ${colors.border}`),
-      ":hover": {
-        borderColor: colors.violet,
-        borderWidth: "1px",
-        ...customTheme?.control?.hover
-      },
+      cursor: state.isDisabled ? "not-allowed" : "default",
+      opacity: state.isDisabled
+        ? (customTheme?.control?.disabled?.opacity ?? "0.5")
+        : (customTheme?.control?.opacity ?? "1"),
+      border: state.isDisabled
+        ? `1px solid ${defaultBorderColor}`
+        : state.isFocused
+          ? (customTheme?.control?.focus?.border ??
+            `1px solid ${colors.violet}`)
+          : !checkIfValueIsEmpty(error)
+            ? (customTheme?.control?.error?.border ??
+              `1px solid ${colors.orange}`)
+            : (customTheme?.control?.border ??
+              `1px solid ${defaultBorderColor}`),
+      ...(state.isDisabled
+        ? {
+            ":hover": {
+              border: `1px solid ${defaultBorderColor}`
+            }
+          }
+        : {
+            ":hover": {
+              borderColor: colors.violet,
+              borderWidth: "1px",
+              ...customTheme?.control?.hover
+            }
+          }),
       ...before
     };
   },
   container: (provided, state: any) => ({
     ...provided,
+    pointerEvents: "initial",
     zIndex: state.isFocused ? zIndex.Select + 1 : zIndex.Select,
     position: "relative",
     width: "100%"
@@ -55,7 +74,7 @@ const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
   option: (provided, state: any) => {
     return {
       ...provided,
-      cursor: state.isDisabled ? "not-allowed" : "pointer",
+      cursor: state.isDisabled ? "not-allowed" : "default",
       opacity: state.isDisabled
         ? (customTheme?.option?.disabled?.opacity ?? "0.5")
         : (customTheme?.option?.opacity ?? "1"),
@@ -72,6 +91,14 @@ const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
         customTheme?.option?.selected),
       ...(state.isFocused && customTheme?.option?.focus),
       ...(!checkIfValueIsEmpty(error) && customTheme?.option?.error)
+    };
+  },
+  indicatorsContainer: (provided, state: any) => {
+    return {
+      ...provided,
+      ...(state.isDisabled && {
+        pointerEvents: "none"
+      })
     };
   },
   indicatorSeparator: () => ({
@@ -94,6 +121,16 @@ const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
       fontSize: "13.33px",
       ...customTheme?.singleValue,
       ...(!checkIfValueIsEmpty(error) && customTheme?.singleValue?.error)
+    };
+  },
+  multiValue: (provided, state: any) => {
+    return {
+      ...provided,
+      ...customTheme?.multiValue,
+      ...(state.isDisabled && {
+        pointerEvents: "none"
+      }),
+      ...(!checkIfValueIsEmpty(error) && customTheme?.multiValue?.error)
     };
   }
 });
@@ -129,6 +166,9 @@ export default function SelectComponent<
     option: Parameters<NonNullable<typeof onChange>>[0],
     actionMeta: Parameters<NonNullable<typeof onChange>>[1]
   ) => {
+    if (disabled) {
+      return;
+    }
     if (!meta.touched) {
       helpers.setTouched(true);
     }

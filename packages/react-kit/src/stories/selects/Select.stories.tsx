@@ -30,6 +30,9 @@ export default {
       }
     },
     disabled: { control: "boolean" },
+    isMulti: { control: "boolean" },
+    isClearable: { control: "boolean" },
+    isSearchable: { control: "boolean" },
     placeholder: { control: "text" }
   },
   decorators: [
@@ -58,7 +61,7 @@ const BASE_ARGS = {
   name: inputName,
   options: [
     { label: "first option", value: "1" },
-    { label: "second option", value: "2" },
+    { label: "second option", value: "2", disabled: true },
     { label: "third option", value: "3" }
   ]
 } as SelectProps;
