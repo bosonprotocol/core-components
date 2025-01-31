@@ -95,6 +95,7 @@ export interface BaseSelectProps<Value = string> {
   placeholder?: string;
   defaultValue?: SelectDataProps<Value> | null;
   onChange?: OnChange<Value>;
+  hasError?: boolean;
 }
 export type SupportedReactSelectProps<
   M extends boolean | undefined = false,

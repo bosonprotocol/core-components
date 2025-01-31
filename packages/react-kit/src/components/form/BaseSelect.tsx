@@ -57,7 +57,8 @@ export default function BaseSelect({
     onChange?.(option);
   };
   const { jsx, selectClassName } = useFixSelectFont({
-    selectClassName: "boson-base-select"
+    selectClassName: "boson-base-select",
+    hasError: props.hasError
   });
   return (
     <>

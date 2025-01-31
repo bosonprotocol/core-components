@@ -121,3 +121,48 @@ export const WithError = {
 export const WithLabel = {
   args: { ...BASE_ARGS, label: "my label" } satisfies SelectProps
 };
+
+export const WithGroups = {
+  args: {
+    ...BASE_ARGS,
+    options: [
+      {
+        label: "first group",
+        options: [
+          { label: "first group - first option", value: "1-first-group" },
+          {
+            label: "first group - second option",
+            value: "2-first-group",
+            disabled: true
+          },
+          { label: "first group - third option", value: "3-first-group" }
+        ]
+      },
+      {
+        label: "second group",
+        options: [
+          { label: "second group - first option", value: "1-second-group" },
+          {
+            label: "second group - second option",
+            value: "2-second-group",
+            disabled: true
+          },
+          { label: "second group - third option", value: "3-second-group" }
+        ],
+        disabled: true
+      },
+      {
+        label: "third group",
+        options: [
+          { label: "third group - first option", value: "1-third-group" },
+          {
+            label: "third group - second option",
+            value: "2-third-group",
+            disabled: true
+          },
+          { label: "third group - third option", value: "3-third-group" }
+        ]
+      }
+    ]
+  } satisfies SelectProps
+};

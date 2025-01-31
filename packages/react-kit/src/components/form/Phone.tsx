@@ -189,7 +189,8 @@ export default function Phone({ name, ...props }: PhoneProps) {
   }, [field.value, initialized]); // eslint-disable-line
 
   const { jsx, selectClassName } = useFixSelectFont({
-    selectClassName: "phone-select"
+    selectClassName: "phone-select",
+    hasError: displayError
   });
   return (
     <>

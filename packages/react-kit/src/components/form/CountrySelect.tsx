@@ -222,7 +222,8 @@ export function CountrySelect({
     }
   }, [field.value, initialized]); // eslint-disable-line
   const { jsx, selectClassName } = useFixSelectFont({
-    selectClassName: "country-select"
+    selectClassName: "country-select",
+    hasError: displayError
   });
   return (
     <>
