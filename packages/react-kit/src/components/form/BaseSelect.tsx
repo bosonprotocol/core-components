@@ -56,13 +56,12 @@ export default function BaseSelect({
   const handleChange = (option: SingleValue<SelectDataProps>) => {
     onChange?.(option);
   };
-  const { jsx, selectClassName } = useFixSelectFont({
+  const { selectClassName } = useFixSelectFont({
     selectClassName: "boson-base-select",
     hasError: props.hasError
   });
   return (
     <>
-      {jsx}
       <Select
         styles={customStyles(null)}
         {...props}
