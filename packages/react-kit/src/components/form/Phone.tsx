@@ -188,13 +188,12 @@ export default function Phone({ name, ...props }: PhoneProps) {
     }
   }, [field.value, initialized]); // eslint-disable-line
 
-  const { jsx, selectClassName } = useFixSelectFont({
+  const { selectClassName } = useFixSelectFont({
     selectClassName: "phone-select",
     hasError: displayError
   });
   return (
     <>
-      {jsx}
       <PhoneWrapper className={selectClassName}>
         <PhoneInput
           country={countryCode}

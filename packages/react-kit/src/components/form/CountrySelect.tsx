@@ -221,13 +221,12 @@ export function CountrySelect({
       setInitialized(true);
     }
   }, [field.value, initialized]); // eslint-disable-line
-  const { jsx, selectClassName } = useFixSelectFont({
+  const { selectClassName } = useFixSelectFont({
     selectClassName: "country-select",
     hasError: displayError
   });
   return (
     <>
-      {jsx}
       <PhoneWrapper className={selectClassName}>
         <PhoneInput
           // eslint-disable-next-line @typescript-eslint/no-unused-vars

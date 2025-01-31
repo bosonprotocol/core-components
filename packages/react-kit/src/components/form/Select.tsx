@@ -250,14 +250,13 @@ export function Select<
     onBlur?.(event);
   };
 
-  const { jsx, selectClassName } = useFixSelectFont({
+  const { selectClassName } = useFixSelectFont({
     selectClassName: "boson-select",
     hasError: displayError
   });
 
   return (
     <>
-      {jsx}
       <ReactSelect<Option, IsMulti, Group>
         styles={customStyles<Option, IsMulti, Group>(
           displayErrorMessage,
