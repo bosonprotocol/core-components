@@ -6,7 +6,13 @@ export { FormField, FormFieldProps } from "./FormField";
 export * from "./BaseInput";
 export { default as Input, InputProps } from "./Input";
 export { default as Phone, PhoneProps } from "./Phone";
-export { default as Select, SelectProps } from "./Select";
+export {
+  default as Select,
+  SelectProps,
+  DefaultSelectProps,
+  SelectOption,
+  GroupBase
+} from "./Select";
 export * from "./CountrySelect";
 export * from "./BaseTagsInput";
 export * from "./BaseTextArea";

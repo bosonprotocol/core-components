@@ -2,7 +2,9 @@ import { ReactNode } from "react";
 import {
   ActionMeta,
   CSSObjectWithLabel,
+  GroupBase,
   MultiValue,
+  SelectComponentsConfig,
   SingleValue
 } from "react-select";
 import { CSSProperties } from "styled-components";
@@ -106,8 +108,7 @@ export type SupportedReactSelectProps<
   Option extends Record<string, unknown> = SelectDataProps
 > = Pick<
   StateManagerProps<Option, M extends undefined ? false : boolean>,
-  | "formatGroupLabel"
-  | "formatOptionLabel"
+  // | "formatOptionLabel"
   | "menuPlacement"
   | "menuPosition"
   | "menuIsOpen"
@@ -126,16 +127,19 @@ export type SupportedReactSelectProps<
   | "closeMenuOnSelect"
   | "captureMenuScroll"
   | "defaultMenuIsOpen"
+  | "placeholder"
+  | "hideSelectedOptions"
 >;
 export type SelectProps<
-  M extends boolean | undefined = false,
+  Group extends GroupBase<Option>,
+  M extends boolean = false,
   Option extends Record<string, unknown> = SelectDataProps
 > = BaseProps & {
   isMulti?: M;
   disabled?: boolean;
   isClearable?: boolean;
   isSearchable?: boolean;
-  options: Array<Option> | Readonly<Array<Option>>;
+  options: Array<Option> | Readonly<Array<Option>> | undefined;
   errorMessage?: string;
   onChange?: (
     option: M extends true ? MultiValue<Option> : SingleValue<Option>,
@@ -162,6 +166,7 @@ export type SelectProps<
     singleValue: Partial<CSSProperties> &
       Partial<{ error: CSSObjectWithLabel }>;
   }>;
+  components?: SelectComponentsConfig<Option, M, Group>;
 } & SupportedReactSelectProps<M, Option>;
 
 export type UploadProps = BaseProps & {

@@ -354,7 +354,7 @@ export default function VariationSelects({
                       setLastChangedVariation("color");
                       submitForm();
                     }}
-                    disabled={disabled}
+                    isDisabled={disabled}
                   />
                 </>
               )}
@@ -373,7 +373,7 @@ export default function VariationSelects({
                       setLastChangedVariation("size");
                       submitForm();
                     }}
-                    disabled={disabled}
+                    isDisabled={disabled}
                   />
                 </>
               )}

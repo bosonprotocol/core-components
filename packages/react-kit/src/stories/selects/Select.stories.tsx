@@ -29,7 +29,7 @@ export default {
         disable: true // remove name input in controls
       }
     },
-    disabled: { control: "boolean" },
+    isDisabled: { control: "boolean" },
     placeholder: { control: "text" }
   },
   decorators: [
@@ -58,7 +58,7 @@ const BASE_ARGS = {
   name: inputName,
   options: [
     { label: "first option", value: "1" },
-    { label: "second option", value: "2" },
+    { label: "second option", value: "2", disabled: true },
     { label: "third option", value: "3" }
   ]
 } as SelectProps;
@@ -113,4 +113,8 @@ export const WithError = {
     ...BASE_ARGS,
     placeholder: "this is a placeholder"
   } satisfies SelectProps
+};
+
+export const WithLabel = {
+  args: { ...BASE_ARGS, label: "my label" } satisfies SelectProps
 };
