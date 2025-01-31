@@ -1,30 +1,90 @@
-/* eslint @typescript-eslint/no-explicit-any: "off" */
 import React from "react";
 import { useField } from "formik";
-import Select, { GroupBase, StylesConfig } from "react-select";
+import ReactSelect, {
+  GroupBase,
+  StylesConfig,
+  MultiValue,
+  SingleValue,
+  ActionMeta,
+  Props as ReactSelectProps,
+  PropsValue,
+  CSSObjectWithLabel
+} from "react-select";
+import { CSSProperties } from "react";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
 import { colors, getCssVar } from "../../theme";
 import { zIndex } from "../ui/zIndex";
-
 import Error from "./Error";
-import type { SelectDataProps, SelectProps } from "./types";
 import { useFixSelectFont } from "../../hooks/form/useFixSelectFont";
-export type { SelectProps } from "./types";
+export { GroupBase } from "react-select";
 
-const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
+// Base theme type with proper CSS types
+type SelectTheme = Partial<{
+  control: Partial<CSSProperties> &
+    Partial<{
+      disabled: Partial<CSSProperties>;
+      hover: Partial<CSSProperties>;
+      focus: Partial<CSSProperties>;
+      error: Partial<CSSProperties>;
+    }>;
+  option: Partial<CSSProperties> &
+    Partial<{
+      selected: Partial<CSSProperties>;
+      disabled: Partial<CSSProperties>;
+      focus: Partial<CSSProperties>;
+      error: Partial<CSSObjectWithLabel>;
+    }>;
+  placeholder: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
+  input: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
+  singleValue: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
+  multiValue: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
+}>;
+export type DefaultSelectOption = {
+  label: string;
+  value: string | number;
+  disabled?: boolean;
+};
+
+// Base option type that all options must extend
+export interface SelectOption extends Record<string, unknown> {
+  label: string;
+  value: string | number;
+  disabled?: boolean;
+}
+
+// Type-safe props with conditional types based on IsMulti
+export type SelectProps<
+  Option extends SelectOption = DefaultSelectOption,
+  IsMulti extends boolean = false,
+  Group extends GroupBase<Option> = GroupBase<Option>
+> = Omit<ReactSelectProps<Option, IsMulti, Group>, "styles" | "theme"> & {
+  name: string;
+  errorMessage?: string;
+  label?: string;
+  theme?: Partial<SelectTheme>;
+  reactSelectTheme?: ReactSelectProps<Option, IsMulti, Group>["theme"];
+};
+
+// Custom styles function with proper typing
+const customStyles = <
+  Option extends SelectOption,
+  IsMulti extends boolean,
+  Group extends GroupBase<Option>
+>(
   error: unknown,
-  customTheme: SelectProps["theme"]
-): StylesConfig<Option, boolean, GroupBase<Option>> => ({
-  control: (provided, state: any) => {
-    const before = state.selectProps.label
-      ? {
-          ":before": {
-            content: `"${state.selectProps.label}"`,
-            fontWeight: "600",
-            paddingLeft: "1rem"
+  customTheme?: Partial<SelectTheme>
+): StylesConfig<Option, IsMulti, Group> => ({
+  control: (provided, state) => {
+    const before =
+      "label" in state.selectProps && state.selectProps.label
+        ? {
+            ":before": {
+              content: `"${state.selectProps.label}"`,
+              fontWeight: "600",
+              paddingLeft: "1rem"
+            }
           }
-        }
-      : null;
+        : null;
     const defaultBorderColor =
       customTheme?.control?.borderColor || colors.border;
     return {
@@ -64,14 +124,14 @@ const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
       ...before
     };
   },
-  container: (provided, state: any) => ({
+  container: (provided, state) => ({
     ...provided,
     pointerEvents: "initial",
     zIndex: state.isFocused ? zIndex.Select + 1 : zIndex.Select,
     position: "relative",
     width: "100%"
   }),
-  option: (provided, state: any) => {
+  option: (provided, state) => {
     return {
       ...provided,
       cursor: state.isDisabled ? "not-allowed" : "default",
@@ -79,21 +139,19 @@ const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
         ? (customTheme?.option?.disabled?.opacity ?? "0.5")
         : (customTheme?.option?.opacity ?? "1"),
       background:
-        state.isOptionSelected || state.isSelected || state.isFocused
+        state.isSelected || state.isFocused
           ? (customTheme?.option?.selected?.background ?? colors.greyLight)
           : (customTheme?.option?.background ?? colors.white),
-      color:
-        state.isOptionSelected || state.isSelected
-          ? (customTheme?.option?.selected?.color ?? colors.violet)
-          : (customTheme?.option?.color ?? colors.black),
+      color: state.isSelected
+        ? (customTheme?.option?.selected?.color ?? colors.violet)
+        : (customTheme?.option?.color ?? colors.black),
       ...(state.isDisabled && customTheme?.option?.disabled),
-      ...((state.isOptionSelected || state.isSelected) &&
-        customTheme?.option?.selected),
+      ...(state.isSelected && customTheme?.option?.selected),
       ...(state.isFocused && customTheme?.option?.focus),
       ...(!checkIfValueIsEmpty(error) && customTheme?.option?.error)
     };
   },
-  indicatorsContainer: (provided, state: any) => {
+  indicatorsContainer: (provided, state) => {
     return {
       ...provided,
       ...(state.isDisabled && {
@@ -123,7 +181,7 @@ const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
       ...(!checkIfValueIsEmpty(error) && customTheme?.singleValue?.error)
     };
   },
-  multiValue: (provided, state: any) => {
+  multiValue: (provided, state) => {
     return {
       ...provided,
       ...customTheme?.multiValue,
@@ -134,24 +192,32 @@ const customStyles = <Option extends Record<string, unknown> = SelectDataProps>(
     };
   }
 });
-
-export default function SelectComponent<
-  M extends boolean,
-  Option extends Record<string, unknown> = SelectDataProps
+export type DefaultSelectProps<IsMulti extends boolean = false> = SelectProps<
+  DefaultSelectOption,
+  IsMulti,
+  GroupBase<DefaultSelectOption>
+>;
+export function Select<
+  Option extends SelectOption = DefaultSelectOption,
+  IsMulti extends boolean = false,
+  Group extends GroupBase<Option> = GroupBase<Option>
 >({
   name,
   options,
   placeholder = "Choose...",
   isClearable = false,
   isSearchable = true,
-  disabled = false,
+  isDisabled = false,
   errorMessage,
   onChange,
+  onBlur,
   theme,
+  reactSelectTheme,
   isMulti,
   ...props
-}: SelectProps<M, Option>) {
+}: SelectProps<Option, IsMulti, Group>) {
   const [field, meta, helpers] = useField(name);
+
   const displayErrorMessage =
     meta.error && meta.touched && !errorMessage
       ? meta.error
@@ -163,10 +229,10 @@ export default function SelectComponent<
     typeof displayErrorMessage === "string" && displayErrorMessage !== "";
 
   const handleChange = (
-    option: Parameters<NonNullable<typeof onChange>>[0],
-    actionMeta: Parameters<NonNullable<typeof onChange>>[1]
+    option: IsMulti extends true ? MultiValue<Option> : SingleValue<Option>,
+    actionMeta: ActionMeta<Option>
   ) => {
-    if (disabled) {
+    if (isDisabled) {
       return;
     }
     if (!meta.touched) {
@@ -175,34 +241,43 @@ export default function SelectComponent<
     helpers.setValue(option);
     onChange?.(option, actionMeta);
   };
-  const handleBlur = () => {
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     if (!meta.touched) {
       helpers.setTouched(true);
     }
+    field.onBlur(event);
+    onBlur?.(event);
   };
+
   const { jsx, selectClassName } = useFixSelectFont({
     selectClassName: "boson-select"
   });
+
   return (
     <>
       {jsx}
-      <Select
-        styles={customStyles<Option>(displayErrorMessage, theme)}
+      <ReactSelect<Option, IsMulti, Group>
+        styles={customStyles<Option, IsMulti, Group>(
+          displayErrorMessage,
+          theme
+        )}
         {...field}
         {...props}
+        theme={reactSelectTheme}
         className={selectClassName}
         isMulti={isMulti}
         placeholder={placeholder}
         options={options}
-        value={field.value}
+        value={field.value as PropsValue<Option>}
         onChange={handleChange}
         onBlur={handleBlur}
         isSearchable={isSearchable}
         isClearable={isClearable}
-        isDisabled={disabled}
+        isDisabled={isDisabled}
         isOptionDisabled={(option) => !!option.disabled}
       />
-      <Error display={displayError} message={displayErrorMessage} />{" "}
+      <Error display={displayError} message={displayErrorMessage} />
     </>
   );
 }

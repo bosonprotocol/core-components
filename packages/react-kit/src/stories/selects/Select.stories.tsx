@@ -29,7 +29,7 @@ export default {
         disable: true // remove name input in controls
       }
     },
-    disabled: { control: "boolean" },
+    isDisabled: { control: "boolean" },
     isMulti: { control: "boolean" },
     isClearable: { control: "boolean" },
     isSearchable: { control: "boolean" },
@@ -116,4 +116,8 @@ export const WithError = {
     ...BASE_ARGS,
     placeholder: "this is a placeholder"
   } satisfies SelectProps
+};
+
+export const WithLabel = {
+  args: { ...BASE_ARGS, label: "my label" } satisfies SelectProps
 };
