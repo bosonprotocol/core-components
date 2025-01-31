@@ -232,6 +232,9 @@ export function SelectComponent<
     option: IsMulti extends true ? MultiValue<Option> : SingleValue<Option>,
     actionMeta: ActionMeta<Option>
   ) => {
+    if (isDisabled) {
+      return;
+    }
     if (!meta.touched) {
       helpers.setTouched(true);
     }

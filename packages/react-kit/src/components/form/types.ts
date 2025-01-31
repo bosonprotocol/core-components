@@ -149,6 +149,7 @@ export type SelectProps<
   theme?: Partial<{
     control: Partial<CSSProperties> &
       Partial<{
+        disabled: Partial<CSSProperties>;
         hover: Partial<CSSProperties>;
         focus: Partial<CSSProperties>;
         error: Partial<CSSProperties>;
@@ -165,6 +166,7 @@ export type SelectProps<
     input: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
     singleValue: Partial<CSSProperties> &
       Partial<{ error: CSSObjectWithLabel }>;
+    multiValue: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
   }>;
   components?: SelectComponentsConfig<Option, M, Group>;
 } & SupportedReactSelectProps<M, Option>;
