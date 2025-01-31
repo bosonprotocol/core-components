@@ -5,29 +5,31 @@ import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
 import { ExchangeFullDescription } from "./ExchangeFullDescription";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
-import { theme } from "../../../../../../theme";
+import { colors } from "../../../../../../theme";
 import { OnClickBuyOrSwapHandler } from "../../../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../../../common/detail/useGetOfferDetailData";
 import { BosonLogo } from "../../../common/BosonLogo";
 
-const colors = theme.colors.light;
 interface Props
   extends OnClickBuyOrSwapHandler,
     Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick"> {
   onBackClick: () => void;
   exchange: Exchange | null;
+  showBosonLogoInFooter: boolean;
 }
 
 export function ExchangeFullDescriptionView({
   onBackClick,
   exchange,
   onExchangePolicyClick,
-  onClickBuyOrSwap
+  onClickBuyOrSwap,
+  showBosonLogoInFooter
 }: Props) {
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: null,
         headerComponent: (
           <Grid style={{ flex: "1" }} gap="1rem">
             <ArrowLeft
@@ -44,11 +46,11 @@ export function ExchangeFullDescriptionView({
           background: colors.white,
           padding: 0
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, exchange?.offer.metadata?.name]);
+  }, [dispatch, exchange?.offer.metadata?.name, showBosonLogoInFooter]);
   return (
     <>
       {!exchange ? (

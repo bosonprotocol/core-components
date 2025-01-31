@@ -8,7 +8,7 @@ import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkW
 import { formatAddress } from "../../../../../lib/address/address";
 import { isNftItem, isProductV1Item } from "../../../../../lib/bundle/filter";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { Tooltip } from "../../../../tooltip/Tooltip";
 import { Grid } from "../../../../ui/Grid";
@@ -17,7 +17,7 @@ import ThemedButton from "../../../../ui/ThemedButton";
 import { Typography } from "../../../../ui/Typography";
 import Video from "../../../../ui/Video";
 import { digitalTypeMappingDisplay } from "../../../../../lib/bundle/const";
-const colors = theme.colors.light;
+
 const imageSize = "2.5rem";
 
 const MediaWrapper = styled.div`
@@ -37,7 +37,7 @@ const Pill = styled.div`
   box-sizing: content-box;
   text-align: start;
   font-size: 0.7rem;
-  color: ${({ theme }) => theme?.colors?.light.secondary};
+  color: ${colors.violet};
 `;
 const ActionText = ({ children }: { children: ReactNode }) => {
   return <span style={{ fontSize: "0.75rem" }}>{children}</span>;
@@ -170,7 +170,7 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
                 as="li"
                 key={bundleItem.metadataUri}
                 style={{
-                  color: colors.darkGrey
+                  color: colors.greyDark
                 }}
               >
                 {videoSrc ? (

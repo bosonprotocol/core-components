@@ -1,10 +1,9 @@
 import React, { useMemo } from "react";
 import { useBreakpoints } from "../../../../../../hooks/useBreakpoints";
 import { isOfferHot } from "../../../../../../lib/offer/getOfferLabel";
-import { theme } from "../../../../../../theme";
 import { Grid } from "../../../../../ui/Grid";
 import { Typography } from "../../../../../ui/Typography";
-const colors = theme.colors.light;
+
 interface IQuantityDisplay {
   quantityInitial: number;
   quantity: number;
@@ -26,7 +25,7 @@ export const QuantityDisplay: React.FC<IQuantityDisplay> = ({
       justifyContent="flex-end"
       style={{ marginTop: isLteXS ? "-7rem" : "0" }}
     >
-      <Typography tag="p" style={{ color: colors.orange, margin: 0 }}>
+      <Typography tag="p" margin={0} fontSize="0.75rem" fontWeight={600}>
         {isHotOffer ? (
           <>
             {quantity === 0 && "No items available!"}
@@ -35,7 +34,7 @@ export const QuantityDisplay: React.FC<IQuantityDisplay> = ({
           </>
         ) : (
           <>
-            {quantity}/{quantityInitial} remaining
+            {quantity}/{quantityInitial} items remaining
           </>
         )}
       </Typography>

@@ -5,7 +5,7 @@ import React, {
   createContext,
   useMemo
 } from "react";
-import { theme } from "../../../theme";
+import { colors, getCssVar } from "../../../theme";
 import { ReactNode } from "react";
 import styled, { css } from "styled-components";
 
@@ -15,7 +15,6 @@ import { zIndex } from "../../ui/zIndex";
 import { breakpoint } from "../../../lib/ui/breakpoint";
 import { Content } from "./styles";
 
-const colors = theme.colors.light;
 const Root = styled.div`
   position: relative;
   top: 0;
@@ -81,15 +80,8 @@ const sizeToMargin = {
   }
 } as const;
 
-const background = {
-  primaryBgColor: "var(--primaryBgColor)",
-  dark: `${colors.black}`,
-  light: `${colors.white}`
-} as const;
-
 const Wrapper = styled.div<{
   $size: NonModalProps["size"];
-  $themeVal: NonModalProps["theme"];
   $maxWidths: NonModalProps["maxWidths"];
 }>`
   display: flex;
@@ -97,18 +89,10 @@ const Wrapper = styled.div<{
   max-height: inherit;
   position: relative;
   z-index: ${zIndex.Modal};
-  color: ${({ $themeVal }) => {
-    switch ($themeVal) {
-      case "dark":
-        return colors.white;
-      default:
-        return colors.black;
-    }
-  }};
-  background-color: ${({ $themeVal }) => {
-    return background[$themeVal as keyof typeof background] || colors.white;
-  }};
-  border: var(--secondary);
+  color: ${getCssVar("--main-text-color")};
+  background-color: ${getCssVar("--background-accent-color")};
+  border-radius: ${getCssVar("--modal-border-radius")};
+  overflow: hidden;
   ${({ $maxWidths }) => {
     if (!$maxWidths) {
       return "";
@@ -170,12 +154,12 @@ export enum ActionKind {
 }
 
 type Action = {
-  payload: State;
+  payload: Required<State>;
 };
 
 type State = Pick<
   NonModalProps,
-  "headerComponent" | "contentStyle" | "footerComponent"
+  "headerComponent" | "contentStyle" | "footerComponent" | "onArrowLeftClick"
 >;
 
 const reducer = (state: State, action: Action): State => {
@@ -186,9 +170,9 @@ const reducer = (state: State, action: Action): State => {
   };
 };
 
-const NonModalContext = createContext<React.Dispatch<Action> | undefined>(
-  undefined
-);
+const NonModalContext = createContext<
+  { dispatch: React.Dispatch<Action>; showConnectButton: boolean } | undefined
+>(undefined);
 export const useNonModalContext = () => {
   const context = useContext(NonModalContext);
   if (!context) {
@@ -199,12 +183,13 @@ export const useNonModalContext = () => {
 
 export interface NonModalProps {
   hideModal?: (data?: unknown | undefined | null) => void;
+  onArrowLeftClick?: null | (() => unknown);
+  withLeftArrowButton?: boolean;
   headerComponent?: ReactNode;
   footerComponent?: ReactNode;
   contentStyle?: CSSProperties;
   size?: NonNullable<Store["modalSize"]>;
   maxWidths?: Store["modalMaxWidth"];
-  theme?: NonNullable<Store["theme"]>;
   closable?: boolean;
   lookAndFeel?: "modal" | "regular";
   children: ReactNode;
@@ -213,34 +198,45 @@ export interface NonModalProps {
 
 export default function NonModal({
   children,
+  withLeftArrowButton,
   hideModal,
+  onArrowLeftClick,
   headerComponent,
   footerComponent,
   size = "auto",
   maxWidths = null,
-  theme = "light",
   contentStyle: _contentStyle,
   closable = true,
   lookAndFeel = "modal",
   showConnectButton
 }: NonModalProps) {
-  const handleOnClose = () => {
+  const handleOnCloseClick = () => {
     if (closable && hideModal) {
       hideModal();
     }
   };
+
   const [
     {
       headerComponent: HeaderComponent,
       footerComponent: FooterComponent,
-      contentStyle
+      contentStyle,
+      onArrowLeftClick: onArrowLeftClickFromReducer
     },
     dispatch
   ] = useReducer(reducer, {
     headerComponent,
     footerComponent,
-    contentStyle: _contentStyle
+    contentStyle: _contentStyle,
+    onArrowLeftClick
   });
+  const handleOnArrowLeftClick = () => {
+    if (onArrowLeftClickFromReducer) {
+      onArrowLeftClickFromReducer();
+    } else {
+      handleOnCloseClick();
+    }
+  };
   const Container = useMemo(() => {
     return ({ children }: { children: ReactNode }) => {
       return lookAndFeel === "modal" ? (
@@ -248,7 +244,7 @@ export default function NonModal({
           {children}
           <RootBG
             onClick={() => {
-              handleOnClose();
+              handleOnCloseClick();
             }}
           />
         </Root>
@@ -260,21 +256,27 @@ export default function NonModal({
   }, [lookAndFeel]);
   return (
     <Container>
-      <Wrapper $size={size} $themeVal={theme} $maxWidths={maxWidths}>
-        <Header
-          HeaderComponent={HeaderComponent}
-          closable={closable}
-          handleOnClose={handleOnClose}
-          showConnectButton={showConnectButton}
-        />
+      <NonModalContext.Provider value={{ dispatch, showConnectButton }}>
+        <Wrapper $size={size} $maxWidths={maxWidths}>
+          <Header
+            HeaderComponent={HeaderComponent}
+            withLeftArrowButton={
+              !!withLeftArrowButton || !!onArrowLeftClickFromReducer
+            }
+            closable={closable}
+            handleOnCloseClick={handleOnCloseClick}
+            handleOnArrowLeftClick={handleOnArrowLeftClick}
+            showConnectButton={showConnectButton}
+          />
 
-        <Content style={contentStyle}>
-          <NonModalContext.Provider value={dispatch}>
-            {children}
-          </NonModalContext.Provider>
-        </Content>
-        {FooterComponent && <FooterWrapper>{FooterComponent}</FooterWrapper>}
-      </Wrapper>
+          <Content style={contentStyle}>{children}</Content>
+          {FooterComponent ? (
+            <FooterWrapper>{FooterComponent}</FooterWrapper>
+          ) : (
+            <div style={{ width: "947px", maxWidth: "100vw" }} />
+          )}
+        </Wrapper>
+      </NonModalContext.Provider>
     </Container>
   );
 }

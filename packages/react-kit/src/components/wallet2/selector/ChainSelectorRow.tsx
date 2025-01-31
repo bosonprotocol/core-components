@@ -3,10 +3,10 @@ import { Check } from "phosphor-react";
 import styled from "styled-components";
 import React from "react";
 import { Spinner } from "../../ui/loading/Spinner";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import { getChainInfo } from "../../../lib/const/chainInfo";
 import { SvgImage } from "../../ui/SvgImage";
-const colors = theme.colors.light;
+
 const LOGO_SIZE = 20;
 
 const Container = styled.button<{ disabled: boolean }>`
@@ -30,7 +30,7 @@ const Container = styled.button<{ disabled: boolean }>`
 
   &:hover {
     background-color: ${({ disabled }) =>
-      disabled ? "none" : colors.lightGrey};
+      disabled ? "none" : colors.greyLight};
   }
 `;
 
@@ -49,7 +49,7 @@ const Status = styled.div`
 `;
 
 const CaptionText = styled.div`
-  /* color: ${colors.lightGrey}; */
+  /* color: ${colors.greyLight}; */
   font-size: 0.75rem;
   grid-column: 2;
   grid-row: 2;
@@ -91,11 +91,7 @@ export default function ChainSelectorRow({
       {isPending && <CaptionText>Approve in wallet</CaptionText>}
       <Status>
         {active && (
-          <Check
-            width={LOGO_SIZE}
-            height={LOGO_SIZE}
-            color={colors.secondary}
-          />
+          <Check width={LOGO_SIZE} height={LOGO_SIZE} color={colors.violet} />
         )}
         {!active && isPending && (
           <Spinner width={LOGO_SIZE} height={LOGO_SIZE} />

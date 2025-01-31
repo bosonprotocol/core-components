@@ -2,7 +2,6 @@ import React, { ComponentType } from "react";
 import { CSSProperties } from "styled-components";
 import { ButtonProps } from "../../buttons/Button";
 import { CommitNonModalProps } from "../../modal/components/Commit/CommitNonModal";
-import GlobalStyle from "../../styles/GlobalStyle";
 import { MarginContainer } from "../MarginContainer";
 import { CommitModalWithOffer } from "./CommitModalWithOffer";
 import {
@@ -34,13 +33,15 @@ type CommitProps = {
     modalMargin?: CSSProperties["margin"];
   };
 export type CommitWidgetProps = CommitProps &
-  Omit<CommitWidgetProvidersProps, "withReduxProvider" | "provider">;
+  Omit<
+    CommitWidgetProvidersProps,
+    "withReduxProvider" | "provider" | "children"
+  >;
 
 export function CommitWidget(props: CommitWidgetProps) {
   return (
     <MarginContainer {...props}>
-      <CommitWidgetProviders {...props} withReduxProvider>
-        <GlobalStyle />
+      <CommitWidgetProviders {...props} withReduxProvider withGlobalStyle>
         <CommitModalWithOffer {...props} hideModal={props.closeWidgetClick} />
       </CommitWidgetProviders>
     </MarginContainer>

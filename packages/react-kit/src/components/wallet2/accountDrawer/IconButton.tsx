@@ -30,7 +30,6 @@ const IconStyles = css<{
   $borderRadius: CSSProperties["borderRadius"];
 }>`
   color: ${({ $color }) => $color};
-  /* TODO: background-color: var(--buttonBgColor); */
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   transition: ${getWidthTransition};
   border-radius: ${({ $borderRadius }) => $borderRadius || "12px"};

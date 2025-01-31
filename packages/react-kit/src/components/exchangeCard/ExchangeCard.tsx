@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { ReactElement, useMemo, useState } from "react";
 import { Button } from "../buttons/Button";
 import {
   Currencies,
@@ -30,10 +30,8 @@ import {
   RedeemButtonWrapper
 } from "./ExchangeCard.styles";
 import { ExchangeCardStatus } from "./types";
-import {
-  ProductCardTitle,
-  ProductCardTitleWrapper
-} from "../productCard/ProductCard.styles";
+import { subgraph } from "@bosonprotocol/core-sdk";
+import { ProductCardTitle, ProductCardTitleWrapper } from "../productCard/ProductCard.styles";
 export type { ExchangeCardStatus } from "./types";
 interface Base {
   id: string;
@@ -50,25 +48,46 @@ interface Base {
   isHoverDisabled?: boolean;
   dataCard?: string;
   productType?: ProductType;
+  isConnected: boolean | undefined;
+  CTAIfDisconnected?: ReactElement;
+  status: ExchangeCardStatus;
 }
 
 interface RedeemCard extends Base {
-  status: Extract<ExchangeCardStatus, "REDEEMED">;
+  status: subgraph.ExchangeState.REDEEMED;
   disputeButtonConfig: IButton;
 }
 
 interface CancelledCard extends Base {
-  status: Extract<ExchangeCardStatus, "CANCELLED">;
+  status: subgraph.ExchangeState.CANCELLED;
 }
 
 interface CommittedCard extends Base {
-  status: Extract<ExchangeCardStatus, "COMMITTED">;
+  status: subgraph.ExchangeState.COMMITTED;
   redeemButtonConfig: IButton;
   cancelButtonConfig: IButton;
   bottomText?: string;
 }
 
-type ExchangeCardProps = CommittedCard | RedeemCard | CancelledCard;
+interface CompletedCard extends Base {
+  status: subgraph.ExchangeState.COMPLETED;
+}
+
+interface DisputedCard extends Base {
+  status: subgraph.ExchangeState.DISPUTED;
+}
+
+interface RevokedCard extends Base {
+  status: subgraph.ExchangeState.REVOKED;
+}
+
+export type ExchangeCardProps =
+  | CommittedCard
+  | RedeemCard
+  | CancelledCard
+  | CompletedCard
+  | DisputedCard
+  | RevokedCard;
 
 export const ExchangeCard = (props: ExchangeCardProps) => {
   const {
@@ -86,7 +105,9 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     dataTestId = "offer",
     isHoverDisabled = false,
     dataCard = "exchange-card",
-    productType
+    productType,
+    isConnected,
+    CTAIfDisconnected
   } = props;
 
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -94,7 +115,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
   const exchangeCardBottom = useMemo(() => {
     if (isCTAVisible) {
       switch (status) {
-        case "REDEEMED": {
+        case subgraph.ExchangeState.REDEEMED: {
           const { disputeButtonConfig } = props;
           return (
             <ExchangeButtonWrapper>
@@ -115,7 +136,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
             </ExchangeButtonWrapper>
           );
         }
-        case "COMMITTED": {
+        case subgraph.ExchangeState.COMMITTED: {
           const { redeemButtonConfig, cancelButtonConfig, bottomText } = props;
           return (
             <ExchangeButtonWrapper>
@@ -181,7 +202,11 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
       <ExchangeCardBottom>
         <ExchangeCardBottomContent
           ref={(div) => {
-            !!div?.clientHeight && !height && setHeight(div.clientHeight);
+            !!div?.clientHeight &&
+              div.clientHeight !== height &&
+              setHeight(
+                height ? Math.min(div.clientHeight, height) : div.clientHeight
+              );
           }}
         >
           <ExchangeCarData>
@@ -217,11 +242,13 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
             />
           </ExchangeCardPriceWrapper>
         </ExchangeCardBottomContent>
-        {isCTAVisible && (
+        {isCTAVisible && isConnected ? (
           <ExchangeCTAWrapper data-cta-wrapper>
             {exchangeCardBottom}
           </ExchangeCTAWrapper>
-        )}
+        ) : isCTAVisible && !isConnected && CTAIfDisconnected ? (
+          CTAIfDisconnected
+        ) : null}
       </ExchangeCardBottom>
     </ExchangeCardWrapper>
   );

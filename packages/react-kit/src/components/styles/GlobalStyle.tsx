@@ -1,9 +1,9 @@
 import { createGlobalStyle } from "styled-components";
 import { breakpoint } from "../../lib/ui/breakpoint";
-import { theme } from "../../theme";
 import { zIndex } from "../ui/zIndex";
+import { cssVars } from "./ResetStylesForNonWidgets";
+import { getCssVar } from "../../theme";
 
-const colors = theme.colors.light;
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: barlow;
@@ -16,20 +16,7 @@ const GlobalStyle = createGlobalStyle`
     --wcm-z-index: ${zIndex.Modal + 100};
   }
   :root {
-    --l: 50%;
-    --headerBgColor: ${colors.white};
-    --headerTextColor: ${colors.darkGrey};
-    --primary: ${colors.primary};
-    --secondary: ${colors.lightGrey};
-    --accent: ${colors.accent};
-    --accentDark: ${colors.arsenic};
-    --textColor: ${colors.black};
-    --primaryBgColor: ${colors.primaryBgColor};
-    --secondaryBgColor: ${colors.secondary};
-    --footerBgColor: ${colors.black};
-    --footerTextColor: ${colors.white};
-    --buttonBgColor: ${colors.primary};
-    --buttonTextColor: ${colors.black};
+    ${cssVars}
 
     font-size: 0.75rem;
     ${breakpoint.xs} {
@@ -61,7 +48,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
 
-    color: var(--textColor);
+    color: ${getCssVar("--main-text-color")};
 
     font-family: "Plus Jakarta Sans";
     font-style: normal;

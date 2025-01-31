@@ -26,6 +26,18 @@ export const NATIVE_TOKENS: { [key: number]: ITokenInfo } = {
     decimals: 18,
     symbol: "ETH"
   },
+  8453: {
+    // Base
+    name: "Ether",
+    decimals: 18,
+    symbol: "ETH"
+  },
+  84532: {
+    // Base Sepolia
+    name: "Ether",
+    decimals: 18,
+    symbol: "ETH"
+  },
   137: {
     // Polygon Mainnet
     name: "MATIC",

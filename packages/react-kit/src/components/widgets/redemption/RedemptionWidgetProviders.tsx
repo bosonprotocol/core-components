@@ -9,66 +9,99 @@ import { IpfsProvider, IpfsProviderProps } from "../../ipfs/IpfsProvider";
 import { ModalProvider } from "../../modal/ModalProvider";
 import { withQueryClientProvider } from "../../queryClient/withQueryClientProvider";
 import { SignerProvider } from "../../signer/SignerProvider";
-import GlobalStyle from "../../styles/GlobalStyle";
-import { WalletConnectionProviderProps } from "../../wallet/WalletConnectionProvider";
 import { WithReduxProvider, WithReduxProviderProps } from "../ReduxProvider";
 import { getParentWindowOrigin } from "../common";
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "../finance/convertion-rate/ConvertionRateProvider";
 import { CommonWidgetTypes } from "../types";
-import { RedemptionContextProps } from "./provider/RedemptionContext";
-import { RedemptionProvider } from "./provider/RedemptionProvider";
+import {
+  RedemptionProvider,
+  RedemptionProviderProps
+} from "./provider/RedemptionProvider";
+import {
+  RedemptionWidgetProvider,
+  RedemptionWidgetProviderProps
+} from "./provider/RedemptionWidgetProvider";
 import { BosonProvider, BosonProviderProps } from "../../boson/BosonProvider";
+import { Web3Provider, Web3ProviderProps } from "../../wallet2/web3Provider";
+import { BlockNumberProvider } from "../../../hooks/contracts/BlockNumberProvider";
+import { RobloxProvider } from "../../../hooks/roblox/context/RobloxProvider";
+import {
+  BosonThemeProvider,
+  BosonThemeProviderProps,
+  useBosonTheme
+} from "../BosonThemeProvider";
+import { GlobalStyledThemed } from "../../styles/GlobalStyledThemed";
 
 export type RedemptionWidgetProvidersProps = IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
-  Omit<RedemptionContextProps, "setWidgetAction"> &
+  RedemptionProviderProps &
+  Partial<BosonThemeProviderProps> &
+  Omit<RedemptionWidgetProviderProps, "setWidgetAction"> &
   ConvertionRateProviderProps &
   CommonWidgetTypes &
-  Omit<WalletConnectionProviderProps, "children" | "envName"> &
+  Omit<Web3ProviderProps, "infuraKey"> &
   BosonProviderProps &
   WithReduxProviderProps & {
-    signatures?: string[] | undefined | null; // signature1,signature2,signature3
+    signatures?: string[] | undefined | null;
   } & {
     children: ReactNode;
+    withGlobalStyle?: boolean;
   };
 
 const { infuraKey, magicLinkKey } = CONFIG;
 
 export const RedemptionWidgetProviders: React.FC<RedemptionWidgetProvidersProps> =
-  withQueryClientProvider(({ children, ...props }) => {
+  withQueryClientProvider(({ children, withGlobalStyle, ...props }) => {
     const parentOrigin = getParentWindowOrigin();
+    const { themeKey: storyBookThemeKey } =
+      useBosonTheme({
+        throwOnError: false
+      }) || {};
     return (
-      <WithReduxProvider
-        withCustomReduxContext={props.withCustomReduxContext}
-        withReduxProvider={props.withReduxProvider}
+      <BosonThemeProvider
+        theme={props.theme || storyBookThemeKey || "light"}
+        roundness={props.roundness || "min"}
       >
-        <ConfigProvider
-          magicLinkKey={magicLinkKey}
-          infuraKey={infuraKey}
-          {...props}
+        {withGlobalStyle && <GlobalStyledThemed />}
+        <WithReduxProvider
+          withCustomReduxContext={props.withCustomReduxContext}
+          withReduxProvider={props.withReduxProvider}
         >
-          <BosonProvider {...props}>
-            <GlobalStyle />
-            <SignerProvider
-              parentOrigin={parentOrigin}
-              withExternalSigner={props.withExternalSigner}
+          <Web3Provider {...props} infuraKey={infuraKey}>
+            <ConfigProvider
+              magicLinkKey={magicLinkKey}
+              {...props}
+              infuraKey={infuraKey}
             >
-              <ChatProvider>
-                <IpfsProvider {...props}>
-                  <ConvertionRateProvider>
-                    <ModalProvider>
-                      <RedemptionProvider {...props}>
-                        {children}
-                      </RedemptionProvider>
-                    </ModalProvider>
-                  </ConvertionRateProvider>
-                </IpfsProvider>
-              </ChatProvider>
-            </SignerProvider>
-          </BosonProvider>
-        </ConfigProvider>
-      </WithReduxProvider>
+              <RobloxProvider>
+                <BlockNumberProvider>
+                  <BosonProvider {...props}>
+                    <SignerProvider
+                      parentOrigin={parentOrigin}
+                      withExternalSigner={props.withExternalSigner}
+                    >
+                      <ChatProvider>
+                        <IpfsProvider {...props}>
+                          <ConvertionRateProvider>
+                            <ModalProvider>
+                              <RedemptionProvider {...props}>
+                                <RedemptionWidgetProvider {...props}>
+                                  {children}
+                                </RedemptionWidgetProvider>
+                              </RedemptionProvider>
+                            </ModalProvider>
+                          </ConvertionRateProvider>
+                        </IpfsProvider>
+                      </ChatProvider>
+                    </SignerProvider>
+                  </BosonProvider>
+                </BlockNumberProvider>
+              </RobloxProvider>
+            </ConfigProvider>
+          </Web3Provider>
+        </WithReduxProvider>
+      </BosonThemeProvider>
     );
   });

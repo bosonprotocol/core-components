@@ -6,17 +6,18 @@ import { useChatStatus } from "./useChatStatus";
 import { Grid } from "../ui/Grid";
 import InitializeChat from "./InitializeChat";
 import { Typography } from "../ui/Typography";
+import { colors, getCssVar } from "../../theme";
 
 const CheckIcon = styled(CheckCircle)`
-  color: var(--primary);
+  color: ${getCssVar("--main-accent-color")};
   path {
-    stroke: var(--primary);
+    stroke: ${getCssVar("--main-accent-color")};
   }
 `;
 const ChatDotsIcon = styled(ChatDots)`
-  fill: var(--accent);
+  fill: ${colors.violet};
   path {
-    stroke: var(--accent);
+    stroke: ${colors.violet};
   }
 `;
 

@@ -25,9 +25,9 @@ describe("index entrypoint", () => {
     (envName) => {
       const envConfigs = getEnvConfigs(envName as EnvironmentType);
       const nbConfigs = {
-        testing: 2,
-        staging: 2,
-        production: 2
+        testing: 3,
+        staging: 3,
+        production: 3
       };
       expect(envConfigs).toBeTruthy();
       expect(envConfigs.length).toEqual(nbConfigs[envName]);
@@ -85,7 +85,7 @@ describe("index entrypoint", () => {
     }
   );
 
-  test.each([1, 137, 80002, 11155111])(
+  test.each([1, 137, 80002, 11155111, 84532, 8453])(
     `Chain Id %p is available`,
     (chainId) => {
       expect(chains[chainId]).toBeTruthy();

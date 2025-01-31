@@ -385,8 +385,8 @@ export const priceToPreciseFloat = (
  * For transaction review numbers, such as token quantities, NFT price (token-denominated),
  *  network fees, transaction history items. Adheres to guidelines defined here:
  * https://www.notion.so/uniswaplabs/Number-standards-fbb9f533f10e4e22820722c2f66d23c0
- * @param num numerical value denominated in any token
- * @param maxDigits the maximum number of digits that should be shown for the quantity
+ * @param num - numerical value denominated in any token
+ * @param maxDigits - the maximum number of digits that should be shown for the quantity
  */
 export const formatTransactionAmount = (
   num: number | undefined | null,

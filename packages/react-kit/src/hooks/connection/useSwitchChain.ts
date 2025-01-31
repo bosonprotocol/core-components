@@ -5,7 +5,12 @@ import { useCallback } from "react";
 import { FALLBACK_URLS, getRpcUrls } from "../../lib/const/networks";
 import { useChainId } from "./connection";
 import { useAppDispatch } from "../../state/hooks";
-import { SupportedChainsType, isSupportedChain } from "../../lib/const/chains";
+import {
+  ChainId_BASE_SEPOLIA,
+  ChainId_POLYGON_AMOY,
+  SupportedChainsType,
+  isSupportedChain
+} from "../../lib/const/chains";
 import {
   endSwitchingChain,
   startSwitchingChain
@@ -26,7 +31,10 @@ function getRpcUrl(
     case ChainId.MAINNET:
     case ChainId.GOERLI:
     case ChainId.SEPOLIA:
-    case 80002:
+    case ChainId.POLYGON:
+    case ChainId_POLYGON_AMOY:
+    case ChainId.BASE:
+    case ChainId_BASE_SEPOLIA: // BASE SEPOLIA
       return RPC_URLS[chainId][0];
     case localChainId: {
       if (localRpcUrl) {
@@ -34,6 +42,10 @@ function getRpcUrl(
       }
       throw new Error(`chain ${localChainId} is not supported`);
     }
+    case ChainId.ZORA:
+    case ChainId.ZORA_SEPOLIA:
+    case ChainId.ROOTSTOCK:
+    case ChainId.BLAST:
     case ChainId.OPTIMISM_SEPOLIA:
     case ChainId.ARBITRUM_SEPOLIA:
       throw new Error(`${chainId} is not supported`);

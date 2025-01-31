@@ -131,6 +131,7 @@ export function useUniswapPools({ tokens }: Props) {
   const bosonToken = useQuery(
     ["pools-boson"],
     async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const poolsIdsQuery = await request<any>(UNISWAP_API_URL, poolsId, {
         token0: "USDC",
         token1: "WETH"

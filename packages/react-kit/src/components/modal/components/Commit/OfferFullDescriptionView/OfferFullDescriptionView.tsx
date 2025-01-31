@@ -1,50 +1,50 @@
 import React, { useEffect } from "react";
-import { theme } from "../../../../../theme";
+import { getCssVar } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { OfferFullDescription } from "../../common/OfferFullDescription/OfferFullDescription";
-import { Grid } from "../../../../ui/Grid";
-import { ArrowLeft } from "phosphor-react";
-import { Typography } from "../../../../ui/Typography";
 import { OnClickBuyOrSwapHandler } from "../../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
-import { BosonLogo } from "../../common/BosonLogo";
+import { HeaderView } from "../../../nonModal/headers/HeaderView";
 
-const colors = theme.colors.light;
 type Props = OnClickBuyOrSwapHandler & {
   onBackClick: () => void;
   offer: Offer;
+  showBosonLogoInHeader: boolean;
 } & Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick">;
 
 export function OfferFullDescriptionView({
   onBackClick,
   offer,
   onExchangePolicyClick,
-  onClickBuyOrSwap
+  onClickBuyOrSwap,
+  showBosonLogoInHeader
 }: Props) {
-  const dispatch = useNonModalContext();
+  const { dispatch, showConnectButton } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: onBackClick,
         headerComponent: (
-          <Grid gap="1rem" style={{ flex: "1 1" }} justifyContent="flex-start">
-            <ArrowLeft
-              onClick={onBackClick}
-              size={32}
-              style={{ cursor: "pointer" }}
-            />
-            <Typography tag="h3">{offer.metadata?.name || ""}</Typography>
-          </Grid>
+          <HeaderView
+            text={offer.metadata?.name || ""}
+            showBosonLogoInHeader={showBosonLogoInHeader}
+          />
         ),
         contentStyle: {
-          background: colors.white,
+          background: getCssVar("--background-accent-color"),
           padding: 0
         },
-        footerComponent: <BosonLogo />
+        footerComponent: null
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, offer.metadata?.name]);
+  }, [
+    dispatch,
+    offer.metadata?.name,
+    onBackClick,
+    showBosonLogoInHeader,
+    showConnectButton
+  ]);
   return (
     <OfferFullDescription
       includeOverviewTab

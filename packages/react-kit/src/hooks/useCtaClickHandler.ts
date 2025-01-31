@@ -96,6 +96,7 @@ export function useCtaClickHandler<T>({
           try {
             onPendingTransaction?.(txResponse.hash, isMetaTx, name);
             receipt = await txResponse.wait(waitBlocks);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } catch (error: any) {
             // Handle transaction that was replaced, canceled or repriced.
             // See https://docs.ethers.io/v5/api/utils/logger/#errors--transaction-replaced

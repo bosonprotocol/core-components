@@ -1,43 +1,40 @@
 import React, { useEffect } from "react";
-import { Grid } from "../../../../ui/Grid";
-import { Typography } from "../../../../ui/Typography";
-import { ArrowLeft } from "phosphor-react";
 import ContractualAgreement from "../../../../contractualAgreement/ContractualAgreement";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { theme } from "../../../../../theme";
+import { getCssVar } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
-import { BosonLogo } from "../../common/BosonLogo";
+import { HeaderView } from "../../../nonModal/headers/HeaderView";
 
-const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
   offer: Offer | null;
+  showBosonLogoInHeader: boolean;
 }
 
-export function ContractualAgreementView({ onBackClick, offer }: Props) {
+export function ContractualAgreementView({
+  onBackClick,
+  offer,
+  showBosonLogoInHeader
+}: Props) {
   const offerId = offer?.id;
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: onBackClick,
         headerComponent: (
-          <Grid gap="1rem" justifyContent="flex-start" style={{ flex: "1 1" }}>
-            <ArrowLeft
-              onClick={onBackClick}
-              size={32}
-              style={{ cursor: "pointer" }}
-            />
-            <Typography tag="h3">Contractual Agreement</Typography>
-          </Grid>
+          <HeaderView
+            text={"Contractual Agreement"}
+            showBosonLogoInHeader={showBosonLogoInHeader}
+          />
         ),
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: null
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, onBackClick, showBosonLogoInHeader]);
   return (
     <>
       {offer ? (

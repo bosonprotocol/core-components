@@ -23,5 +23,11 @@ if (!infuraKey) {
 export const CONFIG = {
   magicLinkKey,
   infuraKey,
-  rpcUrls: getRpcUrls(infuraKey)
+  rpcUrls: getRpcUrls(infuraKey),
+  defaultDisputeResolutionPeriodDays: 15,
+  minimumDisputePeriodInDays: 30,
+  roblox: {
+    getItemDetailsWebsite: ({ itemId }: { itemId: string }) =>
+      `https://www.roblox.com/catalog/${itemId}/`
+  }
 } as const;

@@ -39,6 +39,10 @@ const envNameToConfig: Record<
     "testing-11155111-0": {
       network: "sepolia",
       startBlock: 5583820 // sepolia, block number when protocol was deployed https://sepolia.etherscan.io/tx/0xef725682e82611d0f4b39707a2f3fa869fbfbbd10d85a4f0eb0ae6dddac59d40
+    },
+    "testing-84532-0": {
+      network: "base-sepolia",
+      startBlock: 20927614 // base-sepolia, block number when protocol was deployed https://sepolia.basescan.org/tx/0x06749f2d579176f4a825869906d5db9e5c700829331de9a46bbb6d0eeb8b930e
     }
   },
   staging: {
@@ -49,6 +53,10 @@ const envNameToConfig: Record<
     "staging-11155111-0": {
       network: "sepolia",
       startBlock: 5612422 // sepolia, block number when protocol was deployed https://sepolia.etherscan.io/tx/0x2f2469e88a68433794e77fd5aba9629c9dad7c61f4b0bb45f2a57fc3e65ca1f1
+    },
+    "staging-84532-0": {
+      network: "base-sepolia",
+      startBlock: 20927855 // base-sepolia, block number when protocol was deployed https://sepolia.basescan.org/tx/0x492d19d9a86fcf697f3a7c94b961714006ff224895cfee4fb1a7bc7afe2ab65f
     }
   },
   production: {
@@ -59,9 +67,14 @@ const envNameToConfig: Record<
     "production-1-0": {
       network: "mainnet",
       startBlock: 18240548 // ethereum, block num when protocol is deployed
+    },
+    "production-8453-0": {
+      network: "base",
+      startBlock: 0 // TODO
     }
   }
 };
+
 const { network, startBlock } = envNameToConfig[envName][configId] || {
   network: "",
   startBlock: 0

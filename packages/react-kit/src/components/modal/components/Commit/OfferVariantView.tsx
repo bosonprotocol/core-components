@@ -9,7 +9,6 @@ import React, {
 import styled from "styled-components";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { breakpoint } from "../../../../lib/ui/breakpoint";
-import { theme } from "../../../../theme";
 import { isTruthy } from "../../../../types/helpers";
 import { VariantV1 } from "../../../../types/variants";
 import { Grid } from "../../../ui/Grid";
@@ -25,11 +24,12 @@ import { CommitDetailViewWithProvider } from "./DetailView/CommitDetailViewWithP
 import { DetailContextProps } from "../common/detail/DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "../common/detail/types";
 import { UseGetOfferDetailDataProps } from "../common/detail/useGetOfferDetailData";
-import { BosonLogo } from "../common/BosonLogo";
 import { PhygitalLabel } from "../../../productCard/ProductCard";
 import { useIsPhygital } from "../../../../hooks/offer/useIsPhygital";
+import { getCssVar } from "../../../../theme";
+import { InnerCommitDetailViewProps } from "./DetailView/InnerCommitDetailView";
+import { HeaderView } from "../../nonModal/headers/HeaderView";
 
-const colors = theme.colors.light;
 const ImageWrapper = styled.div`
   container-type: inline-size;
   position: relative;
@@ -59,9 +59,8 @@ const PreviewSlickSlider = styled(SlickSlider)`
 `;
 
 export type OfferVariantViewProps = OnClickBuyOrSwapHandler &
-  Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick"> & {
-    onCommit: (exchangeId: string, txHash: string) => void;
-    onPurchaseOverview: () => void;
+  Pick<UseGetOfferDetailDataProps, "onExchangePolicyClick" | "exchange"> &
+  Pick<InnerCommitDetailViewProps, "requestShipmentProps"> & {
     onViewFullDescription: () => void;
     onLicenseAgreementClick: () => void;
     onGetDetailViewProviderProps: (providerProps: DetailContextProps) => void;
@@ -69,7 +68,8 @@ export type OfferVariantViewProps = OnClickBuyOrSwapHandler &
     selectedVariant: VariantV1;
     setSelectedVariant: Dispatch<SetStateAction<VariantV1 | undefined>>;
     allVariants: VariantV1[];
-    showBosonLogo?: boolean;
+    showBosonLogo: boolean;
+    showBosonLogoInHeader: boolean;
     disableVariationsSelects?: boolean;
     loadingViewFullDescription: boolean;
   };
@@ -88,10 +88,11 @@ export function OfferVariantView({
   showBosonLogo,
   disableVariationsSelects,
   loadingViewFullDescription,
-  onCommit,
+  showBosonLogoInHeader,
+  exchange,
+  requestShipmentProps,
   onExchangePolicyClick,
   onLicenseAgreementClick,
-  onPurchaseOverview,
   onViewFullDescription,
   onGetDetailViewProviderProps,
   onClickBuyOrSwap,
@@ -110,24 +111,29 @@ export function OfferVariantView({
     );
   }, [offerImg, images]);
 
-  const dispatch = useNonModalContext();
+  const { dispatch, showConnectButton } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: null,
         headerComponent: (
-          <Grid
-            gap="1rem"
-            style={{ flex: "1 1" }}
-            justifyContent="flex-start"
+          <HeaderView
+            text={offer.metadata?.name || ""}
+            showBosonLogoInHeader={showBosonLogoInHeader}
           />
         ),
         contentStyle: {
-          background: isCommitting ? colors.white : colors.lightGrey
+          background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: null
       }
     });
-  }, [dispatch, isCommitting]);
+  }, [
+    dispatch,
+    offer.metadata?.name,
+    showBosonLogoInHeader,
+    showConnectButton
+  ]);
   const hasVariations = !!selectedVariant.variations?.length;
   const innerOnGetProviderProps = useCallback(
     (providerProps: DetailContextProps) => {
@@ -154,97 +160,97 @@ export function OfferVariantView({
   const isPhygital = useIsPhygital({ offer });
   return (
     <>
-      {isCommitting ? (
+      {isCommitting && (
         <Grid flexDirection="column">
           <Typography fontSize="1.7rem">
             <strong>Your transaction is being processed...</strong>
           </Typography>
           <WaveLoader />
         </Grid>
-      ) : !offer ? (
-        <div data-testid="notFound">This offer does not exist</div>
-      ) : (
-        <GridContainer
-          itemsPerRow={{
-            xs: 1,
-            s: 2,
-            m: 2,
-            l: 2,
-            xl: 2
-          }}
-          style={{ paddingTop: "1rem" }}
-          rowGap="3rem"
-        >
-          <ImageAndSellerIdContainer flexDirection="column" flex={1}>
-            <ImageWrapper>
-              {isPhygital && <PhygitalLabel />}
-              {!!mediaFiles.length && (
-                <DetailSlider
-                  mediaFiles={mediaFiles}
-                  sliderOptions={sliderOptions}
-                  arrowsAbove={false}
-                  showArrows={false}
-                  data-slider
-                  onChangeMedia={({ index }) => {
-                    setSliderIndex(index);
-                  }}
-                />
-              )}
+      )}
 
-              <SellerAndDescription
-                offer={offer}
-                onViewFullDescription={onViewFullDescription}
-                loadingViewFullDescription={loadingViewFullDescription}
-              />
-              {mediaFiles.length > 1 && (
-                <PreviewSlickSlider
-                  settings={{ ...initialSettings, slidesToShow: 8 }}
-                  mediaFiles={mediaFiles}
-                  onMediaClick={({ index }) => {
-                    setSliderIndex(index);
-                  }}
-                  activeIndex={sliderIndex}
-                  imageOptimizationOpts={{ height: 75 }}
-                />
-              )}
-            </ImageWrapper>
-          </ImageAndSellerIdContainer>
-          <VariationsAndWhiteWidget
-            flexDirection="column"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-          >
-            <Typography tag="h3" marginTop="0" marginBottom="1rem">
-              {offer.metadata?.name || ""}
-            </Typography>
-            {hasVariations && (
-              <ResponsiveVariationSelects
-                selectedVariant={selectedVariant}
-                setSelectedVariant={setSelectedVariant}
-                variants={allVariants}
-                disabled={allVariants.length < 2 || disableVariationsSelects}
+      <GridContainer
+        itemsPerRow={{
+          xs: 1,
+          s: 2,
+          m: 2,
+          l: 2,
+          xl: 2
+        }}
+        style={{
+          paddingTop: "1rem",
+          display: isCommitting ? "none" : undefined
+        }}
+        rowGap="3rem"
+      >
+        <ImageAndSellerIdContainer flexDirection="column" flex={1}>
+          <ImageWrapper>
+            {isPhygital && <PhygitalLabel />}
+            {!!mediaFiles.length && (
+              <DetailSlider
+                mediaFiles={mediaFiles}
+                sliderOptions={sliderOptions}
+                arrowsAbove={false}
+                showArrows={false}
+                data-slider
+                onChangeMedia={({ index }) => {
+                  setSliderIndex(index);
+                }}
               />
             )}
 
-            <CommitDetailViewWithProvider
-              showBosonLogo={showBosonLogo ?? false}
-              selectedVariant={selectedVariant}
-              onExchangePolicyClick={onExchangePolicyClick}
-              onLicenseAgreementClick={onLicenseAgreementClick}
-              onCommit={(...args) => {
-                onCommit(...args);
-                setIsComitting(false);
-              }}
-              onCommitting={() => setIsComitting(true)}
-              onPurchaseOverview={onPurchaseOverview}
-              showPriceAsterisk={false}
-              onGetProviderProps={innerOnGetProviderProps}
-              onClickBuyOrSwap={onClickBuyOrSwap}
-              onAlreadyOwnOfferClick={onAlreadyOwnOfferClick}
+            <SellerAndDescription
+              offer={offer}
+              onViewFullDescription={onViewFullDescription}
+              loadingViewFullDescription={loadingViewFullDescription}
             />
-          </VariationsAndWhiteWidget>
-        </GridContainer>
-      )}
+            {mediaFiles.length > 1 && (
+              <PreviewSlickSlider
+                settings={{ ...initialSettings, slidesToShow: 8 }}
+                mediaFiles={mediaFiles}
+                onMediaClick={({ index }) => {
+                  setSliderIndex(index);
+                }}
+                activeIndex={sliderIndex}
+                imageOptimizationOpts={{ height: 75 }}
+              />
+            )}
+          </ImageWrapper>
+        </ImageAndSellerIdContainer>
+        <VariationsAndWhiteWidget
+          flexDirection="column"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+        >
+          {hasVariations && (
+            <ResponsiveVariationSelects
+              selectedVariant={selectedVariant}
+              setSelectedVariant={setSelectedVariant}
+              variants={allVariants}
+              disabled={allVariants.length < 2 || disableVariationsSelects}
+            />
+          )}
+
+          <CommitDetailViewWithProvider
+            showBosonLogo={showBosonLogo ?? false}
+            selectedVariant={selectedVariant}
+            onExchangePolicyClick={onExchangePolicyClick}
+            onLicenseAgreementClick={onLicenseAgreementClick}
+            onCommit={() => {
+              setIsComitting(false);
+            }}
+            requestShipmentProps={requestShipmentProps}
+            exchange={exchange ?? undefined}
+            onCommitting={() => {
+              setIsComitting(true);
+            }}
+            showPriceAsterisk={false}
+            onGetProviderProps={innerOnGetProviderProps}
+            onClickBuyOrSwap={onClickBuyOrSwap}
+            onAlreadyOwnOfferClick={onAlreadyOwnOfferClick}
+          />
+        </VariationsAndWhiteWidget>
+      </GridContainer>
     </>
   );
 }

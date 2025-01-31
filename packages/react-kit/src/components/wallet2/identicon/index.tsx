@@ -2,15 +2,14 @@ import React from "react";
 import jazzicon from "@metamask/jazzicon";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import useENSAvatar from "../../../hooks/ens/useENSAvatar";
 
-const colors = theme.colors.light;
 const StyledIdenticon = styled.div<{ $iconSize: number }>`
   height: ${({ $iconSize }) => `${$iconSize}px`};
   width: ${({ $iconSize }) => `${$iconSize}px`};
   border-radius: 50%;
-  background-color: ${colors.lightGrey};
+  background-color: ${colors.greyLight};
   font-size: initial;
 `;
 

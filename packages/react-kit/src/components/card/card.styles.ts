@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors } from "../../theme";
 
 export const CardLink = styled.a`
   font-family: Poppins, sans-serif;
@@ -134,8 +135,8 @@ export const CardBottom = styled.div`
   #button {
     align-items: center;
     appearance: button;
-    background-color: ${({ theme }) => theme?.colors?.light.primary};
-    border: 2px solid ${({ theme }) => theme?.colors?.light.primary};
+    background-color: ${colors.green};
+    border: 2px solid ${colors.green};
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     border-radius: 0px 0px 10px 10px;
@@ -154,8 +155,8 @@ export const CardBottom = styled.div`
       opacity: 0.4;
     }
     &:hover {
-      background-color: ${({ theme }) => theme?.colors?.light.secondary};
-      border-color: ${({ theme }) => theme?.colors?.light.secondary};
+      background-color: ${colors.violet};
+      border-color: ${colors.violet};
       color: #ffffff;
     }
     @media (hover: hover) {

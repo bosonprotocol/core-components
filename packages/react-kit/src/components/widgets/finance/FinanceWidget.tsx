@@ -9,7 +9,6 @@ import { useDisconnect } from "../../../hooks/connection/useDisconnect";
 import { useCurrentSellers } from "../../../hooks/useCurrentSellers";
 import { Grid } from "../../ui/Grid";
 import Loading from "../../ui/loading/LoadingWrapper";
-import ConnectButton from "../../wallet/ConnectButton";
 import Finance, { Props } from "./Finance";
 import { useConvertionRate } from "./convertion-rate/useConvertionRate";
 import { useExchangeTokens } from "./exchange-tokens/useExchangeTokens";
@@ -21,11 +20,8 @@ import {
   FinanceWidgetProviders,
   FinanceWidgetProvidersProps
 } from "./FinanceWidgetProviders";
+import { BosonConnectWallet } from "../../wallet2/web3Status/BosonConnectWallet";
 dayjs.extend(isBetween);
-
-const StyledConnectButton = styled(ConnectButton)`
-  padding: 10px;
-`;
 
 const Wrapper = styled.div`
   text-align: center;
@@ -115,7 +111,7 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
     }
 
     if (!address) {
-      return <p style={{ textAlign: "center" }}>Please connect your wallet</p>;
+      return <p style={{ textAlign: "center" }}>Please connect your account</p>;
     }
 
     if (!sellerIdToUse) {
@@ -134,7 +130,10 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
 }
 
 const Component = WithSellerData(Finance);
-type FinanceWidgetProps = FinanceWidgetProvidersProps & {
+export type FinanceWidgetProps = Omit<
+  FinanceWidgetProvidersProps,
+  "children"
+> & {
   sellerId: string | null | undefined;
 };
 
@@ -143,8 +142,8 @@ export function FinanceWidget(props: FinanceWidgetProps) {
   return (
     <FinanceWidgetProviders {...props} withReduxProvider>
       {!withExternalSigner && (
-        <Grid justifyContent="flex-end">
-          <StyledConnectButton showChangeWallet />
+        <Grid justifyContent="flex-end" padding="0.625rem">
+          <BosonConnectWallet />
         </Grid>
       )}
       <Component sellerId={sellerId ?? undefined} />

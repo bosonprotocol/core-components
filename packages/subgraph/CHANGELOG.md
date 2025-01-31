@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.34.4...@bosonprotocol/subgraph@1.34.5) (2025-01-29)
+
+
+### Bug Fixes
+
+* add missing environment for post subgraph deployment with Ormi ([#893](https://github.com/bosonprotocol/core-components/issues/893)) ([8a9511b](https://github.com/bosonprotocol/core-components/commit/8a9511b3a8129575a720a00aaf23f3988d411ad8))
+
+
+
+
+
+## [1.34.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.34.3...@bosonprotocol/subgraph@1.34.4) (2025-01-28)
+
+**Note:** Version bump only for package @bosonprotocol/subgraph
+
+
+
+
+
+## [1.34.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.34.2...@bosonprotocol/subgraph@1.34.3) (2025-01-28)
+
+**Note:** Version bump only for package @bosonprotocol/subgraph
+
+
+
+
+
 ## [1.34.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.34.1...@bosonprotocol/subgraph@1.34.2) (2024-11-22)
 
 **Note:** Version bump only for package @bosonprotocol/subgraph

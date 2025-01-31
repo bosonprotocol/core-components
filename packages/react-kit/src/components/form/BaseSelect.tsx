@@ -3,11 +3,10 @@ import React from "react";
 import Select, { SingleValue } from "react-select";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
 
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { zIndex } from "../ui/zIndex";
 import type { BaseSelectProps, SelectDataProps } from "./types";
-
-const colors = theme.colors.light;
+import { useFixSelectFont } from "../../hooks/form/useFixSelectFont";
 
 const customStyles = (error: any) => ({
   control: (provided: any, state: any) => ({
@@ -16,12 +15,12 @@ const customStyles = (error: any) => ({
     padding: "0.4rem 0.25rem",
     boxShadow: "none",
     ":hover": {
-      borderColor: colors.secondary,
+      borderColor: colors.violet,
       borderWidth: "1px"
     },
-    background: colors.lightGrey,
+    background: colors.greyLight,
     border: state.isFocused
-      ? `1px solid ${colors.secondary}`
+      ? `1px solid ${colors.violet}`
       : !checkIfValueIsEmpty(error)
         ? `1px solid ${colors.orange}`
         : `1px solid ${colors.border}`
@@ -38,12 +37,10 @@ const customStyles = (error: any) => ({
     opacity: state.isDisabled ? "0.5" : "1",
     background:
       state.isOptionSelected || state.isSelected || state.isFocused
-        ? colors.lightGrey
+        ? colors.greyLight
         : colors.white,
     color:
-      state.isOptionSelected || state.isSelected
-        ? colors.secondary
-        : colors.black
+      state.isOptionSelected || state.isSelected ? colors.violet : colors.black
   }),
   indicatorsContainer: () => ({
     display: "none"
@@ -59,14 +56,21 @@ export default function BaseSelect({
   const handleChange = (option: SingleValue<SelectDataProps>) => {
     onChange?.(option);
   };
-
+  const { jsx, selectClassName } = useFixSelectFont({
+    selectClassName: "boson-base-select",
+    hasError: props.hasError
+  });
   return (
-    <Select
-      styles={customStyles(null)}
-      {...props}
-      placeholder={placeholder}
-      options={options}
-      onChange={handleChange}
-    />
+    <>
+      {jsx}
+      <Select
+        styles={customStyles(null)}
+        {...props}
+        className={selectClassName}
+        placeholder={placeholder}
+        options={options}
+        onChange={handleChange}
+      />
+    </>
   );
 }

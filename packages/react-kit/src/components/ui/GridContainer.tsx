@@ -7,6 +7,8 @@ import React, {
   forwardRef
 } from "react";
 import { getTransientCustomProps } from "./getTransientCustomProps";
+import { isDefined } from "./common";
+import { AddDollarPrefixToKeys } from "../../types/helpers";
 
 export interface ItemsPerRow {
   xs: number;
@@ -37,7 +39,8 @@ const pickedProps = {
   rowGapPerRow: true,
   columnGap: true,
   rowGap: true,
-  defaultSize: true
+  defaultSize: true,
+  width: true
 } as const;
 type GridProps = {
   itemsPerRow?: Partial<ItemsPerRow>;
@@ -46,16 +49,10 @@ type GridProps = {
   columnGap?: CSSProperties["columnGap"];
   rowGap?: CSSProperties["rowGap"];
   defaultSize?: string;
+  width?: CSSProperties["width"];
 };
 
-type InnerGridProps = {
-  $itemsPerRow?: Partial<ItemsPerRow>;
-  $columnGapPerRow?: Partial<ColumnGapPerRow>;
-  $rowGapPerRow?: Partial<RowGapPerRow>;
-  $columnGap?: CSSProperties["columnGap"];
-  $rowGap?: CSSProperties["rowGap"];
-  $defaultSize?: string;
-};
+type InnerGridProps = AddDollarPrefixToKeys<GridProps>;
 
 const GridContainerDiv = styled.div<InnerGridProps>`
   display: grid;
@@ -106,11 +103,13 @@ const GridContainerDiv = styled.div<InnerGridProps>`
     grid-column-gap: ${({ $columnGapPerRow }) => $columnGapPerRow?.xl};
     grid-row-gap: ${({ $rowGapPerRow }) => $rowGapPerRow?.xl};
   }
+
+  ${({ $width }) => (isDefined($width) ? `width:${$width}` : "")};
 `;
 type DivProps = HTMLAttributes<ElementRef<"div">>;
-type Props = DivProps & GridProps;
+export type GridContainerProps = DivProps & GridProps;
 
-export const GridContainer = forwardRef<ElementRef<"div">, Props>(
+export const GridContainer = forwardRef<ElementRef<"div">, GridContainerProps>(
   (props, ref) => {
     const { transientProps, otherProps } = getTransientCustomProps<
       InnerGridProps,

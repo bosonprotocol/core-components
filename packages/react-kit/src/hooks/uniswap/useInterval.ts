@@ -3,9 +3,9 @@ import { useEffect } from "react";
 /**
  * Invokes callback repeatedly over an interval defined by the delay
  *
- * @param callback
- * @param delay if null, the callback will not be invoked
- * @param leading by default, the callback will be invoked immediately (on the leading edge);
+ * @param callback -
+ * @param delay - if null, the callback will not be invoked
+ * @param leading - by default, the callback will be invoked immediately (on the leading edge);
  *                if false, the callback will not be invoked until a first delay
  */
 export function useInterval(

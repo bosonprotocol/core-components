@@ -1,10 +1,5 @@
 import { ReactNode } from "react";
-import {
-  ActionMeta,
-  CSSObjectWithLabel,
-  MultiValue,
-  SingleValue
-} from "react-select";
+import { SingleValue } from "react-select";
 import { CSSProperties } from "styled-components";
 import { ImageEditorModalProps } from "./Upload/ImageEditorModal/ImageEditorModal";
 import type {
@@ -100,14 +95,14 @@ export interface BaseSelectProps<Value = string> {
   placeholder?: string;
   defaultValue?: SelectDataProps<Value> | null;
   onChange?: OnChange<Value>;
+  hasError?: boolean;
 }
 export type SupportedReactSelectProps<
   M extends boolean | undefined = false,
   Option extends Record<string, unknown> = SelectDataProps
 > = Pick<
   StateManagerProps<Option, M extends undefined ? false : boolean>,
-  | "formatGroupLabel"
-  | "formatOptionLabel"
+  // | "formatOptionLabel"
   | "menuPlacement"
   | "menuPosition"
   | "menuIsOpen"
@@ -126,43 +121,9 @@ export type SupportedReactSelectProps<
   | "closeMenuOnSelect"
   | "captureMenuScroll"
   | "defaultMenuIsOpen"
+  | "placeholder"
+  | "hideSelectedOptions"
 >;
-export type SelectProps<
-  M extends boolean | undefined = false,
-  Option extends Record<string, unknown> = SelectDataProps
-> = BaseProps & {
-  isMulti?: M;
-  disabled?: boolean;
-  isClearable?: boolean;
-  isSearchable?: boolean;
-  options: Array<Option> | Readonly<Array<Option>>;
-  errorMessage?: string;
-  onChange?: (
-    option: M extends true ? MultiValue<Option> : SingleValue<Option>,
-    actionMeta?: ActionMeta<Option>
-  ) => void;
-  label?: string;
-  theme?: Partial<{
-    control: Partial<CSSProperties> &
-      Partial<{
-        hover: Partial<CSSProperties>;
-        focus: Partial<CSSProperties>;
-        error: Partial<CSSProperties>;
-      }>;
-    option: Partial<CSSProperties> &
-      Partial<{
-        selected: Partial<CSSProperties>;
-        disabled: Partial<CSSProperties>;
-        focus: Partial<CSSProperties>;
-        error: Partial<CSSObjectWithLabel>;
-      }>;
-    placeholder: Partial<CSSProperties> &
-      Partial<{ error: CSSObjectWithLabel }>;
-    input: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
-    singleValue: Partial<CSSProperties> &
-      Partial<{ error: CSSObjectWithLabel }>;
-  }>;
-} & SupportedReactSelectProps<M, Option>;
 
 export type UploadProps = BaseProps & {
   accept?: string;

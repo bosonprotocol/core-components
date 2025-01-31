@@ -129,12 +129,20 @@ async function main() {
     new Date(toTimestampMS).getTime() / 1000
   ).toString();
 
+  const subgraphUrl = defaultConfig.subgraphUrl;
+  if (!subgraphUrl) {
+    console.log("Subgraph is not set for this environment. Aborting...");
+    return;
+  }
   const first = 100;
   let page = 0;
   let doMoreOffersExist = true;
 
-  console.log("\n1. Fetching offers to process...");
-  const subgraphUrl = defaultConfig.subgraphUrl;
+  console.log(
+    "\n1. Fetching offers to process...",
+    "\n\t\tsubgraphUrl",
+    subgraphUrl
+  );
   const subgraphSdk = getSubgraphSdk(subgraphUrl);
   let offersToProcess: Awaited<
     ReturnType<typeof subgraphSdk.getOffersMediaQuery>

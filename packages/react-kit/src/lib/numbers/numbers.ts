@@ -17,11 +17,11 @@ export const getNumberWithDecimals = (
 /**
  * Given a small number, it returns its string representation without the scientific 'e' notation.
  * For example:
- *      1e-112 => 1e-112 (too small to change)
- *      1e-7   => 0.0000001
- *      0.0001 => 0.0001
- *      9e+99  => 9e+99
- * @param num
+ *      1e-112 =\> 1e-112 (too small to change)
+ *      1e-7   =\> 0.0000001
+ *      0.0001 =\> 0.0001
+ *      9e+99  =\> 9e+99
+ * @param num -
  * @returns
  */
 export const fixformattedString = (num: number): string => {
@@ -43,3 +43,7 @@ export const isNumeric = (strNumber: string) => {
     !isNaN(parseFloat(strNumber))
   ); // ...and ensure strings of whitespace fail
 };
+
+export function remToPx(rem: number, rootFontSize = 16) {
+  return rem * rootFontSize;
+}

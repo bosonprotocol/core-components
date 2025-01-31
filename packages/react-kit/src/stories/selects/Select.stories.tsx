@@ -1,5 +1,5 @@
 import { fn } from "@storybook/test";
-import { Select, SelectProps, theme } from "../../index";
+import { colors, Select, SelectProps } from "../../index";
 import React from "react";
 import { Meta } from "@storybook/react";
 import { Formik } from "formik";
@@ -7,7 +7,6 @@ import { Formik } from "formik";
 const inputWithErrors = "With error";
 const inputName = "test";
 
-const colors = theme.colors.light;
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Visual Components/Selects/Select",
@@ -30,7 +29,10 @@ export default {
         disable: true // remove name input in controls
       }
     },
-    disabled: { control: "boolean" },
+    isDisabled: { control: "boolean" },
+    isMulti: { control: "boolean" },
+    isClearable: { control: "boolean" },
+    isSearchable: { control: "boolean" },
     placeholder: { control: "text" }
   },
   decorators: [
@@ -59,7 +61,7 @@ const BASE_ARGS = {
   name: inputName,
   options: [
     { label: "first option", value: "1" },
-    { label: "second option", value: "2" },
+    { label: "second option", value: "2", disabled: true },
     { label: "third option", value: "3" }
   ]
 } as SelectProps;
@@ -113,5 +115,54 @@ export const WithError = {
   args: {
     ...BASE_ARGS,
     placeholder: "this is a placeholder"
+  } satisfies SelectProps
+};
+
+export const WithLabel = {
+  args: { ...BASE_ARGS, label: "my label" } satisfies SelectProps
+};
+
+export const WithGroups = {
+  args: {
+    ...BASE_ARGS,
+    options: [
+      {
+        label: "first group",
+        options: [
+          { label: "first group - first option", value: "1-first-group" },
+          {
+            label: "first group - second option",
+            value: "2-first-group",
+            disabled: true
+          },
+          { label: "first group - third option", value: "3-first-group" }
+        ]
+      },
+      {
+        label: "second group",
+        options: [
+          { label: "second group - first option", value: "1-second-group" },
+          {
+            label: "second group - second option",
+            value: "2-second-group",
+            disabled: true
+          },
+          { label: "second group - third option", value: "3-second-group" }
+        ],
+        disabled: true
+      },
+      {
+        label: "third group",
+        options: [
+          { label: "third group - first option", value: "1-third-group" },
+          {
+            label: "third group - second option",
+            value: "2-third-group",
+            disabled: true
+          },
+          { label: "third group - third option", value: "3-third-group" }
+        ]
+      }
+    ]
   } satisfies SelectProps
 };

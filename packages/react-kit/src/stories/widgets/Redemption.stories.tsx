@@ -1,44 +1,48 @@
-import React from "react";
-import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
+import React, { ReactElement } from "react";
+import { Meta } from "@storybook/react";
 
-import { RedemptionWidget } from "../../components/widgets/redemption/RedemptionWidget";
+import {
+  RedemptionWidget,
+  RedemptionWidgetProps
+} from "../../components/widgets/redemption/RedemptionWidget";
 import {
   EnvironmentType,
   getEnvConfigs,
   subgraph
 } from "@bosonprotocol/core-sdk";
-import { RedemptionWidgetAction } from "../../components/widgets/redemption/provider/RedemptionContext";
+import { RedemptionWidgetAction } from "../../components/widgets";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Widgets/Redemption",
   component: RedemptionWidget
-} as ComponentMeta<typeof RedemptionWidget>;
+} as Meta<typeof RedemptionWidget>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof RedemptionWidget> = (args) => (
-  <RedemptionWidget {...args} />
-);
+const Template = (args) => <RedemptionWidget {...args} />;
 
-const wrapper = (Story: Story) => (
+const wrapper = (Story: () => ReactElement) => (
   <div>
     <Story />
   </div>
 );
 
-export const Redemption: ComponentStory<typeof RedemptionWidget> =
-  Template.bind({});
+export const Redemption = Template.bind({});
 
 const envName =
   (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
 const envConfig = getEnvConfigs(envName);
 const BASE_ARGS = {
-  withCustomReduxContext: false
-};
+  withCustomReduxContext: false,
+  raiseDisputeForExchangeUrl: "https://domain.com/{id}",
+  lookAndFeel: "modal",
+  withWeb3React: true,
+  withReduxProvider: true
+} as const;
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Redemption.args = {
   envName,
   configId: envConfig[0].configId,
-  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID || "",
   dateFormat: "YYYY/MM/DD",
   defaultCurrencySymbol: "$",
   defaultCurrencyTicker: "USD",
@@ -66,12 +70,11 @@ Redemption.args = {
   sellerIds: undefined,
   signatures: undefined,
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
 Redemption.decorators = [(Story) => wrapper(Story)];
 
-export const RedemptionCallbacks: ComponentStory<typeof RedemptionWidget> =
-  Template.bind({});
+export const RedemptionCallbacks = Template.bind({});
 
 RedemptionCallbacks.args = {
   ...Redemption.args,
@@ -85,11 +88,9 @@ RedemptionCallbacks.args = {
     "0x8357f1aabd7b1811c4b7e30ed867471b9d813614ebb56ce0a90d9bae0b86c4a5272a1b9749c1cf9ad6823eb6fe5a0367c0f727b68bd411eec02167080d28d3a21c"
   ],
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
-export const RedemptionCallbacksThenClose: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionCallbacksThenClose = Template.bind({});
 
 RedemptionCallbacksThenClose.args = {
   ...Redemption.args,
@@ -98,11 +99,9 @@ RedemptionCallbacksThenClose.args = {
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed",
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
-export const RedemptionCallbacksRedeemConfirm: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionCallbacksRedeemConfirm = Template.bind({});
 
 RedemptionCallbacksRedeemConfirm.args = {
   ...Redemption.args,
@@ -117,11 +116,9 @@ RedemptionCallbacksRedeemConfirm.args = {
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed",
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
-export const RedemptionCallbacksFailure: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionCallbacksFailure = Template.bind({});
 
 RedemptionCallbacksFailure.args = {
   ...Redemption.args,
@@ -130,11 +127,9 @@ RedemptionCallbacksFailure.args = {
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed",
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
-export const RedemptionCallbacksFailure2: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionCallbacksFailure2 = Template.bind({});
 
 RedemptionCallbacksFailure2.args = {
   ...Redemption.args,
@@ -146,11 +141,9 @@ RedemptionCallbacksFailure2.args = {
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed",
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
-export const RedemptionCallbacksFailure3: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionCallbacksFailure3 = Template.bind({});
 
 RedemptionCallbacksFailure3.args = {
   ...Redemption.args,
@@ -172,11 +165,9 @@ RedemptionCallbacksFailure3.args = {
   postRedemptionSubmittedUrl: "http://localhost:3666/fail3",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed",
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
-export const RedemptionCallbacksFailure4: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionCallbacksFailure4 = Template.bind({});
 
 RedemptionCallbacksFailure4.args = {
   ...Redemption.args,
@@ -198,10 +189,9 @@ RedemptionCallbacksFailure4.args = {
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/fail4",
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
-export const RedemptionHandlers: ComponentStory<typeof RedemptionWidget> =
-  Template.bind({});
+export const RedemptionHandlers = Template.bind({});
 
 RedemptionHandlers.args = {
   ...Redemption.args,
@@ -229,11 +219,9 @@ RedemptionHandlers.args = {
     };
   },
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
-export const RedemptionHandlersNoResume: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionHandlersNoResume = Template.bind({});
 
 RedemptionHandlersNoResume.args = {
   ...Redemption.args,
@@ -246,11 +234,9 @@ RedemptionHandlersNoResume.args = {
     };
   },
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
-export const RedemptionHandlersFailure1: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionHandlersFailure1 = Template.bind({});
 
 RedemptionHandlersFailure1.args = {
   ...Redemption.args,
@@ -263,11 +249,9 @@ RedemptionHandlersFailure1.args = {
     };
   },
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
-export const RedemptionHandlersFailure2: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionHandlersFailure2 = Template.bind({});
 
 RedemptionHandlersFailure2.args = {
   ...Redemption.args,
@@ -276,11 +260,9 @@ RedemptionHandlersFailure2.args = {
     throw new Error("Redemption handler is throwing an exception");
   },
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
-export const RedemptionHandlersFailure3: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionHandlersFailure3 = Template.bind({});
 
 RedemptionHandlersFailure3.args = {
   ...Redemption.args,
@@ -298,11 +280,9 @@ RedemptionHandlersFailure3.args = {
     throw new Error("Redemption handler is throwing an exception");
   },
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;
 
-export const RedemptionHandlersFailure4: ComponentStory<
-  typeof RedemptionWidget
-> = Template.bind({});
+export const RedemptionHandlersFailure4 = Template.bind({});
 
 RedemptionHandlersFailure4.args = {
   ...Redemption.args,
@@ -320,4 +300,4 @@ RedemptionHandlersFailure4.args = {
     throw new Error("Redemption handler is throwing an exception");
   },
   ...BASE_ARGS
-};
+} satisfies RedemptionWidgetProps;

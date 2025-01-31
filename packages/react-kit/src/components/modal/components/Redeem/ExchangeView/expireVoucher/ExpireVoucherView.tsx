@@ -3,26 +3,28 @@ import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
 import ExpireVoucher, { ExpireVoucherProps } from "./ExpireVoucher";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
-import { theme } from "../../../../../../theme";
+import { getCssVar } from "../../../../../../theme";
 import { Grid } from "../../../../../ui/Grid";
 import { BosonLogo } from "../../../common/BosonLogo";
 
-const colors = theme.colors.light;
 export interface ExpireVoucherViewProps {
   onBackClick: ExpireVoucherProps["onBackClick"];
   onSuccess: ExpireVoucherProps["onSuccess"];
   exchange: Exchange | null;
+  showBosonLogoInFooter: boolean;
 }
 
 export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
   exchange,
   onBackClick,
-  onSuccess
+  onSuccess,
+  showBosonLogoInFooter
 }) => {
-  const dispatch = useNonModalContext();
+  const { dispatch } = useNonModalContext();
   useEffect(() => {
     dispatch({
       payload: {
+        onArrowLeftClick: null,
         headerComponent: (
           <Grid style={{ flex: "1" }} gap="1rem">
             <ArrowLeft
@@ -34,13 +36,13 @@ export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
           </Grid>
         ),
         contentStyle: {
-          background: colors.white
+          background: getCssVar("--background-accent-color")
         },
-        footerComponent: <BosonLogo />
+        footerComponent: showBosonLogoInFooter ? <BosonLogo /> : null
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, showBosonLogoInFooter]);
   return (
     <>
       {!exchange ? (

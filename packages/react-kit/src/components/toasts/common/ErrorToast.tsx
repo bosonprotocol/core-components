@@ -2,15 +2,14 @@ import { Warning, X } from "phosphor-react";
 import React, { ReactNode } from "react";
 import toast, { Toast } from "react-hot-toast";
 import styled from "styled-components";
-import { theme } from "../../../theme";
+import { colors } from "../../../theme";
 import { Button } from "../../buttons/Button";
 
 import { Grid } from "../../ui/Grid";
-const colors = theme.colors.light;
 
 const Close = styled(X)`
   line {
-    stroke: ${colors.darkGrey};
+    stroke: ${colors.greyDark};
   }
 `;
 const StyledButton = styled(Button)`

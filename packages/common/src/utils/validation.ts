@@ -4,21 +4,21 @@ import { isAddress } from "@ethersproject/address";
 
 export { validateMetadata } from "@bosonprotocol/metadata";
 
-const positiveIntTestArgs: [string, string, typeof isPositiveInt] = [
+const positiveIntTestArgs = [
   "is-positive-int",
   "${path} has to be a positive integer",
-  isPositiveInt
-];
-const futureDateTestArgs: [string, string, typeof isFutureDate] = [
+  (value: unknown) => isPositiveInt(value || "")
+] as const;
+const futureDateTestArgs = [
   "is-future-date",
   "${path} has to be a date in the future",
-  isFutureDate
-];
-const addressTestArgs: [string, string, typeof isAddress] = [
+  (value: string | undefined) => isFutureDate(value || "")
+] as const;
+const addressTestArgs = [
   "is-address",
   "${path} has to be a valid address",
-  (value: string) => isAddress(value || "")
-];
+  (value: string | undefined) => isAddress(value || "")
+] as const;
 
 export const createOfferArgsSchema = object({
   price: string()
@@ -90,7 +90,7 @@ export const createOfferArgsSchema = object({
           .test(
             "not-zero",
             "Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMS must be non zero",
-            isNotZero
+            (value: string | undefined) => isNotZero(value || "")
           )
           .test(...futureDateTestArgs)
           .test(
@@ -115,7 +115,7 @@ export const createOfferArgsSchema = object({
         schema.test(
           "is-zero",
           "Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMS must be non zero",
-          isZero
+          (value: string | undefined) => isZero(value || "")
         )
     }),
   voucherValidDurationInMS: string()

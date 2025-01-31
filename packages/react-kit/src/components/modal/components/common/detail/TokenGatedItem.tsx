@@ -16,7 +16,7 @@ import { useErc721TokenUris } from "../../../../../hooks/contracts/erc721/useErc
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { nativeOnChain } from "../../../../../lib/const/tokens";
 import { useGetTokenUriImages } from "../../../../../hooks/contracts/useGetTokenUriImages";
-import { theme } from "../../../../../theme";
+import { colors } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import { PortfolioLogo } from "../../../../logo/PortfolioLogo";
@@ -25,11 +25,14 @@ import ThemedButton from "../../../../ui/ThemedButton";
 import { BuyOrSwapContainer } from "./BuyOrSwapContainer";
 import { useDetailViewContext } from "./DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "./types";
-const colors = theme.colors.light;
+import { CONFIG } from "../../../../../lib/config/config";
+import { useRobloxGetItemDetails } from "../../../../../hooks/roblox/useRobloxGetItemDetails";
+import { remToPx } from "../../../../../lib/numbers/numbers";
 
-type Props = OnClickBuyOrSwapHandler & {
+type TokenGatedItemProps = OnClickBuyOrSwapHandler & {
   offer: Offer;
   isConditionMet: boolean;
+  robloxGatedAssetId: string | false;
 };
 
 const Wrapper = styled(Grid)`
@@ -39,8 +42,8 @@ const Wrapper = styled(Grid)`
     }
   }
 `;
-
-const imageSize = "2.5rem";
+const imageSizeRem = 2.5;
+const imageSize = `${imageSizeRem}rem`;
 const ErcImage = styled.img`
   border-radius: 9999px;
   background-color: #f1f3f9;
@@ -62,8 +65,9 @@ const ActionText = ({ children }: { children: ReactNode }) => {
 export const TokenGatedItem = ({
   offer,
   isConditionMet,
-  onClickBuyOrSwap
-}: Props) => {
+  onClickBuyOrSwap,
+  robloxGatedAssetId
+}: TokenGatedItemProps) => {
   const { condition } = offer;
   const coreSDK = useCoreSDKWithContext();
   const { swapParams } = useDetailViewContext();
@@ -77,6 +81,9 @@ export const TokenGatedItem = ({
   const [erc1155Info, setErc1155Info] = useState("NFT");
 
   useEffect(() => {
+    if (!robloxGatedAssetId) {
+      return;
+    }
     (async () => {
       if (
         condition?.tokenAddress &&
@@ -118,7 +125,7 @@ export const TokenGatedItem = ({
         }
       }
     })();
-  }, [condition, coreSDK]);
+  }, [condition, coreSDK, robloxGatedAssetId]);
   const { tokenAddress } = condition ?? {};
 
   const ContractButton = (
@@ -133,6 +140,18 @@ export const TokenGatedItem = ({
       </ThemedButton>
     </a>
   );
+  const VisitButton = robloxGatedAssetId ? (
+    <a
+      href={CONFIG.roblox.getItemDetailsWebsite({ itemId: robloxGatedAssetId })}
+      target="_blank"
+      rel="noreferrer"
+      style={{ flex: 0 }}
+    >
+      <ThemedButton size="regular" themeVal="blankSecondary">
+        <ActionText>Visit</ActionText> <ArrowSquareUpRight size="16" />
+      </ThemedButton>
+    </a>
+  ) : null;
   const BuyButton = !condition ? null : condition.tokenType ===
     TokenType.FungibleToken ? (
     <BuyOrSwapContainer swapParams={swapParams} style={{ flex: 0 }}>
@@ -172,7 +191,11 @@ export const TokenGatedItem = ({
     ),
     [isConditionMet]
   );
-  const ActionButton = isConditionMet ? ContractButton : BuyButton;
+  const ActionButton = robloxGatedAssetId
+    ? VisitButton
+    : isConditionMet
+      ? ContractButton
+      : BuyButton;
   const { config } = useConfigContext();
   const chainId = config.chainId;
 
@@ -256,19 +279,24 @@ export const TokenGatedItem = ({
     },
     { enabled: !!(erc1155Uri && erc1155Uri[0] && tokenIdForImage) }
   );
-
+  const { data: { name: robloxItemName = "" } = {} } = useRobloxGetItemDetails({
+    itemId: robloxGatedAssetId || "",
+    options: {
+      enabled: !!robloxGatedAssetId
+    }
+  });
   const Icon = useMemo(() => {
     return (
       <>
         {chainId && currency ? (
           <PortfolioLogo
             chainId={chainId as ChainId}
-            size={imageSize}
+            size={remToPx(imageSizeRem)}
             currencies={[currency]}
           />
-        ) : erc721Image ? (
+        ) : erc721Image?.[0]?.[0] ? (
           <ErcImage src={erc721Image[0][0]} alt="erc721" />
-        ) : erc1155Image ? (
+        ) : erc1155Image?.[0]?.[0] ? (
           <ErcImage src={erc1155Image[0][0]} alt="erc1155" />
         ) : null}
       </>
@@ -301,7 +329,7 @@ export const TokenGatedItem = ({
   const rangeText = (
     <span
       style={{
-        color: colors.darkGrey,
+        color: colors.greyDark,
         fontSize: "12px",
         fontWeight: 600,
         lineHeight: "18px",
@@ -322,7 +350,8 @@ export const TokenGatedItem = ({
       flexWrap="wrap"
       gap="1rem"
     >
-      {condition.tokenType === TokenType.FungibleToken ? (
+      {condition.tokenType === TokenType.FungibleToken &&
+      !robloxGatedAssetId ? (
         <Condition>
           {condition.threshold && erc20Info?.decimals && (
             <div>
@@ -344,7 +373,8 @@ export const TokenGatedItem = ({
             <div>{erc20Info.symbol}</div>
           </Grid>
         </Condition>
-      ) : condition.tokenType === TokenType.NonFungibleToken ? (
+      ) : condition.tokenType === TokenType.NonFungibleToken &&
+        !robloxGatedAssetId ? (
         <>
           {condition.method === EvaluationMethod.Threshold ? (
             <Condition>
@@ -380,7 +410,8 @@ export const TokenGatedItem = ({
             <></>
           )}
         </>
-      ) : condition.tokenType === TokenType.MultiToken ? (
+      ) : condition.tokenType === TokenType.MultiToken &&
+        !robloxGatedAssetId ? (
         <>
           <Grid gap="1rem" justifyContent="flex-start" flexWrap="wrap">
             {Icon}
@@ -395,6 +426,26 @@ export const TokenGatedItem = ({
             >
               <Grid flexDirection="column" alignItems="flex-start">
                 {erc1155Info} {rangeText}
+              </Grid>
+            </Grid>
+          </Grid>
+          {ActionButton}
+        </>
+      ) : robloxGatedAssetId ? (
+        <>
+          <Grid gap="1rem" justifyContent="flex-start" flexWrap="wrap">
+            {Icon}
+            <div>{condition.threshold}x</div>
+            <Grid
+              flexGrow={0}
+              flexShrink={0}
+              gap="1rem"
+              justifyContent="flex-start"
+              flex={0}
+              width="auto"
+            >
+              <Grid flexDirection="column" alignItems="flex-start">
+                {robloxItemName || erc1155Info} {rangeText}
               </Grid>
             </Grid>
           </Grid>

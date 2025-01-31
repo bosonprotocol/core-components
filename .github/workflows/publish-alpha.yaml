@@ -83,4 +83,5 @@ jobs:
     if: needs.publish.outputs.SUBGRAPH_CHANGES == 'true'
     secrets:
       ORMI_0x_GRAPH_API_KEY_TESTING: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
+      THE_GRAPH_STUDIO_DEPLOY_KEY: ${{ secrets.THE_GRAPH_STUDIO_DEPLOY_KEY }}
       GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}

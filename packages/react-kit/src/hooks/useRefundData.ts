@@ -7,9 +7,12 @@ import {
   getCalcPercentage,
   useDisplayFloatWithConfig
 } from "../lib/price/prices";
-import { Exchange } from "../types/exchange";
+import { subgraph } from "@bosonprotocol/core-sdk";
 
-export default function useRefundData(exchange: Exchange, price: string) {
+export default function useRefundData(
+  exchange: subgraph.ExchangeFieldsFragment,
+  price: string
+) {
   const { store } = useContext(ConvertionRateContext);
   const { offer } = exchange;
   const { defaultCurrency } = useConfigContext();

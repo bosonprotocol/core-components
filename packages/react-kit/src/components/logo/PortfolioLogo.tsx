@@ -128,7 +128,7 @@ interface PortfolioLogoProps {
   chainId: ChainId;
   currencies?: Array<Currency | undefined>;
   images?: Array<string | undefined>;
-  size?: string;
+  size?: number;
   style?: React.CSSProperties;
 }
 
@@ -145,7 +145,7 @@ function getLogo({
   chainId,
   currencies,
   images,
-  size = "40px"
+  size = 40
 }: PortfolioLogoProps) {
   if (currencies && currencies.length) {
     return (
@@ -153,19 +153,21 @@ function getLogo({
         chainId={chainId}
         currencies={currencies}
         backupImages={images}
-        size={size}
+        size={`${size}px`}
       />
     );
   }
   if (images?.length === 1) {
-    return <CircleLogoImage size={size} src={images[0] ?? blankTokenUrl} />;
+    return (
+      <CircleLogoImage size={`${size}px`} src={images[0] ?? blankTokenUrl} />
+    );
   }
   if (images && images?.length >= 2) {
     return (
       <DoubleLogo
         logo1={images[0]}
         logo2={images[images.length - 1]}
-        size={size}
+        size={`${size}px`}
       />
     );
   }

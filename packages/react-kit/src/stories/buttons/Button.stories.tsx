@@ -1,5 +1,5 @@
 import { fn } from "@storybook/test";
-import { Button } from "../../components/buttons/Button";
+import { Button, ButtonProps } from "../../components/buttons/Button";
 import React from "react";
 import { Meta } from "@storybook/react";
 
@@ -43,16 +43,7 @@ export const PrimaryFill = {
     disabled: false,
     loading: false,
     variant: "primaryFill"
-  }
-};
-
-export const PrimaryInverted = {
-  args: {
-    ...BASE_ARGS,
-    disabled: false,
-    loading: false,
-    variant: "primaryInverted"
-  }
+  } satisfies ButtonProps
 };
 
 export const SecondaryFill = {
@@ -61,7 +52,7 @@ export const SecondaryFill = {
     disabled: false,
     loading: false,
     variant: "secondaryFill"
-  }
+  } satisfies ButtonProps
 };
 
 export const SecondaryInverted = {
@@ -70,7 +61,7 @@ export const SecondaryInverted = {
     disabled: false,
     loading: false,
     variant: "secondaryInverted"
-  }
+  } satisfies ButtonProps
 };
 
 export const AccentFill = {
@@ -79,7 +70,7 @@ export const AccentFill = {
     disabled: false,
     loading: false,
     variant: "accentFill"
-  }
+  } satisfies ButtonProps
 };
 
 export const AccentInverted = {
@@ -88,7 +79,7 @@ export const AccentInverted = {
     disabled: false,
     loading: false,
     variant: "accentInverted"
-  }
+  } satisfies ButtonProps
 };
 
 export const Disabled = {
@@ -97,7 +88,7 @@ export const Disabled = {
     disabled: true,
     loading: false,
     variant: "primaryFill"
-  }
+  } satisfies ButtonProps
 };
 
 export const Loading = {
@@ -106,5 +97,5 @@ export const Loading = {
     disabled: false,
     loading: true,
     variant: "primaryFill"
-  }
+  } satisfies ButtonProps
 };

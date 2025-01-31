@@ -1,4 +1,5 @@
 import { ChainId } from "@uniswap/sdk-core";
+import { ChainId_BASE_SEPOLIA, ChainId_POLYGON_AMOY } from "./chains";
 
 // TODO: comment out?
 // const QUICKNODE_BNB_RPC_URL = process.env.REACT_APP_BNB_RPC_URL;
@@ -71,7 +72,7 @@ export const FALLBACK_URLS = {
     "https://rpc-mumbai.maticvigil.com",
     "https://matic-testnet-archive-rpc.bwarelabs.com"
   ],
-  80002: [
+  [ChainId_POLYGON_AMOY]: [
     // "Safe" URLs
     "https://rpc-amoy.polygon.technology"
   ],
@@ -135,6 +136,10 @@ export const FALLBACK_URLS = {
     /*TODO:QUICKNODE_BASE_GOERLI_RPC_URL,*/
     "https://base-goerli.blastapi.io/b5a802d8-151d-4443-90a7-699108dc4e01",
     "https://svc.blockdaemon.com/base/testnet/native?apiKey=zpka_1334e7c450464d06b6e33a972a7a4e57_75320f43"
+  ],
+  [ChainId_BASE_SEPOLIA]: [
+    // "Safe" URLs
+    "https://sepolia.base.org"
   ]
 };
 
@@ -179,10 +184,10 @@ export const getRpcUrls = (infuraKey: string) => ({
     `https://polygon-mumbai.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.POLYGON_MUMBAI]
   ],
-  80002: [
+  [ChainId_POLYGON_AMOY]: [
     // AMOY
     `https://polygon-amoy.infura.io/v3/${infuraKey}`,
-    ...FALLBACK_URLS[80002]
+    ...FALLBACK_URLS[ChainId_POLYGON_AMOY]
   ],
   [ChainId.CELO]: FALLBACK_URLS[ChainId.CELO],
   [ChainId.CELO_ALFAJORES]: FALLBACK_URLS[ChainId.CELO_ALFAJORES],
@@ -200,6 +205,11 @@ export const getRpcUrls = (infuraKey: string) => ({
   [ChainId.BASE_GOERLI]: [
     `https://base-goerli.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.BASE_GOERLI]
+  ],
+  [ChainId_BASE_SEPOLIA]: [
+    // BASE_SEPOLIA
+    `https://base-sepolia.infura.io/v3/${infuraKey}`,
+    ...FALLBACK_URLS[ChainId_BASE_SEPOLIA]
   ],
   31337: [
     `https://mainnet.infura.io/v3/${infuraKey}`,

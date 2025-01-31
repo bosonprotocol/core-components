@@ -87,7 +87,7 @@ function TokenRow({
   return (
     <PortfolioRow
       left={
-        <PortfolioLogo chainId={chainId} size="40px" currencies={[currency]} />
+        <PortfolioLogo chainId={chainId} size={40} currencies={[currency]} />
       }
       title={<TokenNameText>{name}</TokenNameText>}
       descriptor={

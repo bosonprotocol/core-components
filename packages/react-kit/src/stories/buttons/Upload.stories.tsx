@@ -52,10 +52,9 @@ export default {
                 <Story
                   args={{
                     ...args,
-                    saveButtonTheme: bosonButtonThemes({
-                      withBosonStyle: false
+                    saveButtonTheme:
                       // @ts-expect-error saveButtonThemeKey is not a valid prop name of Upload but saveButtonTheme is so we get the theme from the key
-                    })[args.saveButtonThemeKey]
+                      bosonButtonThemes()[args.saveButtonThemeKey]
                   }}
                 />
               </Formik>
@@ -71,7 +70,14 @@ const BASE_ARGS = {
   name,
   placeholder: "",
   withEditor: false,
-  saveButtonTheme: undefined
+  saveButtonTheme: undefined,
+  theme: {
+    triggerTheme: {
+      media: {
+        objectFit: "cover"
+      }
+    }
+  }
 } as const satisfies UploadProps;
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args

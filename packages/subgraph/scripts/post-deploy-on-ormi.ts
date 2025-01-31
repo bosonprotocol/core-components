@@ -11,10 +11,13 @@ program
       .choices([
         "testing_amoy",
         "testing_sepolia",
+        "testing_base",
         "staging_amoy",
         "staging_sepolia",
+        "staging_base",
         "production_polygon",
-        "production_ethereum"
+        "production_ethereum",
+        "production_base"
       ])
   )
   .parse(process.argv);

@@ -7,7 +7,7 @@ import { IconWeight, Question } from "phosphor-react";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 
 export interface TooltipProps extends Omit<TippyProps, "children"> {
   content: React.ReactNode;
@@ -43,11 +43,11 @@ export interface TooltipProps extends Omit<TippyProps, "children"> {
 const Button = styled.button`
   all: unset;
   display: flex;
-  color: ${theme.colors.light.darkGrey};
+  color: ${colors.greyDark};
   background-color: transparent;
   margin: 0 0.5rem;
   :hover {
-    color: ${theme.colors.light.black};
+    color: ${colors.black};
   }
 `;
 
@@ -74,7 +74,7 @@ export const Tooltip = ({
       {...rest}
     >
       {wrap ? (
-        <Button type="button" theme={theme}>
+        <Button type="button">
           {children ? children : <Question size={size} weight={weight} />}
         </Button>
       ) : (

@@ -5,6 +5,7 @@ import { Typography } from "../../../../ui/Typography";
 import { Table } from "./Detail.style";
 import { Instance } from "tippy.js";
 import { CSSProperties } from "styled-components";
+import { getCssVar } from "../../../../../theme";
 
 export interface Data {
   hide?: boolean | undefined;
@@ -60,6 +61,7 @@ export default function DetailTable({
                           setDisplayIndex(undefined);
                           tipRef.current?.[index]?.hide();
                         }}
+                        color={getCssVar("--sub-text-color")}
                       >
                         {d.name}
                       </Typography>

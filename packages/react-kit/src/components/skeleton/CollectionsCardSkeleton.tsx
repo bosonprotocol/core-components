@@ -1,10 +1,10 @@
 import React, { ButtonHTMLAttributes } from "react";
 import styled from "styled-components";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { cardWrapperStyles } from "../productCard/commonStyles";
 import { LoadingBubble } from "./common";
 import { Grid } from "../ui/Grid";
-const colors = theme.colors.light;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -19,7 +19,7 @@ const ImagesContainer = styled.div`
   position: relative;
   /* REMs gives bad height here on smaller views */
   height: 208px;
-  background-color: ${colors.lightGrey};
+  background-color: ${colors.greyLight};
 `;
 
 const BottomCard = styled.div`
@@ -54,7 +54,7 @@ export const CollectionsCardSkeleton = (props: SkeletonCardProps) => {
             $width="140px"
             $height="102px"
             $borderRadius="0px"
-            $backgroundColor={theme.colors.light.darkGrey}
+            $backgroundColor={colors.greyDark}
           />
         </ImageOne>
         <ImageTwo>
@@ -62,7 +62,7 @@ export const CollectionsCardSkeleton = (props: SkeletonCardProps) => {
             $width="60px"
             $height="50px"
             $borderRadius="0px"
-            $backgroundColor={theme.colors.light.darkGrey}
+            $backgroundColor={colors.greyDark}
           />
         </ImageTwo>
         <ImageThree>
@@ -70,7 +70,7 @@ export const CollectionsCardSkeleton = (props: SkeletonCardProps) => {
             $width="60px"
             $height="50px"
             $borderRadius="0px"
-            $backgroundColor={theme.colors.light.darkGrey}
+            $backgroundColor={colors.greyDark}
           />
         </ImageThree>
       </ImagesContainer>

@@ -1,10 +1,15 @@
-import { Cube, Info, Lock, LockOpen } from "phosphor-react";
-import React, { ElementRef, forwardRef, useRef, useState } from "react";
+import { Cube, Lock, LockOpen } from "phosphor-react";
+import React, {
+  ElementRef,
+  forwardRef,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import Logo from "../../../../../assets/logo.svg";
 import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
-import { theme } from "../../../../../theme";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import Price from "../../../../price/Price";
 import { DetailsSummary } from "../../../../ui/DetailsSummary";
@@ -13,7 +18,6 @@ import {
   BaseWidget,
   BosonExclusiveContainer,
   Break,
-  CommitAndRedeemButton,
   WidgetUpperGrid
 } from "./Detail.style";
 import DetailTable from "./DetailTable";
@@ -23,8 +27,7 @@ import { TokenGatedItem } from "./TokenGatedItem";
 import { DetailViewProps } from "./types";
 import { useGetOfferDetailData } from "./useGetOfferDetailData";
 import { SvgImage } from "../../../../ui/SvgImage";
-
-const colors = theme.colors.light;
+import { getIsOfferRobloxGated } from "../../../../../lib/roblox/getIsOfferRobloxGated";
 
 const StyledPrice = styled(Price)`
   h3 {
@@ -64,7 +67,6 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
       showPriceAsterisk,
       isBosonExclusive,
       onExchangePolicyClick,
-      onPurchaseOverview,
       onClickBuyOrSwap
     },
     ref
@@ -87,6 +89,9 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
     const [isDetailsOpen, setDetailsOpen] = useState<boolean>(true);
     const closeDetailsRef = useRef(true);
     const isPhygital = useIsPhygital({ offer });
+    const robloxGatedAssetId = useMemo(() => {
+      return getIsOfferRobloxGated({ offer });
+    }, [offer]);
     return (
       <Widget>
         {isBosonExclusive &&
@@ -110,7 +115,6 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
               decimals={offer.exchangeToken.decimals}
               tag="h3"
               convert
-              withBosonStyles
               withAsterisk={showPriceAsterisk}
             />
             {priceSibling}
@@ -118,28 +122,33 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
         </div>
         {children}
         {offer.condition && (
-          <DetailsSummary
-            summaryText="Token gated offer"
-            icon={
-              isConditionMet ? (
-                <LockOpen size={iconSize} />
-              ) : (
-                <Lock size={iconSize} />
-              )
-            }
-            onSetOpen={(open) => {
-              if (open && closeDetailsRef.current) {
-                setDetailsOpen(false);
-                closeDetailsRef.current = false;
+          <>
+            <DetailsSummary
+              summaryText={
+                robloxGatedAssetId ? "Roblox gated offer" : "Token gated offer"
               }
-            }}
-          >
-            <TokenGatedItem
-              offer={offer}
-              isConditionMet={isConditionMet}
-              onClickBuyOrSwap={onClickBuyOrSwap}
-            />
-          </DetailsSummary>
+              icon={
+                isConditionMet ? (
+                  <LockOpen size={iconSize} />
+                ) : (
+                  <Lock size={iconSize} />
+                )
+              }
+              onSetOpen={(open) => {
+                if (open && closeDetailsRef.current) {
+                  setDetailsOpen(false);
+                  closeDetailsRef.current = false;
+                }
+              }}
+            >
+              <TokenGatedItem
+                offer={offer}
+                isConditionMet={isConditionMet}
+                onClickBuyOrSwap={onClickBuyOrSwap}
+                robloxGatedAssetId={robloxGatedAssetId}
+              />
+            </DetailsSummary>
+          </>
         )}
         {isPhygital && (
           <DetailsSummary
@@ -170,25 +179,6 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
             inheritColor={false}
           />
         </DetailsSummary>
-        <Grid
-          justifyContent="center"
-          alignItems="center"
-          marginTop="12px"
-          marginBottom="12px"
-        >
-          <div
-            style={{
-              cursor: "pointer",
-              display: "flex",
-              gap: "0.1rem",
-              alignItems: "center"
-            }}
-            onClick={onPurchaseOverview}
-          >
-            <CommitAndRedeemButton>How it works?</CommitAndRedeemButton>
-            <Info color={colors.secondary} size={24} />
-          </div>
-        </Grid>
         {bottomChildren && (
           <>
             <Break />

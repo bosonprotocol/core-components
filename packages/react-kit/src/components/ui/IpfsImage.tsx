@@ -8,17 +8,16 @@ import {
   getImageUrl,
   ImageOptimizationOpts
 } from "../../lib/images/images";
-import { theme } from "../../theme";
+import { colors } from "../../theme";
 import { useIpfsContext } from "../ipfs/IpfsContext";
 import { Loading } from "./loading/Loading";
 
 import { Typography } from "./Typography";
 import { zIndex } from "./zIndex";
-const colors = theme.colors.light;
+
 type LoadingStatus = "loading" | "success" | "error";
 
-const ImageWrapper = styled.div<{ $hide?: boolean }>`
-  display: ${({ $hide }) => ($hide ? "none !important" : undefined)};
+const ImageWrapper = styled.div`
   overflow: hidden;
   position: relative;
   z-index: ${zIndex.OfferCard};
@@ -52,17 +51,25 @@ const ImageContainer = styled.img`
   object-fit: cover;
 `;
 
-const ImagePlaceholder = styled.div`
+const Overlay = styled.div<{ $visible: boolean }>`
+  display: ${({ $visible }) => ($visible ? "flex" : "none")};
   position: absolute;
   top: 0;
-  height: 100%;
+  left: 0;
   width: 100%;
-  background-color: ${colors.darkGrey};
+  height: 100%;
+  background-color: ${colors.greyDark};
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+`;
+
+const ImagePlaceholder = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   span {
     ${buttonText}
     font-size: inherit;
@@ -115,33 +122,64 @@ export const IpfsImage: React.FC<IpfsImageProps> = ({
     if (src === currentSrc) {
       return;
     }
-    // reset all if src changes
-    setStatus(withLoading ? "loading" : "success");
+    setStatus((status) =>
+      status === "success" ? "success" : withLoading ? "loading" : "success"
+    );
     setCurrentSrc(
       getImageUrl(src, overrides?.ipfsGateway || ipfsGateway, optimizationOpts)
     );
     setDidOriginalSrcFail(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [src]);
+  }, [
+    src,
+    overrides?.ipfsGateway,
+    ipfsGateway,
+    optimizationOpts,
+    currentSrc,
+    withLoading
+  ]);
+
   const isError = status === "error";
   const isLoading = status === "loading";
   const isSuccess = status === "success";
 
   return (
-    <>
-      <ImageWrapper
-        {...rest}
-        $hide={!isLoading}
-        className={"loading-container " + rest.className}
-      >
+    <ImageWrapper {...rest} className={rest.className}>
+      <ImageContainer
+        data-testid={dataTestId}
+        src={currentSrc}
+        alt={alt}
+        onLoad={() => handleSetStatus("success")}
+        onError={() => {
+          if (didOriginalSrcFail) {
+            handleSetStatus("error");
+          } else {
+            setDidOriginalSrcFail(true);
+            const fallbackUrl = getFallbackImageUrl(
+              src,
+              ipfsGateway,
+              optimizationOpts
+            );
+            if (
+              fallbackUrl.startsWith("unsafe:") ||
+              fallbackUrl === currentSrc
+            ) {
+              handleSetStatus("error");
+            } else {
+              setCurrentSrc(fallbackUrl);
+            }
+          }
+        }}
+      />
+      {children}
+      <Overlay $visible={isLoading}>
         <ImagePlaceholder>
           <Typography tag="div">
             <Loading />
           </Typography>
         </ImagePlaceholder>
-      </ImageWrapper>
-      <ImageWrapper {...rest} $hide={!isError}>
-        <ImagePlaceholder data-image-placeholder>
+      </Overlay>
+      <Overlay $visible={!isLoading && (isError || !isSuccess)}>
+        <ImagePlaceholder>
           {showPlaceholderText ? (
             <ImageIcon size={50} color={colors.white} />
           ) : (
@@ -151,40 +189,7 @@ export const IpfsImage: React.FC<IpfsImageProps> = ({
             <Typography tag="span">IMAGE NOT AVAILABLE</Typography>
           )}
         </ImagePlaceholder>
-      </ImageWrapper>
-      <ImageWrapper
-        {...rest}
-        $hide={!isSuccess}
-        className={"image-container " + rest.className}
-      >
-        {children || ""}
-        <ImageContainer
-          data-testid={dataTestId}
-          src={currentSrc}
-          alt={alt}
-          onLoad={() => handleSetStatus("success")}
-          onError={() => {
-            if (didOriginalSrcFail) {
-              handleSetStatus("error");
-            } else {
-              setDidOriginalSrcFail(true);
-              const fallbackUrl = getFallbackImageUrl(
-                src,
-                ipfsGateway,
-                optimizationOpts
-              );
-              if (
-                fallbackUrl.startsWith("unsafe:") ||
-                fallbackUrl === currentSrc
-              ) {
-                handleSetStatus("error");
-              } else {
-                setCurrentSrc(fallbackUrl);
-              }
-            }
-          }}
-        />
-      </ImageWrapper>
-    </>
+      </Overlay>
+    </ImageWrapper>
   );
 };
