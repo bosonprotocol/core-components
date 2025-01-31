@@ -7,7 +7,8 @@ import Select, {
   SingleValue,
   ActionMeta,
   Props as ReactSelectProps,
-  PropsValue
+  PropsValue,
+  CSSObjectWithLabel
 } from "react-select";
 import { CSSProperties } from "react";
 import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
@@ -18,29 +19,26 @@ import { useFixSelectFont } from "../../hooks/form/useFixSelectFont";
 export { GroupBase } from "react-select";
 
 // Base theme type with proper CSS types
-type SelectTheme = {
-  control?: Partial<CSSProperties> & {
-    hover?: Partial<CSSProperties>;
-    focus?: Partial<CSSProperties>;
-    error?: Partial<CSSProperties>;
-  };
-  option?: Partial<CSSProperties> & {
-    selected?: Partial<CSSProperties>;
-    disabled?: Partial<CSSProperties>;
-    focus?: Partial<CSSProperties>;
-    error?: Partial<CSSProperties>;
-  };
-  placeholder?: Partial<CSSProperties> & {
-    error?: Partial<CSSProperties>;
-  };
-  input?: Partial<CSSProperties> & {
-    error?: Partial<CSSProperties>;
-  };
-  singleValue?: Partial<CSSProperties> & {
-    error?: Partial<CSSProperties>;
-  };
-};
-
+type SelectTheme = Partial<{
+  control: Partial<CSSProperties> &
+    Partial<{
+      disabled: Partial<CSSProperties>;
+      hover: Partial<CSSProperties>;
+      focus: Partial<CSSProperties>;
+      error: Partial<CSSProperties>;
+    }>;
+  option: Partial<CSSProperties> &
+    Partial<{
+      selected: Partial<CSSProperties>;
+      disabled: Partial<CSSProperties>;
+      focus: Partial<CSSProperties>;
+      error: Partial<CSSObjectWithLabel>;
+    }>;
+  placeholder: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
+  input: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
+  singleValue: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
+  multiValue: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
+}>;
 export type DefaultSelectOption = {
   label: string;
   value: string | number;
@@ -77,25 +75,8 @@ const customStyles = <
   customTheme?: Partial<SelectTheme>
 ): StylesConfig<Option, IsMulti, Group> => ({
   control: (provided, state) => {
-    return {
-      ...provided,
-      borderRadius: 0,
-      padding: "0.4rem 0.25rem",
-      boxShadow: "none",
-      background: getCssVar("--background-color"),
-      ...customTheme?.control,
-      border: state.isFocused
-        ? (customTheme?.control?.focus?.border ?? `1px solid ${colors.violet}`)
-        : !checkIfValueIsEmpty(error)
-          ? (customTheme?.control?.error?.border ??
-            `1px solid ${colors.orange}`)
-          : (customTheme?.control?.border ?? `1px solid ${colors.border}`),
-      ":hover": {
-        borderColor: colors.violet,
-        borderWidth: "1px",
-        ...customTheme?.control?.hover
-      },
-      ...("label" in state.selectProps && state.selectProps.label
+    const before =
+      "label" in state.selectProps && state.selectProps.label
         ? {
             ":before": {
               content: `"${state.selectProps.label}"`,
@@ -103,33 +84,81 @@ const customStyles = <
               paddingLeft: "1rem"
             }
           }
-        : {})
+        : null;
+    const defaultBorderColor =
+      customTheme?.control?.borderColor || colors.border;
+    return {
+      ...provided,
+      borderRadius: 0,
+      padding: "0.4rem 0.25rem",
+      boxShadow: "none",
+      background: getCssVar("--background-color"),
+      ...customTheme?.control,
+      cursor: state.isDisabled ? "not-allowed" : "default",
+      opacity: state.isDisabled
+        ? (customTheme?.control?.disabled?.opacity ?? "0.5")
+        : (customTheme?.control?.opacity ?? "1"),
+      border: state.isDisabled
+        ? `1px solid ${defaultBorderColor}`
+        : state.isFocused
+          ? (customTheme?.control?.focus?.border ??
+            `1px solid ${colors.violet}`)
+          : !checkIfValueIsEmpty(error)
+            ? (customTheme?.control?.error?.border ??
+              `1px solid ${colors.orange}`)
+            : (customTheme?.control?.border ??
+              `1px solid ${defaultBorderColor}`),
+      ...(state.isDisabled
+        ? {
+            ":hover": {
+              border: `1px solid ${defaultBorderColor}`
+            }
+          }
+        : {
+            ":hover": {
+              borderColor: colors.violet,
+              borderWidth: "1px",
+              ...customTheme?.control?.hover
+            }
+          }),
+      ...before
     };
   },
   container: (provided, state) => ({
     ...provided,
+    pointerEvents: "initial",
     zIndex: state.isFocused ? zIndex.Select + 1 : zIndex.Select,
     position: "relative",
     width: "100%"
   }),
-  option: (provided, state) => ({
-    ...provided,
-    cursor: state.isDisabled ? "not-allowed" : "pointer",
-    opacity: state.isDisabled
-      ? (customTheme?.option?.disabled?.opacity ?? "0.5")
-      : (customTheme?.option?.opacity ?? "1"),
-    background:
-      state.isSelected || state.isFocused
-        ? (customTheme?.option?.selected?.background ?? colors.greyLight)
-        : (customTheme?.option?.background ?? colors.white),
-    color: state.isSelected
-      ? (customTheme?.option?.selected?.color ?? colors.violet)
-      : (customTheme?.option?.color ?? colors.black),
-    ...(state.isDisabled && customTheme?.option?.disabled),
-    ...(state.isSelected && customTheme?.option?.selected),
-    ...(state.isFocused && customTheme?.option?.focus),
-    ...(!checkIfValueIsEmpty(error) && customTheme?.option?.error)
-  }),
+  option: (provided, state) => {
+    return {
+      ...provided,
+      cursor: state.isDisabled ? "not-allowed" : "default",
+      opacity: state.isDisabled
+        ? (customTheme?.option?.disabled?.opacity ?? "0.5")
+        : (customTheme?.option?.opacity ?? "1"),
+      background:
+        state.isSelected || state.isFocused
+          ? (customTheme?.option?.selected?.background ?? colors.greyLight)
+          : (customTheme?.option?.background ?? colors.white),
+      color: state.isSelected
+        ? (customTheme?.option?.selected?.color ?? colors.violet)
+        : (customTheme?.option?.color ?? colors.black),
+      ...(state.isDisabled && customTheme?.option?.disabled),
+      ...(state.isSelected && customTheme?.option?.selected),
+      ...(state.isFocused && customTheme?.option?.focus),
+      ...(!checkIfValueIsEmpty(error) && customTheme?.option?.error)
+    };
+  },
+  indicatorsContainer: (provided, state) => {
+    return {
+      ...provided,
+      ...(state.isDisabled && {
+        pointerEvents: "none"
+      })
+    };
+  },
   indicatorSeparator: () => ({
     display: "none"
   }),
@@ -143,13 +172,25 @@ const customStyles = <
     ...customTheme?.input,
     ...(!checkIfValueIsEmpty(error) && customTheme?.input?.error)
   }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: colors.greyDark,
-    fontSize: "13.33px",
-    ...customTheme?.singleValue,
-    ...(!checkIfValueIsEmpty(error) && customTheme?.singleValue?.error)
-  })
+  singleValue: (provided) => {
+    return {
+      ...provided,
+      color: colors.greyDark,
+      fontSize: "13.33px",
+      ...customTheme?.singleValue,
+      ...(!checkIfValueIsEmpty(error) && customTheme?.singleValue?.error)
+    };
+  },
+  multiValue: (provided, state) => {
+    return {
+      ...provided,
+      ...customTheme?.multiValue,
+      ...(state.isDisabled && {
+        pointerEvents: "none"
+      }),
+      ...(!checkIfValueIsEmpty(error) && customTheme?.multiValue?.error)
+    };
+  }
 });
 export type DefaultSelectProps<IsMulti extends boolean = false> = SelectProps<
   DefaultSelectOption,
