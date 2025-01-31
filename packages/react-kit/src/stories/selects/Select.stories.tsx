@@ -30,6 +30,9 @@ export default {
       }
     },
     isDisabled: { control: "boolean" },
+    isMulti: { control: "boolean" },
+    isClearable: { control: "boolean" },
+    isSearchable: { control: "boolean" },
     placeholder: { control: "text" }
   },
   decorators: [
