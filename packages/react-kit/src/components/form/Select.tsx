@@ -16,6 +16,7 @@ import { colors, getCssVar } from "../../theme";
 import { zIndex } from "../ui/zIndex";
 import Error from "./Error";
 import { useFixSelectFont } from "../../hooks/form/useFixSelectFont";
+import { SelectDataProps } from "./types";
 export { GroupBase } from "react-select";
 
 // Base theme type with proper CSS types
@@ -39,22 +40,13 @@ type SelectTheme = Partial<{
   singleValue: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
   multiValue: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
 }>;
-export type DefaultSelectOption = {
-  label: string;
-  value: string | number;
-  disabled?: boolean;
-};
 
 // Base option type that all options must extend
-export interface SelectOption extends Record<string, unknown> {
-  label: string;
-  value: string | number;
-  disabled?: boolean;
-}
+export type SelectOption<Value = unknown> = SelectDataProps<Value>;
 
 // Type-safe props with conditional types based on IsMulti
 export type SelectProps<
-  Option extends SelectOption = DefaultSelectOption,
+  Option extends SelectOption = SelectOption,
   IsMulti extends boolean = false,
   Group extends GroupBase<Option> = GroupBase<Option>
 > = Omit<ReactSelectProps<Option, IsMulti, Group>, "styles" | "theme"> & {
@@ -193,12 +185,12 @@ const customStyles = <
   }
 });
 export type DefaultSelectProps<IsMulti extends boolean = false> = SelectProps<
-  DefaultSelectOption,
+  SelectOption,
   IsMulti,
-  GroupBase<DefaultSelectOption>
+  GroupBase<SelectOption>
 >;
 export function Select<
-  Option extends SelectOption = DefaultSelectOption,
+  Option extends SelectOption = SelectOption,
   IsMulti extends boolean = false,
   Group extends GroupBase<Option> = GroupBase<Option>
 >({
