@@ -3,15 +3,23 @@ import { colors, getCssVar } from "../../theme";
 import { cardWrapperStyles } from "./commonStyles";
 import { Typography } from "../ui/Typography";
 import { zIndex } from "../ui/zIndex";
+import { buttonBorderRadius } from "../../borders";
+import { ExchangeStatus } from "../exchangeCard/ExchangeCard.styles";
+import { ExchangeCardStatus } from "../exchangeCard/types";
 
 export const ProductCardLabelWrapper = styled.div`
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  background: white;
-  font-weight: 600;
-  color: ${colors.greyDark};
   z-index: 1;
+  position: relative;
+  background-color: ${getCssVar("--main-text-color")};
+  color: ${getCssVar("--background-accent-color")};
+  border-radius: ${buttonBorderRadius["mid"]};
+  padding: 0.125rem 0.5rem 0.125rem 0.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  left: 0;
 `;
 
 export const ProductCardCreator = styled.div`
@@ -53,15 +61,7 @@ export const ProductCardCreatorName = styled.div`
 export const ProductCardTitle = styled(Typography).attrs({
   className: "title"
 })`
-  word-break: break-word;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-height: 1.5em;
   max-height: calc(1.5em * 2);
-  white-space: nowrap;
-  text-overflow: ellipsis;
 `;
 
 export const ProductCardPriceWrapper = styled.div`
@@ -105,6 +105,7 @@ export const ProductCardBottomContent = styled.div`
 export const ProductCardTitleWrapper = styled.div`
   width: 100%;
   box-sizing: border-box;
+  align-items: flex-start;
 `;
 
 export const ProductCardWrapper = styled.div<{
@@ -121,7 +122,6 @@ export const ProductCardWrapper = styled.div<{
   flex-direction: column;
   min-height: 286px;
   height: 286px;
-  padding: 0 1rem 1rem 1rem;
   ${({ $isHoverDisabled }) =>
     $isHoverDisabled
       ? ""
@@ -235,10 +235,52 @@ export const CTAOnHoverContainer = styled.div<{ $isHovered: boolean }>`
 export const ProductTypeWrapper = styled.div`
   background-color: ${colors.black};
   color: ${colors.white};
-  display: flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.1563rem 0.25rem;
   border-radius: ${getCssVar("--button-border-radius")};
   margin-top: 0.5rem;
+  padding: 0.125rem 0.5rem 0.125rem 0.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  left: 0;
+`;
+
+export const ProductExchangeStatus = styled.div<{
+  $status: ExchangeCardStatus;
+}>`
+  position: absolute;
+  z-index: 10;
+  letter-spacing: 0.5px;
+  line-height: 16px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  &:first-letter {
+    text-transform: uppercase;
+  }
+  background: ${({ $status }) => {
+    switch ($status) {
+      case "REDEEMED":
+      case "CANCELLED":
+        return colors.green;
+      case "COMMITTED":
+        return colors.violet;
+      default:
+        return colors.white;
+    }
+  }};
+  color: ${({ $status }) => {
+    switch ($status) {
+      case "COMMITTED":
+        return colors.white;
+      default:
+        return colors.black;
+    }
+  }};
+  left: 0.5rem;
+  top: 24px;
 `;

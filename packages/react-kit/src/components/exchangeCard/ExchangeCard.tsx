@@ -16,12 +16,12 @@ import {
   ExchangeCarData,
   ExchangeCardBottom,
   ExchangeCardBottomContent,
-  ExchangeCardLabelWrapper,
   ExchangeCardPrice,
   ExchangeCardPriceWrapper,
+  ExchangeCardTitle,
+  ExchangeCardTitleWrapper,
   ExchangeCardTop,
   ExchangeCardWrapper,
-  ExchangeCreator,
   ExchangeCreatorAvatar,
   ExchangeCreatorName,
   ExchangeImageWrapper,
@@ -31,7 +31,16 @@ import {
 } from "./ExchangeCard.styles";
 import { ExchangeCardStatus } from "./types";
 import { subgraph } from "@bosonprotocol/core-sdk";
-import { ProductCardTitle, ProductCardTitleWrapper } from "../productCard/ProductCard.styles";
+import {
+  ProductCardLabelWrapper,
+  ProductCardTitle,
+  ProductCardTitleWrapper
+} from "../productCard/ProductCard.styles";
+import { CircleHalf } from "phosphor-react";
+import { getCssVar } from "../../theme";
+import { Typography } from "../ui/Typography";
+import { Grid } from "../ui/Grid";
+import { PhygitalLabel } from "../productCard/ProductCard";
 export type { ExchangeCardStatus } from "./types";
 interface Base {
   id: string;
@@ -191,9 +200,6 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     >
       <ExchangeCardTop $isNotImageLoaded={isNotImageLoaded}>
         <ExchangeImageWrapper>
-          {isPhygital && (
-            <ExchangeCardLabelWrapper>Phygital</ExchangeCardLabelWrapper>
-          )}
           <Image {...imageProps} onLoaded={() => setIsImageLoaded(true)} />
         </ExchangeImageWrapper>
         <ExchangeStatus $status={status}>{status.toLowerCase()}</ExchangeStatus>
@@ -210,37 +216,41 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
           }}
         >
           <ExchangeCarData>
-            <ExchangeCreator
+            <Grid
+              flexDirection="column"
+              alignItems="flex-start"
               onClick={(e) => {
                 e.stopPropagation();
                 onAvatarNameClick?.();
               }}
             >
-              <ProductCardTitleWrapper>
-                <ProductCardTitle fontSize={"0.75rem"} fontWeight={"600"}>
+              <ExchangeCardTitleWrapper>
+                <ExchangeCardTitle fontSize={"0.75rem"} fontWeight={"600"}>
                   {title}
-                </ProductCardTitle>
-              </ProductCardTitleWrapper>
-              <ExchangeCreatorName data-avatarname="exchange-card">
-                {avatarName}
-              </ExchangeCreatorName>
-            </ExchangeCreator>
+                </ExchangeCardTitle>
+                <ExchangeCardPriceWrapper
+                  justifyContent="flex-end"
+                  alignItems="center"
+                  width="30%"
+                >
+                  <CurrencyDisplay
+                    value={price}
+                    currency={currency}
+                    fontSize={"0.875rem"}
+                    iconSize={16}
+                    gap={"0.3125rem"}
+                    style={{
+                      wordBreak: "break-all",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "600"
+                    }}
+                  />
+                </ExchangeCardPriceWrapper>
+              </ExchangeCardTitleWrapper>
+              {isPhygital && PhygitalLabel()}
+            </Grid>
           </ExchangeCarData>
-          <ExchangeCardPriceWrapper>
-            <CurrencyDisplay
-              value={price}
-              currency={currency}
-              fontSize={"0.875rem"}
-              iconSize={16}
-              gap={"0.3125rem"}
-              style={{
-                wordBreak: "break-all",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingTop: "0.25rem"
-              }}
-            />
-          </ExchangeCardPriceWrapper>
         </ExchangeCardBottomContent>
         {isCTAVisible && isConnected ? (
           <ExchangeCTAWrapper data-cta-wrapper>

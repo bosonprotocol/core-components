@@ -1,20 +1,15 @@
 import styled, { css } from "styled-components";
 import { colors, getCssVar } from "../../theme";
 import { ExchangeCardStatus } from "./types";
-import { ProductCardLabelWrapper } from "../productCard/ProductCard.styles";
+import {
+  ProductCardLabelWrapper,
+  ProductCardTitle
+} from "../productCard/ProductCard.styles";
 import { Grid } from "../ui/Grid";
+import { buttonBorderRadius } from "../../borders";
 
 const topSpace = "1rem";
 const sideSpace = "1rem";
-export const ExchangeCardLabelWrapper = styled(ProductCardLabelWrapper)`
-  top: ${topSpace};
-  left: ${sideSpace};
-`;
-export const ExchangeCreator = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-`;
 
 export const ExchangeCreatorAvatar = styled.div`
   width: 1rem;
@@ -54,6 +49,12 @@ export const ExchangeCardPriceWrapper = styled(Grid)`
   }
 `;
 
+export const ExchangeCardTitleWrapper = styled(Grid)`
+  width: 100%;
+  box-sizing: border-box;
+  align-items: flex-start;
+`;
+
 export const ExchangeCardPrice = styled.div`
   font-size: 0.75rem;
   line-height: 150%;
@@ -64,7 +65,7 @@ export const ExchangeCardPrice = styled.div`
 
 export const ExchangeCarData = styled.div`
   display: flex;
-  flex-direction: column;
+  width: 100%;
 `;
 
 export const ExchangeCardBottom = styled.div`
@@ -102,7 +103,7 @@ export const ExchangeCardWrapper = styled.div<{
   border: 1px solid rgba(85, 96, 114, 0.15);
   box-shadow: 0px 4.31783px 107.946px rgba(21, 30, 52, 0.1);
   cursor: pointer;
-  background: ${getCssVar("--background-accent-color")};
+  background: ${getCssVar("--background-color")};
   [data-image-wrapper] {
     position: static;
     padding-top: 0;
@@ -180,7 +181,7 @@ export const ExchangeStatus = styled.div<{
 }>`
   position: absolute;
   top: ${topSpace};
-  right: ${sideSpace};
+  left: ${sideSpace};
   z-index: 10;
   letter-spacing: 0.5px;
   line-height: 16px;
@@ -231,4 +232,9 @@ export const ExchangeImageWrapper = styled.div`
 export const ExchangeCTAWrapper = styled.div`
   transition: all 0.4s ease-out;
   max-height: 0;
+`;
+
+export const ExchangeCardTitle = styled(ProductCardTitle)`
+  width: 100%;
+  white-space: normal;
 `;
