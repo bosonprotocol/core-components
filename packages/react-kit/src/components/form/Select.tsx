@@ -251,7 +251,8 @@ export function Select<
   };
 
   const { jsx, selectClassName } = useFixSelectFont({
-    selectClassName: "boson-select"
+    selectClassName: "boson-select",
+    hasError: displayError
   });
 
   return (
