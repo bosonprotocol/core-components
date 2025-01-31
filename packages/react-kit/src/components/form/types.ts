@@ -1,12 +1,5 @@
 import { ReactNode } from "react";
-import {
-  ActionMeta,
-  CSSObjectWithLabel,
-  GroupBase,
-  MultiValue,
-  SelectComponentsConfig,
-  SingleValue
-} from "react-select";
+import { SingleValue } from "react-select";
 import { CSSProperties } from "styled-components";
 import { ImageEditorModalProps } from "./Upload/ImageEditorModal/ImageEditorModal";
 import type {
@@ -130,46 +123,6 @@ export type SupportedReactSelectProps<
   | "placeholder"
   | "hideSelectedOptions"
 >;
-export type SelectProps<
-  Group extends GroupBase<Option>,
-  M extends boolean = false,
-  Option extends Record<string, unknown> = SelectDataProps
-> = BaseProps & {
-  isMulti?: M;
-  disabled?: boolean;
-  isClearable?: boolean;
-  isSearchable?: boolean;
-  options: Array<Option> | Readonly<Array<Option>> | undefined;
-  errorMessage?: string;
-  onChange?: (
-    option: M extends true ? MultiValue<Option> : SingleValue<Option>,
-    actionMeta?: ActionMeta<Option>
-  ) => void;
-  label?: string;
-  theme?: Partial<{
-    control: Partial<CSSProperties> &
-      Partial<{
-        disabled: Partial<CSSProperties>;
-        hover: Partial<CSSProperties>;
-        focus: Partial<CSSProperties>;
-        error: Partial<CSSProperties>;
-      }>;
-    option: Partial<CSSProperties> &
-      Partial<{
-        selected: Partial<CSSProperties>;
-        disabled: Partial<CSSProperties>;
-        focus: Partial<CSSProperties>;
-        error: Partial<CSSObjectWithLabel>;
-      }>;
-    placeholder: Partial<CSSProperties> &
-      Partial<{ error: CSSObjectWithLabel }>;
-    input: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
-    singleValue: Partial<CSSProperties> &
-      Partial<{ error: CSSObjectWithLabel }>;
-    multiValue: Partial<CSSProperties> & Partial<{ error: CSSObjectWithLabel }>;
-  }>;
-  components?: SelectComponentsConfig<Option, M, Group>;
-} & SupportedReactSelectProps<M, Option>;
 
 export type UploadProps = BaseProps & {
   accept?: string;

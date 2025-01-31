@@ -1,6 +1,6 @@
 import React from "react";
 import { useField } from "formik";
-import Select, {
+import ReactSelect, {
   GroupBase,
   StylesConfig,
   MultiValue,
@@ -197,7 +197,7 @@ export type DefaultSelectProps<IsMulti extends boolean = false> = SelectProps<
   IsMulti,
   GroupBase<DefaultSelectOption>
 >;
-export function SelectComponent<
+export function Select<
   Option extends SelectOption = DefaultSelectOption,
   IsMulti extends boolean = false,
   Group extends GroupBase<Option> = GroupBase<Option>
@@ -257,7 +257,7 @@ export function SelectComponent<
   return (
     <>
       {jsx}
-      <Select<Option, IsMulti, Group>
+      <ReactSelect<Option, IsMulti, Group>
         styles={customStyles<Option, IsMulti, Group>(
           displayErrorMessage,
           theme
@@ -281,5 +281,3 @@ export function SelectComponent<
     </>
   );
 }
-
-export default SelectComponent;
