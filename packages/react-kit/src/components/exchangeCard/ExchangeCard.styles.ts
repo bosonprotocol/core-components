@@ -2,11 +2,10 @@ import styled, { css } from "styled-components";
 import { colors, getCssVar } from "../../theme";
 import { ExchangeCardStatus } from "./types";
 import {
-  ProductCardLabelWrapper,
+  CTAOnHoverContainer,
   ProductCardTitle
 } from "../productCard/ProductCard.styles";
 import { Grid } from "../ui/Grid";
-import { buttonBorderRadius } from "../../borders";
 
 const topSpace = "1rem";
 const sideSpace = "1rem";
@@ -100,8 +99,6 @@ export const ExchangeCardWrapper = styled.div<{
   isolation: isolate;
   width: 100%;
   min-height: 31.25rem;
-  border: 1px solid rgba(85, 96, 114, 0.15);
-  box-shadow: 0px 4.31783px 107.946px rgba(21, 30, 52, 0.1);
   cursor: pointer;
   background: ${getCssVar("--background-color")};
   [data-image-wrapper] {
@@ -227,6 +224,11 @@ export const ExchangeImageWrapper = styled.div`
   width: 100%;
   height: 100%;
   max-height: 75%;
+  img {
+    border: 1px solid ${colors.border};
+    border-radius: ${getCssVar("--modal-border-radius")};
+    width: auto;
+  }
 `;
 
 export const ExchangeCTAWrapper = styled.div`
@@ -237,4 +239,9 @@ export const ExchangeCTAWrapper = styled.div`
 export const ExchangeCardTitle = styled(ProductCardTitle)`
   width: 100%;
   white-space: normal;
+`;
+
+export const CTAOnHoverContainerExchangeCard = styled(CTAOnHoverContainer)`
+  left: 50%;
+  transform: translate(-50%, 0);
 `;

@@ -127,8 +127,6 @@ export const ProductCardWrapper = styled.div<{
       : css`
           transition: all 300ms ease-in-out;
           &:hover {
-            border: 2px solid ${colors.border};
-
             [data-image-wrapper] {
               width: 110%;
               img {
@@ -155,7 +153,9 @@ export const ProductCardWrapper = styled.div<{
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 1px solid ${colors.border};
     border-radius: ${getCssVar("--modal-border-radius")};
+    width: auto;
     ${({ $isImageFitCover }) =>
       $isImageFitCover
         ? css`

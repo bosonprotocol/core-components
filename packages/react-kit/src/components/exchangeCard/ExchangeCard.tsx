@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo, useState } from "react";
+import React, { ReactElement, ReactNode, useMemo, useState } from "react";
 import { Button } from "../buttons/Button";
 import {
   Currencies,
@@ -9,6 +9,7 @@ import { IBaseImage, Image } from "../image/Image";
 import { ProductType } from "../productCard/const";
 import { IButton } from "../ui/ThemedButton";
 import {
+  CTAOnHoverContainerExchangeCard,
   CommittedBottomText,
   CommittedButtonWrapper,
   ExchangeButtonWrapper,
@@ -30,6 +31,7 @@ import { subgraph } from "@bosonprotocol/core-sdk";
 
 import { Grid } from "../ui/Grid";
 import { PhygitalLabel } from "../productCard/ProductCard";
+import { isMobile } from "../../lib/userAgent/userAgent";
 export type { ExchangeCardStatus } from "./types";
 interface Base {
   id: string;
@@ -49,6 +51,7 @@ interface Base {
   isConnected: boolean | undefined;
   CTAIfDisconnected?: ReactElement;
   status: ExchangeCardStatus;
+  CTAOnHover?: ReactNode;
 }
 
 interface RedeemCard extends Base {
@@ -103,11 +106,12 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     dataCard = "exchange-card",
     productType,
     isConnected,
-    CTAIfDisconnected
+    CTAIfDisconnected,
+    CTAOnHover
   } = props;
 
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-
+  const [isHovered, setIsHovered] = useState(false);
   const exchangeCardBottom = useMemo(() => {
     if (isCTAVisible) {
       switch (status) {
@@ -180,6 +184,8 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
       data-card={dataCard}
       $isHoverDisabled={isHoverDisabled}
       data-testid={dataTestId}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       onClick={(e) => {
         e.preventDefault();
         onCardClick?.(id);
@@ -188,6 +194,11 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
       <ExchangeCardTop $isNotImageLoaded={isNotImageLoaded}>
         <ExchangeImageWrapper>
           <Image {...imageProps} onLoaded={() => setIsImageLoaded(true)} />
+          {true && !isMobile && (
+            <CTAOnHoverContainerExchangeCard $isHovered={isHovered}>
+              {CTAOnHover}
+            </CTAOnHoverContainerExchangeCard>
+          )}
         </ExchangeImageWrapper>
         <ExchangeStatus $status={status}>{status.toLowerCase()}</ExchangeStatus>
       </ExchangeCardTop>
