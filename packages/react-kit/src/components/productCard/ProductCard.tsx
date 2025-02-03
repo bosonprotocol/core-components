@@ -168,7 +168,7 @@ export const ProductCard = (props: IProductCard) => {
             </Wrapper>
           </Grid>
 
-          {productType === ProductType.phygital && PhygitalLabel()}
+          {productType === ProductType.phygital && <PhygitalLabel />}
         </ProductCardBottomContent>
       </ProductCardBottom>
     </ProductCardWrapper>

@@ -235,7 +235,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
                   />
                 </ExchangeCardPriceWrapper>
               </ExchangeCardTitleWrapper>
-              {isPhygital && PhygitalLabel()}
+              {isPhygital && <PhygitalLabel />}
             </Grid>
           </ExchangeCarData>
         </ExchangeCardBottomContent>
