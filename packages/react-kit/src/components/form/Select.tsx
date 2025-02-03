@@ -7,7 +7,6 @@ import ReactSelect, {
   SingleValue,
   ActionMeta,
   Props as ReactSelectProps,
-  PropsValue,
   CSSObjectWithLabel
 } from "react-select";
 import { CSSProperties } from "react";
@@ -208,7 +207,10 @@ export function Select<
   isMulti,
   ...props
 }: SelectProps<Option, IsMulti, Group>) {
-  const [field, meta, helpers] = useField(name);
+  const [field, meta, helpers] =
+    useField<IsMulti extends true ? MultiValue<Option> : SingleValue<Option>>(
+      name
+    );
 
   const displayErrorMessage =
     meta.error && meta.touched && !errorMessage
@@ -261,7 +263,7 @@ export function Select<
         isMulti={isMulti}
         placeholder={placeholder}
         options={options}
-        value={field.value as PropsValue<Option>}
+        value={field.value}
         onChange={handleChange}
         onBlur={handleBlur}
         isSearchable={isSearchable}
