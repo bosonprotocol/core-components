@@ -153,9 +153,7 @@ export const ProductCardWrapper = styled.div<{
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid ${colors.border};
     border-radius: ${getCssVar("--modal-border-radius")};
-    width: auto;
     ${({ $isImageFitCover }) =>
       $isImageFitCover
         ? css`

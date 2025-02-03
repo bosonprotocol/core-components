@@ -224,11 +224,6 @@ export const ExchangeImageWrapper = styled.div`
   width: 100%;
   height: 100%;
   max-height: 75%;
-  img {
-    border: 1px solid ${colors.border};
-    border-radius: ${getCssVar("--modal-border-radius")};
-    width: auto;
-  }
 `;
 
 export const ExchangeCTAWrapper = styled.div`
