@@ -16,29 +16,18 @@ import {
   ExchangeCarData,
   ExchangeCardBottom,
   ExchangeCardBottomContent,
-  ExchangeCardPrice,
   ExchangeCardPriceWrapper,
   ExchangeCardTitle,
   ExchangeCardTitleWrapper,
   ExchangeCardTop,
   ExchangeCardWrapper,
-  ExchangeCreatorAvatar,
-  ExchangeCreatorName,
   ExchangeImageWrapper,
   ExchangeStatus,
-  ExchangeTitle,
   RedeemButtonWrapper
 } from "./ExchangeCard.styles";
 import { ExchangeCardStatus } from "./types";
 import { subgraph } from "@bosonprotocol/core-sdk";
-import {
-  ProductCardLabelWrapper,
-  ProductCardTitle,
-  ProductCardTitleWrapper
-} from "../productCard/ProductCard.styles";
-import { CircleHalf } from "phosphor-react";
-import { getCssVar } from "../../theme";
-import { Typography } from "../ui/Typography";
+
 import { Grid } from "../ui/Grid";
 import { PhygitalLabel } from "../productCard/ProductCard";
 export type { ExchangeCardStatus } from "./types";
@@ -105,8 +94,6 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     imageProps,
     price,
     currency,
-    avatar,
-    avatarName,
     onCardClick,
     status,
     isCTAVisible = true,

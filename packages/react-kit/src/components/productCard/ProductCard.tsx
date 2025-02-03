@@ -25,7 +25,6 @@ import { CircleHalf } from "phosphor-react";
 import { isMobile } from "../../lib/userAgent/userAgent";
 import { Typography } from "../ui/Typography";
 import { getCssVar } from "../../theme";
-import { ExchangeStatus } from "../exchangeCard/ExchangeCard.styles";
 import { ExchangeCardStatus } from "../exchangeCard/types";
 import { ExchangeState } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 

@@ -4,7 +4,6 @@ import { cardWrapperStyles } from "./commonStyles";
 import { Typography } from "../ui/Typography";
 import { zIndex } from "../ui/zIndex";
 import { buttonBorderRadius } from "../../borders";
-import { ExchangeStatus } from "../exchangeCard/ExchangeCard.styles";
 import { ExchangeCardStatus } from "../exchangeCard/types";
 
 export const ProductCardLabelWrapper = styled.div`
