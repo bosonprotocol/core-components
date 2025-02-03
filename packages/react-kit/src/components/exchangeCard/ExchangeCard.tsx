@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useMemo, useState } from "react";
+import React, { ReactElement, useMemo, useState } from "react";
 import { Button } from "../buttons/Button";
 import {
   Currencies,
@@ -10,7 +10,6 @@ import { ProductType } from "../productCard/const";
 import { IButton } from "../ui/ThemedButton";
 import {
   CTAOnHoverContainerExchangeCard,
-  CommittedBottomText,
   CommittedButtonWrapper,
   ExchangeButtonWrapper,
   ExchangeCTAWrapper,
@@ -31,7 +30,6 @@ import { subgraph } from "@bosonprotocol/core-sdk";
 
 import { Grid } from "../ui/Grid";
 import { PhygitalLabel } from "../productCard/ProductCard";
-import { isMobile } from "../../lib/userAgent/userAgent";
 export type { ExchangeCardStatus } from "./types";
 interface Base {
   id: string;
@@ -51,7 +49,6 @@ interface Base {
   isConnected: boolean | undefined;
   CTAIfDisconnected?: ReactElement;
   status: ExchangeCardStatus;
-  CTAOnHover?: ReactNode;
 }
 
 interface RedeemCard extends Base {
@@ -106,8 +103,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     dataCard = "exchange-card",
     productType,
     isConnected,
-    CTAIfDisconnected,
-    CTAOnHover
+    CTAIfDisconnected
   } = props;
 
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -137,7 +133,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
           );
         }
         case subgraph.ExchangeState.COMMITTED: {
-          const { redeemButtonConfig, cancelButtonConfig, bottomText } = props;
+          const { redeemButtonConfig } = props;
           return (
             <ExchangeButtonWrapper>
               <CommittedButtonWrapper>
@@ -153,20 +149,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
                 >
                   Redeem
                 </Button>
-                <Button
-                  variant="secondaryInverted"
-                  {...cancelButtonConfig}
-                  onClick={(
-                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                  ) => {
-                    e.stopPropagation();
-                    cancelButtonConfig?.onClick?.(e);
-                  }}
-                >
-                  Cancel
-                </Button>
               </CommittedButtonWrapper>
-              <CommittedBottomText>{bottomText}</CommittedBottomText>
             </ExchangeButtonWrapper>
           );
         }
@@ -194,9 +177,15 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
       <ExchangeCardTop $isNotImageLoaded={isNotImageLoaded}>
         <ExchangeImageWrapper>
           <Image {...imageProps} onLoaded={() => setIsImageLoaded(true)} />
-          {true && !isMobile && (
+          {isCTAVisible && isConnected && (
             <CTAOnHoverContainerExchangeCard $isHovered={isHovered}>
-              {CTAOnHover}
+              {isCTAVisible && isConnected ? (
+                <ExchangeCTAWrapper data-cta-wrapper>
+                  {exchangeCardBottom}
+                </ExchangeCTAWrapper>
+              ) : isCTAVisible && !isConnected && CTAIfDisconnected ? (
+                CTAIfDisconnected
+              ) : null}
             </CTAOnHoverContainerExchangeCard>
           )}
         </ExchangeImageWrapper>
@@ -250,13 +239,6 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
             </Grid>
           </ExchangeCarData>
         </ExchangeCardBottomContent>
-        {isCTAVisible && isConnected ? (
-          <ExchangeCTAWrapper data-cta-wrapper>
-            {exchangeCardBottom}
-          </ExchangeCTAWrapper>
-        ) : isCTAVisible && !isConnected && CTAIfDisconnected ? (
-          CTAIfDisconnected
-        ) : null}
       </ExchangeCardBottom>
     </ExchangeCardWrapper>
   );

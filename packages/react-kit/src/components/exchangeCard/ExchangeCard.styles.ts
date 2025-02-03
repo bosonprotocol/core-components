@@ -154,7 +154,6 @@ export const ExchangeCardTop = styled.div<{ $isNotImageLoaded: boolean }>`
 `;
 export const ExchangeButtonWrapper = styled.div`
   width: 100%;
-  border-top: 1px solid rgba(85, 96, 114, 0.15);
   align-items: center;
 `;
 
@@ -239,4 +238,5 @@ export const ExchangeCardTitle = styled(ProductCardTitle)`
 export const CTAOnHoverContainerExchangeCard = styled(CTAOnHoverContainer)`
   left: 50%;
   transform: translate(-50%, 0);
+  margin-bottom: 1rem;
 `;
