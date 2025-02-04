@@ -25,7 +25,6 @@ import { isMobile } from "../../lib/userAgent/userAgent";
 import { Typography } from "../ui/Typography";
 import { getCssVar } from "../../theme";
 import { ExchangeCardStatus } from "../exchangeCard/types";
-import { ExchangeState } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 
 export const PhygitalLabel = () => {
   return (
@@ -100,8 +99,7 @@ export const ProductCard = (props: IProductCard) => {
     isImageFitCover = false,
     className,
     productType,
-    currencyColor,
-    status = ExchangeState.REDEEMED
+    currencyColor
   } = props;
 
   const [isHovered, setIsHovered] = useState(false);
