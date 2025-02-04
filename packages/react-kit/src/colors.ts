@@ -10,6 +10,7 @@ export const colors = {
   bosonSkyBlue: "#51BEFA",
   cyan: "#00FFFF",
   darkShade: "#333033",
+  deepPurple: "#131A2A",
   froly: "#F46A6A",
   green: "#02F3A2",
   grey: "#808080", // color 'grey' in chrome
