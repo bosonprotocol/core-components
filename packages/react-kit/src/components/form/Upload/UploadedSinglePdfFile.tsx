@@ -2,6 +2,7 @@ import { Grid } from "../../ui/Grid";
 import { FilePdf, X } from "phosphor-react";
 import { Typography } from "../../ui/Typography";
 import React from "react";
+import { colors } from "../../../colors";
 
 export type UploadedSinglePdfFileProps = {
   fileName: string;
@@ -16,7 +17,13 @@ export const UploadedSinglePdfFile = ({
       <div>
         <FilePdf size={24} />
       </div>
-      <Typography style={{ width: "100%" }}>{fileName}</Typography>
+      <Typography
+        width={"100%"}
+        color={colors.purpleDeep}
+        fontSize={"0.875rem"}
+      >
+        {fileName}
+      </Typography>
       {onXClick && (
         <button
           type="button"

@@ -22,6 +22,7 @@ export const colors = {
   lime: "#B6F952",
   orange: "#FC6838",
   orangeDark: "#ff8c00", // color 'darkorange' in chrome
+  purpleDeep: "#131A2A",
   red: "#FC386A",
   redDark: "#8b0000", // color 'darkred' in chrome
   torquise: "#06F7D5",
