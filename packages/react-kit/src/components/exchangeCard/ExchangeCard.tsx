@@ -218,7 +218,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
                 <ExchangeCardPriceWrapper
                   justifyContent="flex-end"
                   alignItems="center"
-                  width="30%"
+                  width="40%"
                 >
                   <CurrencyDisplay
                     value={price}

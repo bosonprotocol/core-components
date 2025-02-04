@@ -15,8 +15,7 @@ import {
   ProductCardTitleWrapper,
   ProductCardWrapper,
   CTAOnHoverContainer,
-  ProductTypeWrapper,
-  ProductExchangeStatus
+  ProductTypeWrapper
 } from "./ProductCard.styles";
 
 import { ProductType } from "./const";
@@ -130,11 +129,6 @@ export const ProductCard = (props: IProductCard) => {
           </CTAOnHoverContainer>
         )}
       </ProductCardImageWrapper>
-      {status && (
-        <ProductExchangeStatus $status={status}>
-          {status.toLowerCase()}
-        </ProductExchangeStatus>
-      )}
       <ProductCardBottom>
         <ProductCardBottomContent>
           <Grid flexDirection="row" alignItems="flex-start">
