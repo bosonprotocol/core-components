@@ -115,7 +115,6 @@ export const ProductsRoblox = ({
 
   const {
     data: purchasedProductsInPage,
-    isLoading: purchasedProductsLoading,
     fetchNextPage: fetchNextPagePurchasedProducts,
     hasNextPage: hasNextPagePurchasedProducts,
     refetch: refetchPurchasedProducts
@@ -257,7 +256,6 @@ export const ProductsRoblox = ({
                     });
                   }
                 }}
-                isLoading={purchasedProductsLoading}
               />
             </Grid>
             <Grid flexDirection="column" alignItems="flex-start">

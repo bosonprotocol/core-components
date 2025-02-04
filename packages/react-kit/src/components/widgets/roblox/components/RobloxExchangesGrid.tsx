@@ -54,7 +54,6 @@ const TransparentSkeletonProductCard = styled(ProductCardSkeleton)`
 `;
 
 export type RobloxExchangesGridProps = {
-  isLoading: boolean;
   numProducts?: number;
   itemsPerRow: GridContainerProps["itemsPerRow"];
   raiseDisputeForExchangeUrl: string;
@@ -73,7 +72,6 @@ export type RobloxExchangesGridProps = {
 };
 const gap = "2rem";
 export const RobloxExchangesGrid = ({
-  isLoading,
   numProducts,
   itemsPerRow,
   raiseDisputeForExchangeUrl,
