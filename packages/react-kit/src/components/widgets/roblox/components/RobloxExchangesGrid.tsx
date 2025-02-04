@@ -59,6 +59,7 @@ export type RobloxExchangesGridProps = {
   raiseDisputeForExchangeUrl: string;
   handleRequestShipment: (robloxExchange: BosonRobloxExchange) => void;
   handleCancellation: (robloxExchange: BosonRobloxExchange) => void;
+  handleOnCardClick: (robloxExchange: BosonRobloxExchange) => void;
   exchanges: BosonRobloxExchange[] | undefined;
   fetchNextPage: (
     options?: FetchNextPageOptions
@@ -77,6 +78,7 @@ export const RobloxExchangesGrid = ({
   raiseDisputeForExchangeUrl,
   exchanges,
   handleRequestShipment,
+  handleOnCardClick,
   handleCancellation,
   fetchNextPage,
   refetch,
@@ -195,6 +197,9 @@ export const RobloxExchangesGrid = ({
                           type: "button"
                         } as const
                       }
+                      onCardClick={() => {
+                        handleOnCardClick(robloxExchange);
+                      }}
                       disputeButtonConfig={
                         {
                           onClick: () => {

@@ -256,6 +256,20 @@ export const ProductsRoblox = ({
                     });
                   }
                 }}
+                handleOnCardClick={(robloxExchange) => {
+                  const { offer } = robloxExchange;
+                  if (isProductV1(offer)) {
+                    handleSetProductUuid({
+                      selectedProductUuid: offer.metadata.product.uuid,
+                      exchange: robloxExchange
+                    });
+                  } else if (isBundle(offer)) {
+                    handleSetBundleUuid({
+                      selectedBundleUuid: offer.metadata.bundleUuid,
+                      exchange: robloxExchange
+                    });
+                  }
+                }}
               />
             </Grid>
             <Grid flexDirection="column" alignItems="flex-start">
