@@ -6,7 +6,6 @@ import { ProductGridContainer } from "./ProfilePage.styles";
 interface Props {
   onCardClick: (exchange: IExchange) => void;
   onRedeemClick: (exchange: IExchange) => void;
-  onCancelExchangeClick: (exchange: IExchange) => void;
   onRaiseDisputeClick: (exchange: IExchange) => void;
   onAvatarClick: (exchange: IExchange) => void;
   exchanges: ExtendedExchange[];
@@ -15,7 +14,6 @@ interface Props {
 export default function Exchanges({
   onRedeemClick,
   exchanges,
-  onCancelExchangeClick,
   onRaiseDisputeClick,
   onCardClick,
   onAvatarClick
@@ -38,7 +36,6 @@ export default function Exchanges({
             exchange={exchange}
             onRedeemClick={onRedeemClick}
             onCardClick={onCardClick}
-            onCancelExchangeClick={onCancelExchangeClick}
             onRaiseDisputeClick={onRaiseDisputeClick}
             onAvatarClick={onAvatarClick}
           />

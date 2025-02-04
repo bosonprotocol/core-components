@@ -189,14 +189,6 @@ export const RobloxExchangesGrid = ({
                           type: "button"
                         } as const
                       }
-                      cancelButtonConfig={
-                        {
-                          onClick: () => {
-                            handleCancellation(robloxExchange);
-                          },
-                          type: "button"
-                        } as const
-                      }
                       onCardClick={() => {
                         handleOnCardClick(robloxExchange);
                       }}

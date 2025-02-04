@@ -16,7 +16,6 @@ import { BosonLogo } from "../../common/BosonLogo";
 export type MyItemsProps = {
   onExchangeCardClick: (exchange: Exchange) => void;
   onRedeemClick: (exchange: Exchange) => void;
-  onCancelExchange: (exchange: Exchange) => void;
   onRaiseDisputeClick: (exchange: Exchange) => void;
   onAvatarClick: (exchange: Exchange) => void;
   isValid: boolean;
@@ -30,7 +29,6 @@ const ExchangesWithData = WithExchangesData(Exchanges);
 export function MyItems({
   onRedeemClick,
   onExchangeCardClick,
-  onCancelExchange,
   onRaiseDisputeClick,
   onAvatarClick,
   sellerIds,
@@ -100,7 +98,6 @@ export function MyItems({
                   {...values}
                   onCardClick={onExchangeCardClick}
                   onRedeemClick={onRedeemClick}
-                  onCancelExchangeClick={onCancelExchange}
                   onRaiseDisputeClick={onRaiseDisputeClick}
                   onAvatarClick={onAvatarClick}
                 />

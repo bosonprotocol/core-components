@@ -63,7 +63,6 @@ interface CancelledCard extends Base {
 interface CommittedCard extends Base {
   status: subgraph.ExchangeState.COMMITTED;
   redeemButtonConfig: IButton;
-  cancelButtonConfig: IButton;
   bottomText?: string;
 }
 

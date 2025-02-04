@@ -20,7 +20,6 @@ const orderProps = {
 interface CommonProps {
   onCardClick: (exchange: Exchange) => void;
   onRedeemClick: (exchange: Exchange) => void;
-  onCancelExchangeClick: (exchange: Exchange) => void;
   onRaiseDisputeClick: (exchange: Exchange) => void;
   onAvatarClick: (exchange: Exchange) => void;
 }
