@@ -10,7 +10,6 @@ export const colors = {
   bosonSkyBlue: "#51BEFA",
   cyan: "#00FFFF",
   darkShade: "#333033",
-  deepPurple: "#131A2A",
   froly: "#F46A6A",
   green: "#02F3A2",
   grey: "#808080", // color 'grey' in chrome
@@ -23,6 +22,7 @@ export const colors = {
   lime: "#B6F952",
   orange: "#FC6838",
   orangeDark: "#ff8c00", // color 'darkorange' in chrome
+  purpleDeep: "#131A2A",
   red: "#FC386A",
   redDark: "#8b0000", // color 'darkred' in chrome
   torquise: "#06F7D5",

@@ -19,7 +19,7 @@ export const UploadedSinglePdfFile = ({
       </div>
       <Typography
         width={"100%"}
-        color={colors.deepPurple}
+        color={colors.purpleDeep}
         fontSize={"0.875rem"}
       >
         {fileName}
