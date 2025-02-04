@@ -188,7 +188,9 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
             </CTAOnHoverContainerExchangeCard>
           )}
         </ExchangeImageWrapper>
-        <ExchangeStatus $status={status}>{status.toLowerCase()}</ExchangeStatus>
+        <ExchangeStatus $status={status} $side="left">
+          {status.toLowerCase()}
+        </ExchangeStatus>
       </ExchangeCardTop>
       <div style={{ height: height + "px" }} />
       <ExchangeCardBottom>

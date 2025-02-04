@@ -174,10 +174,24 @@ export const CommittedButtonWrapper = styled.div`
 
 export const ExchangeStatus = styled.div<{
   $status: ExchangeCardStatus;
+  $side: "left" | "right";
 }>`
   position: absolute;
   top: ${topSpace};
-  left: ${sideSpace};
+  ${({ $side }) => {
+    switch ($side) {
+      case "left": {
+        return css`
+          left: ${sideSpace};
+        `;
+      }
+      case "right": {
+        return css`
+          right: ${sideSpace};
+        `;
+      }
+    }
+  }}
   z-index: 10;
   letter-spacing: 0.5px;
   line-height: 16px;
