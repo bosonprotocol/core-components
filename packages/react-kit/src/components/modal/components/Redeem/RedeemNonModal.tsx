@@ -87,7 +87,6 @@ export type RedeemNonModalProps = Pick<
     hideModal?: NonModalProps["hideModal"];
     myItemsOnExchangeCardClick?: MyItemsProps["onExchangeCardClick"];
     myItemsOnRedeemClick?: MyItemsProps["onRedeemClick"];
-    myItemsOnCancelExchange?: MyItemsProps["onCancelExchange"];
     myItemsOnRaiseDisputeClick?: MyItemsProps["onRaiseDisputeClick"];
     myItemsOnAvatarClick?: MyItemsProps["onAvatarClick"];
     onExchangePolicyClick?: ExchangeViewProps["onExchangePolicyClick"];
@@ -161,7 +160,6 @@ function RedeemNonModal({
   raiseDisputeForExchangeUrl,
   myItemsOnExchangeCardClick,
   myItemsOnRedeemClick,
-  myItemsOnCancelExchange,
   myItemsOnRaiseDisputeClick,
   myItemsOnAvatarClick,
   onExchangePolicyClick,
@@ -402,11 +400,6 @@ function RedeemNonModal({
                     setActiveStep(ActiveStep.REDEEM_FORM);
                     setExchange(exchange);
                     myItemsOnRedeemClick?.(exchange);
-                  }}
-                  onCancelExchange={(exchange) => {
-                    setActiveStep(ActiveStep.CANCELLATION_VIEW);
-                    setExchange(exchange);
-                    myItemsOnCancelExchange?.(exchange);
                   }}
                   isValid={isRedeemFormOK}
                   onRaiseDisputeClick={(exchange) => {

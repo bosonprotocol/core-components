@@ -54,12 +54,12 @@ const TransparentSkeletonProductCard = styled(ProductCardSkeleton)`
 `;
 
 export type RobloxExchangesGridProps = {
-  isLoading: boolean;
   numProducts?: number;
   itemsPerRow: GridContainerProps["itemsPerRow"];
   raiseDisputeForExchangeUrl: string;
   handleRequestShipment: (robloxExchange: BosonRobloxExchange) => void;
   handleCancellation: (robloxExchange: BosonRobloxExchange) => void;
+  handleOnCardClick: (robloxExchange: BosonRobloxExchange) => void;
   exchanges: BosonRobloxExchange[] | undefined;
   fetchNextPage: (
     options?: FetchNextPageOptions
@@ -73,12 +73,12 @@ export type RobloxExchangesGridProps = {
 };
 const gap = "2rem";
 export const RobloxExchangesGrid = ({
-  isLoading,
   numProducts,
   itemsPerRow,
   raiseDisputeForExchangeUrl,
   exchanges,
   handleRequestShipment,
+  handleOnCardClick,
   handleCancellation,
   fetchNextPage,
   refetch,
@@ -189,14 +189,9 @@ export const RobloxExchangesGrid = ({
                           type: "button"
                         } as const
                       }
-                      cancelButtonConfig={
-                        {
-                          onClick: () => {
-                            handleCancellation(robloxExchange);
-                          },
-                          type: "button"
-                        } as const
-                      }
+                      onCardClick={() => {
+                        handleOnCardClick(robloxExchange);
+                      }}
                       disputeButtonConfig={
                         {
                           onClick: () => {

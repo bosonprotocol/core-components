@@ -22,12 +22,17 @@ import { ProductType } from "./const";
 import { Grid } from "../ui/Grid";
 import { CircleHalf } from "phosphor-react";
 import { isMobile } from "../../lib/userAgent/userAgent";
+import { Typography } from "../ui/Typography";
+import { getCssVar } from "../../theme";
+import { ExchangeCardStatus } from "../exchangeCard/types";
 
 export const PhygitalLabel = () => {
   return (
     <ProductTypeWrapper>
       <CircleHalf />
-      Phygital
+      <Typography fontSize={"0.75rem"} fontWeight={600}>
+        Phygital
+      </Typography>
     </ProductTypeWrapper>
   );
 };
@@ -54,6 +59,7 @@ export interface IProductCard {
   isImageFitCover?: boolean;
   className?: string;
   currencyColor?: CurrencyDisplayProps["color"];
+  status?: ExchangeCardStatus;
 }
 
 const Wrapper = ({
@@ -89,7 +95,7 @@ export const ProductCard = (props: IProductCard) => {
     tooltip = "",
     tooltipProps = {},
     CTAOnHover,
-    hideCreatorName = false,
+    hideCreatorName = true,
     isImageFitCover = false,
     className,
     productType,
@@ -121,12 +127,15 @@ export const ProductCard = (props: IProductCard) => {
           </CTAOnHoverContainer>
         )}
       </ProductCardImageWrapper>
-
       <ProductCardBottom>
         <ProductCardBottomContent>
-          <Grid flexDirection="column">
+          <Grid flexDirection="row" alignItems="flex-start">
             <ProductCardTitleWrapper>
-              <ProductCardTitle fontSize={"0.75rem"} fontWeight={"600"}>
+              <ProductCardTitle
+                fontSize={"0.75rem"}
+                color={getCssVar("--main-text-color")}
+                fontWeight={"600"}
+              >
                 {title}
               </ProductCardTitle>
             </ProductCardTitleWrapper>
@@ -135,29 +144,23 @@ export const ProductCard = (props: IProductCard) => {
                 {avatarName}
               </ProductCardCreatorName>
             )}
+            <Wrapper tooltip={tooltip} tooltipProps={tooltipProps}>
+              <CurrencyDisplay
+                value={price}
+                currency={currency}
+                fontSize={"0.875rem"}
+                color={currencyColor}
+                iconSize={16}
+                gap={"0.3125rem"}
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              />
+            </Wrapper>
           </Grid>
-          <Wrapper tooltip={tooltip} tooltipProps={tooltipProps}>
-            <CurrencyDisplay
-              value={price}
-              currency={currency}
-              fontSize={"0.875rem"}
-              color={currencyColor}
-              iconSize={16}
-              gap={"0.3125rem"}
-              style={{
-                wordBreak: "break-all",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingTop: "0.25rem"
-              }}
-            />
-          </Wrapper>
-          {productType === ProductType.phygital && (
-            <ProductTypeWrapper>
-              <CircleHalf />
-              Phygital
-            </ProductTypeWrapper>
-          )}
+
+          {productType === ProductType.phygital && <PhygitalLabel />}
         </ProductCardBottomContent>
       </ProductCardBottom>
     </ProductCardWrapper>

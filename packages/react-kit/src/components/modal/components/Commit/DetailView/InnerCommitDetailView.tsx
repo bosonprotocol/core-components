@@ -355,7 +355,10 @@ export default function InnerCommitDetailView(
           priceSibling={
             status === "success" ? (
               // TODO: if exchange is in a different state what do we do?
-              <ExchangeStatus $status={subgraph.ExchangeState.COMMITTED}>
+              <ExchangeStatus
+                $status={subgraph.ExchangeState.COMMITTED}
+                $side="right"
+              >
                 {labelValueToText[LabelType.purchased]}
               </ExchangeStatus>
             ) : (

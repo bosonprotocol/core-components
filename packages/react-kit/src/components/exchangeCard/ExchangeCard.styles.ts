@@ -1,19 +1,14 @@
 import styled, { css } from "styled-components";
 import { colors, getCssVar } from "../../theme";
 import { ExchangeCardStatus } from "./types";
-import { ProductCardLabelWrapper } from "../productCard/ProductCard.styles";
+import {
+  CTAOnHoverContainer,
+  ProductCardTitle
+} from "../productCard/ProductCard.styles";
+import { Grid } from "../ui/Grid";
 
 const topSpace = "1rem";
 const sideSpace = "1rem";
-export const ExchangeCardLabelWrapper = styled(ProductCardLabelWrapper)`
-  top: ${topSpace};
-  left: ${sideSpace};
-`;
-export const ExchangeCreator = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-`;
 
 export const ExchangeCreatorAvatar = styled.div`
   width: 1rem;
@@ -47,15 +42,16 @@ export const ExchangeTitle = styled.div`
   word-break: break-word;
 `;
 
-export const ExchangeCardPriceWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-  max-width: 50%;
-  min-width: 44%;
+export const ExchangeCardPriceWrapper = styled(Grid)`
   span {
     padding-left: 0.5rem;
   }
+`;
+
+export const ExchangeCardTitleWrapper = styled(Grid)`
+  width: 100%;
+  box-sizing: border-box;
+  align-items: flex-start;
 `;
 
 export const ExchangeCardPrice = styled.div`
@@ -68,7 +64,7 @@ export const ExchangeCardPrice = styled.div`
 
 export const ExchangeCarData = styled.div`
   display: flex;
-  flex-direction: column;
+  width: 100%;
 `;
 
 export const ExchangeCardBottom = styled.div`
@@ -103,10 +99,8 @@ export const ExchangeCardWrapper = styled.div<{
   isolation: isolate;
   width: 100%;
   min-height: 31.25rem;
-  border: 1px solid rgba(85, 96, 114, 0.15);
-  box-shadow: 0px 4.31783px 107.946px rgba(21, 30, 52, 0.1);
   cursor: pointer;
-  background: ${getCssVar("--background-accent-color")};
+  background: ${getCssVar("--background-color")};
   [data-image-wrapper] {
     position: static;
     padding-top: 0;
@@ -160,7 +154,6 @@ export const ExchangeCardTop = styled.div<{ $isNotImageLoaded: boolean }>`
 `;
 export const ExchangeButtonWrapper = styled.div`
   width: 100%;
-  border-top: 1px solid rgba(85, 96, 114, 0.15);
   align-items: center;
 `;
 
@@ -181,10 +174,24 @@ export const CommittedButtonWrapper = styled.div`
 
 export const ExchangeStatus = styled.div<{
   $status: ExchangeCardStatus;
+  $side: "left" | "right";
 }>`
   position: absolute;
   top: ${topSpace};
-  right: ${sideSpace};
+  ${({ $side }) => {
+    switch ($side) {
+      case "left": {
+        return css`
+          left: ${sideSpace};
+        `;
+      }
+      case "right": {
+        return css`
+          right: ${sideSpace};
+        `;
+      }
+    }
+  }}
   z-index: 10;
   letter-spacing: 0.5px;
   line-height: 16px;
@@ -235,4 +242,15 @@ export const ExchangeImageWrapper = styled.div`
 export const ExchangeCTAWrapper = styled.div`
   transition: all 0.4s ease-out;
   max-height: 0;
+`;
+
+export const ExchangeCardTitle = styled(ProductCardTitle)`
+  width: 100%;
+  white-space: normal;
+`;
+
+export const CTAOnHoverContainerExchangeCard = styled(CTAOnHoverContainer)`
+  left: 50%;
+  transform: translate(-50%, 0);
+  margin-bottom: 1rem;
 `;

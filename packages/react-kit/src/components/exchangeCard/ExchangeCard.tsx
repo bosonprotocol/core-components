@@ -9,28 +9,27 @@ import { IBaseImage, Image } from "../image/Image";
 import { ProductType } from "../productCard/const";
 import { IButton } from "../ui/ThemedButton";
 import {
-  CommittedBottomText,
+  CTAOnHoverContainerExchangeCard,
   CommittedButtonWrapper,
   ExchangeButtonWrapper,
   ExchangeCTAWrapper,
   ExchangeCarData,
   ExchangeCardBottom,
   ExchangeCardBottomContent,
-  ExchangeCardLabelWrapper,
-  ExchangeCardPrice,
   ExchangeCardPriceWrapper,
+  ExchangeCardTitle,
+  ExchangeCardTitleWrapper,
   ExchangeCardTop,
   ExchangeCardWrapper,
-  ExchangeCreator,
-  ExchangeCreatorAvatar,
-  ExchangeCreatorName,
   ExchangeImageWrapper,
   ExchangeStatus,
-  ExchangeTitle,
   RedeemButtonWrapper
 } from "./ExchangeCard.styles";
 import { ExchangeCardStatus } from "./types";
 import { subgraph } from "@bosonprotocol/core-sdk";
+
+import { Grid } from "../ui/Grid";
+import { PhygitalLabel } from "../productCard/ProductCard";
 export type { ExchangeCardStatus } from "./types";
 interface Base {
   id: string;
@@ -64,7 +63,6 @@ interface CancelledCard extends Base {
 interface CommittedCard extends Base {
   status: subgraph.ExchangeState.COMMITTED;
   redeemButtonConfig: IButton;
-  cancelButtonConfig: IButton;
   bottomText?: string;
 }
 
@@ -95,8 +93,6 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     imageProps,
     price,
     currency,
-    avatar,
-    avatarName,
     onCardClick,
     status,
     isCTAVisible = true,
@@ -110,7 +106,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
   } = props;
 
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-
+  const [isHovered, setIsHovered] = useState(false);
   const exchangeCardBottom = useMemo(() => {
     if (isCTAVisible) {
       switch (status) {
@@ -136,7 +132,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
           );
         }
         case subgraph.ExchangeState.COMMITTED: {
-          const { redeemButtonConfig, cancelButtonConfig, bottomText } = props;
+          const { redeemButtonConfig } = props;
           return (
             <ExchangeButtonWrapper>
               <CommittedButtonWrapper>
@@ -152,20 +148,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
                 >
                   Redeem
                 </Button>
-                <Button
-                  variant="secondaryInverted"
-                  {...cancelButtonConfig}
-                  onClick={(
-                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                  ) => {
-                    e.stopPropagation();
-                    cancelButtonConfig?.onClick?.(e);
-                  }}
-                >
-                  Cancel
-                </Button>
               </CommittedButtonWrapper>
-              <CommittedBottomText>{bottomText}</CommittedBottomText>
             </ExchangeButtonWrapper>
           );
         }
@@ -183,6 +166,8 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
       data-card={dataCard}
       $isHoverDisabled={isHoverDisabled}
       data-testid={dataTestId}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       onClick={(e) => {
         e.preventDefault();
         onCardClick?.(id);
@@ -190,12 +175,22 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     >
       <ExchangeCardTop $isNotImageLoaded={isNotImageLoaded}>
         <ExchangeImageWrapper>
-          {isPhygital && (
-            <ExchangeCardLabelWrapper>Phygital</ExchangeCardLabelWrapper>
-          )}
           <Image {...imageProps} onLoaded={() => setIsImageLoaded(true)} />
+          {isCTAVisible && isConnected && (
+            <CTAOnHoverContainerExchangeCard $isHovered={isHovered}>
+              {isCTAVisible && isConnected ? (
+                <ExchangeCTAWrapper data-cta-wrapper>
+                  {exchangeCardBottom}
+                </ExchangeCTAWrapper>
+              ) : isCTAVisible && !isConnected && CTAIfDisconnected ? (
+                CTAIfDisconnected
+              ) : null}
+            </CTAOnHoverContainerExchangeCard>
+          )}
         </ExchangeImageWrapper>
-        <ExchangeStatus $status={status}>{status.toLowerCase()}</ExchangeStatus>
+        <ExchangeStatus $status={status} $side="left">
+          {status.toLowerCase()}
+        </ExchangeStatus>
       </ExchangeCardTop>
       <div style={{ height: height + "px" }} />
       <ExchangeCardBottom>
@@ -209,41 +204,42 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
           }}
         >
           <ExchangeCarData>
-            <ExchangeCreator
+            <Grid
+              flexDirection="column"
+              alignItems="flex-start"
               onClick={(e) => {
                 e.stopPropagation();
                 onAvatarNameClick?.();
               }}
             >
-              <ExchangeCreatorAvatar>
-                <img src={avatar} alt="avatar" />
-              </ExchangeCreatorAvatar>
-              <ExchangeCreatorName data-avatarname="exchange-card">
-                {avatarName}
-              </ExchangeCreatorName>
-            </ExchangeCreator>
-            <ExchangeTitle>{title}</ExchangeTitle>
+              <ExchangeCardTitleWrapper>
+                <ExchangeCardTitle fontSize={"0.75rem"} fontWeight={"600"}>
+                  {title}
+                </ExchangeCardTitle>
+                <ExchangeCardPriceWrapper
+                  justifyContent="flex-end"
+                  alignItems="center"
+                  width="40%"
+                >
+                  <CurrencyDisplay
+                    value={price}
+                    currency={currency}
+                    fontSize={"0.875rem"}
+                    iconSize={16}
+                    gap={"0.3125rem"}
+                    style={{
+                      wordBreak: "break-all",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "600"
+                    }}
+                  />
+                </ExchangeCardPriceWrapper>
+              </ExchangeCardTitleWrapper>
+              {isPhygital && <PhygitalLabel />}
+            </Grid>
           </ExchangeCarData>
-          <ExchangeCardPriceWrapper>
-            <ExchangeCardPrice>Price</ExchangeCardPrice>
-            <CurrencyDisplay
-              value={price}
-              currency={currency}
-              style={{
-                wordBreak: "break-all",
-                alignItems: "flex-start",
-                justifyContent: "flex-end"
-              }}
-            />
-          </ExchangeCardPriceWrapper>
         </ExchangeCardBottomContent>
-        {isCTAVisible && isConnected ? (
-          <ExchangeCTAWrapper data-cta-wrapper>
-            {exchangeCardBottom}
-          </ExchangeCTAWrapper>
-        ) : isCTAVisible && !isConnected && CTAIfDisconnected ? (
-          CTAIfDisconnected
-        ) : null}
       </ExchangeCardBottom>
     </ExchangeCardWrapper>
   );

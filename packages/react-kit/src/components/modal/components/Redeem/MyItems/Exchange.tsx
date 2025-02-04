@@ -4,7 +4,10 @@ import { useMemo } from "react";
 import styled from "styled-components";
 import mockedAvatar from "../../../../../assets/frame.png";
 
-import { ExchangeCard } from "../../../../exchangeCard/ExchangeCard";
+import {
+  ExchangeCard,
+  ExchangeCardProps
+} from "../../../../exchangeCard/ExchangeCard";
 import { Currencies } from "../../../../currencyDisplay/CurrencyDisplay";
 import { exchanges } from "@bosonprotocol/core-sdk";
 import { colors } from "../../../../../theme";
@@ -31,7 +34,6 @@ interface Props {
   exchange: ExtendedExchange;
   onCardClick: (exchange: IExchange) => void;
   onRedeemClick: (exchange: IExchange) => void;
-  onCancelExchangeClick: (exchange: IExchange) => void;
   onRaiseDisputeClick: (exchange: IExchange) => void;
   onAvatarClick: (exchange: IExchange) => void;
 }
@@ -56,7 +58,6 @@ export default function Exchange({
   exchange,
   onRedeemClick,
   onCardClick,
-  onCancelExchangeClick,
   onRaiseDisputeClick,
   onAvatarClick
 }: Props) {
@@ -122,12 +123,6 @@ export default function Exchange({
         const handleRedeem = () => {
           onRedeemClick(exchange);
         };
-        const handleCancel = () => {
-          if (!exchange) {
-            return;
-          }
-          onCancelExchangeClick(exchange);
-        };
         return {
           status: "COMMITTED" as Extract<ExchangeCardStatus, "COMMITTED">,
           isCTAVisible: isBuyer,
@@ -136,13 +131,10 @@ export default function Exchange({
             onClick: handleRedeem,
             type: "button",
             disabled: isInWrongChain
-          } as const,
-          cancelButtonConfig: {
-            onClick: handleCancel,
-            type: "button",
-            disabled: isInWrongChain
           } as const
-        };
+        } satisfies Partial<
+          Extract<ExchangeCardProps, { status: "COMMITTED" }>
+        >;
       }
       default:
         return {
