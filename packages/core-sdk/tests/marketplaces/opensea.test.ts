@@ -46,7 +46,14 @@ const mockOpenSeaSdkHandler = {
   },
   getNFTItems: (): CreateInputItem[] => {
     return openSeaSdkHandlerReturn.getNFTItems as CreateInputItem[];
-  }
+  },
+  cancelOrder: async (
+    args: {
+      order: OrderV2;
+      accountAddress: string;
+      domain?: string;
+    }
+  ): Promise<void> => {}
 };
 
 describe("", () => {
