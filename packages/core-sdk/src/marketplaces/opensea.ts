@@ -92,6 +92,7 @@ export type OpenSeaSDKHandler = {
     ): Promise<OrderUseCase<CreateOrderAction>>;
   };
   createListing(listing: OpenSeaListing): Promise<OrderV2>;
+  cancelOrder(args: { order: OrderV2; accountAddress: string; domain?: string}): Promise<void>;
 };
 
 export class WrapperFactory {
@@ -464,6 +465,27 @@ export class OpenSeaMarketplace extends Marketplace {
       tokenId: asset.tokenId,
       order: buyerOrder
     });
+  }
+
+  public async cancelOrder(
+    asset: {
+      contract: string;
+      tokenId: string;
+    },
+    side: Side
+  ) {
+    const signer = await this._web3Lib.getSignerAddress();
+    const osOrder = await this._handler.api.getOrder({
+      assetContractAddress: asset.contract,
+      tokenId: asset.tokenId,
+      side: side === Side.Ask ? OrderSide.LISTING : OrderSide.OFFER,
+      maker: signer
+    });
+    console.log("cancelOrder", osOrder.orderHash, osOrder.maker.address);
+    await this._handler.cancelOrder({
+      order: osOrder,
+      accountAddress: osOrder.maker.address
+    })
   }
 
   protected convertListing(listing: Listing): OpenSeaListing {

@@ -123,4 +123,11 @@ export abstract class Marketplace {
   public abstract getOrCreateVouchersWrapper(
     contractAddress: string
   ): Promise<Wrapper>;
+  public abstract cancelOrder(
+    asset: {
+      contract: string;
+      tokenId: string;
+    },
+    side: Side
+  ): Promise<void>;
 }
