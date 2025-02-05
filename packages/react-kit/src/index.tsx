@@ -78,6 +78,7 @@ export * from "./components/wallet2/web3Provider/index";
 export * from "./components/wallet2/web3Status/index";
 export * from "./components/widgets/index";
 export * as hooks from "./hooks";
+export * from "./lib/dates/getDateTimestamp";
 export * from "./lib/bundle/const";
 export * from "./lib/bundle/filter";
 export * from "./lib/bytes/bytesToSize";
