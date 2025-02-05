@@ -308,8 +308,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5", // TO BE VERIFIED
-        priceDiscoveryClient: "0xb60cf39Fb18e5111174f346d0f39521ef6531fD4", // TO BE VERIFIED
+        protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+        priceDiscoveryClient: "0xd8C3B2232B3d597156148f757Bb2bd665843aABd",
         forwarder: ""
       },
       metaTx: {
