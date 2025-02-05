@@ -86,7 +86,10 @@ async function main() {
     `Cancel order a listing for token ${tokenId} on contract ${nftContract}`
   );
 
-  await openseaSdkSeller.cancelOrder({ contract: nftContract, tokenId }, Side.Ask);
+  await openseaSdkSeller.cancelOrder(
+    { contract: nftContract, tokenId },
+    Side.Ask
+  );
 }
 
 main()
