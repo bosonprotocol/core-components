@@ -55,6 +55,7 @@ export type Order = {
     address: string;
     decimals?: number;
   };
+  isAuction: boolean;
 };
 
 export type SignedOrder = Order & {

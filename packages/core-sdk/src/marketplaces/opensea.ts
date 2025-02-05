@@ -4,6 +4,7 @@ import {
   FulfillmentDataResponse,
   GetNFTResponse,
   OrderAPIOptions,
+  OrderType,
   OrderV2,
   OrdersQueryOptions,
   ProtocolData
@@ -481,7 +482,6 @@ export class OpenSeaMarketplace extends Marketplace {
       side: side === Side.Ask ? OrderSide.LISTING : OrderSide.OFFER,
       maker: signer
     });
-    console.log("cancelOrder", osOrder.orderHash, osOrder.maker.address);
     await this._handler.cancelOrder({
       order: osOrder,
       accountAddress: osOrder.maker.address
@@ -524,7 +524,8 @@ export class OpenSeaMarketplace extends Marketplace {
       orderHash: osOrder.orderHash,
       protocolAddress: osOrder.protocolAddress,
       maker: osOrder.maker ? { address: osOrder.maker.address } : undefined,
-      taker: osOrder.taker ? { address: osOrder.taker.address } : undefined
+      taker: osOrder.taker ? { address: osOrder.taker.address } : undefined,
+      isAuction: osOrder.orderType === OrderType.ENGLISH
     };
   }
 
