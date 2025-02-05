@@ -1,4 +1,4 @@
-import { EnvironmentType, getEnvConfigById } from "@bosonprotocol/common";
+import { EnvironmentType, getEnvConfigById, Side } from "@bosonprotocol/common";
 import { program } from "commander";
 import { providers, Wallet } from "ethers";
 import {
@@ -21,11 +21,9 @@ program
   )
   .argument("<TOKEN_ID>", "tokenId of the preminted voucher to be listed")
   .option("-k, --apiKey <OPENSEA_API_KEY>", "Opensea API Key")
-  .requiredOption("-p, --price <PRICE>", "Listing Price")
   .option("-e, --env <ENV_NAME>", "Target environment")
   .option("-c, --configId <CONFIG_ID>", "Config id")
   .option("--contract <CONTRACT>", "NFT contract address")
-  .option("--fixedPrice", "Whether to create a fixed price offer")
   .parse(process.argv);
 
 const OPENSEA_FEE_RECIPIENT = "0x0000a26b00c1F0DF003000390027140000fAa719"; // On Real OpenSea
@@ -35,7 +33,6 @@ async function main() {
 
   const opts = program.opts();
   const OPENSEA_API_KEY = opts.openseaApiKey || process.env.OPENSEA_API_KEY;
-  const PRICE = opts.price;
   const envName = opts.env || process.env.ENV_NAME || "testing";
   const configId =
     opts.configId || process.env.ENV_CONFIG_ID || "testing-80002-0";
@@ -77,37 +74,22 @@ async function main() {
       `Exchange Token must be Wrapped Native Currency ${WETH_ADDRESS} for Price Discovery offers (Opensea req)`
     );
   }
-  const nftContract = contract ?? offer.collection.collectionContract.address;
+  let nftContract = contract ?? offer.collection.collectionContract.address;
   const { wrapped, wrapper } = await openseaSdkSeller.isVoucherWrapped(
     nftContract,
     tokenId
   );
-  const listing: Listing = {
-    asset: {
-      contract: wrapped ? (wrapper as string) : nftContract,
-      tokenId: tokenId
-    },
-    offerer: sellerWallet.address,
-    price: PRICE,
-    expirationTime: Math.floor(Date.now() / 1000) + 3600, // should be greater than now + 10 mins
-    exchangeToken: {
-      address: offer.exchangeToken.address, // can't be anything else than WETH on testnet
-      decimals: Number(offer.exchangeToken.decimals)
-    },
-    auction: !opts.fixedPrice
-  };
   if (wrapped) {
-    console.log(
-      `Seller creates a listing for wrapped token ${tokenId} on contract ${wrapper}`
-    );
-  } else {
-    console.log(
-      `Seller creates a listing for token ${tokenId} on contract ${nftContract}`
-    );
+    nftContract = wrapper;
   }
+  console.log(
+    `Cancel order a listing for token ${tokenId} on contract ${nftContract}`
+  );
 
-  const listingOrder = await openseaSdkSeller.createListing(listing);
-  console.log("Listing Order:", listingOrder);
+  await openseaSdkSeller.cancelOrder(
+    { contract: nftContract, tokenId },
+    Side.Ask
+  );
 }
 
 main()

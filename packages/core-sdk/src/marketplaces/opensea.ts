@@ -4,6 +4,7 @@ import {
   FulfillmentDataResponse,
   GetNFTResponse,
   OrderAPIOptions,
+  OrderType,
   OrderV2,
   OrdersQueryOptions,
   ProtocolData
@@ -92,6 +93,11 @@ export type OpenSeaSDKHandler = {
     ): Promise<OrderUseCase<CreateOrderAction>>;
   };
   createListing(listing: OpenSeaListing): Promise<OrderV2>;
+  cancelOrder(args: {
+    order: OrderV2;
+    accountAddress: string;
+    domain?: string;
+  }): Promise<void>;
 };
 
 export class WrapperFactory {
@@ -466,6 +472,26 @@ export class OpenSeaMarketplace extends Marketplace {
     });
   }
 
+  public async cancelOrder(
+    asset: {
+      contract: string;
+      tokenId: string;
+    },
+    side: Side
+  ) {
+    const signer = await this._web3Lib.getSignerAddress();
+    const osOrder = await this._handler.api.getOrder({
+      assetContractAddress: asset.contract,
+      tokenId: asset.tokenId,
+      side: side === Side.Ask ? OrderSide.LISTING : OrderSide.OFFER,
+      maker: signer
+    });
+    await this._handler.cancelOrder({
+      order: osOrder,
+      accountAddress: osOrder.maker.address
+    });
+  }
+
   protected convertListing(listing: Listing): OpenSeaListing {
     return {
       asset: {
@@ -502,7 +528,8 @@ export class OpenSeaMarketplace extends Marketplace {
       orderHash: osOrder.orderHash,
       protocolAddress: osOrder.protocolAddress,
       maker: osOrder.maker ? { address: osOrder.maker.address } : undefined,
-      taker: osOrder.taker ? { address: osOrder.taker.address } : undefined
+      taker: osOrder.taker ? { address: osOrder.taker.address } : undefined,
+      isAuction: osOrder.orderType === OrderType.ENGLISH
     };
   }
 
