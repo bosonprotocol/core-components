@@ -93,7 +93,11 @@ export type OpenSeaSDKHandler = {
     ): Promise<OrderUseCase<CreateOrderAction>>;
   };
   createListing(listing: OpenSeaListing): Promise<OrderV2>;
-  cancelOrder(args: { order: OrderV2; accountAddress: string; domain?: string}): Promise<void>;
+  cancelOrder(args: {
+    order: OrderV2;
+    accountAddress: string;
+    domain?: string;
+  }): Promise<void>;
 };
 
 export class WrapperFactory {
@@ -485,7 +489,7 @@ export class OpenSeaMarketplace extends Marketplace {
     await this._handler.cancelOrder({
       order: osOrder,
       accountAddress: osOrder.maker.address
-    })
+    });
   }
 
   protected convertListing(listing: Listing): OpenSeaListing {
