@@ -207,6 +207,12 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
         name: "Boson Token (PoS)",
         address: "0xd4857D5e326eee33d7bC5d2494524Dab65d55851",
         decimals: "18"
+      },
+      {
+        symbol: "USDC",
+        name: "USD Base Coin",
+        address: "0x8A04d904055528a69f3E4594DDA308A31aeb8457",
+        decimals: "6"
       }
     ]
   ],
