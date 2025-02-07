@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.37.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.36.2...@bosonprotocol/react-kit@0.37.0) (2025-02-07)
+
+
+### Bug Fixes
+
+* process is not defined error ([#895](https://github.com/bosonprotocol/core-components/issues/895)) ([0b39b1a](https://github.com/bosonprotocol/core-components/commit/0b39b1a0da50dac88bb700a3acdd312968cfd339))
+* select component ([#899](https://github.com/bosonprotocol/core-components/issues/899)) ([aba7368](https://github.com/bosonprotocol/core-components/commit/aba736899fbf839427f767bcefb846aaaa780c3b))
+* select component set haserror to useFixSelectFont hook ([#901](https://github.com/bosonprotocol/core-components/issues/901)) ([937dd7e](https://github.com/bosonprotocol/core-components/commit/937dd7e58ed0d23cc106e297f8d1a02b6d59eb37))
+* use fix select font hook ([#900](https://github.com/bosonprotocol/core-components/issues/900)) ([b3a6296](https://github.com/bosonprotocol/core-components/commit/b3a62964a62a52b75b018720503bfc83f0f1dcd9))
+* useFixSelectFont hook ([#902](https://github.com/bosonprotocol/core-components/issues/902)) ([e04159f](https://github.com/bosonprotocol/core-components/commit/e04159faf26cd50f6cdfa630b473293065183f12))
+
+
+### Features
+
+* change types to select ([#903](https://github.com/bosonprotocol/core-components/issues/903)) ([cc53579](https://github.com/bosonprotocol/core-components/commit/cc5357997fa044b096ccd16e286fac7a8b87bbc3))
+* exchange card visual changes ([#867](https://github.com/bosonprotocol/core-components/issues/867)) ([10f5c2e](https://github.com/bosonprotocol/core-components/commit/10f5c2e1c6ea6b60e3c2b8a35ddce6156844ad72))
+* export getDateTimestamp ([#906](https://github.com/bosonprotocol/core-components/issues/906)) ([d84fa1e](https://github.com/bosonprotocol/core-components/commit/d84fa1ee9211b7ac91ca09c851c0c95ba808cd99))
+* improve select types ([#904](https://github.com/bosonprotocol/core-components/issues/904)) ([3430988](https://github.com/bosonprotocol/core-components/commit/343098861f73d88c4fbe5fe2bc5a5a724f7b9df5))
+* pdf uploader typography change ([#905](https://github.com/bosonprotocol/core-components/issues/905)) ([70057f4](https://github.com/bosonprotocol/core-components/commit/70057f470211beb192124852bfe6528a180b7053))
+
+
+
+
+
 ## [0.36.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.36.1...@bosonprotocol/react-kit@0.36.2) (2025-01-29)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit

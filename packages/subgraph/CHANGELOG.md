@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.6](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.34.5...@bosonprotocol/subgraph@1.34.6) (2025-02-07)
+
+**Note:** Version bump only for package @bosonprotocol/subgraph
+
+
+
+
+
 ## [1.34.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.34.4...@bosonprotocol/subgraph@1.34.5) (2025-01-29)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.9](https://github.com/bosonprotocol/core-components/compare/opensea-api-mock@1.0.8...opensea-api-mock@1.0.9) (2025-02-07)
+
+**Note:** Version bump only for package opensea-api-mock
+
+
+
+
+
 ## [1.0.8](https://github.com/bosonprotocol/core-components/compare/opensea-api-mock@1.0.7...opensea-api-mock@1.0.8) (2025-01-29)
 
 **Note:** Version bump only for package opensea-api-mock

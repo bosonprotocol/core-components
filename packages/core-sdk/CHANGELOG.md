@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.43.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.42.2...@bosonprotocol/core-sdk@1.43.0) (2025-02-07)
+
+
+### Features
+
+* add cancelOrder method on Opensea ([#908](https://github.com/bosonprotocol/core-components/issues/908)) ([69472f5](https://github.com/bosonprotocol/core-components/commit/69472f5116ac9b74b739009b784844391da66ddf))
+
+
+
+
+
 ## [1.42.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.42.1...@bosonprotocol/core-sdk@1.42.2) (2025-01-29)
 
 **Note:** Version bump only for package @bosonprotocol/core-sdk
