@@ -163,16 +163,18 @@ export function useBalance(
 
 type UseWeb3SignTypedDataProps = {
   dataToSign: string;
+  address: string;
 };
 export function useWeb3SignTypedData() {
-  const { address } = useAccount();
   const coreSDK = useCoreSDKWithContext();
 
-  return useMutation(async ({ dataToSign }: UseWeb3SignTypedDataProps) => {
-    const signature = await coreSDK.web3Lib.send("eth_signTypedData_v4", [
-      address,
-      dataToSign
-    ]);
-    return signature;
-  });
+  return useMutation(
+    async ({ dataToSign, address }: UseWeb3SignTypedDataProps) => {
+      const signature = await coreSDK.web3Lib.send("eth_signTypedData_v4", [
+        address,
+        dataToSign
+      ]);
+      return signature;
+    }
+  );
 }

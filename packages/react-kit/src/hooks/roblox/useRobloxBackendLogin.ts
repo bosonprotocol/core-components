@@ -91,7 +91,8 @@ export const useRobloxBackendLogin = ({
       );
 
       const signature = await signTypedDataAsync({
-        dataToSign: JSON.stringify(dataToSign)
+        dataToSign: JSON.stringify(dataToSign),
+        address
       });
       return signature;
     },
