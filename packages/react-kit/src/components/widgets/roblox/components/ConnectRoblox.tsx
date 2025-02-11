@@ -433,7 +433,6 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
         },
         retryDelay: 1000,
         onError: () => {
-          // on this version of react-query the onError seems to be called after each failed attempt to we handle this manually
           console.log("robloxBackendLoginAsync errored after all attemps");
           // When all attempt have failed, force the wallet disconnection to avoid a dead end state of the app
           disconnect({ isUserDisconnecting: false });
