@@ -9,7 +9,12 @@ import React, {
 import { css, CSSProperties, styled } from "styled-components";
 import { Grid } from "../../../ui/Grid";
 import { Typography } from "../../../ui/Typography";
-import { useBreakpoints, useIsConnected, usePrevious } from "../../../../hooks";
+import {
+  useAccount,
+  useBreakpoints,
+  useIsConnected,
+  usePrevious
+} from "../../../../hooks";
 import { CaretDown, CaretUp, CheckCircle, Power } from "phosphor-react";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { useRobloxLogout } from "../../../../hooks/roblox/useRobloxLogout";
@@ -319,7 +324,7 @@ export type ConnectRobloxProps = {
 type ActiveStep = 0 | 1 | 2;
 export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
   ({ step3, sellerId }, ref) => {
-    const { address = "", isConnected } = useIsConnected();
+    const { address = "" } = useAccount();
     const prevAddress = usePrevious(address);
     const [isSignUpDone, setSignUpDone] = useState<boolean>(false);
     const [activeStep, setActiveStep] = useState<ActiveStep>(0);
@@ -394,7 +399,7 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
     const { data: isAuthChecked } = useGetRobloxWalletAuth({
       sellerId,
       options: {
-        enabled: !!robloxLoggedInData?.isLoggedIn && isConnected
+        enabled: !!robloxLoggedInData?.isLoggedIn && !!address
       }
     });
     const robloxBackendLoginKey = mutationKeys.postWalletAuth({
@@ -439,7 +444,7 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
         },
         enabled:
           !!robloxLoggedInData?.isLoggedIn &&
-          !!isConnected &&
+          !!address &&
           !isAuthChecked?.walletAuth &&
           !!robloxLoggedInData?.claims &&
           !!robloxLoggedInData?.nonce
