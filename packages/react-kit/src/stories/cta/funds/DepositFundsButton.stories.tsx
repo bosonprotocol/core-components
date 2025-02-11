@@ -92,6 +92,7 @@ Simple.args = {
 };
 
 WithStep.args = {
+  ...Simple.args,
   coreSdkConfig: {
     configId: "testing-80002-0",
     envName: "testing"
@@ -118,25 +119,26 @@ WithStep.args = {
 };
 
 WithMetaTx.args = {
+  ...Simple.args,
   coreSdkConfig: {
     configId: "testing-80002-0",
     envName: "testing",
     metaTx: {
-      relayerUrl: "https://api.biconomy.io",
+      relayerUrl: "https://meta-tx-gateway-testing-114403180314.europe-west2.run.app",
       apiIds: {
-        "0x785a225ebac1b600ca3170c6c7fa3488a203fc21": {
+        "0x7de418a7ce94debd057c34ebac232e7027634ade": {
           // BOSON PROTOCOL
-          executeMetaTransaction: "eaeff5a5-2efd-4c2b-85f5-b597c79eabf2"
+          executeMetaTransaction: "910fa736-3d73-4d09-b398-28ef052c4b24"
         },
-        "0x1f5431e8679630790e8eba3a9b41d1bb4d41aed0": {
+        "0x94e32c4bfca1d3fe08b6f8252abb47a5b14ac2bd": {
           // BOSON TOKEN
-          executeMetaTransaction: "0cfeee86-a304-4761-a1fd-dcf63ffd153c"
+          executeMetaTransaction: "4c6608aa-829f-401d-9663-91fe62cabc56"
         }
       },
       apiKey: "change-me"
     }
   },
-  exchangeToken: "0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0",
+  exchangeToken: "0x94e32c4bfcA1D3fe08B6F8252ABB47A5B14AC2bD",
   extraInfo: "",
   disabled: false,
   onPendingSignature: () => {
