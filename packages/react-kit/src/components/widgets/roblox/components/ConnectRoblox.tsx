@@ -348,12 +348,10 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
       options: { enabled: false }
     });
     const removeWalletAuthCookie = useCallback(() => {
-      // const domain = backendOrigin
-      //   .replace("https://", "")
-      //   .replace("http://", "");
       const isHttps = ((backendOrigin || "") as string).startsWith("https");
       const sameSite = isHttps ? "none" : undefined;
-      removeCookie?.(WEB3AUTH_COOKIE_NAME, { path: "/", sameSite }); // TODO: no domain?
+      const secure = isHttps ? true : undefined;
+      removeCookie?.(WEB3AUTH_COOKIE_NAME, { path: "/", sameSite, secure });
     }, [backendOrigin, removeCookie]);
     const disconnectWallet = useCallback(() => {
       console.log("disconnectWallet()");
