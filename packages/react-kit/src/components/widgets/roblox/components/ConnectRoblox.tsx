@@ -9,12 +9,7 @@ import React, {
 import { css, CSSProperties, styled } from "styled-components";
 import { Grid } from "../../../ui/Grid";
 import { Typography } from "../../../ui/Typography";
-import {
-  useAccount,
-  useBreakpoints,
-  useIsConnected,
-  usePrevious
-} from "../../../../hooks";
+import { useAccount, useBreakpoints, usePrevious } from "../../../../hooks";
 import { CaretDown, CaretUp, CheckCircle, Power } from "phosphor-react";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { useRobloxLogout } from "../../../../hooks/roblox/useRobloxLogout";
