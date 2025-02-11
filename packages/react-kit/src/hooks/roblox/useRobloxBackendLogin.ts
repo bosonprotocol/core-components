@@ -1,9 +1,9 @@
 import { formatBytes32String } from "ethers/lib/utils";
-import { useAccount, useWeb3SignTypedData } from "../connection/connection";
+import { useWeb3SignTypedData } from "../connection/connection";
 import { GetLoggedInResponse } from "@bosonprotocol/roblox-sdk";
 import { useMutation } from "react-query";
-import { useDisconnect } from "../connection/useDisconnect";
 import { usePostRobloxWalletAuth } from "./usePostRobloxWalletAuth";
+import { mutationKeys } from "./mutationKeys";
 
 const domainValues = {
   name: "Boson-Roblox-Bridge",
@@ -49,8 +49,8 @@ export function prepareAuthSignature(
 type UseRobloxBackendLoginProps = {
   loggedInData: GetLoggedInResponse | undefined | null;
   sellerId: string;
-  mutationKey: unknown[];
-
+  mutationKey: ReturnType<(typeof mutationKeys)["postWalletAuth"]>;
+  address: string;
   options?: {
     onError?:
       | ((
@@ -66,12 +66,11 @@ export const useRobloxBackendLogin = ({
   loggedInData,
   sellerId,
   mutationKey,
-  options
+  options,
+  address
 }: UseRobloxBackendLoginProps) => {
   const { mutateAsync: signTypedDataAsync } = useWeb3SignTypedData();
   const { mutateAsync: verifySignature } = usePostRobloxWalletAuth();
-  const { address = "" } = useAccount();
-  const disconnect = useDisconnect();
   return useMutation(
     mutationKey,
     async () => {
@@ -98,15 +97,11 @@ export const useRobloxBackendLogin = ({
     },
     {
       ...options,
-      onSettled: (data, error) => {
+      retry: 0,
+      onSettled: (data) => {
         if (data) {
           console.log("useSignTypedData success", data);
           verifySignature({ signature: data, sellerId, address });
-        }
-        if (error) {
-          console.error("useSignTypedData error: " + error);
-          // When all attempt have failed, force the wallet disconnection to avoid a dead end state of the app
-          disconnect({ isUserDisconnecting: false });
         }
       }
     }

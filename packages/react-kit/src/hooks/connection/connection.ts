@@ -169,10 +169,48 @@ export function useWeb3SignTypedData() {
   const coreSDK = useCoreSDKWithContext();
 
   return useMutation(async ({ dataToSign }: UseWeb3SignTypedDataProps) => {
+    console.log("coreSDK.web3Lib", coreSDK.web3Lib);
     const signature = await coreSDK.web3Lib.send("eth_signTypedData_v4", [
       address,
       dataToSign
     ]);
     return signature;
   });
+}
+
+export function useIsConnected() {
+  const { account: web3ReactAccount, isActive: web3ReactActive } =
+    useWeb3ReactWrapper() || {};
+  const { externalConnectedAccount } = useConfigContext();
+  const { user } = useUser();
+  const { externalWeb3LibAdapter } = useExternalSigner() ?? {};
+  const { signerAddress: externalSignerAddress } = useSignerAddress(
+    externalWeb3LibAdapter
+  );
+  const isMagicLoggedIn = useIsMagicLoggedIn();
+
+  return useMemo(() => {
+    const isConnected = !!(
+      externalConnectedAccount ||
+      externalSignerAddress ||
+      (web3ReactActive && web3ReactAccount) ||
+      (isMagicLoggedIn && user)
+    );
+
+    return {
+      isConnected,
+      address:
+        externalConnectedAccount ??
+        externalSignerAddress ??
+        (web3ReactActive ? web3ReactAccount : undefined) ??
+        user
+    };
+  }, [
+    user,
+    web3ReactAccount,
+    web3ReactActive,
+    externalSignerAddress,
+    externalConnectedAccount,
+    isMagicLoggedIn
+  ]);
 }
