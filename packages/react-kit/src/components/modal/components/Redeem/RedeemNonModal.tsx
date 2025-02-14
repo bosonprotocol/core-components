@@ -357,11 +357,7 @@ function RedeemNonModal({
             !errors[FormModel.formFields.phone.name];
 
           return (
-            <Form
-              placeholder={undefined}
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
-            >
+            <Form>
               {currentStep === ActiveStep.STEPS_OVERVIEW ? (
                 <StepsOverview
                   showBosonLogoInFooter={showBosonLogoInFooter}
