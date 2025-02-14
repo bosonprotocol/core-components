@@ -182,11 +182,7 @@ export const RequestShipmentModal = ({
             !errors[FormModel.formFields.phone.name];
 
           return (
-            <Form
-              placeholder={undefined}
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
-            >
+            <Form>
               {step === ActiveStep.EXCHANGE_POLICY_OVERVIEW ? (
                 <ExchangePolicyOverview
                   onPolicyClick={() => setStep(ActiveStep.EXCHANGE_POLICY)}

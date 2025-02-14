@@ -43,7 +43,7 @@
     "cids": "^1.1.9",
     "dayjs": "1.11.7",
     "eth-revert-reason": "^1.0.3",
-    "formik": "2.2.9",
+    "formik": "^2.4.6",
     "graphql-request": "5.2.0",
     "i": "^0.3.7",
     "jotai": "^1.13.1",
