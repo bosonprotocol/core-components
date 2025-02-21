@@ -91,7 +91,7 @@ export function getConfig(): Config {
       SEAPORT_ADDRESS:
         process.env.SEAPORT_ADDRESS || defaultConfig.contracts.seaport,
       OPENSEA_FEE_RECIPIENT: process.env.OPENSEA_FEE_RECIPIENT || ZeroAddress,
-      OPENSEA_FEE_PERCENTAGE: Number(process.env.OPENSEA_FEE_PERCENTAGE) || 2.5
+      OPENSEA_FEE_PERCENTAGE: Number(process.env.OPENSEA_FEE_PERCENTAGE) || 50
     };
   }
   return config;

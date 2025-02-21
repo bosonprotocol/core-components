@@ -81,7 +81,7 @@ export function getCollection(slug: string) {
     editors: ["collection_editor"],
     fees: [
       {
-        fee: config.OPENSEA_FEE_PERCENTAGE,
+        fee: config.OPENSEA_FEE_PERCENTAGE / 100,
         recipient: config.OPENSEA_FEE_RECIPIENT,
         required: true
       }
