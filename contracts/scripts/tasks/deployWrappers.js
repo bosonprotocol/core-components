@@ -7,13 +7,13 @@ async function deployWrappersTask(
   const OPENSEA_CONFIG =
     hre.network.config.chainId === 31337
       ? {
-          feeAmount: 250,
+          feeAmount: 50,
           feeRecipient: "0x1111122222333334444455555666667777788888",
           conduitKey: hre.ethers.ZeroHash, // = NO_CONDUIT
           conduit: hre.ethers.ZeroAddress
         }
       : {
-          feeAmount: 250,
+          feeAmount: 50,
           feeRecipient: "0x0000a26b00c1F0DF003000390027140000fAa719",
           conduitKey:
             "0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000",

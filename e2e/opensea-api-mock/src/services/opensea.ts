@@ -14,6 +14,7 @@ import {
 } from "@opensea/seaport-js/lib/types";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { BigNumber } from "ethers";
+import { getConfig } from "../config";
 
 export type PostOrderBody = ProtocolData;
 
@@ -198,11 +199,15 @@ function extractOrderInfo(
     )?.token;
     nft = nftAsk;
   }
+  const openseaFee = getConfig().OPENSEA_FEE_PERCENTAGE;
   const fees = price
-    ? BigNumber.from(price).mul(250).div(10000).toString()
+    ? BigNumber.from(price).mul(openseaFee).div(10000).toString()
     : "0";
   const sellerProfit = price
-    ? BigNumber.from(price).mul(9750).div(10000).toString()
+    ? BigNumber.from(price)
+        .mul(10000 - openseaFee)
+        .div(10000)
+        .toString()
     : "0";
   return {
     side,

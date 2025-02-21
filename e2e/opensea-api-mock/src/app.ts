@@ -50,6 +50,8 @@ export function startApp(): Server {
     logger.info(`Forwarder: ${config.FORWARDER}`);
     logger.info(`Seaport Address: ${config.SEAPORT_ADDRESS}`);
     logger.info(`OpenSea Fee Recipient: ${config.OPENSEA_FEE_RECIPIENT}`);
-    logger.info(`OpenSea Fee Percentage: ${config.OPENSEA_FEE_PERCENTAGE}`);
+    logger.info(
+      `OpenSea Fee Percentage: ${config.OPENSEA_FEE_PERCENTAGE / 100}%`
+    );
   });
 }
