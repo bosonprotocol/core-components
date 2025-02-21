@@ -6,6 +6,7 @@ import { BosonThemeProvider } from "../../components/widgets/BosonThemeProvider"
 import { withThemeFromJSXProvider } from "@storybook/addon-themes";
 import { getThemes } from "../../theme";
 import GlobalStyle from "../../components/styles/GlobalStyle";
+import { CommitButtonViewProps } from "../../components/buttons/commit/types";
 
 const themes = Object.keys({
   light: getThemes({ roundness: "min" })["light"]
@@ -51,10 +52,9 @@ export const Base = Template.bind({});
 Base.args = {
   disabled: false,
   onClick: () => console.log("click"),
-  onTaglineClick: () => console.log("tagline click"),
   minWidth: "200px",
-  minHeight: "300px",
+  minHeight: undefined,
   layout: "horizontal",
   color: "green",
   shape: "sharp"
-};
+} satisfies CommitButtonViewProps;
