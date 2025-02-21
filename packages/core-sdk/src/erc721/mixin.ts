@@ -32,19 +32,19 @@ export class ERC721Mixin extends BaseCoreSDK {
 
   public async erc721BalanceOf(
     args: Omit<Parameters<typeof balanceOf>[0], "web3Lib">
-  ): Promise<ReturnType<typeof balanceOf>> {
+  ): ReturnType<typeof balanceOf> {
     return balanceOf({ web3Lib: this._web3Lib, ...args });
   }
 
   public async erc721OwnerOf(
     args: Omit<Parameters<typeof ownerOf>[0], "web3Lib">
-  ): Promise<ReturnType<typeof ownerOf>> {
+  ): ReturnType<typeof ownerOf> {
     return ownerOf({ web3Lib: this._web3Lib, ...args });
   }
 
   public async erc721TokenOfOwnerByIndex(
     args: Omit<Parameters<typeof tokenOfOwnerByIndex>[0], "web3Lib">
-  ): Promise<ReturnType<typeof tokenOfOwnerByIndex>> {
+  ): ReturnType<typeof tokenOfOwnerByIndex> {
     return tokenOfOwnerByIndex({ web3Lib: this._web3Lib, ...args });
   }
 }
