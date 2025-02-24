@@ -187,14 +187,17 @@ export class OpenSeaWrapper extends Wrapper {
 export class OpenSeaMarketplace extends Marketplace {
   protected _wrapperFactory: WrapperFactory;
   protected _wrappersMap = new Map<string, OpenSeaWrapper>();
+  protected _feeBasisPoint: number;
   constructor(
     _type: MarketplaceType,
     protected _handler: OpenSeaSDKHandler,
     protected _contracts: ContractAddresses,
     protected _feeRecipient: string,
-    protected _web3Lib: Web3LibAdapter
+    protected _web3Lib: Web3LibAdapter,
+    feeBasisPoint = 50
   ) {
     super(_type);
+    this._feeBasisPoint = feeBasisPoint;
     if (this._contracts["openseaWrapper"]) {
       this._wrapperFactory = new WrapperFactory(
         this._contracts["openseaWrapper"],
@@ -210,7 +213,9 @@ export class OpenSeaMarketplace extends Marketplace {
   }
 
   public async createBidOrder(listing: Listing): Promise<Order> {
-    const fees = BigNumber.from(listing.price).mul(250).div(10000);
+    const fees = BigNumber.from(listing.price)
+      .mul(this._feeBasisPoint)
+      .div(10000);
     const domain = undefined;
     const salt = undefined;
     const quantity = undefined;
@@ -601,10 +606,13 @@ export class OpenSeaMarketplace extends Marketplace {
       nft = nftAsk;
     }
     const fees = price
-      ? BigNumber.from(price).mul(250).div(10000).toString()
+      ? BigNumber.from(price).mul(this._feeBasisPoint).div(10000).toString()
       : "0";
     const sellerProfit = price
-      ? BigNumber.from(price).mul(9750).div(10000).toString()
+      ? BigNumber.from(price)
+          .mul(10000 - this._feeBasisPoint)
+          .div(10000)
+          .toString()
       : "0";
     return {
       offerer: parameters.offerer,

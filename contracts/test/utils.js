@@ -19,7 +19,7 @@ async function deployMockBosonSellerHandler() {
 async function deployOpenSeaWrapperFactory(protocolAddress) {
   const unwrapperAddress = "0x3333333333333333333333333333333333333333";
   const seaport = "0x4444444444444444444444444444444444444444";
-  const openSeaFee = "250";
+  const openSeaFee = "50";
   const openSeaRecipient = "0x5555555555555555555555555555555555555555";
   const openSeaConduitKey =
     "0x0000000000000000000000000000000000000000000000000000000000000000";
