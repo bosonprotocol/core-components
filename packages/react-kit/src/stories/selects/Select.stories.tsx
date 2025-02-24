@@ -122,6 +122,17 @@ export const WithLabel = {
   args: { ...BASE_ARGS, label: "my label" } satisfies SelectProps
 };
 
+export const WithCustomLabel = {
+  args: {
+    ...BASE_ARGS,
+    options: [
+      { label: <i>first option</i>, value: "1" },
+      { label: <strong>second option</strong>, value: "2", disabled: true },
+      { label: "third option", value: "3" }
+    ]
+  } satisfies SelectProps
+};
+
 export const WithGroups = {
   args: {
     ...BASE_ARGS,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { useField } from "formik";
 import ReactSelect, {
   GroupBase,
@@ -41,7 +41,10 @@ type SelectTheme = Partial<{
 }>;
 
 // Base option type that all options must extend
-export type SelectOption<Value = unknown> = SelectDataProps<Value>;
+export type SelectOption<Value = unknown, Label = ReactNode> = SelectDataProps<
+  Value,
+  Label
+>;
 
 // Type-safe props with conditional types based on IsMulti
 export type SelectProps<
