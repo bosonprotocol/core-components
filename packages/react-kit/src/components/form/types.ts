@@ -75,8 +75,8 @@ export type TagsProps = BaseProps &
     transform?: (tag: string) => string;
   };
 
-export interface SelectDataProps<Value = string> {
-  label: string;
+export interface SelectDataProps<Value = string, Label = string> {
+  label: Label;
   value: Value;
   disabled?: boolean;
   [others: string]: unknown;
@@ -86,15 +86,15 @@ export interface SelectContentProps {
   children: React.ReactNode | JSX.Element;
 }
 
-export type OnChange<Value = string> = (
-  value: SingleValue<SelectDataProps<Value>>
+export type OnChange<Value = string, Label = string> = (
+  value: SingleValue<SelectDataProps<Value, Label>>
 ) => void;
 
-export interface BaseSelectProps<Value = string> {
-  options: Array<SelectDataProps<Value>>;
+export interface BaseSelectProps<Value = string, Label = string> {
+  options: Array<SelectDataProps<Value, Label>>;
   placeholder?: string;
-  defaultValue?: SelectDataProps<Value> | null;
-  onChange?: OnChange<Value>;
+  defaultValue?: SelectDataProps<Value, Label> | null;
+  onChange?: OnChange<Value, Label>;
   hasError?: boolean;
 }
 export type SupportedReactSelectProps<
