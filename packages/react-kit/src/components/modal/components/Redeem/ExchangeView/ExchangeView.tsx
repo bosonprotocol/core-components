@@ -17,7 +17,7 @@ import { DetailContextProps } from "../../common/detail/DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "../../common/detail/types";
 import DetailOpenSea from "../../common/DetailOpenSea";
 import { ResponsiveVariationSelects } from "../../common/VariationSelects";
-import DetailSlider from "../../common/detail/DetailSlider";
+import { DetailSlider } from "../../common/detail/DetailSlider";
 import { SellerAndDescription } from "../../common/detail/SellerAndDescription";
 import { SlickSlider, initialSettings } from "../../common/detail/SlickSlider";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";

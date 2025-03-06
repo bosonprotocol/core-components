@@ -17,7 +17,7 @@ import { Typography } from "../../../ui/Typography";
 import { WaveLoader } from "../../../ui/loading/WaveLoader/WaveLoader";
 import { useNonModalContext } from "../../nonModal/NonModal";
 import { ResponsiveVariationSelects } from "../common/VariationSelects";
-import DetailSlider from "../common/detail/DetailSlider";
+import { DetailSlider } from "../common/detail/DetailSlider";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import { SlickSlider, initialSettings } from "../common/detail/SlickSlider";
 import { CommitDetailViewWithProvider } from "./DetailView/CommitDetailViewWithProvider";
