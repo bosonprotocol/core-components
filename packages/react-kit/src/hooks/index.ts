@@ -35,3 +35,4 @@ export {
   useOpenAccountDrawer
 } from "../components/wallet2/accountDrawer/index";
 export * from "./usePrevious";
+export * from "./offer/useIsPhygital";
