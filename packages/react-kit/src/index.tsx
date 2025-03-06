@@ -96,6 +96,8 @@ export * from "./lib/url/url";
 export * from "./lib/offer/getOfferDetails";
 export * from "./lib/offer/getOfferAnimationUrl";
 export * from "./lib/offer/getOfferVariations";
+export * from "./components/modal/components/common/detail/DetailSlider";
+export * from "./components/modal/components/common/detail/SlickSlider";
 export * from "./theme";
 export * from "./colors";
 export * from "./types/helpers";
