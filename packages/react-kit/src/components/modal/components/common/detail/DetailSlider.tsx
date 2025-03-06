@@ -101,7 +101,7 @@ const DivChildren = forwardRef(
   )
 );
 
-export default function DetailSlider({
+export function DetailSlider({
   mediaFiles,
   sliderOptions = SLIDER_OPTIONS,
   arrowsAbove,
