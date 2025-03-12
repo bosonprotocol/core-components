@@ -12,9 +12,11 @@ program
         "testing_amoy",
         "testing_sepolia",
         "testing_base",
+        "testing_optimism",
         "staging_amoy",
         "staging_sepolia",
         "staging_base",
+        "staging_optimism",
         "production_polygon",
         "production_ethereum",
         "production_base"

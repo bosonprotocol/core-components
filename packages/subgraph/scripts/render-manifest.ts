@@ -1,14 +1,13 @@
 import { EnvironmentType, ConfigId } from "./../../common/src/types/configs";
 import fs from "fs";
 import handlebars from "handlebars";
-import { providers } from "ethers";
 import { getEnvConfigById } from "../../common/src/configs";
 
 const generatedManifestsDir = __dirname + "/../generated/manifests";
 
 const envName = process.argv[2];
 const configId = process.argv[3];
-const { contracts, chainId } = getEnvConfigById(
+const { contracts } = getEnvConfigById(
   envName as EnvironmentType,
   configId as ConfigId
 );
