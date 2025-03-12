@@ -43,6 +43,10 @@ const envNameToConfig: Record<
     "testing-84532-0": {
       network: "base-sepolia",
       startBlock: 20927614 // base-sepolia, block number when protocol was deployed https://sepolia.basescan.org/tx/0x06749f2d579176f4a825869906d5db9e5c700829331de9a46bbb6d0eeb8b930e
+    },
+    "testing-11155420-0": {
+      network: "optimism-sepolia",
+      startBlock: 24332651 // optimism-sepolia, block number when protocol was deployed https://sepolia-optimistic.etherscan.io/tx/0x108f6ba0c2fd48c5e1528e0019ad3a15d827536520b55371861f31ce28502feb
     }
   },
   staging: {
@@ -57,6 +61,10 @@ const envNameToConfig: Record<
     "staging-84532-0": {
       network: "base-sepolia",
       startBlock: 20927855 // base-sepolia, block number when protocol was deployed https://sepolia.basescan.org/tx/0x492d19d9a86fcf697f3a7c94b961714006ff224895cfee4fb1a7bc7afe2ab65f
+    },
+    "staging-11155420-0": {
+      network: "optimism-sepolia",
+      startBlock: 24332809 // optimism-sepolia, block number when protocol was deployed https://sepolia-optimistic.etherscan.io/tx/0x4ace3e8576828d688645378a73b96c4a05f7ad6f01b02b64a5f13675db8adccd
     }
   },
   production: {

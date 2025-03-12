@@ -3,6 +3,7 @@ import ethereumLogoUrl from "../../assets/ethereum-logo.png";
 import polygonCircleLogoUrl from "../../assets/polygonCircle.png";
 import polygonMaticLogo from "../../assets/svg/polygon-matic-logo.svg";
 import polygonSquareLogoUrl from "../../assets/svg/polygon_square_logo.svg";
+import optimismLogoUrl from "../../assets/svg/optimism-logo-light.svg";
 import ms from "ms";
 
 import {
@@ -145,6 +146,22 @@ const CHAIN_INFO: ChainInfoMap = {
     infoLink: "https://info.uniswap.org/#/base-sepolia/",
     label: "Base Sepolia",
     logoUrl: ethereumLogoUrl,
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18
+    },
+    defaultListUrl: ""
+  },
+  [ChainId.OPTIMISM_SEPOLIA]: {
+    networkType: NetworkType.L2,
+    blockWaitMsBeforeWarning: ms(`10m`),
+    bridge: "https://testnets.superbridge.app/optimism-sepolia",
+    docs: "https://docs.optimism.io",
+    explorer: "https://sepolia-optimistic.etherscan.io/",
+    infoLink: "https://info.uniswap.org/#/optimism-sepolia/",
+    label: "Optimism Sepolia",
+    logoUrl: optimismLogoUrl,
     nativeCurrency: {
       name: "Ether",
       symbol: "ETH",

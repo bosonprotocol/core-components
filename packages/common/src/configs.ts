@@ -136,6 +136,38 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: undefined
+    },
+    {
+      envName: "testing",
+      chainId: 11155420,
+      configId: "testing-11155420-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-11155420-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/testing-11155420-0/offers/whitelist.json",
+      defaultDisputeResolverId: "4", // TODO: to be verified
+      defaultTokens: chainIdToDefaultTokens.get(11155420),
+      nativeCoin: chainIdToInfo.get(11155420),
+      getTxExplorerUrl: chainIdToGraphTx.get(11155420),
+      subgraphUrl:
+        "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-optimism/latest/gn",
+      jsonRpcUrl:
+        "https://optimism-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        // from https://github.com/bosonprotocol/boson-protocol-contracts/blob/release-2_4_1/addresses/11155420-optimismsepolia-test.json
+        protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
+        priceDiscoveryClient: "0x661A3e65CD3247c5EAb7f398e0617072C4Cdf19B",
+        forwarder: "",
+        openseaWrapper: ""
+      },
+      metaTx: {
+        relayerUrl:
+          "https://meta-tx-gateway-testing-optimism-114403180314.europe-west2.run.app",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: undefined
     }
   ],
   staging: [
@@ -226,6 +258,37 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       metaTx: {
         relayerUrl:
           "https://meta-tx-gateway-staging-base-114403180314.europe-west2.run.app",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: undefined
+    },
+    {
+      envName: "staging",
+      chainId: 11155420,
+      configId: "staging-11155420-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-11155420-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/staging-11155420-0/offers/whitelist.json",
+      defaultDisputeResolverId: "4", // TODO: to be verified
+      defaultTokens: chainIdToDefaultTokens.get(11155420),
+      nativeCoin: chainIdToInfo.get(11155420),
+      getTxExplorerUrl: chainIdToGraphTx.get(11155420),
+      subgraphUrl:
+        "https://api.0xgraph.xyz/api/public/da9367fc-3453-4e08-824f-19fb4281b6a1/subgraphs/boson-staging-optimism/latest/gn",
+      jsonRpcUrl:
+        "https://optimism-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        // from https://github.com/bosonprotocol/boson-protocol-contracts/blob/release-2_4_1/addresses/11155420-optimismsepolia-staging.json
+        protocolDiamond: "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
+        priceDiscoveryClient: "0xBF432aD3865ed9a80a8ED8cEB696418114275990",
+        forwarder: ""
+      },
+      metaTx: {
+        relayerUrl:
+          "https://meta-tx-gateway-staging-optimism-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: undefined

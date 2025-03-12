@@ -7,7 +7,8 @@ export const chainIdToInfo = new Map<ChainId, ProtocolConfig["nativeCoin"]>([
   [11155111, { decimals: "18", name: "sETH", symbol: "sETH" }],
   [31337, { decimals: "18", name: "Ether", symbol: "ETH" }],
   [84532, { decimals: "18", name: "Ether", symbol: "ETH" }],
-  [8453, { decimals: "18", name: "Ether", symbol: "ETH" }]
+  [8453, { decimals: "18", name: "Ether", symbol: "ETH" }],
+  [11155420, { decimals: "18", name: "Ether", symbol: "ETH" }]
 ]);
 
 export const chainIdToGraphTx = new Map<
@@ -66,6 +67,15 @@ export const chainIdToGraphTx = new Map<
         return `https://sepolia.basescan.org/address/${txHash}`;
       }
       return `https://sepolia.basescan.org/tx/${txHash}`;
+    }
+  ],
+  [
+    11155420,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://sepolia-optimistic.etherscan.io/address/${txHash}`;
+      }
+      return `https://sepolia-optimistic.etherscan.io/tx/${txHash}`;
     }
   ],
   [31337, (txHash = "") => `${txHash}`] // TODO: add url
@@ -213,6 +223,29 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
         name: "USD Base Coin",
         address: "0x8A04d904055528a69f3E4594DDA308A31aeb8457",
         decimals: "6"
+      }
+    ]
+  ],
+  [
+    11155420,
+    [
+      {
+        symbol: "ETH",
+        name: "ETH",
+        address: "0x0000000000000000000000000000000000000000",
+        decimals: "18"
+      },
+      {
+        symbol: "WETH",
+        name: "Wrapped Ether",
+        address: "0x4200000000000000000000000000000000000006",
+        decimals: "18"
+      },
+      {
+        symbol: "BOSON",
+        name: "Boson Token (PoS)",
+        address: "0xe8637906721051d860af222e6021826887d9e358",
+        decimals: "18"
       }
     ]
   ],

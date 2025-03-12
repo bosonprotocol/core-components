@@ -234,6 +234,9 @@ function getChainId(chain: string): number {
     case "base-sepolia": {
       return 84532;
     }
+    case "optimism-sepolia": {
+      return 11155420;
+    }
     case "polygon": {
       return 137;
     }

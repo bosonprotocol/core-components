@@ -25,6 +25,9 @@ export function getOpenSeaChain(chainId: ChainId): OSChain {
     case 84532: {
       return OSChain.BaseSepolia;
     }
+    case 11155420: {
+      return OSChain.OptimismSepolia;
+    }
     case 31337: {
       return "hardhat" as OSChain;
     }

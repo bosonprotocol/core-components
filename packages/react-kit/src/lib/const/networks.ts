@@ -96,6 +96,10 @@ export const FALLBACK_URLS = {
     // "Safe" URLs
     "https://goerli.optimism.io"
   ],
+  [ChainId.OPTIMISM_SEPOLIA]: [
+    // "Safe" URLs
+    "https://sepolia.optimism.io"
+  ],
   [ChainId.CELO]: [
     // "Safe" URLs
     `https://forno.celo.org`
@@ -167,6 +171,10 @@ export const getRpcUrls = (infuraKey: string) => ({
   [ChainId.OPTIMISM_GOERLI]: [
     `https://optimism-goerli.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.OPTIMISM_GOERLI]
+  ],
+  [ChainId.OPTIMISM_SEPOLIA]: [
+    `https://optimism-sepolia.infura.io/v3/${infuraKey}`,
+    ...FALLBACK_URLS[ChainId.OPTIMISM_SEPOLIA]
   ],
   [ChainId.ARBITRUM_ONE]: [
     `https://arbitrum-mainnet.infura.io/v3/${infuraKey}`,

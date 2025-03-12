@@ -7,12 +7,14 @@
     "testing": {
       "amoy": "boson-testing-amoy",
       "sepolia": "boson-testing-sepolia",
-      "base": "boson-testing-base"
+      "base": "boson-testing-base",
+      "optimism": "boson-testing-optimism"
     },
     "staging": {
       "amoy": "boson-staging-amoy",
       "sepolia": "boson-staging-sepolia",
-      "base": "boson-staging-base"
+      "base": "boson-staging-base",
+      "optimism": "boson-staging-optimism"
     },
     "production": {
       "polygon": "boson-polygon",
@@ -40,9 +42,11 @@
     "manifest:testing:amoy": "npm run manifest -- testing testing-80002-0 && npm run codegen",
     "manifest:testing:sepolia": "npm run manifest -- testing testing-11155111-0 && npm run codegen",
     "manifest:testing:base": "npm run manifest -- testing testing-84532-0 && npm run codegen",
+    "manifest:testing:optimism": "npm run manifest -- testing testing-11155420-0 && npm run codegen",
     "manifest:staging:amoy": "npm run manifest -- staging staging-80002-0 && npm run codegen",
     "manifest:staging:sepolia": "npm run manifest -- staging staging-11155111-0 && npm run codegen",
     "manifest:staging:base": "npm run manifest -- staging staging-84532-0 && npm run codegen",
+    "manifest:staging:optimism": "npm run manifest -- staging staging-11155420-0 && npm run codegen",
     "manifest:production:polygon": "npm run manifest -- production production-137-0 && npm run codegen",
     "manifest:production:ethereum": "npm run manifest -- production production-1-0 && npm run codegen",
     "manifest:production:base": "npm run manifest -- production production-8453-0 && npm run codegen",
@@ -60,6 +64,9 @@
     "deploy:cmd:testing:base": "run-script-os",
     "deploy:cmd:testing:base:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_testing_base",
     "deploy:cmd:testing:base:win32": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l %npm_package_version% %npm_package_config_testing_base%",
+    "deploy:cmd:testing:optimism": "run-script-os",
+    "deploy:cmd:testing:optimism:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_testing_optimism",
+    "deploy:cmd:testing:optimism:win32": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l %npm_package_version% %npm_package_config_testing_optimism%",
     "deploy:cmd:staging:amoy": "run-script-os",
     "deploy:cmd:staging:amoy:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_staging_amoy",
     "deploy:cmd:staging:amoy:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_staging_amoy%",
@@ -69,6 +76,9 @@
     "deploy:cmd:staging:base": "run-script-os",
     "deploy:cmd:staging:base:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_staging_base",
     "deploy:cmd:staging:base:win32": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l %npm_package_version% %npm_package_config_staging_base%",
+    "deploy:cmd:staging:optimism": "run-script-os",
+    "deploy:cmd:staging:optimism:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_staging_optimism",
+    "deploy:cmd:staging:optimism:win32": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l %npm_package_version% %npm_package_config_staging_optimism%",
     "deploy:cmd:production:polygon": "run-script-os",
     "deploy:cmd:production:polygon:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_production_polygon",
     "deploy:cmd:production:polygon:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_production_polygon%",

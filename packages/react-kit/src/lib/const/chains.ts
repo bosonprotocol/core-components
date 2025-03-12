@@ -30,6 +30,7 @@ export const CHAIN_IDS_TO_NAMES = {
   [ChainId.ARBITRUM_GOERLI]: "arbitrum_goerli",
   [ChainId.OPTIMISM]: "optimism",
   [ChainId.OPTIMISM_GOERLI]: "optimism_goerli",
+  [ChainId.OPTIMISM_SEPOLIA]: "optimism_sepolia",
   [ChainId.BNB]: "bnb",
   [ChainId.AVALANCHE]: "avalanche",
   [ChainId.BASE]: "base",
@@ -51,6 +52,7 @@ export const CHAIN_IDS_TO_FRIENDLY_NAMES = {
   [ChainId.ARBITRUM_GOERLI]: "Arbitrum Goerli",
   [ChainId.OPTIMISM]: "Optimism",
   [ChainId.OPTIMISM_GOERLI]: "Optimism Goerli",
+  [ChainId.OPTIMISM_SEPOLIA]: "Optimism Sepolia",
   [ChainId.BNB]: "Bnb",
   [ChainId.AVALANCHE]: "Avalanche",
   [ChainId.BASE]: "Base",
@@ -99,9 +101,9 @@ export const TESTNET_CHAIN_IDS = [
   ChainId.POLYGON_MUMBAI,
   ChainId_POLYGON_AMOY,
   ChainId_BASE_SEPOLIA,
+  ChainId.OPTIMISM_SEPOLIA,
   LocalChainId
   // ChainId.ARBITRUM_GOERLI,
-  // ChainId.OPTIMISM_GOERLI,
   // ChainId.CELO_ALFAJORES
   // ChainId.BASE_GOERLI
 ] as const;
@@ -135,7 +137,8 @@ export const L2_CHAIN_IDS = [
   // ChainId.OPTIMISM,
   // ChainId.OPTIMISM_GOERLI
   ChainId.BASE,
-  ChainId_BASE_SEPOLIA
+  ChainId_BASE_SEPOLIA,
+  ChainId.OPTIMISM_SEPOLIA
   // ChainId.BASE_GOERLI
 ] as const;
 
@@ -162,8 +165,8 @@ export function getChainPriority(chainId: number): number {
     // case ChainId.ARBITRUM_GOERLI:
     //   return 2;
     // case ChainId.OPTIMISM:
-    // case ChainId.OPTIMISM_GOERLI:
-    //   return 3;
+    case ChainId.OPTIMISM_SEPOLIA:
+      return 3;
     // case ChainId.BNB:
     //   return 4;
     // case ChainId.AVALANCHE:

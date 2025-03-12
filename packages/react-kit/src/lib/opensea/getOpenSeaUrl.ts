@@ -20,6 +20,11 @@ const openSeaUrlMap = new Map([
         "testing-84532-0",
         (tokenId: string, contractAddress: string) =>
           `https://testnets.opensea.io/assets/base_sepolia/${contractAddress}/${tokenId}`
+      ],
+      [
+        "testing-11155420-0",
+        (tokenId: string, contractAddress: string) =>
+          `https://testnets.opensea.io/assets/optimism_sepolia/${contractAddress}/${tokenId}`
       ]
     ])
   ],
@@ -40,6 +45,11 @@ const openSeaUrlMap = new Map([
         "staging-84532-0",
         (tokenId: string, contractAddress: string) =>
           `https://testnets.opensea.io/assets/base_sepolia/${contractAddress}/${tokenId}`
+      ],
+      [
+        "staging-11155420-0",
+        (tokenId: string, contractAddress: string) =>
+          `https://testnets.opensea.io/assets/optimism_sepolia/${contractAddress}/${tokenId}`
       ]
     ])
   ],
