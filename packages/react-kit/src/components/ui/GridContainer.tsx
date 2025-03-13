@@ -11,6 +11,7 @@ import { isDefined } from "./common";
 import { AddDollarPrefixToKeys } from "../../types/helpers";
 
 export interface ItemsPerRow {
+  xxs?: number;
   xs: number;
   s: number;
   m: number;
@@ -60,7 +61,7 @@ const GridContainerDiv = styled.div<InnerGridProps>`
   grid-row-gap: ${({ $rowGap }) => $rowGap || "2rem"};
 
   grid-template-columns: repeat(
-    1,
+    ${({ $itemsPerRow }) => $itemsPerRow?.xxs || "1"},
     ${({ $defaultSize }) => $defaultSize || "minmax(0, 1fr)"}
   );
   ${breakpoint.xs} {
