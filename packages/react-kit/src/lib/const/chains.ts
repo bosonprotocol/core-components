@@ -134,7 +134,7 @@ export type SupportedL1ChainId = (typeof L1_CHAIN_IDS)[number];
 export const L2_CHAIN_IDS = [
   // ChainId.ARBITRUM_ONE,
   // ChainId.ARBITRUM_GOERLI,
-  // ChainId.OPTIMISM,
+  ChainId.OPTIMISM,
   // ChainId.OPTIMISM_GOERLI
   ChainId.BASE,
   ChainId_BASE_SEPOLIA,
@@ -164,7 +164,7 @@ export function getChainPriority(chainId: number): number {
     // case ChainId.ARBITRUM_ONE:
     // case ChainId.ARBITRUM_GOERLI:
     //   return 2;
-    // case ChainId.OPTIMISM:
+    case ChainId.OPTIMISM:
     case ChainId.OPTIMISM_SEPOLIA:
       return 3;
     // case ChainId.BNB:

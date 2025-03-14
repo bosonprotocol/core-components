@@ -169,6 +169,22 @@ const CHAIN_INFO: ChainInfoMap = {
     },
     defaultListUrl: ""
   },
+  [ChainId.OPTIMISM]: {
+    networkType: NetworkType.L2,
+    blockWaitMsBeforeWarning: ms(`10m`),
+    bridge: "https://optimism.superbridge.app",
+    docs: "https://docs.optimism.io",
+    explorer: "https://optimistic.etherscan.io/",
+    infoLink: "https://info.uniswap.org/#/optimism/",
+    label: "Optimism",
+    logoUrl: optimismLogoUrl,
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18
+    },
+    defaultListUrl: ""
+  },
   [LocalChainId]: {
     networkType: NetworkType.L1,
     docs: "https://docs.uniswap.org/",

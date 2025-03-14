@@ -246,6 +246,9 @@ function getChainId(chain: string): number {
     case "base": {
       return 8453;
     }
+    case "optimism": {
+      return 10;
+    }
     case "hardhat": {
       return 31337;
     }

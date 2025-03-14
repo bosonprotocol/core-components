@@ -70,6 +70,11 @@ const openSeaUrlMap = new Map([
         "production-8453-0",
         (tokenId: string, contractAddress: string) =>
           `https://opensea.io/assets/base/${contractAddress}/${tokenId}`
+      ],
+      [
+        "production-10-0",
+        (tokenId: string, contractAddress: string) =>
+          `https://opensea.io/assets/optimism/${contractAddress}/${tokenId}`
       ]
     ])
   ]

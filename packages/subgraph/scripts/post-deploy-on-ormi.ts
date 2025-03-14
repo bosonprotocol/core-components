@@ -19,7 +19,8 @@ program
         "staging_optimism",
         "production_polygon",
         "production_ethereum",
-        "production_base"
+        "production_base",
+        "production_optimism"
       ])
   )
   .parse(process.argv);

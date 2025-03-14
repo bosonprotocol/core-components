@@ -32,6 +32,12 @@ export const NATIVE_TOKENS: { [key: number]: ITokenInfo } = {
     decimals: 18,
     symbol: "ETH"
   },
+  10: {
+    // Base
+    name: "Ether",
+    decimals: 18,
+    symbol: "ETH"
+  },
   84532: {
     // Base Sepolia
     name: "Ether",

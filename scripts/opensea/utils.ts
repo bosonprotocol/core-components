@@ -22,6 +22,9 @@ export function getOpenSeaChain(chainId: ChainId): OSChain {
     case 8453: {
       return OSChain.Base;
     }
+    case 10: {
+      return OSChain.Optimism;
+    }
     case 84532: {
       return OSChain.BaseSepolia;
     }
@@ -48,6 +51,7 @@ export function createOpenSeaSDK(
   switch (chainId) {
     case 1:
     case 137:
+    case 10:
     case 8453: {
       openseaUrl = API_BASE_MAINNET;
       break;

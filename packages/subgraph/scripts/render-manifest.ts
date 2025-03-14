@@ -78,6 +78,10 @@ const envNameToConfig: Record<
     "production-8453-0": {
       network: "base",
       startBlock: 0 // TODO
+    },
+    "production-10-0": {
+      network: "optimism",
+      startBlock: 0 // TODO
     }
   }
 };

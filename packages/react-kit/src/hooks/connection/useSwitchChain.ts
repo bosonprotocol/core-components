@@ -35,6 +35,7 @@ function getRpcUrl(
     case ChainId_POLYGON_AMOY:
     case ChainId.BASE:
     case ChainId_BASE_SEPOLIA: // BASE SEPOLIA
+    case ChainId.OPTIMISM:
     case ChainId.OPTIMISM_SEPOLIA:
       return RPC_URLS[chainId][0];
     case localChainId: {
