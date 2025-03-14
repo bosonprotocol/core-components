@@ -81,7 +81,7 @@ export const RPC_PROVIDERS: {
   [ChainId.GOERLI]: new AppJsonRpcProvider(ChainId.GOERLI),
   [ChainId.SEPOLIA]: new AppJsonRpcProvider(ChainId.SEPOLIA),
   [ChainId.OPTIMISM]: new AppJsonRpcProvider(ChainId.OPTIMISM),
-  [ChainId.OPTIMISM_GOERLI]: new AppJsonRpcProvider(ChainId.OPTIMISM_GOERLI),
+  [ChainId.OPTIMISM_SEPOLIA]: new AppJsonRpcProvider(ChainId.OPTIMISM_SEPOLIA),
   [ChainId.ARBITRUM_ONE]: new AppJsonRpcProvider(ChainId.ARBITRUM_ONE),
   [ChainId.ARBITRUM_GOERLI]: new AppJsonRpcProvider(ChainId.ARBITRUM_GOERLI),
   [ChainId.POLYGON]: new AppJsonRpcProvider(ChainId.POLYGON),

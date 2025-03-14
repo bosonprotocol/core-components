@@ -51,7 +51,8 @@
     "update-contract-uri": "ts-node -P tsconfig.base.json ./scripts/change-contract-uri.ts",
     "check-offer-exchange-policy": "ts-node -P tsconfig.base.json ./scripts/checkOfferExchangePolicy.ts",
     "get-buyers": "ts-node -P tsconfig.base.json ./scripts/get-buyers.ts",
-    "ts-coverage": "typescript-coverage-report"
+    "ts-coverage": "typescript-coverage-report",
+    "update-protocol-addresses": "ts-node -P tsconfig.base.json ./scripts/update-protocol-addresses.ts"
   },
   "repository": {
     "type": "git",
