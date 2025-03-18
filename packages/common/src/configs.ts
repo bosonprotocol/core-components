@@ -10,7 +10,7 @@ import {
   ProtocolAddressesConfig,
   ProtocolConfig
 } from "./types";
-import protocolAddressesJson from "../generated/protocolAddresses.json";
+import protocolAddressesJson from "./generated/protocolAddresses.json";
 
 const protocolAddresses = protocolAddressesJson as ProtocolAddressesConfig;
 
@@ -153,7 +153,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-11155420-0/sellers/blacklist.json",
       offersWhiteList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/testing-11155420-0/offers/whitelist.json",
-      defaultDisputeResolverId: "4", // TODO: to be verified
+      defaultDisputeResolverId: "4",
       defaultTokens: chainIdToDefaultTokens.get(11155420),
       nativeCoin: chainIdToInfo.get(11155420),
       getTxExplorerUrl: chainIdToGraphTx.get(11155420),
@@ -279,7 +279,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-11155420-0/sellers/blacklist.json",
       offersWhiteList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/staging-11155420-0/offers/whitelist.json",
-      defaultDisputeResolverId: "4", // TODO: to be verified
+      defaultDisputeResolverId: "4",
       defaultTokens: chainIdToDefaultTokens.get(11155420),
       nativeCoin: chainIdToInfo.get(11155420),
       getTxExplorerUrl: chainIdToGraphTx.get(11155420),
