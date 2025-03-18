@@ -77,11 +77,11 @@ const envNameToConfig: Record<
     },
     "production-8453-0": {
       network: "base",
-      startBlock: 0 // TODO
+      startBlock: 25765296 // block number when protocol was deployed https://basescan.org/tx/0x7b1052fe88862c519561110e34f8a502c43a71df198520eabe135417585499ca
     },
     "production-10-0": {
       network: "optimism",
-      startBlock: 0 // TODO
+      startBlock: 133002790 // block number when protocol was deployed https://optimistic.etherscan.io/tx/0x9950ab98822ab6579495dd39ba38bf044a3d5a8d869d41f36ce2802b4a42d631
     }
   }
 };
