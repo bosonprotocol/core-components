@@ -10,7 +10,7 @@ import {
   ProtocolAddressesConfig,
   ProtocolConfig
 } from "./types";
-import protocolAddressesJson from "./protocolAddresses.json";
+import protocolAddressesJson from "../generated/protocolAddresses.json";
 
 const protocolAddresses = protocolAddressesJson as ProtocolAddressesConfig;
 
