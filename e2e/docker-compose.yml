@@ -5,7 +5,7 @@ services:
       context: ../.
       dockerfile: ./e2e/meta-tx-gateway/Dockerfile
     user: "node:node"
-    image: meta-tx-gateway:202518061227
+    image: meta-tx-gateway:202503191403
     ports:
       - "8888:8888"
     environment:
@@ -23,7 +23,7 @@ services:
       context: ../.
       dockerfile: ./e2e/opensea-api-mock/Dockerfile
     user: "node:node"
-    image: opensea-api-mock:202502211050
+    image: opensea-api-mock:202503191403
     ports:
       - "3334:3334"
     environment:
@@ -36,7 +36,7 @@ services:
 
   hardhat-node:
     build: ../contracts
-    image: hardhat-node:174ae30fcdee39fa7048a2dfb3ac00e9d22445d5_5
+    image: hardhat-node:ace1f5cb75635b999ee8f025bbfb64f4b837fdfb_0
     ports:
       - "8545:8545"
     volumes:
