@@ -35,6 +35,8 @@ function getRpcUrl(
     case ChainId_POLYGON_AMOY:
     case ChainId.BASE:
     case ChainId_BASE_SEPOLIA: // BASE SEPOLIA
+    case ChainId.OPTIMISM:
+    case ChainId.OPTIMISM_SEPOLIA:
       return RPC_URLS[chainId][0];
     case localChainId: {
       if (localRpcUrl) {
@@ -46,7 +48,6 @@ function getRpcUrl(
     case ChainId.ZORA_SEPOLIA:
     case ChainId.ROOTSTOCK:
     case ChainId.BLAST:
-    case ChainId.OPTIMISM_SEPOLIA:
     case ChainId.ARBITRUM_SEPOLIA:
       throw new Error(`${chainId} is not supported`);
     // Attempting to add a chain using an infura URL will not work, as the URL will be unreachable from the MetaMask background page.

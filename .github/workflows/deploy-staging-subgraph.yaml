@@ -47,6 +47,10 @@ jobs:
         run: cd ./packages/subgraph && npm run deploy:staging:base
         env:
           ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_STAGING }}
+      - name: Deploy subgraph to optimism sepolia
+        run: cd ./packages/subgraph && npm run deploy:staging:optimism
+        env:
+          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_STAGING }}
       - name: Commit & Push
         env:
           GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}

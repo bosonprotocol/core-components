@@ -103,7 +103,10 @@ export const COMMON_BASES: ChainCurrencyList = {
     USDT_OPTIMISM,
     WBTC_OPTIMISM
   ],
-  [ChainId.OPTIMISM_GOERLI]: [nativeOnChain(ChainId.OPTIMISM_GOERLI)],
+  [ChainId.OPTIMISM_SEPOLIA]: [
+    nativeOnChain(ChainId.OPTIMISM_SEPOLIA),
+    WRAPPED_NATIVE_CURRENCY[ChainId.OPTIMISM_SEPOLIA] as Token
+  ],
   [ChainId.BASE]: [
     nativeOnChain(ChainId.BASE),
     WRAPPED_NATIVE_CURRENCY[ChainId.BASE] as Token,

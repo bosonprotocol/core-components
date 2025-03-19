@@ -50,6 +50,10 @@ jobs:
         run: cd ./packages/subgraph && npm run deploy:production:base
         env:
           ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
+      - name: Deploy subgraph to Optimism
+        run: cd ./packages/subgraph && npm run deploy:production:optimism
+        env:
+          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
       - name: Commit & Push
         env:
           GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}

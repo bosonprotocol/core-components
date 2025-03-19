@@ -5,7 +5,14 @@ import {
   chainIdToInfo,
   chainIdToLensInfo
 } from "./mappings";
-import { EnvironmentType, ProtocolConfig } from "./types";
+import {
+  EnvironmentType,
+  ProtocolAddressesConfig,
+  ProtocolConfig
+} from "./types";
+import protocolAddressesJson from "./generated/protocolAddresses.json";
+
+const protocolAddresses = protocolAddressesJson as ProtocolAddressesConfig;
 
 export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
   local: [
@@ -63,8 +70,9 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
-        priceDiscoveryClient: "0xFFcd4c407B60B0d4351945484F9354d2C9E34EA1",
+        protocolDiamond: protocolAddresses.testing[80002].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.testing[80002].priceDiscoveryClient,
         forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0", // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
         openseaWrapper: "0x6e9C25b48161A2aC6A854af3bc596d3190F0B5A3"
       },
@@ -96,9 +104,9 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
-        protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
-        priceDiscoveryClient: "0x789d8727b9ae0A8546489232EB55b6fBE86b21Ac",
+        protocolDiamond: protocolAddresses.testing[11155111].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.testing[11155111].priceDiscoveryClient,
         forwarder: "0xbdeA59c8801658561a16fF58D68FC2b198DE4E93", // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L10
         openseaWrapper: "0xf4e888DfCBD71b08a3Aa5Cf15d5124Cfd7205433"
       },
@@ -124,15 +132,47 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        // https://github.com/bosonprotocol/boson-protocol-contracts/pull/976
-        protocolDiamond: "0x7de418a7ce94debd057c34ebac232e7027634ade",
-        priceDiscoveryClient: "0xFDD51a6DB1cE50d1C33b98782035f3cB1E7E1f14",
+        protocolDiamond: protocolAddresses.testing[84532].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.testing[84532].priceDiscoveryClient,
         forwarder: "",
         openseaWrapper: ""
       },
       metaTx: {
         relayerUrl:
           "https://meta-tx-gateway-testing-base-114403180314.europe-west2.run.app",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: undefined
+    },
+    {
+      envName: "testing",
+      chainId: 11155420,
+      configId: "testing-11155420-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-11155420-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/testing-11155420-0/offers/whitelist.json",
+      defaultDisputeResolverId: "4",
+      defaultTokens: chainIdToDefaultTokens.get(11155420),
+      nativeCoin: chainIdToInfo.get(11155420),
+      getTxExplorerUrl: chainIdToGraphTx.get(11155420),
+      subgraphUrl:
+        "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-optimism/latest/gn",
+      jsonRpcUrl:
+        "https://optimism-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        protocolDiamond: protocolAddresses.testing[11155420].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.testing[11155420].priceDiscoveryClient,
+        forwarder: "",
+        openseaWrapper: ""
+      },
+      metaTx: {
+        relayerUrl:
+          "https://meta-tx-gateway-testing-optimism-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: undefined
@@ -158,8 +198,9 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        protocolDiamond: "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
-        priceDiscoveryClient: "0xbDD129B5034a65bd1F2872Df3F62C6dE1308352E",
+        protocolDiamond: protocolAddresses.staging[80002].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.staging[80002].priceDiscoveryClient,
         forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0", // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
         openseaWrapper: "0x6678663A66C228BA79C8B2ABB4b4D797C6215026"
       },
@@ -191,9 +232,9 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
-        protocolDiamond: "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
-        priceDiscoveryClient: "0x9F3dAAA2D7B39C7ad4f375e095357012296e69B8",
+        protocolDiamond: protocolAddresses.staging[11155111].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.staging[11155111].priceDiscoveryClient,
         forwarder: "0xbdeA59c8801658561a16fF58D68FC2b198DE4E93" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L10
       },
       metaTx: undefined,
@@ -218,14 +259,45 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/976
-        protocolDiamond: "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
-        priceDiscoveryClient: "0x295044BCfB2E84eDD40fEa5970df6B26CAC9a703",
+        protocolDiamond: protocolAddresses.staging[84532].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.staging[84532].priceDiscoveryClient,
         forwarder: ""
       },
       metaTx: {
         relayerUrl:
           "https://meta-tx-gateway-staging-base-114403180314.europe-west2.run.app",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: undefined
+    },
+    {
+      envName: "staging",
+      chainId: 11155420,
+      configId: "staging-11155420-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-11155420-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/staging-11155420-0/offers/whitelist.json",
+      defaultDisputeResolverId: "4",
+      defaultTokens: chainIdToDefaultTokens.get(11155420),
+      nativeCoin: chainIdToInfo.get(11155420),
+      getTxExplorerUrl: chainIdToGraphTx.get(11155420),
+      subgraphUrl:
+        "https://api.0xgraph.xyz/api/public/da9367fc-3453-4e08-824f-19fb4281b6a1/subgraphs/boson-staging-optimism/latest/gn",
+      jsonRpcUrl:
+        "https://optimism-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        protocolDiamond: protocolAddresses.staging[11155420].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.staging[11155420].priceDiscoveryClient,
+        forwarder: ""
+      },
+      metaTx: {
+        relayerUrl:
+          "https://meta-tx-gateway-staging-optimism-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: undefined
@@ -251,8 +323,9 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
-        priceDiscoveryClient: "0xb60cf39Fb18e5111174f346d0f39521ef6531fD4",
+        protocolDiamond: protocolAddresses.production[137].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.production[137].priceDiscoveryClient,
         forwarder: "0xf0511f123164602042ab2bCF02111fA5D3Fe97CD"
       },
       metaTx: {
@@ -282,8 +355,9 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
-        priceDiscoveryClient: "0xb60cf39Fb18e5111174f346d0f39521ef6531fD4",
+        protocolDiamond: protocolAddresses.production[1].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.production[1].priceDiscoveryClient,
         forwarder: "0x84a0856b038eaAd1cC7E297cF34A7e72685A8693" // https://docs-gasless.biconomy.io/misc/contract-addresses
       },
       metaTx: undefined,
@@ -297,7 +371,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-8453-0/sellers/blacklist.json",
       offersWhiteList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-8453-0/offers/whitelist.json",
-      defaultDisputeResolverId: "4", // TO BE VERIFIED
+      defaultDisputeResolverId: "4", // TODO: TO BE VERIFIED
       defaultTokens: chainIdToDefaultTokens.get(8453),
       nativeCoin: chainIdToInfo.get(8453),
       getTxExplorerUrl: chainIdToGraphTx.get(8453),
@@ -308,13 +382,45 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
-        priceDiscoveryClient: "0xd8C3B2232B3d597156148f757Bb2bd665843aABd",
+        protocolDiamond: protocolAddresses.production[8453].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.production[8453].priceDiscoveryClient,
         forwarder: ""
       },
       metaTx: {
         relayerUrl:
           "https://meta-tx-gateway-base-114403180314.europe-west2.run.app",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: undefined
+    },
+    {
+      envName: "production",
+      chainId: 10,
+      configId: "production-10-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-10-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-10-0/offers/whitelist.json",
+      defaultDisputeResolverId: "4", // TODO: TO BE VERIFIED
+      defaultTokens: chainIdToDefaultTokens.get(10),
+      nativeCoin: chainIdToInfo.get(10),
+      getTxExplorerUrl: chainIdToGraphTx.get(10),
+      subgraphUrl:
+        "https://api.0xgraph.xyz/api/public/b521f6b7-36c4-4117-8ad5-6b21c6eeb195/subgraphs/boson-optimism/latest/gn",
+      jsonRpcUrl:
+        "https://optimism-mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        protocolDiamond: protocolAddresses.production[10].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.production[10].priceDiscoveryClient,
+        forwarder: ""
+      },
+      metaTx: {
+        relayerUrl:
+          "https://meta-tx-gateway-optimism-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: undefined

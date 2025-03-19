@@ -1,14 +1,13 @@
 import { EnvironmentType, ConfigId } from "./../../common/src/types/configs";
 import fs from "fs";
 import handlebars from "handlebars";
-import { providers } from "ethers";
 import { getEnvConfigById } from "../../common/src/configs";
 
 const generatedManifestsDir = __dirname + "/../generated/manifests";
 
 const envName = process.argv[2];
 const configId = process.argv[3];
-const { contracts, chainId } = getEnvConfigById(
+const { contracts } = getEnvConfigById(
   envName as EnvironmentType,
   configId as ConfigId
 );
@@ -43,6 +42,10 @@ const envNameToConfig: Record<
     "testing-84532-0": {
       network: "base-sepolia",
       startBlock: 20927614 // base-sepolia, block number when protocol was deployed https://sepolia.basescan.org/tx/0x06749f2d579176f4a825869906d5db9e5c700829331de9a46bbb6d0eeb8b930e
+    },
+    "testing-11155420-0": {
+      network: "optimism-sepolia",
+      startBlock: 24332651 // optimism-sepolia, block number when protocol was deployed https://sepolia-optimistic.etherscan.io/tx/0x108f6ba0c2fd48c5e1528e0019ad3a15d827536520b55371861f31ce28502feb
     }
   },
   staging: {
@@ -57,6 +60,10 @@ const envNameToConfig: Record<
     "staging-84532-0": {
       network: "base-sepolia",
       startBlock: 20927855 // base-sepolia, block number when protocol was deployed https://sepolia.basescan.org/tx/0x492d19d9a86fcf697f3a7c94b961714006ff224895cfee4fb1a7bc7afe2ab65f
+    },
+    "staging-11155420-0": {
+      network: "optimism-sepolia",
+      startBlock: 24332809 // optimism-sepolia, block number when protocol was deployed https://sepolia-optimistic.etherscan.io/tx/0x4ace3e8576828d688645378a73b96c4a05f7ad6f01b02b64a5f13675db8adccd
     }
   },
   production: {
@@ -70,7 +77,11 @@ const envNameToConfig: Record<
     },
     "production-8453-0": {
       network: "base",
-      startBlock: 0 // TODO
+      startBlock: 25765296 // block number when protocol was deployed https://basescan.org/tx/0x7b1052fe88862c519561110e34f8a502c43a71df198520eabe135417585499ca
+    },
+    "production-10-0": {
+      network: "optimism",
+      startBlock: 133002790 // block number when protocol was deployed https://optimistic.etherscan.io/tx/0x9950ab98822ab6579495dd39ba38bf044a3d5a8d869d41f36ce2802b4a42d631
     }
   }
 };

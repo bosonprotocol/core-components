@@ -1,0 +1,56 @@
+{
+  "testing": {
+    "80002": {
+      "protocolDiamond": "0x7de418a7ce94debd057c34ebac232e7027634ade",
+      "priceDiscoveryClient": "0xF4f02BAE43cf66fca47eBaC58657586Aa951D135"
+    },
+    "84532": {
+      "protocolDiamond": "0x7de418a7ce94debd057c34ebac232e7027634ade",
+      "priceDiscoveryClient": "0xFDD51a6DB1cE50d1C33b98782035f3cB1E7E1f14"
+    },
+    "11155111": {
+      "protocolDiamond": "0x7de418a7ce94debd057c34ebac232e7027634ade",
+      "priceDiscoveryClient": "0x789d8727b9ae0A8546489232EB55b6fBE86b21Ac"
+    },
+    "11155420": {
+      "protocolDiamond": "0x7de418a7ce94debd057c34ebac232e7027634ade",
+      "priceDiscoveryClient": "0x661A3e65CD3247c5EAb7f398e0617072C4Cdf19B"
+    }
+  },
+  "staging": {
+    "80002": {
+      "protocolDiamond": "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
+      "priceDiscoveryClient": "0xbDD129B5034a65bd1F2872Df3F62C6dE1308352E"
+    },
+    "84532": {
+      "protocolDiamond": "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
+      "priceDiscoveryClient": "0x295044BCfB2E84eDD40fEa5970df6B26CAC9a703"
+    },
+    "11155111": {
+      "protocolDiamond": "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
+      "priceDiscoveryClient": "0x9F3dAAA2D7B39C7ad4f375e095357012296e69B8"
+    },
+    "11155420": {
+      "protocolDiamond": "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
+      "priceDiscoveryClient": "0xBF432aD3865ed9a80a8ED8cEB696418114275990"
+    }
+  },
+  "production": {
+    "1": {
+      "protocolDiamond": "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+      "priceDiscoveryClient": "0xb60cf39Fb18e5111174f346d0f39521ef6531fD4"
+    },
+    "10": {
+      "protocolDiamond": "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+      "priceDiscoveryClient": "0xd8C3B2232B3d597156148f757Bb2bd665843aABd"
+    },
+    "137": {
+      "protocolDiamond": "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+      "priceDiscoveryClient": "0xb60cf39Fb18e5111174f346d0f39521ef6531fD4"
+    },
+    "8453": {
+      "protocolDiamond": "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+      "priceDiscoveryClient": "0xd8C3B2232B3d597156148f757Bb2bd665843aABd"
+    }
+  }
+}
