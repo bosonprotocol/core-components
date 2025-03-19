@@ -86,7 +86,7 @@ async function main() {
   // - use a regexp to extract the JSON definition of envConfigs
   const protocolAddressesFile = resolve(
     __dirname,
-    "../packages/common/generated/protocolAddresses.json"
+    "../packages/common/src/generated/protocolAddresses.json"
   );
   const rawProtocolAddressesFile = fs
     .readFileSync(protocolAddressesFile)
