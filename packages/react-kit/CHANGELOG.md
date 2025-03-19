@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.38.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.37.0...@bosonprotocol/react-kit@0.38.0) (2025-03-19)
+
+
+### Bug Fixes
+
+* loading bubble styles ([#922](https://github.com/bosonprotocol/core-components/issues/922)) ([0097aab](https://github.com/bosonprotocol/core-components/commit/0097aabbb9422746ac290cb42d4073f2fa77c4a4))
+* props commit button view in stories ([#914](https://github.com/bosonprotocol/core-components/issues/914)) ([0f2784b](https://github.com/bosonprotocol/core-components/commit/0f2784bd7c27f56c238309a5b4dce87576a77164))
+
+
+### Features
+
+* add items per row grid container for xxs breakpoint ([#925](https://github.com/bosonprotocol/core-components/issues/925)) ([d4aec77](https://github.com/bosonprotocol/core-components/commit/d4aec771f9ce02fcc5ca012eaefc2ccf994bf7c5))
+* add select with custom label ([#916](https://github.com/bosonprotocol/core-components/issues/916)) ([9de2ac7](https://github.com/bosonprotocol/core-components/commit/9de2ac735e316cc748420f812cda8add951b48cc))
+* export detail slider without default ([#921](https://github.com/bosonprotocol/core-components/issues/921)) ([3c7a6eb](https://github.com/bosonprotocol/core-components/commit/3c7a6eb4fd6a75a760bb4479b9fddc14260ee789))
+* export media sliders ([#920](https://github.com/bosonprotocol/core-components/issues/920)) ([8d14c11](https://github.com/bosonprotocol/core-components/commit/8d14c115778078116ae319d78d346dbf356e9627))
+* export offer utilities ([#919](https://github.com/bosonprotocol/core-components/issues/919)) ([159861e](https://github.com/bosonprotocol/core-components/commit/159861e07d8246cdc71526211e8845c18ed47271))
+
+
+
+
+
 # [0.37.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.36.2...@bosonprotocol/react-kit@0.37.0) (2025-02-07)
 
 
