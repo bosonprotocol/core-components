@@ -27,7 +27,7 @@
     "@svgr/webpack": "^8.1.0",
     "@tippyjs/react": "4.2.6",
     "@uniswap/redux-multicall": "^1.1.8",
-    "@uniswap/sdk-core": "^4.0.7",
+    "@uniswap/sdk-core": "^4.2.1",
     "@uniswap/token-lists": "^1.0.0-beta.33",
     "@uniswap/v2-sdk": "^3.3.0",
     "@uniswap/v3-periphery": "^1.4.4",
