@@ -92,13 +92,14 @@ const Container = styled.div<InnerGridProps>`
 export type GridProps = {
   children?: React.ReactNode;
   as?: React.ElementType;
+  tag?: React.ElementType;
   style?: CSSProperties | undefined;
   onClick?: ElementRef<"div">["onclick"];
 } & IGrid &
   HTMLAttributes<unknown>;
 
 export const Grid = forwardRef<HTMLDivElement, GridProps>(
-  ({ children, as, style, ...props }, ref) => {
+  ({ children, as, style, tag, ...props }, ref) => {
     const { transientProps, otherProps } = getTransientCustomProps<
       InnerGridProps,
       IGrid
@@ -108,7 +109,7 @@ export const Grid = forwardRef<HTMLDivElement, GridProps>(
         {...transientProps}
         {...otherProps}
         ref={ref}
-        as={as}
+        as={as ?? tag}
         style={style}
       >
         {children}
