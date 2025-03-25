@@ -3,7 +3,8 @@ import ethereumLogoUrl from "../../assets/ethereum-logo.png";
 import polygonCircleLogoUrl from "../../assets/polygonCircle.png";
 import polygonMaticLogo from "../../assets/svg/polygon-matic-logo.svg";
 import polygonSquareLogoUrl from "../../assets/svg/polygon_square_logo.svg";
-import optimismLogoUrl from "../../assets/svg/optimism-logo-light.svg";
+import optimismSquareLogoUrl from "assets/svg/optimism_square_logo.svg";
+import optimismLogoUrl from "assets/svg/optimistic_ethereum.svg";
 import ms from "ms";
 
 import {
@@ -162,6 +163,8 @@ const CHAIN_INFO: ChainInfoMap = {
     infoLink: "https://info.uniswap.org/#/optimism-sepolia/",
     label: "Optimism Sepolia",
     logoUrl: optimismLogoUrl,
+    circleLogoUrl: optimismLogoUrl,
+    squareLogoUrl: optimismSquareLogoUrl,
     nativeCurrency: {
       name: "Ether",
       symbol: "ETH",
@@ -178,6 +181,8 @@ const CHAIN_INFO: ChainInfoMap = {
     infoLink: "https://info.uniswap.org/#/optimism/",
     label: "Optimism",
     logoUrl: optimismLogoUrl,
+    circleLogoUrl: optimismLogoUrl,
+    squareLogoUrl: optimismSquareLogoUrl,
     nativeCurrency: {
       name: "Ether",
       symbol: "ETH",
