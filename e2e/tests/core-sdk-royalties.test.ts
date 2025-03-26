@@ -1,4 +1,4 @@
-import { Wallet, BigNumber } from "ethers";
+import { BigNumber } from "ethers";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 import {
   createOffer,
