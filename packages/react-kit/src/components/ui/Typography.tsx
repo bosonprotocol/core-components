@@ -92,7 +92,6 @@ export type TypographyProps = WrapperProps &
     children?: string | React.ReactNode;
     tag?: keyof JSX.IntrinsicElements;
     style?: React.CSSProperties;
-    onClick?: () => void;
     className?: string;
   };
 
