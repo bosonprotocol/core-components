@@ -8,7 +8,7 @@
     "node": "hardhat node --hostname 0.0.0.0"
   },
   "devDependencies": {
-    "@bosonprotocol/boson-protocol-contracts": "github:bosonprotocol/boson-protocol-contracts#ace1f5cb75635b999ee8f025bbfb64f4b837fdfb",
+    "@bosonprotocol/boson-protocol-contracts": "github:bosonprotocol/boson-protocol-contracts#f099648a49045c8bad1a1bdb8e2c4ffcf67b69da",
     "@manifoldxyz/royalty-registry-solidity": "github:manifoldxyz/royalty-registry-solidity#e5369fc79279ce2e4c6ea2eb5914df51e89e8bd8",
     "@nomicfoundation/hardhat-ethers": "^3.0.5",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
