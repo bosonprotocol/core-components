@@ -89,11 +89,8 @@ const Wrapper = styled.div<InnerTypographyProps>`
 
 export type TypographyProps = WrapperProps &
   HTMLAttributes<unknown> & {
-    children?: string | React.ReactNode;
+    children?: React.ReactNode;
     tag?: keyof JSX.IntrinsicElements;
-    style?: React.CSSProperties;
-    onClick?: () => void;
-    className?: string;
   };
 
 export const Typography = forwardRef<HTMLDivElement, TypographyProps>(
