@@ -59,7 +59,7 @@ const DELAYS_PER_CHAINID: {
     DEFAULT_TIMEOUT: 60000
   },
   31337: {
-    BLOCK_DELAY: 200,
+    BLOCK_DELAY: 2000,
     MAX_SAME_BLOCK: 20,
     MAX_SAME_BLOCK_DELAY: 1000,
     DEFAULT_TIMEOUT: 3000
@@ -91,6 +91,7 @@ export class SubgraphMixin extends BaseCoreSDK {
         await this.wait(delays.BLOCK_DELAY);
         currentBlock = await this.getSubgraphBlockNumber();
         if (currentBlock === oldCurrentBlock) {
+          console.log("sameBlockNumber", sameBlockNumber);
           if (sameBlockNumber++ >= delays.MAX_SAME_BLOCK) {
             // Seems that the subgraph does not update its current block
             console.error(
@@ -99,8 +100,10 @@ export class SubgraphMixin extends BaseCoreSDK {
             await this.wait(delays.MAX_SAME_BLOCK_DELAY);
             return;
           }
+        } else {
+          oldCurrentBlock = currentBlock;
+          sameBlockNumber = 0;
         }
-        oldCurrentBlock = currentBlock;
       }
       return;
     }
