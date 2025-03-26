@@ -170,7 +170,7 @@ module.exports = {
       })),
       mining: {
         auto: true,
-        interval: 5000
+        interval: 2000
       }
     },
     localhost: {
