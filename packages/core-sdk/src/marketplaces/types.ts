@@ -131,4 +131,5 @@ export abstract class Marketplace {
     },
     side: Side
   ): Promise<void>;
+  public abstract getFees(price: string): string;
 }

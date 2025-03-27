@@ -25,6 +25,7 @@ import {
   Wrapper
 } from "../../packages/core-sdk/src/marketplaces/types";
 import { MSEC_PER_DAY } from "@bosonprotocol/common/src/utils/timestamp";
+import { TransactionResponse } from "@bosonprotocol/common";
 
 const seedWallet = seedWallet24;
 jest.setTimeout(60_000);
@@ -354,13 +355,14 @@ describe("Opensea Price Discovery", () => {
   });
 
   describe("Seller - Fulfil a bid offer with price > 0 (without wrapper)", () => {
-    let openseaSdkBuyer: Marketplace;
     let listing: Listing;
     let buyerWallet: Wallet;
     let buyerCoreSDK: CoreSDK;
     let exchangeId: BigNumber;
     let offer2: OfferFieldsFragment;
     let tokenIds2: BigNumber[];
+    let txCommit: TransactionResponse;
+    let openseaFees: string;
     beforeEach(async () => {
       // Create another offer and tokenIds
       ({ offer: offer2, tokenIds: tokenIds2 } = await createOfferAndTokens({
@@ -372,7 +374,7 @@ describe("Opensea Price Discovery", () => {
       ({ coreSDK: buyerCoreSDK, fundedWallet: buyerWallet } =
         await initCoreSDKWithFundedWallet(seedWallet));
 
-      openseaSdkBuyer = buyerCoreSDK.marketplace(
+      const openseaSdkBuyer = buyerCoreSDK.marketplace(
         MarketplaceType.OPENSEA,
         createOpenseaSdk(buyerWallet.privateKey),
         OPENSEA_FEE_RECIPIENT
@@ -381,8 +383,10 @@ describe("Opensea Price Discovery", () => {
       listing = getListing(
         offer2,
         tokenIds2[0].toString(),
-        buyerWallet.address
+        buyerWallet.address,
+        "1234567890000000000"
       );
+      openseaFees = openseaSdkBuyer.getFees(listing.price);
       await ensureMintedAndAllowedTokens([buyerWallet], listing.price, false);
       await openseaSdkBuyer.createBidOrder(listing);
 
@@ -395,6 +399,7 @@ describe("Opensea Price Discovery", () => {
         true
       );
 
+      // Ensure seller deposits up-front for paying sellerDeposit
       await (
         await sellerCoreSDK.depositFunds(
           offer2.seller.id,
@@ -402,17 +407,7 @@ describe("Opensea Price Discovery", () => {
           offer2.exchangeToken.address
         )
       ).wait();
-    });
-    test("Fulfil a bid offer with positive price", async () => {
-      let exchange = await sellerCoreSDK.getExchangeById(exchangeId);
-      expect(exchange).not.toBeTruthy();
 
-      // Check the voucher belongs to the seller wallet
-      let owner = await sellerCoreSDK.erc721OwnerOf({
-        contractAddress: listing.asset.contract,
-        tokenId: listing.asset.tokenId
-      });
-      expect(owner.toLowerCase()).toEqual(sellerWallet.address.toLowerCase());
       // Ensure all vouchers are approved for Boson Protocol
       await approveIfNeeded(
         sellerCoreSDK.contracts?.protocolDiamond as string,
@@ -423,29 +418,57 @@ describe("Opensea Price Discovery", () => {
       const fulfilmentData = await openseaSdkSeller.generateFulfilmentData(
         listing.asset
       );
-      const txCommit = await sellerCoreSDK.commitToPriceDiscoveryOffer(
+      txCommit = await sellerCoreSDK.commitToPriceDiscoveryOffer(
         buyerWallet.address,
         listing.asset.tokenId,
         fulfilmentData
       );
       await txCommit.wait();
+    });
+    test("Fulfil a bid offer with positive price", async () => {
       // Check the token has been transferred to the buyer
-      owner = await sellerCoreSDK.erc721OwnerOf({
+      const owner = await sellerCoreSDK.erc721OwnerOf({
         contractAddress: listing.asset.contract,
         tokenId: listing.asset.tokenId
       });
       expect(owner.toLowerCase()).toEqual(buyerWallet.address.toLowerCase());
+    });
+
+    test("Buyer cancels after committing to price discovery, with penalty", async () => {
       await sellerCoreSDK.waitForGraphNodeIndexing(txCommit);
       // Check the COMMITTED exchange is created
-      exchange = await sellerCoreSDK.getExchangeById(exchangeId);
+      let exchange = await sellerCoreSDK.getExchangeById(exchangeId);
       expect(exchange).toBeTruthy();
       expect(exchange.buyer.wallet.toLowerCase()).toEqual(
         buyerWallet.address.toLowerCase()
       );
       expect(exchange.state).toEqual(ExchangeState.COMMITTED);
+      // Buyer Cancels
+      const txCancel = await buyerCoreSDK.cancelVoucher(exchangeId);
+      await buyerCoreSDK.waitForGraphNodeIndexing(txCancel);
+      // Check exchange state
+      exchange = await sellerCoreSDK.getExchangeById(exchangeId);
+      expect(exchange).toBeTruthy();
+      expect(exchange.state).toEqual(ExchangeState.CANCELLED);
+      // Check the buyerCancelPenalty is not refunded (nor the openseaFees)
+      const [buyer] = await buyerCoreSDK.getBuyers({
+        buyersFilter: {
+          wallet: buyerWallet.address.toLowerCase()
+        },
+        includeFunds: true,
+        fundsFilter: {
+          tokenAddress: offer2.exchangeToken.address.toLowerCase()
+        }
+      });
+      expect(buyer).toBeTruthy();
+      expect(buyer.funds?.length).toEqual(1);
+      expect(buyer.funds?.[0].availableAmount).toEqual(
+        BigNumber.from(listing.price)
+          .sub(openseaFees)
+          .sub(offer2.buyerCancelPenalty)
+          .toString()
+      );
     });
-
-    // TODO: add test case with exchange cancelled and check the seller gets the bueyrCancelPenalty
   });
 
   describe("Seller - Use wrappers for pre-minted vouchers", () => {
