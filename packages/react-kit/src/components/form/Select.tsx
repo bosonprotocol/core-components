@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { forwardRef, ReactNode } from "react";
 import { useField } from "formik";
 import ReactSelect, {
   GroupBase,
@@ -191,90 +191,96 @@ export type DefaultSelectProps<IsMulti extends boolean = false> = SelectProps<
   IsMulti,
   GroupBase<SelectOption>
 >;
-export function Select<
-  Option extends SelectOption = SelectOption,
-  IsMulti extends boolean = false,
-  Group extends GroupBase<Option> = GroupBase<Option>
->({
-  name,
-  options,
-  placeholder = "Choose...",
-  isClearable = false,
-  isSearchable = true,
-  isDisabled = false,
-  errorMessage,
-  onChange,
-  onBlur,
-  theme,
-  reactSelectTheme,
-  isMulti,
-  ...props
-}: SelectProps<Option, IsMulti, Group>) {
-  const [field, meta, helpers] =
-    useField<IsMulti extends true ? MultiValue<Option> : SingleValue<Option>>(
-      name
-    );
-
-  const displayErrorMessage =
-    meta.error && meta.touched && !errorMessage
-      ? meta.error
-      : meta.error && meta.touched && errorMessage
-        ? errorMessage
-        : "";
-
-  const displayError =
-    typeof displayErrorMessage === "string" && displayErrorMessage !== "";
-
-  const handleChange = (
-    option: IsMulti extends true ? MultiValue<Option> : SingleValue<Option>,
-    actionMeta: ActionMeta<Option>
+export const Select = forwardRef(
+  <
+    Option extends SelectOption = SelectOption,
+    IsMulti extends boolean = false,
+    Group extends GroupBase<Option> = GroupBase<Option>
+  >(
+    {
+      name,
+      options,
+      placeholder = "Choose...",
+      isClearable = false,
+      isSearchable = true,
+      isDisabled = false,
+      errorMessage,
+      onChange,
+      onBlur,
+      theme,
+      reactSelectTheme,
+      isMulti,
+      ...props
+    }: SelectProps<Option, IsMulti, Group>,
+    ref: Parameters<typeof ReactSelect<Option, IsMulti, Group>>[0]["ref"]
   ) => {
-    if (isDisabled) {
-      return;
-    }
-    if (!meta.touched) {
-      helpers.setTouched(true);
-    }
-    helpers.setValue(option);
-    onChange?.(option, actionMeta);
-  };
+    const [field, meta, helpers] =
+      useField<IsMulti extends true ? MultiValue<Option> : SingleValue<Option>>(
+        name
+      );
 
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    if (!meta.touched) {
-      helpers.setTouched(true);
-    }
-    field.onBlur(event);
-    onBlur?.(event);
-  };
+    const displayErrorMessage =
+      meta.error && meta.touched && !errorMessage
+        ? meta.error
+        : meta.error && meta.touched && errorMessage
+          ? errorMessage
+          : "";
 
-  const { selectClassName } = useFixSelectFont({
-    selectClassName: "boson-select",
-    hasError: displayError
-  });
+    const displayError =
+      typeof displayErrorMessage === "string" && displayErrorMessage !== "";
 
-  return (
-    <>
-      <ReactSelect<Option, IsMulti, Group>
-        styles={customStyles<Option, IsMulti, Group>(
-          displayErrorMessage,
-          theme
-        )}
-        {...field}
-        {...props}
-        theme={reactSelectTheme}
-        className={selectClassName}
-        isMulti={isMulti}
-        placeholder={placeholder}
-        options={options}
-        value={field.value}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        isSearchable={isSearchable}
-        isClearable={isClearable}
-        isDisabled={isDisabled}
-        isOptionDisabled={(option) => !!option.disabled}
-      />
-      <Error display={displayError} message={displayErrorMessage} />
-    </>
-  );
-}
+    const handleChange = (
+      option: IsMulti extends true ? MultiValue<Option> : SingleValue<Option>,
+      actionMeta: ActionMeta<Option>
+    ) => {
+      if (isDisabled) {
+        return;
+      }
+      if (!meta.touched) {
+        helpers.setTouched(true);
+      }
+      helpers.setValue(option);
+      onChange?.(option, actionMeta);
+    };
+
+    const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+      if (!meta.touched) {
+        helpers.setTouched(true);
+      }
+      field.onBlur(event);
+      onBlur?.(event);
+    };
+
+    const { selectClassName } = useFixSelectFont({
+      selectClassName: "boson-select",
+      hasError: displayError
+    });
+
+    return (
+      <>
+        <ReactSelect<Option, IsMulti, Group>
+          ref={ref}
+          styles={customStyles<Option, IsMulti, Group>(
+            displayErrorMessage,
+            theme
+          )}
+          {...field}
+          {...props}
+          theme={reactSelectTheme}
+          className={selectClassName}
+          isMulti={isMulti}
+          placeholder={placeholder}
+          options={options}
+          value={field.value}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          isSearchable={isSearchable}
+          isClearable={isClearable}
+          isDisabled={isDisabled}
+          isOptionDisabled={(option) => !!option.disabled}
+        />
+        <Error display={displayError} message={displayErrorMessage} />
+      </>
+    );
+  }
+);
