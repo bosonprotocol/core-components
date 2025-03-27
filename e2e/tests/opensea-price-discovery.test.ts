@@ -25,6 +25,7 @@ import {
   Wrapper
 } from "../../packages/core-sdk/src/marketplaces/types";
 import { MSEC_PER_DAY } from "@bosonprotocol/common/src/utils/timestamp";
+import { TransactionResponse } from "@bosonprotocol/common";
 
 const seedWallet = seedWallet24;
 jest.setTimeout(60_000);
@@ -33,9 +34,16 @@ describe("Opensea Price Discovery", () => {
   let sellerCoreSDK: CoreSDK;
   let sellerWallet: Wallet;
   let offer: OfferFieldsFragment;
-  let offerId: string;
   let tokenIds: BigNumber[];
   let openseaSdkSeller: Marketplace;
+  let createOfferAndTokens: (offerParams?: {
+    price: string;
+    sellerDeposit: string;
+    buyerCancelPenalty: string;
+  }) => Promise<{
+    offer: OfferFieldsFragment;
+    tokenIds: BigNumber[];
+  }>;
   beforeEach(async () => {
     // Create the sellerCoreSdk
     ({ coreSDK: sellerCoreSDK, fundedWallet: sellerWallet } =
@@ -44,49 +52,67 @@ describe("Opensea Price Discovery", () => {
     // Create the seller
     await createSeller(sellerCoreSDK, sellerWallet.address);
 
-    // Create a price discovery offer
-    offer = await createOffer(sellerCoreSDK, {
-      exchangeToken: MOCK_ERC20_ADDRESS, // Should be WETH
-      price: "0", // Should be 0 for Price Discovery
-      priceType: PriceType.Discovery,
-      sellerDeposit: "0",
-      buyerCancelPenalty: "0"
-    });
-    offerId = offer.id;
+    createOfferAndTokens = async (
+      offerParams: {
+        price: string;
+        sellerDeposit: string;
+        buyerCancelPenalty: string;
+      } = {
+        price: "0",
+        sellerDeposit: "0",
+        buyerCancelPenalty: "0"
+      }
+    ): Promise<{
+      offer: OfferFieldsFragment;
+      tokenIds: BigNumber[];
+    }> => {
+      // Create a price discovery offer
+      let offer = await createOffer(sellerCoreSDK, {
+        exchangeToken: MOCK_ERC20_ADDRESS, // Should be WETH
+        priceType: PriceType.Discovery,
+        ...offerParams
+      });
+      const offerId = offer.id;
 
-    // Reserve range
-    await (
-      await sellerCoreSDK.reserveRange(
+      // Reserve range
+      await (
+        await sellerCoreSDK.reserveRange(
+          offerId,
+          offer.quantityAvailable,
+          "seller"
+        )
+      ).wait();
+      // Premint some vouchers
+      const txPremint = await sellerCoreSDK.preMint(
         offerId,
-        offer.quantityAvailable,
-        "seller"
-      )
-    ).wait();
-    // Premint some vouchers
-    const txPremint = await sellerCoreSDK.preMint(
-      offerId,
-      offer.quantityAvailable
-    );
-    await sellerCoreSDK.waitForGraphNodeIndexing(txPremint);
-    offer = await sellerCoreSDK.getOfferById(offerId);
-    const rangeStartEx = offer.range?.start as string;
-    const rangeStartTokenId = sellerCoreSDK.getExchangeTokenId(
-      rangeStartEx,
-      offerId
-    );
-    const rangeEndEx = offer.range?.end as string;
-    const rangeEndTokenId = sellerCoreSDK.getExchangeTokenId(
-      rangeEndEx,
-      offerId
-    );
-    tokenIds = [];
-    for (
-      let tokenId = rangeStartTokenId;
-      tokenId.lte(rangeEndTokenId);
-      tokenId = tokenId.add(1)
-    ) {
-      tokenIds.push(tokenId);
-    }
+        offer.quantityAvailable
+      );
+      await sellerCoreSDK.waitForGraphNodeIndexing(txPremint);
+      offer = await sellerCoreSDK.getOfferById(offerId);
+      const rangeStartEx = offer.range?.start as string;
+      const rangeStartTokenId = sellerCoreSDK.getExchangeTokenId(
+        rangeStartEx,
+        offerId
+      );
+      const rangeEndEx = offer.range?.end as string;
+      const rangeEndTokenId = sellerCoreSDK.getExchangeTokenId(
+        rangeEndEx,
+        offerId
+      );
+      const tokenIds: BigNumber[] = [];
+      for (
+        let tokenId = rangeStartTokenId;
+        tokenId.lte(rangeEndTokenId);
+        tokenId = tokenId.add(1)
+      ) {
+        tokenIds.push(tokenId);
+      }
+      return {
+        offer,
+        tokenIds
+      };
+    };
+    ({ offer, tokenIds } = await createOfferAndTokens());
     expect(tokenIds.length).toEqual(Number(offer.quantityInitial));
     expect(Number(offer.quantityAvailable)).toEqual(0);
 
@@ -98,9 +124,10 @@ describe("Opensea Price Discovery", () => {
   });
 
   const getListing = (
+    offer: OfferFieldsFragment,
+    tokenId: string,
     offerer: string,
     price = "1000000000000000000",
-    tokenIndex = 0,
     assetContract: string | undefined = undefined,
     wrapperContract: string | undefined = undefined
   ): Listing => {
@@ -108,7 +135,7 @@ describe("Opensea Price Discovery", () => {
       offerer,
       asset: {
         contract: assetContract || offer.collection.collectionContract.address,
-        tokenId: tokenIds[0].add(tokenIndex).toString()
+        tokenId
       },
       exchangeToken: {
         address: offer.exchangeToken.address,
@@ -153,7 +180,11 @@ describe("Opensea Price Discovery", () => {
 
   describe("Seller- List pre-minted vouchers (without wrapper)", () => {
     test("Seller creates a listing for 1st voucher", async () => {
-      const listing = getListing(sellerWallet.address);
+      const listing = getListing(
+        offer,
+        tokenIds[0].toString(),
+        sellerWallet.address
+      );
       const order = await openseaSdkSeller.createListing(listing);
       expect(order).toBeTruthy();
       expect(order.side).toEqual(Side.Ask);
@@ -172,7 +203,11 @@ describe("Opensea Price Discovery", () => {
         OPENSEA_FEE_RECIPIENT
       );
 
-      const listing = getListing(buyerWallet.address);
+      const listing = getListing(
+        offer,
+        tokenIds[0].toString(),
+        buyerWallet.address
+      );
       await expect(openseaSdkBuyer.createBidOrder(listing)).rejects.toThrow(
         /The offerer does not have the amount needed to create or fulfill/
       );
@@ -187,7 +222,11 @@ describe("Opensea Price Discovery", () => {
         OPENSEA_FEE_RECIPIENT
       );
 
-      const listing = getListing(buyerWallet.address);
+      const listing = getListing(
+        offer,
+        tokenIds[0].toString(),
+        buyerWallet.address
+      );
 
       // Fund the buyer in ERC20 token, but do not approve
       //  (as we expect commitToOffer to do it when required)
@@ -202,7 +241,11 @@ describe("Opensea Price Discovery", () => {
 
   describe("Get Orders", () => {
     test("Get ASK Order", async () => {
-      const listing = getListing(sellerWallet.address);
+      const listing = getListing(
+        offer,
+        tokenIds[0].toString(),
+        sellerWallet.address
+      );
       await openseaSdkSeller.createListing(listing);
 
       const order = await openseaSdkSeller.getOrder(listing.asset, Side.Ask);
@@ -225,7 +268,11 @@ describe("Opensea Price Discovery", () => {
         OPENSEA_FEE_RECIPIENT
       );
 
-      const listing = getListing(buyerWallet.address);
+      const listing = getListing(
+        offer,
+        tokenIds[0].toString(),
+        buyerWallet.address
+      );
       await ensureMintedAndAllowedTokens([buyerWallet], listing.price, false);
       await openseaSdkBuyer.createBidOrder(listing);
 
@@ -258,7 +305,7 @@ describe("Opensea Price Discovery", () => {
         OPENSEA_FEE_RECIPIENT
       );
 
-      listing = getListing(buyerWallet.address);
+      listing = getListing(offer, tokenIds[0].toString(), buyerWallet.address);
       await ensureMintedAndAllowedTokens([buyerWallet], listing.price, false);
       await openseaSdkBuyer.createBidOrder(listing);
 
@@ -304,6 +351,123 @@ describe("Opensea Price Discovery", () => {
         buyerWallet.address.toLowerCase()
       );
       expect(exchange.state).toEqual(ExchangeState.COMMITTED);
+    });
+  });
+
+  describe("Seller - Fulfil a bid offer with price > 0 (without wrapper)", () => {
+    let listing: Listing;
+    let buyerWallet: Wallet;
+    let buyerCoreSDK: CoreSDK;
+    let exchangeId: BigNumber;
+    let offer2: OfferFieldsFragment;
+    let tokenIds2: BigNumber[];
+    let txCommit: TransactionResponse;
+    let openseaFees: string;
+    beforeEach(async () => {
+      // Create another offer and tokenIds
+      ({ offer: offer2, tokenIds: tokenIds2 } = await createOfferAndTokens({
+        price: "1000000000000000000", // 1
+        sellerDeposit: "80000000000000000", // 0.08
+        buyerCancelPenalty: "50000000000000000" // 0.05
+      }));
+      // Buyer creates a bid order for a voucher
+      ({ coreSDK: buyerCoreSDK, fundedWallet: buyerWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet));
+
+      const openseaSdkBuyer = buyerCoreSDK.marketplace(
+        MarketplaceType.OPENSEA,
+        createOpenseaSdk(buyerWallet.privateKey),
+        OPENSEA_FEE_RECIPIENT
+      );
+
+      listing = getListing(
+        offer2,
+        tokenIds2[0].toString(),
+        buyerWallet.address,
+        "1234567890000000000"
+      );
+      openseaFees = openseaSdkBuyer.getFees(listing.price);
+      await ensureMintedAndAllowedTokens([buyerWallet], listing.price, false);
+      await openseaSdkBuyer.createBidOrder(listing);
+
+      ({ exchangeId } = sellerCoreSDK.parseTokenId(listing.asset.tokenId));
+
+      // ensure seller balance and allowance for sellerDeposit
+      await ensureMintedAndAllowedTokens(
+        [sellerWallet],
+        offer2.sellerDeposit,
+        true
+      );
+
+      // Ensure seller deposits up-front for paying sellerDeposit
+      await (
+        await sellerCoreSDK.depositFunds(
+          offer2.seller.id,
+          offer2.sellerDeposit,
+          offer2.exchangeToken.address
+        )
+      ).wait();
+
+      // Ensure all vouchers are approved for Boson Protocol
+      await approveIfNeeded(
+        sellerCoreSDK.contracts?.protocolDiamond as string,
+        listing.asset.contract,
+        sellerCoreSDK
+      );
+      // Call commitToPriceDiscoveryOffer, that will fulfil the Order on Seaport
+      const fulfilmentData = await openseaSdkSeller.generateFulfilmentData(
+        listing.asset
+      );
+      txCommit = await sellerCoreSDK.commitToPriceDiscoveryOffer(
+        buyerWallet.address,
+        listing.asset.tokenId,
+        fulfilmentData
+      );
+      await txCommit.wait();
+    });
+    test("Fulfil a bid offer with positive price", async () => {
+      // Check the token has been transferred to the buyer
+      const owner = await sellerCoreSDK.erc721OwnerOf({
+        contractAddress: listing.asset.contract,
+        tokenId: listing.asset.tokenId
+      });
+      expect(owner.toLowerCase()).toEqual(buyerWallet.address.toLowerCase());
+    });
+
+    test("Buyer cancels after committing to price discovery, with penalty", async () => {
+      await sellerCoreSDK.waitForGraphNodeIndexing(txCommit);
+      // Check the COMMITTED exchange is created
+      let exchange = await sellerCoreSDK.getExchangeById(exchangeId);
+      expect(exchange).toBeTruthy();
+      expect(exchange.buyer.wallet.toLowerCase()).toEqual(
+        buyerWallet.address.toLowerCase()
+      );
+      expect(exchange.state).toEqual(ExchangeState.COMMITTED);
+      // Buyer Cancels
+      const txCancel = await buyerCoreSDK.cancelVoucher(exchangeId);
+      await buyerCoreSDK.waitForGraphNodeIndexing(txCancel);
+      // Check exchange state
+      exchange = await sellerCoreSDK.getExchangeById(exchangeId);
+      expect(exchange).toBeTruthy();
+      expect(exchange.state).toEqual(ExchangeState.CANCELLED);
+      // Check the buyerCancelPenalty is not refunded (nor the openseaFees)
+      const [buyer] = await buyerCoreSDK.getBuyers({
+        buyersFilter: {
+          wallet: buyerWallet.address.toLowerCase()
+        },
+        includeFunds: true,
+        fundsFilter: {
+          tokenAddress: offer2.exchangeToken.address.toLowerCase()
+        }
+      });
+      expect(buyer).toBeTruthy();
+      expect(buyer.funds?.length).toEqual(1);
+      expect(buyer.funds?.[0].availableAmount).toEqual(
+        BigNumber.from(listing.price)
+          .sub(openseaFees)
+          .sub(offer2.buyerCancelPenalty)
+          .toString()
+      );
     });
   });
 
@@ -438,9 +602,10 @@ describe("Opensea Price Discovery", () => {
       );
 
       listing = getListing(
+        offer,
+        tokenIds[0].toString(),
         buyerWallet.address,
         "1000000000000000000",
-        0,
         wrapper.address,
         wrapper.address
       );
@@ -488,7 +653,11 @@ describe("Opensea Price Discovery", () => {
     });
     test("Seller can't fulfil a bid offer on the unwrapped voucher once been wrapped", async () => {
       // Buyer creates a Bid Offer for the unwrapped token
-      const unwrappedListing = getListing(buyerWallet.address);
+      const unwrappedListing = getListing(
+        offer,
+        tokenIds[0].toString(),
+        buyerWallet.address
+      );
       await ensureMintedAndAllowedTokens(
         [buyerWallet],
         unwrappedListing.price,
@@ -560,3 +729,5 @@ describe("Opensea Price Discovery", () => {
     });
   });
 });
+
+// TODO: create another offer with price > 0, sellerDeposit > 0 and buyerCancellationPernalty > 0

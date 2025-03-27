@@ -25,7 +25,7 @@
     "e2e:services:default": "./e2e/run-e2e-services.sh",
     "e2e:services:win32": "cmd /c .\\e2e\\run-e2e-services.cmd",
     "subgraph:deploy:local": "cd ./packages/subgraph && npm run deploy:local",
-    "export-abis": "ts-node ./scripts/export-abis.ts",
+    "export-abis": "ts-node -P tsconfig.base.json ./scripts/export-abis.ts",
     "dr:create": "ts-node -P tsconfig.base.json ./scripts/create-dispute-resolver.ts",
     "dr:update": "ts-node -P tsconfig.base.json ./scripts/update-dispute-resolver.ts",
     "deposit-funds": "ts-node -P tsconfig.base.json ./scripts/deposit-funds.ts",

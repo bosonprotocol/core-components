@@ -312,6 +312,23 @@ export async function createFundedWallet(
   return fundedWallet;
 }
 
+export async function doItAgain<T>(
+  nbOfTries: number,
+  f: () => Promise<T>
+): Promise<T> {
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    try {
+      const ret = await f();
+      return ret;
+    } catch (e) {
+      if (--nbOfTries <= 0) {
+        throw e;
+      }
+    }
+  }
+}
+
 export async function ensureCreatedSeller(sellerWallet: Wallet) {
   const sellerAddress = sellerWallet.address;
   const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
@@ -320,17 +337,20 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
   const contractUri = await getCollectionMetadataUri(sellerCoreSDK);
 
   if (!sellers.length) {
-    const tx = await sellerCoreSDK.createSeller({
-      assistant: sellerAddress,
-      treasury: sellerAddress,
-      admin: sellerAddress,
-      contractUri,
-      royaltyPercentage: "0",
-      authTokenId: "0",
-      authTokenType: 0,
-      metadataUri: sellerMetadataUri
+    const tx = await doItAgain(2, async () => {
+      const tx = await sellerCoreSDK.createSeller({
+        assistant: sellerAddress,
+        treasury: sellerAddress,
+        admin: sellerAddress,
+        contractUri,
+        royaltyPercentage: "0",
+        authTokenId: "0",
+        authTokenType: 0,
+        metadataUri: sellerMetadataUri
+      });
+      await tx.wait();
+      return tx;
     });
-    await tx.wait();
     await sellerCoreSDK.waitForGraphNodeIndexing(tx);
     sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
   }
@@ -795,22 +815,25 @@ export async function createSeller(
   });
   const metadataUri = "ipfs://" + metadataHash;
   const contractUri = await getCollectionMetadataUri(coreSDK);
-  const createSellerTxResponse = await coreSDK.createSeller({
-    assistant: sellerAddress,
-    admin: sellerAddress,
-    treasury: sellerAddress,
-    contractUri,
-    royaltyPercentage: "0",
-    authTokenId: "0",
-    authTokenType: 0,
-    metadataUri,
-    ...overrides.sellerParams
+  const createSellerTxReceipt = await doItAgain(2, async () => {
+    const createSellerTxResponse = await coreSDK.createSeller({
+      assistant: sellerAddress,
+      admin: sellerAddress,
+      treasury: sellerAddress,
+      contractUri,
+      royaltyPercentage: "0",
+      authTokenId: "0",
+      authTokenType: 0,
+      metadataUri,
+      ...overrides.sellerParams
+    });
+    const createSellerTxReceipt = await createSellerTxResponse.wait();
+    return createSellerTxReceipt;
   });
-  const createSellerTxReceipt = await createSellerTxResponse.wait();
+
   const createdSellerId = coreSDK.getCreatedSellerIdFromLogs(
     createSellerTxReceipt.logs
   );
-
   await coreSDK.waitForGraphNodeIndexing(createSellerTxReceipt);
   if (createdSellerId === null) {
     throw new Error("Failed to create seller");

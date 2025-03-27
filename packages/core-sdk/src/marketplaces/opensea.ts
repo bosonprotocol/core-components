@@ -212,10 +212,12 @@ export class OpenSeaMarketplace extends Marketplace {
     return this.convertOsOrder(osOrder);
   }
 
+  public getFees(price: string): string {
+    return BigNumber.from(price).mul(this._feeBasisPoint).div(10000).toString();
+  }
+
   public async createBidOrder(listing: Listing): Promise<Order> {
-    const fees = BigNumber.from(listing.price)
-      .mul(this._feeBasisPoint)
-      .div(10000);
+    const fees = this.getFees(listing.price);
     const domain = undefined;
     const salt = undefined;
     const quantity = undefined;
@@ -234,9 +236,9 @@ export class OpenSeaMarketplace extends Marketplace {
         itemType: 1,
         token: listing.exchangeToken.address,
         identifierOrCriteria: "0",
-        amount: fees.toString(),
-        startAmount: fees.toString(),
-        endAmount: fees.toString(),
+        amount: fees,
+        startAmount: fees,
+        endAmount: fees,
         recipient: this._feeRecipient
       }
     ];
@@ -605,14 +607,9 @@ export class OpenSeaMarketplace extends Marketplace {
       )?.token;
       nft = nftAsk;
     }
-    const fees = price
-      ? BigNumber.from(price).mul(this._feeBasisPoint).div(10000).toString()
-      : "0";
+    const fees = price ? this.getFees(price) : "0";
     const sellerProfit = price
-      ? BigNumber.from(price)
-          .mul(10000 - this._feeBasisPoint)
-          .div(10000)
-          .toString()
+      ? BigNumber.from(price).sub(fees).toString()
       : "0";
     return {
       offerer: parameters.offerer,

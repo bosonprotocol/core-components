@@ -371,7 +371,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-8453-0/sellers/blacklist.json",
       offersWhiteList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-8453-0/offers/whitelist.json",
-      defaultDisputeResolverId: "4", // TODO: TO BE VERIFIED
+      defaultDisputeResolverId: "4",
       defaultTokens: chainIdToDefaultTokens.get(8453),
       nativeCoin: chainIdToInfo.get(8453),
       getTxExplorerUrl: chainIdToGraphTx.get(8453),
