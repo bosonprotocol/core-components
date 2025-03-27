@@ -322,7 +322,7 @@ export async function doItAgain<T>(
       const ret = await f();
       return ret;
     } catch (e) {
-      if (--nbOfTries == 0) {
+      if (--nbOfTries <= 0) {
         throw e;
       }
     }
