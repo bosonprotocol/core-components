@@ -3,6 +3,7 @@ import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
 import { mutationKeys } from "./mutationKeys";
 import { GetWalletAuthResponse } from "@bosonprotocol/roblox-sdk";
 import { productsPageSize } from "../../components/widgets/roblox/components/const";
+import { useAccount } from "../connection/connection";
 type UseGetRobloxWalletAuthProps = {
   sellerId: string;
   options: { enabled: boolean };
@@ -11,10 +12,11 @@ export const useGetRobloxWalletAuth = ({
   sellerId,
   options
 }: UseGetRobloxWalletAuthProps) => {
+  const { address = "" } = useAccount();
   const { backendOrigin } = useRobloxConfigContext();
   const queryClient = useQueryClient();
   return useQuery(
-    mutationKeys.getWalletAuth({ backendOrigin }),
+    mutationKeys.getWalletAuth({ backendOrigin, address }),
     async () => {
       const response = await fetch(`${backendOrigin}/wallet-auth`, {
         credentials: "include"
