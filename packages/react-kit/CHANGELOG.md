@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.39.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.38.0...@bosonprotocol/react-kit@0.39.0) (2025-03-31)
+
+
+### Bug Fixes
+
+* select ref types ([#935](https://github.com/bosonprotocol/core-components/issues/935)) ([c8f7509](https://github.com/bosonprotocol/core-components/commit/c8f750993be295144b32bea661d1ced82d1ea347))
+
+
+### Features
+
+* add ref to select ([#934](https://github.com/bosonprotocol/core-components/issues/934)) ([b837e0e](https://github.com/bosonprotocol/core-components/commit/b837e0e4bcc8cfb9f3507f9fea1f9a6c274b9a42))
+* add tag prop to grid component ([#928](https://github.com/bosonprotocol/core-components/issues/928)) ([48f5818](https://github.com/bosonprotocol/core-components/commit/48f5818823d6aa0d1f15f621b9ae830981fb7384))
+* exports erc20 hooks ([#931](https://github.com/bosonprotocol/core-components/issues/931)) ([1261b2a](https://github.com/bosonprotocol/core-components/commit/1261b2add29251d9d18629ab37895b3b3d8bbf10))
+* make uploaded single pdf clickable ([#927](https://github.com/bosonprotocol/core-components/issues/927)) ([bd047df](https://github.com/bosonprotocol/core-components/commit/bd047df6efc836cdfa4e067c1b007cd90f3c228f))
+* remove explicit onclick prop typography ([#930](https://github.com/bosonprotocol/core-components/issues/930)) ([15c7403](https://github.com/bosonprotocol/core-components/commit/15c7403cd9356bd904b1c036aab0d7fe6bfb1ba1))
+
+
+
+
+
 # [0.38.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.37.0...@bosonprotocol/react-kit@0.38.0) (2025-03-19)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.30.4...@bosonprotocol/common@1.30.5) (2025-03-31)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
 ## [1.30.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.30.3...@bosonprotocol/common@1.30.4) (2025-03-19)
 
 **Note:** Version bump only for package @bosonprotocol/common
