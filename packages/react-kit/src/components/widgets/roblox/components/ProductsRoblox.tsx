@@ -24,6 +24,8 @@ import { OfferVariantViewProps } from "../../../modal/components/Commit/OfferVar
 const Wrapper = styled(Grid).attrs({
   paddingTop: "5rem",
   paddingBottom: "5rem",
+  paddingLeft: "1.5rem",
+  paddingRight: "1.5rem",
   alignItems: "flex-start"
 })`
   flex: 1;
