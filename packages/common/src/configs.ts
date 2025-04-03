@@ -176,6 +176,38 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: undefined
+    },
+    {
+      envName: "testing",
+      chainId: 421614,
+      configId: "testing-421614-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-421614-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/testing-421614-0/offers/whitelist.json",
+      defaultDisputeResolverId: "4", // TODO: to be verified
+      defaultTokens: chainIdToDefaultTokens.get(421614),
+      nativeCoin: chainIdToInfo.get(421614),
+      getTxExplorerUrl: chainIdToGraphTx.get(421614),
+      subgraphUrl:
+        "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-arbitrum/latest/gn",
+      jsonRpcUrl:
+        "https://arbitrum-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        protocolDiamond: protocolAddresses.testing[421614].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.testing[421614].priceDiscoveryClient,
+        forwarder: "",
+        openseaWrapper: ""
+      },
+      metaTx: {
+        relayerUrl:
+          "https://meta-tx-gateway-testing-arbitrum-114403180314.europe-west2.run.app",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: undefined
     }
   ],
   staging: [
@@ -301,6 +333,37 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: undefined
+    },
+    {
+      envName: "staging",
+      chainId: 421614,
+      configId: "staging-421614-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-421614-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/staging-421614-0/offers/whitelist.json",
+      defaultDisputeResolverId: "4", // TODO: to be verified
+      defaultTokens: chainIdToDefaultTokens.get(421614),
+      nativeCoin: chainIdToInfo.get(421614),
+      getTxExplorerUrl: chainIdToGraphTx.get(421614),
+      subgraphUrl:
+        "https://api.0xgraph.xyz/api/public/da9367fc-3453-4e08-824f-19fb4281b6a1/subgraphs/boson-staging-arbitrum/latest/gn",
+      jsonRpcUrl:
+        "https://arbitrum-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        protocolDiamond: protocolAddresses.staging[421614].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.staging[421614].priceDiscoveryClient,
+        forwarder: ""
+      },
+      metaTx: {
+        relayerUrl:
+          "https://meta-tx-gateway-staging-arbitrum-114403180314.europe-west2.run.app",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: undefined
     }
   ],
   production: [
@@ -421,6 +484,37 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       metaTx: {
         relayerUrl:
           "https://meta-tx-gateway-optimism-114403180314.europe-west2.run.app",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: undefined
+    },
+    {
+      envName: "production",
+      chainId: 42161,
+      configId: "production-42161-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-42161-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-42161-0/offers/whitelist.json",
+      defaultDisputeResolverId: "4", // TODO: TO BE VERIFIED
+      defaultTokens: chainIdToDefaultTokens.get(42161),
+      nativeCoin: chainIdToInfo.get(42161),
+      getTxExplorerUrl: chainIdToGraphTx.get(42161),
+      subgraphUrl:
+        "https://api.0xgraph.xyz/api/public/b521f6b7-36c4-4117-8ad5-6b21c6eeb195/subgraphs/boson-arbitrum/latest/gn",
+      jsonRpcUrl:
+        "https://arbitrum-mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e",
+      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        protocolDiamond: protocolAddresses.production[42161].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.production[42161].priceDiscoveryClient,
+        forwarder: ""
+      },
+      metaTx: {
+        relayerUrl:
+          "https://meta-tx-gateway-arbitrum-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
       lens: undefined

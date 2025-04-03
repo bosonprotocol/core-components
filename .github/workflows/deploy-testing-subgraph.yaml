@@ -57,6 +57,10 @@ jobs:
         run: cd ./packages/subgraph && npm run deploy:testing:optimism
         env:
           ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
+      - name: Deploy subgraph to arbitrum sepolia
+        run: cd ./packages/subgraph && npm run deploy:testing:arbitrum
+        env:
+          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
       - name: Commit & Push
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
