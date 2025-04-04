@@ -5,6 +5,7 @@ import polygonMaticLogo from "../../assets/svg/polygon-matic-logo.svg";
 import polygonSquareLogoUrl from "../../assets/svg/polygon_square_logo.svg";
 import optimismSquareLogoUrl from "../../assets/svg/optimism_square_logo.svg";
 import optimismLogoUrl from "../../assets/svg/optimistic_ethereum.svg";
+import arbitrumLogoUrl from "../../assets/svg/0923_One_Logos_Logomark_RGB.svg";
 import ms from "ms";
 
 import {
@@ -183,6 +184,42 @@ const CHAIN_INFO: ChainInfoMap = {
     logoUrl: optimismLogoUrl,
     circleLogoUrl: optimismLogoUrl,
     squareLogoUrl: optimismSquareLogoUrl,
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18
+    },
+    defaultListUrl: ""
+  },
+  [ChainId.ARBITRUM_SEPOLIA]: {
+    networkType: NetworkType.L2,
+    blockWaitMsBeforeWarning: ms(`10m`),
+    bridge: "https://testnets.superbridge.app/arbitrum-sepolia",
+    docs: "https://docs.arbitrum.io",
+    explorer: "https://sepolia.arbiscan.io/",
+    infoLink: "https://info.uniswap.org/#/arbitrum-sepolia/",
+    label: "Arbitrum Sepolia",
+    logoUrl: arbitrumLogoUrl,
+    circleLogoUrl: arbitrumLogoUrl,
+    squareLogoUrl: arbitrumLogoUrl,
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18
+    },
+    defaultListUrl: ""
+  },
+  [ChainId.ARBITRUM_ONE]: {
+    networkType: NetworkType.L2,
+    blockWaitMsBeforeWarning: ms(`10m`),
+    bridge: "https://arbitrum.superbridge.app",
+    docs: "https://docs.arbitrum.io",
+    explorer: "https://arbiscan.io/",
+    infoLink: "https://info.uniswap.org/#/arbitrum/",
+    label: "Arbitrum One",
+    logoUrl: arbitrumLogoUrl,
+    circleLogoUrl: arbitrumLogoUrl,
+    squareLogoUrl: arbitrumLogoUrl,
     nativeCurrency: {
       name: "Ether",
       symbol: "ETH",

@@ -13,14 +13,17 @@ program
         "testing_sepolia",
         "testing_base",
         "testing_optimism",
+        "testing_arbitrum",
         "staging_amoy",
         "staging_sepolia",
         "staging_base",
         "staging_optimism",
+        "staging_arbitrum",
         "production_polygon",
         "production_ethereum",
         "production_base",
-        "production_optimism"
+        "production_optimism",
+        "production_arbitrum"
       ])
   )
   .parse(process.argv);

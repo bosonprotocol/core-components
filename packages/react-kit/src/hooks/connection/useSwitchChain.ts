@@ -37,6 +37,8 @@ function getRpcUrl(
     case ChainId_BASE_SEPOLIA: // BASE SEPOLIA
     case ChainId.OPTIMISM:
     case ChainId.OPTIMISM_SEPOLIA:
+    case ChainId.ARBITRUM_ONE:
+    case ChainId.ARBITRUM_SEPOLIA:
       return RPC_URLS[chainId][0];
     case localChainId: {
       if (localRpcUrl) {

@@ -32,6 +32,12 @@ export const NATIVE_TOKENS: { [key: number]: ITokenInfo } = {
     decimals: 18,
     symbol: "ETH"
   },
+  42161: {
+    // Arbitrum
+    name: "Ether",
+    decimals: 18,
+    symbol: "ETH"
+  },
   10: {
     // Base
     name: "Ether",
@@ -46,6 +52,12 @@ export const NATIVE_TOKENS: { [key: number]: ITokenInfo } = {
   },
   11155420: {
     // Optimism Sepolia
+    name: "Ether",
+    decimals: 18,
+    symbol: "ETH"
+  },
+  421614: {
+    // Arbitrum Sepolia
     name: "Ether",
     decimals: 18,
     symbol: "ETH"

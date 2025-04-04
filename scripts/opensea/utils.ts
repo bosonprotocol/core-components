@@ -25,11 +25,17 @@ export function getOpenSeaChain(chainId: ChainId): OSChain {
     case 10: {
       return OSChain.Optimism;
     }
+    case 42161: {
+      return OSChain.Arbitrum;
+    }
     case 84532: {
       return OSChain.BaseSepolia;
     }
     case 11155420: {
       return OSChain.OptimismSepolia;
+    }
+    case 421614: {
+      return OSChain.ArbitrumSepolia;
     }
     case 31337: {
       return "hardhat" as OSChain;
@@ -52,6 +58,7 @@ export function createOpenSeaSDK(
     case 1:
     case 137:
     case 10:
+    case 42161:
     case 8453: {
       openseaUrl = API_BASE_MAINNET;
       break;

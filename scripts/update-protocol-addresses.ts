@@ -46,7 +46,8 @@ const CONFIGS: Record<
       "80002-amoy",
       "11155111-sepolia",
       "84532-basesepolia",
-      "11155420-optimismsepolia"
+      "11155420-optimismsepolia",
+      "421614-arbitrum-sepolia"
     ],
     suffix: "test"
   },
@@ -55,12 +56,19 @@ const CONFIGS: Record<
       "80002-amoy",
       "11155111-sepolia",
       "84532-basesepolia",
-      "11155420-optimismsepolia"
+      "11155420-optimismsepolia",
+      "421614-arbitrum-sepolia"
     ],
     suffix: "staging"
   },
   production: {
-    chains: ["1-mainnet", "137-polygon", "8453-base", "10-optimism"],
+    chains: [
+      "1-mainnet",
+      "137-polygon",
+      "8453-base",
+      "10-optimism",
+      "42161-arbitrum"
+    ],
     suffix: "prod"
   }
 };

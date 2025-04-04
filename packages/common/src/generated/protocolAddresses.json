@@ -8,6 +8,10 @@
       "protocolDiamond": "0x7de418a7ce94debd057c34ebac232e7027634ade",
       "priceDiscoveryClient": "0xFDD51a6DB1cE50d1C33b98782035f3cB1E7E1f14"
     },
+    "421614": {
+      "protocolDiamond": "0x7de418a7ce94debd057c34ebac232e7027634ade",
+      "priceDiscoveryClient": "0xFFcd4c407B60B0d4351945484F9354d2C9E34EA1"
+    },
     "11155111": {
       "protocolDiamond": "0x7de418a7ce94debd057c34ebac232e7027634ade",
       "priceDiscoveryClient": "0x789d8727b9ae0A8546489232EB55b6fBE86b21Ac"
@@ -25,6 +29,10 @@
     "84532": {
       "protocolDiamond": "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
       "priceDiscoveryClient": "0x295044BCfB2E84eDD40fEa5970df6B26CAC9a703"
+    },
+    "421614": {
+      "protocolDiamond": "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
+      "priceDiscoveryClient": "0x0BD0C8c91800A4444551c52f1eC0C3b6A129D2aB"
     },
     "11155111": {
       "protocolDiamond": "0x26f643746cbc918b46c2d47edca68c4a6c98ebe6",
@@ -49,6 +57,10 @@
       "priceDiscoveryClient": "0xb60cf39Fb18e5111174f346d0f39521ef6531fD4"
     },
     "8453": {
+      "protocolDiamond": "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+      "priceDiscoveryClient": "0xd8C3B2232B3d597156148f757Bb2bd665843aABd"
+    },
+    "42161": {
       "protocolDiamond": "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
       "priceDiscoveryClient": "0xd8C3B2232B3d597156148f757Bb2bd665843aABd"
     }
