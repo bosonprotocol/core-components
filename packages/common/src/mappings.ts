@@ -5,11 +5,13 @@ export const chainIdToInfo = new Map<ChainId, ProtocolConfig["nativeCoin"]>([
   [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [1, { decimals: "18", name: "Ether", symbol: "ETH" }],
   [10, { decimals: "18", name: "Ether", symbol: "ETH" }],
+  [42161, { decimals: "18", name: "Ether", symbol: "ETH" }],
   [11155111, { decimals: "18", name: "sETH", symbol: "sETH" }],
   [31337, { decimals: "18", name: "Ether", symbol: "ETH" }],
   [84532, { decimals: "18", name: "Ether", symbol: "ETH" }],
   [8453, { decimals: "18", name: "Ether", symbol: "ETH" }],
-  [11155420, { decimals: "18", name: "Ether", symbol: "ETH" }]
+  [11155420, { decimals: "18", name: "Ether", symbol: "ETH" }],
+  [421614, { decimals: "18", name: "Ether", symbol: "ETH" }]
 ]);
 
 export const chainIdToGraphTx = new Map<
@@ -86,6 +88,24 @@ export const chainIdToGraphTx = new Map<
         return `https://sepolia-optimistic.etherscan.io/address/${txHash}`;
       }
       return `https://sepolia-optimistic.etherscan.io/tx/${txHash}`;
+    }
+  ],
+  [
+    42161,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://arbiscan.io/address/${txHash}`;
+      }
+      return `https://arbiscan.io/tx/${txHash}`;
+    }
+  ],
+  [
+    421614,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://sepolia.arbiscan.io/address/${txHash}`;
+      }
+      return `https://sepolia.arbiscan.io/tx/${txHash}`;
     }
   ],
   [31337, (txHash = "") => `${txHash}`] // TODO: add url
@@ -255,6 +275,52 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
         symbol: "BOSON",
         name: "Boson Token (PoS)",
         address: "0xe8637906721051d860af222e6021826887d9e358",
+        decimals: "18"
+      }
+    ]
+  ],
+  [
+    421614,
+    [
+      {
+        symbol: "ETH",
+        name: "ETH",
+        address: "0x0000000000000000000000000000000000000000",
+        decimals: "18"
+      },
+      {
+        symbol: "WETH",
+        name: "Wrapped Ether",
+        address: "0x980B62Da83eFf3D4576C647993b0c1D7faf17c73",
+        decimals: "18"
+      },
+      {
+        symbol: "BOSON",
+        name: "Boson Token",
+        address: "0x9Aa2Be49567a2C86b30c703662E376146deD9B32",
+        decimals: "18"
+      }
+    ]
+  ],
+  [
+    42161,
+    [
+      {
+        symbol: "ETH",
+        name: "ETH",
+        address: "0x0000000000000000000000000000000000000000",
+        decimals: "18"
+      },
+      {
+        symbol: "WETH",
+        name: "Wrapped Ether",
+        address: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+        decimals: "18"
+      },
+      {
+        symbol: "BOSON",
+        name: "Boson Token",
+        address: "0x54B334d68cf5382feE7FBBE496FCf1e76D9BA000",
         decimals: "18"
       }
     ]

@@ -8,19 +8,22 @@
       "amoy": "boson-testing-amoy",
       "sepolia": "boson-testing-sepolia",
       "base": "boson-testing-base",
-      "optimism": "boson-testing-optimism"
+      "optimism": "boson-testing-optimism",
+      "arbitrum": "boson-testing-arbitrum"
     },
     "staging": {
       "amoy": "boson-staging-amoy",
       "sepolia": "boson-staging-sepolia",
       "base": "boson-staging-base",
-      "optimism": "boson-staging-optimism"
+      "optimism": "boson-staging-optimism",
+      "arbitrum": "boson-staging-arbitrum"
     },
     "production": {
       "polygon": "boson-polygon",
       "ethereum": "boson-ethereum",
       "base": "boson-base",
-      "optimism": "boson-optimism"
+      "optimism": "boson-optimism",
+      "arbitrum": "boson-arbitrum"
     }
   },
   "dependencies": {
@@ -44,14 +47,17 @@
     "manifest:testing:sepolia": "npm run manifest -- testing testing-11155111-0 && npm run codegen",
     "manifest:testing:base": "npm run manifest -- testing testing-84532-0 && npm run codegen",
     "manifest:testing:optimism": "npm run manifest -- testing testing-11155420-0 && npm run codegen",
+    "manifest:testing:arbitrum": "npm run manifest -- testing testing-421614-0 && npm run codegen",
     "manifest:staging:amoy": "npm run manifest -- staging staging-80002-0 && npm run codegen",
     "manifest:staging:sepolia": "npm run manifest -- staging staging-11155111-0 && npm run codegen",
     "manifest:staging:base": "npm run manifest -- staging staging-84532-0 && npm run codegen",
     "manifest:staging:optimism": "npm run manifest -- staging staging-11155420-0 && npm run codegen",
+    "manifest:staging:arbitrum": "npm run manifest -- staging staging-421614-0 && npm run codegen",
     "manifest:production:polygon": "npm run manifest -- production production-137-0 && npm run codegen",
     "manifest:production:ethereum": "npm run manifest -- production production-1-0 && npm run codegen",
     "manifest:production:base": "npm run manifest -- production production-8453-0 && npm run codegen",
     "manifest:production:optimism": "npm run manifest -- production production-10-0 && npm run codegen",
+    "manifest:production:arbitrum": "npm run manifest -- production production-42161-0 && npm run codegen",
     "codegen": "graph codegen",
     "create:local": "graph create --node http://localhost:8020/ boson/corecomponents",
     "remove:local": "graph remove --node http://localhost:8020/ boson/corecomponents",
@@ -69,6 +75,9 @@
     "deploy:cmd:testing:optimism": "run-script-os",
     "deploy:cmd:testing:optimism:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_testing_optimism",
     "deploy:cmd:testing:optimism:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_testing_optimism%",
+    "deploy:cmd:testing:arbitrum": "run-script-os",
+    "deploy:cmd:testing:arbitrum:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_testing_arbitrum",
+    "deploy:cmd:testing:arbitrum:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_testing_arbitrum%",
     "deploy:cmd:staging:amoy": "run-script-os",
     "deploy:cmd:staging:amoy:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_staging_amoy",
     "deploy:cmd:staging:amoy:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_staging_amoy%",
@@ -81,6 +90,9 @@
     "deploy:cmd:staging:optimism": "run-script-os",
     "deploy:cmd:staging:optimism:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_staging_optimism",
     "deploy:cmd:staging:optimism:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_staging_optimism%",
+    "deploy:cmd:staging:arbitrum": "run-script-os",
+    "deploy:cmd:staging:arbitrum:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_staging_arbitrum",
+    "deploy:cmd:staging:arbitrum:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_staging_arbitrum%",
     "deploy:cmd:production:polygon": "run-script-os",
     "deploy:cmd:production:polygon:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_production_polygon",
     "deploy:cmd:production:polygon:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_production_polygon%",
@@ -93,19 +105,25 @@
     "deploy:cmd:production:optimism": "run-script-os",
     "deploy:cmd:production:optimism:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_production_optimism",
     "deploy:cmd:production:optimism:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_production_optimism%",
+    "deploy:cmd:production:arbitrum": "run-script-os",
+    "deploy:cmd:production:arbitrum:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version $npm_package_config_production_arbitrum",
+    "deploy:cmd:production:arbitrum:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% %npm_package_config_production_arbitrum%",
     "deploy:local": "npm run manifest:local && npm run create:local && npm run deploy:cmd:local",
     "deploy:testing:amoy": "npm run manifest:testing:amoy && npm run deploy:cmd:testing:amoy && npm run post-deploy:ormi -- --env=testing_amoy",
     "deploy:testing:sepolia": "npm run manifest:testing:sepolia && npm run deploy:cmd:testing:sepolia && npm run post-deploy:ormi -- --env=testing_sepolia",
     "deploy:testing:base": "npm run manifest:testing:base && npm run deploy:cmd:testing:base && npm run post-deploy:ormi -- --env=testing_base",
     "deploy:testing:optimism": "npm run manifest:testing:optimism && npm run deploy:cmd:testing:optimism && npm run post-deploy:ormi -- --env=testing_optimism",
+    "deploy:testing:arbitrum": "npm run manifest:testing:arbitrum && npm run deploy:cmd:testing:arbitrum && npm run post-deploy:ormi -- --env=testing_arbitrum",
     "deploy:staging:amoy": "npm run manifest:staging:amoy && npm run deploy:cmd:staging:amoy && npm run post-deploy:ormi -- --env=staging_amoy",
     "deploy:staging:sepolia": "npm run manifest:staging:sepolia && npm run deploy:cmd:staging:sepolia && npm run post-deploy:ormi -- --env=staging_sepolia",
     "deploy:staging:base": "npm run manifest:staging:base && npm run deploy:cmd:staging:base && npm run post-deploy:ormi -- --env=staging_base",
     "deploy:staging:optimism": "npm run manifest:staging:optimism && npm run deploy:cmd:staging:optimism && npm run post-deploy:ormi -- --env=staging_optimism",
+    "deploy:staging:arbitrum": "npm run manifest:staging:arbitrum && npm run deploy:cmd:staging:arbitrum && npm run post-deploy:ormi -- --env=staging_arbitrum",
     "deploy:production:polygon": "npm run manifest:production:polygon && npm run deploy:cmd:production:polygon && npm run post-deploy:ormi -- --env=production_polygon",
     "deploy:production:ethereum": "npm run manifest:production:ethereum && npm run deploy:cmd:production:ethereum && npm run post-deploy:ormi -- --env=production_ethereum",
     "deploy:production:base": "npm run manifest:production:base && npm run deploy:cmd:production:base && npm run post-deploy:ormi -- --env=production_base",
     "deploy:production:optimism": "npm run manifest:production:optimism && npm run deploy:cmd:production:optimism && npm run post-deploy:ormi -- --env=production_optimism",
+    "deploy:production:arbitrum": "npm run manifest:production:arbitrum && npm run deploy:cmd:production:arbitrum && npm run post-deploy:ormi -- --env=production_arbitrum",
     "test": "npm run manifest:local && graph test"
   }
 }

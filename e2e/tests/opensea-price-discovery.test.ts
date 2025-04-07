@@ -354,7 +354,8 @@ describe("Opensea Price Discovery", () => {
     });
   });
 
-  describe("Seller - Fulfil a bid offer with price > 0 (without wrapper)", () => {
+  // TODO: reactivate the following tests block when upgrading protocol to the main branch (v2.4.2+)
+  xdescribe("Seller - Fulfil a bid offer with price > 0 (without wrapper)", () => {
     let listing: Listing;
     let buyerWallet: Wallet;
     let buyerCoreSDK: CoreSDK;

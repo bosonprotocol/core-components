@@ -82,6 +82,10 @@ export const FALLBACK_URLS = {
     // "Fallback" URLs
     "https://arbitrum.public-rpc.com"
   ],
+  [ChainId.ARBITRUM_SEPOLIA]: [
+    // "Safe" URLs
+    "https://sepolia-rollup.arbitrum.io/rpc"
+  ],
   [ChainId.ARBITRUM_GOERLI]: [
     // "Safe" URLs
     "https://goerli-rollup.arbitrum.io/rpc"
@@ -177,12 +181,16 @@ export const getRpcUrls = (infuraKey: string) => ({
     ...FALLBACK_URLS[ChainId.OPTIMISM_SEPOLIA]
   ],
   [ChainId.ARBITRUM_ONE]: [
-    `https://arbitrum-mainnet.infura.io/v3/${infuraKey}`,
+    `https://arbitrum-one.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.ARBITRUM_ONE]
   ],
   [ChainId.ARBITRUM_GOERLI]: [
     `https://arbitrum-goerli.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.ARBITRUM_GOERLI]
+  ],
+  [ChainId.ARBITRUM_SEPOLIA]: [
+    `https://arbitrum-sepolia.infura.io/v3/${infuraKey}`,
+    ...FALLBACK_URLS[ChainId.ARBITRUM_SEPOLIA]
   ],
   [ChainId.POLYGON]: [
     `https://polygon-mainnet.infura.io/v3/${infuraKey}`,

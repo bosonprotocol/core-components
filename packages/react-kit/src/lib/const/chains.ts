@@ -28,6 +28,7 @@ export const CHAIN_IDS_TO_NAMES = {
   [ChainId.CELO_ALFAJORES]: "celo_alfajores",
   [ChainId.ARBITRUM_ONE]: "arbitrum",
   [ChainId.ARBITRUM_GOERLI]: "arbitrum_goerli",
+  [ChainId.ARBITRUM_SEPOLIA]: "arbitrum_sepolia",
   [ChainId.OPTIMISM]: "optimism",
   [ChainId.OPTIMISM_GOERLI]: "optimism_goerli",
   [ChainId.OPTIMISM_SEPOLIA]: "optimism_sepolia",
@@ -50,6 +51,7 @@ export const CHAIN_IDS_TO_FRIENDLY_NAMES = {
   [ChainId.CELO_ALFAJORES]: "Celo Alfajores",
   [ChainId.ARBITRUM_ONE]: "Arbitrum",
   [ChainId.ARBITRUM_GOERLI]: "Arbitrum Goerli",
+  [ChainId.ARBITRUM_SEPOLIA]: "Arbitrum Sepolia",
   [ChainId.OPTIMISM]: "Optimism",
   [ChainId.OPTIMISM_GOERLI]: "Optimism Goerli",
   [ChainId.OPTIMISM_SEPOLIA]: "Optimism Sepolia",
@@ -102,6 +104,7 @@ export const TESTNET_CHAIN_IDS = [
   ChainId_POLYGON_AMOY,
   ChainId_BASE_SEPOLIA,
   ChainId.OPTIMISM_SEPOLIA,
+  ChainId.ARBITRUM_SEPOLIA,
   LocalChainId
   // ChainId.ARBITRUM_GOERLI,
   // ChainId.CELO_ALFAJORES
@@ -132,7 +135,8 @@ export type SupportedL1ChainId = (typeof L1_CHAIN_IDS)[number];
  * The expectation is that all of these networks have immediate transaction confirmation.
  */
 export const L2_CHAIN_IDS = [
-  // ChainId.ARBITRUM_ONE,
+  ChainId.ARBITRUM_ONE,
+  ChainId.ARBITRUM_SEPOLIA,
   // ChainId.ARBITRUM_GOERLI,
   ChainId.OPTIMISM,
   // ChainId.OPTIMISM_GOERLI
@@ -161,9 +165,10 @@ export function getChainPriority(chainId: number): number {
     case ChainId.BASE:
     case ChainId_BASE_SEPOLIA:
       return 1;
-    // case ChainId.ARBITRUM_ONE:
-    // case ChainId.ARBITRUM_GOERLI:
-    //   return 2;
+    case ChainId.ARBITRUM_ONE:
+    case ChainId.ARBITRUM_SEPOLIA:
+      // case ChainId.ARBITRUM_GOERLI:
+      return 2;
     case ChainId.OPTIMISM:
     case ChainId.OPTIMISM_SEPOLIA:
       return 3;
