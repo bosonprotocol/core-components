@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.17](https://github.com/bosonprotocol/core-components/compare/meta-tx-gateway@1.7.16...meta-tx-gateway@1.7.17) (2025-04-08)
+
+**Note:** Version bump only for package meta-tx-gateway
+
+
+
+
+
 ## [1.7.16](https://github.com/bosonprotocol/core-components/compare/meta-tx-gateway@1.7.15...meta-tx-gateway@1.7.16) (2025-03-31)
 
 **Note:** Version bump only for package meta-tx-gateway
