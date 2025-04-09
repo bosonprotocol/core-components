@@ -12,6 +12,7 @@ import { colors, getCssVar } from "../../../../../theme";
 import { useModal } from "../../../useModal";
 import { RequestShipmentModalProps } from "../../RequestShipment/RequestShipmentModal";
 import ThemedButton from "../../../../ui/ThemedButton";
+import { getExchangeTokenId } from "../../../../../lib/utils/exchange";
 
 const DividerWrapper = styled.div`
   width: 100%;
@@ -131,7 +132,8 @@ export const RedeemWhatsNext = ({
               href={getOpenSeaUrl({
                 configId: config.configId,
                 envName: config.envName,
-                exchange
+                tokenId: getExchangeTokenId(exchange, config.envName),
+                contractAddress: exchange.seller.voucherCloneAddress
               })}
               target="_blank"
               rel="noreferrer"
