@@ -98,17 +98,15 @@ const openSeaUrlMap = new Map([
 export const getOpenSeaUrl = ({
   configId,
   envName,
-  exchange
+  tokenId,
+  contractAddress
 }: {
   envName: EnvironmentType;
   configId: ConfigId;
-  exchange: Exchange | undefined;
+  tokenId: string;
+  contractAddress: string;
 }): string => {
-  if (!exchange) {
-    return "";
-  }
-  const tokenId = getExchangeTokenId(exchange, envName);
   const urlFn = openSeaUrlMap.get(envName)?.get(configId);
 
-  return urlFn?.(tokenId, exchange.seller.voucherCloneAddress) || "";
+  return urlFn?.(tokenId, contractAddress) || "";
 };
