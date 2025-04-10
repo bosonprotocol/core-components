@@ -1,6 +1,5 @@
 import { BigNumber } from "ethers";
-import { Exchange } from "../../types/exchange";
-import { EnvironmentType } from "@bosonprotocol/core-sdk";
+import { EnvironmentType, subgraph } from "@bosonprotocol/core-sdk";
 
 const PROTOCOL_DEPLOYMENT_TIMES = {
   v221: {
@@ -12,7 +11,7 @@ const PROTOCOL_DEPLOYMENT_TIMES = {
 };
 
 export const getExchangeTokenId = (
-  exchange: Exchange,
+  exchange: subgraph.ExchangeFieldsFragment,
   envName: EnvironmentType
 ): string => {
   if (
