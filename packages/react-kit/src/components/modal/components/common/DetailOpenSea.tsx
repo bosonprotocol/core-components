@@ -1,7 +1,6 @@
 import { exchanges, subgraph } from "@bosonprotocol/core-sdk";
 import { ArrowSquareOut } from "phosphor-react";
 import React, { useMemo } from "react";
-import { Exchange } from "../../../../types/exchange";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
 
 import { OpenSeaButton } from "./detail/Detail.style";
@@ -9,16 +8,12 @@ import { getOpenSeaUrl } from "../../../../lib/opensea/getOpenSeaUrl";
 import { getExchangeTokenId } from "../../../../lib/utils/exchange";
 
 interface Props {
-  exchange?: Exchange;
+  exchange?: subgraph.ExchangeFieldsFragment;
 }
 
 export default function DetailOpenSea({ exchange }: Props) {
   const { envName, configId } = useEnvContext();
-  const exchangeStatus = exchange
-    ? exchanges.getExchangeState(
-        exchange as unknown as subgraph.ExchangeFieldsFragment
-      )
-    : null;
+  const exchangeStatus = exchange ? exchanges.getExchangeState(exchange) : null;
   const isToRedeem =
     !exchangeStatus || exchangeStatus === subgraph.ExchangeState.COMMITTED;
 
