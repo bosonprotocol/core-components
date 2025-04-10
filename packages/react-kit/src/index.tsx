@@ -98,7 +98,7 @@ export * from "./lib/offer/getOfferAnimationUrl";
 export * from "./lib/offer/getOfferVariations";
 export * from "./components/modal/components/common/detail/DetailSlider";
 export * from "./components/modal/components/common/detail/SlickSlider";
-export * from "./components/modal/components/common/DetailOpenSea";
+export { default as DetailOpenSea } from "./components/modal/components/common/DetailOpenSea";
 export * from "./theme";
 export * from "./colors";
 export * from "./types/helpers";
