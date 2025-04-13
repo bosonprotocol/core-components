@@ -32,12 +32,16 @@ export class EthersAdapter implements Web3LibAdapter {
   private _provider: Provider;
   uuid: string;
 
-  constructor(provider: Provider, signer?: Signer) {
+  constructor(provider: Provider, signer?: Signer, connectedSigner?: Signer) {
     this._provider = provider;
     this.uuid = crypto.randomUUID();
-    this._signer = signer
-      ? signer.connect(this._provider)
-      : this._provider.getSigner();
+    if (connectedSigner) {
+      this._signer = connectedSigner;
+    } else {
+      this._signer = signer
+        ? signer.connect(this._provider)
+        : this._provider.getSigner();
+    }
   }
 
   public async getSignerAddress() {
