@@ -92,7 +92,7 @@ const envNameToConfig: Record<
       startBlock: 133002790 // block number when protocol was deployed https://optimistic.etherscan.io/tx/0x9950ab98822ab6579495dd39ba38bf044a3d5a8d869d41f36ce2802b4a42d631
     },
     "production-42161-0": {
-      network: "arbitrum",
+      network: "arbitrum-one",
       startBlock: 321778899 // block number when protocol was deployed https://arbiscan.io/tx/0x4619b9fabf674886ccefa8f220e7802701d3db90165ac3677973992cd42b721c
     }
   }
