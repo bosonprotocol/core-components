@@ -1,6 +1,4 @@
 import { ConfigId, EnvironmentType } from "@bosonprotocol/core-sdk";
-import { Exchange } from "../../types/exchange";
-import { getExchangeTokenId } from "../utils/exchange";
 
 const openSeaUrlMap = new Map([
   [

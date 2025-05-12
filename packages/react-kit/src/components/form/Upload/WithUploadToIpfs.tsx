@@ -18,14 +18,14 @@ export const SUPPORTED_FORMATS = [
   "image/png",
   "image/webp"
 ];
-export interface WithUploadToIpfsProps {
+export type WithUploadToIpfsProps = {
   saveToIpfs: (
     files: File[] | null,
     options?: { throwOnError?: boolean }
   ) => Promise<false | FileProps[] | undefined>;
   loadMedia: (src: string) => Promise<string | undefined>;
   removeFile: (src: string) => Promise<void>;
-}
+};
 export function WithUploadToIpfs<P extends WithUploadToIpfsProps>(
   WrappedComponent: React.ComponentType<P>
 ) {
@@ -76,7 +76,7 @@ export function WithUploadToIpfs<P extends WithUploadToIpfsProps>(
           return false;
         }
 
-        const ipfsArray = [];
+        const ipfsArray: FileProps[] = [];
         for (let i = 0; i < filesArray.length; i++) {
           const file = filesArray[i];
           const cid = await saveFile(file);
@@ -100,7 +100,7 @@ export function WithUploadToIpfs<P extends WithUploadToIpfsProps>(
           ipfsArray.push(fileProps);
         }
 
-        return ipfsArray as FileProps[];
+        return ipfsArray;
       },
       [accept, maxSize, saveFile]
     );

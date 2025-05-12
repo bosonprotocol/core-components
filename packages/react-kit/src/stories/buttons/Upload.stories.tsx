@@ -47,7 +47,10 @@ export default {
       return (
         <QueryClientProviderCustom>
           <EnvironmentProvider configId="testing-80002-0" envName="testing">
-            <IpfsProvider>
+            <IpfsProvider
+              ipfsProjectId={process.env.STORYBOOK_DATA_IPFS_PROJECT_ID}
+              ipfsProjectSecret={process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET}
+            >
               <Formik initialValues={{ [name]: [] }} onSubmit={console.log}>
                 <Story
                   args={{
@@ -77,6 +80,14 @@ const BASE_ARGS = {
         objectFit: "cover"
       }
     }
+  },
+  compressImages: true,
+  imageCompressionOptions: {
+    maxSizeMB: 1,
+    useWebWorker: true
+  },
+  imgPreviewStyle: {
+    objectFit: "contain"
   }
 } as const satisfies UploadProps;
 
