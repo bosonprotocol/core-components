@@ -29,6 +29,7 @@ import { useModal } from "../../modal/useModal";
 import { ImageEditorModal } from "./ImageEditorModal/ImageEditorModal";
 import { Grid } from "../../ui/Grid";
 import { UploadedSinglePdfFile } from "./UploadedSinglePdfFile";
+import imageCompression, { Options } from "browser-image-compression";
 
 export type BaseUploadProps = UploadPropsWithNoIpfs;
 function BaseUpload({
@@ -52,6 +53,8 @@ function BaseUpload({
   borderRadius,
   borderRadiusUnit = "px",
   imgPreviewStyle,
+  compressImages,
+  imageCompressionOptions,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   removeFile,
   saveButtonTheme,
@@ -252,7 +255,31 @@ function BaseUpload({
       }
       handleLoading(true);
       try {
-        const files = await saveToIpfs(efiles, { throwOnError: true });
+        const transformedFiles: File[] = [];
+        for await (const file of efiles ?? []) {
+          const isImage = file.type.startsWith("image");
+          if (isImage && compressImages) {
+            try {
+              const options = imageCompressionOptions
+                ? imageCompressionOptions
+                : ({
+                    maxSizeMB: 1,
+                    useWebWorker: true
+                  } satisfies Options);
+              const compressedFile = await imageCompression(file, options);
+              transformedFiles.push(compressedFile);
+            } catch (error) {
+              console.error("error while optimising image", file, error);
+              transformedFiles.push(file); // if we cant optimise the size of an image, then we add it without compression
+            }
+          } else {
+            transformedFiles.push(file);
+          }
+        }
+
+        const files = await saveToIpfs(transformedFiles, {
+          throwOnError: true
+        });
         setErrorMessage(undefined);
         if (files) {
           setFiles(files);
@@ -272,7 +299,15 @@ function BaseUpload({
         handleLoading(false);
       }
     },
-    [meta.touched, handleLoading, saveToIpfs, helpers, setFiles]
+    [
+      meta.touched,
+      handleLoading,
+      saveToIpfs,
+      helpers,
+      setFiles,
+      compressImages,
+      imageCompressionOptions
+    ]
   );
   const saveFn = withUpload ? handleSave : handleChange;
   const style = {
