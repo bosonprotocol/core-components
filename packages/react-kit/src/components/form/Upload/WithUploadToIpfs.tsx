@@ -9,7 +9,6 @@ import { Typography } from "../../ui/Typography";
 import { FileProps, UploadProps } from "../types";
 import { useSaveImageToIpfs } from "../../../hooks/ipfs/useSaveImageToIpfs";
 import { bytesToSize } from "../../../lib/bytes/bytesToSize";
-import { Options } from "browser-image-compression";
 
 export const MAX_FILE_SIZE = 20 * 1024 * 1024;
 export const SUPPORTED_FORMATS = [
@@ -26,8 +25,6 @@ export type WithUploadToIpfsProps = {
   ) => Promise<false | FileProps[] | undefined>;
   loadMedia: (src: string) => Promise<string | undefined>;
   removeFile: (src: string) => Promise<void>;
-  imageCompressionOptions?: Options;
-  compressImages: boolean;
 };
 export function WithUploadToIpfs<P extends WithUploadToIpfsProps>(
   WrappedComponent: React.ComponentType<P>

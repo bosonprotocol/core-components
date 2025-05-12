@@ -80,6 +80,11 @@ const BASE_ARGS = {
         objectFit: "cover"
       }
     }
+  },
+  compressImages: true,
+  imageCompressionOptions: {
+    maxSizeMB: 1,
+    useWebWorker: true
   }
 } as const satisfies UploadProps;
 

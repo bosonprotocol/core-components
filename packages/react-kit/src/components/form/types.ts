@@ -10,6 +10,7 @@ import type {
 import type { GridProps } from "../ui/Grid";
 import { StateManagerProps } from "react-select/dist/declarations/src/useStateManager";
 import { IconProps } from "phosphor-react";
+import { Options } from "browser-image-compression";
 
 export interface BaseProps {
   name: string;
@@ -147,6 +148,8 @@ export type UploadProps = BaseProps & {
     overrides: React.CSSProperties;
     uploadButton: React.CSSProperties;
   }>;
+  imageCompressionOptions?: Options;
+  compressImages: boolean;
 } & (
     | {
         withEditor: true;
