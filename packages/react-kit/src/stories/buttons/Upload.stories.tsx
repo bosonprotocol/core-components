@@ -85,6 +85,9 @@ const BASE_ARGS = {
   imageCompressionOptions: {
     maxSizeMB: 1,
     useWebWorker: true
+  },
+  imgPreviewStyle: {
+    objectFit: "contain"
   }
 } as const satisfies UploadProps;
 
