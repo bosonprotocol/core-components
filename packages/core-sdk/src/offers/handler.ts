@@ -4,7 +4,8 @@ import {
   TransactionResponse,
   MetadataStorage,
   utils,
-  RoyaltyInfo
+  RoyaltyInfo,
+  TransactionRequest
 } from "@bosonprotocol/common";
 import {
   bosonOfferHandlerIface,
@@ -26,6 +27,7 @@ export async function createOffer(args: {
   web3Lib: Web3LibAdapter;
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
+  txRequest?: TransactionRequest;
 }): Promise<TransactionResponse> {
   utils.validation.createOfferArgsSchema.validateSync(args.offerToCreate, {
     abortEarly: false
@@ -43,6 +45,7 @@ export async function createOffer(args: {
   });
 
   return args.web3Lib.sendTransaction({
+    ...args.txRequest,
     to: args.contractAddress,
     data: encodeCreateOffer(args.offerToCreate)
   });

@@ -13,7 +13,8 @@ import {
   TokenType,
   EvaluationMethod,
   GatingType,
-  RoyaltyInfo
+  RoyaltyInfo,
+  TransactionRequest
 } from "@bosonprotocol/common";
 import groupBy from "lodash/groupBy";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
@@ -39,6 +40,7 @@ export class OfferMixin extends BaseCoreSDK {
     offerToCreate: offers.CreateOfferArgs,
     overrides: Partial<{
       contractAddress: string;
+      txRequest: TransactionRequest;
     }> = {}
   ): Promise<TransactionResponse> {
     return offers.handler.createOffer({
@@ -46,7 +48,8 @@ export class OfferMixin extends BaseCoreSDK {
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
-      contractAddress: overrides.contractAddress || this._protocolDiamond
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      txRequest: overrides?.txRequest
     });
   }
 
