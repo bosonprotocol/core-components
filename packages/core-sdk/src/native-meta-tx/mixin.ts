@@ -1,10 +1,16 @@
-import { MetaTxConfig, TransactionResponse } from "@bosonprotocol/common";
+import {
+  MetaTxConfig,
+  TransactionResponse,
+  Web3LibAdapter
+} from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 import { handler } from ".";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 
-export class NativeMetaTxMixin extends BaseCoreSDK {
+export class NativeMetaTxMixin<
+  T extends Web3LibAdapter
+> extends BaseCoreSDK<T> {
   /**
    * Encodes and signs a native "token.approve()" meta transaction that can be relayed.
    * @param exchangeToken - The address of the token contract.

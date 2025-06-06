@@ -1,3 +1,4 @@
+import { Web3LibAdapter } from "@bosonprotocol/common";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import { OpenSeaMarketplace, OpenSeaSDKHandler } from "./opensea";
 import { MarketplaceType, MarketplaceHandler } from "./types";
@@ -6,7 +7,7 @@ type MarketplaceTypeToClass = {
   [MarketplaceType.OPENSEA]: OpenSeaMarketplace;
 };
 
-export class MarketplaceMixin extends BaseCoreSDK {
+export class MarketplaceMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   public marketplace<T extends keyof MarketplaceTypeToClass>(
     type: T,
     handler: T extends MarketplaceType.OPENSEA

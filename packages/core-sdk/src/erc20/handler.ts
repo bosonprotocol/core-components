@@ -1,19 +1,51 @@
-import { Web3LibAdapter, TransactionRequest } from "@bosonprotocol/common";
+import {
+  Web3LibAdapter,
+  TransactionRequest,
+  TransactionResponse
+} from "@bosonprotocol/common";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { erc20Iface } from "./interface";
 
+// Overload: returnTxInfo is true -> returns TransactionRequest
 export async function approve(args: {
   contractAddress: string;
   spender: string;
   value: BigNumberish;
   web3Lib: Web3LibAdapter;
   txRequest?: TransactionRequest;
-}) {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined -> returns TransactionResponse
+export async function approve(args: {
+  contractAddress: string;
+  spender: string;
+  value: BigNumberish;
+  web3Lib: Web3LibAdapter;
+  txRequest?: TransactionRequest;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function approve(args: {
+  contractAddress: string;
+  spender: string;
+  value: BigNumberish;
+  web3Lib: Web3LibAdapter;
+  txRequest?: TransactionRequest;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
+  const transactionRequest: TransactionRequest = {
     ...args.txRequest,
     to: args.contractAddress,
     data: erc20Iface.encodeFunctionData("approve", [args.spender, args.value])
-  });
+  };
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
 export async function getAllowance(args: {

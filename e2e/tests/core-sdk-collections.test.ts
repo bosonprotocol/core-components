@@ -161,9 +161,8 @@ describe("Offer collections", () => {
     );
   });
   test("Check create offer in default collection", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet20
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet20);
     const createdOffer = await createSellerAndOffer(
       coreSDK,
       fundedWallet.address

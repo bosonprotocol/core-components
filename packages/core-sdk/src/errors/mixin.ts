@@ -1,8 +1,8 @@
 import { Interface } from "@ethersproject/abi";
-import { abis, ErrorFragment } from "@bosonprotocol/common";
+import { abis, ErrorFragment, Web3LibAdapter } from "@bosonprotocol/common";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 
-export class ErrorMixin extends BaseCoreSDK {
+export class ErrorMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   public parseError(error: object): object {
     return { ...error, decoded: this.recurseParseError(error) };
   }

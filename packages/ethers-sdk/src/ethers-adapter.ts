@@ -28,8 +28,8 @@ export type Provider =
  * `Web3LibAdapter` implementation targeting `ethers`.
  */
 export class EthersAdapter implements Web3LibAdapter {
-  private _signer: Signer;
-  private _provider: Provider;
+  protected _signer: Signer;
+  protected _provider: Provider;
   uuid: string;
 
   constructor(provider: Provider, signer?: Signer) {

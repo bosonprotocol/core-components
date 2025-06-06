@@ -1,7 +1,8 @@
+import { Web3LibAdapter } from "@bosonprotocol/common";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import { supportsInterface } from "./handler";
 
-export class ERC165Mixin extends BaseCoreSDK {
+export class ERC165Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
   /*                           ERC20 related methods                          */
   /* -------------------------------------------------------------------------- */

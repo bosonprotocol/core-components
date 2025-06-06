@@ -1,4 +1,8 @@
-import { Web3LibAdapter, TransactionResponse } from "@bosonprotocol/common";
+import {
+  Web3LibAdapter,
+  TransactionResponse,
+  TransactionRequest
+} from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 
@@ -16,62 +20,170 @@ import {
 } from "./interface";
 import { prepareDataSignatureParameters } from "../utils/signature";
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function raiseDispute(args: {
   exchangeId: BigNumberish;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function raiseDispute(args: {
+  exchangeId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+// Implementation
+export async function raiseDispute(args: {
+  exchangeId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionResponse | TransactionRequest> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeRaiseDispute(args)
-  });
+  } satisfies TransactionRequest;
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function retractDispute(args: {
   exchangeId: BigNumberish;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function retractDispute(args: {
+  exchangeId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+// Implementation
+export async function retractDispute(args: {
+  exchangeId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionResponse | TransactionRequest> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeRetractDispute(args.exchangeId)
-  });
+  } satisfies TransactionRequest;
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function extendDisputeTimeout(args: {
   exchangeId: BigNumberish;
   newDisputeTimeout: BigNumberish;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function extendDisputeTimeout(args: {
+  exchangeId: BigNumberish;
+  newDisputeTimeout: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+// Implementation
+export async function extendDisputeTimeout(args: {
+  exchangeId: BigNumberish;
+  newDisputeTimeout: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionResponse | TransactionRequest> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeExtendDisputeTimeout(args)
-  });
+  } satisfies TransactionRequest;
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function expireDispute(args: {
   exchangeId: BigNumberish;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function expireDispute(args: {
+  exchangeId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+// Implementation
+export async function expireDispute(args: {
+  exchangeId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionResponse | TransactionRequest> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeExpireDispute(args.exchangeId)
-  });
+  } satisfies TransactionRequest;
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function expireDisputeBatch(args: {
   exchangeIds: BigNumberish[];
   contractAddress: string;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function expireDisputeBatch(args: {
+  exchangeIds: BigNumberish[];
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+// Implementation
+export async function expireDisputeBatch(args: {
+  exchangeIds: BigNumberish[];
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionResponse | TransactionRequest> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeExpireDisputeBatch(args.exchangeIds)
-  });
+  } satisfies TransactionRequest;
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function resolveDispute(args: {
   exchangeId: BigNumberish;
   buyerPercentBasisPoints: BigNumberish;
@@ -80,56 +192,170 @@ export async function resolveDispute(args: {
   sigV: BigNumberish;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function resolveDispute(args: {
+  exchangeId: BigNumberish;
+  buyerPercentBasisPoints: BigNumberish;
+  sigR: BytesLike;
+  sigS: BytesLike;
+  sigV: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+// Implementation
+export async function resolveDispute(args: {
+  exchangeId: BigNumberish;
+  buyerPercentBasisPoints: BigNumberish;
+  sigR: BytesLike;
+  sigS: BytesLike;
+  sigV: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionResponse | TransactionRequest> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeResolveDispute(args)
-  });
+  } satisfies TransactionRequest;
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function escalateDispute(args: {
   exchangeId: BigNumberish;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function escalateDispute(args: {
+  exchangeId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+// Implementation
+export async function escalateDispute(args: {
+  exchangeId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionResponse | TransactionRequest> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeEscalateDispute(args.exchangeId)
-  });
+  } satisfies TransactionRequest;
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function decideDispute(args: {
   exchangeId: BigNumberish;
   buyerPercent: BigNumberish;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function decideDispute(args: {
+  exchangeId: BigNumberish;
+  buyerPercent: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+// Implementation
+export async function decideDispute(args: {
+  exchangeId: BigNumberish;
+  buyerPercent: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionResponse | TransactionRequest> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeDecideDispute(args)
-  });
+  } satisfies TransactionRequest;
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function refuseEscalatedDispute(args: {
   exchangeId: BigNumberish;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function refuseEscalatedDispute(args: {
+  exchangeId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+// Implementation
+export async function refuseEscalatedDispute(args: {
+  exchangeId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionResponse | TransactionRequest> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeRefuseEscalatedDispute(args.exchangeId)
-  });
+  } satisfies TransactionRequest;
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function expireEscalatedDispute(args: {
   exchangeId: BigNumberish;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function expireEscalatedDispute(args: {
+  exchangeId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+// Implementation
+export async function expireEscalatedDispute(args: {
+  exchangeId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionResponse | TransactionRequest> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeExpireEscalatedDispute(args.exchangeId)
-  });
+  } satisfies TransactionRequest;
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
 export async function signResolutionProposal(args: {

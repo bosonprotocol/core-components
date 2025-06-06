@@ -14,9 +14,8 @@ jest.setTimeout(60_000);
 
 describe("native-meta-tx", () => {
   test("approve ERC20 token", async () => {
-    const allowanceBefore = await coreSDK.getProtocolAllowance(
-      MOCK_ERC20_ADDRESS
-    );
+    const allowanceBefore =
+      await coreSDK.getProtocolAllowance(MOCK_ERC20_ADDRESS);
 
     const newAllowance = BigNumber.from(allowanceBefore).add("100");
 
@@ -41,9 +40,8 @@ describe("native-meta-tx", () => {
     expect(metaTxReceipt.transactionHash).toBeTruthy();
     expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
-    const allowanceAfter = await coreSDK.getProtocolAllowance(
-      MOCK_ERC20_ADDRESS
-    );
+    const allowanceAfter =
+      await coreSDK.getProtocolAllowance(MOCK_ERC20_ADDRESS);
 
     expect(BigNumber.from(allowanceAfter).eq(newAllowance)).toBe(true);
   });

@@ -1,7 +1,8 @@
 import {
   AuthTokenType,
   MetaTxConfig,
-  TransactionResponse
+  TransactionResponse,
+  Web3LibAdapter
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
@@ -12,7 +13,7 @@ import { GetRetriedHashesData } from "./biconomy";
 import { accounts } from "..";
 import { AccountsMixin } from "../accounts/mixin";
 import { SellerFieldsFragment } from "../subgraph";
-export class MetaTxMixin extends BaseCoreSDK {
+export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
   /*                           Meta Tx related methods                          */
   /* -------------------------------------------------------------------------- */

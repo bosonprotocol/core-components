@@ -1,6 +1,11 @@
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import * as subgraph from "../subgraph";
-import { TransactionResponse, Log } from "@bosonprotocol/common";
+import {
+  TransactionResponse,
+  TransactionRequest,
+  Log,
+  Web3LibAdapter
+} from "@bosonprotocol/common";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { getValueFromLogs } from "../utils/logs";
 import {
@@ -18,7 +23,7 @@ import {
 import { getExchangeById, getExchanges } from "./subgraph";
 import { bosonExchangeHandlerIface } from "./interface";
 
-export class ExchangesMixin extends BaseCoreSDK {
+export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
   /*                          Exchange related methods                          */
   /* -------------------------------------------------------------------------- */
@@ -58,16 +63,45 @@ export class ExchangesMixin extends BaseCoreSDK {
     offerId: BigNumberish,
     overrides: Partial<{
       buyer: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+  public async commitToOffer(
+    offerId: BigNumberish,
+    overrides?: Partial<{
+      buyer: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+  public async commitToOffer(
+    offerId: BigNumberish,
+    overrides: Partial<{
+      buyer: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
     const buyer = overrides.buyer || (await this._web3Lib.getSignerAddress());
-    return commitToOffer({
+
+    const commitArgs = {
       buyer,
       offerId,
       web3Lib: this._web3Lib,
       subgraphUrl: this._subgraphUrl,
       contractAddress: this._protocolDiamond
-    });
+    } as const satisfies Parameters<typeof commitToOffer>[0];
+
+    if (returnTxInfo === true) {
+      return commitToOffer({
+        ...commitArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return commitToOffer({
+        ...commitArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -83,17 +117,48 @@ export class ExchangesMixin extends BaseCoreSDK {
     tokenId: BigNumberish,
     overrides: Partial<{
       buyer: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+  public async commitToConditionalOffer(
+    offerId: BigNumberish,
+    tokenId: BigNumberish,
+    overrides?: Partial<{
+      buyer: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+  public async commitToConditionalOffer(
+    offerId: BigNumberish,
+    tokenId: BigNumberish,
+    overrides: Partial<{
+      buyer: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
     const buyer = overrides.buyer || (await this._web3Lib.getSignerAddress());
-    return commitToConditionalOffer({
+
+    const commitArgs = {
       buyer,
       offerId,
       tokenId,
       web3Lib: this._web3Lib,
       subgraphUrl: this._subgraphUrl,
       contractAddress: this._protocolDiamond
-    });
+    } as const satisfies Parameters<typeof commitToConditionalOffer>[0];
+
+    if (returnTxInfo === true) {
+      return commitToConditionalOffer({
+        ...commitArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return commitToConditionalOffer({
+        ...commitArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -117,14 +182,35 @@ export class ExchangesMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async revokeVoucher(
-    exchangeId: BigNumberish
-  ): Promise<TransactionResponse> {
-    return revokeVoucher({
+    exchangeId: BigNumberish,
+    returnTxInfo: true
+  ): Promise<TransactionRequest>;
+  public async revokeVoucher(
+    exchangeId: BigNumberish,
+    returnTxInfo?: false | undefined
+  ): Promise<TransactionResponse>;
+  public async revokeVoucher(
+    exchangeId: BigNumberish,
+    returnTxInfo?: boolean
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const revokeArgs = {
       web3Lib: this._web3Lib,
       contractAddress: this._protocolDiamond,
       exchangeId,
       subgraphUrl: this._subgraphUrl
-    });
+    } as const satisfies Parameters<typeof revokeVoucher>[0];
+
+    if (returnTxInfo === true) {
+      return revokeVoucher({
+        ...revokeArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return revokeVoucher({
+        ...revokeArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -134,14 +220,35 @@ export class ExchangesMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async cancelVoucher(
-    exchangeId: BigNumberish
-  ): Promise<TransactionResponse> {
-    return cancelVoucher({
+    exchangeId: BigNumberish,
+    returnTxInfo: true
+  ): Promise<TransactionRequest>;
+  public async cancelVoucher(
+    exchangeId: BigNumberish,
+    returnTxInfo?: false | undefined
+  ): Promise<TransactionResponse>;
+  public async cancelVoucher(
+    exchangeId: BigNumberish,
+    returnTxInfo?: boolean
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const cancelArgs = {
       web3Lib: this._web3Lib,
       contractAddress: this._protocolDiamond,
       exchangeId,
       subgraphUrl: this._subgraphUrl
-    });
+    } as const satisfies Parameters<typeof cancelVoucher>[0];
+
+    if (returnTxInfo === true) {
+      return cancelVoucher({
+        ...cancelArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return cancelVoucher({
+        ...cancelArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -151,14 +258,35 @@ export class ExchangesMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async redeemVoucher(
-    exchangeId: BigNumberish
-  ): Promise<TransactionResponse> {
-    return redeemVoucher({
+    exchangeId: BigNumberish,
+    returnTxInfo: true
+  ): Promise<TransactionRequest>;
+  public async redeemVoucher(
+    exchangeId: BigNumberish,
+    returnTxInfo?: false | undefined
+  ): Promise<TransactionResponse>;
+  public async redeemVoucher(
+    exchangeId: BigNumberish,
+    returnTxInfo?: boolean
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const redeemArgs = {
       web3Lib: this._web3Lib,
       contractAddress: this._protocolDiamond,
       exchangeId,
       subgraphUrl: this._subgraphUrl
-    });
+    } as const satisfies Parameters<typeof redeemVoucher>[0];
+
+    if (returnTxInfo === true) {
+      return redeemVoucher({
+        ...redeemArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return redeemVoucher({
+        ...redeemArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -168,14 +296,35 @@ export class ExchangesMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async completeExchange(
-    exchangeId: BigNumberish
-  ): Promise<TransactionResponse> {
-    return completeExchange({
+    exchangeId: BigNumberish,
+    returnTxInfo: true
+  ): Promise<TransactionRequest>;
+  public async completeExchange(
+    exchangeId: BigNumberish,
+    returnTxInfo?: false | undefined
+  ): Promise<TransactionResponse>;
+  public async completeExchange(
+    exchangeId: BigNumberish,
+    returnTxInfo?: boolean
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const completeArgs = {
       web3Lib: this._web3Lib,
       contractAddress: this._protocolDiamond,
       exchangeId,
       subgraphUrl: this._subgraphUrl
-    });
+    } as const satisfies Parameters<typeof completeExchange>[0];
+
+    if (returnTxInfo === true) {
+      return completeExchange({
+        ...completeArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return completeExchange({
+        ...completeArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -185,14 +334,35 @@ export class ExchangesMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async completeExchangeBatch(
-    exchangeIds: BigNumberish[]
-  ): Promise<TransactionResponse> {
-    return completeExchangeBatch({
+    exchangeIds: BigNumberish[],
+    returnTxInfo: true
+  ): Promise<TransactionRequest>;
+  public async completeExchangeBatch(
+    exchangeIds: BigNumberish[],
+    returnTxInfo?: false | undefined
+  ): Promise<TransactionResponse>;
+  public async completeExchangeBatch(
+    exchangeIds: BigNumberish[],
+    returnTxInfo?: boolean
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const batchArgs = {
       web3Lib: this._web3Lib,
       contractAddress: this._protocolDiamond,
       exchangeIds,
       subgraphUrl: this._subgraphUrl
-    });
+    } as const satisfies Parameters<typeof completeExchangeBatch>[0];
+
+    if (returnTxInfo === true) {
+      return completeExchangeBatch({
+        ...batchArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return completeExchangeBatch({
+        ...batchArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -201,14 +371,35 @@ export class ExchangesMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async expireVoucher(
-    exchangeId: BigNumberish
-  ): Promise<TransactionResponse> {
-    return expireVoucher({
+    exchangeId: BigNumberish,
+    returnTxInfo: true
+  ): Promise<TransactionRequest>;
+  public async expireVoucher(
+    exchangeId: BigNumberish,
+    returnTxInfo?: false | undefined
+  ): Promise<TransactionResponse>;
+  public async expireVoucher(
+    exchangeId: BigNumberish,
+    returnTxInfo?: boolean
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const expireArgs = {
       web3Lib: this._web3Lib,
       contractAddress: this._protocolDiamond,
       exchangeId,
       subgraphUrl: this._subgraphUrl
-    });
+    } as const satisfies Parameters<typeof expireVoucher>[0];
+
+    if (returnTxInfo === true) {
+      return expireVoucher({
+        ...expireArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return expireVoucher({
+        ...expireArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   public getExchangeTokenId(

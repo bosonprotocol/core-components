@@ -241,7 +241,9 @@ describe("Bundle e2e tests", () => {
     expect(bundles[0].offer.id).toEqual(offer.id);
     expect(bundles[0].items.length).toEqual(1);
 
-    expect(bundles[0].items[0].type).toEqual(subgraph.ItemMetadataType.ITEM_NFT);
+    expect(bundles[0].items[0].type).toEqual(
+      subgraph.ItemMetadataType.ITEM_NFT
+    );
     expect(
       (bundles[0].items[0] as subgraph.NftItemMetadataEntity).name
     ).toEqual(digitalItem.name);

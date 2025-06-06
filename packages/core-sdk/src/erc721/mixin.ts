@@ -1,3 +1,4 @@
+import { Web3LibAdapter } from "@bosonprotocol/common";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import {
   balanceOf,
@@ -8,7 +9,7 @@ import {
   tokenUri
 } from "./handler";
 
-export class ERC721Mixin extends BaseCoreSDK {
+export class ERC721Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
   /*                           ERC721 related methods                          */
   /* -------------------------------------------------------------------------- */

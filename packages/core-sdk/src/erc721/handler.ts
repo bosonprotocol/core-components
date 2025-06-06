@@ -1,4 +1,8 @@
-import { TransactionRequest, Web3LibAdapter } from "@bosonprotocol/common";
+import {
+  TransactionRequest,
+  TransactionResponse,
+  Web3LibAdapter
+} from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { erc721Iface } from "./interface";
 
@@ -96,19 +100,45 @@ export async function tokenOfOwnerByIndex(args: {
   return String(tokenId);
 }
 
+// setApprovalForAll overloads
 export async function setApprovalForAll(args: {
   contractAddress: string;
   operator: string;
   approved: boolean;
   web3Lib: Web3LibAdapter;
+  returnTxInfo: true;
   txRequest?: TransactionRequest;
-}) {
-  return args.web3Lib.sendTransaction({
+}): Promise<TransactionRequest>;
+
+export async function setApprovalForAll(args: {
+  contractAddress: string;
+  operator: string;
+  approved: boolean;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+  txRequest?: TransactionRequest;
+}): Promise<TransactionResponse>;
+
+export async function setApprovalForAll(args: {
+  contractAddress: string;
+  operator: string;
+  approved: boolean;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+  txRequest?: TransactionRequest;
+}): Promise<TransactionRequest | TransactionResponse> {
+  const transactionRequest = {
     ...args.txRequest,
     to: args.contractAddress,
     data: erc721Iface.encodeFunctionData("setApprovalForAll", [
       args.operator,
       args.approved
     ])
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
