@@ -1,7 +1,10 @@
 import { BaseCoreSDK } from "../mixins/base-core-sdk";
 import { handler } from ".";
+import { Web3LibAdapter } from "@bosonprotocol/common";
 
-export class ProtocolConfigMixin extends BaseCoreSDK {
+export class ProtocolConfigMixin<
+  T extends Web3LibAdapter
+> extends BaseCoreSDK<T> {
   public async getMaxRoyaltyPercentage(
     overrides: Partial<{
       contractAddress: string;

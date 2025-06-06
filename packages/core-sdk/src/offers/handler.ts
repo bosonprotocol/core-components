@@ -21,6 +21,7 @@ import { CreateOfferArgs } from "./types";
 import { OfferFieldsFragment } from "../subgraph";
 import { storeMetadataItems } from "../metadata/storeMetadataItems";
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function createOffer(args: {
   offerToCreate: CreateOfferArgs;
   contractAddress: string;
@@ -28,7 +29,30 @@ export async function createOffer(args: {
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
   txRequest?: TransactionRequest;
-}): Promise<TransactionResponse> {
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function createOffer(args: {
+  offerToCreate: CreateOfferArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+  txRequest?: TransactionRequest;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function createOffer(args: {
+  offerToCreate: CreateOfferArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+  txRequest?: TransactionRequest;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
   utils.validation.createOfferArgsSchema.validateSync(args.offerToCreate, {
     abortEarly: false
   });
@@ -44,20 +68,49 @@ export async function createOffer(args: {
     createOffersArgs: [args.offerToCreate]
   });
 
-  return args.web3Lib.sendTransaction({
+  const transactionRequest = {
     ...args.txRequest,
     to: args.contractAddress,
     data: encodeCreateOffer(args.offerToCreate)
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    const txResponse = await args.web3Lib.sendTransaction(transactionRequest);
+    return txResponse;
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function createOfferBatch(args: {
   offersToCreate: CreateOfferArgs[];
   contractAddress: string;
   web3Lib: Web3LibAdapter;
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
-}): Promise<TransactionResponse> {
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function createOfferBatch(args: {
+  offersToCreate: CreateOfferArgs[];
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function createOfferBatch(args: {
+  offersToCreate: CreateOfferArgs[];
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
   for (const offerToCreate of args.offersToCreate) {
     utils.validation.createOfferArgsSchema.validateSync(offerToCreate, {
       abortEarly: false
@@ -79,12 +132,19 @@ export async function createOfferBatch(args: {
     createOffersArgs: args.offersToCreate
   });
 
-  return args.web3Lib.sendTransaction({
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeCreateOfferBatch(args.offersToCreate)
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function reserveRange(args: {
   contractAddress: string;
   subgraphUrl: string;
@@ -92,7 +152,30 @@ export async function reserveRange(args: {
   length: BigNumberish;
   to: string;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function reserveRange(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerId: BigNumberish;
+  length: BigNumberish;
+  to: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function reserveRange(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerId: BigNumberish;
+  length: BigNumberish;
+  to: string;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
   const offerFromSubgraph = await getOfferById(args.subgraphUrl, args.offerId);
   const signerAddress = await args.web3Lib.getSignerAddress();
 
@@ -103,35 +186,87 @@ export async function reserveRange(args: {
     offerFromSubgraph
   );
 
-  return args.web3Lib.sendTransaction({
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeReserveRange(args.offerId, args.length, args.to)
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function voidOffer(args: {
   contractAddress: string;
   subgraphUrl: string;
   offerId: BigNumberish;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function voidOffer(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerId: BigNumberish;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function voidOffer(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerId: BigNumberish;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
   const offerFromSubgraph = await getOfferById(args.subgraphUrl, args.offerId);
   const signerAddress = await args.web3Lib.getSignerAddress();
 
   checkIfOfferVoidable(args.offerId, signerAddress, offerFromSubgraph);
 
-  return args.web3Lib.sendTransaction({
+  const transactionRequest = {
     to: args.contractAddress,
     data: bosonOfferHandlerIface.encodeFunctionData("voidOffer", [args.offerId])
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function voidOfferBatch(args: {
   contractAddress: string;
   subgraphUrl: string;
   offerIds: BigNumberish[];
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function voidOfferBatch(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerIds: BigNumberish[];
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function voidOfferBatch(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerIds: BigNumberish[];
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
   const offersFromSubgraph = await getOffers(args.subgraphUrl, {
     offersFilter: {
       id_in: args.offerIds.map(String)
@@ -155,68 +290,182 @@ export async function voidOfferBatch(args: {
     throw new Error(`Some offers can not be voided. ${invalidOfferIdErrors}`);
   }
 
-  return args.web3Lib.sendTransaction({
+  const transactionRequest = {
     to: args.contractAddress,
     data: bosonOfferHandlerIface.encodeFunctionData("voidOfferBatch", [
       args.offerIds
     ])
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function extendOffer(args: {
   contractAddress: string;
   subgraphUrl: string;
   offerId: BigNumberish;
   validUntil: BigNumberish;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function extendOffer(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerId: BigNumberish;
+  validUntil: BigNumberish;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function extendOffer(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerId: BigNumberish;
+  validUntil: BigNumberish;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: bosonOfferHandlerIface.encodeFunctionData("extendOffer", [
       args.offerId,
       args.validUntil
     ])
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function extendOfferBatch(args: {
   contractAddress: string;
   subgraphUrl: string;
   offerIds: BigNumberish[];
   validUntil: BigNumberish;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function extendOfferBatch(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerIds: BigNumberish[];
+  validUntil: BigNumberish;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function extendOfferBatch(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerIds: BigNumberish[];
+  validUntil: BigNumberish;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: bosonOfferHandlerIface.encodeFunctionData("extendOfferBatch", [
       args.offerIds,
       args.validUntil
     ])
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function updateOfferRoyaltyRecipients(args: {
   contractAddress: string;
   web3Lib: Web3LibAdapter;
   offerId: BigNumberish;
   royaltyInfo: RoyaltyInfo;
-}) {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function updateOfferRoyaltyRecipients(args: {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  offerId: BigNumberish;
+  royaltyInfo: RoyaltyInfo;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function updateOfferRoyaltyRecipients(args: {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  offerId: BigNumberish;
+  royaltyInfo: RoyaltyInfo;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeUpdateOfferRoyaltyRecipients(args)
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function updateOfferRoyaltyRecipientsBatch(args: {
   contractAddress: string;
   web3Lib: Web3LibAdapter;
   offerIds: BigNumberish[];
   royaltyInfo: RoyaltyInfo;
-}) {
-  return args.web3Lib.sendTransaction({
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function updateOfferRoyaltyRecipientsBatch(args: {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  offerIds: BigNumberish[];
+  royaltyInfo: RoyaltyInfo;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function updateOfferRoyaltyRecipientsBatch(args: {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  offerIds: BigNumberish[];
+  royaltyInfo: RoyaltyInfo;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeUpdateOfferRoyaltyRecipientsBatch(args)
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
 function checkIfOfferVoidable(

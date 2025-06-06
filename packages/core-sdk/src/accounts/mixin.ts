@@ -2,13 +2,19 @@ import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import * as accounts from ".";
 import * as subgraph from "../subgraph";
 import * as erc721 from "../erc721";
-import { AuthTokenType, TransactionResponse, Log } from "@bosonprotocol/common";
+import {
+  AuthTokenType,
+  TransactionResponse,
+  TransactionRequest,
+  Log,
+  Web3LibAdapter
+} from "@bosonprotocol/common";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import { offers, orchestration } from "..";
 import { getValueFromLogs, getValuesFromLogsExt } from "../utils/logs";
 
-export class AccountsMixin extends BaseCoreSDK {
+export class AccountsMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
   /*                           Account related methods                          */
   /* -------------------------------------------------------------------------- */
@@ -203,19 +209,56 @@ export class AccountsMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async createSeller(
     sellerToCreate: accounts.CreateSellerArgs,
     overrides: Partial<{
       contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async createSeller(
+    sellerToCreate: accounts.CreateSellerArgs,
+    overrides?: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async createSeller(
+    sellerToCreate: accounts.CreateSellerArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return accounts.handler.createSeller({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const sellerArgs = {
       sellerToCreate,
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<typeof accounts.handler.createSeller>[0];
+
+    if (returnTxInfo === true) {
+      return accounts.handler.createSeller({
+        ...sellerArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.createSeller({
+        ...sellerArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -226,21 +269,62 @@ export class AccountsMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async createSellerAndOffer(
     sellerToCreate: accounts.CreateSellerArgs,
     offerToCreate: offers.CreateOfferArgs,
     overrides: Partial<{
       contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async createSellerAndOffer(
+    sellerToCreate: accounts.CreateSellerArgs,
+    offerToCreate: offers.CreateOfferArgs,
+    overrides?: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async createSellerAndOffer(
+    sellerToCreate: accounts.CreateSellerArgs,
+    offerToCreate: offers.CreateOfferArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return orchestration.handler.createOfferAndSeller({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const orchestrationArgs = {
       sellerToCreate,
       offerToCreate,
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<
+      typeof orchestration.handler.createOfferAndSeller
+    >[0];
+
+    if (returnTxInfo === true) {
+      return orchestration.handler.createOfferAndSeller({
+        ...orchestrationArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return orchestration.handler.createOfferAndSeller({
+        ...orchestrationArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -250,19 +334,56 @@ export class AccountsMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async updateSeller(
     sellerUpdates: accounts.UpdateSellerArgs,
     overrides: Partial<{
       contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async updateSeller(
+    sellerUpdates: accounts.UpdateSellerArgs,
+    overrides?: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async updateSeller(
+    sellerUpdates: accounts.UpdateSellerArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return accounts.handler.updateSeller({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const sellerArgs = {
       sellerUpdates,
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<typeof accounts.handler.updateSeller>[0];
+
+    if (returnTxInfo === true) {
+      return accounts.handler.updateSeller({
+        ...sellerArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.updateSeller({
+        ...sellerArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -272,17 +393,56 @@ export class AccountsMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async optInToSellerUpdate(
     sellerUpdates: accounts.OptInToSellerUpdateArgs,
     overrides: Partial<{
       contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async optInToSellerUpdate(
+    sellerUpdates: accounts.OptInToSellerUpdateArgs,
+    overrides?: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async optInToSellerUpdate(
+    sellerUpdates: accounts.OptInToSellerUpdateArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return accounts.handler.optInToSellerUpdate({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const sellerArgs = {
       sellerUpdates,
       web3Lib: this._web3Lib,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<
+      typeof accounts.handler.optInToSellerUpdate
+    >[0];
+
+    if (returnTxInfo === true) {
+      return accounts.handler.optInToSellerUpdate({
+        ...sellerArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.optInToSellerUpdate({
+        ...sellerArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -299,7 +459,10 @@ export class AccountsMixin extends BaseCoreSDK {
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    const updateTx = await this.updateSeller(sellerUpdates, overrides);
+    const updateTx = await this.updateSeller(sellerUpdates, {
+      ...overrides,
+      returnTxInfo: false
+    });
     const txReceipt = await updateTx.wait();
     const pendingSellerUpdate = this.getPendingSellerUpdateFromLogs(
       txReceipt.logs
@@ -373,14 +536,56 @@ export class AccountsMixin extends BaseCoreSDK {
    * @param disputeResolverToCreate - Dispute resolver arguments.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async createDisputeResolver(
-    disputeResolverToCreate: accounts.CreateDisputeResolverArgs
-  ): Promise<TransactionResponse> {
-    return accounts.handler.createDisputeResolver({
+    disputeResolverToCreate: accounts.CreateDisputeResolverArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async createDisputeResolver(
+    disputeResolverToCreate: accounts.CreateDisputeResolverArgs,
+    overrides?: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async createDisputeResolver(
+    disputeResolverToCreate: accounts.CreateDisputeResolverArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const disputeArgs = {
       disputeResolverToCreate,
-      contractAddress: this._protocolDiamond,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
       web3Lib: this._web3Lib
-    });
+    } as const satisfies Parameters<
+      typeof accounts.handler.createDisputeResolver
+    >[0];
+
+    if (returnTxInfo === true) {
+      return accounts.handler.createDisputeResolver({
+        ...disputeArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.createDisputeResolver({
+        ...disputeArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -456,30 +661,113 @@ export class AccountsMixin extends BaseCoreSDK {
    * @param updates - Values to update for the given dispute resolver.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async updateDisputeResolver(
     disputeResolverId: BigNumberish,
-    updates: accounts.DisputeResolverUpdates
-  ): Promise<TransactionResponse> {
-    return accounts.handler.updateDisputeResolver({
+    updates: accounts.DisputeResolverUpdates,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async updateDisputeResolver(
+    disputeResolverId: BigNumberish,
+    updates: accounts.DisputeResolverUpdates,
+    overrides?: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async updateDisputeResolver(
+    disputeResolverId: BigNumberish,
+    updates: accounts.DisputeResolverUpdates,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const disputeArgs = {
       disputeResolverId,
       updates,
       subgraphUrl: this._subgraphUrl,
-      contractAddress: this._protocolDiamond,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
       web3Lib: this._web3Lib
-    });
+    } as const satisfies Parameters<
+      typeof accounts.handler.updateDisputeResolver
+    >[0];
+
+    if (returnTxInfo === true) {
+      return accounts.handler.updateDisputeResolver({
+        ...disputeArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.updateDisputeResolver({
+        ...disputeArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async optInToDisputeResolverUpdate(
     disputeResolverUpdates: accounts.OptInToDisputeResolverUpdateArgs,
     overrides: Partial<{
       contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async optInToDisputeResolverUpdate(
+    disputeResolverUpdates: accounts.OptInToDisputeResolverUpdateArgs,
+    overrides?: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async optInToDisputeResolverUpdate(
+    disputeResolverUpdates: accounts.OptInToDisputeResolverUpdateArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return accounts.handler.optInToDisputeResolverUpdate({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const disputeArgs = {
       disputeResolverUpdates,
       web3Lib: this._web3Lib,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<
+      typeof accounts.handler.optInToDisputeResolverUpdate
+    >[0];
+
+    if (returnTxInfo === true) {
+      return accounts.handler.optInToDisputeResolverUpdate({
+        ...disputeArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.optInToDisputeResolverUpdate({
+        ...disputeArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -491,16 +779,60 @@ export class AccountsMixin extends BaseCoreSDK {
    * not already specified.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async addFeesToDisputeResolver(
     disputeResolverId: BigNumberish,
-    fees: accounts.DisputeResolutionFee[]
-  ): Promise<TransactionResponse> {
-    return accounts.handler.addFeesToDisputeResolver({
+    fees: accounts.DisputeResolutionFee[],
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async addFeesToDisputeResolver(
+    disputeResolverId: BigNumberish,
+    fees: accounts.DisputeResolutionFee[],
+    overrides?: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async addFeesToDisputeResolver(
+    disputeResolverId: BigNumberish,
+    fees: accounts.DisputeResolutionFee[],
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const disputeArgs = {
       disputeResolverId,
       fees,
-      contractAddress: this._protocolDiamond,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
       web3Lib: this._web3Lib
-    });
+    } as const satisfies Parameters<
+      typeof accounts.handler.addFeesToDisputeResolver
+    >[0];
+
+    if (returnTxInfo === true) {
+      return accounts.handler.addFeesToDisputeResolver({
+        ...disputeArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.addFeesToDisputeResolver({
+        ...disputeArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -512,16 +844,54 @@ export class AccountsMixin extends BaseCoreSDK {
    *  Should only contain seller ids that are not part of the current allow list.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async addSellersToDisputeResolverAllowList(
     disputeResolverId: BigNumberish,
-    sellerAllowList: BigNumberish[]
-  ): Promise<TransactionResponse> {
-    return accounts.handler.addSellersToAllowList({
+    sellerAllowList: BigNumberish[],
+    overrides: Partial<{
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async addSellersToDisputeResolverAllowList(
+    disputeResolverId: BigNumberish,
+    sellerAllowList: BigNumberish[],
+    overrides?: Partial<{
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async addSellersToDisputeResolverAllowList(
+    disputeResolverId: BigNumberish,
+    sellerAllowList: BigNumberish[],
+    overrides: Partial<{
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const args = {
       disputeResolverId,
       sellerAllowList,
       contractAddress: this._protocolDiamond,
       web3Lib: this._web3Lib
-    });
+    } as const satisfies Parameters<
+      typeof accounts.handler.addSellersToAllowList
+    >[0];
+
+    if (returnTxInfo === true) {
+      return accounts.handler.addSellersToAllowList({
+        ...args,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.addSellersToAllowList({
+        ...args,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -532,16 +902,54 @@ export class AccountsMixin extends BaseCoreSDK {
    * @param feeTokenAddresses - Addresses of fee tokens to remove.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async removeFeesFromDisputeResolver(
     disputeResolverId: BigNumberish,
-    feeTokenAddresses: string[]
-  ): Promise<TransactionResponse> {
-    return accounts.handler.removeFeesFromDisputeResolver({
+    feeTokenAddresses: string[],
+    overrides: Partial<{
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async removeFeesFromDisputeResolver(
+    disputeResolverId: BigNumberish,
+    feeTokenAddresses: string[],
+    overrides?: Partial<{
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async removeFeesFromDisputeResolver(
+    disputeResolverId: BigNumberish,
+    feeTokenAddresses: string[],
+    overrides: Partial<{
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const args = {
       disputeResolverId,
       feeTokenAddresses,
       contractAddress: this._protocolDiamond,
       web3Lib: this._web3Lib
-    });
+    } as const satisfies Parameters<
+      typeof accounts.handler.removeFeesFromDisputeResolver
+    >[0];
+
+    if (returnTxInfo === true) {
+      return accounts.handler.removeFeesFromDisputeResolver({
+        ...args,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.removeFeesFromDisputeResolver({
+        ...args,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -553,52 +961,81 @@ export class AccountsMixin extends BaseCoreSDK {
    * list of a dispute resolver.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async removeSellersFromDisputeResolverAllowList(
     disputeResolverId: BigNumberish,
-    sellerAllowList: string[]
-  ): Promise<TransactionResponse> {
-    return accounts.handler.removeSellersFromAllowList({
+    sellerAllowList: string[],
+    overrides: Partial<{
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async removeSellersFromDisputeResolverAllowList(
+    disputeResolverId: BigNumberish,
+    sellerAllowList: string[],
+    overrides?: Partial<{
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async removeSellersFromDisputeResolverAllowList(
+    disputeResolverId: BigNumberish,
+    sellerAllowList: string[],
+    overrides: Partial<{
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const args = {
       disputeResolverId,
       sellerAllowList,
       contractAddress: this._protocolDiamond,
       web3Lib: this._web3Lib
-    });
-  }
+    } as const satisfies Parameters<
+      typeof accounts.handler.removeSellersFromAllowList
+    >[0];
 
-  /**
-   * Returns dispute resolver entity from subgraph.
-   * @param disputeResolverId - ID of dispute resolver entity to query for.
-   * @param queryVars - Optional query variables to skip, order or filter.
-   * @returns Dispute resolver entity from subgraph.
-   */
-  public async getDisputeResolverById(
-    disputeResolverId: BigNumberish,
-    queryVars?: accounts.subgraph.SingleDisputeResolverQueryVariables
-  ): Promise<subgraph.DisputeResolverFieldsFragment> {
-    return accounts.subgraph.getDisputeResolverById(
-      this._subgraphUrl,
-      disputeResolverId,
-      queryVars
-    );
-  }
-
-  /**
-   * Returns dispute resolver entities from subgraph.
-   * @param queryVars - Optional query variables to skip, order or filter.
-   * @returns Dispute resolver entities from subgraph.
-   */
-  public async getDisputeResolvers(
-    queryVars?: subgraph.GetDisputeResolversQueryQueryVariables
-  ): Promise<subgraph.DisputeResolverFieldsFragment[]> {
-    return accounts.subgraph.getDisputeResolvers(this._subgraphUrl, queryVars);
+    if (returnTxInfo === true) {
+      return accounts.handler.removeSellersFromAllowList({
+        ...args,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.removeSellersFromAllowList({
+        ...args,
+        returnTxInfo: false
+      });
+    }
   }
 
   public async createNewCollection(
     collectionToCreate: accounts.CreateCollectionArgs,
     overrides: Partial<{
       contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  public async createNewCollection(
+    collectionToCreate: accounts.CreateCollectionArgs,
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  public async createNewCollection(
+    collectionToCreate: accounts.CreateCollectionArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
     if (!collectionToCreate.sellerId) {
       const { id: sellerId } = await this.getSellerByAssistant(
         await this._web3Lib.getSignerAddress()
@@ -606,19 +1043,28 @@ export class AccountsMixin extends BaseCoreSDK {
       // If the caller is not a seller, the sellerId remains undefined
       collectionToCreate.sellerId = sellerId;
     }
-    return accounts.handler.createNewCollection({
+
+    const args = {
       collectionToCreate,
       web3Lib: this._web3Lib,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage
-    });
-  }
+    } as const satisfies Parameters<
+      typeof accounts.handler.createNewCollection
+    >[0];
 
-  public async getOfferCollections(
-    queryVars?: subgraph.GetOfferCollectionsQueryQueryVariables
-  ): Promise<subgraph.OfferCollectionFieldsFragment[]> {
-    return accounts.subgraph.getOfferCollections(this._subgraphUrl, queryVars);
+    if (returnTxInfo === true) {
+      return accounts.handler.createNewCollection({
+        ...args,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.createNewCollection({
+        ...args,
+        returnTxInfo: false
+      });
+    }
   }
 
   public async addRoyaltyRecipients(
@@ -626,14 +1072,49 @@ export class AccountsMixin extends BaseCoreSDK {
     royaltyRecipients: accounts.RoyaltyRecipientInfo[],
     overrides: Partial<{
       contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  public async addRoyaltyRecipients(
+    sellerId: BigNumberish,
+    royaltyRecipients: accounts.RoyaltyRecipientInfo[],
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  public async addRoyaltyRecipients(
+    sellerId: BigNumberish,
+    royaltyRecipients: accounts.RoyaltyRecipientInfo[],
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ) {
-    return accounts.handler.addRoyaltyRecipients({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const args = {
       sellerId,
       royaltyRecipients,
       web3Lib: this._web3Lib,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<
+      typeof accounts.handler.addRoyaltyRecipients
+    >[0];
+
+    if (returnTxInfo === true) {
+      return accounts.handler.addRoyaltyRecipients({
+        ...args,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.addRoyaltyRecipients({
+        ...args,
+        returnTxInfo: false
+      });
+    }
   }
 
   public async updateRoyaltyRecipients(
@@ -642,15 +1123,52 @@ export class AccountsMixin extends BaseCoreSDK {
     royaltyRecipients: accounts.RoyaltyRecipientInfo[],
     overrides: Partial<{
       contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  public async updateRoyaltyRecipients(
+    sellerId: BigNumberish,
+    royaltyRecipientIds: BigNumberish[],
+    royaltyRecipients: accounts.RoyaltyRecipientInfo[],
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  public async updateRoyaltyRecipients(
+    sellerId: BigNumberish,
+    royaltyRecipientIds: BigNumberish[],
+    royaltyRecipients: accounts.RoyaltyRecipientInfo[],
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ) {
-    return accounts.handler.updateRoyaltyRecipients({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const args = {
       sellerId,
       royaltyRecipientIds,
       royaltyRecipients,
       web3Lib: this._web3Lib,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<
+      typeof accounts.handler.updateRoyaltyRecipients
+    >[0];
+
+    if (returnTxInfo === true) {
+      return accounts.handler.updateRoyaltyRecipients({
+        ...args,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.updateRoyaltyRecipients({
+        ...args,
+        returnTxInfo: false
+      });
+    }
   }
 
   public async removeRoyaltyRecipients(
@@ -658,14 +1176,49 @@ export class AccountsMixin extends BaseCoreSDK {
     royaltyRecipientIds: BigNumberish[],
     overrides: Partial<{
       contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  public async removeRoyaltyRecipients(
+    sellerId: BigNumberish,
+    royaltyRecipientIds: BigNumberish[],
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  public async removeRoyaltyRecipients(
+    sellerId: BigNumberish,
+    royaltyRecipientIds: BigNumberish[],
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ) {
-    return accounts.handler.removeRoyaltyRecipients({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const args = {
       sellerId,
       royaltyRecipientIds,
       web3Lib: this._web3Lib,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<
+      typeof accounts.handler.removeRoyaltyRecipients
+    >[0];
+
+    if (returnTxInfo === true) {
+      return accounts.handler.removeRoyaltyRecipients({
+        ...args,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.removeRoyaltyRecipients({
+        ...args,
+        returnTxInfo: false
+      });
+    }
   }
 
   public async getRoyaltyRecipients(

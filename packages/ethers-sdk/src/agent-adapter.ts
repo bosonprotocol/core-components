@@ -6,10 +6,9 @@ import { EthersAdapter, Provider } from "./ethers-adapter";
  * `AgentAdapter` extension of EthersAdapter which also targets `ethers`.
  */
 export class AgentAdapter extends EthersAdapter {
-  private sentTransactions: TransactionRequest[] = [];
   constructor(
     provider: Provider,
-    private signerInfo: { signerAddress: string; chainId: number }
+    private signerInfo: { signerAddress: string }
   ) {
     super(provider, null);
   }
@@ -19,7 +18,7 @@ export class AgentAdapter extends EthersAdapter {
   }
 
   public async getChainId(): Promise<number> {
-    return this.signerInfo.chainId;
+    return (await this._provider.getNetwork()).chainId;
   }
 
   public async estimateGas(
@@ -35,18 +34,18 @@ export class AgentAdapter extends EthersAdapter {
     return this._provider.estimateGas(requestWithFrom);
   }
 
-  public getLastSentTransaction(): TransactionRequest | undefined {
-    return this.sentTransactions.shift();
-  }
-
   public async sendTransaction(
-    transactionRequest: TransactionRequest
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+    _transactionRequest: TransactionRequest
   ): Promise<TransactionResponse> {
-    this.sentTransactions.push(transactionRequest);
-    return;
+    throw new Error(
+      "sendTransaction is not supported in AgentAdapter. Use sendSignedTransaction instead."
+    );
   }
 
-  public async send(rpcMethod: string, payload: unknown[]): Promise<string> {
-    return this._provider.send(rpcMethod, payload);
+  public async sendSignedTransaction(
+    signedTransaction: string
+  ): Promise<TransactionResponse> {
+    return await this._provider.sendTransaction(signedTransaction);
   }
 }

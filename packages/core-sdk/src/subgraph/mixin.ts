@@ -1,5 +1,9 @@
 import { GraphQLClient, gql } from "graphql-request";
-import { TransactionReceipt, TransactionResponse } from "@bosonprotocol/common";
+import {
+  TransactionReceipt,
+  TransactionResponse,
+  Web3LibAdapter
+} from "@bosonprotocol/common";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 
 const DELAYS_PER_CHAINID: {
@@ -78,7 +82,7 @@ const DELAYS_PER_CHAINID: {
   }
 };
 
-export class SubgraphMixin extends BaseCoreSDK {
+export class SubgraphMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   public async waitForGraphNodeIndexing(
     blockNumberOrTransaction?: number | TransactionResponse | TransactionReceipt
   ) {

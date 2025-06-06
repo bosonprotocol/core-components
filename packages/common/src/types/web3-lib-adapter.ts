@@ -1,4 +1,4 @@
-import { BigNumberish } from "@ethersproject/bignumber";
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 
 export type Log = {
   data: string;
@@ -13,6 +13,7 @@ export type TransactionRequest = Partial<{
   value: BigNumberish;
   gasLimit: BigNumberish;
   gasPrice: BigNumberish;
+  chainId: number;
 }>;
 
 export type TransactionResponse = {
@@ -28,6 +29,7 @@ export type TransactionReceipt = {
   transactionHash: string;
   effectiveGasPrice: BigNumberish;
   blockNumber: number;
+  gasUsed?: BigNumber;
 };
 
 export interface Web3LibAdapter {

@@ -104,71 +104,16 @@ test("AgentAdapter estimateGas defaults from address when not provided", async (
     from: WALLETS[2] // Should default to signerInfo address
   });
 });
-
-test("AgentAdapter sendTransaction stores transaction and returns undefined", async () => {
+test("AgentAdapter sendTransaction throws error", async () => {
   const provider = mockProvider();
   const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
-  const result = await agentAdapter.sendTransaction(MOCK_TRANSACTION_REQUEST);
-
-  expect(result).toBeUndefined();
-  // Verify transaction was stored by checking we can retrieve it
-  const storedTx = agentAdapter.getLastSentTransaction();
-  expect(storedTx).toEqual(MOCK_TRANSACTION_REQUEST);
-});
-
-test("AgentAdapter sendTransaction stores multiple transactions in order", async () => {
-  const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
-  const agentAdapter = new AgentAdapter(provider, signerInfo);
-
-  const tx1 = { ...MOCK_TRANSACTION_REQUEST, nonce: 1 };
-  const tx2 = { ...MOCK_TRANSACTION_REQUEST, nonce: 2 };
-
-  await agentAdapter.sendTransaction(tx1);
-  await agentAdapter.sendTransaction(tx2);
-
-  // Verify FIFO order by retrieving transactions
-  const firstTx = agentAdapter.getLastSentTransaction();
-  const secondTx = agentAdapter.getLastSentTransaction();
-
-  expect(firstTx).toEqual(tx1);
-  expect(secondTx).toEqual(tx2);
-});
-
-test("AgentAdapter getLastSentTransaction returns and removes first transaction", () => {
-  const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
-  const agentAdapter = new AgentAdapter(provider, signerInfo);
-
-  const tx1 = { ...MOCK_TRANSACTION_REQUEST, nonce: 1 };
-  const tx2 = { ...MOCK_TRANSACTION_REQUEST, nonce: 2 };
-
-  // Send transactions to store them
-  agentAdapter.sendTransaction(tx1);
-  agentAdapter.sendTransaction(tx2);
-
-  // Get first transaction
-  const firstTx = agentAdapter.getLastSentTransaction();
-  expect(firstTx).toEqual(tx1);
-
-  // Get second transaction
-  const secondTx = agentAdapter.getLastSentTransaction();
-  expect(secondTx).toEqual(tx2);
-
-  // Queue should now be empty
-  const emptyResult = agentAdapter.getLastSentTransaction();
-  expect(emptyResult).toBeUndefined();
-});
-
-test("AgentAdapter getLastSentTransaction returns undefined when no transactions", () => {
-  const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
-  const agentAdapter = new AgentAdapter(provider, signerInfo);
-
-  const lastTx = agentAdapter.getLastSentTransaction();
-  expect(lastTx).toBeUndefined();
+  await expect(
+    agentAdapter.sendTransaction(MOCK_TRANSACTION_REQUEST)
+  ).rejects.toThrow(
+    "sendTransaction is not supported in AgentAdapter. Use sendSignedTransaction instead."
+  );
 });
 
 test("AgentAdapter call delegates to provider", async () => {

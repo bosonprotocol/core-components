@@ -4,8 +4,9 @@ import {
   getEventLogs,
   getConditionalCommitAuthorizedEventLogs
 } from "./subgraph";
+import { Web3LibAdapter } from "@bosonprotocol/common";
 
-export class EventLogsMixin extends BaseCoreSDK {
+export class EventLogsMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /**
    * Returns event logs from subgraph.
    * @param queryVars - Optional query variables to skip, order or filter.

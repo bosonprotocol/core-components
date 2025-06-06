@@ -30,7 +30,7 @@ import { SubgraphMixin } from "./subgraph/mixin";
 import { PriceDiscoveryMixin } from "./price-discovery/mixin";
 import { MarketplaceMixin } from "./marketplaces/mixin";
 
-export class CoreSDK extends BaseCoreSDK {
+export class CoreSDK<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /**
    * Creates an instance of `CoreSDK` by using default values derived either from
    * `args.envName` or `args.chainId`.
@@ -47,8 +47,8 @@ export class CoreSDK extends BaseCoreSDK {
    * @param args - Constructor args.
    * @returns CoreSDK instance with default values.
    */
-  static fromDefaultConfig(args: {
-    web3Lib: Web3LibAdapter;
+  static fromDefaultConfig<T extends Web3LibAdapter>(args: {
+    web3Lib: T;
     envName: EnvironmentType;
     configId: ConfigId;
     metadataStorage?: MetadataStorage;
@@ -57,7 +57,7 @@ export class CoreSDK extends BaseCoreSDK {
   }) {
     const defaultConfig = getEnvConfigById(args.envName, args.configId);
 
-    return new CoreSDK({
+    return new CoreSDK<T>({
       web3Lib: args.web3Lib,
       metadataStorage: args.metadataStorage,
       theGraphStorage: args.theGraphStorage,
@@ -132,28 +132,28 @@ export class CoreSDK extends BaseCoreSDK {
 
 // Doc: https://www.typescriptlang.org/docs/handbook/mixins.html#alternative-pattern
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface CoreSDK
-  extends MetadataMixin,
-    AccountsMixin,
-    OfferMixin,
-    FundsMixin,
-    ExchangesMixin,
-    DisputesMixin,
-    MetaTxMixin,
-    NativeMetaTxMixin,
-    GroupsMixin,
-    OrchestrationMixin,
-    EventLogsMixin,
-    VoucherMixin,
-    ERC20Mixin,
-    ERC721Mixin,
-    ERC1155Mixin,
-    ERC165Mixin,
-    ProtocolConfigMixin,
-    ErrorMixin,
-    SubgraphMixin,
-    PriceDiscoveryMixin,
-    MarketplaceMixin {}
+export interface CoreSDK<T extends Web3LibAdapter = Web3LibAdapter>
+  extends MetadataMixin<T>,
+    AccountsMixin<T>,
+    OfferMixin<T>,
+    FundsMixin<T>,
+    ExchangesMixin<T>,
+    DisputesMixin<T>,
+    MetaTxMixin<T>,
+    NativeMetaTxMixin<T>,
+    GroupsMixin<T>,
+    OrchestrationMixin<T>,
+    EventLogsMixin<T>,
+    VoucherMixin<T>,
+    ERC20Mixin<T>,
+    ERC721Mixin<T>,
+    ERC1155Mixin<T>,
+    ERC165Mixin<T>,
+    ProtocolConfigMixin<T>,
+    ErrorMixin<T>,
+    SubgraphMixin<T>,
+    PriceDiscoveryMixin<T>,
+    MarketplaceMixin<T> {}
 applyMixins(CoreSDK, [
   MetadataMixin,
   AccountsMixin,
