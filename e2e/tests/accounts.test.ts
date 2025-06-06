@@ -136,6 +136,46 @@ describe("CoreSDK - accounts", () => {
       ).toEqual(ZERO_ADDRESS);
     });
 
+    test("optInToDisputeResolverUpdate: check transaction data", async () => {
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(protocolAdminWallet);
+      const disputeResolverAddress = fundedWallet.address.toLowerCase();
+
+      const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
+        protocolAdminWallet,
+        {
+          assistant: disputeResolverAddress,
+          admin: disputeResolverAddress,
+          treasury: disputeResolverAddress,
+          metadataUri,
+          escalationResponsePeriodInMS,
+          fees: [],
+          sellerAllowList: []
+        }
+      );
+
+      const { coreSDK: coreSDK2, fundedWallet: randomWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet3);
+      await (
+        await coreSDK.updateDisputeResolver(disputeResolver.id, {
+          assistant: randomWallet.address
+        })
+      ).wait();
+
+      const txData = await coreSDK2.optInToDisputeResolverUpdate(
+        {
+          id: disputeResolver.id,
+          fieldsToUpdate: {
+            assistant: true
+          }
+        },
+        { returnTxInfo: true }
+      );
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+    });
+
     test("add fees", async () => {
       const { coreSDK, fundedWallet } =
         await initCoreSDKWithFundedWallet(protocolAdminWallet);
@@ -224,6 +264,40 @@ describe("CoreSDK - accounts", () => {
       expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
     });
 
+    test("updateDisputeResolver: check transaction data", async () => {
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(protocolAdminWallet);
+      const disputeResolverAddress = fundedWallet.address.toLowerCase();
+
+      const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
+        protocolAdminWallet,
+        {
+          assistant: disputeResolverAddress,
+          admin: disputeResolverAddress,
+          treasury: disputeResolverAddress,
+          metadataUri,
+          escalationResponsePeriodInMS,
+          fees: [],
+          sellerAllowList: []
+        }
+      );
+
+      const { fundedWallet: randomWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet3);
+      const txData = await coreSDK.updateDisputeResolver(
+        disputeResolver.id,
+        {
+          assistant: randomWallet.address,
+          metadataUri: "ipfs://changed",
+          escalationResponsePeriodInMS: 123_000
+        },
+        { returnTxInfo: true }
+      );
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+    });
+
     test("remove fees", async () => {
       const { coreSDK, fundedWallet } =
         await initCoreSDKWithFundedWallet(protocolAdminWallet);
@@ -254,6 +328,34 @@ describe("CoreSDK - accounts", () => {
 
       expect(disputeResolverBeforeUpdate.fees.length).toBe(1);
       expect(disputeResolverAfterUpdate.fees.length).toBe(0);
+    });
+
+    test("removeFeesFromDisputeResolver: check transaction data", async () => {
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(protocolAdminWallet);
+      const disputeResolverAddress = fundedWallet.address.toLowerCase();
+
+      const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
+        protocolAdminWallet,
+        {
+          assistant: disputeResolverAddress,
+          admin: disputeResolverAddress,
+          treasury: disputeResolverAddress,
+          metadataUri,
+          escalationResponsePeriodInMS,
+          fees: [ethDisputeResolutionFee],
+          sellerAllowList: []
+        }
+      );
+
+      const txData = await coreSDK.removeFeesFromDisputeResolver(
+        disputeResolver.id,
+        [ethDisputeResolutionFee.tokenAddress],
+        { returnTxInfo: true }
+      );
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
     });
 
     test("add sellers", async () => {
@@ -292,6 +394,37 @@ describe("CoreSDK - accounts", () => {
       expect(disputeResolverAfterUpdate.sellerAllowList[0]).toBe(seller.id);
     });
 
+    test("addSellersToDisputeResolverAllowList: check transaction data", async () => {
+      const [sellers, { coreSDK, fundedWallet }] = await Promise.all([
+        ensureCreatedSeller(sellerWallet),
+        initCoreSDKWithFundedWallet(protocolAdminWallet)
+      ]);
+      const [seller] = sellers;
+      const disputeResolverAddress = fundedWallet.address.toLowerCase();
+
+      const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
+        protocolAdminWallet,
+        {
+          assistant: disputeResolverAddress,
+          admin: disputeResolverAddress,
+          treasury: disputeResolverAddress,
+          metadataUri,
+          escalationResponsePeriodInMS,
+          fees: [],
+          sellerAllowList: []
+        }
+      );
+
+      const txData = await coreSDK.addSellersToDisputeResolverAllowList(
+        disputeResolver.id,
+        [seller.id],
+        { returnTxInfo: true }
+      );
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+    });
+
     test("remove sellers", async () => {
       const [sellers, { coreSDK, fundedWallet }] = await Promise.all([
         ensureCreatedSeller(sellerWallet),
@@ -326,6 +459,37 @@ describe("CoreSDK - accounts", () => {
       expect(disputeResolverBeforeUpdate.sellerAllowList.length).toBe(1);
       expect(disputeResolverAfterUpdate.sellerAllowList.length).toBe(0);
     });
+
+    test("removeSellersFromDisputeResolverAllowList: check transaction data", async () => {
+      const [sellers, { coreSDK, fundedWallet }] = await Promise.all([
+        ensureCreatedSeller(sellerWallet),
+        initCoreSDKWithFundedWallet(protocolAdminWallet)
+      ]);
+      const [seller] = sellers;
+      const disputeResolverAddress = fundedWallet.address.toLowerCase();
+
+      const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
+        protocolAdminWallet,
+        {
+          assistant: disputeResolverAddress,
+          admin: disputeResolverAddress,
+          treasury: disputeResolverAddress,
+          metadataUri,
+          escalationResponsePeriodInMS,
+          fees: [],
+          sellerAllowList: [seller.id]
+        }
+      );
+
+      const txData = await coreSDK.removeSellersFromDisputeResolverAllowList(
+        disputeResolver.id,
+        [seller.id],
+        { returnTxInfo: true }
+      );
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+    });
   });
 
   describe("seller", () => {
@@ -342,6 +506,30 @@ describe("CoreSDK - accounts", () => {
       expect(BigNumber.from(seller.authTokenId).eq(0)).toBe(true);
       expect(seller.authTokenType).toEqual(AuthTokenType.NONE);
       expect(seller.metadata).toMatchObject(sellerMetadata);
+    });
+
+    test("createSeller: check transaction data", async () => {
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet3);
+
+      const metadataHash = await coreSDK.storeMetadata(sellerMetadata);
+      const metadataUri = "ipfs://" + metadataHash;
+
+      const txData = await coreSDK.createSeller(
+        {
+          assistant: fundedWallet.address,
+          admin: fundedWallet.address,
+          treasury: fundedWallet.address,
+          contractUri: "",
+          royaltyPercentage: "0",
+          authTokenId: "0",
+          authTokenType: AuthTokenType.NONE,
+          metadataUri
+        },
+        { returnTxInfo: true }
+      );
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
     });
     test("create seller and then update metadata", async () => {
       const { coreSDK, fundedWallet } =
@@ -362,6 +550,37 @@ describe("CoreSDK - accounts", () => {
       });
       expect(updatedSeller.metadata).toMatchObject(newMetadata);
     });
+
+    test("updateSeller: check transaction data", async () => {
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet3);
+
+      const seller = await createSeller(coreSDK, fundedWallet.address);
+
+      const newMetadata = {
+        type: "SELLER" as const,
+        kind: "regular",
+        contactPreference: "xmtp_and_email"
+      };
+      const metadataHash = await coreSDK.storeMetadata(newMetadata);
+      const metadataUri = "ipfs://" + metadataHash;
+
+      const txData = await coreSDK.updateSeller(
+        {
+          id: seller.id,
+          assistant: seller.assistant,
+          admin: seller.admin,
+          treasury: seller.treasury,
+          authTokenId: seller.authTokenId,
+          authTokenType: seller.authTokenType,
+          metadataUri
+        },
+        { returnTxInfo: true }
+      );
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+    });
+
     test("create seller and then update salesChannels in metadata", async () => {
       const { coreSDK, fundedWallet } =
         await initCoreSDKWithFundedWallet(seedWallet3);
@@ -561,6 +780,39 @@ describe("CoreSDK - accounts", () => {
       expect(seller).toBeTruthy();
       expect(seller.assistant).toEqual(fundedWallet.address.toLowerCase());
       expect(seller.pendingSeller?.assistant).toEqual(ZERO_ADDRESS);
+    });
+
+    test("optInToSellerUpdate: check transaction data", async () => {
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet3);
+
+      const seller = await createSeller(coreSDK, fundedWallet.address);
+
+      const { coreSDK: coreSDK2, fundedWallet: randomWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet3);
+      await (
+        await coreSDK.updateSeller({
+          id: seller.id,
+          assistant: randomWallet.address,
+          admin: seller.admin,
+          treasury: seller.treasury,
+          authTokenId: seller.authTokenId,
+          authTokenType: seller.authTokenType,
+          metadataUri: seller.metadataUri
+        })
+      ).wait();
+
+      const txData = await coreSDK2.optInToSellerUpdate(
+        {
+          id: seller.id,
+          fieldsToUpdate: {
+            assistant: true
+          }
+        },
+        { returnTxInfo: true }
+      );
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
     });
     test("update seller - update with another metadataUri", async () => {
       const { coreSDK, fundedWallet } =

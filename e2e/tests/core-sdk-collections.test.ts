@@ -261,13 +261,13 @@ describe("Offer collections", () => {
     expect(seller).toBeTruthy();
     expect(seller.collections.length).toEqual(1);
     expect(seller.collections[0].metadata).toBeTruthy();
-    expect(seller.collections[0].metadata.name).toEqual(
+    expect(seller.collections[0].metadata?.name).toEqual(
       collectionMetadata1.name
     );
-    expect(seller.collections[0].metadata.externalLink).toEqual(
+    expect(seller.collections[0].metadata?.externalLink).toEqual(
       collectionMetadata1.external_link
     );
-    expect(seller.collections[0].metadata.collaborators.length).toEqual(
+    expect(seller.collections[0].metadata?.collaborators?.length).toEqual(
       collectionMetadata1.collaborators.length
     );
   });
