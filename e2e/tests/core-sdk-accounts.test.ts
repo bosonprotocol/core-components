@@ -7,7 +7,6 @@ import {
   seedWallet21,
   updateSeller
 } from "./utils";
-import { Wallet } from "ethers";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 
 jest.setTimeout(60_000);

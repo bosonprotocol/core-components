@@ -14,9 +14,8 @@ const seedWallet = seedWallet16; // be sure the seedWallet is not used by anothe
 
 describe("core-sdk-extend-offer", () => {
   test("Extend an offer", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
 
     const createdOffer = await createSellerAndOffer(
       coreSDK,

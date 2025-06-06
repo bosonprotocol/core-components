@@ -10,9 +10,8 @@ const seedWallet = seedWallet13; // be sure the seedWallet is not used by anothe
 
 describe("fundsEventLogs", () => {
   test("Check funds encumbered", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
 
     const createdOffer = await createSellerAndOffer(
       coreSDK,

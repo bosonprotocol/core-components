@@ -23,9 +23,8 @@ describe("core-sdk-funds", () => {
   describe("deposit funds", () => {
     test("ETH", async () => {
       const sellerFundsDepositInEth = "5";
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
       const sellers = await ensureCreatedSeller(fundedWallet);
       const [seller] = sellers;
 
@@ -44,9 +43,8 @@ describe("core-sdk-funds", () => {
 
     test("ERC20", async () => {
       const sellerFundsDeposit = "5";
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
       const sellers = await ensureCreatedSeller(fundedWallet);
       const [seller] = sellers;
 
@@ -70,9 +68,8 @@ describe("core-sdk-funds", () => {
   describe("withdraw funds", () => {
     test("ETH", async () => {
       const sellerFundsDepositInEth = "5";
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
       const sellers = await ensureCreatedSeller(fundedWallet);
       const [seller] = sellers;
 
@@ -99,9 +96,8 @@ describe("core-sdk-funds", () => {
 
     test("ETH and ERC20", async () => {
       const sellerFundsDepositInEth = "5";
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
       const sellers = await ensureCreatedSeller(fundedWallet);
       const [seller] = sellers;
 

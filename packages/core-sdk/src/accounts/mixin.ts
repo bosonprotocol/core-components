@@ -1011,6 +1011,34 @@ export class AccountsMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
     }
   }
 
+  /**
+   * Returns dispute resolver entity from subgraph.
+   * @param disputeResolverId - ID of dispute resolver entity to query for.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Dispute resolver entity from subgraph.
+   */
+  public async getDisputeResolverById(
+    disputeResolverId: BigNumberish,
+    queryVars?: accounts.subgraph.SingleDisputeResolverQueryVariables
+  ): Promise<subgraph.DisputeResolverFieldsFragment> {
+    return accounts.subgraph.getDisputeResolverById(
+      this._subgraphUrl,
+      disputeResolverId,
+      queryVars
+    );
+  }
+
+  /**
+   * Returns dispute resolver entities from subgraph.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Dispute resolver entities from subgraph.
+   */
+  public async getDisputeResolvers(
+    queryVars?: subgraph.GetDisputeResolversQueryQueryVariables
+  ): Promise<subgraph.DisputeResolverFieldsFragment[]> {
+    return accounts.subgraph.getDisputeResolvers(this._subgraphUrl, queryVars);
+  }
+
   public async createNewCollection(
     collectionToCreate: accounts.CreateCollectionArgs,
     overrides: Partial<{
@@ -1065,6 +1093,12 @@ export class AccountsMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
         returnTxInfo: false
       });
     }
+  }
+
+  public async getOfferCollections(
+    queryVars?: subgraph.GetOfferCollectionsQueryQueryVariables
+  ): Promise<subgraph.OfferCollectionFieldsFragment[]> {
+    return accounts.subgraph.getOfferCollections(this._subgraphUrl, queryVars);
   }
 
   public async addRoyaltyRecipients(
