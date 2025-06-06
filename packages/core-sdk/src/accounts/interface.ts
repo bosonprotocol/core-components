@@ -225,8 +225,8 @@ function argsToSellerStruct(args: {
     // we need to set some arbitrary values.
     id: "0",
     active: true,
-    clerk: AddressZero,
-    ...args
+    ...args,
+    clerk: AddressZero // force clerk to be AddressZero (since protocol v2.1.0)
   };
 }
 
@@ -239,11 +239,11 @@ function createDisputeResolverArgsToDisputeResolverStruct(
     // we need to set some arbitrary values.
     id: "0",
     active: true,
-    clerk: AddressZero,
     ...args,
     escalationResponsePeriod: utils.timestamp.msToSec(
       args.escalationResponsePeriodInMS
-    )
+    ),
+    clerk: AddressZero // force clerk to be AddressZero (since protocol v2.1.0)
   };
 }
 
