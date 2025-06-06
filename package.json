@@ -21,6 +21,7 @@
     "e2e:suite:default": "./e2e/run-e2e-suite.sh",
     "e2e:suite:win32": "cmd /c .\\e2e\\run-e2e-suite.cmd",
     "e2e:test": "jest -c ./e2e/jest.config.js",
+    "e2e:test:only": "jest -c ./e2e/jest.config.js --runInBand",
     "e2e:services": "run-script-os",
     "e2e:services:default": "./e2e/run-e2e-services.sh",
     "e2e:services:win32": "cmd /c .\\e2e\\run-e2e-services.cmd",
@@ -32,6 +33,7 @@
     "ipfs-upload": "ts-node -P tsconfig.base.json ./scripts/upload-to-ipfs.ts",
     "explore-offer": "ts-node -P tsconfig.base.json ./scripts/explore-offer.ts",
     "create-offer": "ts-node -P tsconfig.base.json ./scripts/create-offer.ts",
+    "create-offer-agent": "ts-node -P tsconfig.base.json ./scripts/create-offer-agent.ts",
     "create-pd-offer": "ts-node -P tsconfig.base.json ./scripts/create-price-discovery-offer.ts",
     "opensea:wrap": "ts-node -P tsconfig.base.json ./scripts/opensea/wrap-vouchers.ts",
     "opensea:list": "ts-node -P tsconfig.base.json ./scripts/opensea/create-listing.ts",
@@ -102,7 +104,7 @@
     "lerna": "5.5.1"
   },
   "volta": {
-    "node": "16.16.0",
+    "node": "22.16.0",
     "npm": "8.11.0"
   },
   "dependencies": {
