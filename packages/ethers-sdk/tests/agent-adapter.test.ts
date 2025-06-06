@@ -16,6 +16,8 @@ const GAS_ESTIMATE = "21000";
 const TX_HASH = "transactionHash";
 const CONTRACT_CODE = "0x608060405234801561001057600080fd5b50";
 const EOA_CODE = "0x";
+const SIGNED_TX =
+  "0xf86c808504a817c800825208943535353535353535353535353535353535353535880de0b6b3a76400008025a028ef61340bd939bc2195fe537567866003e1a15d3c71ff63e1590620aa636276a067cbe9d8997f761aecb703304b3800ccf555c9f3dc64214b297fb1966a3b6d83";
 
 const MOCK_TRANSACTION_REQUEST: TransactionRequest = {
   to: WALLETS[1],
@@ -31,32 +33,33 @@ test("imports AgentAdapter", () => {
 
 test("AgentAdapter constructor", () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[0] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
   expect(agentAdapter).toBeTruthy();
 });
 
 test("AgentAdapter getSignerAddress returns signerInfo address", async () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[2], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[2] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
   const signerAddress = await agentAdapter.getSignerAddress();
   expect(signerAddress).toEqual(WALLETS[2]);
 });
 
-test("AgentAdapter getChainId returns signerInfo chainId", async () => {
+test("AgentAdapter getChainId returns network chainId from provider", async () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: 5678 };
+  const signerInfo = { signerAddress: WALLETS[0] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
   const chainId = await agentAdapter.getChainId();
-  expect(chainId).toEqual(5678);
+  expect(chainId).toEqual(CHAIN_ID);
+  expect(provider.getNetwork).toHaveBeenCalled();
 });
 
 test("AgentAdapter isSignerContract detects EOA", async () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[0] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
   const isContract = await agentAdapter.isSignerContract();
@@ -66,7 +69,7 @@ test("AgentAdapter isSignerContract detects EOA", async () => {
 
 test("AgentAdapter isSignerContract detects contract", async () => {
   const provider = mockProviderWithContract();
-  const signerInfo = { signerAddress: WALLETS[1], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[1] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
   const isContract = await agentAdapter.isSignerContract();
@@ -76,7 +79,7 @@ test("AgentAdapter isSignerContract detects contract", async () => {
 
 test("AgentAdapter estimateGas uses provider with from address", async () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[0] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
   const gasEstimate = await agentAdapter.estimateGas(MOCK_TRANSACTION_REQUEST);
@@ -90,7 +93,7 @@ test("AgentAdapter estimateGas uses provider with from address", async () => {
 
 test("AgentAdapter estimateGas defaults from address when not provided", async () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[2], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[2] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
   const requestWithoutFrom = { ...MOCK_TRANSACTION_REQUEST };
@@ -104,9 +107,10 @@ test("AgentAdapter estimateGas defaults from address when not provided", async (
     from: WALLETS[2] // Should default to signerInfo address
   });
 });
+
 test("AgentAdapter sendTransaction throws error", async () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[0] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
   await expect(
@@ -116,9 +120,20 @@ test("AgentAdapter sendTransaction throws error", async () => {
   );
 });
 
+test("AgentAdapter sendSignedTransaction delegates to provider", async () => {
+  const provider = mockProvider();
+  const signerInfo = { signerAddress: WALLETS[0] };
+  const agentAdapter = new AgentAdapter(provider, signerInfo);
+
+  const result = await agentAdapter.sendSignedTransaction(SIGNED_TX);
+
+  expect(result.hash).toEqual(TX_HASH);
+  expect(provider.sendTransaction).toHaveBeenCalledWith(SIGNED_TX);
+});
+
 test("AgentAdapter call delegates to provider", async () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[0] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
   const result = await agentAdapter.call(MOCK_TRANSACTION_REQUEST);
@@ -129,7 +144,7 @@ test("AgentAdapter call delegates to provider", async () => {
 
 test("AgentAdapter send delegates to provider", async () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[0] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
   const rpcMethod = "eth_getBalance";
@@ -143,7 +158,7 @@ test("AgentAdapter send delegates to provider", async () => {
 
 test("AgentAdapter getTransactionReceipt delegates to provider", async () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[0] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
   const receipt = await agentAdapter.getTransactionReceipt(TX_HASH);
@@ -155,7 +170,7 @@ test("AgentAdapter getTransactionReceipt delegates to provider", async () => {
 
 test("AgentAdapter inherits uuid from parent", () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[0] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
   expect(agentAdapter.uuid).toBeDefined();
@@ -164,7 +179,7 @@ test("AgentAdapter inherits uuid from parent", () => {
 
 test("AgentAdapter multiple instances have different uuids", () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[0] };
 
   const adapter1 = new AgentAdapter(provider, signerInfo);
   const adapter2 = new AgentAdapter(provider, signerInfo);
@@ -175,7 +190,7 @@ test("AgentAdapter multiple instances have different uuids", () => {
 // Edge cases and error scenarios
 test("AgentAdapter handles empty transaction request in estimateGas", async () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[0] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
   const emptyRequest = {};
@@ -189,7 +204,7 @@ test("AgentAdapter handles empty transaction request in estimateGas", async () =
 
 test("AgentAdapter preserves all transaction request properties", async () => {
   const provider = mockProvider();
-  const signerInfo = { signerAddress: WALLETS[0], chainId: CHAIN_ID };
+  const signerInfo = { signerAddress: WALLETS[0] };
   const agentAdapter = new AgentAdapter(provider, signerInfo);
 
   const complexRequest = {
@@ -205,6 +220,48 @@ test("AgentAdapter preserves all transaction request properties", async () => {
   await agentAdapter.estimateGas(complexRequest);
 
   expect(provider.estimateGas).toHaveBeenCalledWith(complexRequest);
+});
+
+// Additional tests for error scenarios
+test("AgentAdapter sendSignedTransaction handles provider errors", async () => {
+  const provider = mockProvider();
+  const errorMessage = "Network error";
+  (provider.sendTransaction as jest.Mock).mockRejectedValue(
+    new Error(errorMessage)
+  );
+
+  const signerInfo = { signerAddress: WALLETS[0] };
+  const agentAdapter = new AgentAdapter(provider, signerInfo);
+
+  await expect(agentAdapter.sendSignedTransaction(SIGNED_TX)).rejects.toThrow(
+    errorMessage
+  );
+});
+
+test("AgentAdapter estimateGas handles provider errors", async () => {
+  const provider = mockProvider();
+  const errorMessage = "Gas estimation failed";
+  (provider.estimateGas as jest.Mock).mockRejectedValue(
+    new Error(errorMessage)
+  );
+
+  const signerInfo = { signerAddress: WALLETS[0] };
+  const agentAdapter = new AgentAdapter(provider, signerInfo);
+
+  await expect(
+    agentAdapter.estimateGas(MOCK_TRANSACTION_REQUEST)
+  ).rejects.toThrow(errorMessage);
+});
+
+test("AgentAdapter getChainId handles provider errors", async () => {
+  const provider = mockProvider();
+  const errorMessage = "Network unavailable";
+  (provider.getNetwork as jest.Mock).mockRejectedValue(new Error(errorMessage));
+
+  const signerInfo = { signerAddress: WALLETS[0] };
+  const agentAdapter = new AgentAdapter(provider, signerInfo);
+
+  await expect(agentAdapter.getChainId()).rejects.toThrow(errorMessage);
 });
 
 function mockProvider(): Provider {
@@ -228,7 +285,25 @@ function mockProvider(): Provider {
       connect: jest.fn().mockReturnThis()
     }),
     getCode: jest.fn().mockResolvedValue(EOA_CODE),
-    estimateGas: jest.fn().mockResolvedValue(GAS_ESTIMATE)
+    estimateGas: jest.fn().mockResolvedValue(GAS_ESTIMATE),
+    getNetwork: jest.fn().mockResolvedValue({ chainId: CHAIN_ID }),
+    sendTransaction: jest.fn().mockResolvedValue({
+      hash: TX_HASH,
+      from: WALLETS[0],
+      to: WALLETS[1],
+      value: "0",
+      gasLimit: "21000",
+      gasPrice: "20000000000",
+      nonce: 0,
+      data: "0x",
+      chainId: CHAIN_ID,
+      wait: jest.fn().mockResolvedValue({
+        status: 1,
+        transactionHash: TX_HASH,
+        gasUsed: GAS_USED,
+        blockNumber: BLOCK_NUMBER
+      })
+    })
   } as unknown as Provider;
 
   return provider;
