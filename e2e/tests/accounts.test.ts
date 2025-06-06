@@ -192,6 +192,37 @@ describe("CoreSDK - accounts", () => {
       expect(disputeResolverAfterUpdate.fees[1].token.decimals).toBe("0");
       expect(disputeResolverAfterUpdate.fees[1].token.symbol).toBe("unknown");
     });
+    test("addFeesToDisputeResolver: check transaction data", async () => {
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(protocolAdminWallet);
+      const disputeResolverAddress = fundedWallet.address.toLowerCase();
+
+      const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
+        protocolAdminWallet,
+        {
+          assistant: disputeResolverAddress,
+          admin: disputeResolverAddress,
+          treasury: disputeResolverAddress,
+          metadataUri,
+          escalationResponsePeriodInMS,
+          fees: [ethDisputeResolutionFee],
+          sellerAllowList: []
+        }
+      );
+      const secondFee = {
+        tokenAddress: "0x0000000000000000000000000000000000000001",
+        tokenName: "Not-Native",
+        feeAmount: utils.parseEther("0")
+      };
+      const txData = await coreSDK.addFeesToDisputeResolver(
+        disputeResolver.id,
+        [secondFee],
+        { returnTxInfo: true }
+      );
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+    });
 
     test("remove fees", async () => {
       const { coreSDK, fundedWallet } =

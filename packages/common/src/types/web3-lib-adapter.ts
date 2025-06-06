@@ -29,7 +29,7 @@ export type TransactionReceipt = {
   transactionHash: string;
   effectiveGasPrice: BigNumberish;
   blockNumber: number;
-  gasUsed?: BigNumber;
+  gasUsed: BigNumber;
 };
 
 export interface Web3LibAdapter {
