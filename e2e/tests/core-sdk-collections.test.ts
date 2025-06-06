@@ -113,6 +113,23 @@ describe("Offer collections", () => {
     expect(collections[1].collectionIndex).toEqual("1");
     expect(collections[1].externalId).toEqual(customCollectionId);
   });
+
+  test("createNewCollection: check transaction data", async () => {
+    const { coreSDK: coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet20);
+    const seller = await createSeller(coreSDK, fundedWallet.address);
+    expect(seller).toBeTruthy();
+
+    const txData = await coreSDK.createNewCollection(
+      {
+        contractUri: "",
+        collectionId: customCollectionId
+      },
+      { returnTxInfo: true }
+    );
+
+    expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+  });
   test("Check the collection list at seller level", async () => {
     const { coreSDK: coreSDK, fundedWallet } =
       await initCoreSDKWithFundedWallet(seedWallet20);

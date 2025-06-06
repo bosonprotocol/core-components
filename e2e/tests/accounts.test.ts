@@ -68,6 +68,27 @@ describe("CoreSDK - accounts", () => {
       );
     });
 
+    test("createDisputeResolver: check transaction data", async () => {
+      const fundedWallet = await createFundedWallet(protocolAdminWallet);
+      const { coreSDK } = await initCoreSDKWithFundedWallet(fundedWallet);
+      const disputeResolverAddress = fundedWallet.address.toLowerCase();
+
+      const txData = await coreSDK.createDisputeResolver(
+        {
+          assistant: disputeResolverAddress,
+          admin: disputeResolverAddress,
+          treasury: disputeResolverAddress,
+          metadataUri,
+          escalationResponsePeriodInMS,
+          fees: [],
+          sellerAllowList: []
+        },
+        { returnTxInfo: true }
+      );
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+    });
+
     test("update", async () => {
       const { coreSDK, fundedWallet } =
         await initCoreSDKWithFundedWallet(protocolAdminWallet);
