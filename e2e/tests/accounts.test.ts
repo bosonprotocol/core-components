@@ -86,9 +86,7 @@ describe("CoreSDK - accounts", () => {
         { returnTxInfo: true }
       );
 
-      expect(Object.keys(txData).sort()).toStrictEqual(
-        ["data", "to", "value"].sort()
-      );
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
     });
 
     test("update", async () => {
