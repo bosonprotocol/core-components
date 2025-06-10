@@ -69,7 +69,7 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("createDisputeResolver: check transaction data", async () => {
-      const fundedWallet = await createFundedWallet(protocolAdminWallet);
+      const fundedWallet = await createFundedWallet(protocolAdminWallet, "20");
       const { coreSDK } = await initCoreSDKWithFundedWallet(fundedWallet);
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 

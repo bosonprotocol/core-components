@@ -167,7 +167,7 @@ describe("core-sdk", () => {
       });
 
       expect(Object.keys(txData).sort()).toStrictEqual(
-        ["data", "to", "value"].sort()
+        ["data", "to", "value", "from"].sort()
       );
     });
 
