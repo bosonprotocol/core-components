@@ -39,6 +39,22 @@ describe("core-sdk-set-contract-uri", () => {
     ).toEqual(newContractURI);
   });
 
+  test("setContractURI: check transaction data", async () => {
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const newContractURI = "ipfs://testNewContractURI";
+    await createSellerAndOffer(coreSDK, fundedWallet.address);
+
+    const collectionIndex = 0;
+    const txData = await coreSDK.setContractURI(
+      newContractURI,
+      collectionIndex,
+      { returnTxInfo: true }
+    );
+
+    expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+  });
+
   test("Set contract URI - Not existing seller", async () => {
     const { coreSDK, fundedWallet } =
       await initCoreSDKWithFundedWallet(seedWallet);

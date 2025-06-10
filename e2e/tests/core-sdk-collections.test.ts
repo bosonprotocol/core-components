@@ -113,6 +113,23 @@ describe("Offer collections", () => {
     expect(collections[1].collectionIndex).toEqual("1");
     expect(collections[1].externalId).toEqual(customCollectionId);
   });
+
+  test("createNewCollection: check transaction data", async () => {
+    const { coreSDK: coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet20);
+    const seller = await createSeller(coreSDK, fundedWallet.address);
+    expect(seller).toBeTruthy();
+
+    const txData = await coreSDK.createNewCollection(
+      {
+        contractUri: "",
+        collectionId: customCollectionId
+      },
+      { returnTxInfo: true }
+    );
+
+    expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+  });
   test("Check the collection list at seller level", async () => {
     const { coreSDK: coreSDK, fundedWallet } =
       await initCoreSDKWithFundedWallet(seedWallet20);
@@ -261,13 +278,13 @@ describe("Offer collections", () => {
     expect(seller).toBeTruthy();
     expect(seller.collections.length).toEqual(1);
     expect(seller.collections[0].metadata).toBeTruthy();
-    expect(seller.collections[0].metadata.name).toEqual(
+    expect(seller.collections[0].metadata?.name).toEqual(
       collectionMetadata1.name
     );
-    expect(seller.collections[0].metadata.externalLink).toEqual(
+    expect(seller.collections[0].metadata?.externalLink).toEqual(
       collectionMetadata1.external_link
     );
-    expect(seller.collections[0].metadata.collaborators.length).toEqual(
+    expect(seller.collections[0].metadata?.collaborators?.length).toEqual(
       collectionMetadata1.collaborators.length
     );
   });
