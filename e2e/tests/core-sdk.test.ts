@@ -166,7 +166,9 @@ describe("core-sdk", () => {
         returnTxInfo: true
       });
 
-      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+      expect(Object.keys(txData).sort()).toStrictEqual(
+        ["data", "to", "value"].sort()
+      );
     });
 
     test("Create a group for multiple offers", async () => {
