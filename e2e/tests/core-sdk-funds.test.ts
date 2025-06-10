@@ -55,7 +55,9 @@ describe("core-sdk-funds", () => {
         { returnTxInfo: true }
       );
 
-      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+      expect(Object.keys(txData).sort()).toStrictEqual(
+        ["data", "to", "value"].sort()
+      );
     });
 
     test("ERC20", async () => {
