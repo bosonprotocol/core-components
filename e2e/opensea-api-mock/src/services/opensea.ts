@@ -79,7 +79,17 @@ export async function getCollection(slug: string) {
   return data.getCollection(slug);
 }
 
-export type PostFulfillmentDataBody = {
+type PostListingFulfillmentDataBody = {
+  listing: {
+    hash: string;
+    chain: string;
+    protocol_address: string;
+  };
+  fulfiller: {
+    address: string;
+  };
+};
+type PostOfferFulfillmentDataBody = {
   offer: {
     hash: string;
     chain: string;
@@ -90,12 +100,35 @@ export type PostFulfillmentDataBody = {
   };
 };
 
+export type PostFulfillmentDataBody =
+  | PostListingFulfillmentDataBody
+  | PostOfferFulfillmentDataBody;
+
 export async function computeFulfillmentData(
+  sidePath: string,
   postFulfillmentDataBody: PostFulfillmentDataBody
 ) {
-  const chain = postFulfillmentDataBody.offer.chain;
-  const protocolAddress = postFulfillmentDataBody.offer.protocol_address;
-  const orderHash = postFulfillmentDataBody.offer.hash;
+  let chain, protocolAddress, orderHash;
+  switch (sidePath) {
+    case "listings": {
+      ({
+        chain,
+        protocol_address: protocolAddress,
+        hash: orderHash
+      } = (postFulfillmentDataBody as PostListingFulfillmentDataBody).listing);
+      break;
+    }
+    case "offers": {
+      ({
+        chain,
+        protocol_address: protocolAddress,
+        hash: orderHash
+      } = (postFulfillmentDataBody as PostOfferFulfillmentDataBody).offer);
+      break;
+    }
+    default:
+      throw new Error(`Invalid sidePath '${sidePath}'`);
+  }
   const fulfillerAddress = postFulfillmentDataBody.fulfiller.address;
 
   logger.info(
