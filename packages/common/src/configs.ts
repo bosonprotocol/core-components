@@ -14,7 +14,7 @@ import protocolAddressesJson from "./generated/protocolAddresses.json";
 
 const protocolAddresses = protocolAddressesJson as ProtocolAddressesConfig;
 
-export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
+export const envConfigs = {
   local: [
     {
       envName: "local",
@@ -520,7 +520,10 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       lens: undefined
     }
   ]
+} satisfies {
+  [K in EnvironmentType]: ProtocolConfig<K>[];
 };
+const allConfigs = Object.values(envConfigs).flat();
 
 /**
  * Returns configs based on provided `envName` that can be
@@ -573,6 +576,18 @@ export function getEnvConfigById(
   if (!config) {
     throw new Error(
       `Could not find config for envName ${envName} and configId ${configId}`
+    );
+  }
+  return config;
+}
+
+export function getConfigFromConfigId(
+  configId: ProtocolConfig["configId"]
+): ProtocolConfig {
+  const config = allConfigs.find((config) => config.configId === configId);
+  if (!config) {
+    throw new Error(
+      `Could not find config for configId ${configId}. Possible values are ${allConfigs.map((c) => c.configId).join(", ")}`
     );
   }
   return config;
