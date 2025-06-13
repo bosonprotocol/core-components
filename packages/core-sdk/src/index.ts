@@ -20,6 +20,7 @@ export {
   envConfigs,
   getEnvConfigs,
   getEnvConfigById,
+  getConfigFromConfigId,
   EnvironmentType,
   ConfigId,
   MetaTxConfig,
