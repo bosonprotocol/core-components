@@ -41,7 +41,7 @@
   "dependencies": {
     "@bosonprotocol/metadata-storage": "^1.0.1",
     "ipfs-http-client": "^56.0.1",
-    "multiformats": "^9.6.4",
+    "multiformats": "^13.1.0",
     "uint8arrays": "^3.0.0"
   },
   "overrides": {
