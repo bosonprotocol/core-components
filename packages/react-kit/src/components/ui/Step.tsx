@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { Typography } from "../../components/ui/Typography";
-import { breakpoint } from "../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 import { getCssVar } from "../../theme";
 import { zIndex } from "./zIndex";
 

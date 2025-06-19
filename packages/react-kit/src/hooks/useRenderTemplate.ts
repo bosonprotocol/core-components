@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { CreateOfferArgs, PriceType } from "@bosonprotocol/common";
 import { offers, subgraph } from "@bosonprotocol/core-sdk";
 import { useEffect, useState } from "react";
-import { ProgressStatus } from "../lib/progress/progressStatus";
+import { ProgressStatus } from "@bosonprotocol/utils";
 import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
 
 import { useIpfsStorage } from "./useIpfsStorage";

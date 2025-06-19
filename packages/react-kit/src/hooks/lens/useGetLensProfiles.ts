@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { fetchLens } from "../../lib/lens/fetchLens";
+import { fetchLens } from "@bosonprotocol/utils";
 import {
   ProfileQueryRequest,
   ProfilesDocument,

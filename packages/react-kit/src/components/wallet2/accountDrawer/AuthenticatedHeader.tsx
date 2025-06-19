@@ -19,7 +19,7 @@ import { Column } from "../../ui/column";
 import { colors } from "../../../theme";
 import { useENSName } from "../../../hooks/ens/useENSName";
 import { useDisconnect } from "../../../hooks/connection/useDisconnect";
-import { formatAddress } from "../../../lib/address/address";
+import { formatAddress } from "@bosonprotocol/utils";
 import { CopyButton } from "../../form/Field.styles";
 import { Spinner } from "../../ui/loading/Spinner";
 import { Tooltip } from "../../tooltip/Tooltip";

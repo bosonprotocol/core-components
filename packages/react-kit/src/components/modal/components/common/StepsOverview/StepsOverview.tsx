@@ -5,7 +5,7 @@ import { Button } from "../../../../buttons/Button";
 import { Grid } from "../../../../ui/Grid";
 import { CommitStep } from "./style";
 import Step from "../../../../ui/Step";
-import { breakpoint } from "../../../../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { colors, getCssVar } from "../../../../../theme";
 import { RedeemHeader } from "../../Redeem/RedeemHeader";

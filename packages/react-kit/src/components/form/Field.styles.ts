@@ -2,7 +2,7 @@
 import styled, { CSSProperties, css } from "styled-components";
 
 import { transition } from "../../components/ui/styles";
-import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
+import { checkIfValueIsEmpty } from "@bosonprotocol/utils";
 import { colors } from "../../theme";
 import { Grid } from "../ui/Grid";
 

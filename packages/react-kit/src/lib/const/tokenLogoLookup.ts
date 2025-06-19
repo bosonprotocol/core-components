@@ -1,6 +1,6 @@
 import store from "../../state";
 
-import { DEFAULT_LIST_OF_LISTS } from "./lists";
+import { DEFAULT_LIST_OF_LISTS } from "@bosonprotocol/utils";
 
 class TokenLogoLookupTable {
   private dict: { [key: string]: string[] | undefined } = {};

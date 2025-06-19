@@ -6,7 +6,7 @@ import utc from "dayjs/plugin/utc";
 import type { Dayjs } from "dayjs";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
-import timezones from "../../lib/const/timezones.json";
+import { timezones } from "@bosonprotocol/utils";
 import BaseSelect from "../form/BaseSelect";
 import { Grid } from "../ui/Grid";
 import { Typography } from "../ui/Typography";

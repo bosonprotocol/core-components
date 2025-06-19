@@ -27,7 +27,7 @@ import {
   useIsConnectedToWrongChain
 } from "../../../../../hooks/connection/connection";
 import { ExchangeCardStatus } from "../../../../exchangeCard/types";
-import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
+import { getOfferDetails } from "@bosonprotocol/utils";
 
 interface Props {
   offer: ExtendedExchange["offer"];

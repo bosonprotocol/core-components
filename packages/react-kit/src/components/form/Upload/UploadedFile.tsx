@@ -1,7 +1,7 @@
 import { ImageSquare, X, FilePdf } from "phosphor-react";
 import React, { useCallback } from "react";
 import styled, { css } from "styled-components";
-import { bytesToSize } from "../../../lib/bytes/bytesToSize";
+import { bytesToSize } from "@bosonprotocol/utils";
 
 import { Grid } from "../../ui/Grid";
 import ThemedButton from "../../ui/ThemedButton";

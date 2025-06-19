@@ -3,9 +3,9 @@ import JSBI from "jsbi";
 import { useMemo } from "react";
 import { useChainId } from "../connection/connection";
 import { useInterfaceMulticall } from "../contracts/useContract";
-import { isAddress } from "../../lib/address/address";
+import { isAddress } from "@bosonprotocol/utils";
 import { useSingleContractMultipleData } from "../contracts/multicall";
-import { nativeOnChain } from "../../lib/const/tokens";
+import { nativeOnChain } from "@bosonprotocol/utils";
 import { useTokenBalances as useTokenBalancesSDK } from "../contracts/useTokenBalances";
 
 /**

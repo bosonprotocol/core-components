@@ -3,7 +3,7 @@ import React, { ReactNode, useMemo } from "react";
 import { UserProvider } from "./UserProvider";
 import { CONFIG } from "../../lib/config/config";
 import { useConfigContext } from "../config/ConfigContext";
-import type { getRpcUrls } from "../../lib/const/networks";
+import { getRpcUrls } from "../../lib/const/networks";
 import { ethers } from "ethers";
 import { MagicContext } from "./MagicContext";
 

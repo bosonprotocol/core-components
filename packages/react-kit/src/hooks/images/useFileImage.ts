@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { loadAndSetImagePromise } from "../../lib/base64/base64";
+import { loadAndSetImagePromise } from "@bosonprotocol/utils";
 
 type UseFileImageProps = {
   file: File | undefined;

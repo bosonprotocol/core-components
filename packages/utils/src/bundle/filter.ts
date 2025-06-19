@@ -1,5 +1,5 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
-import type { BundleItem } from "../../types/bundle";
+import type { BundleItem } from "../types/bundle";
 
 export type ProductV1Item = Extract<
   BundleItem,

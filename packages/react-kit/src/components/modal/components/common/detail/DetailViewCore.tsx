@@ -27,7 +27,7 @@ import { TokenGatedItem } from "./TokenGatedItem";
 import { DetailViewProps } from "./types";
 import { useGetOfferDetailData } from "./useGetOfferDetailData";
 import { SvgImage } from "../../../../ui/SvgImage";
-import { getIsOfferRobloxGated } from "../../../../../lib/roblox/getIsOfferRobloxGated";
+import { getIsOfferRobloxGated } from "@bosonprotocol/utils";
 
 const StyledPrice = styled(Price)`
   h3 {

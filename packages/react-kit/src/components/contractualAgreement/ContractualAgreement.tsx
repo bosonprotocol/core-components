@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { useRenderTemplate } from "../../hooks/useRenderTemplate";
-import { ProgressStatus } from "../../lib/progress/progressStatus";
+import { ProgressStatus } from "@bosonprotocol/utils";
 
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { useBosonContext } from "../boson/BosonProvider";

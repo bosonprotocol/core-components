@@ -4,8 +4,7 @@ import React, { useMemo } from "react";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
 
 import { OpenSeaButton } from "./detail/Detail.style";
-import { getOpenSeaUrl } from "../../../../lib/opensea/getOpenSeaUrl";
-import { getExchangeTokenId } from "../../../../lib/utils/exchange";
+import { getOpenSeaUrl, getExchangeTokenId } from "@bosonprotocol/utils";
 
 interface Props {
   exchange?: subgraph.ExchangeFieldsFragment;

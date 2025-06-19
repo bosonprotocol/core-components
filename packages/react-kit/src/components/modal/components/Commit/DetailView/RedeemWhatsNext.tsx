@@ -5,14 +5,14 @@ import React from "react";
 import { Button } from "../../../../buttons/Button";
 import { Info } from "phosphor-react";
 import { useConfigContext, useExchanges } from "../../../../../hooks";
-import { getOpenSeaUrl } from "../../../../../lib/opensea/getOpenSeaUrl";
+import { getOpenSeaUrl } from "@bosonprotocol/utils";
 import dayjs from "dayjs";
-import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
+import { getDateTimestamp } from "@bosonprotocol/utils";
 import { colors, getCssVar } from "../../../../../theme";
 import { useModal } from "../../../useModal";
 import { RequestShipmentModalProps } from "../../RequestShipment/RequestShipmentModal";
 import ThemedButton from "../../../../ui/ThemedButton";
-import { getExchangeTokenId } from "../../../../../lib/utils/exchange";
+import { getExchangeTokenId } from "@bosonprotocol/utils";
 
 const DividerWrapper = styled.div`
   width: 100%;

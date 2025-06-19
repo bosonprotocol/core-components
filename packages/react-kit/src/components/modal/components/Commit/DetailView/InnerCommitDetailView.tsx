@@ -20,7 +20,7 @@ import {
   extractUserFriendlyError,
   getHasUserRejectedTx
 } from "../../../../../lib/errors/transactions";
-import { poll } from "../../../../../lib/promises/promises";
+import { poll } from "@bosonprotocol/utils";
 import { Button } from "../../../../buttons/Button";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import SuccessTransactionToast from "../../../../toasts/SuccessTransactionToast";
@@ -45,7 +45,7 @@ import { Provider } from "@bosonprotocol/ethers-sdk";
 import { ThemedCommitButton } from "../../../../cta/offer/ThemedCommitButton";
 import { getCssVar } from "../../../../../theme";
 import dayjs from "dayjs";
-import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
+import { getDateTimestamp } from "@bosonprotocol/utils";
 import { LabelType, labelValueToText } from "../../../../exchangeCard/const";
 import { ExchangeStatus } from "../../../../exchangeCard/ExchangeCard.styles";
 

@@ -14,7 +14,7 @@ import { useErc1155Uris } from "../../../../../hooks/contracts/erc1155/useErc115
 import { useErc20ExchangeTokenInfo } from "../../../../../hooks/contracts/erc20/useErc20ExchangeTokenInfo";
 import { useErc721TokenUris } from "../../../../../hooks/contracts/erc721/useErc721TokenUris";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
-import { nativeOnChain } from "../../../../../lib/const/tokens";
+import { nativeOnChain } from "@bosonprotocol/utils";
 import { useGetTokenUriImages } from "../../../../../hooks/contracts/useGetTokenUriImages";
 import { colors } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
@@ -27,7 +27,7 @@ import { useDetailViewContext } from "./DetailViewProvider";
 import { OnClickBuyOrSwapHandler } from "./types";
 import { CONFIG } from "../../../../../lib/config/config";
 import { useRobloxGetItemDetails } from "../../../../../hooks/roblox/useRobloxGetItemDetails";
-import { remToPx } from "../../../../../lib/numbers/numbers";
+import { remToPx } from "@bosonprotocol/utils";
 
 type TokenGatedItemProps = OnClickBuyOrSwapHandler & {
   offer: Offer;

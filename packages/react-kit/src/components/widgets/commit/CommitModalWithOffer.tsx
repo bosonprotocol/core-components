@@ -8,8 +8,8 @@ import useProductByOfferId from "../../../hooks/products/useProductByOfferId";
 import { useCoreSDKWithContext } from "../../../hooks/core-sdk/useCoreSdkWithContext";
 import { useBundleByUuid } from "../../../hooks";
 import { VariantV1 } from "../../../types/variants";
-import { isTruthy } from "../../../types/helpers";
-import { ProductV1Item, isProductV1Item } from "../../../lib/bundle/filter";
+import { isTruthy } from "@bosonprotocol/utils";
+import { ProductV1Item, isProductV1Item } from "@bosonprotocol/utils";
 import { MetadataType } from "@bosonprotocol/core-sdk";
 
 function WithProductOrOffer(

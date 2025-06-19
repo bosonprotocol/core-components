@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useBreakpoints } from "../../../../../../hooks/useBreakpoints";
-import { isOfferHot } from "../../../../../../lib/offer/getOfferLabel";
+import { isOfferHot } from "@bosonprotocol/utils";
 import { Grid } from "../../../../../ui/Grid";
 import { Typography } from "../../../../../ui/Typography";
 

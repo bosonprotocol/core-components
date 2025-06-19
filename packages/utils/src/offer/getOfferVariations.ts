@@ -1,5 +1,5 @@
-import { Offer } from "../../types/offer";
-import { isTruthy } from "../../types/helpers";
+import { Offer } from "../types/offer";
+import { isTruthy } from "../types/helpers";
 
 export const getOfferVariations = (offer: Offer | undefined) => {
   if (!offer?.metadata || offer.metadata.__typename === "BaseMetadataEntity") {

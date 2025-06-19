@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 import { useQuery } from "react-query";
-import { fetchSubgraph } from "../lib/subgraph/subgraph";
+import { fetchSubgraph } from "@bosonprotocol/utils";
 import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
 
 interface Props {

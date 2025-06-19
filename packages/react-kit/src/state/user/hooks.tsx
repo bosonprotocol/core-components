@@ -14,13 +14,12 @@ import {
 } from "./reducer";
 import { SerializedPair, SerializedToken, SlippageTolerance } from "./types";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { SupportedLocale } from "../../lib/const/locales";
+import { SupportedLocale, L2_DEADLINE_FROM_NOW } from "@bosonprotocol/utils";
+import { L2_CHAIN_IDS } from "../../lib/const/chains";
+import { UserAddedToken } from "../../types/tokens";
 import { useCallback, useMemo } from "react";
 import { RouterPreference } from "../routing/types";
 import { useChainId } from "../../hooks/connection/connection";
-import { L2_CHAIN_IDS } from "../../lib/const/chains";
-import { L2_DEADLINE_FROM_NOW } from "../../lib/const/misc";
-import { UserAddedToken } from "../../types/tokens";
 
 export function serializeToken(token: Token): SerializedToken {
   return {
