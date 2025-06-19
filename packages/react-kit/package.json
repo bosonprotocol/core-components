@@ -60,7 +60,7 @@
     "lodash.uniqby": "4.7.0",
     "magic-sdk": "^20.1.1",
     "multicodec": "^3.2.1",
-    "multiformats": "^13.1.0",
+    "multiformats": "^10.0.0",
     "multihashes": "^4.0.3",
     "nanoclone": "^0.2.1",
     "phosphor-react": "^1.4.1",
