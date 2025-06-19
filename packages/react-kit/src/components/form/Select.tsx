@@ -10,7 +10,7 @@ import ReactSelect, {
   CSSObjectWithLabel
 } from "react-select";
 import { CSSProperties } from "react";
-import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
+import { checkIfValueIsEmpty } from "@bosonprotocol/utils";
 import { colors, getCssVar } from "../../theme";
 import { zIndex } from "../ui/zIndex";
 import Error from "./Error";

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { checkIfTimestampIsToo } from "../dates/checkIfTimestampIsToo";
 import { getDateTimestamp } from "../dates/getDateTimestamp";
-import { Offer } from "../../types/offer";
+import { Offer } from "../types/offer";
 
 type GetIsOfferExpiredProps =
   | {

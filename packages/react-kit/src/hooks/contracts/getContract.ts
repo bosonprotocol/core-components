@@ -1,7 +1,7 @@
 import { AddressZero } from "@ethersproject/constants";
 import { Contract } from "@ethersproject/contracts";
 import { JsonRpcProvider, JsonRpcSigner } from "@ethersproject/providers";
-import { isAddress } from "../../lib/address/address";
+import { isAddress } from "@bosonprotocol/utils";
 
 // account is optional
 

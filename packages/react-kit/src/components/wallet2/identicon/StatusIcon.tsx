@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { flexColumnNoWrap } from "../styles";
 import Identicon from ".";
 import React from "react";
-import { breakpoint } from "../../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 import { Connection, ConnectionType } from "../../connection/types";
 import useENSAvatar from "../../../hooks/ens/useENSAvatar";
 import { colors } from "../../../theme";

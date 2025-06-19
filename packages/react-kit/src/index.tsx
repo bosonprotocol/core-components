@@ -78,30 +78,20 @@ export * from "./components/wallet2/web3Provider/index";
 export * from "./components/wallet2/web3Status/index";
 export * from "./components/widgets/index";
 export * as hooks from "./hooks";
-export * from "./lib/dates/getDateTimestamp";
-export * from "./lib/bundle/const";
-export * from "./lib/bundle/filter";
-export * from "./lib/bytes/bytesToSize";
+// Re-export everything from utils package for backward compatibility
+export * from "@bosonprotocol/utils";
+
+// Export remaining lib functions that stayed in react-kit
 export * from "./lib/const/networks";
 export * from "./lib/copy/copyToClipboard";
 export * from "./lib/errors/transactions";
-export * from "./lib/ipfs/ipfs";
 export * from "./lib/magicLink/logout";
 export * from "./lib/magicLink/provider";
-export * from "./lib/offer/filter";
-export * from "./lib/offer/getIsOfferExpired";
-export * from "./lib/opensea/getOpenSeaUrl";
-export * from "./lib/promises/promises";
-export * from "./lib/url/url";
-export * from "./lib/offer/getOfferDetails";
-export * from "./lib/offer/getOfferAnimationUrl";
-export * from "./lib/offer/getOfferVariations";
 export * from "./components/modal/components/common/detail/DetailSlider";
 export * from "./components/modal/components/common/detail/SlickSlider";
 export { default as DetailOpenSea } from "./components/modal/components/common/DetailOpenSea";
 export * from "./theme";
 export * from "./colors";
-export * from "./types/helpers";
 export { AuthTokenType } from "@bosonprotocol/common";
 export * from "@bosonprotocol/core-sdk";
 export * from "@bosonprotocol/ethers-sdk";

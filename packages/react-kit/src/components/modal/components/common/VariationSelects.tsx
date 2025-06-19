@@ -8,9 +8,9 @@ import React, {
   useState
 } from "react";
 import styled from "styled-components";
-import { isNumeric } from "../../../../lib/numbers/numbers";
+import { isNumeric } from "@bosonprotocol/utils";
 import { getCssVar } from "../../../../theme";
-import { isTruthy } from "../../../../types/helpers";
+import { isTruthy } from "@bosonprotocol/utils";
 import { VariantV1, Variation } from "../../../../types/variants";
 import { SimpleError } from "../../../error/SimpleError";
 import { Select } from "../../../form";

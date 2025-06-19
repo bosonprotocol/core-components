@@ -2,10 +2,10 @@ import { House } from "phosphor-react";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
-import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
-import { breakpoint } from "../../../../../lib/ui/breakpoint";
+import { getOfferDetails } from "@bosonprotocol/utils";
+import { breakpoint } from "@bosonprotocol/utils";
 import { getCssVar } from "../../../../../theme";
-import { isTruthy } from "../../../../../types/helpers";
+import { isTruthy } from "@bosonprotocol/utils";
 import { VariantV1 } from "../../../../../types/variants";
 import { Grid } from "../../../../ui/Grid";
 import { GridContainer } from "../../../../ui/GridContainer";
@@ -21,7 +21,7 @@ import { DetailSlider } from "../../common/detail/DetailSlider";
 import { SellerAndDescription } from "../../common/detail/SellerAndDescription";
 import { SlickSlider, initialSettings } from "../../common/detail/SlickSlider";
 import { UseGetOfferDetailDataProps } from "../../common/detail/useGetOfferDetailData";
-import { getOfferVariations } from "../../../../../lib/offer/getOfferVariations";
+import { getOfferVariations } from "@bosonprotocol/utils";
 import { BosonLogo } from "../../common/BosonLogo";
 
 const ImageWrapper = styled.div`

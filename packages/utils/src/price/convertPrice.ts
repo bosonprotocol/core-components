@@ -1,4 +1,8 @@
-import { RateProps } from "../../components/widgets/finance/convertion-rate/utils";
+export interface RateProps {
+  to: string;
+  from: string;
+  value: number;
+}
 
 interface Currency {
   ticker: "USD" | string;

@@ -4,13 +4,13 @@ import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { AuthTokenType } from "..";
 import { getLensTokenIdDecimal } from "../lib/lens/profile";
-import { fetchSubgraph } from "../lib/subgraph/subgraph";
+import { fetchSubgraph } from "@bosonprotocol/utils";
 import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
 import { SellerFieldsFragment } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { useAccount } from "./connection/connection";
 import { useErc721OwnerOf } from "./contracts/erc721/useErc721OwnerOf";
 import { useConfigContext } from "../components/config/ConfigContext";
-import { isTruthy } from "../types/helpers";
+import { isTruthy } from "@bosonprotocol/utils";
 
 interface Props {
   address?: string;

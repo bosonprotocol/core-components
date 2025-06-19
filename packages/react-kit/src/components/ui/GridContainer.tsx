@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { breakpoint } from "../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 import React, {
   CSSProperties,
   ElementRef,
@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { getTransientCustomProps } from "./getTransientCustomProps";
 import { isDefined } from "./common";
-import { AddDollarPrefixToKeys } from "../../types/helpers";
+import { AddDollarPrefixToKeys } from "@bosonprotocol/utils";
 
 export interface ItemsPerRow {
   xxs?: number;

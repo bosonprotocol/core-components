@@ -1,11 +1,6 @@
 import { Offer } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { IPool } from "./useUniswapPools";
-
-export interface RateProps {
-  to: string;
-  from: string;
-  value: number;
-}
+import { RateProps } from "@bosonprotocol/utils";
 interface RatePools {
   all: Array<IPool>;
   boson: Array<IPool>;

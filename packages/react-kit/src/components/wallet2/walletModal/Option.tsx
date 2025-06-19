@@ -10,7 +10,7 @@ import {
   useActivationState
 } from "../../connection/activate";
 import { colors } from "../../../theme";
-import { breakpoint } from "../../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 import { Spinner } from "../../ui/loading/Spinner";
 import { SvgImage } from "../../ui/SvgImage";
 

@@ -10,7 +10,7 @@ import React, {
 } from "react";
 
 import styled, { css } from "styled-components";
-import { breakpointNumbers } from "../../../../../lib/ui/breakpoint";
+import { breakpointNumbers } from "@bosonprotocol/utils";
 import { colors, getCssVar } from "../../../../../theme";
 import { Grid } from "../../../../ui/Grid";
 import { IpfsImage } from "../../../../ui/IpfsImage";

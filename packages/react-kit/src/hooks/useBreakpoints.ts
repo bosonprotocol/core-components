@@ -1,5 +1,5 @@
 import { useMediaQuery } from "react-responsive";
-import { breakpointNumbers } from "../lib/ui/breakpoint";
+import { breakpointNumbers } from "@bosonprotocol/utils";
 
 export function useBreakpoints() {
   const isXXS = useMediaQuery({

@@ -5,8 +5,8 @@ import { useExchangeTokenBalance } from "../../../../../hooks/offer/useExchangeT
 import useCheckTokenGatedOffer from "../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
 import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
 import { useSellers } from "../../../../../hooks/useSellers";
-import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
-import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
+import { getDateTimestamp } from "@bosonprotocol/utils";
+import { Field, swapQueryParameters } from "@bosonprotocol/utils";
 import { Offer } from "../../../../../types/offer";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import Loading from "../../../../ui/loading/LoadingWrapper";
@@ -15,7 +15,7 @@ import {
   DetailViewProvider,
   useDetailViewContext
 } from "./DetailViewProvider";
-import { getIsOfferExpired } from "../../../../../lib/offer/getIsOfferExpired";
+import { getIsOfferExpired } from "@bosonprotocol/utils";
 import { useBosonContext } from "../../../../boson/BosonProvider";
 
 export type DetailViewWithProviderProps = ConsumerProps & {

@@ -14,8 +14,8 @@ import {
   ContactPreference,
   getRedeemFormValidationSchema
 } from "../Redeem/const";
-import { getHasBuyerTransferInfos } from "../../../../lib/offer/filter";
-import { BuyerTransferInfo } from "../../../../lib/bundle/const";
+import { getHasBuyerTransferInfos } from "@bosonprotocol/utils";
+import { BuyerTransferInfo } from "@bosonprotocol/utils";
 import { Form, Formik, FormikProps } from "formik";
 import { FormModel } from "../Redeem/RedeemFormModel";
 import { useRedemptionContext } from "../../../widgets/redemption/provider/RedemptionContext";

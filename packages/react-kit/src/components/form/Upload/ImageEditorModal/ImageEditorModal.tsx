@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/browser";
 import React, { useRef, useState } from "react";
 import AvatarEditor from "react-avatar-editor";
-import { dataURItoBlob } from "../../../../lib/base64/base64";
+import { dataURItoBlob } from "@bosonprotocol/utils";
 import Modal from "../../../modal/Modal";
 import { Grid } from "../../../ui/Grid";
 import { Spinner } from "../../../ui/loading/Spinner";

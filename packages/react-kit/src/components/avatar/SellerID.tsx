@@ -6,9 +6,9 @@ import { getCssVar } from "../../theme";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../types/offer";
 import { MediaSet } from "../../lib/lens/generated";
-import { getLensImageUrl } from "../../lib/images/images";
+import { getOfferDetails } from "@bosonprotocol/utils";
 import { getLensProfilePictureUrl } from "../../lib/lens/profile";
-import { getOfferDetails } from "../../lib/offer/getOfferDetails";
+import { getLensImageUrl } from "../../lib/images/images";
 import { useIpfsContext } from "../ipfs/IpfsContext";
 import { useAccount } from "../../hooks/connection/connection";
 

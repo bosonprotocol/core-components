@@ -4,7 +4,7 @@ import { subgraph } from "@bosonprotocol/core-sdk";
 import { ethers } from "ethers";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { useCoreSDKWithContext } from "../../../hooks/core-sdk/useCoreSdkWithContext";
-import { ProgressStatus } from "../../../lib/progress/progressStatus";
+import { ProgressStatus } from "@bosonprotocol/utils";
 import { Token } from "./convertion-rate/ConvertionRateContext";
 
 export interface FundsProps {

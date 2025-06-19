@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import styled from "styled-components";
 import { useAddPendingTransactionWithContext } from "../../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
-import { poll } from "../../../../../lib/promises/promises";
+import { poll } from "@bosonprotocol/utils";
 
 import { colors, getCssVar } from "../../../../../theme";
 import { useChatContext } from "../../../../chat/ChatProvider/ChatContext";

@@ -1,5 +1,5 @@
 import { css } from "styled-components";
-import { breakpoint } from "../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 
 export const transition = css`
   transition: all 150ms ease-in-out;

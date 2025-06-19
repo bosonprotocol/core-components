@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
-import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
+import { getOfferDetails } from "@bosonprotocol/utils";
 import { Exchange } from "../../../../../types/exchange";
 import { Offer } from "../../../../../types/offer";
 import { DetailChart } from "../../../../detail/DetailChart";

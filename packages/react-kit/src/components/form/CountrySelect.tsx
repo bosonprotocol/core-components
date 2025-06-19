@@ -16,7 +16,7 @@ import Error from "./Error";
 import type { BaseProps, SupportedReactSelectProps } from "./types";
 import { SelectDataProps } from "./types";
 import { colors, getCssVar } from "../../theme";
-import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
+import { checkIfValueIsEmpty } from "@bosonprotocol/utils";
 import { useFixSelectFont } from "../../hooks/form/useFixSelectFont";
 import { inputStyles } from "./styles";
 export type { Country as CountryCode } from "react-phone-number-input";

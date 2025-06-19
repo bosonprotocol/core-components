@@ -1,9 +1,8 @@
 import { CoreSDK, subgraph } from "@bosonprotocol/core-sdk";
-import { isNftItem } from "../../lib/bundle/filter";
+import { isNftItem, isTruthy } from "@bosonprotocol/utils";
 import { useErc721TokenUris } from "../contracts/erc721/useErc721TokenUris";
 import { useErc1155Uris } from "../contracts/erc1155/useErc1155Uris";
 import { useGetTokenUriImages } from "../contracts/useGetTokenUriImages";
-import { isTruthy } from "../../types/helpers";
 
 export const useBundleItemsImages = ({
   bundleItems,

@@ -9,7 +9,7 @@ import { saveItemInStorage } from "../../../hooks/storage/useLocalStorage";
 import { SellerExchangeProps } from "./useSellerDeposit";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../../types/offer";
-import { getIsOfferExpired } from "../../../lib/offer/getIsOfferExpired";
+import { getIsOfferExpired } from "@bosonprotocol/utils";
 dayjs.extend(isBetween);
 
 const THRESHOLD = 15;

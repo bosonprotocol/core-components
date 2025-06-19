@@ -6,7 +6,7 @@ import getTokenList from "./useTokenList/fetchTokenList";
 import { useCallback } from "react";
 import { useAppDispatch } from "../../state/hooks";
 import { fetchTokenList } from "../../state/lists/actions";
-import resolveENSContentHash from "../../lib/uniswap/resolveENSContentHash";
+import resolveENSContentHash from "@bosonprotocol/utils/src/uniswap/resolveENSContentHash";
 
 export function useFetchListCallback(): (
   listUrl: string,

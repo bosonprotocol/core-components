@@ -1,5 +1,5 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
-import { Offer } from "../../types/offer";
+import { Offer } from "../types/offer";
 import { getOfferAnimationUrl } from "./getOfferAnimationUrl";
 import { isBundle, isProductV1 } from "./filter";
 import { isNftItem, isProductV1Item } from "../bundle/filter";

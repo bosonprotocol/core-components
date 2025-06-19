@@ -1,4 +1,4 @@
-import { DEFAULT_LIST_OF_LISTS } from "../const/lists";
+import { DEFAULT_LIST_OF_LISTS } from "@bosonprotocol/utils";
 
 const DEFAULT_LIST_PRIORITIES = DEFAULT_LIST_OF_LISTS.reduce(
   (acc, listUrl, index) => ({

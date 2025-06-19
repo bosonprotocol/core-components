@@ -1,7 +1,7 @@
 /* eslint @typescript-eslint/no-explicit-any: "off" */
 import React from "react";
 import Select, { SingleValue } from "react-select";
-import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
+import { checkIfValueIsEmpty } from "@bosonprotocol/utils";
 
 import { colors } from "../../theme";
 import { zIndex } from "../ui/zIndex";

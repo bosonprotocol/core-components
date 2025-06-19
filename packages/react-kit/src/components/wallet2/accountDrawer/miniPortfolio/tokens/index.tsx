@@ -14,11 +14,7 @@ import { Typography } from "../../../../ui/Typography";
 import { useChainId } from "../../../../../hooks/connection/connection";
 import { useTokenBalances } from "../../../../../hooks/contracts/useTokenBalances";
 import { EllipsisStyle } from "../../../styles";
-import {
-  NumberType,
-  formatNumber
-} from "../../../../../lib/uniswap/formatNumbers";
-import { nativeOnChain } from "../../../../../lib/const/tokens";
+import { NumberType, formatNumber, nativeOnChain } from "@bosonprotocol/utils";
 import { PortfolioLogo } from "../../../../logo/PortfolioLogo";
 
 export type TokensProps = {

@@ -5,9 +5,9 @@ import { useBundleItemsImages } from "../../../../../hooks/bundles/useBundleItem
 import { useErc1155Name } from "../../../../../hooks/contracts/erc1155/useErc1155Name";
 import { useErc721Name } from "../../../../../hooks/contracts/erc721/useErc721Name";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
-import { formatAddress } from "../../../../../lib/address/address";
-import { isNftItem, isProductV1Item } from "../../../../../lib/bundle/filter";
-import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
+import { formatAddress } from "@bosonprotocol/utils";
+import { isNftItem, isProductV1Item } from "@bosonprotocol/utils";
+import { getOfferDetails } from "@bosonprotocol/utils";
 import { colors } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { Tooltip } from "../../../../tooltip/Tooltip";
@@ -16,7 +16,7 @@ import { IpfsImage } from "../../../../ui/IpfsImage";
 import ThemedButton from "../../../../ui/ThemedButton";
 import { Typography } from "../../../../ui/Typography";
 import Video from "../../../../ui/Video";
-import { digitalTypeMappingDisplay } from "../../../../../lib/bundle/const";
+import { digitalTypeMappingDisplay } from "@bosonprotocol/utils";
 
 const imageSize = "2.5rem";
 

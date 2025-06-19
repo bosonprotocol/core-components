@@ -1,6 +1,6 @@
 import { NativeCurrency, Token } from "@uniswap/sdk-core";
 import { TokenInfo } from "@uniswap/token-lists";
-import { isAddress } from "../../../lib/address/address";
+import { isAddress } from "@bosonprotocol/utils";
 
 const alwaysTrue = () => true;
 

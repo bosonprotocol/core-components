@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 
 import { offers } from "@bosonprotocol/core-sdk";
 import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
-import { fetchTextFile } from "../lib/utils/textFile";
-import { getIpfsGatewayUrl } from "../lib/ipfs/ipfs";
+import { fetchTextFile, getIpfsGatewayUrl } from "@bosonprotocol/utils";
 import { useIpfsContext } from "../components/ipfs/IpfsContext";
 import { Token } from "../components/widgets/finance/convertion-rate/ConvertionRateContext";
 import { useQuery } from "react-query";

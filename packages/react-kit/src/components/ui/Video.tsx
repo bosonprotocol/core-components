@@ -11,7 +11,7 @@ import React, {
 } from "react";
 import styled, { CSSProperties, css } from "styled-components";
 import { useIpfsStorage } from "../../hooks/useIpfsStorage";
-import { fetchIpfsBase64Media } from "../../lib/base64/base64";
+import { fetchIpfsBase64Media } from "@bosonprotocol/utils";
 import { colors } from "../../theme";
 import { Loading } from "./loading/Loading";
 

@@ -21,7 +21,7 @@ import {
 } from "./utils";
 import { WalletConnectV2 } from "./WalletConnectV2";
 import { RPC_PROVIDERS } from "../../lib/const/providers";
-import { isMobile } from "../../lib/userAgent/userAgent";
+import { isMobile } from "@bosonprotocol/utils";
 import { getRpcUrls } from "../../lib/const/networks";
 
 function onError(error: Error) {

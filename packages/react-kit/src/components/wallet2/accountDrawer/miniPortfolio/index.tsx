@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Grid } from "../../../ui/Grid";
 import { Typography } from "../../../ui/Typography";
 import Tokens, { TokensProps } from "./tokens";
-import { breakpointNumbers } from "../../../../lib/ui/breakpoint";
+import { breakpointNumbers } from "@bosonprotocol/utils";
 import { Column } from "../../../ui/column";
 
 const Wrapper = styled(Column)`

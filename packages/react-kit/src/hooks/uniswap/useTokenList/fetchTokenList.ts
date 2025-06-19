@@ -1,8 +1,7 @@
 import type { TokenList } from "@uniswap/token-lists";
-import contenthashToUri from "../../../lib/uniswap/contenthashToUri";
-import uriToHttp from "../../../lib/url/uriToHttp";
-import { validateTokenList } from "../../../lib/uniswap/validateTokenList";
-import parseENSAddress from "../../../lib/uniswap/parseENSAddress";
+import contenthashToUri from "@bosonprotocol/utils/src/uniswap/contenthashToUri";
+import { uriToHttp, validateTokenList } from "@bosonprotocol/utils";
+import parseENSAddress from "@bosonprotocol/utils/src/uniswap/parseENSAddress";
 
 const listCache = new Map<string, TokenList>();
 

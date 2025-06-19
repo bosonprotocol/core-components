@@ -31,7 +31,7 @@ import { getCssVar } from "../../../../theme";
 import ThemedButton from "../../../ui/ThemedButton";
 import { maxWidthStepper } from "./styles";
 import { productsPageSize, purchasedProductsPageSize, statuses } from "./const";
-import { breakpoint } from "../../../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 
 const stepToIcon = {
   0: (

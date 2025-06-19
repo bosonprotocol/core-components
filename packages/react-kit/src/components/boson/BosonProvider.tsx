@@ -1,5 +1,5 @@
 import React, { ReactNode, createContext, useContext, useMemo } from "react";
-import { isTruthy } from "../../types/helpers";
+import { isTruthy } from "@bosonprotocol/utils";
 
 export type BosonProviderProps = {
   minimumDisputePeriodInDays?: number;

@@ -2,7 +2,7 @@ import { getVersionUpgrade, VersionUpgrade } from "@uniswap/token-lists";
 import {
   DEFAULT_LIST_OF_LISTS,
   UNSUPPORTED_LIST_URLS
-} from "../../lib/const/lists";
+} from "@bosonprotocol/utils";
 import ms from "ms";
 import { useCallback, useEffect } from "react";
 import { useAppDispatch } from "../../state/hooks";

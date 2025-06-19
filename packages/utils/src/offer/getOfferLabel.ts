@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { colors } from "../../theme";
-import { Offer } from "../../types/offer";
+import { colors } from "../theme";
+import { Offer } from "../types/offer";
 import { getDateTimestamp } from "../dates/getDateTimestamp";
 import { getIsOfferExpired } from "./getIsOfferExpired";
 

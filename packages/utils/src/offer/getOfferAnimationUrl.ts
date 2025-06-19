@@ -1,5 +1,5 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
-import { Offer } from "../../types/offer";
+import { Offer } from "../types/offer";
 
 export const getOfferAnimationUrl = (
   offer: Offer | subgraph.OfferFieldsFragment | undefined | null

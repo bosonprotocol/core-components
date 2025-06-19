@@ -7,9 +7,9 @@ import React, {
   useState
 } from "react";
 import styled from "styled-components";
-import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
-import { breakpoint } from "../../../../lib/ui/breakpoint";
-import { isTruthy } from "../../../../types/helpers";
+import { getOfferDetails } from "@bosonprotocol/utils";
+import { breakpoint } from "@bosonprotocol/utils";
+import { isTruthy } from "@bosonprotocol/utils";
 import { VariantV1 } from "../../../../types/variants";
 import { Grid } from "../../../ui/Grid";
 import { GridContainer } from "../../../ui/GridContainer";

@@ -1,10 +1,10 @@
 import tokenLogoLookup from "../../lib/const/tokenLogoLookup";
 
 import { useCallback, useEffect, useState } from "react";
-import { isAddress } from "../../lib/address/address";
-import uriToHttp from "../../lib/url/uriToHttp";
+import { isAddress } from "@bosonprotocol/utils";
+import { uriToHttp } from "@bosonprotocol/utils";
 import { getNativeLogoURI } from "../../lib/chains/getNativeLogoURI";
-import { chainIdToNetworkName } from "../../lib/chains/chainIdToNetworkName";
+import { chainIdToNetworkName } from "@bosonprotocol/utils";
 
 const BAD_SRCS: { [tokenAddress: string]: true } = {};
 

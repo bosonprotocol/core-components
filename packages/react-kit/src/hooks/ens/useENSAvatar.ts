@@ -9,12 +9,11 @@ import {
   useERC721Contract,
   useERC1155Contract
 } from "../contracts/useContract";
-import { isAddress, isZero } from "../../lib/address/address";
+import { isAddress, isZero } from "@bosonprotocol/utils";
 import { useDebounce } from "../useDebounce";
 import { useENSName } from "./useENSName";
 import { useAccount } from "../connection/connection";
-import uriToHttp from "../../lib/url/uriToHttp";
-import { safeNamehash } from "../../lib/uniswap/safeNamehash";
+import { uriToHttp, safeNamehash } from "@bosonprotocol/utils";
 import {
   NEVER_RELOAD,
   useMainnetSingleCallResult

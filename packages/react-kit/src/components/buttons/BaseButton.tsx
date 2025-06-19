@@ -11,7 +11,7 @@ import * as Styles from "../ui/styles";
 import { colors } from "../../theme";
 import { Loading } from "../ui/loading/Loading";
 import { ButtonSize } from "../ui/buttonSize";
-import { AddDollarPrefixToKeys, AnyString } from "../../types/helpers";
+import { AddDollarPrefixToKeys, AnyString } from "@bosonprotocol/utils";
 
 type ButtonWithThemePropsType = AddDollarPrefixToKeys<{
   size: ButtonSizeProp;

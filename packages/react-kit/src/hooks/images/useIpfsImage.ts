@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { fetchImageAsBase64 } from "../../lib/base64/base64";
+import { fetchImageAsBase64 } from "@bosonprotocol/utils";
 import { getImageMetadata } from "../../lib/images/images";
 
 type UseIpfsImageProps = {

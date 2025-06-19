@@ -44,8 +44,11 @@ import {
   WETH_POLYGON_MUMBAI,
   WRAPPED_NATIVE_CURRENCY,
   WETH_POLYGON_AMOY
-} from "./tokens";
-import { ChainId_BASE_SEPOLIA, ChainId_POLYGON_AMOY } from "./chains";
+} from "@bosonprotocol/utils";
+import {
+  ChainId_BASE_SEPOLIA,
+  ChainId_POLYGON_AMOY
+} from "@bosonprotocol/utils";
 
 type ChainTokenList = {
   readonly [chainId: number]: Token[];

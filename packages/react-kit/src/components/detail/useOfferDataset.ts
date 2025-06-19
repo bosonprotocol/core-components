@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import minMax from "dayjs/plugin/minMax";
 import { useMemo } from "react";
 
-import { getDateTimestamp } from "../../lib/dates/getDateTimestamp";
+import { getDateTimestamp } from "@bosonprotocol/utils";
 import { colors } from "../../theme";
 import { Offer } from "./../../types/offer";
 

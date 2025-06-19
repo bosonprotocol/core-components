@@ -1,8 +1,8 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
-import type { Offer } from "../../types/offer";
+import type { Offer } from "../types/offer";
 import { NftItem, isNftItem } from "../bundle/filter";
 import { BUYER_TRANSFER_INFO_KEY, BuyerTransferInfo } from "../bundle/const";
-import { isTruthy } from "../../types/helpers";
+import { isTruthy } from "../types/helpers";
 
 export type BundleMetadata = Extract<
   Offer["metadata"],

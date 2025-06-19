@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useDisplayFloatWithConfig } from "../../lib/price/prices";
-import { breakpoint } from "../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 import {
   Currencies,
   CurrencyDisplay

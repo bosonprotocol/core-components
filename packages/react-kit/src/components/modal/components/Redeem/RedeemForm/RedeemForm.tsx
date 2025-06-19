@@ -1,8 +1,8 @@
 import React from "react";
 import type { Country as CountryCode } from "react-phone-number-input";
 import { useBreakpoints } from "../../../../../hooks/useBreakpoints";
-import { BuyerTransferInfo } from "../../../../../lib/bundle/const";
-import { getHasBuyerTransferInfos } from "../../../../../lib/offer/filter";
+import { BuyerTransferInfo } from "@bosonprotocol/utils";
+import { getHasBuyerTransferInfos } from "@bosonprotocol/utils";
 import { Button } from "../../../../buttons/Button";
 import { CountrySelect } from "../../../../form/CountrySelect";
 import Input from "../../../../form/Input";

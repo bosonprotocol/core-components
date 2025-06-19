@@ -8,8 +8,8 @@ import styled from "styled-components";
 import {
   getNumberWithDecimals,
   getNumberWithoutDecimals
-} from "../../../../lib/numbers/numbers";
-import { poll } from "../../../../lib/promises/promises";
+} from "@bosonprotocol/utils";
+import { poll } from "@bosonprotocol/utils";
 
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Provider } from "@bosonprotocol/ethers-sdk";

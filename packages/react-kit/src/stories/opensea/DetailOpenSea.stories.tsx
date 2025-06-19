@@ -5,8 +5,7 @@ import { ArrowSquareOut } from "phosphor-react";
 import { Exchange } from "../../types/exchange";
 import { EnvironmentProvider } from "../../components/environment/EnvironmentProvider";
 import { OpenSeaButton } from "../../components/modal/components/common/detail/Detail.style";
-import { getOpenSeaUrl } from "../../lib/opensea/getOpenSeaUrl";
-import { getExchangeTokenId } from "../../lib/utils/exchange";
+import { getOpenSeaUrl, getExchangeTokenId } from "@bosonprotocol/utils";
 
 const meta = {
   title: "Visual Components/Opensea/DetailOpenSea",

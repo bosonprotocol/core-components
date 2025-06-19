@@ -1,6 +1,6 @@
 import { ChainId } from "@uniswap/sdk-core";
-import multicall from "../../lib/state/multicall";
-import { SkipFirst } from "../../types/tuple";
+import { SkipFirst } from "@bosonprotocol/utils";
+import { multicall } from "../../lib/state/multicall";
 import { useBlockNumber, useMainnetBlockNumber } from "./useBlockNumber";
 import { useChainId } from "../connection/connection";
 

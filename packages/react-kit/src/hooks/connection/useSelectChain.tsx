@@ -11,7 +11,7 @@ import {
   useConnections
 } from "../../components/connection/ConnectionsProvider";
 import { isSupportedChain } from "../../lib/const/chains";
-import { configQueryParameters } from "../../lib/const/parameters";
+import { configQueryParameters } from "@bosonprotocol/utils";
 import { didUserReject } from "../../components/connection/utils";
 import { colors } from "../../theme";
 import { Typography } from "../../components/ui/Typography";

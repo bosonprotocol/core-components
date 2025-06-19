@@ -3,11 +3,11 @@ import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { useMemo } from "react";
-import { getDateTimestamp } from "../lib/dates/getDateTimestamp";
+import { getDateTimestamp } from "@bosonprotocol/utils";
 
 import { Offer } from "../types/offer";
-import { checkIfTimestampIsToo } from "../lib/dates/checkIfTimestampIsToo";
-import { getIsOfferExpired } from "../lib/offer/getIsOfferExpired";
+import { checkIfTimestampIsToo } from "@bosonprotocol/utils";
+import { getIsOfferExpired } from "@bosonprotocol/utils";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

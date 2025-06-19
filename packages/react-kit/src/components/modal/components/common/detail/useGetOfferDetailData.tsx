@@ -5,8 +5,8 @@ import React from "react";
 import {
   buyerAndSellerAgreementIncluding,
   customisedExchangePolicy
-} from "../../../../../lib/const/policies";
-import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
+} from "@bosonprotocol/utils";
+import { getDateTimestamp } from "@bosonprotocol/utils";
 import {
   getCalcPercentage,
   useDisplayFloat

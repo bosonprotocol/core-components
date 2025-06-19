@@ -10,8 +10,7 @@ import {
   getFallbackImageUrl,
   getImageUrl
 } from "../../../../lib/images/images";
-import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
-import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
+import { getOfferDetails, isBundle, isProductV1 } from "@bosonprotocol/utils";
 import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
 import { ProductType } from "../../../productCard/const";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
@@ -20,7 +19,7 @@ import {
   GetExchangesResponse
 } from "@bosonprotocol/roblox-sdk";
 import { Typography } from "../../../ui/Typography";
-import { isTruthy } from "../../../../types/helpers";
+import { isTruthy } from "@bosonprotocol/utils";
 import { ExchangeCard } from "../../../exchangeCard/ExchangeCard";
 import {
   FetchNextPageOptions,

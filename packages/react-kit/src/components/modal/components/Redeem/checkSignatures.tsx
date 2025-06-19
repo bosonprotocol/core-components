@@ -3,7 +3,7 @@ import React from "react";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { ethers } from "ethers";
 import styled from "styled-components";
-import { isTruthy } from "../../../../types/helpers";
+import { isTruthy } from "@bosonprotocol/utils";
 const UlWithWordBreak = styled.ul`
   * > {
     word-break: break-word;

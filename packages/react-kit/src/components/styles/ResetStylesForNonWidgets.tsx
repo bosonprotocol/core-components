@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { colors } from "../../theme";
-import { isTruthy } from "../../types/helpers";
+import { isTruthy } from "@bosonprotocol/utils";
 
 export const cssVars = css`
   --l: 50%;

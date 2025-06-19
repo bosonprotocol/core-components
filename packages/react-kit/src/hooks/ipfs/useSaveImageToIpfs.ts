@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { fetchIpfsBase64Media } from "../../lib/base64/base64";
+import { fetchIpfsBase64Media } from "@bosonprotocol/utils";
 import { useIpfsStorage } from "../useIpfsStorage";
 
 export function useSaveImageToIpfs() {

@@ -7,13 +7,13 @@ import { useAccount, useChainId } from "../../../hooks/connection/connection";
 import { useENSName } from "../../../hooks/ens/useENSName";
 import { useBreakpoints } from "../../../hooks/useBreakpoints";
 import { useLast } from "../../../hooks/useLast";
-import { formatAddress } from "../../../lib/address/address";
+import { formatAddress } from "@bosonprotocol/utils";
 import {
   getConfigsByChainId,
   getEnvConfigsFilteredByEnv
 } from "../../../lib/config/getConfigsByChainId";
 import { CHAIN_IDS_TO_FRIENDLY_NAMES } from "../../../lib/const/chains";
-import { breakpoint, breakpointNumbers } from "../../../lib/ui/breakpoint";
+import { breakpoint, breakpointNumbers } from "@bosonprotocol/utils";
 import { useAppSelector } from "../../../state/hooks";
 import { BaseButton, BaseButtonTheme } from "../../buttons/BaseButton";
 import { useConfigContext } from "../../config/ConfigContext";

@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import React, { useMemo } from "react";
 import useTransactionHistory from "../../../../../hooks/useTransactionHistory";
-import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
-import { IPrice } from "../../../../../lib/price/convertPrice";
+import { getDateTimestamp } from "@bosonprotocol/utils";
+import { IPrice } from "@bosonprotocol/utils";
 import { Exchange } from "../../../../../types/exchange";
 import { Offer } from "../../../../../types/offer";
 import { useConvertedPrice } from "../../../../price/useConvertedPrice";

@@ -2,8 +2,8 @@ import * as Sentry from "@sentry/browser";
 import { useField } from "formik";
 import { Image, Trash, VideoCamera, FilePdf, Upload } from "phosphor-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { loadAndSetMedia } from "../../../lib/base64/base64";
-import { bytesToSize } from "../../../lib/bytes/bytesToSize";
+import { loadAndSetMedia } from "@bosonprotocol/utils";
+import { bytesToSize } from "@bosonprotocol/utils";
 import { colors } from "../../../theme";
 
 import Loading from "../../ui/loading/LoadingWrapper";
