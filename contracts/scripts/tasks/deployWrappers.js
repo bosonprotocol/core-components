@@ -8,7 +8,7 @@ async function deployWrappersTask(
     hre.network.config.chainId === 31337
       ? {
           feeAmount: 50,
-          feeRecipient: "0x1111122222333334444455555666667777788888",
+          feeRecipient: "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199",
           conduitKey: hre.ethers.ZeroHash, // = NO_CONDUIT
           conduit: hre.ethers.ZeroAddress
         }

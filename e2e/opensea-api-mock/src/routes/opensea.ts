@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { body } from "express-validator";
+import { body, oneOf, param } from "express-validator";
 import * as openseaController from "../controllers/opensea";
 
 export const openseaV2 = Router();
@@ -24,10 +24,21 @@ openseaV2.get("/collections/:slug", openseaController.getCollection);
 
 openseaV2.post(
   "/:sidePath/fulfillment_data",
-  body("offer.hash").isString(),
-  body("offer.chain").isString(),
-  body("offer.protocol_address").isString(),
   body("fulfiller.address").isString(),
+  oneOf([
+    [
+      param("sidePath").equals("offers"),
+      body("offer.hash").isString(),
+      body("offer.chain").isString(),
+      body("offer.protocol_address").isString()
+    ],
+    [
+      param("sidePath").equals("listings"),
+      body("listing.hash").isString(),
+      body("listing.chain").isString(),
+      body("listing.protocol_address").isString()
+    ]
+  ]),
   openseaController.postFulfillmentData
 );
 

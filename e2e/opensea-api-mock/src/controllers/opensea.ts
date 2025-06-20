@@ -123,9 +123,12 @@ export async function postFulfillmentData(
       );
     }
 
-    const response = await openseaService.computeFulfillmentData({
-      ...req.body
-    });
+    const response = await openseaService.computeFulfillmentData(
+      req.params["sidePath"] as string,
+      {
+        ...req.body
+      }
+    );
     return res.send(response);
   } catch (error) {
     next(error);
