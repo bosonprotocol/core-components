@@ -1,11 +1,11 @@
 import { useMemo } from "react";
-import { safeNamehash } from "../../lib/uniswap/safeNamehash";
+import { safeNamehash } from "@bosonprotocol/utils";
 import { useDebounce } from "../useDebounce";
 import {
   useENSRegistrarContract,
   useENSResolverContract
 } from "../contracts/useContract";
-import { isZero } from "../../lib/address/address";
+import { isZero } from "@bosonprotocol/utils";
 import {
   NEVER_RELOAD,
   useMainnetSingleCallResult

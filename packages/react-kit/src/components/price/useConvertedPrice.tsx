@@ -3,7 +3,7 @@ import {
   convertPrice,
   IPrice,
   IPricePassedAsAProp
-} from "../../lib/price/convertPrice";
+} from "@bosonprotocol/utils";
 import { calcPrice } from "../../lib/price/prices";
 import { useConfigContext } from "../config/ConfigContext";
 import ConvertionRateContext from "../widgets/finance/convertion-rate/ConvertionRateContext";

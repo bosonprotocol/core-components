@@ -11,17 +11,21 @@ import {
   getFallbackImageUrl,
   getImageUrl
 } from "../../../../lib/images/images";
-import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
-import { Bundle, isBundle, isProductV1 } from "../../../../lib/offer/filter";
+import {
+  getOfferDetails,
+  Bundle,
+  isBundle,
+  isProductV1
+} from "@bosonprotocol/utils";
 import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
 import { ProductType } from "../../../productCard/const";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
 import { BosonRobloxProductWithAvailability } from "@bosonprotocol/roblox-sdk";
 import { Typography } from "../../../ui/Typography";
-import { isTruthy } from "../../../../types/helpers";
+import { isTruthy } from "@bosonprotocol/utils";
 import { LoginWithRoblox } from "./LoginWithRoblox";
 import { ThemedCommitButtonView } from "../../../buttons/commit/ThemedCommitButtonView";
-import { isMobile } from "../../../../lib/userAgent/userAgent";
+import { isMobile } from "@bosonprotocol/utils";
 
 import InfiniteScroll from "react-infinite-scroll-component";
 const Wrapper = styled.div`

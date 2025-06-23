@@ -12,7 +12,7 @@ import styled, { css } from "styled-components";
 import Header from "./Header";
 import { Store } from "../ModalContext";
 import { zIndex } from "../../ui/zIndex";
-import { breakpoint } from "../../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 import { Content } from "./styles";
 
 const Root = styled.div`

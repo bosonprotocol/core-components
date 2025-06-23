@@ -10,7 +10,7 @@ import { useConfigContext } from "../../components/config/ConfigContext";
 import useParsedQueryString from "../parameters/useParsedQueryString";
 import { isSupportedChain } from "../../lib/const/chains";
 import { useSelectChain } from "./useSelectChain";
-import { configQueryParameters } from "../../lib/const/parameters";
+import { configQueryParameters } from "@bosonprotocol/utils";
 import { useIsMagicLoggedIn } from "../magic";
 import { ConfigId } from "@bosonprotocol/core-sdk";
 

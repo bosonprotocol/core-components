@@ -1,7 +1,7 @@
 import { useContext, useMemo } from "react";
 import { useConfigContext } from "../components/config/ConfigContext";
 import ConvertionRateContext from "../components/widgets/finance/convertion-rate/ConvertionRateContext";
-import { convertPrice } from "../lib/price/convertPrice";
+import { convertPrice } from "@bosonprotocol/utils";
 import {
   calcPrice,
   getCalcPercentage,

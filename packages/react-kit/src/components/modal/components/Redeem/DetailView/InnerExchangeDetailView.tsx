@@ -8,9 +8,9 @@ import {
   useIsConnectedToWrongChain
 } from "../../../../../hooks/connection/connection";
 import type { ExtendedExchange } from "../../../../../hooks/useExchanges";
-import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
-import { titleCase } from "../../../../../lib/string/formatText";
-import { breakpoint } from "../../../../../lib/ui/breakpoint";
+import { getDateTimestamp } from "@bosonprotocol/utils";
+import { titleCase } from "@bosonprotocol/utils";
+import { breakpoint } from "@bosonprotocol/utils";
 import { colors, getCssVar } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import { Grid } from "../../../../ui/Grid";

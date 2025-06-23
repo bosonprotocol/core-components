@@ -1,4 +1,6 @@
 import { ChainId } from "@uniswap/sdk-core";
+import { isIOS } from "@bosonprotocol/utils";
+import { getRpcUrls } from "../../lib/const/networks";
 import { L1_CHAIN_IDS, L2_CHAIN_IDS } from "../../lib/const/chains";
 import { zIndex } from "../ui/zIndex";
 import {
@@ -6,8 +8,6 @@ import {
   WalletConnect,
   WalletConnectConstructorArgs
 } from "@web3-react/walletconnect-v2";
-import { isIOS } from "../../lib/userAgent/userAgent";
-import { getRpcUrls } from "../../lib/const/networks";
 // import { sendAnalyticsEvent } from "analytics";
 
 export class WalletConnectV2 extends WalletConnect {

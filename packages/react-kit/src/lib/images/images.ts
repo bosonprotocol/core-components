@@ -1,5 +1,5 @@
-import { blobToBase64 } from "../base64/base64";
-import { getIpfsGatewayUrl } from "../ipfs/ipfs";
+import { blobToBase64 } from "@bosonprotocol/utils";
+import { getIpfsGatewayUrl } from "@bosonprotocol/utils";
 
 // See https://docs.pinata.cloud/gateways/image-optimization
 export type ImageOptimizationOpts = {

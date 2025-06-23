@@ -18,8 +18,8 @@ import {
 import {
   getNumberWithDecimals,
   getNumberWithoutDecimals
-} from "../../../../lib/numbers/numbers";
-import { poll } from "../../../../lib/promises/promises";
+} from "@bosonprotocol/utils";
+import { poll } from "@bosonprotocol/utils";
 import { DepositFundsButton } from "../../../cta/funds/DepositFundsButton";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
 import { Grid } from "../../../ui/Grid";

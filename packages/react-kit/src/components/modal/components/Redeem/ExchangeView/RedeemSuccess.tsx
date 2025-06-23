@@ -2,7 +2,7 @@ import { CheckCircle, Fire, House } from "phosphor-react";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
-import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
+import { getOfferDetails } from "@bosonprotocol/utils";
 import { Grid } from "../../../../ui/Grid";
 import { IpfsImage } from "../../../../ui/IpfsImage";
 import Loading from "../../../../ui/loading/LoadingWrapper";

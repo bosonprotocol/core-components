@@ -20,7 +20,7 @@ import {
   extractUserFriendlyError,
   getHasUserRejectedTx
 } from "../../../../../lib/errors/transactions";
-import { poll } from "../../../../../lib/promises/promises";
+import { poll } from "@bosonprotocol/utils";
 import { Button } from "../../../../buttons/Button";
 import { useConfigContext } from "../../../../config/ConfigContext";
 import SuccessTransactionToast from "../../../../toasts/SuccessTransactionToast";
@@ -40,12 +40,12 @@ import { useBuyers } from "../../../../../hooks/useBuyers";
 import { CommitRedeemSteps } from "./CommitRedeemSteps";
 import { RedeemWhatsNext, RedeemWhatsNextProps } from "./RedeemWhatsNext";
 import { useOpenAccountDrawer } from "../../../../wallet2/accountDrawer";
-import { colors } from "../../../../../colors";
+import { colors } from "../../../../../theme";
 import { Provider } from "@bosonprotocol/ethers-sdk";
 import { ThemedCommitButton } from "../../../../cta/offer/ThemedCommitButton";
 import { getCssVar } from "../../../../../theme";
 import dayjs from "dayjs";
-import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
+import { getDateTimestamp } from "@bosonprotocol/utils";
 import { LabelType, labelValueToText } from "../../../../exchangeCard/const";
 import { ExchangeStatus } from "../../../../exchangeCard/ExchangeCard.styles";
 

@@ -14,7 +14,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePagination, useRowSelect, useSortBy, useTable } from "react-table";
 import styled from "styled-components";
 
-import { ProgressStatus } from "../../../lib/progress/progressStatus";
+import { ProgressStatus } from "@bosonprotocol/utils";
 import { calcPrice } from "../../../lib/price/prices";
 import { useModal } from "../../modal/useModal";
 import { Tooltip } from "../../tooltip/Tooltip";

@@ -7,7 +7,7 @@ import styled, { CSSProperties } from "styled-components";
 import { ClickableStyle, ScrollBarStyles } from "../styles";
 import { DefaultMenu, DefaultMenuProps } from "./DefaultMenu";
 import { colors } from "../../../theme";
-import { breakpointNumbers } from "../../../lib/ui/breakpoint";
+import { breakpointNumbers } from "@bosonprotocol/utils";
 import { zIndex } from "../../ui/zIndex";
 import { useBreakpoints } from "../../../hooks/useBreakpoints";
 import useDisableScrolling from "../../../hooks/useDisableScrolling";

@@ -4,7 +4,7 @@ import {
   TokenList,
   VersionUpgrade
 } from "@uniswap/token-lists";
-import { DEFAULT_LIST_OF_LISTS } from "../../lib/const/lists";
+import { DEFAULT_LIST_OF_LISTS } from "@bosonprotocol/utils";
 import tokenSafetyLookup from "../../lib/const/tokenSafetyLookup";
 
 import { updateVersion } from "../global/actions";

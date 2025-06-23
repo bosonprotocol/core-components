@@ -11,7 +11,7 @@ import * as Styles from "../ui/styles";
 import { colors } from "../../theme";
 import { Loading } from "../ui/loading/Loading";
 import { ButtonSize } from "../ui/buttonSize";
-import { AddDollarPrefixToKeys, AnyString } from "../../types/helpers";
+import { AddDollarPrefixToKeys, AnyString } from "@bosonprotocol/utils";
 
 type ButtonWithThemePropsType = AddDollarPrefixToKeys<{
   size: ButtonSizeProp;
@@ -40,7 +40,7 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
     ${(props) =>
       props.theme.svg &&
       css`
-        stroke: ${(props) => props.theme?.svg.stroke};
+        stroke: ${(props) => props.theme?.svg?.stroke};
         ${props.theme.svg.fill &&
         css`
           fill: ${props.theme.svg.fill};

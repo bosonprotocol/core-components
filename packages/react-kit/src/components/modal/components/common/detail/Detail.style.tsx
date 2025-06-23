@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { breakpoint } from "../../../../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 import { colors, getCssVar } from "../../../../../theme";
 import { Grid } from "../../../../ui/Grid";
 import ThemedButton from "../../../../ui/ThemedButton";

@@ -10,7 +10,7 @@ import { useAddPendingTransactionWithContext } from "../../../../../../hooks/tra
 import useRefundData from "../../../../../../hooks/useRefundData";
 import { extractUserFriendlyError } from "../../../../../../lib/errors/transactions";
 import { useDisplayFloatWithConfig } from "../../../../../../lib/price/prices";
-import { poll } from "../../../../../../lib/promises/promises";
+import { poll } from "@bosonprotocol/utils";
 import { colors, getCssVar } from "../../../../../../theme";
 import {
   CancelButton,

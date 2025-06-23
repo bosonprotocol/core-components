@@ -14,7 +14,7 @@ import NonModal from "../../../modal/nonModal/NonModal";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { getCssVar } from "../../../../theme";
 import { GridContainerProps } from "../../../ui/GridContainer";
-import { isBundle, isProductV1 } from "../../../../lib/offer/filter";
+import { isBundle, isProductV1 } from "@bosonprotocol/utils";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { maxWidthStepper } from "./styles";
 import { ThemedBosonLogo } from "../../../modal/components/common/ThemedBosonLogo";

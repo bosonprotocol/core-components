@@ -23,8 +23,8 @@ import WETH_ABI from "../../abis/weth.json";
 import { getContract } from "./getContract";
 import { useMemo } from "react";
 import { useChainId, useProvider, useAccount } from "../connection/connection";
+import { WRAPPED_NATIVE_CURRENCY } from "@bosonprotocol/utils";
 import { RPC_PROVIDERS } from "../../lib/const/providers";
-import { WRAPPED_NATIVE_CURRENCY } from "../../lib/const/tokens";
 import { UniswapInterfaceMulticall } from "../../types/v3/UniswapInterfaceMulticall";
 
 const { abi: MulticallABI } = UniswapInterfaceMulticallJson;

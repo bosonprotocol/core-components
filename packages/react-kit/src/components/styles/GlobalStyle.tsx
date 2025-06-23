@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import { breakpoint } from "../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 import { zIndex } from "../ui/zIndex";
 import { cssVars } from "./ResetStylesForNonWidgets";
 import { getCssVar } from "../../theme";

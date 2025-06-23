@@ -15,7 +15,7 @@ import {
 } from "../../connection/activate";
 import { MagicLoginButton, MagicLoginButtonProps } from "../../magicLink/Login";
 import { useChainId } from "../../../hooks/connection/connection";
-import { breakpoint } from "../../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 import { AutoColumn } from "../../ui/column";
 import { useConnections } from "../../connection/ConnectionsProvider";
 import { isSupportedChain } from "../../../lib/const/chains";

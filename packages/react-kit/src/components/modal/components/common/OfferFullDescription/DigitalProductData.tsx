@@ -1,7 +1,7 @@
 import React from "react";
 
 import styled from "styled-components";
-import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
+import { getOfferDetails } from "@bosonprotocol/utils";
 import { Offer } from "../../../../../types/offer";
 import { DetailsSummary } from "../../../../ui/DetailsSummary";
 import { Grid } from "../../../../ui/Grid";
@@ -13,11 +13,11 @@ import {
   digitalNftTypeMapping,
   digitalTypeMappingDisplay,
   ercTokenMapping
-} from "../../../../../lib/bundle/const";
+} from "@bosonprotocol/utils";
 import { useBundleItemsImages } from "../../../../../hooks/bundles/useBundleItemsImages";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
-import { isNftItem } from "../../../../../lib/bundle/filter";
-import { isTruthy } from "../../../../../types/helpers";
+import { isNftItem } from "@bosonprotocol/utils";
+import { isTruthy } from "@bosonprotocol/utils";
 import Video from "../../../../ui/Video";
 import { IpfsImage } from "../../../../ui/IpfsImage";
 

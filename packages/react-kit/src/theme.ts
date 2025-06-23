@@ -1,7 +1,7 @@
 import "styled-components";
-import { colors } from "./colors";
+import { colors } from "@bosonprotocol/utils";
 import { buttonBorderRadius } from "./borders";
-export { colors } from "./colors";
+export { colors } from "@bosonprotocol/utils";
 
 export const cssVarsKeys = {
   "--background-color": "--background-color",

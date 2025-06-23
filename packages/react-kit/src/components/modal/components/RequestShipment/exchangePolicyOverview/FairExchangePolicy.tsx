@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import { CONFIG } from "../../../../../lib/config/config";
 import { Typography } from "../../../../ui/Typography";
 import { getCssVar } from "../../../../../theme";
-import { onlyFairExchangePolicyLabel } from "../../../../../lib/const/policies";
+import { onlyFairExchangePolicyLabel } from "@bosonprotocol/utils";
 
 const InfoTitleWrapper = styled.div`
   display: flex;

@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
-import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
-import { isTruthy } from "../../../../../types/helpers";
+import { getOfferDetails } from "@bosonprotocol/utils";
+import { isTruthy } from "@bosonprotocol/utils";
 import { Offer } from "../../../../../types/offer";
 import { Grid } from "../../../../ui/Grid";
 import { Typography } from "../../../../ui/Typography";

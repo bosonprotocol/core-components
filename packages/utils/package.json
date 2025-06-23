@@ -1,0 +1,61 @@
+{
+  "name": "@bosonprotocol/utils",
+  "description": "Pure utility functions, constants, and types for Boson Protocol packages.",
+  "version": "0.40.0-alpha.6",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/cjs/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@bosonprotocol/core-sdk": "^1.44.0-alpha.4",
+    "@bosonprotocol/ipfs-storage": "^1.12.0",
+    "@bosonprotocol/roblox-sdk": "^1.0.0-alpha.19",
+    "@sentry/browser": "7.43.0",
+    "@uniswap/sdk-core": "^4.2.1",
+    "@uniswap/token-lists": "^1.0.0-beta.33",
+    "ajv": "^8.12.0",
+    "graphql-request": "5.2.0",
+    "multiformats": "^10.0.0",
+    "ua-parser-js": "^1.0.38"
+  },
+  "peerDependencies": {
+    "@ethersproject/abstract-provider": "^5.7.0",
+    "@ethersproject/address": "^5.7.0",
+    "@ethersproject/contracts": "^5.7.0",
+    "ethers": "^5.7.2"
+  },
+  "scripts": {
+    "lint": "eslint --ignore-path ../../.gitignore --ext .ts .",
+    "lint:fix": "npm run lint -- --fix",
+    "clean": "rimraf build coverage .turbo node_modules",
+    "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
+    "tsc": "tsc",
+    "prettier": "prettier --write \"src/**/*.ts\""
+  },
+  "devDependencies": {
+    "@types/lodash.merge": "^4.6.7",
+    "@types/lodash.uniqby": "^4.7.7",
+    "@types/node": "^16.11.25",
+    "@types/ua-parser-js": "^0.7.39",
+    "eslint": "^8.10.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^5.1.6"
+  },
+  "overrides": {
+    "typescript": "^5.1.6",
+    "multiformats": "^10.0.3"
+  }
+}

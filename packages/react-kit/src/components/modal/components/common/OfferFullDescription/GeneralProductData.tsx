@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useIsPhygital } from "../../../../../hooks/offer/useIsPhygital";
-import { breakpoint } from "../../../../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 import { colors } from "../../../../../theme";
 import { Offer } from "../../../../../types/offer";
 import { useConfigContext } from "../../../../config/ConfigContext";
@@ -21,7 +21,7 @@ import {
 } from "../detail/useGetOfferDetailData";
 import { Exchange } from "../../../../../types/exchange";
 import { PhygitalProduct } from "../detail/PhygitalProduct";
-import { getIsOfferRobloxGated } from "../../../../../lib/roblox/getIsOfferRobloxGated";
+import { getIsOfferRobloxGated } from "@bosonprotocol/utils";
 
 const StyledPrice = styled(Price)`
   h3 {

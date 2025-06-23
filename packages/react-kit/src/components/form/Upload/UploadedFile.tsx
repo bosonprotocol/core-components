@@ -1,14 +1,14 @@
 import { ImageSquare, X, FilePdf } from "phosphor-react";
 import React, { useCallback } from "react";
 import styled, { css } from "styled-components";
-import { bytesToSize } from "../../../lib/bytes/bytesToSize";
+import { bytesToSize } from "@bosonprotocol/utils";
 
 import { Grid } from "../../ui/Grid";
 import ThemedButton from "../../ui/ThemedButton";
 import { Typography } from "../../ui/Typography";
 import { FileUploadWrapper } from "../Field.styles";
 import { UploadProps } from "../types";
-import { colors } from "../../../colors";
+import { colors } from "../../../theme";
 
 const AttachmentContainer = styled.div<{
   $isLeftAligned: boolean;

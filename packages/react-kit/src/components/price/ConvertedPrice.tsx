@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { IPrice } from "../../lib/price/convertPrice";
+import { IPrice } from "@bosonprotocol/utils";
 import { useDisplayFloatWithConfig } from "../../lib/price/prices";
 import { useConfigContext } from "../config/ConfigContext";
 

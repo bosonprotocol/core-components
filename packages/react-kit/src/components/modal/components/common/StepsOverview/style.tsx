@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { breakpoint } from "../../../../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 import { colors, getCssVar } from "../../../../../theme";
 
 export const CommitStep = styled.div`

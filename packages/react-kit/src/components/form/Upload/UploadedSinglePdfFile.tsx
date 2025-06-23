@@ -2,8 +2,8 @@ import { Grid } from "../../ui/Grid";
 import { FilePdf, X } from "phosphor-react";
 import { Typography } from "../../ui/Typography";
 import React from "react";
-import { colors } from "../../../colors";
-import { getIpfsGatewayUrl } from "../../../lib/ipfs/ipfs";
+import { colors } from "../../../theme";
+import { getIpfsGatewayUrl } from "@bosonprotocol/utils";
 import styled, { css } from "styled-components";
 const Wrapper = styled(Grid)<
   Pick<UploadedSinglePdfFileProps, "onClick" | "urlProps">

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { Grid } from "../ui/Grid";
 import { GridContainer } from "../ui/GridContainer";
-import { breakpoint } from "../../lib/ui/breakpoint";
+import { breakpoint } from "@bosonprotocol/utils";
 
 const margin = "1.75rem";
 const StyledGridContainer = styled(GridContainer)`

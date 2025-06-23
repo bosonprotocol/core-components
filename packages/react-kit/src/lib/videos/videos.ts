@@ -1,4 +1,4 @@
-import { blobToBase64 } from "../base64/base64";
+import { blobToBase64 } from "@bosonprotocol/utils";
 
 export function getVideoMetadata(videoFile: File) {
   return new Promise<{

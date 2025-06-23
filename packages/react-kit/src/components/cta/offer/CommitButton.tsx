@@ -12,7 +12,7 @@ import styled from "styled-components";
 import { Button } from "../../buttons/Button";
 import { CommitView } from "../../buttons/commit/CommitView";
 import { CommitButtonViewProps } from "../../buttons/commit/types";
-import { AddDollarPrefixToKeys } from "../../../types/helpers";
+import { AddDollarPrefixToKeys } from "@bosonprotocol/utils";
 
 const StyledButton = styled(Button)<{
   $color: CommitButtonViewProps["color"];

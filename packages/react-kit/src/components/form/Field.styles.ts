@@ -2,7 +2,7 @@
 import styled, { CSSProperties, css } from "styled-components";
 
 import { transition } from "../../components/ui/styles";
-import { checkIfValueIsEmpty } from "../../lib/object/checkIfValueIsEmpty";
+import { checkIfValueIsEmpty } from "@bosonprotocol/utils";
 import { colors } from "../../theme";
 import { Grid } from "../ui/Grid";
 
@@ -15,35 +15,21 @@ export type InputTheme = {
   borderColor: CSSProperties["borderColor"];
   borderRadius: CSSProperties["borderRadius"];
   color: CSSProperties["color"];
-  placeholder: {
-    color: CSSProperties["color"];
-  };
-  focus: {
-    caretColor: CSSProperties["caretColor"];
-  };
-  hover: {
-    borderColor: CSSProperties["borderColor"];
-  };
+  placeholder: { color: CSSProperties["color"] };
+  focus: { caretColor: CSSProperties["caretColor"] };
+  hover: { borderColor: CSSProperties["borderColor"] };
   error: {
     borderColor: CSSProperties["borderColor"];
-    hover: {
-      borderColor: CSSProperties["borderColor"];
-    };
+    hover: { borderColor: CSSProperties["borderColor"] };
     focus: {
       borderColor: CSSProperties["borderColor"];
       caretColor: CSSProperties["caretColor"];
     };
-    placeholder: {
-      color: CSSProperties["color"];
-    };
+    placeholder: { color: CSSProperties["color"] };
   };
 };
 export type HeightSize = keyof typeof sizeToHeight;
-const sizeToHeight = {
-  small: "40px",
-  regular: "49px",
-  large: "56px"
-} as const;
+const sizeToHeight = { small: "40px", regular: "49px", large: "56px" } as const;
 export const FieldInput = styled.input<{
   $error?: any;
   $heightSize?: HeightSize;
@@ -133,12 +119,8 @@ export type FileUploadWrapperTheme = Partial<{
   borderColor: CSSProperties["borderColor"];
   borderRadius: CSSProperties["borderRadius"];
   background: CSSProperties["background"];
-  focus: Partial<{
-    borderColor: CSSProperties["borderColor"];
-  }>;
-  error: Partial<{
-    borderColor: CSSProperties["borderColor"];
-  }>;
+  focus: Partial<{ borderColor: CSSProperties["borderColor"] }>;
+  error: Partial<{ borderColor: CSSProperties["borderColor"] }>;
   media: Partial<Pick<CSSProperties, "objectFit">>;
   overrides: Partial<CSSProperties>;
 }>;
@@ -295,24 +277,16 @@ export type TextAreaTheme = {
   background: CSSProperties["backgroundColor"];
   borderColor: CSSProperties["borderColor"];
   borderRadius: CSSProperties["borderRadius"];
-  focus: {
-    caretColor: CSSProperties["caretColor"];
-  };
-  hover: {
-    borderColor: CSSProperties["borderColor"];
-  };
+  focus: { caretColor: CSSProperties["caretColor"] };
+  hover: { borderColor: CSSProperties["borderColor"] };
   error: {
     borderColor: CSSProperties["borderColor"];
-    hover: {
-      borderColor: CSSProperties["borderColor"];
-    };
+    hover: { borderColor: CSSProperties["borderColor"] };
     focus: {
       borderColor: CSSProperties["borderColor"];
       caretColor: CSSProperties["caretColor"];
     };
-    placeholder: {
-      color: CSSProperties["color"];
-    };
+    placeholder: { color: CSSProperties["color"] };
   };
 };
 export const FieldTextArea = styled.textarea<{ $error: any }>`

@@ -51,8 +51,8 @@ import {
   DetailContextProps,
   DetailViewProvider
 } from "../common/detail/DetailViewProvider";
-import { getHasBuyerTransferInfos } from "../../../../lib/offer/filter";
-import { BuyerTransferInfo } from "../../../../lib/bundle/const";
+import { getHasBuyerTransferInfos } from "@bosonprotocol/utils";
+import { BuyerTransferInfo } from "@bosonprotocol/utils";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 import { mockedDeliveryAddress } from "../../../widgets/redemption/const";
 import { checkSignatures } from "./checkSignatures";
