@@ -12,6 +12,7 @@ export * from "./const/parameters";
 export * from "./const/policies";
 export * from "./const/tokens";
 export * from "./const/chains";
+export * from "./ui/breakpoint";
 export * from "./const/validationMessage";
 export * from "./dates/checkIfTimestampIsToo";
 export * from "./dates/getDateTimestamp";
@@ -33,7 +34,6 @@ export * from "./promises/promises";
 export * from "./roblox/getIsOfferRobloxGated";
 export * from "./string/formatText";
 export * from "./subgraph/subgraph";
-export * from "./ui/breakpoint";
 export * from "./uniswap/contenthashToUri";
 export * from "./uniswap/formatNumbers";
 export * from "./uniswap/parseENSAddress";
@@ -46,8 +46,13 @@ export * from "./userAgent/userAgent";
 export * from "./utils/exchange";
 export * from "./utils/textFile";
 
+// Theme exports
+export * from "./theme";
+
 // Pure utility types
+export * from "./types/bundle";
 export * from "./types/helpers";
+export * from "./types/offer";
 export * from "./types/tuple";
 
 // Constants/data

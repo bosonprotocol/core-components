@@ -40,7 +40,7 @@ const ButtonWithThemeProps = styled.button<ButtonWithThemePropsType>`
     ${(props) =>
       props.theme.svg &&
       css`
-        stroke: ${(props) => props.theme?.svg.stroke};
+        stroke: ${(props) => props.theme?.svg?.stroke};
         ${props.theme.svg.fill &&
         css`
           fill: ${props.theme.svg.fill};

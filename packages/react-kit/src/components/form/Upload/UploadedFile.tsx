@@ -8,7 +8,7 @@ import ThemedButton from "../../ui/ThemedButton";
 import { Typography } from "../../ui/Typography";
 import { FileUploadWrapper } from "../Field.styles";
 import { UploadProps } from "../types";
-import { colors } from "../../../colors";
+import { colors } from "../../../theme";
 
 const AttachmentContainer = styled.div<{
   $isLeftAligned: boolean;

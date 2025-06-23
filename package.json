@@ -101,7 +101,8 @@
     "typescript": "^5.1.6",
     "is-ipfs": "0.6.3",
     "lerna": "5.5.1",
-    "multiformats": "^10.0.0"
+    "multiformats": "^10.0.3",
+    "ws": "^8.18.0"
   },
   "volta": {
     "node": "16.16.0",

@@ -40,7 +40,7 @@ import { useBuyers } from "../../../../../hooks/useBuyers";
 import { CommitRedeemSteps } from "./CommitRedeemSteps";
 import { RedeemWhatsNext, RedeemWhatsNextProps } from "./RedeemWhatsNext";
 import { useOpenAccountDrawer } from "../../../../wallet2/accountDrawer";
-import { colors } from "../../../../../colors";
+import { colors } from "../../../../../theme";
 import { Provider } from "@bosonprotocol/ethers-sdk";
 import { ThemedCommitButton } from "../../../../cta/offer/ThemedCommitButton";
 import { getCssVar } from "../../../../../theme";

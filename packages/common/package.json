@@ -24,8 +24,7 @@
   },
   "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/common#readme",
   "files": [
-    "dist/*",
-    "src/*"
+    "dist/*"
   ],
   "publishConfig": {
     "access": "public"

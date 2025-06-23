@@ -13,8 +13,7 @@
     }
   },
   "files": [
-    "dist/*",
-    "src/*"
+    "dist/*"
   ],
   "publishConfig": {
     "access": "public"
@@ -212,6 +211,8 @@
     "webpack-bundle-analyzer": "^4.5.0"
   },
   "overrides": {
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "multiformats": "^10.0.3",
+    "ws": "^8.18.0"
   }
 }

@@ -91,7 +91,6 @@ export * from "./components/modal/components/common/detail/DetailSlider";
 export * from "./components/modal/components/common/detail/SlickSlider";
 export { default as DetailOpenSea } from "./components/modal/components/common/DetailOpenSea";
 export * from "./theme";
-export * from "./colors";
 export { AuthTokenType } from "@bosonprotocol/common";
 export * from "@bosonprotocol/core-sdk";
 export * from "@bosonprotocol/ethers-sdk";
