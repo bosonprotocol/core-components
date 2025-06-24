@@ -8,7 +8,7 @@ env:
   GH_REGISTRY: ghcr.io
   IMAGE_NAME: "${{ github.repository }}/opensea-api-mock"
   DH_REGISTRY: docker.io
-  DH_NAMESPACE: levalleuxludordm
+  DH_NAMESPACE: ${{ vars.BSN_DOCKER_LOGIN }}
   DH_REPOSITORY: opensea-api-mock
 
 jobs:
@@ -34,8 +34,8 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
-          username: ${{ secrets.TEMPO_DOCKER_USERNAME }}
-          password: ${{ secrets.TEMPO_DOCKER_PASSWORD }}
+          username: ${{ vars.BSN_DOCKER_LOGIN }}
+          password: ${{ secrets.BSN_DOCKER_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
