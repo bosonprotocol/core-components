@@ -13,7 +13,6 @@ import {
   getEnvConfigsFilteredByEnv
 } from "../../../lib/config/getConfigsByChainId";
 import { CHAIN_IDS_TO_FRIENDLY_NAMES } from "../../../lib/const/chains";
-import { breakpoint, breakpointNumbers } from "../../../lib/ui/breakpoint";
 import { useAppSelector } from "../../../state/hooks";
 import { BaseButton, BaseButtonTheme } from "../../buttons/BaseButton";
 import { useConfigContext } from "../../config/ConfigContext";
@@ -25,22 +24,6 @@ import { Tooltip } from "../../tooltip/Tooltip";
 import { Grid } from "../../ui/Grid";
 import { useAccountDrawer } from "../accountDrawer";
 import StatusIcon from "../identicon/StatusIcon";
-
-const breakpointWhenConnectButtonOverflows = "1300px";
-
-const AddressAndChevronContainer = styled.div`
-  display: flex;
-
-  ${breakpoint.xxs} {
-    display: none;
-  }
-  @media (min-width: ${breakpointNumbers.l}px) and (max-width: ${breakpointWhenConnectButtonOverflows}) {
-    display: none;
-  }
-  @media (min-width: ${breakpointWhenConnectButtonOverflows}) {
-    display: flex;
-  }
-`;
 
 const Text = styled.p`
   flex: 1 1 auto;
@@ -145,13 +128,7 @@ function Web3StatusInner({
           />
         )}
         {leftConnectedChild}
-        {hideConnectedAddress ? (
-          <AddressAndChevronContainer>
-            <Text>{connectedText}</Text>
-          </AddressAndChevronContainer>
-        ) : (
-          <Text>{connectedText}</Text>
-        )}
+        {!hideConnectedAddress && <Text>{connectedText}</Text>}
         {rightConnectedChild}
       </BaseButton>
     );
