@@ -75,7 +75,8 @@ function Web3StatusInner({
   leftWrongNetworkChild,
   rightConnectWalletChild,
   rightConnectedChild,
-  rightWrongNetworkChild
+  rightWrongNetworkChild,
+  hideConnectedAddress
 }: ConnectWalletProps) {
   const switchingChain = useAppSelector(
     (state) => state.wallets.switchingChain
@@ -127,6 +128,7 @@ function Web3StatusInner({
       : wasConnected && !configsPreviousChain?.length && isActive;
 
   if (!connectedToWrongChainId && account) {
+    const connectedText = ENSName || formatAddress(account);
     return (
       <BaseButton
         disabled={Boolean(switchingChain)}
@@ -143,9 +145,13 @@ function Web3StatusInner({
           />
         )}
         {leftConnectedChild}
-        <AddressAndChevronContainer>
-          <Text>{ENSName || formatAddress(account)}</Text>
-        </AddressAndChevronContainer>
+        {hideConnectedAddress ? (
+          <AddressAndChevronContainer>
+            <Text>{connectedText}</Text>
+          </AddressAndChevronContainer>
+        ) : (
+          <Text>{connectedText}</Text>
+        )}
         {rightConnectedChild}
       </BaseButton>
     );
@@ -219,6 +225,7 @@ export type ConnectWalletProps = {
   rightWrongNetworkChild?: ReactNode;
   leftConnectWalletChild?: ReactNode;
   rightConnectWalletChild?: ReactNode;
+  hideConnectedAddress?: boolean;
 };
 export const ConnectWallet = memo(function Web3Status(
   props: ConnectWalletProps

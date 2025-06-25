@@ -39,6 +39,7 @@ const ColorGlobalStyle = createGlobalStyle<{ color: CSSProperties["color"] }>`
 `;
 const Component = ({
   showStatusIcon,
+  hideConnectedAddress,
   rightConnectedChild,
   connectWalletChild,
   textColor,
@@ -66,6 +67,7 @@ const Component = ({
   onUserDisconnect
 }: {
   showStatusIcon: boolean;
+  hideConnectedAddress?: boolean;
   rightConnectedChild?: ReactNode;
   textColor: string;
   connectWalletChild: string;
@@ -142,6 +144,7 @@ const Component = ({
                         />
                         <ConnectWallet
                           showStatusIcon={showStatusIcon}
+                          hideConnectedAddress={hideConnectedAddress}
                           connectWalletChild={connectWalletChild}
                           rightConnectedChild={rightConnectedChild}
                           connectWalletButtonTheme={{
@@ -299,7 +302,8 @@ export default {
 } satisfies Meta<typeof Component>;
 
 const BASE_ARGS = {
-  PrivacyPolicy: () => <div>privacy policy</div>
+  PrivacyPolicy: () => <div>privacy policy</div>,
+  hideConnectedAddress: false
 } as const;
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
