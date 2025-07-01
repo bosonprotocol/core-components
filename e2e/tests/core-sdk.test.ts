@@ -113,6 +113,22 @@ describe("core-sdk", () => {
       expect(offer.voided).toBe(true);
     });
 
+    test("voidOffer: check transaction data", async () => {
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
+
+      const createdOffer = await createSellerAndOffer(
+        coreSDK,
+        fundedWallet.address
+      );
+
+      const txData = await coreSDK.voidOffer(createdOffer.id, {
+        returnTxInfo: true
+      });
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+    });
+
     test("commit (native currency offer)", async () => {
       const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
@@ -132,6 +148,27 @@ describe("core-sdk", () => {
       });
 
       expect(exchange).toBeTruthy();
+    });
+
+    test("commitToOffer: check transaction data", async () => {
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
+      const createdOffer = await createSellerAndOffer(
+        sellerCoreSDK,
+        sellerWallet.address
+      );
+      await depositFunds({
+        coreSDK: sellerCoreSDK,
+        sellerId: createdOffer.seller.id
+      });
+
+      const txData = await buyerCoreSDK.commitToOffer(createdOffer.id, {
+        returnTxInfo: true
+      });
+
+      expect(Object.keys(txData).sort()).toStrictEqual(
+        ["data", "to", "value", "from"].sort()
+      );
     });
 
     test("Create a group for multiple offers", async () => {
@@ -182,6 +219,44 @@ describe("core-sdk", () => {
         expect(offerWithCondition.condition).toBeTruthy();
         expect(conditionClone).toEqual(condition);
       }
+    });
+
+    test("createGroup: check transaction data", async () => {
+      const tokenID = Date.now().toString();
+      const { sellerCoreSDK, sellerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
+      await ensureCreatedSeller(sellerWallet);
+
+      // Create 3 offers
+      const offer1 = await createOffer(sellerCoreSDK);
+      const offer2 = await createOffer(sellerCoreSDK);
+      const offer3 = await createOffer(sellerCoreSDK);
+
+      // Ensure the condition token is minted
+      await ensureMintedERC1155(sellerWallet, tokenID, "5");
+
+      // Create the group for the 3 offers and the token condition
+      const offerIds = [offer1.id, offer2.id, offer3.id];
+      const condition = {
+        method: EvaluationMethod.Threshold,
+        tokenType: TokenType.MultiToken,
+        tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+        gatingType: GatingType.PerAddress,
+        minTokenId: tokenID,
+        maxTokenId: tokenID,
+        threshold: "1",
+        maxCommits: "3"
+      };
+      const groupToCreate = {
+        offerIds,
+        ...condition
+      };
+
+      const txData = await sellerCoreSDK.createGroup(groupToCreate, {
+        returnTxInfo: true
+      });
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
     });
 
     test("createOfferWithCondition()", async () => {
@@ -1042,6 +1117,28 @@ describe("core-sdk", () => {
       expect(exchangeAfterRevoke.revokedDate).toBeTruthy();
     });
 
+    test("revokeVoucher: check transaction data", async () => {
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
+      const createdOffer = await createSellerAndOffer(
+        sellerCoreSDK,
+        sellerWallet.address
+      );
+      await depositFunds({
+        coreSDK: sellerCoreSDK,
+        sellerId: createdOffer.seller.id
+      });
+      const exchange = await commitToOffer({
+        buyerCoreSDK,
+        sellerCoreSDK,
+        offerId: createdOffer.id
+      });
+
+      const txData = await sellerCoreSDK.revokeVoucher(exchange.id, true);
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+    });
+
     test("cancel", async () => {
       const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
@@ -1068,6 +1165,28 @@ describe("core-sdk", () => {
 
       expect(exchangeAfterRevoke.state).toBe(ExchangeState.CANCELLED);
       expect(exchangeAfterRevoke.cancelledDate).toBeTruthy();
+    });
+
+    test("cancelVoucher: check transaction data", async () => {
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
+      const createdOffer = await createSellerAndOffer(
+        sellerCoreSDK,
+        sellerWallet.address
+      );
+      await depositFunds({
+        coreSDK: sellerCoreSDK,
+        sellerId: createdOffer.seller.id
+      });
+      const exchange = await commitToOffer({
+        buyerCoreSDK,
+        sellerCoreSDK,
+        offerId: createdOffer.id
+      });
+
+      const txData = await buyerCoreSDK.cancelVoucher(exchange.id, true);
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
     });
 
     test("redeem + finalize", async () => {
@@ -1110,6 +1229,28 @@ describe("core-sdk", () => {
           createdOffer.protocolFee
         )
       ).toBe(true);
+    });
+
+    test("redeemVoucher: check transaction data", async () => {
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
+      const createdOffer = await createSellerAndOffer(
+        sellerCoreSDK,
+        sellerWallet.address
+      );
+      await depositFunds({
+        coreSDK: sellerCoreSDK,
+        sellerId: createdOffer.seller.id
+      });
+      const exchange = await commitToOffer({
+        buyerCoreSDK,
+        sellerCoreSDK,
+        offerId: createdOffer.id
+      });
+
+      const txData = await buyerCoreSDK.redeemVoucher(exchange.id, true);
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
     });
 
     test("redeem + finalize batch", async () => {

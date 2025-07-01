@@ -177,9 +177,8 @@ describe("meta-tx", () => {
 
   describe("#signMetaTxUpdateSellerAndOptIn", () => {
     test("update seller - replace all addresses", async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        sellerWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
 
       let seller = await createSeller(coreSDK, fundedWallet.address);
       expect(seller).toBeTruthy();
@@ -635,9 +634,8 @@ describe("meta-tx", () => {
         offerToCommit.price
       );
 
-      const allowanceAfter = await buyerCoreSDK.getProtocolAllowance(
-        MOCK_ERC20_ADDRESS
-      );
+      const allowanceAfter =
+        await buyerCoreSDK.getProtocolAllowance(MOCK_ERC20_ADDRESS);
       expect(BigNumber.from(allowanceAfter).gte(offerToCommit.price)).toBe(
         true
       );
@@ -697,9 +695,8 @@ describe("meta-tx", () => {
         createdOffer.price
       );
 
-      const allowanceAfter = await buyerCoreSDK.getProtocolAllowance(
-        MOCK_ERC20_ADDRESS
-      );
+      const allowanceAfter =
+        await buyerCoreSDK.getProtocolAllowance(MOCK_ERC20_ADDRESS);
       expect(BigNumber.from(allowanceAfter).gte(createdOffer.price)).toBe(true);
 
       // `Buyer` signs meta tx
@@ -848,9 +845,8 @@ describe("meta-tx", () => {
         fundsAmount
       );
 
-      const allowanceAfter = await newSellerCoreSDK.getProtocolAllowance(
-        MOCK_ERC20_ADDRESS
-      );
+      const allowanceAfter =
+        await newSellerCoreSDK.getProtocolAllowance(MOCK_ERC20_ADDRESS);
       expect(BigNumber.from(allowanceAfter).gte(fundsAmount)).toBe(true);
 
       // Seller signs meta tx

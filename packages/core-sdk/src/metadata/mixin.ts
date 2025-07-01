@@ -11,8 +11,9 @@ import {
   getAllProductsWithNotVoidedVariants,
   getBundleMetadataEntities
 } from "./subgraph";
+import { Web3LibAdapter } from "@bosonprotocol/common";
 
-export class MetadataMixin extends BaseCoreSDK {
+export class MetadataMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
   /*                          Metadata related methods                          */
   /* -------------------------------------------------------------------------- */

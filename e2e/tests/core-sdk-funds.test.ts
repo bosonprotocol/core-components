@@ -23,9 +23,8 @@ describe("core-sdk-funds", () => {
   describe("deposit funds", () => {
     test("ETH", async () => {
       const sellerFundsDepositInEth = "5";
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
       const sellers = await ensureCreatedSeller(fundedWallet);
       const [seller] = sellers;
 
@@ -42,11 +41,29 @@ describe("core-sdk-funds", () => {
       expect(funds.token.symbol.toUpperCase()).toBe("ETH");
     });
 
+    test("depositFunds: check transaction data", async () => {
+      const sellerFundsDepositInEth = "5";
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
+      const sellers = await ensureCreatedSeller(fundedWallet);
+      const [seller] = sellers;
+
+      const txData = await coreSDK.depositFunds(
+        seller.id,
+        utils.parseEther(sellerFundsDepositInEth),
+        constants.AddressZero,
+        { returnTxInfo: true }
+      );
+
+      expect(Object.keys(txData).sort()).toStrictEqual(
+        ["data", "to", "value"].sort()
+      );
+    });
+
     test("ERC20", async () => {
       const sellerFundsDeposit = "5";
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
       const sellers = await ensureCreatedSeller(fundedWallet);
       const [seller] = sellers;
 
@@ -70,9 +87,8 @@ describe("core-sdk-funds", () => {
   describe("withdraw funds", () => {
     test("ETH", async () => {
       const sellerFundsDepositInEth = "5";
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
       const sellers = await ensureCreatedSeller(fundedWallet);
       const [seller] = sellers;
 
@@ -97,11 +113,33 @@ describe("core-sdk-funds", () => {
       expect(updatedFunds[0].availableAmount).toEqual("0");
     });
 
+    test("withdrawFunds: check transaction data", async () => {
+      const sellerFundsDepositInEth = "5";
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
+      const sellers = await ensureCreatedSeller(fundedWallet);
+      const [seller] = sellers;
+
+      await depositFunds({
+        coreSDK,
+        fundsDepositAmountInEth: sellerFundsDepositInEth,
+        sellerId: seller.id
+      });
+
+      const txData = await coreSDK.withdrawFunds(
+        seller.id,
+        [constants.AddressZero],
+        [utils.parseEther(sellerFundsDepositInEth)],
+        { returnTxInfo: true }
+      );
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+    });
+
     test("ETH and ERC20", async () => {
       const sellerFundsDepositInEth = "5";
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
       const sellers = await ensureCreatedSeller(fundedWallet);
       const [seller] = sellers;
 

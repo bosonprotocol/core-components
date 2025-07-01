@@ -14,9 +14,8 @@ const seedWallet = seedWallet16; // be sure the seedWallet is not used by anothe
 
 describe("core-sdk-extend-offer", () => {
   test("Extend an offer", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
 
     const createdOffer = await createSellerAndOffer(
       coreSDK,
@@ -35,6 +34,27 @@ describe("core-sdk-extend-offer", () => {
     await coreSDK.waitForGraphNodeIndexing(tx);
     const offer = await coreSDK.getOfferById(offerId);
     expect(offer.validUntilDate).toEqual(newValidUntil.toString());
+  });
+
+  test("extendOffer: check transaction data", async () => {
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+
+    const createdOffer = await createSellerAndOffer(
+      coreSDK,
+      fundedWallet.address
+    );
+
+    const offerId = createdOffer.id;
+    const newValidUntil = BigNumber.from(createdOffer.validUntilDate).add(1000);
+
+    const txData = await coreSDK.extendOffer(
+      offerId,
+      newValidUntil.toString(),
+      { returnTxInfo: true }
+    );
+
+    expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
   });
   test("Extend offers (batch)", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
@@ -59,5 +79,26 @@ describe("core-sdk-extend-offer", () => {
     expect(offer1.validUntilDate).toEqual(newValidUntil.toString());
     const offer2 = await coreSDK.getOfferById(createdOffer2.id);
     expect(offer2.validUntilDate).toEqual(newValidUntil.toString());
+  });
+
+  test("extendOfferBatch: check transaction data", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    await ensureCreatedSeller(sellerWallet);
+
+    const createdOffer1 = await createOffer(coreSDK);
+    const createdOffer2 = await createOffer(coreSDK);
+
+    const newValidUntil = BigNumber.from(createdOffer1.validUntilDate).add(
+      1000
+    );
+
+    const txData = await coreSDK.extendOfferBatch(
+      [createdOffer1.id, createdOffer2.id],
+      newValidUntil.toString(),
+      { returnTxInfo: true }
+    );
+
+    expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
   });
 });

@@ -10,9 +10,8 @@ const seedWallet = seedWallet18; // be sure the seedWallet is not used by anothe
 
 describe("core-sdk-set-contract-uri", () => {
   test("Set contract URI", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const newContractURI = "ipfs://testNewContractURI";
     const createdOffer = await createSellerAndOffer(
       coreSDK,
@@ -40,10 +39,25 @@ describe("core-sdk-set-contract-uri", () => {
     ).toEqual(newContractURI);
   });
 
-  test("Set contract URI - Not existing seller", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
+  test("setContractURI: check transaction data", async () => {
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const newContractURI = "ipfs://testNewContractURI";
+    await createSellerAndOffer(coreSDK, fundedWallet.address);
+
+    const collectionIndex = 0;
+    const txData = await coreSDK.setContractURI(
+      newContractURI,
+      collectionIndex,
+      { returnTxInfo: true }
     );
+
+    expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+  });
+
+  test("Set contract URI - Not existing seller", async () => {
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const [seller] = await coreSDK.getSellersByAddress(fundedWallet.address);
     expect(seller).not.toBeTruthy();
 
@@ -55,9 +69,8 @@ describe("core-sdk-set-contract-uri", () => {
   });
 
   test("Set contract URI - Not existing collection", async () => {
-    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-      seedWallet
-    );
+    const { coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
     const newContractURI = "ipfs://testNewContractURI";
     const createdOffer = await createSellerAndOffer(
       coreSDK,

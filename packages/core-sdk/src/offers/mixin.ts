@@ -14,7 +14,8 @@ import {
   EvaluationMethod,
   GatingType,
   RoyaltyInfo,
-  TransactionRequest
+  TransactionRequest,
+  Web3LibAdapter
 } from "@bosonprotocol/common";
 import groupBy from "lodash/groupBy";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
@@ -24,7 +25,7 @@ import { batchTasks } from "../utils/promises";
 import { EventLogsMixin } from "../event-logs/mixin";
 import { AccountsMixin } from "../accounts/mixin";
 
-export class OfferMixin extends BaseCoreSDK {
+export class OfferMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
   /*                            Offer related methods                           */
   /* -------------------------------------------------------------------------- */
@@ -36,21 +37,57 @@ export class OfferMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async createOffer(
     offerToCreate: offers.CreateOfferArgs,
     overrides: Partial<{
       contractAddress: string;
       txRequest: TransactionRequest;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async createOffer(
+    offerToCreate: offers.CreateOfferArgs,
+    overrides?: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async createOffer(
+    offerToCreate: offers.CreateOfferArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return offers.handler.createOffer({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const offerArgs = {
       offerToCreate,
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
-      txRequest: overrides?.txRequest
-    });
+      txRequest: overrides.txRequest
+    } as const satisfies Parameters<typeof offers.handler.createOffer>[0];
+
+    if (returnTxInfo === true) {
+      return offers.handler.createOffer({
+        ...offerArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return offers.handler.createOffer({
+        ...offerArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -60,19 +97,53 @@ export class OfferMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async createOfferBatch(
     offersToCreate: offers.CreateOfferArgs[],
     overrides: Partial<{
       contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async createOfferBatch(
+    offersToCreate: offers.CreateOfferArgs[],
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async createOfferBatch(
+    offersToCreate: offers.CreateOfferArgs[],
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return offers.handler.createOfferBatch({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const batchArgs = {
       offersToCreate,
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<typeof offers.handler.createOfferBatch>[0];
+
+    if (returnTxInfo === true) {
+      return offers.handler.createOfferBatch({
+        ...batchArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return offers.handler.createOfferBatch({
+        ...batchArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -160,18 +231,52 @@ export class OfferMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async voidOffer(
     offerId: BigNumberish,
     overrides: Partial<{
       contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async voidOffer(
+    offerId: BigNumberish,
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async voidOffer(
+    offerId: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return offers.handler.voidOffer({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const voidArgs = {
       offerId,
       web3Lib: this._web3Lib,
       subgraphUrl: this._subgraphUrl,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<typeof offers.handler.voidOffer>[0];
+
+    if (returnTxInfo === true) {
+      return offers.handler.voidOffer({
+        ...voidArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return offers.handler.voidOffer({
+        ...voidArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -182,18 +287,52 @@ export class OfferMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async voidOfferBatch(
     offerIds: BigNumberish[],
     overrides: Partial<{
       contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async voidOfferBatch(
+    offerIds: BigNumberish[],
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async voidOfferBatch(
+    offerIds: BigNumberish[],
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return offers.handler.voidOfferBatch({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const batchArgs = {
       offerIds,
       web3Lib: this._web3Lib,
       subgraphUrl: this._subgraphUrl,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<typeof offers.handler.voidOfferBatch>[0];
+
+    if (returnTxInfo === true) {
+      return offers.handler.voidOfferBatch({
+        ...batchArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return offers.handler.voidOfferBatch({
+        ...batchArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -204,20 +343,56 @@ export class OfferMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async extendOffer(
     offerId: BigNumberish,
     validUntil: BigNumberish,
     overrides: Partial<{
       contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async extendOffer(
+    offerId: BigNumberish,
+    validUntil: BigNumberish,
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async extendOffer(
+    offerId: BigNumberish,
+    validUntil: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return offers.handler.extendOffer({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const extendArgs = {
       offerId,
       validUntil,
       web3Lib: this._web3Lib,
       subgraphUrl: this._subgraphUrl,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<typeof offers.handler.extendOffer>[0];
+
+    if (returnTxInfo === true) {
+      return offers.handler.extendOffer({
+        ...extendArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return offers.handler.extendOffer({
+        ...extendArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -229,20 +404,56 @@ export class OfferMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async extendOfferBatch(
     offerIds: BigNumberish[],
     validUntil: BigNumberish,
     overrides: Partial<{
       contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async extendOfferBatch(
+    offerIds: BigNumberish[],
+    validUntil: BigNumberish,
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async extendOfferBatch(
+    offerIds: BigNumberish[],
+    validUntil: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return offers.handler.extendOfferBatch({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const batchArgs = {
       offerIds,
       validUntil,
       web3Lib: this._web3Lib,
       subgraphUrl: this._subgraphUrl,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<typeof offers.handler.extendOfferBatch>[0];
+
+    if (returnTxInfo === true) {
+      return offers.handler.extendOfferBatch({
+        ...batchArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return offers.handler.extendOfferBatch({
+        ...batchArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -310,16 +521,42 @@ export class OfferMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async reserveRange(
     offerId: BigNumberish,
     length: BigNumberish,
     to: "seller" | "contract",
     overrides: Partial<{
       contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async reserveRange(
+    offerId: BigNumberish,
+    length: BigNumberish,
+    to: "seller" | "contract",
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async reserveRange(
+    offerId: BigNumberish,
+    length: BigNumberish,
+    to: "seller" | "contract",
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
     const offer = await this.getOfferById(offerId);
-    return offers.handler.reserveRange({
+
+    const reserveArgs = {
       offerId,
       length,
       to:
@@ -329,7 +566,19 @@ export class OfferMixin extends BaseCoreSDK {
       subgraphUrl: this._subgraphUrl,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
       web3Lib: this._web3Lib
-    });
+    } as const satisfies Parameters<typeof offers.handler.reserveRange>[0];
+
+    if (returnTxInfo === true) {
+      return offers.handler.reserveRange({
+        ...reserveArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return offers.handler.reserveRange({
+        ...reserveArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /* -------------------------------------------------------------------------- */
@@ -383,19 +632,55 @@ export class OfferMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async approveExchangeToken(
     exchangeToken: string,
     value: BigNumberish,
     overrides: Partial<{
       spender: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async approveExchangeToken(
+    exchangeToken: string,
+    value: BigNumberish,
+    overrides?: Partial<{
+      spender: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async approveExchangeToken(
+    exchangeToken: string,
+    value: BigNumberish,
+    overrides: Partial<{
+      spender: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return erc20.handler.approve({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const approveArgs = {
       contractAddress: exchangeToken,
       spender: overrides.spender || this._protocolDiamond,
       value,
       web3Lib: this._web3Lib
-    });
+    } as const satisfies Parameters<typeof erc20.handler.approve>[0];
+
+    if (returnTxInfo === true) {
+      return erc20.handler.approve({
+        ...approveArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return erc20.handler.approve({
+        ...approveArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   public async getProtocolAllowance(
@@ -427,7 +712,7 @@ export class OfferMixin extends BaseCoreSDK {
       (tokenId: string) => boolean
     > => {
       const conditionalCommitLogs = await (
-        this as unknown as EventLogsMixin
+        this as unknown as EventLogsMixin<Web3LibAdapter>
       ).getConditionalCommitAuthorizedEventLogs({
         conditionalCommitAuthorizedLogsFilter: {
           groupId: offerConditionId, // all offers of the same product have the same condition.id
@@ -475,7 +760,9 @@ export class OfferMixin extends BaseCoreSDK {
     };
 
     const getCurrentCommits = async (): Promise<number> => {
-      const buyers = await (this as unknown as AccountsMixin).getBuyers({
+      const buyers = await (
+        this as unknown as AccountsMixin<Web3LibAdapter>
+      ).getBuyers({
         buyersFilter: {
           wallet: buyerAddress
         },
@@ -693,19 +980,57 @@ export class OfferMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async updateOfferRoyaltyRecipients(
     offerId: BigNumberish,
     royaltyInfo: RoyaltyInfo,
     overrides: Partial<{
       contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async updateOfferRoyaltyRecipients(
+    offerId: BigNumberish,
+    royaltyInfo: RoyaltyInfo,
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async updateOfferRoyaltyRecipients(
+    offerId: BigNumberish,
+    royaltyInfo: RoyaltyInfo,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return offers.handler.updateOfferRoyaltyRecipients({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const royaltyArgs = {
       offerId,
       royaltyInfo,
       web3Lib: this._web3Lib,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<
+      typeof offers.handler.updateOfferRoyaltyRecipients
+    >[0];
+
+    if (returnTxInfo === true) {
+      return offers.handler.updateOfferRoyaltyRecipients({
+        ...royaltyArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return offers.handler.updateOfferRoyaltyRecipients({
+        ...royaltyArgs,
+        returnTxInfo: false
+      });
+    }
   }
 
   /**
@@ -715,18 +1040,56 @@ export class OfferMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
+  // Overload: returnTxInfo is true → returns TransactionRequest
   public async updateOfferRoyaltyRecipientsBatch(
     offerIds: BigNumberish[],
     royaltyInfo: RoyaltyInfo,
     overrides: Partial<{
       contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async updateOfferRoyaltyRecipientsBatch(
+    offerIds: BigNumberish[],
+    royaltyInfo: RoyaltyInfo,
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async updateOfferRoyaltyRecipientsBatch(
+    offerIds: BigNumberish[],
+    royaltyInfo: RoyaltyInfo,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
     }> = {}
-  ): Promise<TransactionResponse> {
-    return offers.handler.updateOfferRoyaltyRecipientsBatch({
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const batchArgs = {
       offerIds,
       royaltyInfo,
       web3Lib: this._web3Lib,
       contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    } as const satisfies Parameters<
+      typeof offers.handler.updateOfferRoyaltyRecipientsBatch
+    >[0];
+
+    if (returnTxInfo === true) {
+      return offers.handler.updateOfferRoyaltyRecipientsBatch({
+        ...batchArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return offers.handler.updateOfferRoyaltyRecipientsBatch({
+        ...batchArgs,
+        returnTxInfo: false
+      });
+    }
   }
 }

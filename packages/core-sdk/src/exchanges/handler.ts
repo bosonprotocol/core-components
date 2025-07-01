@@ -1,6 +1,10 @@
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
-import { Web3LibAdapter, TransactionResponse } from "@bosonprotocol/common";
+import {
+  Web3LibAdapter,
+  TransactionResponse,
+  TransactionRequest
+} from "@bosonprotocol/common";
 import {
   encodeCancelVoucher,
   encodeCommitToOffer,
@@ -51,20 +55,48 @@ export function checkOfferIsCommittable(
   }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function commitToOffer(
   args: BaseExchangeHandlerArgs & {
     buyer: string;
     offerId: BigNumberish;
+    returnTxInfo: true;
   }
-): Promise<TransactionResponse> {
+): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function commitToOffer(
+  args: BaseExchangeHandlerArgs & {
+    buyer: string;
+    offerId: BigNumberish;
+    returnTxInfo?: false | undefined;
+  }
+): Promise<TransactionResponse>;
+
+// Implementation
+export async function commitToOffer(
+  args: BaseExchangeHandlerArgs & {
+    buyer: string;
+    offerId: BigNumberish;
+    returnTxInfo?: boolean;
+  }
+): Promise<TransactionRequest | TransactionResponse> {
   const offer = await getOfferById(args.subgraphUrl, args.offerId);
 
   await checkOfferIsCommittable(args.offerId, offer);
 
   if (offer.condition) {
     // keep compatibility with previous version
+    if (args.returnTxInfo) {
+      return commitToConditionalOffer({
+        ...args,
+        returnTxInfo: true,
+        tokenId: offer.condition.minTokenId
+      });
+    }
     return commitToConditionalOffer({
       ...args,
+      returnTxInfo: false,
       tokenId: offer.condition.minTokenId
     });
   }
@@ -81,21 +113,49 @@ export async function commitToOffer(
     });
   }
 
-  return args.web3Lib.sendTransaction({
+  const transactionRequest = {
     from: args.buyer,
     to: args.contractAddress,
     data: encodeCommitToOffer(args.buyer, args.offerId),
     value: offer.exchangeToken.address === AddressZero ? offer.price : "0"
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function commitToConditionalOffer(
   args: BaseExchangeHandlerArgs & {
     buyer: string;
     offerId: BigNumberish;
     tokenId: BigNumberish;
+    returnTxInfo: true;
   }
-): Promise<TransactionResponse> {
+): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function commitToConditionalOffer(
+  args: BaseExchangeHandlerArgs & {
+    buyer: string;
+    offerId: BigNumberish;
+    tokenId: BigNumberish;
+    returnTxInfo?: false | undefined;
+  }
+): Promise<TransactionResponse>;
+
+// Implementation
+export async function commitToConditionalOffer(
+  args: BaseExchangeHandlerArgs & {
+    buyer: string;
+    offerId: BigNumberish;
+    tokenId: BigNumberish;
+    returnTxInfo?: boolean;
+  }
+): Promise<TransactionRequest | TransactionResponse> {
   const offer = await getOfferById(args.subgraphUrl, args.offerId);
 
   await checkOfferIsCommittable(args.offerId, offer);
@@ -112,7 +172,7 @@ export async function commitToConditionalOffer(
     });
   }
 
-  return args.web3Lib.sendTransaction({
+  const transactionRequest = {
     from: args.buyer,
     to: args.contractAddress,
     data: encodeCommitToConditionalOffer(
@@ -121,14 +181,38 @@ export async function commitToConditionalOffer(
       args.tokenId
     ),
     value: offer.exchangeToken.address === AddressZero ? offer.price : "0"
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function completeExchange(
   args: BaseExchangeHandlerArgs & {
     exchangeId: BigNumberish;
+    returnTxInfo: true;
   }
-) {
+): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function completeExchange(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+    returnTxInfo?: false | undefined;
+  }
+): Promise<TransactionResponse>;
+
+// Implementation
+export async function completeExchange(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+    returnTxInfo?: boolean;
+  }
+): Promise<TransactionRequest | TransactionResponse> {
   const [exchange, signerAddress] = await Promise.all([
     getExchangeById(args.subgraphUrl, args.exchangeId),
     args.web3Lib.getSignerAddress()
@@ -136,17 +220,41 @@ export async function completeExchange(
 
   assertCompletableExchange(args.exchangeId, exchange, signerAddress);
 
-  return args.web3Lib.sendTransaction({
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeCompleteExchange(args.exchangeId)
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function completeExchangeBatch(
   args: BaseExchangeHandlerArgs & {
     exchangeIds: BigNumberish[];
+    returnTxInfo: true;
   }
-) {
+): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function completeExchangeBatch(
+  args: BaseExchangeHandlerArgs & {
+    exchangeIds: BigNumberish[];
+    returnTxInfo?: false | undefined;
+  }
+): Promise<TransactionResponse>;
+
+// Implementation
+export async function completeExchangeBatch(
+  args: BaseExchangeHandlerArgs & {
+    exchangeIds: BigNumberish[];
+    returnTxInfo?: boolean;
+  }
+): Promise<TransactionRequest | TransactionResponse> {
   const [exchanges, signerAddress] = await Promise.all([
     getExchanges(args.subgraphUrl, {
       exchangesFilter: {
@@ -160,17 +268,41 @@ export async function completeExchangeBatch(
     assertCompletableExchange(exchange.id, exchange, signerAddress);
   }
 
-  return args.web3Lib.sendTransaction({
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeCompleteExchangeBatch(args.exchangeIds)
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function revokeVoucher(
   args: BaseExchangeHandlerArgs & {
     exchangeId: BigNumberish;
+    returnTxInfo: true;
   }
-): Promise<TransactionResponse> {
+): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function revokeVoucher(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+    returnTxInfo?: false | undefined;
+  }
+): Promise<TransactionResponse>;
+
+// Implementation
+export async function revokeVoucher(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+    returnTxInfo?: boolean;
+  }
+): Promise<TransactionRequest | TransactionResponse> {
   const [exchange, signerAddress] = await Promise.all([
     getExchangeById(args.subgraphUrl, args.exchangeId),
     args.web3Lib.getSignerAddress()
@@ -180,17 +312,41 @@ export async function revokeVoucher(
   assertExchangeState(exchange, ExchangeState.COMMITTED);
   assertSignerIsAssistant(signerAddress, exchange);
 
-  return args.web3Lib.sendTransaction({
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeRevokeVoucher(args.exchangeId)
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function cancelVoucher(
   args: BaseExchangeHandlerArgs & {
     exchangeId: BigNumberish;
+    returnTxInfo: true;
   }
-): Promise<TransactionResponse> {
+): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function cancelVoucher(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+    returnTxInfo?: false | undefined;
+  }
+): Promise<TransactionResponse>;
+
+// Implementation
+export async function cancelVoucher(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+    returnTxInfo?: boolean;
+  }
+): Promise<TransactionRequest | TransactionResponse> {
   const [exchange, signerAddress] = await Promise.all([
     getExchangeById(args.subgraphUrl, args.exchangeId),
     args.web3Lib.getSignerAddress()
@@ -200,17 +356,41 @@ export async function cancelVoucher(
   assertExchangeState(exchange, ExchangeState.COMMITTED);
   assertSignerIsBuyer(signerAddress, exchange);
 
-  return args.web3Lib.sendTransaction({
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeCancelVoucher(args.exchangeId)
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function expireVoucher(
   args: BaseExchangeHandlerArgs & {
     exchangeId: BigNumberish;
+    returnTxInfo: true;
   }
-): Promise<TransactionResponse> {
+): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function expireVoucher(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+    returnTxInfo?: false | undefined;
+  }
+): Promise<TransactionResponse>;
+
+// Implementation
+export async function expireVoucher(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+    returnTxInfo?: boolean;
+  }
+): Promise<TransactionRequest | TransactionResponse> {
   const exchange = await getExchangeById(args.subgraphUrl, args.exchangeId);
 
   assertExchange(args.exchangeId, exchange);
@@ -219,17 +399,41 @@ export async function expireVoucher(
     throw new Error(`Voucher is still valid`);
   }
 
-  return args.web3Lib.sendTransaction({
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeExpireVoucher(args.exchangeId)
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function redeemVoucher(
   args: BaseExchangeHandlerArgs & {
     exchangeId: BigNumberish;
+    returnTxInfo: true;
   }
-): Promise<TransactionResponse> {
+): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function redeemVoucher(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+    returnTxInfo?: false | undefined;
+  }
+): Promise<TransactionResponse>;
+
+// Implementation
+export async function redeemVoucher(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+    returnTxInfo?: boolean;
+  }
+): Promise<TransactionRequest | TransactionResponse> {
   const [exchange, signerAddress] = await Promise.all([
     getExchangeById(args.subgraphUrl, args.exchangeId),
     args.web3Lib.getSignerAddress()
@@ -247,10 +451,16 @@ export async function redeemVoucher(
     throw new Error(`Voucher can not be redeemed anymore`);
   }
 
-  return args.web3Lib.sendTransaction({
+  const transactionRequest = {
     to: args.contractAddress,
     data: encodeRedeemVoucher(args.exchangeId)
-  });
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
 }
 
 function assertExchange(

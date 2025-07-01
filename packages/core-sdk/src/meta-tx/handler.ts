@@ -379,7 +379,8 @@ export async function relayBiconomyMetaTransaction(args: {
         transactionHash: txHash,
         logs: txReceipt?.logs || [],
         effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice),
-        blockNumber: txReceipt.blockNumber
+        blockNumber: txReceipt.blockNumber,
+        gasUsed: txReceipt.gasUsed
       };
     },
     hash: relayTxResponse.txHash
@@ -1281,7 +1282,8 @@ export async function relayMetaTransaction(args: {
         transactionHash: txHash,
         logs: txReceipt?.logs || [],
         effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice),
-        blockNumber: txReceipt?.blockNumber
+        blockNumber: txReceipt?.blockNumber,
+        gasUsed: txReceipt.gasUsed
       };
     },
     hash: relayTxResponse.txHash

@@ -1,11 +1,17 @@
-import { ConditionStruct, TransactionResponse } from "@bosonprotocol/common";
+import {
+  ConditionStruct,
+  TransactionResponse,
+  Web3LibAdapter
+} from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { handler } from ".";
 import { offers, accounts } from "..";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import { PremintParametersStruct } from "@bosonprotocol/common/src";
 
-export class OrchestrationMixin extends BaseCoreSDK {
+export class OrchestrationMixin<
+  T extends Web3LibAdapter
+> extends BaseCoreSDK<T> {
   /**
    * Creates an offer with a specific conditions
    * @param offerToCreate - Offer arguments.

@@ -59,14 +59,33 @@ export type Token = {
   decimals: string;
 };
 
-export type ProtocolConfig = {
-  envName: EnvironmentType;
-  configId: ConfigId;
+// Helper type to extract chainId from configId string
+type ExtractChainId<T extends string> =
+  T extends `${string}-${infer ChainId}-${string}`
+    ? ChainId extends `${number}`
+      ? ChainId
+      : never
+    : never;
+
+// Helper type to convert string to number
+type StringToNumber<T extends string> = T extends `${infer N extends number}`
+  ? N
+  : never;
+
+// Helper type to create valid combinations dynamically from ConfigId
+type ValidConfigChainCombination<T extends EnvironmentType> = {
+  [K in Extract<ConfigId, `${T}-${string}`>]: {
+    configId: K;
+    chainId: StringToNumber<ExtractChainId<K>>;
+  };
+}[Extract<ConfigId, `${T}-${string}`>];
+
+export type ProtocolConfig<T extends EnvironmentType = EnvironmentType> = {
+  envName: T;
   defaultTokens: Token[] | undefined;
   defaultDisputeResolverId: string;
   sellersBlackList: string;
   offersWhiteList: string;
-  chainId: ChainId;
   nativeCoin:
     | undefined
     | {
@@ -84,7 +103,7 @@ export type ProtocolConfig = {
   contracts: ContractAddresses;
   metaTx?: Partial<MetaTxConfig>;
   lens: Lens | undefined;
-};
+} & ValidConfigChainCombination<T>;
 
 export type CoreProtocolConfig = Pick<
   ProtocolConfig,

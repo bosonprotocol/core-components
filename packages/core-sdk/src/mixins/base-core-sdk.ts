@@ -9,8 +9,8 @@ import {
 import { TokenInfoManager } from "../utils/tokenInfoManager";
 import { Biconomy } from "../meta-tx/biconomy";
 
-export class BaseCoreSDK {
-  protected _web3Lib: Web3LibAdapter;
+export class BaseCoreSDK<T extends Web3LibAdapter = Web3LibAdapter> {
+  protected _web3Lib: T;
   protected _metadataStorage?: MetadataStorage;
   protected _theGraphStorage?: MetadataStorage;
 
@@ -35,7 +35,7 @@ export class BaseCoreSDK {
    * @param args - Constructor args
    */
   constructor(opts: {
-    web3Lib: Web3LibAdapter;
+    web3Lib: T;
     subgraphUrl: string;
     protocolDiamond: string;
     metadataStorage?: MetadataStorage;
@@ -118,8 +118,8 @@ export class BaseCoreSDK {
 
 // Doc: https://www.typescriptlang.org/docs/handbook/mixins.html#alternative-pattern
 export function applyMixins(
-  derivedCtor: typeof BaseCoreSDK,
-  constructors: (typeof BaseCoreSDK)[]
+  derivedCtor: typeof BaseCoreSDK<Web3LibAdapter>,
+  constructors: (typeof BaseCoreSDK<Web3LibAdapter>)[]
 ) {
   constructors.forEach((baseCtor) => {
     Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {

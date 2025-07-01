@@ -627,9 +627,8 @@ describe("Multi-variant offers tests", () => {
           sellerId_in: [seller.id]
         }
       };
-      const productsBefore = await coreSDK.getAllProductsWithVariants(
-        productsFilter
-      );
+      const productsBefore =
+        await coreSDK.getAllProductsWithVariants(productsFilter);
       expect(productsBefore).toBeTruthy();
       nbProductsBefore = productsBefore.length;
 
@@ -640,9 +639,8 @@ describe("Multi-variant offers tests", () => {
 
     test("#getAllProductsWithVariants()", async () => {
       // Get the products with all variants
-      const allProductsWithVariants = await coreSDK.getAllProductsWithVariants(
-        productsFilter
-      );
+      const allProductsWithVariants =
+        await coreSDK.getAllProductsWithVariants(productsFilter);
       // Check the number of products of this seller has been increased by 2
       expect(allProductsWithVariants.length).toEqual(nbProductsBefore + 2);
 

@@ -1,7 +1,8 @@
+import { Web3LibAdapter } from "@bosonprotocol/common";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import { balanceOf, name, symbol, uri } from "./handler";
 
-export class ERC1155Mixin extends BaseCoreSDK {
+export class ERC1155Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
   /*                           ERC1155 related methods                          */
   /* -------------------------------------------------------------------------- */

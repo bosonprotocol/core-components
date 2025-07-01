@@ -5,7 +5,6 @@ import {
   createRandomWallet,
   initCoreSDKWithWallet
 } from "./utils";
-import { Wallet } from "ethers";
 
 const erc721InterfaceId = "0x80ac58cd";
 const erc1155InterfaceId = "0xd9b67a26";
