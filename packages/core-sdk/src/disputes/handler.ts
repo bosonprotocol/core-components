@@ -18,7 +18,11 @@ import {
   encodeResolveDispute,
   encodeRetractDispute
 } from "./interface";
-import { prepareDataSignatureParameters } from "../utils/signature";
+import {
+  getSignatureParameters,
+  prepareDataSignatureParameters,
+  StructuredData
+} from "../utils/signature";
 
 // Overload: returnTxInfo is true → returns TransactionRequest
 export async function raiseDispute(args: {
@@ -364,7 +368,24 @@ export async function signResolutionProposal(args: {
   contractAddress: string;
   web3Lib: Web3LibAdapter;
   chainId: number;
-}) {
+  returnTypedDataToSign: true;
+}): Promise<StructuredData>;
+export async function signResolutionProposal(args: {
+  exchangeId: BigNumberish;
+  buyerPercentBasisPoints: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  chainId: number;
+  returnTypedDataToSign?: false;
+}): Promise<ReturnType<typeof getSignatureParameters>>;
+export async function signResolutionProposal(args: {
+  exchangeId: BigNumberish;
+  buyerPercentBasisPoints: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  chainId: number;
+  returnTypedDataToSign?: boolean;
+}): Promise<StructuredData | ReturnType<typeof getSignatureParameters>> {
   const customSignatureType = {
     Resolution: [
       { name: "exchangeId", type: "uint256" },
@@ -377,12 +398,24 @@ export async function signResolutionProposal(args: {
     buyerPercentBasisPoints: args.buyerPercentBasisPoints.toString()
   };
 
-  return prepareDataSignatureParameters({
+  const signatureArgs = {
     message,
     customSignatureType,
     web3Lib: args.web3Lib,
     verifyingContractAddress: args.contractAddress,
     chainId: args.chainId,
     primaryType: "Resolution"
-  });
+  } as const;
+
+  if (args.returnTypedDataToSign) {
+    return prepareDataSignatureParameters({
+      ...signatureArgs,
+      returnTypedDataToSign: true
+    });
+  } else {
+    return prepareDataSignatureParameters({
+      ...signatureArgs,
+      returnTypedDataToSign: false
+    });
+  }
 }
