@@ -86,7 +86,8 @@ export async function signNativeMetaTx(
     customSignatureType,
     customDomainData: args.domain,
     primaryType: "MetaTransaction",
-    message
+    message,
+    returnTypedDataToSign: false
   });
 
   return {

@@ -2,7 +2,7 @@ import { Web3LibAdapter } from "@bosonprotocol/common";
 import { isHexString, hexZeroPad } from "@ethersproject/bytes";
 import { BigNumber } from "@ethersproject/bignumber";
 
-type SignatureArgs = {
+type SignatureArgs<T extends boolean> = {
   web3Lib: Web3LibAdapter;
   verifyingContractAddress: string;
   chainId: number;
@@ -10,9 +10,35 @@ type SignatureArgs = {
   customDomainData?: Record<string, unknown>;
   primaryType: string;
   message: Record<string, unknown>;
+  returnTypedDataToSign: T;
 };
 
-export async function prepareDataSignatureParameters(args: SignatureArgs) {
+export type StructuredData = {
+  types: {
+    EIP712Domain: {
+      name: string;
+      type: string;
+    }[];
+  };
+  domain: {
+    name: string;
+    version: string;
+    verifyingContract: string;
+    salt: string;
+  };
+  primaryType: string;
+  message: Record<string, unknown>;
+};
+
+export async function prepareDataSignatureParameters(
+  args: SignatureArgs<true>
+): Promise<StructuredData>;
+export async function prepareDataSignatureParameters(
+  args: SignatureArgs<false>
+): Promise<ReturnType<typeof getSignatureParameters>>;
+export async function prepareDataSignatureParameters(
+  args: SignatureArgs<boolean>
+): Promise<StructuredData | ReturnType<typeof getSignatureParameters>> {
   const domainType = [
     { name: "name", type: "string" },
     { name: "version", type: "string" },
@@ -36,15 +62,25 @@ export async function prepareDataSignatureParameters(args: SignatureArgs) {
   const signatureTypes = {
     EIP712Domain: domainType,
     ...args.customSignatureType
+  } satisfies {
+    EIP712Domain: {
+      name: string;
+      type: string;
+    }[];
   };
 
-  const dataToSign = JSON.stringify({
+  const structuredDataToSign = {
     types: signatureTypes,
     domain: domainData,
     primaryType: args.primaryType,
     message: args.message
-  });
+  } satisfies StructuredData;
 
+  if (args.returnTypedDataToSign) {
+    return structuredDataToSign; // Return the raw EIP-712 data
+  }
+
+  const dataToSign = JSON.stringify(structuredDataToSign);
   const signerAddress = await args.web3Lib.getSignerAddress();
   const signature = await args.web3Lib.send("eth_signTypedData_v4", [
     signerAddress,
@@ -54,7 +90,12 @@ export async function prepareDataSignatureParameters(args: SignatureArgs) {
   return getSignatureParameters(signature);
 }
 
-export function getSignatureParameters(signature: string) {
+export function getSignatureParameters(signature: string): {
+  r: string;
+  s: string;
+  v: number;
+  signature: string;
+} {
   if (!isHexString(signature)) {
     throw new Error(`Value "${signature}" is not a valid hex string`);
   }
