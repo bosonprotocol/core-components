@@ -1,4 +1,5 @@
 import { IpfsMetadataStorage } from "../src/";
+import { BaseIpfsStorage } from "../src/ipfs/base";
 import { IPFS_HASH } from "@bosonprotocol/common/tests/mocks";
 import { MetadataType, validateMetadata } from "@bosonprotocol/metadata";
 
@@ -137,5 +138,210 @@ describe("#getMetadata()", () => {
     await expect(
       ipfsStorage.getMetadata("http://ipfs.api.com/METADATA")
     ).rejects.toThrow();
+  });
+});
+
+describe("#get() - BaseIpfsStorage", () => {
+  let ipfsStorage: BaseIpfsStorage;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    ipfsStorage = new BaseIpfsStorage({ url: IPFS_URL });
+  });
+
+  describe("IPFS URIs", () => {
+    it("should handle valid ipfs:// URI with just CID", async () => {
+      const mockGetByCID = jest
+        .spyOn(ipfsStorage, "getByCID")
+        .mockResolvedValue("data");
+
+      await ipfsStorage.get(
+        "ipfs://QmYpVHKAYEx8xopJELvyLuvvW99a2heH9GHA8SAuxkoTrz"
+      );
+
+      expect(mockGetByCID).toHaveBeenCalledWith(
+        "QmYpVHKAYEx8xopJELvyLuvvW99a2heH9GHA8SAuxkoTrz",
+        true,
+        false
+      );
+    });
+
+    it("should handle valid ipfs:// URI with CID and path", async () => {
+      const mockGetByCID = jest
+        .spyOn(ipfsStorage, "getByCID")
+        .mockResolvedValue("data");
+
+      await ipfsStorage.get(
+        "ipfs://QmYpVHKAYEx8xopJELvyLuvvW99a2heH9GHA8SAuxkoTrz/path/to/file"
+      );
+
+      expect(mockGetByCID).toHaveBeenCalledWith(
+        "QmYpVHKAYEx8xopJELvyLuvvW99a2heH9GHA8SAuxkoTrz",
+        true,
+        false
+      );
+    });
+
+    it("should throw error for ipfs:// URI with invalid CID", async () => {
+      await expect(ipfsStorage.get("ipfs://invalidcid")).rejects.toThrow(
+        "Invalid IPFS URI: ipfs://invalidcid. CID parsing failed:"
+      );
+    });
+  });
+
+  describe("Raw CIDs", () => {
+    it("should handle valid raw CID", async () => {
+      const mockGetByCID = jest
+        .spyOn(ipfsStorage, "getByCID")
+        .mockResolvedValue("data");
+
+      await ipfsStorage.get("QmYpVHKAYEx8xopJELvyLuvvW99a2heH9GHA8SAuxkoTrz");
+
+      expect(mockGetByCID).toHaveBeenCalledWith(
+        "QmYpVHKAYEx8xopJELvyLuvvW99a2heH9GHA8SAuxkoTrz",
+        true,
+        false
+      );
+    });
+
+    it("should handle valid raw CID with path", async () => {
+      const mockGetByCID = jest
+        .spyOn(ipfsStorage, "getByCID")
+        .mockResolvedValue("data");
+
+      await ipfsStorage.get(
+        "QmYpVHKAYEx8xopJELvyLuvvW99a2heH9GHA8SAuxkoTrz/path/to/file"
+      );
+
+      expect(mockGetByCID).toHaveBeenCalledWith(
+        "QmYpVHKAYEx8xopJELvyLuvvW99a2heH9GHA8SAuxkoTrz",
+        true,
+        false
+      );
+    });
+
+    it("should throw error for invalid hash without protocol", async () => {
+      await expect(ipfsStorage.get("invalidhash123")).rejects.toThrow(
+        "Invalid input: invalidhash123 is neither a valid CID nor a valid URL"
+      );
+    });
+  });
+
+  describe("URLs with protocols", () => {
+    it("should handle http:// URLs", async () => {
+      const mockGetByURL = jest
+        .spyOn(ipfsStorage, "getByURL")
+        .mockResolvedValue("data");
+
+      await ipfsStorage.get("http://example.com");
+
+      expect(mockGetByURL).toHaveBeenCalledWith(
+        "http://example.com",
+        true,
+        false
+      );
+    });
+
+    it("should handle https:// URLs with path", async () => {
+      const mockGetByURL = jest
+        .spyOn(ipfsStorage, "getByURL")
+        .mockResolvedValue("data");
+
+      await ipfsStorage.get("https://example.com/path");
+
+      expect(mockGetByURL).toHaveBeenCalledWith(
+        "https://example.com/path",
+        true,
+        false
+      );
+    });
+
+    it("should pass ftp:// URLs to getByURL (let fetch handle the error)", async () => {
+      const mockGetByURL = jest
+        .spyOn(ipfsStorage, "getByURL")
+        .mockRejectedValue(new Error("fetch failed"));
+
+      await expect(
+        ipfsStorage.get("ftp://example.com/file.txt")
+      ).rejects.toThrow("fetch failed");
+
+      expect(mockGetByURL).toHaveBeenCalledWith(
+        "ftp://example.com/file.txt",
+        true,
+        false
+      );
+    });
+
+    it("should pass file:// URLs to getByURL (let fetch handle the error)", async () => {
+      const mockGetByURL = jest
+        .spyOn(ipfsStorage, "getByURL")
+        .mockRejectedValue(new Error("fetch failed"));
+
+      await expect(ipfsStorage.get("file:///path/to/file")).rejects.toThrow(
+        "fetch failed"
+      );
+
+      expect(mockGetByURL).toHaveBeenCalledWith(
+        "file:///path/to/file",
+        true,
+        false
+      );
+    });
+
+    it("should handle data: URLs (treated as invalid input)", async () => {
+      // data: URLs don't match the :// protocol pattern, so they're treated as invalid CIDs
+      await expect(
+        ipfsStorage.get("data:text/plain;base64,SGVsbG8=")
+      ).rejects.toThrow(
+        "Invalid input: data:text/plain;base64,SGVsbG8= is neither a valid CID nor a valid URL"
+      );
+    });
+  });
+
+  describe("Invalid inputs", () => {
+    it("should throw error for empty string", async () => {
+      await expect(ipfsStorage.get("")).rejects.toThrow(
+        "Invalid input: uriOrHash must be a non-empty string"
+      );
+    });
+
+    it("should throw error for non-string input", async () => {
+      await expect(ipfsStorage.get(null as unknown as string)).rejects.toThrow(
+        "Invalid input: uriOrHash must be a non-empty string"
+      );
+    });
+
+    it("should throw error for undefined input", async () => {
+      await expect(
+        ipfsStorage.get(undefined as unknown as string)
+      ).rejects.toThrow("Invalid input: uriOrHash must be a non-empty string");
+    });
+
+    it("should throw error for number input", async () => {
+      await expect(ipfsStorage.get(123 as unknown as string)).rejects.toThrow(
+        "Invalid input: uriOrHash must be a non-empty string"
+      );
+    });
+  });
+
+  describe("Edge cases", () => {
+    it("should handle protocol-like strings that aren't URLs", async () => {
+      // This looks like it has a protocol but it's actually invalid
+      await expect(ipfsStorage.get("http:invalid")).rejects.toThrow(
+        "Invalid input: http:invalid is neither a valid CID nor a valid URL"
+      );
+    });
+
+    it("should handle ipfs:// with empty CID", async () => {
+      await expect(ipfsStorage.get("ipfs://")).rejects.toThrow(
+        "Invalid IPFS URI: ipfs://. CID parsing failed:"
+      );
+    });
+
+    it("should handle ipfs:// with just a slash", async () => {
+      await expect(ipfsStorage.get("ipfs:///")).rejects.toThrow(
+        "Invalid IPFS URI: ipfs:///. CID parsing failed:"
+      );
+    });
   });
 });
