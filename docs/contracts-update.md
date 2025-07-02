@@ -57,28 +57,6 @@ https://github.com/bosonprotocol/boson-protocol-contracts/compare/<PREVIOUS_COMM
 For our e2e setup contracts deployment, we use a [customized deploy script](../contracts/scripts/deploy.js) that slightly differs from the one of the [`protocol-contracts`](../contracts/protocol-contracts/scripts/deploy-suite.js) folder.
 This script might need to be adapted based on the changes of the folder script.
 
-Additionally, we need to change the image tag in our e2e docker-compose file.
-
-```diff
-  hardhat-node:
-    build: ../contracts
--    image: hardhat-node:<OLD_COMMIT_HASH>
-+    image: hardhat-node:<NEW_COMMIT_HASH>
-    ports:
-      - "8545:8545"
-```
-
-And also the image tag to the current date time:
-
-```diff
-  meta-tx-gateway:
-    build:
-      context: ../.
-      dockerfile: ./e2e/meta-tx-gateway/Dockerfile
-+    image: meta-tx-gateway:20230124153900
--    image: meta-tx-gateway:20220224153900
-```
-
 ### 4. Export ABIs
 
 Based on the new set of contracts, we can now export ABIs to the `@bosonprotocol/common` package:

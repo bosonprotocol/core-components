@@ -5,7 +5,6 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "e2e/meta-tx-gateway",
     "e2e/opensea-api-mock"
   ],
   "scripts": {
