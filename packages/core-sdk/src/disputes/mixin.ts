@@ -25,6 +25,7 @@ import {
   getDisputeById,
   getDisputes
 } from "./subgraph";
+import { getSignatureParameters, StructuredData } from "../utils/signature";
 
 export class DisputesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
@@ -460,12 +461,35 @@ export class DisputesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   public async signDisputeResolutionProposal(args: {
     exchangeId: BigNumberish;
     buyerPercentBasisPoints: BigNumberish;
-  }) {
-    return signResolutionProposal({
-      ...args,
+    returnTypedDataToSign: true;
+  }): Promise<StructuredData>;
+  public async signDisputeResolutionProposal(args: {
+    exchangeId: BigNumberish;
+    buyerPercentBasisPoints: BigNumberish;
+    returnTypedDataToSign?: false;
+  }): Promise<ReturnType<typeof getSignatureParameters>>;
+  public async signDisputeResolutionProposal(args: {
+    exchangeId: BigNumberish;
+    buyerPercentBasisPoints: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }): Promise<StructuredData | ReturnType<typeof getSignatureParameters>> {
+    const { returnTypedDataToSign, ...argsWithoutReturnTypedDataToSign } = args;
+    const params = {
+      ...argsWithoutReturnTypedDataToSign,
       web3Lib: this._web3Lib,
       contractAddress: this._protocolDiamond,
       chainId: this._chainId
-    });
+    };
+    if (returnTypedDataToSign === true) {
+      return signResolutionProposal({
+        ...params,
+        returnTypedDataToSign: true
+      });
+    } else {
+      return signResolutionProposal({
+        ...params,
+        returnTypedDataToSign: false
+      });
+    }
   }
 }

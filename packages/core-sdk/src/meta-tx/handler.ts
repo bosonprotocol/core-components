@@ -118,7 +118,8 @@ export async function signMetaTx(
     verifyingContractAddress: args.metaTxHandlerAddress,
     customSignatureType,
     primaryType: "MetaTransaction",
-    message
+    message,
+    returnTypedDataToSign: false
   });
 
   return {
@@ -179,7 +180,8 @@ export async function signVoucherMetaTx(
       version: "0.0.1",
       chainId,
       salt: undefined
-    }
+    },
+    returnTypedDataToSign: false
   });
 
   return {
@@ -286,7 +288,8 @@ export async function signBiconomyVoucherMetaTx(
       ...biconomyForwarderDomainData
       // chainId
       // salt: undefined
-    }
+    },
+    returnTypedDataToSign: false
   });
   const signature = signatureParams.signature;
   const getDomainSeparator = async () => {
@@ -861,7 +864,8 @@ export async function signMetaTxCommitToOffer(
     verifyingContractAddress: args.metaTxHandlerAddress,
     customSignatureType,
     primaryType: "MetaTxCommitToOffer",
-    message
+    message,
+    returnTypedDataToSign: false
   });
 
   return {
@@ -920,7 +924,8 @@ export async function signMetaTxCommitToConditionalOffer(
     verifyingContractAddress: args.metaTxHandlerAddress,
     customSignatureType,
     primaryType: "MetaTxCommitToConditionalOffer",
-    message
+    message,
+    returnTypedDataToSign: false
   });
 
   return {
@@ -1043,7 +1048,8 @@ export async function signMetaTxResolveDispute(
     verifyingContractAddress: args.metaTxHandlerAddress,
     customSignatureType,
     primaryType: "MetaTxDisputeResolution",
-    message
+    message,
+    returnTypedDataToSign: false
   });
 
   return {
@@ -1124,7 +1130,8 @@ export async function signMetaTxWithdrawFunds(
     verifyingContractAddress: args.metaTxHandlerAddress,
     customSignatureType,
     primaryType: "MetaTxFund",
-    message
+    message,
+    returnTypedDataToSign: false
   });
 
   return {
@@ -1213,7 +1220,8 @@ function makeExchangeMetaTxSigner(
       verifyingContractAddress: args.metaTxHandlerAddress,
       customSignatureType,
       primaryType: "MetaTxExchange",
-      message
+      message,
+      returnTypedDataToSign: false
     });
 
     return {

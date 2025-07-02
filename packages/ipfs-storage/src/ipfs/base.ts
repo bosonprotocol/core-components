@@ -26,15 +26,41 @@ export class BaseIpfsStorage {
     asJson = true,
     asBlob = false
   ): Promise<T | string | Blob | Uint8Array> {
+    if (!uriOrHash || typeof uriOrHash !== "string") {
+      throw new Error("Invalid input: uriOrHash must be a non-empty string");
+    }
+
     let cid: CID = null;
+    const isIpfsUri = uriOrHash.startsWith("ipfs://");
+    const hasProtocol = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(uriOrHash);
+
+    // Extract CID from ipfs:// URI or raw CID with path
+    let cidString: string;
+    if (isIpfsUri) {
+      cidString = uriOrHash.split("ipfs://")[1].split("/")[0]; // Get just the CID part before any path
+    } else if (!hasProtocol) {
+      // For inputs without protocol, try to extract CID from potential path like "QmHash/path/to/file"
+      cidString = uriOrHash.split("/")[0];
+    } else {
+      cidString = uriOrHash; // URLs with protocols are parsed as-is (will fail CID parsing as expected)
+    }
+
     try {
-      cid = CID.parse(
-        uriOrHash.startsWith("ipfs://")
-          ? uriOrHash.split("ipfs://")[1]
-          : uriOrHash
-      );
+      cid = CID.parse(cidString);
     } catch (error) {
-      // if parsing fails, we assume it is a url
+      if (isIpfsUri) {
+        // If it's an ipfs:// URI but CID parsing fails, throw error
+        throw new Error(
+          `Invalid IPFS URI: ${uriOrHash}. CID parsing failed: ${error.message}`
+        );
+      } else if (!hasProtocol) {
+        // If it has no protocol and is not a valid CID, throw error
+        // This prevents invalid hashes from being treated as URLs
+        throw new Error(
+          `Invalid input: ${uriOrHash} is neither a valid CID nor a valid URL`
+        );
+      }
+      // If it's an HTTP URI and CID parsing fails, that's expected - fall through to getByURL
     }
 
     const value = await (cid
