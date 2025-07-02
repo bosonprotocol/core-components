@@ -12,17 +12,22 @@ WORKDIR /home
 COPY ./*.json ./
 RUN mkdir -p ./packages/common
 RUN mkdir -p ./packages/metadata
+RUN mkdir -p ./packages/metadata-storage
 RUN mkdir -p ./packages/subgraph
 COPY ./*.json ./
 COPY ./packages/common/*.json ./packages/common/
 COPY ./packages/metadata/*.json ./packages/metadata/
+COPY ./packages/metadata-storage/*.json ./packages/metadata-storage/
 COPY ./packages/subgraph/*.json ./packages/subgraph/
 
 RUN npm ci
 
 COPY ./packages/common ./packages/common
 COPY ./packages/metadata ./packages/metadata
+COPY ./packages/metadata-storage ./packages/metadata-storage
 COPY ./packages/subgraph ./packages/subgraph
+
+RUN npm run build
 
 WORKDIR /home/packages/subgraph
 RUN npm run manifest:local
