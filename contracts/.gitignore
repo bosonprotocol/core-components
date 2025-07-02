@@ -5,6 +5,7 @@ coverage.json
 typechain
 contracts
 protocol-contracts
+Dockerfile
 
 #Hardhat files
 cache
