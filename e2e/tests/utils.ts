@@ -241,6 +241,11 @@ export const graphMetadataStorage = new IpfsMetadataStorage(validateMetadata, {
   url: defaultConfig.theGraphIpfsUrl
 });
 
+export const META_TX_API_KEY = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+export const META_TX_API_ID_BOSON = "xxxxxxxx-xxxx-xxxx-xxxx-111111111111";
+export const META_TX_API_ID_ERC20s = "xxxxxxxx-xxxx-xxxx-xxxx-333333333333";
+export const META_TX_API_ID_VOUCHER = "xxxxxxxx-xxxx-xxxx-xxxx-444444444444";
+
 export async function initSellerAndBuyerSDKs(seedWallet: Wallet) {
   const { coreSDK: sellerCoreSDK, fundedWallet: sellerWallet } =
     await initCoreSDKWithFundedWallet(seedWallet);
@@ -269,10 +274,10 @@ export function initCoreSDKWithWallet(wallet: Wallet | undefined) {
   const testErc20Address = defaultConfig.contracts.testErc20 as string;
   const apiIds = {
     [protocolAddress.toLowerCase()]: {
-      executeMetaTransaction: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      executeMetaTransaction: META_TX_API_ID_BOSON
     },
     [testErc20Address.toLowerCase()]: {
-      executeMetaTransaction: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      executeMetaTransaction: META_TX_API_ID_ERC20s
     }
   };
   return CoreSDK.fromDefaultConfig({
@@ -282,7 +287,7 @@ export function initCoreSDKWithWallet(wallet: Wallet | undefined) {
     metadataStorage: ipfsMetadataStorage,
     theGraphStorage: graphMetadataStorage,
     metaTx: {
-      apiKey: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      apiKey: META_TX_API_KEY,
       apiIds
     }
   });

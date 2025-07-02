@@ -330,7 +330,9 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       | "batchId"
       | "forwarderAbi"
       | "relayerUrl"
-    >,
+    > & {
+      bosonVoucherAddress?: string;
+    },
     overrides: Partial<{
       batchId?: BigNumberish;
       txGas?: number;
@@ -347,7 +349,7 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
     return handler.signMetaTxSetApprovalForAllToContract(
       {
         web3Lib: this._web3Lib,
-        bosonVoucherAddress: seller.voucherCloneAddress,
+        bosonVoucherAddress: args.bosonVoucherAddress || seller.voucherCloneAddress,
         chainId: this._chainId,
         forwarderAddress,
         batchId,
