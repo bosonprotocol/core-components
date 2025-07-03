@@ -9,8 +9,11 @@ function cleanup() {
   exit
 }
 
+echo "Install protocol and dependencies..."
+cd contracts
+npm ci
+cd ..
 cd e2e
-
 docker compose pull # force pulling the latest update
 docker compose up -d #--build
 

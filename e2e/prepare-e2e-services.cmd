@@ -1,4 +1,8 @@
 @echo off
+echo [92m*** Install protocol and dependencies... ***[0m
+cd contracts
+call npm ci
+cd ..
 cd e2e
 
 docker-compose pull
