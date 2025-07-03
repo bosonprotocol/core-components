@@ -4,7 +4,7 @@ import { useCoreSDKWithContext } from "../../../hooks/core-sdk/useCoreSdkWithCon
 import { useEnvContext } from "../../environment/EnvironmentContext";
 
 import { Context } from "./ChatContext";
-import { getChatEnvName } from "./const";
+import { AuthorityIdEnvName, getChatEnvName } from "./const";
 import { useSigner } from "../../../hooks/connection/connection";
 
 interface Props {
@@ -16,7 +16,7 @@ export default function ChatProvider({ children }: Props) {
   const [initialize, setInitialized] = useState<number>(0);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [bosonXmtp, setBosonXmtp] = useState<BosonXmtpClient>();
-  const [chatEnvName, setChatEnvName] = useState<string>("undefined");
+  const [chatEnvName, setChatEnvName] = useState<AuthorityIdEnvName>("undefined" as AuthorityIdEnvName);
   const coreSDK = useCoreSDKWithContext();
   const { envName } = useEnvContext();
   useEffect(() => {

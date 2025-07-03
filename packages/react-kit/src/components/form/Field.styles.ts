@@ -96,35 +96,35 @@ export const FieldInput = styled.input<{
     !checkIfValueIsEmpty($error) &&
     css`
       border: 1px solid
-        ${(props) => props.theme?.error?.borderColor || colors.orange};
+        ${(props) => (props.theme as InputTheme)?.error?.borderColor || colors.orange};
       &:not(:disabled) {
         &:hover {
           border: 1px solid
             ${(props) =>
-              props.theme?.error?.hover?.borderColor || colors.orange};
+              (props.theme as InputTheme)?.error?.hover?.borderColor || colors.orange};
         }
       }
       &:not(:disabled) {
         &:focus {
           border: 1px solid
             ${(props) =>
-              props.theme?.error?.focus?.borderColor || colors.greyLight};
+              (props.theme as InputTheme)?.error?.focus?.borderColor || colors.greyLight};
           caret-color: ${(props) =>
-            props.theme?.error?.focus?.caretColor || colors.orange};
+            (props.theme as InputTheme)?.error?.focus?.caretColor || colors.orange};
         }
       }
       &::placeholder {
         color: ${(props) =>
-          props.theme?.error?.placeholder?.color || colors.orange};
+          (props.theme as InputTheme)?.error?.placeholder?.color || colors.orange};
         opacity: 1;
       }
       &:-ms-input-placeholder {
         color: ${(props) =>
-          props.theme?.error?.placeholder?.color || colors.orange};
+          (props.theme as InputTheme)?.error?.placeholder?.color || colors.orange};
       }
       &::-ms-input-placeholder {
         color: ${(props) =>
-          props.theme?.error?.placeholder?.color || colors.orange};
+          (props.theme as InputTheme)?.error?.placeholder?.color || colors.orange};
       }
     `};
 `;
@@ -210,7 +210,7 @@ export const FileUploadWrapper = styled.div<{
   &:focus,
   &:hover {
     border: 1px solid
-      ${({ theme }) => theme?.hover?.borderColor || colors.greyLight};
+      ${({ theme }) => (theme as InputTheme)?.hover?.borderColor || colors.greyLight};
   }
 
   /* prettier-ignore */
@@ -320,9 +320,9 @@ export const FieldTextArea = styled.textarea<{ $error: any }>`
   padding: 1rem;
   gap: 0.5rem;
   font-family: inherit;
-  background: ${(props) => props.theme?.background || "transparent"};
-  border: 1px solid ${(props) => props.theme?.borderColor || colors.border};
-  border-radius: ${(props) => props.theme?.borderRadius || 0}px;
+  background: ${(props) => (props.theme as InputTheme)?.background || "transparent"};
+  border: 1px solid ${(props) => (props.theme as InputTheme)?.borderColor || colors.border};
+  border-radius: ${(props) => (props.theme as InputTheme)?.borderRadius || 0}px;
   outline: none;
 
   ${transition}
@@ -331,8 +331,8 @@ export const FieldTextArea = styled.textarea<{ $error: any }>`
     &:focus,
     &:hover {
       border: 1px solid
-        ${(props) => props.theme?.hover?.borderColor || colors.greyLight};
-      caret-color: ${(props) => props.theme?.focus?.caretColor || "initial"};
+        ${(props) => (props.theme as InputTheme)?.hover?.borderColor || colors.greyLight};
+      caret-color: ${(props) => (props.theme as InputTheme)?.focus?.caretColor || "initial"};
     }
   }
 
@@ -345,35 +345,35 @@ export const FieldTextArea = styled.textarea<{ $error: any }>`
     !checkIfValueIsEmpty($error) &&
     css`
       border: 1px solid
-        ${(props) => props.theme?.error?.borderColor || colors.orange};
+        ${(props) => (props.theme as InputTheme)?.error?.borderColor || colors.orange};
       &:not(:disabled) {
         &:hover {
           border: 1px solid
             ${(props) =>
-              props.theme?.error?.hover?.borderColor || colors.orange};
+              (props.theme as InputTheme)?.error?.hover?.borderColor || colors.orange};
         }
       }
       &:not(:disabled) {
         &:focus {
           border: 1px solid
             ${(props) =>
-              props.theme?.error?.focus?.borderColor || colors.greyLight};
+              (props.theme as InputTheme)?.error?.focus?.borderColor || colors.greyLight};
           caret-color: ${(props) =>
-            props.theme?.error?.focus?.caretColor || colors.orange};
+            (props.theme as InputTheme)?.error?.focus?.caretColor || colors.orange};
         }
       }
       &::placeholder {
         color: ${(props) =>
-          props.theme?.error?.placeholder?.color || colors.orange};
+          (props.theme as InputTheme)?.error?.placeholder?.color || colors.orange};
         opacity: 1;
       }
       &:-ms-input-placeholder {
         color: ${(props) =>
-          props.theme?.error?.placeholder?.color || colors.orange};
+          (props.theme as InputTheme)?.error?.placeholder?.color || colors.orange};
       }
       &::-ms-input-placeholder {
         color: ${(props) =>
-          props.theme?.error?.placeholder?.color || colors.orange};
+          (props.theme as InputTheme)?.error?.placeholder?.color || colors.orange};
       }
     `}
 `;

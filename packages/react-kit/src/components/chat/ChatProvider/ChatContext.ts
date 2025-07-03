@@ -1,15 +1,16 @@
 import { BosonXmtpClient } from "@bosonprotocol/chat-sdk";
 import { createContext, Dispatch, SetStateAction, useContext } from "react";
+import { AuthorityIdEnvName } from "./const";
 
 export const Context = createContext<{
   bosonXmtp: BosonXmtpClient | undefined;
   initialize: Dispatch<SetStateAction<void>>;
-  chatEnvName: string;
+  chatEnvName: AuthorityIdEnvName;
   isInitializing: boolean;
 }>({
   bosonXmtp: undefined,
   initialize: () => console.log("initialize has not been defined"),
-  chatEnvName: "",
+  chatEnvName: "" as AuthorityIdEnvName,
   isInitializing: false
 });
 

@@ -12,7 +12,7 @@ export const cssVars = css`
     Object.keys(theme)
       .filter((key) => key.startsWith("--"))
       .map((key) => {
-        const value = theme[key];
+        const value = (theme as any)[key];
         if (!value) {
           return null;
         }
