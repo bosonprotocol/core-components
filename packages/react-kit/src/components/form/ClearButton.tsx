@@ -33,7 +33,9 @@ export const ClearButton = styled(CrossIcon)`
   stroke: ${(props) => (props.theme as ClearButtonTheme)?.stroke || "#cccccc"};
   stroke-width: 0;
   &:hover * {
-    stroke: ${(props) => (props.theme as ClearButtonTheme)?.hover?.stroke || "#999999"};
-    fill: ${(props) => (props.theme as ClearButtonTheme)?.hover?.fill || "#999999"};
+    stroke: ${(props) =>
+      (props.theme as ClearButtonTheme)?.hover?.stroke || "#999999"};
+    fill: ${(props) =>
+      (props.theme as ClearButtonTheme)?.hover?.fill || "#999999"};
   }
 `;

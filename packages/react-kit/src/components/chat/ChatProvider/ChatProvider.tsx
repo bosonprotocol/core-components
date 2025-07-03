@@ -16,7 +16,9 @@ export default function ChatProvider({ children }: Props) {
   const [initialize, setInitialized] = useState<number>(0);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [bosonXmtp, setBosonXmtp] = useState<BosonXmtpClient>();
-  const [chatEnvName, setChatEnvName] = useState<AuthorityIdEnvName>("undefined" as AuthorityIdEnvName);
+  const [chatEnvName, setChatEnvName] = useState<AuthorityIdEnvName>(
+    "undefined" as AuthorityIdEnvName
+  );
   const coreSDK = useCoreSDKWithContext();
   const { envName } = useEnvContext();
   useEffect(() => {

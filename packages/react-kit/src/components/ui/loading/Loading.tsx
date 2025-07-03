@@ -41,6 +41,7 @@ const LoadingStyle = styled.span.attrs({ className: "loading" })<{
   min-width: ${({ $size }) => $size}rem;
   border: ${({ $borderWidthPx }) => $borderWidthPx}px solid
     ${({ theme, $color }) =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (theme as any)?.colors?.light?.accent || $color || "#000000"};
   border-bottom-color: transparent;
   border-radius: 50%;
