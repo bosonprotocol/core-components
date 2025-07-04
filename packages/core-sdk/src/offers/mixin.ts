@@ -73,6 +73,7 @@ export class OfferMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
+      subgraphUrl: this._subgraphUrl,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
       txRequest: overrides.txRequest
     } as const satisfies Parameters<typeof offers.handler.createOffer>[0];

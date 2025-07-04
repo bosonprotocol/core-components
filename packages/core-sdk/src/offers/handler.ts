@@ -20,12 +20,14 @@ import { storeMetadataOnTheGraph } from "./storage";
 import { CreateOfferArgs } from "./types";
 import { OfferFieldsFragment } from "../subgraph";
 import { storeMetadataItems } from "../metadata/storeMetadataItems";
+import { getDisputeResolverById } from "../accounts/subgraph";
 
 // Overload: returnTxInfo is true → returns TransactionRequest
 export async function createOffer(args: {
   offerToCreate: CreateOfferArgs;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
+  subgraphUrl: string;
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
   txRequest?: TransactionRequest;
@@ -37,6 +39,7 @@ export async function createOffer(args: {
   offerToCreate: CreateOfferArgs;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
+  subgraphUrl: string;
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
   txRequest?: TransactionRequest;
@@ -48,6 +51,7 @@ export async function createOffer(args: {
   offerToCreate: CreateOfferArgs;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
+  subgraphUrl: string;
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
   txRequest?: TransactionRequest;
@@ -56,6 +60,26 @@ export async function createOffer(args: {
   utils.validation.createOfferArgsSchema.validateSync(args.offerToCreate, {
     abortEarly: false
   });
+
+  const { disputeResolverId, exchangeToken } = args.offerToCreate;
+  const disputeResolver = await getDisputeResolverById(
+    args.subgraphUrl,
+    disputeResolverId
+  );
+  if (!disputeResolver) {
+    throw new Error(
+      `Dispute resolver with id "${disputeResolverId}" does not exist`
+    );
+  }
+  if (
+    !disputeResolver.fees.some(
+      (fee) => fee.token.address.toLowerCase() === exchangeToken.toLowerCase()
+    )
+  ) {
+    throw new Error(
+      `Dispute resolver with id "${disputeResolverId}" does not support exchange token "${exchangeToken}"`
+    );
+  }
 
   await storeMetadataOnTheGraph({
     metadataUriOrHash: args.offerToCreate.metadataUri,
