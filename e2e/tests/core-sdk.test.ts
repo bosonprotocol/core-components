@@ -11,7 +11,10 @@ import {
   ExchangeState,
   FundsEntityFieldsFragment
 } from "../../packages/core-sdk/src/subgraph";
-
+import {
+  MSEC_PER_DAY,
+  MSEC_PER_SEC
+} from "./../../packages/common/src/utils/timestamp";
 import {
   initCoreSDKWithFundedWallet,
   initSellerAndBuyerSDKs,
@@ -34,7 +37,8 @@ import {
   createSeller,
   createSellerAndOffer,
   commitToOffer,
-  wait
+  wait,
+  createDisputeResolver
 } from "./utils";
 import { EvaluationMethod, GatingType, TokenType } from "../../packages/common";
 
@@ -46,6 +50,38 @@ jest.setTimeout(60_000);
 
 describe("core-sdk", () => {
   describe("core user flows", () => {
+    test("create offer with disputeResolver that doesnt support exchangeToken should fail", async () => {
+      const escalationResponsePeriodInMS = 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
+      // TODO: use valid metadata uri
+      const metadataUri = "ipfs://dispute-resolver-uri";
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
+
+      const disputeResolverAddress = fundedWallet.address.toLowerCase();
+
+      const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
+        fundedWallet, // not used, it can be any wallet
+        {
+          assistant: disputeResolverAddress,
+          admin: disputeResolverAddress,
+          treasury: disputeResolverAddress,
+          metadataUri,
+          escalationResponsePeriodInMS,
+          fees: [],
+          sellerAllowList: []
+        }
+      );
+
+      const offerArgs = mockCreateOfferArgs({
+        exchangeToken: constants.AddressZero,
+        disputeResolverId: disputeResolver.id
+      });
+
+      await expect(coreSDK.createOffer(offerArgs)).rejects.toThrow(
+        /does not support exchange token/
+      );
+    });
     test("create seller and offer", async () => {
       const { coreSDK, fundedWallet } =
         await initCoreSDKWithFundedWallet(seedWallet);
