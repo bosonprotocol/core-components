@@ -15,6 +15,7 @@ import {
   mockRawOfferFromSubgraph,
   ZERO_ADDRESS
 } from "../mocks";
+import { LOCAL_SUBGRAPH_URL } from "../../../../e2e/tests/utils";
 const sellerMetadataUri =
   "ipfs://Qmcp1cqzUu62CggNpA45p4LmQuExYjoW4yazv11JdEMESj";
 describe("#createOffer()", () => {
@@ -25,7 +26,7 @@ describe("#createOffer()", () => {
           price: "invalid"
         }),
         web3Lib: new MockWeb3LibAdapter(),
-        subgraphUrl: "",
+        subgraphUrl: LOCAL_SUBGRAPH_URL,
         contractAddress: ADDRESS
       })
     ).rejects.toThrow();
@@ -52,7 +53,7 @@ describe("#createOffer()", () => {
       contractAddress: ADDRESS,
       metadataStorage: new MockMetadataStorage(),
       theGraphStorage: new MockMetadataStorage(),
-      subgraphUrl: ""
+      subgraphUrl: LOCAL_SUBGRAPH_URL
     });
 
     expect(txResponse.hash).toEqual(mockedTxHash);

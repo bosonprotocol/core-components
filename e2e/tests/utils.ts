@@ -95,6 +95,8 @@ export type DeepPartial<T> = T extends object
 const getFirstEnvConfig = (arg0: Parameters<typeof getEnvConfigs>[0]) =>
   getEnvConfigs(arg0)[0];
 
+export const LOCAL_SUBGRAPH_URL = getFirstEnvConfig("local").subgraphUrl;
+
 export const MOCK_ERC20_ADDRESS =
   (getFirstEnvConfig("local").contracts.testErc20 as string) ||
   "0x998abeb3E57409262aE5b751f60747921B33613E";
