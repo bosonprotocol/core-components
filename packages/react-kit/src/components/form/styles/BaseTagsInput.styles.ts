@@ -1,5 +1,6 @@
 import styled, { CSSProperties, css } from "styled-components";
 import { colors } from "../../../theme";
+import { InputTheme } from "..";
 
 export const TagContainer = styled.div<{
   $gap: CSSProperties["gap"];
@@ -37,7 +38,7 @@ export const TagWrapper = styled.div`
   display: inline-block;
   padding: 0.5em 0.75em;
   margin-top: 1rem;
-  border-radius: ${(props) => props.theme.borderRadius || 0}px;
+  border-radius: ${(props) => (props.theme as InputTheme).borderRadius || 0}px;
   .text {
     word-break: break-word;
   }

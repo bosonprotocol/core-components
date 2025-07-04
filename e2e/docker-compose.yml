@@ -1,19 +1,22 @@
 version: "3"
 services:
   meta-tx-gateway:
-    build:
-      context: ../.
-      dockerfile: ./e2e/meta-tx-gateway/Dockerfile
+    image: ghcr.io/bosonprotocol/meta-tx-gateway:main
+    # image: bosonprotocol/meta-tx-gateway:main # can be pulled from Docker Hub as well
     user: "node:node"
-    image: meta-tx-gateway:202504021614
     ports:
       - "8888:8888"
     environment:
       - ENV_NAME=local
+      - CONFIG_ID=local-31337-0
       - PRIVATE_KEY=0x316b234f5fea007dcc40404188b588fb90cb9bb1e33fc163e212eab2f8565293 # ACCOUNT_9 from ./contracts/accounts.js
       - RPC_NODE=http://host.docker.internal:8545
+      - FORWARDER_ADDRESS=0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+      - API_KEYS=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+      - 'API_IDS={"BOSON": ["xxxxxxxx-xxxx-xxxx-xxxx-111111111111"], "FERMION": ["xxxxxxxx-xxxx-xxxx-xxxx-222222222222"], "ERC20": ["xxxxxxxx-xxxx-xxxx-xxxx-333333333333"], "FORWARDER": ["xxxxxxxx-xxxx-xxxx-xxxx-444444444444"]}'
+      - BOSON_VOUCHER_INTERFACE_ID=0x6a474d2c
     depends_on:
-      - hardhat-node
+      - boson-protocol-node
     extra_hosts:
       - host.docker.internal:host-gateway
     command: ["sh", "-c", "sleep 3 && npm run start"]
@@ -23,27 +26,27 @@ services:
       context: ../.
       dockerfile: ./e2e/opensea-api-mock/Dockerfile
     user: "node:node"
-    image: opensea-api-mock:202504021614
     ports:
       - "3334:3334"
     environment:
       - ENV_NAME=local
       - RPC_NODE=http://host.docker.internal:8545
     depends_on:
-      - hardhat-node
+      - boson-protocol-node
     extra_hosts:
       - host.docker.internal:host-gateway
 
-  hardhat-node:
-    build: ../contracts
-    image: hardhat-node:89660a4e103079207498915aa1a0e364b03be545_0
+  boson-protocol-node:
+    build:
+      context: ../.
+      dockerfile: ./contracts/Dockerfile
     ports:
       - "8545:8545"
-    volumes:
-      - ../contracts/scripts/deploy.js:/app/scripts/deploy.js
 
-  graph-node:
-    image: graphprotocol/graph-node:v0.33.0
+  boson-subgraph:
+    build:
+      context: ../
+      dockerfile: ./packages/subgraph/Dockerfile
     ports:
       - "8000:8000"
       - "8001:8001"
@@ -53,7 +56,7 @@ services:
     depends_on:
       - ipfs
       - postgres
-      - hardhat-node
+      - boson-protocol-node
     extra_hosts:
       - host.docker.internal:host-gateway
     environment:

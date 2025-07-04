@@ -25,9 +25,10 @@ import {
   getSellerMetadataUri,
   createOfferWithCondition,
   getCollectionMetadataUri,
-  createRandomWallet
+  createRandomWallet,
+  META_TX_API_ID_VOUCHER
 } from "./utils";
-import { CoreSDK } from "../../packages/core-sdk/src";
+import { CoreSDK, forwarder } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
 import TokenType from "../../contracts/protocol-contracts/scripts/domain/TokenType";
 import { AuthTokenType, GatingType } from "../../packages/common";
@@ -1206,21 +1207,22 @@ describe("meta-tx", () => {
       });
       const amount = 10;
 
-      const { to, r, s, v, functionSignature } =
+      const { to, signature, domainSeparator, request } =
         await sellerCoreSDK.signMetaTxPreMint({
           offerId,
           amount
         });
 
-      metaTx = await sellerCoreSDK.relayNativeMetaTransaction(
+      metaTx = await sellerCoreSDK.relayBiconomyMetaTransaction(
         to,
         {
-          functionSignature,
-          sigR: r,
-          sigS: s,
-          sigV: v
+          request: request as forwarder.biconomy.ERC20ForwardRequest,
+          domainSeparator:
+            domainSeparator ??
+            "0x305def757d40eaccb764a44e4a9d5ec89af56886451ff9348822884eb7a9674a",
+          signature
         },
-        { metaTxConfig: { apiId: "dummy" } }
+        { metaTxConfig: { apiId: META_TX_API_ID_VOUCHER } }
       );
 
       metaTxReceipt = await metaTx.wait();
@@ -1270,21 +1272,22 @@ describe("meta-tx", () => {
       });
       const amount = 10;
 
-      const { to, r, s, v, functionSignature } =
+      const { to, signature, domainSeparator, request } =
         await sellerCoreSDK.signMetaTxPreMint({
           offerId,
           amount
         });
 
-      metaTx = await sellerCoreSDK.relayNativeMetaTransaction(
+      metaTx = await sellerCoreSDK.relayBiconomyMetaTransaction(
         to,
         {
-          functionSignature,
-          sigR: r,
-          sigS: s,
-          sigV: v
+          request: request as forwarder.biconomy.ERC20ForwardRequest,
+          domainSeparator:
+            domainSeparator ??
+            "0x305def757d40eaccb764a44e4a9d5ec89af56886451ff9348822884eb7a9674a",
+          signature
         },
-        { metaTxConfig: { apiId: "dummy" } }
+        { metaTxConfig: { apiId: META_TX_API_ID_VOUCHER } }
       );
 
       metaTxReceipt = await metaTx.wait();
@@ -1311,21 +1314,22 @@ describe("meta-tx", () => {
       );
       expect(isApprovedForAllBefore).toEqual(false);
 
-      const { to, r, s, v, functionSignature } =
+      const { to, signature, domainSeparator, request } =
         await sellerCoreSDK.signMetaTxSetApprovalForAllToContract({
           operator: openseaConduit,
           approved: true
         });
 
-      const metaTx = await sellerCoreSDK.relayNativeMetaTransaction(
+      const metaTx = await sellerCoreSDK.relayBiconomyMetaTransaction(
         to,
         {
-          functionSignature,
-          sigR: r,
-          sigS: s,
-          sigV: v
+          request: request as forwarder.biconomy.ERC20ForwardRequest,
+          domainSeparator:
+            domainSeparator ??
+            "0x305def757d40eaccb764a44e4a9d5ec89af56886451ff9348822884eb7a9674a",
+          signature
         },
-        { metaTxConfig: { apiId: "dummy" } }
+        { metaTxConfig: { apiId: META_TX_API_ID_VOUCHER } }
       );
 
       const metaTxReceipt = await metaTx.wait();
@@ -1371,21 +1375,22 @@ describe("meta-tx", () => {
       // Note: when using the real seaport contract, be sure the preminted tokens are approved for openseaConduit
 
       // Call seaport validate method via seller voucher
-      const { to, r, s, v, functionSignature } =
+      const { to, signature, domainSeparator, request } =
         await sellerCoreSDK.signMetaTxCallExternalContract({
           to: MOCK_SEAPORT_ADDRESS,
           data: encodeValidate([order])
         });
 
-      const metaTx = await sellerCoreSDK.relayNativeMetaTransaction(
+      const metaTx = await sellerCoreSDK.relayBiconomyMetaTransaction(
         to,
         {
-          functionSignature,
-          sigR: r,
-          sigS: s,
-          sigV: v
+          request: request as forwarder.biconomy.ERC20ForwardRequest,
+          domainSeparator:
+            domainSeparator ??
+            "0x305def757d40eaccb764a44e4a9d5ec89af56886451ff9348822884eb7a9674a",
+          signature
         },
-        { metaTxConfig: { apiId: "dummy" } }
+        { metaTxConfig: { apiId: META_TX_API_ID_VOUCHER } }
       );
 
       const metaTxReceipt = await metaTx.wait();

@@ -28,12 +28,14 @@ export const ClearButton = styled(CrossIcon)`
   margin: 0 5px;
   cursor: pointer;
   display: inline-block;
-  fill: ${(props) => props.theme?.fill || "#cccccc"};
+  fill: ${(props) => (props.theme as ClearButtonTheme)?.fill || "#cccccc"};
   line-height: 1;
-  stroke: ${(props) => props.theme?.stroke || "#cccccc"};
+  stroke: ${(props) => (props.theme as ClearButtonTheme)?.stroke || "#cccccc"};
   stroke-width: 0;
   &:hover * {
-    stroke: ${(props) => props.theme?.hover?.stroke || "#999999"};
-    fill: ${(props) => props.theme?.hover?.fill || "#999999"};
+    stroke: ${(props) =>
+      (props.theme as ClearButtonTheme)?.hover?.stroke || "#999999"};
+    fill: ${(props) =>
+      (props.theme as ClearButtonTheme)?.hover?.fill || "#999999"};
   }
 `;

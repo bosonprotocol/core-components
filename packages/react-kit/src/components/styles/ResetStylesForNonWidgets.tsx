@@ -12,7 +12,8 @@ export const cssVars = css`
     Object.keys(theme)
       .filter((key) => key.startsWith("--"))
       .map((key) => {
-        const value = theme[key];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const value = (theme as any)[key];
         if (!value) {
           return null;
         }
