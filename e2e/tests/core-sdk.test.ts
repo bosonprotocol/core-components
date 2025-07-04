@@ -50,10 +50,22 @@ jest.setTimeout(60_000);
 
 describe("core-sdk", () => {
   describe("core user flows", () => {
+    const escalationResponsePeriodInMS = 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
+    // TODO: use valid metadata uri
+    const metadataUri = "ipfs://dispute-resolver-uri";
+    test("create offer with madeup disputeResolverId should fail", async () => {
+      const { coreSDK } = await initCoreSDKWithFundedWallet(seedWallet);
+      const disputeResolverId = Number.MAX_SAFE_INTEGER;
+      const offerArgs = mockCreateOfferArgs({
+        exchangeToken: constants.AddressZero,
+        disputeResolverId
+      });
+
+      await expect(coreSDK.createOffer(offerArgs)).rejects.toThrow(
+        `Dispute resolver with id "${disputeResolverId}" does not exist`
+      );
+    });
     test("create offer with disputeResolver that doesnt support exchangeToken should fail", async () => {
-      const escalationResponsePeriodInMS = 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
-      // TODO: use valid metadata uri
-      const metadataUri = "ipfs://dispute-resolver-uri";
       const { coreSDK, fundedWallet } =
         await initCoreSDKWithFundedWallet(seedWallet);
 
@@ -79,7 +91,7 @@ describe("core-sdk", () => {
       });
 
       await expect(coreSDK.createOffer(offerArgs)).rejects.toThrow(
-        /does not support exchange token/
+        `Dispute resolver with id "${offerArgs.disputeResolverId}" does not support exchange token "${offerArgs.exchangeToken}"`
       );
     });
     test("create seller and offer", async () => {
