@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/ipfs-storage",
-  "version": "1.13.0-alpha.2",
+  "version": "1.13.0-alpha.3",
   "description": "IPFS metadata storage implementation for building on top of the Boson Protocol.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
