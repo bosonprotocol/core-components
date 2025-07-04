@@ -25,6 +25,7 @@ describe("#createOffer()", () => {
           price: "invalid"
         }),
         web3Lib: new MockWeb3LibAdapter(),
+        subgraphUrl: "",
         contractAddress: ADDRESS
       })
     ).rejects.toThrow();
@@ -50,7 +51,8 @@ describe("#createOffer()", () => {
       }),
       contractAddress: ADDRESS,
       metadataStorage: new MockMetadataStorage(),
-      theGraphStorage: new MockMetadataStorage()
+      theGraphStorage: new MockMetadataStorage(),
+      subgraphUrl: ""
     });
 
     expect(txResponse.hash).toEqual(mockedTxHash);
