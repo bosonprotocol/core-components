@@ -25,15 +25,48 @@ describe("#createOffer()", () => {
           price: "invalid"
         }),
         web3Lib: new MockWeb3LibAdapter(),
+        subgraphUrl: SUBGRAPH_URL,
         contractAddress: ADDRESS
       })
     ).rejects.toThrow();
   });
 
   test("return tx response", async () => {
+    const offerArgs = mockCreateOfferArgs();
+    interceptSubgraph().reply(200, {
+      data: {
+        disputeResolver: {
+          id: offerArgs.disputeResolverId,
+          escalationResponsePeriod: "604800",
+          admin: ADDRESS,
+          clerk: ZERO_ADDRESS,
+          treasury: ADDRESS,
+          assistant: ADDRESS,
+          metadataUri: "ipfs://dispute-resolver-uri",
+          active: true,
+          sellerAllowList: [],
+          fees: [
+            {
+              id: "1-fee-0x0000000000000000000000000000000000000000",
+              tokenAddress: ZERO_ADDRESS,
+              tokenName: "ETH",
+              token: {
+                id: ZERO_ADDRESS,
+                address: ZERO_ADDRESS,
+                decimals: "18",
+                symbol: "ETH",
+                name: "Ether"
+              },
+              feeAmount: "0"
+            }
+          ]
+        }
+      }
+    });
+
     const mockedTxHash = "0xTX_HASH";
     const txResponse = await createOffer({
-      offerToCreate: mockCreateOfferArgs(),
+      offerToCreate: offerArgs,
       web3Lib: new MockWeb3LibAdapter({
         sendTransaction: {
           hash: mockedTxHash,
@@ -50,7 +83,8 @@ describe("#createOffer()", () => {
       }),
       contractAddress: ADDRESS,
       metadataStorage: new MockMetadataStorage(),
-      theGraphStorage: new MockMetadataStorage()
+      theGraphStorage: new MockMetadataStorage(),
+      subgraphUrl: SUBGRAPH_URL
     });
 
     expect(txResponse.hash).toEqual(mockedTxHash);
