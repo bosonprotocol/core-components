@@ -9,7 +9,7 @@ import React, {
 import { css, CSSProperties, styled } from "styled-components";
 import { Grid } from "../../../ui/Grid";
 import { Typography } from "../../../ui/Typography";
-import { useAccount, useBreakpoints } from "../../../../hooks";
+import { useAccount, useBreakpoints, usePrevious } from "../../../../hooks";
 import { CaretDown, CaretUp, CheckCircle, Power } from "phosphor-react";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";
 import { useRobloxLogout } from "../../../../hooks/roblox/useRobloxLogout";
@@ -17,7 +17,6 @@ import { useRobloxConfigContext } from "../../../../hooks/roblox/context/useRobl
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
 import { useGetRobloxWalletAuth } from "../../../../hooks/roblox/useGetRobloxWalletAuth";
 import { useRobloxBackendLogin } from "../../../../hooks/roblox/useRobloxBackendLogin";
-import { useQuery } from "react-query";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 import { useCookies } from "react-cookie";
 import {
@@ -32,6 +31,8 @@ import ThemedButton from "../../../ui/ThemedButton";
 import { maxWidthStepper } from "./styles";
 import { productsPageSize, purchasedProductsPageSize, statuses } from "./const";
 import { breakpoint } from "../../../../lib/ui/breakpoint";
+import { useQuery } from "react-query";
+import { mutationKeys } from "../../../../hooks/roblox/mutationKeys";
 
 const stepToIcon = {
   0: (
@@ -319,6 +320,7 @@ type ActiveStep = 0 | 1 | 2;
 export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
   ({ step3, sellerId }, ref) => {
     const { address = "" } = useAccount();
+    const prevAddress = usePrevious(address);
     const [isSignUpDone, setSignUpDone] = useState<boolean>(false);
     const [activeStep, setActiveStep] = useState<ActiveStep>(0);
     const disconnect = useDisconnect();
@@ -345,28 +347,33 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
       pageSize: purchasedProductsPageSize,
       options: { enabled: false }
     });
-    const disconnectWallet = useCallback(() => {
-      console.log("disconnectWallet()");
-      // setIsSigning(false);
-      // setIsWalletAuthenticated(false);
-      // const domain = backendOrigin
-      //   .replace("https://", "")
-      //   .replace("http://", "");
+    const removeWalletAuthCookie = useCallback(() => {
       const isHttps = ((backendOrigin || "") as string).startsWith("https");
       const sameSite = isHttps ? "none" : undefined;
-      removeCookie?.(WEB3AUTH_COOKIE_NAME, { path: "/", sameSite }); // TODO: no domain?
+      const secure = isHttps ? true : undefined;
+      removeCookie?.(WEB3AUTH_COOKIE_NAME, { path: "/", sameSite, secure });
+    }, [backendOrigin, removeCookie]);
+    const disconnectWallet = useCallback(() => {
+      console.log("disconnectWallet()");
+      removeWalletAuthCookie();
       disconnect({ isUserDisconnecting: false });
       loadAvailableBosonProducts(); // Refresh products
       loadUnavailableBosonProducts(); // Refresh products
       loadBosonExchanges(); // Refresh exchanges
     }, [
-      removeCookie,
+      removeWalletAuthCookie,
       disconnect,
-      backendOrigin,
       loadAvailableBosonProducts,
       loadUnavailableBosonProducts,
       loadBosonExchanges
     ]);
+    useEffect(() => {
+      // change of connected wallet address
+      // or disconnection of wallet
+      if (prevAddress !== address) {
+        removeWalletAuthCookie();
+      }
+    }, [address, removeWalletAuthCookie, prevAddress]);
     const { data: robloxLoggedInData } = useIsRobloxLoggedIn({
       sellerId,
       options: {
@@ -385,30 +392,20 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
     const { data: isAuthChecked } = useGetRobloxWalletAuth({
       sellerId,
       options: {
-        enabled: !!robloxLoggedInData?.isLoggedIn
+        enabled: !!robloxLoggedInData?.isLoggedIn && !!address
       }
     });
-    const {
-      mutateAsync: robloxBackendLoginAsync,
-      data: isWalletAuthenticatedSigned
-    } = useRobloxBackendLogin({
+    const robloxBackendLoginKey = mutationKeys.postWalletAuth({
+      address,
+      isAuthChecked,
+      robloxLoggedInData
+    });
+    const { mutateAsync: robloxBackendLoginAsync } = useRobloxBackendLogin({
       loggedInData: robloxLoggedInData,
+      address,
       sellerId,
-      mutationKey: [
-        address,
-        isAuthChecked?.walletAuth,
-        isAuthChecked,
-        robloxLoggedInData
-      ],
-      options: {
-        onError: (...args) => {
-          console.error("robloxBackendLoginAsync error", { ...args });
-          disconnectWallet();
-        }
-      }
+      mutationKey: robloxBackendLoginKey
     });
-    const isWalletAuthenticated =
-      isWalletAuthenticatedSigned || isAuthChecked?.walletAuth;
     useEffect(() => {
       if (!robloxLoggedInData?.isLoggedIn) {
         setActiveStep(0);
@@ -418,24 +415,34 @@ export const ConnectRoblox = forwardRef<HTMLDivElement, ConnectRobloxProps>(
     }, [robloxLoggedInData?.isLoggedIn, address]);
 
     useQuery(
-      [robloxLoggedInData, address, isAuthChecked],
-      () => {
-        if (robloxLoggedInData?.claims && robloxLoggedInData?.nonce) {
-          robloxBackendLoginAsync();
-        } else {
-          console.error("robloxLoggedInData is not valid");
-        }
+      robloxBackendLoginKey,
+      async () => {
+        return await robloxBackendLoginAsync();
       },
       {
-        staleTime: Infinity,
+        retry: function (failureCount, error) {
+          const didUserReject: boolean =
+            typeof error === "object" &&
+            !!error &&
+            "message" in error &&
+            error.message === "User rejected the request.";
+          const shouldRetry = failureCount < 3 && !didUserReject;
+          return shouldRetry;
+        },
+        retryDelay: 1000,
+        onError: () => {
+          console.log("robloxBackendLoginAsync errored after all attemps");
+          // When all attempt have failed, force the wallet disconnection to avoid a dead end state of the app
+          disconnect({ isUserDisconnecting: false });
+        },
         enabled:
           !!robloxLoggedInData?.isLoggedIn &&
           !!address &&
-          !!isAuthChecked &&
-          !isWalletAuthenticated
+          !isAuthChecked?.walletAuth &&
+          !!robloxLoggedInData?.claims &&
+          !!robloxLoggedInData?.nonce
       }
     );
-
     const { mutateAsync: robloxLogoutAsync } = useRobloxLogout();
     const nextLatestActiveStep = (step: ActiveStep) => {
       setActiveStep((activeStep) => Math.max(step, activeStep) as ActiveStep);
