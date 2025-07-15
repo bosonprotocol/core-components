@@ -17,6 +17,8 @@ import {
   ensureCreatedSeller,
   createOfferArgs,
   mockProductV1Metadata,
+  getCollectionMetadataUri,
+  getSellerMetadataUri,
   MOCK_ERC1155_ADDRESS,
   MOCK_SEAPORT_ADDRESS,
   seedWallet14,
@@ -514,16 +516,19 @@ describe("orchestration", () => {
       mockProductV1Metadata("test-template")
     );
 
+    const contractUri = await getCollectionMetadataUri(sellerCoreSDK);
+    const metadataUri = await getSellerMetadataUri(sellerCoreSDK);
+
     const txData = await sellerCoreSDK.createSellerAndPremintedOffer(
       {
         assistant: sellerWallet.address,
         admin: sellerWallet.address,
         treasury: sellerWallet.address,
-        contractUri: "ipfs://test",
+        contractUri,
         royaltyPercentage: "0",
         authTokenId: "0",
         authTokenType: 0,
-        metadataUri: "ipfs://test"
+        metadataUri
       },
       offerArgs,
       premintParameters,
@@ -608,17 +613,20 @@ describe("orchestration", () => {
       mockProductV1Metadata("test-template")
     );
 
+    const contractUri = await getCollectionMetadataUri(sellerCoreSDK);
+    const metadataUri = await getSellerMetadataUri(sellerCoreSDK);
+
     const txData =
       await sellerCoreSDK.createSellerAndPremintedOfferWithCondition(
         {
           assistant: sellerWallet.address,
           admin: sellerWallet.address,
           treasury: sellerWallet.address,
-          contractUri: "ipfs://test",
+          contractUri,
           royaltyPercentage: "0",
           authTokenId: "0",
           authTokenType: 0,
-          metadataUri: "ipfs://test"
+          metadataUri
         },
         offerArgs,
         premintParameters,

@@ -40,7 +40,9 @@ import {
   wait,
   createDisputeResolver,
   createOfferArgs,
-  mockProductV1Metadata
+  mockProductV1Metadata,
+  getCollectionMetadataUri,
+  getSellerMetadataUri
 } from "./utils";
 import { EvaluationMethod, GatingType, TokenType } from "../../packages/common";
 
@@ -461,16 +463,19 @@ describe("core-sdk", () => {
         mockProductV1Metadata("test-template")
       );
 
+      const contractUri = await getCollectionMetadataUri(sellerCoreSDK);
+      const metadataUri = await getSellerMetadataUri(sellerCoreSDK);
+
       const txData = await sellerCoreSDK.createSellerAndOfferWithCondition(
         {
           assistant: sellerWallet.address,
           admin: sellerWallet.address,
           treasury: sellerWallet.address,
-          contractUri: "ipfs://test",
+          contractUri,
           royaltyPercentage: "0",
           authTokenId: "0",
           authTokenType: 0,
-          metadataUri: "ipfs://test"
+          metadataUri
         },
         offerArgs,
         condition,
