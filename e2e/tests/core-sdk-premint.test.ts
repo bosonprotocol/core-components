@@ -12,6 +12,11 @@ import {
   createSellerAndPremintedOfferWithCondition,
   ensureMintedERC1155,
   initCoreSDKWithFundedWallet,
+  initSellerAndBuyerSDKs,
+  initCoreSDKWithWallet,
+  ensureCreatedSeller,
+  createOfferArgs,
+  mockProductV1Metadata,
   MOCK_ERC1155_ADDRESS,
   MOCK_SEAPORT_ADDRESS,
   seedWallet14,
@@ -459,6 +464,184 @@ describe("orchestration", () => {
     expect(offer.condition?.tokenAddress.toLowerCase()).toEqual(
       condition.tokenAddress
     );
+  });
+
+  test("createPremintedOfferAddToGroup: check transaction data", async () => {
+    const { sellerCoreSDK, sellerWallet } =
+      await initSellerAndBuyerSDKs(seedWallet);
+    await ensureCreatedSeller(sellerWallet);
+
+    // Create a simple group first
+    const groupId = "1";
+
+    const premintParameters = {
+      quantity: "10",
+      to: sellerWallet.address,
+      reservedRangeLength: "10"
+    };
+
+    const offerArgs = await createOfferArgs(
+      sellerCoreSDK,
+      mockProductV1Metadata("test-template")
+    );
+
+    const txData = await sellerCoreSDK.createPremintedOfferAddToGroup(
+      offerArgs,
+      premintParameters,
+      groupId,
+      {
+        returnTxInfo: true
+      }
+    );
+
+    expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+  });
+
+  test("createSellerAndPremintedOffer: check transaction data", async () => {
+    const { sellerWallet } = await initSellerAndBuyerSDKs(seedWallet);
+
+    // Create a new seller SDK instance for this test
+    const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
+
+    const premintParameters = {
+      quantity: "10",
+      to: sellerWallet.address,
+      reservedRangeLength: "10"
+    };
+
+    const offerArgs = await createOfferArgs(
+      sellerCoreSDK,
+      mockProductV1Metadata("test-template")
+    );
+
+    const txData = await sellerCoreSDK.createSellerAndPremintedOffer(
+      {
+        assistant: sellerWallet.address,
+        admin: sellerWallet.address,
+        treasury: sellerWallet.address,
+        contractUri: "ipfs://test",
+        royaltyPercentage: "0",
+        authTokenId: "0",
+        authTokenType: 0,
+        metadataUri: "ipfs://test"
+      },
+      offerArgs,
+      premintParameters,
+      {
+        returnTxInfo: true
+      }
+    );
+
+    expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+  });
+
+  test("createPremintedOfferWithCondition: check transaction data", async () => {
+    const tokenID = Date.now().toString();
+    const { sellerCoreSDK, sellerWallet } =
+      await initSellerAndBuyerSDKs(seedWallet);
+    await ensureCreatedSeller(sellerWallet);
+
+    // Ensure the condition token is minted
+    await ensureMintedERC1155(sellerWallet, tokenID, "5");
+    const condition = {
+      method: EvaluationMethod.Threshold,
+      tokenType: TokenType.MultiToken,
+      tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+      gatingType: GatingType.PerAddress,
+      minTokenId: tokenID,
+      maxTokenId: tokenID,
+      threshold: "1",
+      maxCommits: "3"
+    };
+
+    const premintParameters = {
+      quantity: "10",
+      to: sellerWallet.address,
+      reservedRangeLength: "10"
+    };
+
+    const offerArgs = await createOfferArgs(
+      sellerCoreSDK,
+      mockProductV1Metadata("test-template")
+    );
+
+    const txData = await sellerCoreSDK.createPremintedOfferWithCondition(
+      offerArgs,
+      premintParameters,
+      condition,
+      {
+        returnTxInfo: true
+      }
+    );
+
+    expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+  });
+
+  test("createSellerAndPremintedOfferWithCondition: check transaction data", async () => {
+    const tokenID = Date.now().toString();
+    const { sellerWallet } = await initSellerAndBuyerSDKs(seedWallet);
+
+    // Create a new seller SDK instance for this test
+    const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
+
+    // Ensure the condition token is minted
+    await ensureMintedERC1155(sellerWallet, tokenID, "5");
+    const condition = {
+      method: EvaluationMethod.Threshold,
+      tokenType: TokenType.MultiToken,
+      tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+      gatingType: GatingType.PerAddress,
+      minTokenId: tokenID,
+      maxTokenId: tokenID,
+      threshold: "1",
+      maxCommits: "3"
+    };
+
+    const premintParameters = {
+      quantity: "10",
+      to: sellerWallet.address,
+      reservedRangeLength: "10"
+    };
+
+    const offerArgs = await createOfferArgs(
+      sellerCoreSDK,
+      mockProductV1Metadata("test-template")
+    );
+
+    const txData =
+      await sellerCoreSDK.createSellerAndPremintedOfferWithCondition(
+        {
+          assistant: sellerWallet.address,
+          admin: sellerWallet.address,
+          treasury: sellerWallet.address,
+          contractUri: "ipfs://test",
+          royaltyPercentage: "0",
+          authTokenId: "0",
+          authTokenType: 0,
+          metadataUri: "ipfs://test"
+        },
+        offerArgs,
+        premintParameters,
+        condition,
+        {
+          returnTxInfo: true
+        }
+      );
+
+    expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+  });
+
+  test("raiseAndEscalateDispute: check transaction data", async () => {
+    const { buyerCoreSDK } = await initSellerAndBuyerSDKs(seedWallet);
+
+    // Use a mock exchangeId for the test
+    const exchangeId = "1";
+
+    const txData = await buyerCoreSDK.raiseAndEscalateDispute(exchangeId, {
+      returnTxInfo: true
+    });
+
+    expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
   });
 });
 function getExchangeIdFromRange(range: Range): number {
