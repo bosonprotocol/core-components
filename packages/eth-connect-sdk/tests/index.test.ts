@@ -14,6 +14,7 @@ const CALL_RET = "call_ret";
 const TRANSACTION_COUNT = 64;
 const GAS_USED = "87654";
 const TX_HASH = "transactionHash";
+const nowInSec = Math.floor(Date.now() / 1000);
 
 test("imports EthConnectAdapter", () => {
   expect(EthConnectAdapter).toBeTruthy();
@@ -161,6 +162,17 @@ test("EthConnectAdapter getTransactionReceipt", async () => {
   expect(txReceipt.transactionHash).toEqual(TX_HASH);
 });
 
+test("EthConnectAdapter getCurrentTimeMs", async () => {
+  const requestManager = mockRequestManager();
+  const externalFeatures = mockExternalFeatures();
+  const ethConnectAdapter = new EthConnectAdapter(
+    requestManager,
+    externalFeatures
+  );
+  const nowMs = await ethConnectAdapter.getCurrentTimeMs();
+  expect(nowMs).toBe(nowInSec * 1000); // Convert seconds to milliseconds
+});
+
 function mockSigner(wallet: string): RequestManager {
   return mockRequestManager(wallet);
 }
@@ -187,7 +199,10 @@ function mockRequestManager(wallet?: string): RequestManager {
     },
     eth_accounts: async () => (wallet ? [wallet] : WALLETS),
     eth_sendTransaction: async (t: any) => TX_HASH,
-    sendAsync: async (t: any) => TX_HASH
+    sendAsync: async (t: any) => TX_HASH,
+    eth_getBlockByNumber: async (blockNumber: string, fullTx: boolean) => {
+      return { timestamp: nowInSec };
+    }
   } as unknown as RequestManager;
 }
 
@@ -200,7 +215,5 @@ function mockExternalFeatures(signerAddress?: string): ExternalFeatures {
       }
     } as ExternalFeatures;
   }
-  return {
-    delay: async (ms: number) => undefined
-  } as ExternalFeatures;
+  return { delay: async (ms: number) => undefined } as ExternalFeatures;
 }

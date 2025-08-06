@@ -38,13 +38,7 @@ const getDefaultHandleSignerFunction = <R>({
       }
     }
     window.addEventListener("message", onMessageReceived);
-    window.parent.postMessage(
-      {
-        function: functionName,
-        args
-      },
-      parentOrigin
-    );
+    window.parent.postMessage({ function: functionName, args }, parentOrigin);
   });
 };
 
@@ -55,6 +49,7 @@ const getExternalWeb3LibAdapterListener = ({
 }): Web3LibAdapter => {
   return {
     uuid: crypto.randomUUID(),
+    getCurrentTimeMs: () => Promise.resolve(Date.now()),
     getSignerAddress: (): Promise<string> => {
       return getDefaultHandleSignerFunction<string>({
         parentOrigin,
@@ -145,10 +140,7 @@ const getExternalWeb3LibAdapterListener = ({
         }
         window.addEventListener("message", onMessageReceived);
         window.parent.postMessage(
-          {
-            function: functionName,
-            args: [transactionRequest]
-          },
+          { function: functionName, args: [transactionRequest] },
           parentOrigin
         );
       });
@@ -289,10 +281,7 @@ const getExternalSignerListener = ({
         }
         window.addEventListener("message", onMessageReceived);
         window.parent.postMessage(
-          {
-            function: functionName,
-            args: [transactionRequest]
-          },
+          { function: functionName, args: [transactionRequest] },
           parentOrigin
         );
       });
@@ -330,11 +319,7 @@ const getExternalSignerListener = ({
     ): ReturnType<Signer["populateTransaction"]> => {
       return getDefaultHandleSignerFunction<
         ReturnType<Signer["populateTransaction"]>
-      >({
-        parentOrigin,
-        functionName: "populateTransaction",
-        args
-      });
+      >({ parentOrigin, functionName: "populateTransaction", args });
     },
     estimateGas: async (...args: any[]): ReturnType<Signer["estimateGas"]> => {
       return getDefaultHandleSignerFunction<ReturnType<Signer["estimateGas"]>>({
@@ -353,11 +338,7 @@ const getExternalSignerListener = ({
     _checkProvider: async (...args: any[]): Promise<void> => {
       return getDefaultHandleSignerFunction<
         ReturnType<Signer["_checkProvider"]>
-      >({
-        parentOrigin,
-        functionName: "_checkProvider",
-        args
-      });
+      >({ parentOrigin, functionName: "_checkProvider", args });
     },
     connect: (..._args: any[]): ReturnType<Signer["connect"]> => {
       // TODO: how can we implement this?

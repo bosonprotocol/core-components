@@ -218,7 +218,12 @@ export async function completeExchange(
     args.web3Lib.getSignerAddress()
   ]);
 
-  assertCompletableExchange(args.exchangeId, exchange, signerAddress);
+  await assertCompletableExchange(
+    args.exchangeId,
+    exchange,
+    signerAddress,
+    args.web3Lib
+  );
 
   const transactionRequest = {
     to: args.contractAddress,
@@ -257,15 +262,18 @@ export async function completeExchangeBatch(
 ): Promise<TransactionRequest | TransactionResponse> {
   const [exchanges, signerAddress] = await Promise.all([
     getExchanges(args.subgraphUrl, {
-      exchangesFilter: {
-        id_in: args.exchangeIds.map((id) => id.toString())
-      }
+      exchangesFilter: { id_in: args.exchangeIds.map((id) => id.toString()) }
     }),
     args.web3Lib.getSignerAddress()
   ]);
 
   for (const exchange of exchanges) {
-    assertCompletableExchange(exchange.id, exchange, signerAddress);
+    await assertCompletableExchange(
+      exchange.id,
+      exchange,
+      signerAddress,
+      args.web3Lib
+    );
   }
 
   const transactionRequest = {
@@ -522,10 +530,11 @@ function assertSignerIsBuyerOrAssistant(
   return { isSignerBuyer, isSignerAssistant };
 }
 
-function assertCompletableExchange(
+async function assertCompletableExchange(
   exchangeId: BigNumberish,
   exchange: ExchangeFieldsFragment | null,
-  signer: string
+  signer: string,
+  web3Lib: Web3LibAdapter
 ) {
   assertExchange(exchangeId, exchange);
 
@@ -535,8 +544,9 @@ function assertCompletableExchange(
   );
 
   if (isSignerAssistant && !isSignerBuyer) {
+    const now = await web3Lib.getCurrentTimeMs();
     const elapsedSinceRedeemMS =
-      Date.now() - Number(exchange.redeemedDate || "0") * 1000;
+      now - Number(exchange.redeemedDate || "0") * 1000;
     const didDisputePeriodElapse =
       elapsedSinceRedeemMS >
       Number(exchange.offer.disputePeriodDuration) * 1000;
