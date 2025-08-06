@@ -40,6 +40,11 @@ export class EthersAdapter implements Web3LibAdapter {
       : this._provider.getSigner();
   }
 
+  async getCurrentTimeMs(): Promise<number> {
+    const { timestamp } = await this._provider.getBlock("latest");
+    return timestamp * 1000; // Convert seconds to milliseconds
+  }
+
   public async getSignerAddress() {
     return this._signer.getAddress();
   }

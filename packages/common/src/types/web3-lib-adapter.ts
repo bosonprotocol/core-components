@@ -1,9 +1,6 @@
 import { BigNumberish } from "@ethersproject/bignumber";
 
-export type Log = {
-  data: string;
-  topics: string[];
-};
+export type Log = { data: string; topics: string[] };
 
 export type TransactionRequest = Partial<{
   to: string;
@@ -48,4 +45,5 @@ export interface Web3LibAdapter {
   call(transactionRequest: TransactionRequest): Promise<string>;
   send(rpcMethod: string, payload: unknown[]): Promise<string>;
   getTransactionReceipt(txHash: string): Promise<TransactionReceipt>;
+  getCurrentTimeMs(): Promise<number>;
 }

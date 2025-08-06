@@ -36,12 +36,7 @@ export function mockOfferStruct(overrides?: Partial<OfferStruct>): OfferStruct {
     metadataUri: IPFS_URI,
     metadataHash: IPFS_HASH,
     priceType: PriceType.Static,
-    royaltyInfo: [
-      {
-        recipients: [AddressZero],
-        bps: [0]
-      }
-    ],
+    royaltyInfo: [{ recipients: [AddressZero], bps: [0] }],
     ...overrides
   };
 }
@@ -158,10 +153,10 @@ export class MockWeb3LibAdapter implements Web3LibAdapter {
 
   constructor(returnValues: Partial<MockedWeb3LibReturnValues> = {}) {
     this.uuid = crypto.randomUUID();
-    this._returnValues = {
-      ...defaultMockedReturnValues,
-      ...returnValues
-    };
+    this._returnValues = { ...defaultMockedReturnValues, ...returnValues };
+  }
+  getCurrentTimeMs(): Promise<number> {
+    return Promise.resolve(Date.now());
   }
   async getTransactionReceipt(txHash: string): Promise<TransactionReceipt> {
     this.getTransactionReceiptArgs.push(txHash);

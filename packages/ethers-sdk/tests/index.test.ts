@@ -12,6 +12,7 @@ const BLOCK_NUMBER = "42";
 const CALL_RET = "call_ret";
 const GAS_USED = "87654";
 const TX_HASH = "transactionHash";
+const nowInSec = Math.floor(Date.now() / 1000);
 
 test("imports EthersAdapter", () => {
   expect(EthersAdapter).toBeTruthy();
@@ -24,7 +25,7 @@ test("EthersAdapter constructor", () => {
   expect(ethersAdapter).toBeTruthy();
 });
 
-test("EthConnectAdapter getSignerAddress without signer", async () => {
+test("EthersAdapter getSignerAddress without signer", async () => {
   const provider = mockProvider();
   const ethersAdapter = new EthersAdapter(provider);
   expect(ethersAdapter).toBeTruthy();
@@ -32,13 +33,21 @@ test("EthConnectAdapter getSignerAddress without signer", async () => {
   expect(signerAddress).toEqual(WALLETS[0]);
 });
 
-test("EthConnectAdapter getSignerAddress with signer", async () => {
+test("EthersAdapter getSignerAddress with signer", async () => {
   const provider = mockProvider();
   const signer = mockSigner(WALLETS[2]);
   const ethersAdapter = new EthersAdapter(provider, signer);
   expect(ethersAdapter).toBeTruthy();
   const signerAddress = await ethersAdapter.getSignerAddress();
   expect(signerAddress).toEqual(WALLETS[2]);
+});
+
+test("EthersAdapter getCurrentTimeMs", async () => {
+  const provider = mockProvider();
+  const ethersAdapter = new EthersAdapter(provider);
+  expect(ethersAdapter).toBeTruthy();
+  const nowMs = await ethersAdapter.getCurrentTimeMs();
+  expect(nowMs).toBe(nowInSec * 1000); // Convert seconds to milliseconds
 });
 
 function mockProvider(): Provider {
@@ -58,7 +67,8 @@ function mockProvider(): Provider {
     },
     send: async () => TX_HASH,
     getSigner: () => mockSigner(WALLETS[0]),
-    getCode: async () => "0x"
+    getCode: async () => "0x",
+    getBlock: async () => ({ timestamp: nowInSec })
   } as unknown as Provider;
 }
 
@@ -67,8 +77,5 @@ function mockSigner(wallet: string): Signer {
     getAddress: async () => wallet,
     getChainId: async () => CHAIN_ID
   };
-  return {
-    ...signer,
-    connect: () => signer
-  } as unknown as Signer;
+  return { ...signer, connect: () => signer } as unknown as Signer;
 }

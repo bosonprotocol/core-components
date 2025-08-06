@@ -36,6 +36,14 @@ export class EthConnectAdapter implements Web3LibAdapter {
     this._externalFeatures = externalFeatures;
   }
 
+  async getCurrentTimeMs(): Promise<number> {
+    const { timestamp } = await this._requestManager.eth_getBlockByNumber(
+      "latest",
+      false
+    );
+    return Number(timestamp.valueOf()) * 1000; // Convert seconds to milliseconds
+  }
+
   public async getSignerAddress() {
     if (this._externalFeatures?.getSignerAddress) {
       const address = await this._externalFeatures?.getSignerAddress();
@@ -97,10 +105,7 @@ export class EthConnectAdapter implements Web3LibAdapter {
     // Use standard requestManager to fetch blockchain information
     const blockNumber = await this._requestManager.eth_blockNumber();
     return this._requestManager.eth_call(
-      {
-        data: transactionRequest.data,
-        to: transactionRequest.to
-      },
+      { data: transactionRequest.data, to: transactionRequest.to },
       blockNumber
     );
   }
