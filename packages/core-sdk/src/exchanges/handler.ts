@@ -268,7 +268,7 @@ export async function completeExchangeBatch(
   ]);
 
   for (const exchange of exchanges) {
-    assertCompletableExchange(
+    await assertCompletableExchange(
       exchange.id,
       exchange,
       signerAddress,
