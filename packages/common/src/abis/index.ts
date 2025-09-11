@@ -1,6 +1,7 @@
 /** auto-generated code: do not edit */
 
 import BiconomyForwarderABI from "./BiconomyForwarder.json";
+import DRFeeMutualizerABI from "./DRFeeMutualizer.json";
 import ERC1155ABI from "./ERC1155.json";
 import ERC165ABI from "./ERC165.json";
 import ERC20ABI from "./ERC20.json";
@@ -9,6 +10,7 @@ import IBosonAccountHandlerABI from "./IBosonAccountHandler.json";
 import IBosonAccountHandlerLegacyABI from "./IBosonAccountHandlerLegacy.json";
 import IBosonConfigHandlerABI from "./IBosonConfigHandler.json";
 import IBosonDisputeHandlerABI from "./IBosonDisputeHandler.json";
+import IBosonExchangeCommitHandlerABI from "./IBosonExchangeCommitHandler.json";
 import IBosonExchangeHandlerABI from "./IBosonExchangeHandler.json";
 import IBosonFundsHandlerABI from "./IBosonFundsHandler.json";
 import IBosonGroupHandlerABI from "./IBosonGroupHandler.json";
@@ -20,6 +22,7 @@ import IBosonOfferHandlerLegacyABI from "./IBosonOfferHandlerLegacy.json";
 import IBosonOrchestrationHandlerABI from "./IBosonOrchestrationHandler.json";
 import IBosonPriceDiscoveryHandlerABI from "./IBosonPriceDiscoveryHandler.json";
 import IBosonVoucherABI from "./IBosonVoucher.json";
+import IDRFeeMutualizerABI from "./IDRFeeMutualizer.json";
 import MockForwarderABI from "./MockForwarder.json";
 import NativeMetaTransactionABI from "./MockNativeMetaTransaction.json";
 import OpenSeaWrapperABI from "./OpenSeaWrapper.json";
@@ -30,6 +33,7 @@ import SeaportInterfaceABI from "./SeaportInterface.json";
 
 export {
   BiconomyForwarderABI,
+  DRFeeMutualizerABI,
   ERC1155ABI,
   ERC165ABI,
   ERC20ABI,
@@ -38,6 +42,7 @@ export {
   IBosonAccountHandlerLegacyABI,
   IBosonConfigHandlerABI,
   IBosonDisputeHandlerABI,
+  IBosonExchangeCommitHandlerABI,
   IBosonExchangeHandlerABI,
   IBosonFundsHandlerABI,
   IBosonGroupHandlerABI,
@@ -49,6 +54,7 @@ export {
   IBosonOrchestrationHandlerABI,
   IBosonPriceDiscoveryHandlerABI,
   IBosonVoucherABI,
+  IDRFeeMutualizerABI,
   MockForwarderABI,
   NativeMetaTransactionABI,
   OpenSeaWrapperABI,

@@ -237,6 +237,7 @@ module.exports = {
       "ProtocolDiamond",
       "IBosonAccountHandler",
       "IBosonExchangeHandler",
+      "IBosonExchangeCommit",
       "IBosonFundsHandler",
       "IBosonOfferHandler",
       "IBosonOrchestrationHandler",
@@ -250,8 +251,10 @@ module.exports = {
       "IBosonPriceDiscoveryHandler",
       "Seaport",
       "OpenSeaWrapper",
-      "OpenSeaWrapperFactory"
-    ]
+      "OpenSeaWrapperFactory",
+      "DRFeeMutualizer"
+    ],
+    except: ["MockDRFeeMutualizer"]
   }
 };
 

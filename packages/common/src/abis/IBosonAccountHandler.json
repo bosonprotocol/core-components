@@ -96,6 +96,11 @@
   },
   {
     "inputs": [],
+    "name": "DRFeeMutualizerCannotProvideCoverage",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "DRUnsupportedFee",
     "type": "error"
   },
@@ -167,11 +172,6 @@
   {
     "inputs": [],
     "name": "ExternalCallFailed",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FeeAmountNotYetSupported",
     "type": "error"
   },
   {
@@ -261,7 +261,17 @@
   },
   {
     "inputs": [],
+    "name": "InvalidBuyerOfferFields",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "InvalidBuyerPercent",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidCollectionIndex",
     "type": "error"
   },
   {
@@ -302,6 +312,16 @@
   {
     "inputs": [],
     "name": "InvalidFunctionName",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidOffer",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidOfferCreator",
     "type": "error"
   },
   {
@@ -377,6 +397,11 @@
   {
     "inputs": [],
     "name": "InvalidRoyaltyRecipientId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidSellerOfferFields",
     "type": "error"
   },
   {
@@ -501,6 +526,11 @@
   },
   {
     "inputs": [],
+    "name": "NoSuchEntity",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NoSuchExchange",
     "type": "error"
   },
@@ -582,6 +612,11 @@
   {
     "inputs": [],
     "name": "NotDisputeResolverAssistant",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotOfferCreator",
     "type": "error"
   },
   {
@@ -702,6 +737,11 @@
   },
   {
     "inputs": [],
+    "name": "SameMutualizerAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "SellerAddressMustBeUnique",
     "type": "error"
   },
@@ -717,12 +757,17 @@
   },
   {
     "inputs": [],
+    "name": "SellerParametersNotAllowed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "SellerSaltNotUnique",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "SignerAndSignatureDoNotMatch",
+    "name": "SignatureValidationFailed",
     "type": "error"
   },
   {
@@ -781,8 +826,24 @@
     "type": "error"
   },
   {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      }
+    ],
+    "name": "UnexpectedDataReturned",
+    "type": "error"
+  },
+  {
     "inputs": [],
     "name": "UnexpectedERC721Received",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UnsupportedMutualizer",
     "type": "error"
   },
   {
