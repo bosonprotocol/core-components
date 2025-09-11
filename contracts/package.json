@@ -8,24 +8,24 @@
     "node": "hardhat node --hostname 0.0.0.0"
   },
   "devDependencies": {
-    "@bosonprotocol/boson-protocol-contracts": "github:bosonprotocol/boson-protocol-contracts#db298d6b7efcc0fa9902966dbf1e1e6822b93da6",
+    "@bosonprotocol/boson-protocol-contracts": "github:bosonprotocol/boson-protocol-contracts#6a14c31bead936ed03b2d51ab82010ecd1047f40",
     "@manifoldxyz/royalty-registry-solidity": "github:manifoldxyz/royalty-registry-solidity#e5369fc79279ce2e4c6ea2eb5914df51e89e8bd8",
-    "@nomicfoundation/hardhat-ethers": "^3.0.5",
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
-    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.9",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.13",
+    "@nomicfoundation/hardhat-toolbox": "^6.0.0",
     "chai": "^4.3.6",
     "dotenv": "^16.0.1",
     "ethereum-waffle": "^3.4.4",
-    "ethers": "^6.9.0",
+    "ethers": "^6.15.0",
     "ethersv5": "npm:ethers@^5.7.2",
     "glob": "^9.1.0",
-    "hardhat": "^2.19.2",
+    "hardhat": "^2.25.0",
     "hardhat-abi-exporter": "^2.9.0",
     "patch-package": "^8.0.0",
     "seaport": "github:ProjectOpenSea/seaport#e9c5a9f17cb5ee658ccc9cb1a8eeab02c1f5a4cd"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.9.0",
-    "@openzeppelin/contracts-upgradeable": "4.9.3"
+    "@openzeppelin/contracts": "^4.9.6",
+    "@openzeppelin/contracts-upgradeable": "4.9.6"
   }
 }
