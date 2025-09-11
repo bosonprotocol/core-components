@@ -608,6 +608,7 @@ export class AccountsMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @returns Created exchange id.
    */
   public getPendingSellerUpdateFromLogs(logs: Log[]): {
+    sellerId: bigint;
     assistant: string;
     clerk: string;
     admin: string;
@@ -626,10 +627,11 @@ export class AccountsMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
           tokenType: number;
           tokenId: BigNumber;
         }
+      | bigint
     >({
       iface: accounts.iface.bosonAccountHandlerIface,
       logs,
-      eventArgsKeys: ["pendingSeller", "pendingAuthToken"],
+      eventArgsKeys: ["pendingSeller", "pendingAuthToken", "sellerId"],
       eventNames: ["SellerUpdatePending", "SellerUpdateApplied"]
     });
     const pendingSellerStruct = (
@@ -645,7 +647,9 @@ export class AccountsMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
         tokenId: BigNumber;
       }[]
     )?.[0];
+    const sellerId = (valuesFromLogs["sellerId"] as bigint[])?.[0];
     return {
+      sellerId,
       assistant: pendingSellerStruct?.assistant,
       admin: pendingSellerStruct?.admin,
       clerk: pendingSellerStruct?.clerk,
