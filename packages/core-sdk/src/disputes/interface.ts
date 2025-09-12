@@ -2,6 +2,7 @@ import { abis } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
+import { rebuildSignature } from "../utils/signature";
 
 export const bosonDisputeHandlerIface = new Interface(
   abis.IBosonDisputeHandlerABI
@@ -63,19 +64,35 @@ export function encodeRefuseEscalatedDispute(exchangeId: BigNumberish) {
   ]);
 }
 
-export function encodeResolveDispute(args: {
-  exchangeId: BigNumberish;
-  buyerPercentBasisPoints: BigNumberish;
-  sigR: BytesLike;
-  sigS: BytesLike;
-  sigV: BigNumberish;
-}) {
+export function encodeResolveDispute(
+  args:
+    | {
+        exchangeId: BigNumberish;
+        buyerPercentBasisPoints: BigNumberish;
+        sigR: BytesLike;
+        sigS: BytesLike;
+        sigV: BigNumberish;
+      }
+    | {
+        exchangeId: BigNumberish;
+        buyerPercentBasisPoints: BigNumberish;
+        signature: string;
+      }
+) {
+  let signature: string;
+  if (!("signature" in args)) {
+    signature = rebuildSignature({
+      r: args.sigR.toString(),
+      s: args.sigS.toString(),
+      v: Number(args.sigV)
+    });
+  } else {
+    signature = args.signature;
+  }
   return bosonDisputeHandlerIface.encodeFunctionData("resolveDispute", [
     args.exchangeId,
     args.buyerPercentBasisPoints,
-    args.sigR,
-    args.sigS,
-    args.sigV
+    signature
   ]);
 }
 
