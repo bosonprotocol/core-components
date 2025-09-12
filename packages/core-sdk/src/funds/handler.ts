@@ -11,7 +11,7 @@ import { getFunds } from "./subgraph";
 
 // Overload: returnTxInfo is true -> returns TransactionRequest
 export async function depositFunds(args: {
-  sellerId: BigNumberish;
+  entityId: BigNumberish;
   fundsTokenAddress?: string;
   fundsAmount: BigNumberish;
   contractAddress: string;
@@ -21,7 +21,7 @@ export async function depositFunds(args: {
 
 // Overload: returnTxInfo is false or undefined -> returns TransactionResponse
 export async function depositFunds(args: {
-  sellerId: BigNumberish;
+  entityId: BigNumberish;
   fundsTokenAddress?: string;
   fundsAmount: BigNumberish;
   contractAddress: string;
@@ -31,7 +31,7 @@ export async function depositFunds(args: {
 
 // Implementation
 export async function depositFunds(args: {
-  sellerId: BigNumberish;
+  entityId: BigNumberish;
   fundsTokenAddress?: string;
   fundsAmount: BigNumberish;
   contractAddress: string;
@@ -49,7 +49,7 @@ export async function depositFunds(args: {
   const transactionRequest: TransactionRequest = {
     to: args.contractAddress,
     data: encodeDepositFunds(
-      args.sellerId,
+      args.entityId,
       fundsTokenAddress,
       args.fundsAmount
     ),
