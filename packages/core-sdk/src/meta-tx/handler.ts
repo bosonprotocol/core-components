@@ -1147,7 +1147,7 @@ export async function signMetaTxWithdrawFunds(
 
 export async function signMetaTxDepositFunds(
   args: BaseMetaTxArgs & {
-    sellerId: BigNumberish;
+    entityId: BigNumberish;
     fundsTokenAddress: string;
     fundsAmount: BigNumberish;
   }
@@ -1166,7 +1166,7 @@ export async function signMetaTxDepositFunds(
     ...args,
     functionName: "depositFunds(uint256,address,uint256)",
     functionSignature: encodeDepositFunds(
-      args.sellerId,
+      args.entityId,
       args.fundsTokenAddress,
       args.fundsAmount
     )

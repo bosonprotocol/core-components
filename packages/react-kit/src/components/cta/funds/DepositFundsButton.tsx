@@ -64,7 +64,7 @@ export const DepositFundsButton = withQueryClientProvider(
           coreSdk.depositFunds(accountId, amountToDeposit, exchangeToken),
         signMetaTxFn: () =>
           coreSdk.signMetaTxDepositFunds({
-            sellerId: accountId,
+            entityId: accountId,
             fundsTokenAddress: exchangeToken,
             fundsAmount: amountToDeposit,
             nonce: Date.now()

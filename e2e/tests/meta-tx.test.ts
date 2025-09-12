@@ -853,7 +853,7 @@ describe("meta-tx", () => {
       // Seller signs meta tx
       const { r, s, v, functionName, functionSignature } =
         await newSellerCoreSDK.signMetaTxDepositFunds({
-          sellerId: seller.id,
+          entityId: seller.id,
           fundsTokenAddress,
           fundsAmount,
           nonce
