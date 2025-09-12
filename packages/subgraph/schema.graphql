@@ -524,6 +524,11 @@ enum PriceType {
   DISCOVERY
 }
 
+enum OfferCreator {
+  SELLER
+  BUYER
+}
+
 type RoyaltyRecipientXSeller @entity(immutable: false) {
   id: ID!
   seller: Seller!
@@ -587,7 +592,7 @@ type Offer @entity(immutable: false) {
   disputeResolver: DisputeResolver!
   disputeResolutionTerms: DisputeResolutionTermsEntity!
   sellerId: BigInt!
-  seller: Seller!
+  seller: Seller
   exchangeToken: ExchangeToken!
   priceType: Int!
   royaltyInfos: [RoyaltyInfo!]! @derivedFrom(field: "offer")
@@ -595,6 +600,9 @@ type Offer @entity(immutable: false) {
   voidedAt: BigInt
   exchanges: [Exchange!]! @derivedFrom(field: "offer")
   condition: ConditionEntity
+  creator: Int!
+  buyerId: BigInt!
+  buyer: Buyer
 
   "Range"
   range: RangeEntity
@@ -673,6 +681,7 @@ type Exchange @entity(immutable: false) {
   expired: Boolean!
   dispute: Dispute
   protocolFeeCollected: ProtocolFeeCollected @derivedFrom(field: "exchange")
+  mutualizerAddress: Bytes!
 }
 
 """
@@ -761,6 +770,7 @@ type DisputeResolutionTermsEntity @entity(immutable: false) {
   buyerEscalationDeposit: BigInt!
   disputeResolver: DisputeResolver!
   offer: Offer!
+  mutualizerAddress: Bytes!
 }
 
 type DisputeResolverFee @entity(immutable: false) {

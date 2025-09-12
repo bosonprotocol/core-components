@@ -11,6 +11,7 @@ import {
   DisputeResolver
 } from "../../generated/schema";
 import { saveExchangeToken } from "./token";
+import { ZERO_ADDRESS } from "../utils/eth";
 
 export function getDisputeResolutionTermsId(
   disputeResolverId: string,
@@ -42,7 +43,7 @@ export function saveDisputeResolutionTerms(
   terms.offer = offerId;
   terms.feeAmount = disputeResolutionTerms.feeAmount;
   terms.offer = offerId;
-  // TODO: add mutualizer when available in the struct
+  terms.mutualizerAddress = disputeResolutionTerms.mutualizerAddress;
   terms.save();
 
   return disputeResolutionTermsId;
@@ -71,6 +72,7 @@ export function saveDisputeResolutionTerms240(
   terms.offer = offerId;
   terms.feeAmount = disputeResolutionTerms.feeAmount;
   terms.offer = offerId;
+  terms.mutualizerAddress = Address.fromString(ZERO_ADDRESS);
   terms.save();
 
   return disputeResolutionTermsId;
@@ -98,6 +100,7 @@ export function saveDisputeResolutionTerms230(
   terms.disputeResolver = disputeResolutionTerms.disputeResolverId.toString();
   terms.feeAmount = disputeResolutionTerms.feeAmount;
   terms.offer = offerId;
+  terms.mutualizerAddress = Address.fromString(ZERO_ADDRESS);
   terms.save();
 
   return disputeResolutionTermsId;
@@ -125,6 +128,7 @@ export function saveDisputeResolutionTermsLegacy(
   terms.disputeResolver = disputeResolutionTerms.disputeResolverId.toString();
   terms.feeAmount = disputeResolutionTerms.feeAmount;
   terms.offer = offerId;
+  terms.mutualizerAddress = Address.fromString(ZERO_ADDRESS);
   terms.save();
 
   return disputeResolutionTermsId;

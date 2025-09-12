@@ -8,24 +8,31 @@ import {
 import {
   getRangeId,
   handleOfferCreatedEvent,
+  handleOfferCreatedEvent230,
+  handleOfferCreatedEvent240,
   handleOfferCreatedEventLegacy,
   handleOfferExtendedEvent,
   handleOfferRoyaltyInfoUpdatedEvent,
   handleOfferVoidedEvent,
+  handleOfferVoidedEvent240,
   handleRangeReservedEvent
 } from "../src/mappings/offer-handler";
 import {
   RoyaltyInfo,
   createOfferCreatedEvent,
+  createOfferCreatedEvent230,
+  createOfferCreatedEvent240,
   createOfferCreatedEventLegacy,
   createOfferExtendedEvent,
   createOfferRoyaltyInfoUpdatedEvent,
   createOfferVoidedEvent,
+  createOfferVoidedEvent240,
   createRangeReservedEvent,
   createSeller,
   mockExchangeTokenContractCalls
 } from "./mocks";
 import { Offer } from "../generated/schema";
+import { ZERO_ADDRESS } from "../src/utils/eth";
 
 const exchangeTokenAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const exchangeTokenDecimals = 18;
@@ -60,10 +67,10 @@ const disputeBuyerEscalationDeposit = 1;
 const collectionIndex = 0;
 const agentId = 1;
 const executedBy = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
-const royaltyInfo: RoyaltyInfo = new RoyaltyInfo(
-  ["0x0000000000000000000000000000000000000000"],
-  [0]
-);
+const royaltyInfo: RoyaltyInfo = new RoyaltyInfo([ZERO_ADDRESS], [0]);
+const creator = i8(0); // 0 = Seller, 1 = Buyer
+const buyerId = 0;
+const mutualizerAddress = ZERO_ADDRESS;
 
 const offerCreatedEvent = createOfferCreatedEvent(
   offerId,
@@ -93,7 +100,70 @@ const offerCreatedEvent = createOfferCreatedEvent(
   collectionIndex,
   agentId,
   executedBy,
+  royaltyInfo,
+  creator,
+  buyerId,
+  mutualizerAddress
+);
+
+const offerCreatedEvent240 = createOfferCreatedEvent240(
+  offerId,
+  sellerId,
+  price,
+  sellerDeposit,
+  protocolFee,
+  agentFee,
+  buyerCancelPenalty,
+  quantityAvailable,
+  validFromDate,
+  validUntilDate,
+  voucherRedeemableFromDate,
+  voucherRedeemableUntilDate,
+  disputePeriodDuration,
+  voucherValidDuration,
+  resolutionPeriodDuration,
+  exchangeTokenAddress,
+  disputeResolverId,
+  disputeEscalationResponsePeriod,
+  disputeFeeAmount,
+  disputeBuyerEscalationDeposit,
+  priceType,
+  "ipfs://" + metadataHash,
+  metadataHash,
+  false,
+  collectionIndex,
+  agentId,
+  executedBy,
   royaltyInfo
+);
+
+const offerCreatedEvent230 = createOfferCreatedEvent230(
+  offerId,
+  sellerId,
+  price,
+  sellerDeposit,
+  protocolFee,
+  agentFee,
+  buyerCancelPenalty,
+  quantityAvailable,
+  validFromDate,
+  validUntilDate,
+  voucherRedeemableFromDate,
+  voucherRedeemableUntilDate,
+  disputePeriodDuration,
+  voucherValidDuration,
+  resolutionPeriodDuration,
+  exchangeTokenAddress,
+  disputeResolverId,
+  disputeEscalationResponsePeriod,
+  disputeFeeAmount,
+  disputeBuyerEscalationDeposit,
+  "ipfs://" + metadataHash,
+  metadataHash,
+  false,
+  collectionIndex,
+  agentId,
+  executedBy
 );
 
 const offerCreatedEventLegacy = createOfferCreatedEventLegacy(
@@ -237,6 +307,34 @@ test("handle OfferVoidedEvent", () => {
   assert.fieldEquals("BaseMetadataEntity", "1-metadata", "voided", "true");
 });
 
+test("handle OfferVoidedEvent240", () => {
+  mockExchangeTokenContractCalls(
+    exchangeTokenAddress,
+    exchangeTokenDecimals,
+    exchangeTokenName,
+    exchangeTokenSymbol
+  );
+  mockIpfsFile(metadataHash, "tests/metadata/base.json");
+  createSeller(
+    1,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
+  );
+  handleOfferCreatedEvent240(offerCreatedEvent240);
+
+  const offerVoidedEvent = createOfferVoidedEvent240(
+    1,
+    1,
+    exchangeTokenAddress
+  );
+  handleOfferVoidedEvent240(offerVoidedEvent);
+
+  assert.fieldEquals("Offer", "1", "voided", "true");
+  assert.fieldEquals("BaseMetadataEntity", "1-metadata", "voided", "true");
+});
+
 test("handleOfferExtendedEvent", () => {
   mockExchangeTokenContractCalls(
     exchangeTokenAddress,
@@ -342,6 +440,68 @@ test("handleOfferCreatedEventLegacy", () => {
   );
 });
 
+test("handleOfferCreatedEvent230", () => {
+  mockExchangeTokenContractCalls(
+    exchangeTokenAddress,
+    exchangeTokenDecimals,
+    exchangeTokenName,
+    exchangeTokenSymbol
+  );
+  mockIpfsFile(metadataHash, "tests/metadata/base.json");
+  createSeller(
+    1,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
+  );
+  handleOfferCreatedEvent230(offerCreatedEvent230);
+  assert.fieldEquals("Offer", "1", "id", "1");
+  assert.fieldEquals(
+    "ExchangeToken",
+    exchangeTokenAddress.toLowerCase(),
+    "id",
+    exchangeTokenAddress.toLowerCase()
+  );
+  assert.fieldEquals(
+    "ExchangeToken",
+    exchangeTokenAddress.toLowerCase(),
+    "name",
+    exchangeTokenName
+  );
+});
+
+test("handleOfferCreatedEvent240", () => {
+  mockExchangeTokenContractCalls(
+    exchangeTokenAddress,
+    exchangeTokenDecimals,
+    exchangeTokenName,
+    exchangeTokenSymbol
+  );
+  mockIpfsFile(metadataHash, "tests/metadata/base.json");
+  createSeller(
+    1,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
+  );
+  handleOfferCreatedEvent240(offerCreatedEvent240);
+  assert.fieldEquals("Offer", "1", "id", "1");
+  assert.fieldEquals(
+    "ExchangeToken",
+    exchangeTokenAddress.toLowerCase(),
+    "id",
+    exchangeTokenAddress.toLowerCase()
+  );
+  assert.fieldEquals(
+    "ExchangeToken",
+    exchangeTokenAddress.toLowerCase(),
+    "name",
+    exchangeTokenName
+  );
+});
+
 test("handleOfferRoyaltyInfoUpdatedEvent", () => {
   mockExchangeTokenContractCalls(
     exchangeTokenAddress,
@@ -364,10 +524,7 @@ test("handleOfferRoyaltyInfoUpdatedEvent", () => {
   assert.assertTrue(royaltyInfos1.length == 1);
 
   const newRoyaltyInfo: RoyaltyInfo = new RoyaltyInfo(
-    [
-      "0x0000000000000000000000000000000000000000",
-      "0x0123456789012345678901234567890123456789"
-    ],
+    [ZERO_ADDRESS, "0x0123456789012345678901234567890123456789"],
     [10, 20]
   );
 

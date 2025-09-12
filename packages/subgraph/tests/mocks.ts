@@ -1,3 +1,4 @@
+import { OfferCreator } from "@bosonprotocol/common/src/types/enums";
 import {
   ConditionalCommitAuthorized,
   ExchangeCompleted,
@@ -61,6 +62,16 @@ import {
   OfferCreated as OfferCreatedLegacy,
   OfferCreatedOfferStruct as OfferCreatedOfferStructLegacy
 } from "../generated/BosonOfferHandlerLegacy/IBosonOfferHandlerLegacy";
+import {
+  OfferCreated as OfferCreated240,
+  OfferCreatedOfferStruct as OfferCreatedOfferStruct240,
+  OfferVoided as OfferVoided240,
+  OfferCreatedDisputeResolutionTermsStruct as OfferCreatedDisputeResolutionTermsStruct240
+} from "../generated/BosonOfferHandler240/IBosonOfferHandler240";
+import {
+  OfferCreated as OfferCreated230,
+  OfferCreatedOfferStruct as OfferCreatedOfferStruct230
+} from "../generated/BosonOfferHandler230/IBosonOfferHandler230";
 import { SellerUpdateApplied } from "../generated/BosonAccountHandler/IBosonAccountHandler";
 import { getProductId } from "../src/entities/metadata/product-v1/product";
 import {
@@ -81,7 +92,11 @@ import {
   GroupUpdated
 } from "../generated/BosonGroupHandler/IBosonGroupHandler";
 import { getDisputeResolutionTermsId } from "../src/entities/dispute-resolution";
-import { ContractURIChanged, VouchersPreMinted } from "../generated/BosonAccountHandler/IBosonVoucher";
+import {
+  ContractURIChanged,
+  VouchersPreMinted
+} from "../generated/BosonAccountHandler/IBosonVoucher";
+import { ZERO_ADDRESS } from "../src/utils/eth";
 
 export class RoyaltyInfo {
   recipients: string[];
@@ -120,7 +135,10 @@ export function createOfferCreatedEvent(
   collectionIndex: i32,
   agentId: i32,
   executedBy: string,
-  royaltyInfo: RoyaltyInfo
+  royaltyInfo: RoyaltyInfo,
+  creator: i8,
+  buyerId: i32,
+  mutualizerAddress: string
 ): OfferCreated {
   const offerCreatedEvent = changetype<OfferCreated>(newMockEvent());
   offerCreatedEvent.parameters = [];
@@ -137,6 +155,128 @@ export function createOfferCreatedEvent(
     "offer",
     ethereum.Value.fromTuple(
       createOfferStruct(
+        offerId,
+        sellerId,
+        price,
+        sellerDeposit,
+        buyerCancelPenalty,
+        quantityAvailable,
+        exchangeToken,
+        priceType,
+        metadataUri,
+        metadataHash,
+        voided,
+        collectionIndex,
+        royaltyInfo,
+        creator,
+        buyerId
+      )
+    )
+  );
+  const offerDatesParams = new ethereum.EventParam(
+    "offerDates",
+    ethereum.Value.fromTuple(
+      createOfferDatesStruct(
+        validFromDate,
+        validUntilDate,
+        voucherRedeemableFromDate,
+        voucherRedeemableUntilDate
+      )
+    )
+  );
+  const offerDurationsParams = new ethereum.EventParam(
+    "offerDurations",
+    ethereum.Value.fromTuple(
+      createOfferDurationsStruct(
+        disputePeriodDuration,
+        voucherValidDuration,
+        resolutionPeriodDuration
+      )
+    )
+  );
+  const offerFeesParams = new ethereum.EventParam(
+    "offerFees",
+    ethereum.Value.fromTuple(createOfferFeesStruct(protocolFee, agentFee))
+  );
+  const disputeResolutionTermsParams = new ethereum.EventParam(
+    "disputeResolutionTerms",
+    ethereum.Value.fromTuple(
+      createDisputeResolutionTermsStruct(
+        disputeResolverId,
+        disputeEscalationResponsePeriod,
+        disputeFeeAmount,
+        disputeBuyerEscalationDeposit,
+        mutualizerAddress
+      )
+    )
+  );
+  const agentIdParam = new ethereum.EventParam(
+    "agentId",
+    ethereum.Value.fromI32(agentId)
+  );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
+
+  offerCreatedEvent.parameters.push(offerIdParam);
+  offerCreatedEvent.parameters.push(sellerIdParam);
+  offerCreatedEvent.parameters.push(offerParam);
+  offerCreatedEvent.parameters.push(offerDatesParams);
+  offerCreatedEvent.parameters.push(offerDurationsParams);
+  offerCreatedEvent.parameters.push(disputeResolutionTermsParams);
+  offerCreatedEvent.parameters.push(offerFeesParams);
+  offerCreatedEvent.parameters.push(agentIdParam);
+  offerCreatedEvent.parameters.push(executedByParam);
+
+  return offerCreatedEvent;
+}
+
+export function createOfferCreatedEvent240(
+  offerId: i32,
+  sellerId: i32,
+  price: i32,
+  sellerDeposit: i32,
+  protocolFee: i32,
+  agentFee: i32,
+  buyerCancelPenalty: i32,
+  quantityAvailable: i32,
+  validFromDate: i32,
+  validUntilDate: i32,
+  voucherRedeemableFromDate: i32,
+  voucherRedeemableUntilDate: i32,
+  disputePeriodDuration: i32,
+  voucherValidDuration: i32,
+  resolutionPeriodDuration: i32,
+  exchangeToken: string,
+  disputeResolverId: i32,
+  disputeEscalationResponsePeriod: i32,
+  disputeFeeAmount: i32,
+  disputeBuyerEscalationDeposit: i32,
+  priceType: i8,
+  metadataUri: string,
+  metadataHash: string,
+  voided: boolean,
+  collectionIndex: i32,
+  agentId: i32,
+  executedBy: string,
+  royaltyInfo: RoyaltyInfo
+): OfferCreated240 {
+  const offerCreatedEvent = changetype<OfferCreated240>(newMockEvent());
+  offerCreatedEvent.parameters = [];
+
+  const offerIdParam = new ethereum.EventParam(
+    "offerId",
+    ethereum.Value.fromI32(offerId)
+  );
+  const sellerIdParam = new ethereum.EventParam(
+    "sellerId",
+    ethereum.Value.fromI32(sellerId)
+  );
+  const offerParam = new ethereum.EventParam(
+    "offer",
+    ethereum.Value.fromTuple(
+      createOfferStruct240(
         offerId,
         sellerId,
         price,
@@ -181,7 +321,122 @@ export function createOfferCreatedEvent(
   const disputeResolutionTermsParams = new ethereum.EventParam(
     "disputeResolutionTerms",
     ethereum.Value.fromTuple(
-      createDisputeResolutionTermsStruct(
+      createDisputeResolutionTermsStruct240(
+        disputeResolverId,
+        disputeEscalationResponsePeriod,
+        disputeFeeAmount,
+        disputeBuyerEscalationDeposit
+      )
+    )
+  );
+  const agentIdParam = new ethereum.EventParam(
+    "agentId",
+    ethereum.Value.fromI32(agentId)
+  );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
+
+  offerCreatedEvent.parameters.push(offerIdParam);
+  offerCreatedEvent.parameters.push(sellerIdParam);
+  offerCreatedEvent.parameters.push(offerParam);
+  offerCreatedEvent.parameters.push(offerDatesParams);
+  offerCreatedEvent.parameters.push(offerDurationsParams);
+  offerCreatedEvent.parameters.push(disputeResolutionTermsParams);
+  offerCreatedEvent.parameters.push(offerFeesParams);
+  offerCreatedEvent.parameters.push(agentIdParam);
+  offerCreatedEvent.parameters.push(executedByParam);
+
+  return offerCreatedEvent;
+}
+
+export function createOfferCreatedEvent230(
+  offerId: i32,
+  sellerId: i32,
+  price: i32,
+  sellerDeposit: i32,
+  protocolFee: i32,
+  agentFee: i32,
+  buyerCancelPenalty: i32,
+  quantityAvailable: i32,
+  validFromDate: i32,
+  validUntilDate: i32,
+  voucherRedeemableFromDate: i32,
+  voucherRedeemableUntilDate: i32,
+  disputePeriodDuration: i32,
+  voucherValidDuration: i32,
+  resolutionPeriodDuration: i32,
+  exchangeToken: string,
+  disputeResolverId: i32,
+  disputeEscalationResponsePeriod: i32,
+  disputeFeeAmount: i32,
+  disputeBuyerEscalationDeposit: i32,
+  metadataUri: string,
+  metadataHash: string,
+  voided: boolean,
+  collectionIndex: i32,
+  agentId: i32,
+  executedBy: string
+): OfferCreated230 {
+  const offerCreatedEvent = changetype<OfferCreated230>(newMockEvent());
+  offerCreatedEvent.parameters = [];
+
+  const offerIdParam = new ethereum.EventParam(
+    "offerId",
+    ethereum.Value.fromI32(offerId)
+  );
+  const sellerIdParam = new ethereum.EventParam(
+    "sellerId",
+    ethereum.Value.fromI32(sellerId)
+  );
+  const offerParam = new ethereum.EventParam(
+    "offer",
+    ethereum.Value.fromTuple(
+      createOfferStruct230(
+        offerId,
+        sellerId,
+        price,
+        sellerDeposit,
+        buyerCancelPenalty,
+        quantityAvailable,
+        exchangeToken,
+        metadataUri,
+        metadataHash,
+        voided,
+        collectionIndex
+      )
+    )
+  );
+  const offerDatesParams = new ethereum.EventParam(
+    "offerDates",
+    ethereum.Value.fromTuple(
+      createOfferDatesStruct(
+        validFromDate,
+        validUntilDate,
+        voucherRedeemableFromDate,
+        voucherRedeemableUntilDate
+      )
+    )
+  );
+  const offerDurationsParams = new ethereum.EventParam(
+    "offerDurations",
+    ethereum.Value.fromTuple(
+      createOfferDurationsStruct(
+        disputePeriodDuration,
+        voucherValidDuration,
+        resolutionPeriodDuration
+      )
+    )
+  );
+  const offerFeesParams = new ethereum.EventParam(
+    "offerFees",
+    ethereum.Value.fromTuple(createOfferFeesStruct(protocolFee, agentFee))
+  );
+  const disputeResolutionTermsParams = new ethereum.EventParam(
+    "disputeResolutionTerms",
+    ethereum.Value.fromTuple(
+      createDisputeResolutionTermsStruct240(
         disputeResolverId,
         disputeEscalationResponsePeriod,
         disputeFeeAmount,
@@ -294,7 +549,7 @@ export function createOfferCreatedEventLegacy(
   const disputeResolutionTermsParams = new ethereum.EventParam(
     "disputeResolutionTerms",
     ethereum.Value.fromTuple(
-      createDisputeResolutionTermsStruct(
+      createDisputeResolutionTermsStruct240(
         disputeResolverId,
         disputeEscalationResponsePeriod,
         disputeFeeAmount,
@@ -326,10 +581,38 @@ export function createOfferCreatedEventLegacy(
 
 export function createOfferVoidedEvent(
   offerId: i32,
-  sellerId: i32,
+  creatorId: i32,
   executedBy: string
 ): OfferVoided {
   const offerVoidedEvent = changetype<OfferVoided>(newMockEvent());
+  offerVoidedEvent.parameters = [];
+
+  const offerIdParam = new ethereum.EventParam(
+    "offerId",
+    ethereum.Value.fromI32(offerId)
+  );
+  const creatorIdParam = new ethereum.EventParam(
+    "creatorId",
+    ethereum.Value.fromI32(creatorId)
+  );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
+
+  offerVoidedEvent.parameters.push(offerIdParam);
+  offerVoidedEvent.parameters.push(creatorIdParam);
+  offerVoidedEvent.parameters.push(executedByParam);
+
+  return offerVoidedEvent;
+}
+
+export function createOfferVoidedEvent240(
+  offerId: i32,
+  sellerId: i32,
+  executedBy: string
+): OfferVoided240 {
+  const offerVoidedEvent = changetype<OfferVoided240>(newMockEvent());
   offerVoidedEvent.parameters = [];
 
   const offerIdParam = new ethereum.EventParam(
@@ -414,7 +697,10 @@ export function createBuyerCommittedEvent(
   exchangeStruct.push(ethereum.Value.fromI32(offerId));
   exchangeStruct.push(ethereum.Value.fromI32(buyerId));
   exchangeStruct.push(ethereum.Value.fromI32(0));
-  exchangeStruct.push(ethereum.Value.fromI32(0)); // COMMITTED
+  exchangeStruct.push(ethereum.Value.fromI32(0)); // state = COMMITTED
+  exchangeStruct.push(
+    ethereum.Value.fromAddress(Address.fromString(ZERO_ADDRESS))
+  ); // mutualizerAddress
 
   const offerIdParam = new ethereum.EventParam(
     "offerId",
@@ -654,9 +940,8 @@ export function createSellerUpdateAppliedEvent(
   executedBy: string,
   metadataUri: string
 ): SellerUpdateApplied {
-  const sellerUpdateAppliedEvent = changetype<SellerUpdateApplied>(
-    newMockEvent()
-  );
+  const sellerUpdateAppliedEvent =
+    changetype<SellerUpdateApplied>(newMockEvent());
   sellerUpdateAppliedEvent.parameters = [];
 
   const sellerIdParam = new ethereum.EventParam(
@@ -903,9 +1188,47 @@ export function createOfferStruct(
   metadataHash: string,
   voided: boolean,
   collectionIndex: i32,
-  royaltyInfo: RoyaltyInfo
+  royaltyInfo: RoyaltyInfo,
+  creator: i8,
+  buyerId: i32
 ): OfferCreatedOfferStruct {
   const tuple = new OfferCreatedOfferStruct();
+  tuple.push(ethereum.Value.fromI32(offerId));
+  tuple.push(ethereum.Value.fromI32(sellerId));
+  tuple.push(ethereum.Value.fromI32(price));
+  tuple.push(ethereum.Value.fromI32(sellerDeposit));
+  tuple.push(ethereum.Value.fromI32(buyerCancelPenalty));
+  tuple.push(ethereum.Value.fromI32(quantityAvailable));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(exchangeToken)));
+  tuple.push(ethereum.Value.fromI32(priceType));
+  tuple.push(ethereum.Value.fromI32(creator));
+  tuple.push(ethereum.Value.fromString(metadataUri));
+  tuple.push(ethereum.Value.fromString(metadataHash));
+  tuple.push(ethereum.Value.fromBoolean(voided));
+  tuple.push(ethereum.Value.fromI32(collectionIndex));
+  tuple.push(
+    ethereum.Value.fromTupleArray([createRoyaltyInfoStruct(royaltyInfo)])
+  );
+  tuple.push(ethereum.Value.fromI32(buyerId));
+  return tuple;
+}
+
+export function createOfferStruct240(
+  offerId: i32,
+  sellerId: i32,
+  price: i32,
+  sellerDeposit: i32,
+  buyerCancelPenalty: i32,
+  quantityAvailable: i32,
+  exchangeToken: string,
+  priceType: i8,
+  metadataUri: string,
+  metadataHash: string,
+  voided: boolean,
+  collectionIndex: i32,
+  royaltyInfo: RoyaltyInfo
+): OfferCreatedOfferStruct240 {
+  const tuple = new OfferCreatedOfferStruct240();
   tuple.push(ethereum.Value.fromI32(offerId));
   tuple.push(ethereum.Value.fromI32(sellerId));
   tuple.push(ethereum.Value.fromI32(price));
@@ -921,6 +1244,34 @@ export function createOfferStruct(
   tuple.push(
     ethereum.Value.fromTupleArray([createRoyaltyInfoStruct(royaltyInfo)])
   );
+  return tuple;
+}
+
+export function createOfferStruct230(
+  offerId: i32,
+  sellerId: i32,
+  price: i32,
+  sellerDeposit: i32,
+  buyerCancelPenalty: i32,
+  quantityAvailable: i32,
+  exchangeToken: string,
+  metadataUri: string,
+  metadataHash: string,
+  voided: boolean,
+  collectionIndex: i32
+): OfferCreatedOfferStruct230 {
+  const tuple = new OfferCreatedOfferStruct230();
+  tuple.push(ethereum.Value.fromI32(offerId));
+  tuple.push(ethereum.Value.fromI32(sellerId));
+  tuple.push(ethereum.Value.fromI32(price));
+  tuple.push(ethereum.Value.fromI32(sellerDeposit));
+  tuple.push(ethereum.Value.fromI32(buyerCancelPenalty));
+  tuple.push(ethereum.Value.fromI32(quantityAvailable));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(exchangeToken)));
+  tuple.push(ethereum.Value.fromString(metadataUri));
+  tuple.push(ethereum.Value.fromString(metadataHash));
+  tuple.push(ethereum.Value.fromBoolean(voided));
+  tuple.push(ethereum.Value.fromI32(collectionIndex));
   return tuple;
 }
 
@@ -1013,9 +1364,25 @@ export function createDisputeResolutionTermsStruct(
   disputeResolverId: i32,
   escalationResponsePeriod: i32,
   feeAmount: i32,
-  buyerEscalationDeposit: i32
+  buyerEscalationDeposit: i32,
+  mutualizerAddress: string
 ): OfferCreatedDisputeResolutionTermsStruct {
   const tuple = new OfferCreatedDisputeResolutionTermsStruct();
+  tuple.push(ethereum.Value.fromI32(disputeResolverId));
+  tuple.push(ethereum.Value.fromI32(escalationResponsePeriod));
+  tuple.push(ethereum.Value.fromI32(feeAmount));
+  tuple.push(ethereum.Value.fromI32(buyerEscalationDeposit));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(mutualizerAddress)));
+  return tuple;
+}
+
+export function createDisputeResolutionTermsStruct240(
+  disputeResolverId: i32,
+  escalationResponsePeriod: i32,
+  feeAmount: i32,
+  buyerEscalationDeposit: i32
+): OfferCreatedDisputeResolutionTermsStruct240 {
+  const tuple = new OfferCreatedDisputeResolutionTermsStruct240();
   tuple.push(ethereum.Value.fromI32(disputeResolverId));
   tuple.push(ethereum.Value.fromI32(escalationResponsePeriod));
   tuple.push(ethereum.Value.fromI32(feeAmount));
@@ -1319,6 +1686,8 @@ export function mockOffer(offerId: string, sellerId: string): Offer {
   offer.exchangeToken = "0xaaaaabbbbbcccccdddddeeeeefffff0000011111";
   offer.numberOfCommits = BigInt.fromI32(0);
   offer.numberOfRedemptions = BigInt.fromI32(0);
+  offer.creator = OfferCreator.Seller;
+  offer.buyerId = BigInt.fromI32(0);
   offer.save();
   return offer;
 }
@@ -1355,9 +1724,8 @@ export function createRoyaltyRecipientsChanged(
   minRoyaltyPercentages: i32[],
   executedBy: string
 ): RoyaltyRecipientsChanged {
-  const royaltyRecipientsChangedEvent = changetype<RoyaltyRecipientsChanged>(
-    newMockEvent()
-  );
+  const royaltyRecipientsChangedEvent =
+    changetype<RoyaltyRecipientsChanged>(newMockEvent());
   royaltyRecipientsChangedEvent.parameters = [];
   const sellerIdParam = new ethereum.EventParam(
     "sellerId",
@@ -1403,6 +1771,7 @@ export function mockExchange(
   exchange.committedDate = BigInt.zero();
   exchange.validUntilDate = BigInt.zero();
   exchange.expired = false;
+  exchange.mutualizerAddress = Address.fromString(ZERO_ADDRESS);
 
   exchange.save();
   return exchange;
@@ -1592,9 +1961,8 @@ export function createVoucherTransferredEvent(
   newBuyerId: i32,
   executedBy: string
 ): VoucherTransferred {
-  const voucherTransferredEvent = changetype<VoucherTransferred>(
-    newMockEvent()
-  );
+  const voucherTransferredEvent =
+    changetype<VoucherTransferred>(newMockEvent());
   voucherTransferredEvent.parameters = [];
   const offerIdParam = new ethereum.EventParam(
     "offerId",
@@ -1658,9 +2026,8 @@ export function createConditionalCommitAuthorizedEvent(
   commitCount: i32,
   maxCommits: i32
 ): ConditionalCommitAuthorized {
-  const conditionalCommitAuthorized = changetype<ConditionalCommitAuthorized>(
-    newMockEvent()
-  );
+  const conditionalCommitAuthorized =
+    changetype<ConditionalCommitAuthorized>(newMockEvent());
   conditionalCommitAuthorized.parameters = [];
   const offerIdParam = new ethereum.EventParam(
     "offerId",
@@ -1701,9 +2068,8 @@ export function createOfferRoyaltyInfoUpdatedEvent(
   royaltyInfo: RoyaltyInfo,
   executedBy: string
 ): OfferRoyaltyInfoUpdated {
-  const offerRoyaltyInfoUpdated = changetype<OfferRoyaltyInfoUpdated>(
-    newMockEvent()
-  );
+  const offerRoyaltyInfoUpdated =
+    changetype<OfferRoyaltyInfoUpdated>(newMockEvent());
   offerRoyaltyInfoUpdated.parameters = [];
   const offerIdParam = new ethereum.EventParam(
     "offerId",

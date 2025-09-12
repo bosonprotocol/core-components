@@ -5,6 +5,7 @@ export * from "./accounts";
 export * from "./groups";
 export * from "./vouchers";
 export * from "./errors";
+export * from "./enums";
 
 import {
   AnyMetadata as _AnyMetadata,

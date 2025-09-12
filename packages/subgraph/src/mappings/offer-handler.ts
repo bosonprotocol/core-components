@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Address, BigInt, log } from "@graphprotocol/graph-ts";
+import { OfferCreator } from "@bosonprotocol/common/src/types/enums";
 import {
   OfferCreated,
   OfferVoided,
@@ -76,16 +77,21 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     offer.resolutionPeriodDuration = offerDurationsStruct.resolutionPeriod;
     offer.disputeResolverId = disputeResolutionTermsStruct.disputeResolverId;
     offer.sellerId = offerStruct.sellerId;
-    // TODO: offer.creator = offerStruct.creator;
-    // TODO: offer.buyerId = offerStruct.buyerId;
+    offer.creator = offerStruct.creator;
+    offer.buyerId = offerStruct.buyerId;
     offer.disputeResolver =
       disputeResolutionTermsStruct.disputeResolverId.toString();
     offer.disputeResolutionTerms = getDisputeResolutionTermsId(
       disputeResolutionTermsStruct.disputeResolverId.toString(),
       offerId.toString()
     );
-    offer.seller = offerStruct.sellerId.toString();
-    // TODO: offer.buyer = offerStruct.buyerId.toString();// We assume buyer entity is created. How?
+    if (offerStruct.creator == OfferCreator.Buyer) {
+      offer.seller = null;
+      offer.buyer = offerStruct.buyerId.toString();
+    } else {
+      offer.seller = offerStruct.sellerId.toString();
+      offer.buyer = null;
+    }
     offer.exchangeToken = offerStruct.exchangeToken.toHexString();
     offer.metadataUri = offerStruct.metadataUri;
     offer.metadataHash = offerStruct.metadataHash;
@@ -227,6 +233,8 @@ export function handleOfferCreatedEvent240(event: OfferCreated240): void {
     offer.resolutionPeriodDuration = offerDurationsStruct.resolutionPeriod;
     offer.disputeResolverId = disputeResolutionTermsStruct.disputeResolverId;
     offer.sellerId = offerStruct.sellerId;
+    offer.creator = i8(OfferCreator.Seller);
+    offer.buyerId = BigInt.fromI32(0);
     offer.disputeResolver =
       disputeResolutionTermsStruct.disputeResolverId.toString();
     offer.disputeResolutionTerms = getDisputeResolutionTermsId(
@@ -338,6 +346,8 @@ export function handleOfferCreatedEvent230(event: OfferCreated230): void {
     offer.numberOfRedemptions = BigInt.fromI32(0);
     offer.priceType = i8(0); // default value for legacy offers
     // TODO: set default royalty recipients for legacy offers?
+    offer.creator = i8(OfferCreator.Seller);
+    offer.buyerId = BigInt.fromI32(0);
 
     offer.save();
 
@@ -421,6 +431,8 @@ export function handleOfferCreatedEventLegacy(event: OfferCreatedLegacy): void {
     offer.numberOfRedemptions = BigInt.fromI32(0);
     offer.priceType = i8(0); // default value for legacy offers
     // TODO: set default royalty recipients for legacy offers?
+    offer.creator = i8(OfferCreator.Seller);
+    offer.buyerId = BigInt.fromI32(0);
 
     offer.save();
 

@@ -1,4 +1,4 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { Address, BigInt, log } from "@graphprotocol/graph-ts";
 import {
   BuyerCommitted,
   VoucherCanceled,
@@ -18,6 +18,7 @@ import {
   saveConditionalCommitAuthorizedEventLog,
   saveExchangeEventLogs
 } from "../entities/event-log";
+import { ZERO_ADDRESS } from "../utils/eth";
 
 export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   const exchangeFromEvent = event.params.exchange;
@@ -37,7 +38,7 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
 
     saveMetadata(offer, offer.createdAt);
 
-    exchange.seller = offer.seller;
+    exchange.seller = offer.seller as string; // We assume seller in defined when BuyerCommitted is emitted
     exchange.disputeResolver = offer.disputeResolver;
   } else {
     log.warning("Unable to find Offer with id '{}'", [
@@ -52,7 +53,7 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   exchange.committedDate = event.params.voucher.committedDate;
   exchange.validUntilDate = event.params.voucher.validUntilDate;
   exchange.expired = false;
-  // TODO: store exchangeFromEvent.mutualizer?
+  exchange.mutualizerAddress = exchangeFromEvent.mutualizerAddress;
 
   exchange.save();
 
@@ -84,7 +85,7 @@ export function handleBuyerCommittedEvent240(event: BuyerCommitted240): void {
 
     saveMetadata(offer, offer.createdAt);
 
-    exchange.seller = offer.seller;
+    exchange.seller = offer.seller as string; // We assume seller in defined when BuyerCommitted is emitted
     exchange.disputeResolver = offer.disputeResolver;
   } else {
     log.warning("Unable to find Offer with id '{}'", [
@@ -99,6 +100,7 @@ export function handleBuyerCommittedEvent240(event: BuyerCommitted240): void {
   exchange.committedDate = event.params.voucher.committedDate;
   exchange.validUntilDate = event.params.voucher.validUntilDate;
   exchange.expired = false;
+  exchange.mutualizerAddress = Address.fromString(ZERO_ADDRESS);
 
   exchange.save();
 

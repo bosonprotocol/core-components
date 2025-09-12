@@ -4,6 +4,7 @@ import { ERC20 } from "../../generated/BosonOfferHandler/ERC20";
 import { ERC20SymbolBytes } from "../../generated/BosonOfferHandler/ERC20SymbolBytes";
 import { ERC20NameBytes } from "../../generated/BosonOfferHandler/ERC20NameBytes";
 import { ExchangeToken } from "../../generated/schema";
+import { ZERO_ADDRESS } from "../utils/eth";
 
 export function saveExchangeToken(exchangeTokenAddress: Address): void {
   let exchangeToken = ExchangeToken.load(exchangeTokenAddress.toHexString());
@@ -100,5 +101,5 @@ export function isNullEthValue(value: string): boolean {
 }
 
 export function isZeroAddress(value: string): boolean {
-  return value == "0x0000000000000000000000000000000000000000";
+  return value == ZERO_ADDRESS;
 }
