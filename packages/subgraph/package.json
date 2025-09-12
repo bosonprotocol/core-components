@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.97.1",
-    "@graphprotocol/graph-ts": "0.33.0"
+    "@graphprotocol/graph-ts": "^0.38.1"
   },
   "devDependencies": {
     "assemblyscript": "0.19.23",
