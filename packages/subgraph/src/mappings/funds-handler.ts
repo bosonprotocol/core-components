@@ -164,11 +164,11 @@ export function handleProtocolFeeCollectedEvent(
     ]);
   } else {
     protocolFeeCollected = new ProtocolFeeCollected(protocolFeeCollectedId);
+    protocolFeeCollected.amount = event.params.amount;
+    protocolFeeCollected.exchange = event.params.exchangeId.toString();
+    protocolFeeCollected.exchangeId = event.params.exchangeId;
+    protocolFeeCollected.exchangeToken = event.params.exchangeToken;
+    protocolFeeCollected.executedBy = event.params.executedBy;
+    protocolFeeCollected.save();
   }
-  protocolFeeCollected.amount = event.params.amount;
-  protocolFeeCollected.exchange = event.params.exchangeId.toString();
-  protocolFeeCollected.exchangeId = event.params.exchangeId;
-  protocolFeeCollected.exchangeToken = event.params.exchangeToken;
-  protocolFeeCollected.executedBy = event.params.executedBy;
-  protocolFeeCollected.save();
 }

@@ -29,11 +29,10 @@ export function saveProductV1Variations(
 
     if (!variation) {
       variation = new ProductV1Variation(variationId);
+      variation.type = variationType;
+      variation.option = variationOption;
+      variation.save();
     }
-
-    variation.type = variationType;
-    variation.option = variationOption;
-    variation.save();
 
     savedVariations.push(variationId);
   }

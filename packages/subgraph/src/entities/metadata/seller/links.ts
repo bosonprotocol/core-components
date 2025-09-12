@@ -30,8 +30,8 @@ export function saveContactLinks(
       sellerContactLink = new SellerContactLink(id);
       sellerContactLink.url = url;
       sellerContactLink.tag = tag;
+      sellerContactLink.save();
     }
-    sellerContactLink.save();
 
     savedContactLinks.push(id);
   }
@@ -63,8 +63,8 @@ export function saveSocialLinks(
       sellerSocialLink = new SellerSocialLink(id);
       sellerSocialLink.url = url;
       sellerSocialLink.tag = tag;
+      sellerSocialLink.save();
     }
-    sellerSocialLink.save();
 
     savedSocialLinks.push(id);
   }
