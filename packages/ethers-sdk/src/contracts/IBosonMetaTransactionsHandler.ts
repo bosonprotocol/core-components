@@ -22,7 +22,7 @@ export interface IBosonMetaTransactionsHandlerInterface
   extends utils.Interface {
   contractName: "IBosonMetaTransactionsHandler";
   functions: {
-    "executeMetaTransaction(address,string,bytes,uint256,bytes32,bytes32,uint8)": FunctionFragment;
+    "executeMetaTransaction(address,string,bytes,uint256,bytes)": FunctionFragment;
     "isFunctionAllowlisted(string)": FunctionFragment;
     "isUsedNonce(address,uint256)": FunctionFragment;
     "setAllowlistedFunctions(bytes32[],bool)": FunctionFragment;
@@ -30,15 +30,7 @@ export interface IBosonMetaTransactionsHandlerInterface
 
   encodeFunctionData(
     functionFragment: "executeMetaTransaction",
-    values: [
-      string,
-      string,
-      BytesLike,
-      BigNumberish,
-      BytesLike,
-      BytesLike,
-      BigNumberish
-    ]
+    values: [string, string, BytesLike, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "isFunctionAllowlisted",
@@ -133,9 +125,7 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
       _functionName: string,
       _functionSignature: BytesLike,
       _nonce: BigNumberish,
-      _sigR: BytesLike,
-      _sigS: BytesLike,
-      _sigV: BigNumberish,
+      _signature: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -167,9 +157,7 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
     _functionName: string,
     _functionSignature: BytesLike,
     _nonce: BigNumberish,
-    _sigR: BytesLike,
-    _sigS: BytesLike,
-    _sigV: BigNumberish,
+    _signature: BytesLike,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -201,9 +189,7 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
       _functionName: string,
       _functionSignature: BytesLike,
       _nonce: BigNumberish,
-      _sigR: BytesLike,
-      _sigS: BytesLike,
-      _sigV: BigNumberish,
+      _signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<string>;
 
@@ -262,9 +248,7 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
       _functionName: string,
       _functionSignature: BytesLike,
       _nonce: BigNumberish,
-      _sigR: BytesLike,
-      _sigS: BytesLike,
-      _sigV: BigNumberish,
+      _signature: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -297,9 +281,7 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
       _functionName: string,
       _functionSignature: BytesLike,
       _nonce: BigNumberish,
-      _sigR: BytesLike,
-      _sigS: BytesLike,
-      _sigV: BigNumberish,
+      _signature: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

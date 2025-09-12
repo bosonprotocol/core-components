@@ -5,9 +5,9 @@
 import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
 import type {
-  IBosonGroupHandler,
-  IBosonGroupHandlerInterface,
-} from "../IBosonGroupHandler";
+  IBosonConfigHandler,
+  IBosonConfigHandlerInterface,
+} from "../IBosonConfigHandler";
 
 const _abi = [
   {
@@ -932,86 +932,9 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint256",
-        name: "groupId",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "sellerId",
-        type: "uint256",
-      },
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "sellerId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256[]",
-            name: "offerIds",
-            type: "uint256[]",
-          },
-        ],
-        indexed: false,
-        internalType: "struct BosonTypes.Group",
-        name: "group",
-        type: "tuple",
-      },
-      {
-        components: [
-          {
-            internalType: "enum BosonTypes.EvaluationMethod",
-            name: "method",
-            type: "uint8",
-          },
-          {
-            internalType: "enum BosonTypes.TokenType",
-            name: "tokenType",
-            type: "uint8",
-          },
-          {
-            internalType: "address",
-            name: "tokenAddress",
-            type: "address",
-          },
-          {
-            internalType: "enum BosonTypes.GatingType",
-            name: "gating",
-            type: "uint8",
-          },
-          {
-            internalType: "uint256",
-            name: "minTokenId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "threshold",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxCommits",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxTokenId",
-            type: "uint256",
-          },
-        ],
-        indexed: false,
-        internalType: "struct BosonTypes.Condition",
-        name: "condition",
-        type: "tuple",
+        internalType: "address",
+        name: "accessControllerAddress",
+        type: "address",
       },
       {
         indexed: true,
@@ -1020,7 +943,7 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "GroupCreated",
+    name: "AccessControllerAddressChanged",
     type: "event",
   },
   {
@@ -1028,86 +951,15 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint256",
-        name: "groupId",
-        type: "uint256",
+        internalType: "enum BosonTypes.AuthTokenType",
+        name: "authTokenType",
+        type: "uint8",
       },
       {
         indexed: true,
-        internalType: "uint256",
-        name: "sellerId",
-        type: "uint256",
-      },
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "sellerId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256[]",
-            name: "offerIds",
-            type: "uint256[]",
-          },
-        ],
-        indexed: false,
-        internalType: "struct BosonTypes.Group",
-        name: "group",
-        type: "tuple",
-      },
-      {
-        components: [
-          {
-            internalType: "enum BosonTypes.EvaluationMethod",
-            name: "method",
-            type: "uint8",
-          },
-          {
-            internalType: "enum BosonTypes.TokenType",
-            name: "tokenType",
-            type: "uint8",
-          },
-          {
-            internalType: "address",
-            name: "tokenAddress",
-            type: "address",
-          },
-          {
-            internalType: "enum BosonTypes.GatingType",
-            name: "gating",
-            type: "uint8",
-          },
-          {
-            internalType: "uint256",
-            name: "minTokenId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "threshold",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxCommits",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxTokenId",
-            type: "uint256",
-          },
-        ],
-        indexed: false,
-        internalType: "struct BosonTypes.Condition",
-        name: "condition",
-        type: "tuple",
+        internalType: "address",
+        name: "authTokenContract",
+        type: "address",
       },
       {
         indexed: true,
@@ -1116,187 +968,352 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "GroupUpdated",
+    name: "AuthTokenContractChanged",
     type: "event",
   },
   {
+    anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "address",
+        name: "beaconProxyAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "BeaconProxyAddressChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
         internalType: "uint256",
-        name: "_groupId",
+        name: "buyerEscalationFeePercentage",
         type: "uint256",
       },
       {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "BuyerEscalationFeePercentageChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        indexed: false,
         internalType: "uint256[]",
-        name: "_offerIds",
+        name: "priceRanges",
         type: "uint256[]",
       },
-    ],
-    name: "addOffersToGroup",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
       {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "sellerId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256[]",
-            name: "offerIds",
-            type: "uint256[]",
-          },
-        ],
-        internalType: "struct BosonTypes.Group",
-        name: "_group",
-        type: "tuple",
+        indexed: false,
+        internalType: "uint256[]",
+        name: "feePercentages",
+        type: "uint256[]",
       },
       {
-        components: [
-          {
-            internalType: "enum BosonTypes.EvaluationMethod",
-            name: "method",
-            type: "uint8",
-          },
-          {
-            internalType: "enum BosonTypes.TokenType",
-            name: "tokenType",
-            type: "uint8",
-          },
-          {
-            internalType: "address",
-            name: "tokenAddress",
-            type: "address",
-          },
-          {
-            internalType: "enum BosonTypes.GatingType",
-            name: "gating",
-            type: "uint8",
-          },
-          {
-            internalType: "uint256",
-            name: "minTokenId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "threshold",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxCommits",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxTokenId",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct BosonTypes.Condition",
-        name: "_condition",
-        type: "tuple",
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
       },
     ],
-    name: "createGroup",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    name: "FeeTableUpdated",
+    type: "event",
   },
   {
+    anonymous: false,
     inputs: [
       {
+        indexed: false,
         internalType: "uint256",
-        name: "_groupId",
+        name: "maxEscalationResponsePeriod",
         type: "uint256",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
-    name: "getGroup",
+    name: "MaxEscalationResponsePeriodChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "maxPremintedVouchers",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "MaxPremintedVouchersChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "maxResolutionPeriod",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "MaxResolutionPeriodChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint16",
+        name: "maxRoyaltyPercentage",
+        type: "uint16",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "MaxRoyaltyPercentageChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint16",
+        name: "maxTotalOfferFeePercentage",
+        type: "uint16",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "MaxTotalOfferFeePercentageChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "minDisputePeriod",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "MinDisputePeriodChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "minResolutionPeriod",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "MinResolutionPeriodChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "priceDiscoveryAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "PriceDiscoveryAddressChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "feeFlatBoson",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "ProtocolFeeFlatBosonChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "feePercentage",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "ProtocolFeePercentageChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "TokenAddressChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "treasuryAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "TreasuryAddressChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "voucherBeaconAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "VoucherBeaconAddressChanged",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "getAccessControllerAddress",
     outputs: [
       {
-        internalType: "bool",
-        name: "exists",
-        type: "bool",
+        internalType: "address",
+        name: "",
+        type: "address",
       },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
       {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "sellerId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256[]",
-            name: "offerIds",
-            type: "uint256[]",
-          },
-        ],
-        internalType: "struct BosonTypes.Group",
-        name: "group",
-        type: "tuple",
+        internalType: "enum BosonTypes.AuthTokenType",
+        name: "_authTokenType",
+        type: "uint8",
       },
+    ],
+    name: "getAuthTokenContract",
+    outputs: [
       {
-        components: [
-          {
-            internalType: "enum BosonTypes.EvaluationMethod",
-            name: "method",
-            type: "uint8",
-          },
-          {
-            internalType: "enum BosonTypes.TokenType",
-            name: "tokenType",
-            type: "uint8",
-          },
-          {
-            internalType: "address",
-            name: "tokenAddress",
-            type: "address",
-          },
-          {
-            internalType: "enum BosonTypes.GatingType",
-            name: "gating",
-            type: "uint8",
-          },
-          {
-            internalType: "uint256",
-            name: "minTokenId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "threshold",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxCommits",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxTokenId",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct BosonTypes.Condition",
-        name: "condition",
-        type: "tuple",
+        internalType: "address",
+        name: "",
+        type: "address",
       },
     ],
     stateMutability: "view",
@@ -1304,11 +1321,165 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "getNextGroupId",
+    name: "getBeaconProxyAddress",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getBuyerEscalationDepositPercentage",
     outputs: [
       {
         internalType: "uint256",
-        name: "nextGroupId",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getMaxEscalationResponsePeriod",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getMaxResolutionPeriod",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getMaxRoyaltyPercentage",
+    outputs: [
+      {
+        internalType: "uint16",
+        name: "",
+        type: "uint16",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getMaxTotalOfferFeePercentage",
+    outputs: [
+      {
+        internalType: "uint16",
+        name: "",
+        type: "uint16",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getMinDisputePeriod",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getMinResolutionPeriod",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getPriceDiscoveryAddress",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_exchangeToken",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_price",
+        type: "uint256",
+      },
+    ],
+    name: "getProtocolFee",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getProtocolFeeFlatBoson",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getProtocolFeePercentage",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
         type: "uint256",
       },
     ],
@@ -1318,17 +1489,130 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "_exchangeToken",
+        type: "address",
+      },
+      {
         internalType: "uint256",
-        name: "_groupId",
+        name: "_price",
         type: "uint256",
+      },
+    ],
+    name: "getProtocolFeePercentage",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_tokenAddress",
+        type: "address",
+      },
+    ],
+    name: "getProtocolFeeTable",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "priceRanges",
+        type: "uint256[]",
       },
       {
         internalType: "uint256[]",
-        name: "_offerIds",
+        name: "feePercentages",
         type: "uint256[]",
       },
     ],
-    name: "removeOffersFromGroup",
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTokenAddress",
+    outputs: [
+      {
+        internalType: "address payable",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTreasuryAddress",
+    outputs: [
+      {
+        internalType: "address payable",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getVoucherBeaconAddress",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_accessControllerAddress",
+        type: "address",
+      },
+    ],
+    name: "setAccessControllerAddress",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "enum BosonTypes.AuthTokenType",
+        name: "_authTokenType",
+        type: "uint8",
+      },
+      {
+        internalType: "address",
+        name: "_authTokenContract",
+        type: "address",
+      },
+    ],
+    name: "setAuthTokenContract",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_beaconProxyAddress",
+        type: "address",
+      },
+    ],
+    name: "setBeaconProxyAddress",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1337,73 +1621,205 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_groupId",
+        name: "_buyerEscalationDepositPercentage",
         type: "uint256",
       },
+    ],
+    name: "setBuyerEscalationDepositPercentage",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
       {
-        components: [
-          {
-            internalType: "enum BosonTypes.EvaluationMethod",
-            name: "method",
-            type: "uint8",
-          },
-          {
-            internalType: "enum BosonTypes.TokenType",
-            name: "tokenType",
-            type: "uint8",
-          },
-          {
-            internalType: "address",
-            name: "tokenAddress",
-            type: "address",
-          },
-          {
-            internalType: "enum BosonTypes.GatingType",
-            name: "gating",
-            type: "uint8",
-          },
-          {
-            internalType: "uint256",
-            name: "minTokenId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "threshold",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxCommits",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxTokenId",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct BosonTypes.Condition",
-        name: "_condition",
-        type: "tuple",
+        internalType: "uint256",
+        name: "_maxEscalationResponsePeriod",
+        type: "uint256",
       },
     ],
-    name: "setGroupCondition",
+    name: "setMaxEscalationResponsePeriod",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_maxResolutionPeriod",
+        type: "uint256",
+      },
+    ],
+    name: "setMaxResolutionPeriod",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint16",
+        name: "_maxRoyaltyPercentage",
+        type: "uint16",
+      },
+    ],
+    name: "setMaxRoyaltyPercentage",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint16",
+        name: "_maxTotalOfferFeePercentage",
+        type: "uint16",
+      },
+    ],
+    name: "setMaxTotalOfferFeePercentage",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_minDisputePeriod",
+        type: "uint256",
+      },
+    ],
+    name: "setMinDisputePeriod",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_minResolutionPeriod",
+        type: "uint256",
+      },
+    ],
+    name: "setMinResolutionPeriod",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_priceDiscovery",
+        type: "address",
+      },
+    ],
+    name: "setPriceDiscoveryAddress",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_protocolFeeFlatBoson",
+        type: "uint256",
+      },
+    ],
+    name: "setProtocolFeeFlatBoson",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_protocolFeePercentage",
+        type: "uint256",
+      },
+    ],
+    name: "setProtocolFeePercentage",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_tokenAddress",
+        type: "address",
+      },
+      {
+        internalType: "uint256[]",
+        name: "_priceRanges",
+        type: "uint256[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "_feePercentages",
+        type: "uint256[]",
+      },
+    ],
+    name: "setProtocolFeeTable",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address payable",
+        name: "_tokenAddress",
+        type: "address",
+      },
+    ],
+    name: "setTokenAddress",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address payable",
+        name: "_treasuryAddress",
+        type: "address",
+      },
+    ],
+    name: "setTreasuryAddress",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_voucherBeaconAddress",
+        type: "address",
+      },
+    ],
+    name: "setVoucherBeaconAddress",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
 ];
 
-export class IBosonGroupHandler__factory {
+export class IBosonConfigHandler__factory {
   static readonly abi = _abi;
-  static createInterface(): IBosonGroupHandlerInterface {
-    return new utils.Interface(_abi) as IBosonGroupHandlerInterface;
+  static createInterface(): IBosonConfigHandlerInterface {
+    return new utils.Interface(_abi) as IBosonConfigHandlerInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): IBosonGroupHandler {
-    return new Contract(address, _abi, signerOrProvider) as IBosonGroupHandler;
+  ): IBosonConfigHandler {
+    return new Contract(address, _abi, signerOrProvider) as IBosonConfigHandler;
   }
 }

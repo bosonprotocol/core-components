@@ -166,11 +166,13 @@ export declare namespace BosonTypes {
     quantityAvailable: BigNumberish;
     exchangeToken: string;
     priceType: BigNumberish;
+    creator: BigNumberish;
     metadataUri: string;
     metadataHash: string;
     voided: boolean;
     collectionIndex: BigNumberish;
     royaltyInfo: BosonTypes.RoyaltyInfoStruct[];
+    buyerId: BigNumberish;
   };
 
   export type OfferStructOutput = [
@@ -182,11 +184,13 @@ export declare namespace BosonTypes {
     BigNumber,
     string,
     number,
+    number,
     string,
     string,
     boolean,
     BigNumber,
-    BosonTypes.RoyaltyInfoStructOutput[]
+    BosonTypes.RoyaltyInfoStructOutput[],
+    BigNumber
   ] & {
     id: BigNumber;
     sellerId: BigNumber;
@@ -196,11 +200,13 @@ export declare namespace BosonTypes {
     quantityAvailable: BigNumber;
     exchangeToken: string;
     priceType: number;
+    creator: number;
     metadataUri: string;
     metadataHash: string;
     voided: boolean;
     collectionIndex: BigNumber;
     royaltyInfo: BosonTypes.RoyaltyInfoStructOutput[];
+    buyerId: BigNumber;
   };
 
   export type OfferDatesStruct = {
@@ -239,18 +245,21 @@ export declare namespace BosonTypes {
     escalationResponsePeriod: BigNumberish;
     feeAmount: BigNumberish;
     buyerEscalationDeposit: BigNumberish;
+    mutualizerAddress: string;
   };
 
   export type DisputeResolutionTermsStructOutput = [
     BigNumber,
     BigNumber,
     BigNumber,
-    BigNumber
+    BigNumber,
+    string
   ] & {
     disputeResolverId: BigNumber;
     escalationResponsePeriod: BigNumber;
     feeAmount: BigNumber;
     buyerEscalationDeposit: BigNumber;
+    mutualizerAddress: string;
   };
 
   export type OfferFeesStruct = {
@@ -339,6 +348,16 @@ export declare namespace BosonTypes {
     tokenType: number;
   };
 
+  export type DRParametersStruct = {
+    disputeResolverId: BigNumberish;
+    mutualizerAddress: string;
+  };
+
+  export type DRParametersStructOutput = [BigNumber, string] & {
+    disputeResolverId: BigNumber;
+    mutualizerAddress: string;
+  };
+
   export type PremintParametersStruct = {
     reservedRangeLength: BigNumberish;
     to: string;
@@ -365,22 +384,22 @@ export declare namespace BosonTypes {
 export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
   contractName: "IBosonOrchestrationHandler";
   functions: {
-    "createOfferAddToGroup((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256)": FunctionFragment;
-    "createOfferAndTwinWithBundle((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,uint256,uint256,uint256,uint256,address,uint8),uint256,uint256)": FunctionFragment;
-    "createOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256)": FunctionFragment;
-    "createOfferWithConditionAndTwinAndBundle((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),uint256,uint256)": FunctionFragment;
-    "createPremintedOfferAddToGroup((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,address),uint256,uint256,uint256)": FunctionFragment;
-    "createPremintedOfferAndTwinWithBundle((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,address),(uint256,uint256,uint256,uint256,uint256,address,uint8),uint256,uint256)": FunctionFragment;
-    "createPremintedOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256)": FunctionFragment;
-    "createPremintedOfferWithConditionAndTwinAndBundle((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),uint256,uint256)": FunctionFragment;
-    "createSellerAndOffer((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
-    "createSellerAndOfferAndTwinWithBundle((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
-    "createSellerAndOfferWithCondition((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
-    "createSellerAndOfferWithConditionAndTwinAndBundle((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
-    "createSellerAndPremintedOffer((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,address),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
-    "createSellerAndPremintedOfferAndTwinWithBundle((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,address),(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
-    "createSellerAndPremintedOfferWithCondition((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
-    "createSellerAndPremintedOfferWithConditionAndTwinAndBundle((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
+    "createOfferAddToGroup((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),uint256,uint256,uint256)": FunctionFragment;
+    "createOfferAndTwinWithBundle((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint256,uint256,uint256,uint256,uint256,address,uint8),uint256,uint256)": FunctionFragment;
+    "createOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256)": FunctionFragment;
+    "createOfferWithConditionAndTwinAndBundle((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),uint256,uint256)": FunctionFragment;
+    "createPremintedOfferAddToGroup((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint256,address),uint256,uint256,uint256)": FunctionFragment;
+    "createPremintedOfferAndTwinWithBundle((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint256,address),(uint256,uint256,uint256,uint256,uint256,address,uint8),uint256,uint256)": FunctionFragment;
+    "createPremintedOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256)": FunctionFragment;
+    "createPremintedOfferWithConditionAndTwinAndBundle((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),uint256,uint256)": FunctionFragment;
+    "createSellerAndOffer((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
+    "createSellerAndOfferAndTwinWithBundle((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
+    "createSellerAndOfferWithCondition((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
+    "createSellerAndOfferWithConditionAndTwinAndBundle((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
+    "createSellerAndPremintedOffer((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint256,address),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
+    "createSellerAndPremintedOfferAndTwinWithBundle((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint256,address),(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
+    "createSellerAndPremintedOfferWithCondition((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
+    "createSellerAndPremintedOfferWithConditionAndTwinAndBundle((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256,bytes32),uint256,uint256)": FunctionFragment;
     "raiseAndEscalateDispute(uint256)": FunctionFragment;
   };
 
@@ -390,7 +409,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BigNumberish,
       BigNumberish,
       BigNumberish
@@ -402,7 +421,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.TwinStruct,
       BigNumberish,
       BigNumberish
@@ -414,7 +433,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.ConditionStruct,
       BigNumberish,
       BigNumberish
@@ -426,7 +445,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.ConditionStruct,
       BosonTypes.TwinStruct,
       BigNumberish,
@@ -439,7 +458,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.PremintParametersStruct,
       BigNumberish,
       BigNumberish,
@@ -452,7 +471,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.PremintParametersStruct,
       BosonTypes.TwinStruct,
       BigNumberish,
@@ -465,7 +484,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.PremintParametersStruct,
       BosonTypes.ConditionStruct,
       BigNumberish,
@@ -478,7 +497,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.PremintParametersStruct,
       BosonTypes.ConditionStruct,
       BosonTypes.TwinStruct,
@@ -493,7 +512,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.AuthTokenStruct,
       BosonTypes.VoucherInitValuesStruct,
       BigNumberish,
@@ -507,7 +526,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.TwinStruct,
       BosonTypes.AuthTokenStruct,
       BosonTypes.VoucherInitValuesStruct,
@@ -522,7 +541,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.ConditionStruct,
       BosonTypes.AuthTokenStruct,
       BosonTypes.VoucherInitValuesStruct,
@@ -537,7 +556,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.ConditionStruct,
       BosonTypes.TwinStruct,
       BosonTypes.AuthTokenStruct,
@@ -553,7 +572,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.PremintParametersStruct,
       BosonTypes.AuthTokenStruct,
       BosonTypes.VoucherInitValuesStruct,
@@ -568,7 +587,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.PremintParametersStruct,
       BosonTypes.TwinStruct,
       BosonTypes.AuthTokenStruct,
@@ -584,7 +603,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.PremintParametersStruct,
       BosonTypes.ConditionStruct,
       BosonTypes.AuthTokenStruct,
@@ -600,7 +619,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
-      BigNumberish,
+      BosonTypes.DRParametersStruct,
       BosonTypes.PremintParametersStruct,
       BosonTypes.ConditionStruct,
       BosonTypes.TwinStruct,
@@ -700,8 +719,10 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
     "DisputeResolverUpdatePending(uint256,tuple,address)": EventFragment;
     "GroupCreated(uint256,uint256,tuple,tuple,address)": EventFragment;
     "GroupUpdated(uint256,uint256,tuple,tuple,address)": EventFragment;
+    "NonListedOfferVoided(bytes32,uint256,address)": EventFragment;
     "OfferCreated(uint256,uint256,tuple,tuple,tuple,tuple,tuple,uint256,address)": EventFragment;
     "OfferExtended(uint256,uint256,uint256,address)": EventFragment;
+    "OfferMutualizerUpdated(uint256,uint256,address,address)": EventFragment;
     "OfferRoyaltyInfoUpdated(uint256,uint256,tuple,address)": EventFragment;
     "OfferVoided(uint256,uint256,address)": EventFragment;
     "RangeReserved(uint256,uint256,uint256,uint256,address,address)": EventFragment;
@@ -735,8 +756,10 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
   ): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GroupCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GroupUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NonListedOfferVoided"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OfferCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OfferExtended"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OfferMutualizerUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OfferRoyaltyInfoUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OfferVoided"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RangeReserved"): EventFragment;
@@ -957,6 +980,14 @@ export type GroupUpdatedEvent = TypedEvent<
 
 export type GroupUpdatedEventFilter = TypedEventFilter<GroupUpdatedEvent>;
 
+export type NonListedOfferVoidedEvent = TypedEvent<
+  [string, BigNumber, string],
+  { offerHash: string; offererId: BigNumber; executedBy: string }
+>;
+
+export type NonListedOfferVoidedEventFilter =
+  TypedEventFilter<NonListedOfferVoidedEvent>;
+
 export type OfferCreatedEvent = TypedEvent<
   [
     BigNumber,
@@ -996,6 +1027,19 @@ export type OfferExtendedEvent = TypedEvent<
 
 export type OfferExtendedEventFilter = TypedEventFilter<OfferExtendedEvent>;
 
+export type OfferMutualizerUpdatedEvent = TypedEvent<
+  [BigNumber, BigNumber, string, string],
+  {
+    offerId: BigNumber;
+    sellerId: BigNumber;
+    newMutualizer: string;
+    executedBy: string;
+  }
+>;
+
+export type OfferMutualizerUpdatedEventFilter =
+  TypedEventFilter<OfferMutualizerUpdatedEvent>;
+
 export type OfferRoyaltyInfoUpdatedEvent = TypedEvent<
   [BigNumber, BigNumber, BosonTypes.RoyaltyInfoStructOutput, string],
   {
@@ -1011,7 +1055,7 @@ export type OfferRoyaltyInfoUpdatedEventFilter =
 
 export type OfferVoidedEvent = TypedEvent<
   [BigNumber, BigNumber, string],
-  { offerId: BigNumber; sellerId: BigNumber; executedBy: string }
+  { offerId: BigNumber; creatorId: BigNumber; executedBy: string }
 >;
 
 export type OfferVoidedEventFilter = TypedEventFilter<OfferVoidedEvent>;
@@ -1189,7 +1233,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _groupId: BigNumberish,
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
@@ -1200,7 +1244,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
@@ -1211,7 +1255,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
@@ -1222,7 +1266,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       _agentId: BigNumberish,
@@ -1234,7 +1278,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _groupId: BigNumberish,
       _agentId: BigNumberish,
@@ -1246,7 +1290,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _agentId: BigNumberish,
@@ -1258,7 +1302,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _agentId: BigNumberish,
@@ -1270,7 +1314,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
@@ -1284,7 +1328,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
       _agentId: BigNumberish,
@@ -1297,7 +1341,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -1311,7 +1355,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -1325,7 +1369,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -1340,7 +1384,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -1354,7 +1398,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -1369,7 +1413,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -1384,7 +1428,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
@@ -1405,7 +1449,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _groupId: BigNumberish,
     _agentId: BigNumberish,
     _feeLimit: BigNumberish,
@@ -1416,7 +1460,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _twin: BosonTypes.TwinStruct,
     _agentId: BigNumberish,
     _feeLimit: BigNumberish,
@@ -1427,7 +1471,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _condition: BosonTypes.ConditionStruct,
     _agentId: BigNumberish,
     _feeLimit: BigNumberish,
@@ -1438,7 +1482,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _condition: BosonTypes.ConditionStruct,
     _twin: BosonTypes.TwinStruct,
     _agentId: BigNumberish,
@@ -1450,7 +1494,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _premintParameters: BosonTypes.PremintParametersStruct,
     _groupId: BigNumberish,
     _agentId: BigNumberish,
@@ -1462,7 +1506,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _premintParameters: BosonTypes.PremintParametersStruct,
     _twin: BosonTypes.TwinStruct,
     _agentId: BigNumberish,
@@ -1474,7 +1518,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _premintParameters: BosonTypes.PremintParametersStruct,
     _condition: BosonTypes.ConditionStruct,
     _agentId: BigNumberish,
@@ -1486,7 +1530,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _premintParameters: BosonTypes.PremintParametersStruct,
     _condition: BosonTypes.ConditionStruct,
     _twin: BosonTypes.TwinStruct,
@@ -1500,7 +1544,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _authToken: BosonTypes.AuthTokenStruct,
     _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
     _agentId: BigNumberish,
@@ -1513,7 +1557,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _twin: BosonTypes.TwinStruct,
     _authToken: BosonTypes.AuthTokenStruct,
     _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -1527,7 +1571,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _condition: BosonTypes.ConditionStruct,
     _authToken: BosonTypes.AuthTokenStruct,
     _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -1541,7 +1585,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _condition: BosonTypes.ConditionStruct,
     _twin: BosonTypes.TwinStruct,
     _authToken: BosonTypes.AuthTokenStruct,
@@ -1556,7 +1600,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _premintParameters: BosonTypes.PremintParametersStruct,
     _authToken: BosonTypes.AuthTokenStruct,
     _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -1570,7 +1614,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _premintParameters: BosonTypes.PremintParametersStruct,
     _twin: BosonTypes.TwinStruct,
     _authToken: BosonTypes.AuthTokenStruct,
@@ -1585,7 +1629,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _premintParameters: BosonTypes.PremintParametersStruct,
     _condition: BosonTypes.ConditionStruct,
     _authToken: BosonTypes.AuthTokenStruct,
@@ -1600,7 +1644,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
-    _disputeResolverId: BigNumberish,
+    _drParameters: BosonTypes.DRParametersStruct,
     _premintParameters: BosonTypes.PremintParametersStruct,
     _condition: BosonTypes.ConditionStruct,
     _twin: BosonTypes.TwinStruct,
@@ -1621,7 +1665,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _groupId: BigNumberish,
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
@@ -1632,7 +1676,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
@@ -1643,7 +1687,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
@@ -1654,7 +1698,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       _agentId: BigNumberish,
@@ -1666,7 +1710,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _groupId: BigNumberish,
       _agentId: BigNumberish,
@@ -1678,7 +1722,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _agentId: BigNumberish,
@@ -1690,7 +1734,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _agentId: BigNumberish,
@@ -1702,7 +1746,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
@@ -1716,7 +1760,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
       _agentId: BigNumberish,
@@ -1729,7 +1773,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -1743,7 +1787,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -1757,7 +1801,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -1772,7 +1816,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -1786,7 +1830,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -1801,7 +1845,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -1816,7 +1860,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
@@ -2019,6 +2063,17 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       executedBy?: string | null
     ): GroupUpdatedEventFilter;
 
+    "NonListedOfferVoided(bytes32,uint256,address)"(
+      offerHash?: null,
+      offererId?: BigNumberish | null,
+      executedBy?: string | null
+    ): NonListedOfferVoidedEventFilter;
+    NonListedOfferVoided(
+      offerHash?: null,
+      offererId?: BigNumberish | null,
+      executedBy?: string | null
+    ): NonListedOfferVoidedEventFilter;
+
     "OfferCreated(uint256,uint256,tuple,tuple,tuple,tuple,tuple,uint256,address)"(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
@@ -2055,6 +2110,19 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       executedBy?: string | null
     ): OfferExtendedEventFilter;
 
+    "OfferMutualizerUpdated(uint256,uint256,address,address)"(
+      offerId?: BigNumberish | null,
+      sellerId?: BigNumberish | null,
+      newMutualizer?: string | null,
+      executedBy?: null
+    ): OfferMutualizerUpdatedEventFilter;
+    OfferMutualizerUpdated(
+      offerId?: BigNumberish | null,
+      sellerId?: BigNumberish | null,
+      newMutualizer?: string | null,
+      executedBy?: null
+    ): OfferMutualizerUpdatedEventFilter;
+
     "OfferRoyaltyInfoUpdated(uint256,uint256,tuple,address)"(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
@@ -2070,12 +2138,12 @@ export interface IBosonOrchestrationHandler extends BaseContract {
 
     "OfferVoided(uint256,uint256,address)"(
       offerId?: BigNumberish | null,
-      sellerId?: BigNumberish | null,
+      creatorId?: BigNumberish | null,
       executedBy?: string | null
     ): OfferVoidedEventFilter;
     OfferVoided(
       offerId?: BigNumberish | null,
-      sellerId?: BigNumberish | null,
+      creatorId?: BigNumberish | null,
       executedBy?: string | null
     ): OfferVoidedEventFilter;
 
@@ -2227,7 +2295,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _groupId: BigNumberish,
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
@@ -2238,7 +2306,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
@@ -2249,7 +2317,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
@@ -2260,7 +2328,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       _agentId: BigNumberish,
@@ -2272,7 +2340,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _groupId: BigNumberish,
       _agentId: BigNumberish,
@@ -2284,7 +2352,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _agentId: BigNumberish,
@@ -2296,7 +2364,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _agentId: BigNumberish,
@@ -2308,7 +2376,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
@@ -2322,7 +2390,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
       _agentId: BigNumberish,
@@ -2335,7 +2403,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -2349,7 +2417,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -2363,7 +2431,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -2378,7 +2446,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -2392,7 +2460,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -2407,7 +2475,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -2422,7 +2490,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
@@ -2444,7 +2512,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _groupId: BigNumberish,
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
@@ -2455,7 +2523,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
@@ -2466,7 +2534,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
@@ -2477,7 +2545,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       _agentId: BigNumberish,
@@ -2489,7 +2557,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _groupId: BigNumberish,
       _agentId: BigNumberish,
@@ -2501,7 +2569,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _agentId: BigNumberish,
@@ -2513,7 +2581,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _agentId: BigNumberish,
@@ -2525,7 +2593,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
@@ -2539,7 +2607,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
       _agentId: BigNumberish,
@@ -2552,7 +2620,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -2566,7 +2634,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -2580,7 +2648,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -2595,7 +2663,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _authToken: BosonTypes.AuthTokenStruct,
       _voucherInitValues: BosonTypes.VoucherInitValuesStruct,
@@ -2609,7 +2677,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _twin: BosonTypes.TwinStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -2624,7 +2692,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _authToken: BosonTypes.AuthTokenStruct,
@@ -2639,7 +2707,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
-      _disputeResolverId: BigNumberish,
+      _drParameters: BosonTypes.DRParametersStruct,
       _premintParameters: BosonTypes.PremintParametersStruct,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,

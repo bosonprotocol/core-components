@@ -5,9 +5,9 @@
 import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
 import type {
-  IBosonGroupHandler,
-  IBosonGroupHandlerInterface,
-} from "../IBosonGroupHandler";
+  IBosonPriceDiscoveryHandler,
+  IBosonPriceDiscoveryHandlerInterface,
+} from "../IBosonPriceDiscoveryHandler";
 
 const _abi = [
   {
@@ -933,13 +933,19 @@ const _abi = [
       {
         indexed: true,
         internalType: "uint256",
-        name: "groupId",
+        name: "offerId",
         type: "uint256",
       },
       {
         indexed: true,
         internalType: "uint256",
-        name: "sellerId",
+        name: "buyerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
         type: "uint256",
       },
       {
@@ -951,76 +957,71 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "sellerId",
+            name: "offerId",
             type: "uint256",
           },
           {
-            internalType: "uint256[]",
-            name: "offerIds",
-            type: "uint256[]",
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "finalizedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.ExchangeState",
+            name: "state",
+            type: "uint8",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
           },
         ],
         indexed: false,
-        internalType: "struct BosonTypes.Group",
-        name: "group",
+        internalType: "struct BosonTypes.Exchange",
+        name: "exchange",
         type: "tuple",
       },
       {
         components: [
           {
-            internalType: "enum BosonTypes.EvaluationMethod",
-            name: "method",
-            type: "uint8",
-          },
-          {
-            internalType: "enum BosonTypes.TokenType",
-            name: "tokenType",
-            type: "uint8",
-          },
-          {
-            internalType: "address",
-            name: "tokenAddress",
-            type: "address",
-          },
-          {
-            internalType: "enum BosonTypes.GatingType",
-            name: "gating",
-            type: "uint8",
-          },
-          {
             internalType: "uint256",
-            name: "minTokenId",
+            name: "committedDate",
             type: "uint256",
           },
           {
             internalType: "uint256",
-            name: "threshold",
+            name: "validUntilDate",
             type: "uint256",
           },
           {
             internalType: "uint256",
-            name: "maxCommits",
+            name: "redeemedDate",
             type: "uint256",
           },
           {
-            internalType: "uint256",
-            name: "maxTokenId",
-            type: "uint256",
+            internalType: "bool",
+            name: "expired",
+            type: "bool",
           },
         ],
         indexed: false,
-        internalType: "struct BosonTypes.Condition",
-        name: "condition",
+        internalType: "struct BosonTypes.Voucher",
+        name: "voucher",
         type: "tuple",
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: "address",
         name: "executedBy",
         type: "address",
       },
     ],
-    name: "GroupCreated",
+    name: "BuyerCommitted",
     type: "event",
   },
   {
@@ -1029,7 +1030,448 @@ const _abi = [
       {
         indexed: true,
         internalType: "uint256",
-        name: "groupId",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
+          {
+            components: [
+              {
+                internalType: "address payable[]",
+                name: "recipients",
+                type: "address[]",
+              },
+              {
+                internalType: "uint256[]",
+                name: "bps",
+                type: "uint256[]",
+              },
+            ],
+            internalType: "struct BosonTypes.RoyaltyInfo",
+            name: "royaltyInfo",
+            type: "tuple",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.SellerOfferParams",
+        name: "sellerParams",
+        type: "tuple",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "BuyerInitiatedOfferSetSellerParams",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "enum BosonTypes.GatingType",
+        name: "gating",
+        type: "uint8",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "buyerAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "commitCount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "maxCommits",
+        type: "uint256",
+      },
+    ],
+    name: "ConditionalCommitAuthorized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "feeAmount",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "mutualizerAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "DRFeeRequested",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "returnAmount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address payable",
+        name: "mutualizerAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "DRFeeReturned",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "buyerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "ExchangeCompleted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "entityId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "exchangeToken",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "FundsEncumbered",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "entityId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "exchangeToken",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "FundsReleased",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "withdrawnTo",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "FundsWithdrawn",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "exchangeToken",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "ProtocolFeeCollected",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "offerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "finalizedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.ExchangeState",
+            name: "state",
+            type: "uint8",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.Exchange",
+        name: "exchange",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "committedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntilDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "redeemedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "bool",
+            name: "expired",
+            type: "bool",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.Voucher",
+        name: "voucher",
+        type: "tuple",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "SellerCommitted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "twinId",
         type: "uint256",
       },
       {
@@ -1051,27 +1493,19 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "uint256[]",
-            name: "offerIds",
-            type: "uint256[]",
-          },
-        ],
-        indexed: false,
-        internalType: "struct BosonTypes.Group",
-        name: "group",
-        type: "tuple",
-      },
-      {
-        components: [
-          {
-            internalType: "enum BosonTypes.EvaluationMethod",
-            name: "method",
-            type: "uint8",
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
           },
           {
-            internalType: "enum BosonTypes.TokenType",
-            name: "tokenType",
-            type: "uint8",
+            internalType: "uint256",
+            name: "supplyAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
           },
           {
             internalType: "address",
@@ -1079,34 +1513,14 @@ const _abi = [
             type: "address",
           },
           {
-            internalType: "enum BosonTypes.GatingType",
-            name: "gating",
+            internalType: "enum BosonTypes.TokenType",
+            name: "tokenType",
             type: "uint8",
-          },
-          {
-            internalType: "uint256",
-            name: "minTokenId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "threshold",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxCommits",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxTokenId",
-            type: "uint256",
           },
         ],
         indexed: false,
-        internalType: "struct BosonTypes.Condition",
-        name: "condition",
+        internalType: "struct BosonTypes.Twin",
+        name: "twin",
         type: "tuple",
       },
       {
@@ -1116,294 +1530,372 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "GroupUpdated",
+    name: "TwinCreated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "twinId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "TwinDeleted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "twinId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "TwinTransferFailed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "twinCount",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "TwinTransferSkipped",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "twinId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "TwinTransferred",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "VoucherCanceled",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "VoucherExpired",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "validUntil",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "VoucherExtended",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "VoucherRedeemed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "VoucherRevoked",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "newBuyerId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "VoucherTransferred",
     type: "event",
   },
   {
     inputs: [
       {
+        internalType: "address payable",
+        name: "_buyer",
+        type: "address",
+      },
+      {
         internalType: "uint256",
-        name: "_groupId",
+        name: "_tokenIdOrOfferId",
         type: "uint256",
       },
       {
-        internalType: "uint256[]",
-        name: "_offerIds",
-        type: "uint256[]",
-      },
-    ],
-    name: "addOffersToGroup",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         components: [
           {
             internalType: "uint256",
-            name: "id",
+            name: "price",
             type: "uint256",
           },
           {
-            internalType: "uint256",
-            name: "sellerId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256[]",
-            name: "offerIds",
-            type: "uint256[]",
-          },
-        ],
-        internalType: "struct BosonTypes.Group",
-        name: "_group",
-        type: "tuple",
-      },
-      {
-        components: [
-          {
-            internalType: "enum BosonTypes.EvaluationMethod",
-            name: "method",
-            type: "uint8",
-          },
-          {
-            internalType: "enum BosonTypes.TokenType",
-            name: "tokenType",
+            internalType: "enum BosonTypes.Side",
+            name: "side",
             type: "uint8",
           },
           {
             internalType: "address",
-            name: "tokenAddress",
+            name: "priceDiscoveryContract",
             type: "address",
-          },
-          {
-            internalType: "enum BosonTypes.GatingType",
-            name: "gating",
-            type: "uint8",
-          },
-          {
-            internalType: "uint256",
-            name: "minTokenId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "threshold",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxCommits",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxTokenId",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct BosonTypes.Condition",
-        name: "_condition",
-        type: "tuple",
-      },
-    ],
-    name: "createGroup",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_groupId",
-        type: "uint256",
-      },
-    ],
-    name: "getGroup",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "exists",
-        type: "bool",
-      },
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "sellerId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256[]",
-            name: "offerIds",
-            type: "uint256[]",
-          },
-        ],
-        internalType: "struct BosonTypes.Group",
-        name: "group",
-        type: "tuple",
-      },
-      {
-        components: [
-          {
-            internalType: "enum BosonTypes.EvaluationMethod",
-            name: "method",
-            type: "uint8",
-          },
-          {
-            internalType: "enum BosonTypes.TokenType",
-            name: "tokenType",
-            type: "uint8",
           },
           {
             internalType: "address",
-            name: "tokenAddress",
+            name: "conduit",
             type: "address",
           },
           {
-            internalType: "enum BosonTypes.GatingType",
-            name: "gating",
-            type: "uint8",
-          },
-          {
-            internalType: "uint256",
-            name: "minTokenId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "threshold",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxCommits",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxTokenId",
-            type: "uint256",
+            internalType: "bytes",
+            name: "priceDiscoveryData",
+            type: "bytes",
           },
         ],
-        internalType: "struct BosonTypes.Condition",
-        name: "condition",
+        internalType: "struct BosonTypes.PriceDiscovery",
+        name: "_priceDiscovery",
         type: "tuple",
       },
     ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getNextGroupId",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "nextGroupId",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_groupId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256[]",
-        name: "_offerIds",
-        type: "uint256[]",
-      },
-    ],
-    name: "removeOffersFromGroup",
+    name: "commitToPriceDiscoveryOffer",
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_groupId",
-        type: "uint256",
-      },
-      {
-        components: [
-          {
-            internalType: "enum BosonTypes.EvaluationMethod",
-            name: "method",
-            type: "uint8",
-          },
-          {
-            internalType: "enum BosonTypes.TokenType",
-            name: "tokenType",
-            type: "uint8",
-          },
-          {
-            internalType: "address",
-            name: "tokenAddress",
-            type: "address",
-          },
-          {
-            internalType: "enum BosonTypes.GatingType",
-            name: "gating",
-            type: "uint8",
-          },
-          {
-            internalType: "uint256",
-            name: "minTokenId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "threshold",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxCommits",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "maxTokenId",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct BosonTypes.Condition",
-        name: "_condition",
-        type: "tuple",
-      },
-    ],
-    name: "setGroupCondition",
-    outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
 ];
 
-export class IBosonGroupHandler__factory {
+export class IBosonPriceDiscoveryHandler__factory {
   static readonly abi = _abi;
-  static createInterface(): IBosonGroupHandlerInterface {
-    return new utils.Interface(_abi) as IBosonGroupHandlerInterface;
+  static createInterface(): IBosonPriceDiscoveryHandlerInterface {
+    return new utils.Interface(_abi) as IBosonPriceDiscoveryHandlerInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): IBosonGroupHandler {
-    return new Contract(address, _abi, signerOrProvider) as IBosonGroupHandler;
+  ): IBosonPriceDiscoveryHandler {
+    return new Contract(
+      address,
+      _abi,
+      signerOrProvider
+    ) as IBosonPriceDiscoveryHandler;
   }
 }

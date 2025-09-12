@@ -8,7 +8,7 @@ import {
   BytesLike,
   CallOverrides,
   ContractTransaction,
-  Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -113,273 +113,42 @@ export declare namespace BosonTypes {
     tokenType: number;
   };
 
-  export type OfferFeesStruct = {
-    protocolFee: BigNumberish;
-    agentFee: BigNumberish;
-  };
-
-  export type OfferFeesStructOutput = [BigNumber, BigNumber] & {
-    protocolFee: BigNumber;
-    agentFee: BigNumber;
-  };
-
-  export type ConditionStruct = {
-    method: BigNumberish;
-    tokenType: BigNumberish;
-    tokenAddress: string;
-    gating: BigNumberish;
-    minTokenId: BigNumberish;
-    threshold: BigNumberish;
-    maxCommits: BigNumberish;
-    maxTokenId: BigNumberish;
-  };
-
-  export type ConditionStructOutput = [
-    number,
-    number,
-    string,
-    number,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
-  ] & {
-    method: number;
-    tokenType: number;
-    tokenAddress: string;
-    gating: number;
-    minTokenId: BigNumber;
-    threshold: BigNumber;
-    maxCommits: BigNumber;
-    maxTokenId: BigNumber;
-  };
-
-  export type TwinReceiptStruct = {
-    twinId: BigNumberish;
-    tokenId: BigNumberish;
-    amount: BigNumberish;
-    tokenAddress: string;
-    tokenType: BigNumberish;
-  };
-
-  export type TwinReceiptStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    string,
-    number
-  ] & {
-    twinId: BigNumber;
-    tokenId: BigNumber;
-    amount: BigNumber;
-    tokenAddress: string;
-    tokenType: number;
-  };
-
-  export type ReceiptStruct = {
-    exchangeId: BigNumberish;
-    offerId: BigNumberish;
-    buyerId: BigNumberish;
-    sellerId: BigNumberish;
+  export type PriceDiscoveryStruct = {
     price: BigNumberish;
-    sellerDeposit: BigNumberish;
-    buyerCancelPenalty: BigNumberish;
-    offerFees: BosonTypes.OfferFeesStruct;
-    agentId: BigNumberish;
-    exchangeToken: string;
-    finalizedDate: BigNumberish;
-    condition: BosonTypes.ConditionStruct;
-    committedDate: BigNumberish;
-    redeemedDate: BigNumberish;
-    voucherExpired: boolean;
-    disputeResolverId: BigNumberish;
-    disputedDate: BigNumberish;
-    escalatedDate: BigNumberish;
-    disputeState: BigNumberish;
-    twinReceipts: BosonTypes.TwinReceiptStruct[];
+    side: BigNumberish;
+    priceDiscoveryContract: string;
+    conduit: string;
+    priceDiscoveryData: BytesLike;
   };
 
-  export type ReceiptStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BosonTypes.OfferFeesStructOutput,
-    BigNumber,
-    string,
-    BigNumber,
-    BosonTypes.ConditionStructOutput,
-    BigNumber,
-    BigNumber,
-    boolean,
-    BigNumber,
-    BigNumber,
+  export type PriceDiscoveryStructOutput = [
     BigNumber,
     number,
-    BosonTypes.TwinReceiptStructOutput[]
+    string,
+    string,
+    string
   ] & {
-    exchangeId: BigNumber;
-    offerId: BigNumber;
-    buyerId: BigNumber;
-    sellerId: BigNumber;
     price: BigNumber;
-    sellerDeposit: BigNumber;
-    buyerCancelPenalty: BigNumber;
-    offerFees: BosonTypes.OfferFeesStructOutput;
-    agentId: BigNumber;
-    exchangeToken: string;
-    finalizedDate: BigNumber;
-    condition: BosonTypes.ConditionStructOutput;
-    committedDate: BigNumber;
-    redeemedDate: BigNumber;
-    voucherExpired: boolean;
-    disputeResolverId: BigNumber;
-    disputedDate: BigNumber;
-    escalatedDate: BigNumber;
-    disputeState: number;
-    twinReceipts: BosonTypes.TwinReceiptStructOutput[];
+    side: number;
+    priceDiscoveryContract: string;
+    conduit: string;
+    priceDiscoveryData: string;
   };
 }
 
-export interface IBosonExchangeHandlerInterface extends utils.Interface {
-  contractName: "IBosonExchangeHandler";
+export interface IBosonPriceDiscoveryHandlerInterface extends utils.Interface {
+  contractName: "IBosonPriceDiscoveryHandler";
   functions: {
-    "cancelVoucher(uint256)": FunctionFragment;
-    "completeExchange(uint256)": FunctionFragment;
-    "completeExchangeBatch(uint256[])": FunctionFragment;
-    "expireVoucher(uint256)": FunctionFragment;
-    "extendVoucher(uint256,uint256)": FunctionFragment;
-    "getEIP2981Royalties(uint256,bool)": FunctionFragment;
-    "getExchange(uint256)": FunctionFragment;
-    "getExchangeState(uint256)": FunctionFragment;
-    "getNextExchangeId()": FunctionFragment;
-    "getReceipt(uint256)": FunctionFragment;
-    "getRoyalties(uint256)": FunctionFragment;
-    "isExchangeFinalized(uint256)": FunctionFragment;
-    "onVoucherTransferred(uint256,address)": FunctionFragment;
-    "redeemVoucher(uint256)": FunctionFragment;
-    "revokeVoucher(uint256)": FunctionFragment;
+    "commitToPriceDiscoveryOffer(address,uint256,(uint256,uint8,address,address,bytes))": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "cancelVoucher",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "completeExchange",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "completeExchangeBatch",
-    values: [BigNumberish[]]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "expireVoucher",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "extendVoucher",
-    values: [BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getEIP2981Royalties",
-    values: [BigNumberish, boolean]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getExchange",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getExchangeState",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getNextExchangeId",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getReceipt",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getRoyalties",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "isExchangeFinalized",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "onVoucherTransferred",
-    values: [BigNumberish, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "redeemVoucher",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "revokeVoucher",
-    values: [BigNumberish]
+    functionFragment: "commitToPriceDiscoveryOffer",
+    values: [string, BigNumberish, BosonTypes.PriceDiscoveryStruct]
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "cancelVoucher",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "completeExchange",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "completeExchangeBatch",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "expireVoucher",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "extendVoucher",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getEIP2981Royalties",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getExchange",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getExchangeState",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getNextExchangeId",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getReceipt", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getRoyalties",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "isExchangeFinalized",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "onVoucherTransferred",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "redeemVoucher",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "revokeVoucher",
+    functionFragment: "commitToPriceDiscoveryOffer",
     data: BytesLike
   ): Result;
 
@@ -705,13 +474,13 @@ export type VoucherTransferredEvent = TypedEvent<
 export type VoucherTransferredEventFilter =
   TypedEventFilter<VoucherTransferredEvent>;
 
-export interface IBosonExchangeHandler extends BaseContract {
-  contractName: "IBosonExchangeHandler";
+export interface IBosonPriceDiscoveryHandler extends BaseContract {
+  contractName: "IBosonPriceDiscoveryHandler";
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: IBosonExchangeHandlerInterface;
+  interface: IBosonPriceDiscoveryHandlerInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -733,278 +502,26 @@ export interface IBosonExchangeHandler extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    cancelVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    completeExchange(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    completeExchangeBatch(
-      _exchangeIds: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    expireVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    extendVoucher(
-      _exchangeId: BigNumberish,
-      _validUntilDate: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    getEIP2981Royalties(
-      _queryId: BigNumberish,
-      _isExchangeId: boolean,
-      overrides?: CallOverrides
-    ): Promise<
-      [string, BigNumber] & { receiver: string; royaltyPercentage: BigNumber }
-    >;
-
-    getExchange(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [
-        boolean,
-        BosonTypes.ExchangeStructOutput,
-        BosonTypes.VoucherStructOutput
-      ] & {
-        exists: boolean;
-        exchange: BosonTypes.ExchangeStructOutput;
-        voucher: BosonTypes.VoucherStructOutput;
-      }
-    >;
-
-    getExchangeState(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[boolean, number] & { exists: boolean; state: number }>;
-
-    getNextExchangeId(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { nextExchangeId: BigNumber }>;
-
-    getReceipt(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [BosonTypes.ReceiptStructOutput] & {
-        receipt: BosonTypes.ReceiptStructOutput;
-      }
-    >;
-
-    getRoyalties(
-      _tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [string[], BigNumber[]] & { recipients: string[]; bps: BigNumber[] }
-    >;
-
-    isExchangeFinalized(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[boolean, boolean] & { exists: boolean; isFinalized: boolean }>;
-
-    onVoucherTransferred(
-      _tokenId: BigNumberish,
-      _newBuyer: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    redeemVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    revokeVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    commitToPriceDiscoveryOffer(
+      _buyer: string,
+      _tokenIdOrOfferId: BigNumberish,
+      _priceDiscovery: BosonTypes.PriceDiscoveryStruct,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
-  cancelVoucher(
-    _exchangeId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  completeExchange(
-    _exchangeId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  completeExchangeBatch(
-    _exchangeIds: BigNumberish[],
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  expireVoucher(
-    _exchangeId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  extendVoucher(
-    _exchangeId: BigNumberish,
-    _validUntilDate: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  getEIP2981Royalties(
-    _queryId: BigNumberish,
-    _isExchangeId: boolean,
-    overrides?: CallOverrides
-  ): Promise<
-    [string, BigNumber] & { receiver: string; royaltyPercentage: BigNumber }
-  >;
-
-  getExchange(
-    _exchangeId: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<
-    [
-      boolean,
-      BosonTypes.ExchangeStructOutput,
-      BosonTypes.VoucherStructOutput
-    ] & {
-      exists: boolean;
-      exchange: BosonTypes.ExchangeStructOutput;
-      voucher: BosonTypes.VoucherStructOutput;
-    }
-  >;
-
-  getExchangeState(
-    _exchangeId: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<[boolean, number] & { exists: boolean; state: number }>;
-
-  getNextExchangeId(overrides?: CallOverrides): Promise<BigNumber>;
-
-  getReceipt(
-    _exchangeId: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BosonTypes.ReceiptStructOutput>;
-
-  getRoyalties(
-    _tokenId: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<
-    [string[], BigNumber[]] & { recipients: string[]; bps: BigNumber[] }
-  >;
-
-  isExchangeFinalized(
-    _exchangeId: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<[boolean, boolean] & { exists: boolean; isFinalized: boolean }>;
-
-  onVoucherTransferred(
-    _tokenId: BigNumberish,
-    _newBuyer: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  redeemVoucher(
-    _exchangeId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  revokeVoucher(
-    _exchangeId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+  commitToPriceDiscoveryOffer(
+    _buyer: string,
+    _tokenIdOrOfferId: BigNumberish,
+    _priceDiscovery: BosonTypes.PriceDiscoveryStruct,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    cancelVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    completeExchange(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    completeExchangeBatch(
-      _exchangeIds: BigNumberish[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    expireVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    extendVoucher(
-      _exchangeId: BigNumberish,
-      _validUntilDate: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    getEIP2981Royalties(
-      _queryId: BigNumberish,
-      _isExchangeId: boolean,
-      overrides?: CallOverrides
-    ): Promise<
-      [string, BigNumber] & { receiver: string; royaltyPercentage: BigNumber }
-    >;
-
-    getExchange(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [
-        boolean,
-        BosonTypes.ExchangeStructOutput,
-        BosonTypes.VoucherStructOutput
-      ] & {
-        exists: boolean;
-        exchange: BosonTypes.ExchangeStructOutput;
-        voucher: BosonTypes.VoucherStructOutput;
-      }
-    >;
-
-    getExchangeState(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[boolean, number] & { exists: boolean; state: number }>;
-
-    getNextExchangeId(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getReceipt(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BosonTypes.ReceiptStructOutput>;
-
-    getRoyalties(
-      _tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [string[], BigNumber[]] & { recipients: string[]; bps: BigNumber[] }
-    >;
-
-    isExchangeFinalized(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[boolean, boolean] & { exists: boolean; isFinalized: boolean }>;
-
-    onVoucherTransferred(
-      _tokenId: BigNumberish,
-      _newBuyer: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    redeemVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    revokeVoucher(
-      _exchangeId: BigNumberish,
+    commitToPriceDiscoveryOffer(
+      _buyer: string,
+      _tokenIdOrOfferId: BigNumberish,
+      _priceDiscovery: BosonTypes.PriceDiscoveryStruct,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -1314,156 +831,20 @@ export interface IBosonExchangeHandler extends BaseContract {
   };
 
   estimateGas: {
-    cancelVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    completeExchange(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    completeExchangeBatch(
-      _exchangeIds: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    expireVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    extendVoucher(
-      _exchangeId: BigNumberish,
-      _validUntilDate: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    getEIP2981Royalties(
-      _queryId: BigNumberish,
-      _isExchangeId: boolean,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getExchange(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getExchangeState(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getNextExchangeId(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getReceipt(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getRoyalties(
-      _tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    isExchangeFinalized(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    onVoucherTransferred(
-      _tokenId: BigNumberish,
-      _newBuyer: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    redeemVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    revokeVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    commitToPriceDiscoveryOffer(
+      _buyer: string,
+      _tokenIdOrOfferId: BigNumberish,
+      _priceDiscovery: BosonTypes.PriceDiscoveryStruct,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    cancelVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    completeExchange(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    completeExchangeBatch(
-      _exchangeIds: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    expireVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    extendVoucher(
-      _exchangeId: BigNumberish,
-      _validUntilDate: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    getEIP2981Royalties(
-      _queryId: BigNumberish,
-      _isExchangeId: boolean,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getExchange(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getExchangeState(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getNextExchangeId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getReceipt(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getRoyalties(
-      _tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    isExchangeFinalized(
-      _exchangeId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    onVoucherTransferred(
-      _tokenId: BigNumberish,
-      _newBuyer: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    redeemVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    revokeVoucher(
-      _exchangeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    commitToPriceDiscoveryOffer(
+      _buyer: string,
+      _tokenIdOrOfferId: BigNumberish,
+      _priceDiscovery: BosonTypes.PriceDiscoveryStruct,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }
