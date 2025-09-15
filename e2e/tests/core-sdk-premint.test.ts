@@ -369,7 +369,7 @@ describe("orchestration", () => {
   test("#createPremintedOfferAddToGroup()", async () => {
     const { coreSDK, fundedWallet } =
       await initCoreSDKWithFundedWallet(seedWallet);
-    await createSeller(coreSDK, fundedWallet.address);
+    const seller = await createSeller(coreSDK, fundedWallet.address);
 
     // Ensure the condition token is minted
     const tokenID = Date.now().toString();
@@ -392,7 +392,8 @@ describe("orchestration", () => {
     const { offer, groupId } = await createPremintedOfferAddToGroup(
       coreSDK,
       condition,
-      premintParameters
+      premintParameters,
+      seller.id.toString()
     );
     expect(offer).toBeTruthy();
     expect(offer.range).toBeTruthy();

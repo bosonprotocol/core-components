@@ -136,7 +136,7 @@ export function rebuildSignature({
   const sValue = s.startsWith("0x") ? s.substring(2) : s;
 
   // Convert v to two digit hex, handle Ledger signature conversion
-  const vValue = (v >= 27 ? v - 27 : v).toString(16).padStart(2, "0");
+  const vValue = v.toString(16).padStart(2, "0");
 
   // Concatenate the signature parts
   return "0x" + rValue + sValue + vValue;

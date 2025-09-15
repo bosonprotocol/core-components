@@ -336,7 +336,7 @@ function getWrapperConfig(chainId) {
       return {
         protocolAddress: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
         priceDiscoveryClient: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
-        seaport: "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF"
+        seaport: "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf"
       };
     }
   }

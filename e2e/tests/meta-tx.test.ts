@@ -392,6 +392,7 @@ describe("meta-tx", () => {
         maxCommits: "3"
       };
       const groupToCreate = {
+        sellerId: createdOffer.seller.id,
         offerIds,
         ...condition
       };
