@@ -1,4 +1,5 @@
 import { BigNumberish } from "@ethersproject/bignumber";
+import { OfferCreator } from "./enums";
 
 export enum PriceType {
   Static = 0,
@@ -31,11 +32,15 @@ export type CreateOfferArgs = {
   feeLimit?: BigNumberish;
   priceType?: PriceType;
   royaltyInfo?: RoyaltyInfo[];
+  creator?: OfferCreator;
+  mutualizerAddress?: string;
 };
 
 export type OfferStruct = {
   id: BigNumberish;
   sellerId: BigNumberish;
+  buyerId: BigNumberish;
+  creator: number;
   price: BigNumberish;
   sellerDeposit: BigNumberish;
   buyerCancelPenalty: BigNumberish;
@@ -60,6 +65,11 @@ export type OfferDurationsStruct = {
   disputePeriod: BigNumberish;
   voucherValid: BigNumberish;
   resolutionPeriod: BigNumberish;
+};
+
+export type DRParametersStruct = {
+  disputeResolverId: BigNumberish;
+  mutualizerAddress: string;
 };
 
 export type DisputeResolutionTermsStruct = {

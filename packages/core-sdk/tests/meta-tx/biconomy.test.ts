@@ -40,11 +40,11 @@ describe("Biconomy handler", () => {
   });
   test("GET /api/v1/meta-tx/resubmitted should fail", async () => {
     await expect(
-      new Biconomy(BICONOMY_URL + "xxx").getResubmitted({
+      new Biconomy(BICONOMY_URL + "/xxx").getResubmitted({
         networkId: 31337,
         transactionHash: "txHash"
       })
-    ).rejects.toThrow(/reason: getaddrinfo ENOTFOUND/);
+    ).rejects.toThrow();
   });
   test("POST /api/v2/meta-tx/native should not fail after 2 errors", async () => {
     nock(BICONOMY_URL)

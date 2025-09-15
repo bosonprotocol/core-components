@@ -476,7 +476,7 @@ export async function signMetaTxCreateOffer(
   return signMetaTx({
     ...args,
     functionName:
-      "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256)",
+      "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),uint256,uint256)",
     functionSignature: encodeCreateOffer(args.createOfferArgs)
   });
 }
