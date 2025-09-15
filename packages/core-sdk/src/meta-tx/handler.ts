@@ -22,14 +22,20 @@ import {
   encodeOptInToSellerUpdate,
   encodeUpdateSeller
 } from "../accounts/interface";
-import { bosonExchangeHandlerIface } from "../exchanges/interface";
+import {
+  bosonExchangeCommitHandlerIface,
+  bosonExchangeHandlerIface
+} from "../exchanges/interface";
 import {
   bosonOfferHandlerIface,
   encodeCreateOffer,
   encodeCreateOfferBatch,
   encodeReserveRange
 } from "../offers/interface";
-import { prepareDataSignatureParameters } from "../utils/signature";
+import {
+  prepareDataSignatureParameters,
+  rebuildSignature
+} from "../utils/signature";
 import {
   Biconomy,
   ForwarderDomainData,
@@ -508,7 +514,7 @@ export async function signMetaTxCreateOfferBatch(
   return signMetaTx({
     ...args,
     functionName:
-      "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[])[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],uint256[],uint256[],uint256[])",
+      "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256)[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],(uint256,address)[],uint256[],uint256[])",
     functionSignature: encodeCreateOfferBatch(args.createOffersArgs)
   });
 }
@@ -813,7 +819,7 @@ export async function signMetaTxCreateOfferWithCondition(
   return signMetaTx({
     ...args,
     functionName:
-      "createOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256)",
+      "createOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256)",
     functionSignature: encodeCreateOfferWithCondition(
       args.offerToCreate,
       args.condition
@@ -871,7 +877,7 @@ export async function signMetaTxCommitToOffer(
   return {
     ...signatureParams,
     functionName,
-    functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
+    functionSignature: bosonExchangeCommitHandlerIface.encodeFunctionData(
       "commitToOffer",
       [buyerAddress, args.offerId]
     )
@@ -931,7 +937,7 @@ export async function signMetaTxCommitToConditionalOffer(
   return {
     ...signatureParams,
     functionName,
-    functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
+    functionSignature: bosonExchangeCommitHandlerIface.encodeFunctionData(
       "commitToConditionalOffer",
       [buyerAddress, args.offerId, args.tokenId]
     )
@@ -999,21 +1005,25 @@ export async function signMetaTxResolveDispute(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
     buyerPercent: BigNumberish;
-    counterpartySig: {
-      r: string;
-      s: string;
-      v: number;
-    };
+    counterpartySig:
+      | {
+          r: string;
+          s: string;
+          v: number;
+        }
+      | string;
   }
 ): Promise<SignedMetaTx> {
-  const functionName = "resolveDispute(uint256,uint256,bytes32,bytes32,uint8)";
+  const functionName = "resolveDispute(uint256,uint256,bytes)";
+  const counterpartySig =
+    typeof args.counterpartySig === "string"
+      ? args.counterpartySig
+      : rebuildSignature(args.counterpartySig);
 
   const disputeResolutionType = [
     { name: "exchangeId", type: "uint256" },
     { name: "buyerPercentBasisPoints", type: "uint256" },
-    { name: "sigR", type: "bytes32" },
-    { name: "sigS", type: "bytes32" },
-    { name: "sigV", type: "uint8" }
+    { name: "signature", type: "bytes" }
   ];
 
   const metaTransactionType = [
@@ -1037,9 +1047,7 @@ export async function signMetaTxResolveDispute(
     disputeResolutionDetails: {
       exchangeId: args.exchangeId.toString(),
       buyerPercentBasisPoints: args.buyerPercent.toString(),
-      sigR: args.counterpartySig.r,
-      sigS: args.counterpartySig.s,
-      sigV: args.counterpartySig.v
+      signature: counterpartySig
     }
   };
 
@@ -1058,13 +1066,7 @@ export async function signMetaTxResolveDispute(
     functionSignature: bosonDisputeHandlerIface.encodeFunctionData(
       // remove params in brackets from string
       functionName.replace(/\(([^)]*)\)[^(]*$/, ""),
-      [
-        args.exchangeId,
-        args.buyerPercent,
-        args.counterpartySig.r,
-        args.counterpartySig.s,
-        args.counterpartySig.v
-      ]
+      [args.exchangeId, args.buyerPercent, counterpartySig]
     )
   };
 }
@@ -1268,9 +1270,11 @@ export async function relayMetaTransaction(args: {
       metaTx.params.functionName,
       metaTx.params.functionSignature,
       metaTx.params.nonce,
-      metaTx.params.sigR,
-      metaTx.params.sigS,
-      metaTx.params.sigV
+      rebuildSignature({
+        r: metaTx.params.sigR.toString(),
+        s: metaTx.params.sigS.toString(),
+        v: Number(metaTx.params.sigV)
+      })
     ],
     from: metaTx.params.userAddress
   });
