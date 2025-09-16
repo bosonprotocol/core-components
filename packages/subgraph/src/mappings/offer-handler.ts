@@ -33,6 +33,7 @@ import {
 } from "../entities/dispute-resolution";
 import { saveOfferEventLog } from "../entities/event-log";
 import {
+  checkBuyerExist,
   checkSellerExist,
   getOfferCollectionId,
   saveRoyaltyRecipient
@@ -49,14 +50,6 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     const offerDurationsStruct = event.params.offerDurations;
     const offerFeesStruct = event.params.offerFees;
     const disputeResolutionTermsStruct = event.params.disputeResolutionTerms;
-
-    if (!checkSellerExist(offerStruct.sellerId)) {
-      log.warning(
-        "Offer '{}' won't be created because seller '{}' does not exist",
-        [offerId.toString(), offerStruct.sellerId.toString()]
-      );
-      return;
-    }
 
     offer = new Offer(offerId.toString());
     offer.createdAt = event.block.timestamp;
@@ -86,33 +79,49 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
       offerId.toString()
     );
     if (offerStruct.creator == OfferCreator.Buyer) {
+      // Buyer initiated offer
+      if (!checkBuyerExist(offerStruct.buyerId)) {
+        log.warning(
+          "Offer '{}' won't be created because buyer '{}' does not exist",
+          [offerId.toString(), offerStruct.buyerId.toString()]
+        );
+        return;
+      }
       offer.seller = null;
       offer.buyer = offerStruct.buyerId.toString();
     } else {
+      // Seller initiated offer
+      if (!checkSellerExist(offerStruct.sellerId)) {
+        log.warning(
+          "Offer '{}' won't be created because seller '{}' does not exist",
+          [offerId.toString(), offerStruct.sellerId.toString()]
+        );
+        return;
+      }
       offer.seller = offerStruct.sellerId.toString();
       offer.buyer = null;
+      offer.collectionIndex = offerStruct.collectionIndex;
+      offer.collection = getOfferCollectionId(
+        offerStruct.sellerId.toString(),
+        offerStruct.collectionIndex.toString()
+      );
+      const royaltyInfos = offerStruct.royaltyInfo;
+      for (let i = 0; i < royaltyInfos.length; i++) {
+        saveRoyaltyInfo(
+          offerId.toString(),
+          royaltyInfos[i].recipients,
+          royaltyInfos[i].bps,
+          i8(i),
+          event.block.timestamp
+        );
+      }
     }
     offer.exchangeToken = offerStruct.exchangeToken.toHexString();
     offer.metadataUri = offerStruct.metadataUri;
     offer.metadataHash = offerStruct.metadataHash;
     offer.priceType = offerStruct.priceType;
-    const royaltyInfos = offerStruct.royaltyInfo;
-    for (let i = 0; i < royaltyInfos.length; i++) {
-      saveRoyaltyInfo(
-        offerId.toString(),
-        royaltyInfos[i].recipients,
-        royaltyInfos[i].bps,
-        i8(i),
-        event.block.timestamp
-      );
-    }
     offer.metadata = offerId.toString() + "-metadata";
     offer.voided = false;
-    offer.collectionIndex = offerStruct.collectionIndex;
-    offer.collection = getOfferCollectionId(
-      offerStruct.sellerId.toString(),
-      offerStruct.collectionIndex.toString()
-    );
     offer.numberOfCommits = BigInt.fromI32(0);
     offer.numberOfRedemptions = BigInt.fromI32(0);
 

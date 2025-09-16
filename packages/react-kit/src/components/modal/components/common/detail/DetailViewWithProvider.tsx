@@ -84,11 +84,11 @@ export const DetailViewWithProvider: React.FC<
     isError: isSellersError
   } = useSellers(
     {
-      id: offer?.seller.id,
+      id: offer?.seller?.id,
       includeFunds: true
     },
     {
-      enabled: !!offer?.seller.id
+      enabled: !!offer?.seller?.id
     }
   );
   const sellerAvailableDeposit = sellers?.[0]?.funds?.find(

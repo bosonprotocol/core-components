@@ -151,7 +151,13 @@ export default function Exchange({
         dataCard="exchange-card"
         id={offer.id}
         title={offer.metadata?.name ?? ""}
-        avatarName={lens?.name ? lens?.name : `Seller ID: ${offer.seller.id}`}
+        avatarName={
+          lens?.name
+            ? lens?.name
+            : offer.seller
+              ? `Seller ID: ${offer.seller?.id}`
+              : `Buyer ID: ${offer.buyer?.id}`
+        }
         avatar={avatar || mockedAvatar}
         imageProps={{
           src: imageSrc,

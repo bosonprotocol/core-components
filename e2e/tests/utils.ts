@@ -201,6 +201,7 @@ export const seedWallet14 = new Wallet(ACCOUNT_14.privateKey, provider);
 export const seedWallet15 = new Wallet(ACCOUNT_15.privateKey, provider);
 // seedWallets used by core-sdk-extend-offer test
 export const seedWallet16 = new Wallet(ACCOUNT_16.privateKey, provider);
+// seedWallets used by core-sdk-offers test
 export const seedWallet17 = new Wallet(ACCOUNT_17.privateKey, provider);
 // seedWallets used by core-sdk-set-contract-uri
 export const seedWallet18 = new Wallet(ACCOUNT_18.privateKey, provider);

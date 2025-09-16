@@ -586,8 +586,8 @@ type Offer @entity(immutable: false) {
   metadataUri: String!
   metadataHash: String!
   voided: Boolean!
-  collectionIndex: BigInt!
-  collection: OfferCollection!
+  collectionIndex: BigInt
+  collection: OfferCollection
   disputeResolverId: BigInt!
   disputeResolver: DisputeResolver!
   disputeResolutionTerms: DisputeResolutionTermsEntity!
