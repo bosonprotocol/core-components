@@ -1,7 +1,7 @@
 version: "3"
 services:
   meta-tx-gateway:
-    image: ghcr.io/bosonprotocol/meta-tx-gateway:prepare-upgrade-contracts-2.5.0 # TODO: change to main when merged
+    image: ghcr.io/bosonprotocol/meta-tx-gateway:main
     # image: bosonprotocol/meta-tx-gateway:main # can be pulled from Docker Hub as well
     user: "node:node"
     ports:
