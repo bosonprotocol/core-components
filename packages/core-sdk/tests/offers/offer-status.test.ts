@@ -4,7 +4,7 @@ describe("offer-status", () => {
   let validOffer;
   let now;
   beforeEach(() => {
-    now = Math.floor(Date.now()/1000);
+    now = Math.floor(Date.now() / 1000);
     validOffer = {
       voidedAt: null,
       validFromDate: (now - 1).toString(),
