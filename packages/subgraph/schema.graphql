@@ -52,20 +52,20 @@ interface ItemMetadataInterface {
   metadataUri: String!
 }
 
-type SellerContactLink @entity {
+type SellerContactLink @entity(immutable: true) {
   id: ID!
   url: String!
   tag: String!
 }
 
-type SellerSocialLink @entity {
+type SellerSocialLink @entity(immutable: true) {
   id: ID!
   url: String!
   tag: String!
 }
 
 
-type SellerMetadataMedia @entity {
+type SellerMetadataMedia @entity(immutable: false) {
   id: ID!
   url: String!
   tag: String
@@ -80,7 +80,7 @@ enum SellerMetadataType {
   SELLER
 }
 
-type SalesChannelDeployment @entity {
+type SalesChannelDeployment @entity(immutable: false) {
   id: ID!
   product: ProductV1Product
   status: String
@@ -88,7 +88,7 @@ type SalesChannelDeployment @entity {
   lastUpdated: String
 }
 
-type SalesChannel @entity {
+type SalesChannel @entity(immutable: false) {
   id: ID!
   tag: String!
   name: String
@@ -98,7 +98,7 @@ type SalesChannel @entity {
   deployments: [SalesChannelDeployment!]
 }
 
-type SellerMetadata @entity {
+type SellerMetadata @entity(immutable: false) {
   id: ID!
   type: SellerMetadataType!
   createdAt: BigInt!
@@ -114,21 +114,21 @@ type SellerMetadata @entity {
   salesChannels: [SalesChannel!]
 }
 
-type AnimationMetadata @entity {
+type AnimationMetadata @entity(immutable: true) {
   id: ID!
   height: Int
   type: String
   width: Int
 }
 
-type MetadataAttribute @entity {
+type MetadataAttribute @entity(immutable: true) {
   id: ID!
   traitType: String!
   value: String!
   displayType: String!
 }
 
-type BaseMetadataEntity implements MetadataInterface @entity {
+type BaseMetadataEntity implements MetadataInterface @entity(immutable: false) {
   """
   Fields compliant to metadata standard
   """
@@ -163,7 +163,7 @@ type BaseMetadataEntity implements MetadataInterface @entity {
   numberOfRedemptions: BigInt!
 }
 
-type ProductV1MetadataEntity implements MetadataInterface @entity {
+type ProductV1MetadataEntity implements MetadataInterface @entity(immutable: false) {
   """
   Fields compliant to metadata standard
   """
@@ -210,7 +210,7 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   productOverrides: ProductV1ProductOverrides
 }
 
-type BundleMetadataEntity implements MetadataInterface @entity {
+type BundleMetadataEntity implements MetadataInterface @entity(immutable: false) {
   """
   Fields compliant to metadata standard
   """
@@ -255,7 +255,7 @@ type BundleMetadataEntity implements MetadataInterface @entity {
   productUuids: [String!]! # Products unique ID (unique for all variants of the same product)
 }
 
-type UnknownItemMetadataEntity implements ItemMetadataInterface @entity {
+type UnknownItemMetadataEntity implements ItemMetadataInterface @entity(immutable: false) {
   id: ID!
   schemaUrl: String! # JSON schema URL
   type: ItemMetadataType!
@@ -263,7 +263,7 @@ type UnknownItemMetadataEntity implements ItemMetadataInterface @entity {
   metadataUri: String!
 }
 
-type ProductV1ItemMetadataEntity implements ItemMetadataInterface @entity {
+type ProductV1ItemMetadataEntity implements ItemMetadataInterface @entity(immutable: false) {
   id: ID!
   schemaUrl: String! # JSON schema URL
   type: ItemMetadataType!
@@ -280,13 +280,13 @@ type ProductV1ItemMetadataEntity implements ItemMetadataInterface @entity {
   metadataUri: String!
 }
 
-type TokenIdRange @entity {
+type TokenIdRange @entity(immutable: true) {
   id: ID!
   min: String!
   max: String!
 }
 
-type Term @entity {
+type Term @entity(immutable: true) {
   id: ID!
   key: String!
   value: String!
@@ -294,7 +294,7 @@ type Term @entity {
 }
 
 
-type NftItemMetadataEntity implements ItemMetadataInterface @entity {
+type NftItemMetadataEntity implements ItemMetadataInterface @entity(immutable: false) {
   id: ID!
   schemaUrl: String! # JSON schema URL
   type: ItemMetadataType!
@@ -315,7 +315,7 @@ type NftItemMetadataEntity implements ItemMetadataInterface @entity {
   metadataUri: String!
 }
 
-type ProductV1Product @entity {
+type ProductV1Product @entity(immutable: false) {
   id: ID!
   uuid: String!
   version: Int!
@@ -387,28 +387,28 @@ type ProductV1Product @entity {
   maxValidUntilDate: BigInt!
 }
 
-type ProductV1Brand @entity {
+type ProductV1Brand @entity(immutable: true) {
   id: ID!
   name: String!
   products: [ProductV1Product!]! @derivedFrom(field: "brand")
 }
 
-type ProductV1Category @entity {
+type ProductV1Category @entity(immutable: true) {
   id: ID!
   name: String!
 }
 
-type ProductV1Tag @entity {
+type ProductV1Tag @entity(immutable: true) {
   id: ID!
   name: String!
 }
 
-type ProductV1Section @entity {
+type ProductV1Section @entity(immutable: true) {
   id: ID!
   name: String!
 }
 
-type ProductV1Media @entity {
+type ProductV1Media @entity(immutable: false) {
   id: ID!
   url: String!
   tag: String
@@ -417,25 +417,25 @@ type ProductV1Media @entity {
   height: Int
 }
 
-type ProductV1Personalisation @entity {
+type ProductV1Personalisation @entity(immutable: true) {
   id: ID!
   name: String!
 }
 
-type ProductV1Variation @entity {
+type ProductV1Variation @entity(immutable: true) {
   id: ID!
   type: String!
   option: String!
 }
 
-type ProductV1Variant @entity {
+type ProductV1Variant @entity(immutable: false) {
   id: ID!
   variations: [ProductV1Variation!]
   offer: Offer!
   bundle: BundleMetadataEntity
 }
 
-type ProductV1Seller @entity {
+type ProductV1Seller @entity(immutable: false) {
   id: ID!
   defaultVersion: Int!
   name: String
@@ -452,13 +452,13 @@ type ProductV1Seller @entity {
   seller: Seller!
 }
 
-type ProductV1SellerContactLink @entity {
+type ProductV1SellerContactLink @entity(immutable: true) {
   id: ID!
   url: String!
   tag: String!
 }
 
-type ProductV1ShippingOption @entity {
+type ProductV1ShippingOption @entity(immutable: false) {
   id: ID!
   defaultVersion: Int
   countryOfOrigin: String
@@ -467,13 +467,13 @@ type ProductV1ShippingOption @entity {
   returnPeriodInDays: Int!
 }
 
-type ProductV1ShippingJurisdiction @entity {
+type ProductV1ShippingJurisdiction @entity(immutable: true) {
   id: ID!
   label: String!
   deliveryTime: String!
 }
 
-type ProductV1ExchangePolicy @entity {
+type ProductV1ExchangePolicy @entity(immutable: false) {
   id: ID!
   uuid: String!
   version: Int!
@@ -483,7 +483,7 @@ type ProductV1ExchangePolicy @entity {
   disputeResolverContactMethod: String!
 }
 
-type ProductV1ProductOverrides @entity {
+type ProductV1ProductOverrides @entity(immutable: false) {
   id: ID!
   version: Int!
   title: String!
@@ -524,28 +524,33 @@ enum PriceType {
   DISCOVERY
 }
 
-type RoyaltyRecipientXSeller @entity {
+enum OfferCreator {
+  SELLER
+  BUYER
+}
+
+type RoyaltyRecipientXSeller @entity(immutable: false) {
   id: ID!
   seller: Seller!
   recipient: RoyaltyRecipient!
   minRoyaltyPercentage: BigInt!
 }
 
-type RoyaltyRecipient @entity {
+type RoyaltyRecipient @entity(immutable: true) {
   id: ID!
   wallet: Bytes!
   royalties: [RoyaltyRecipientXOffer!]! @derivedFrom(field: "recipient")
   sellers: [RoyaltyRecipientXSeller!]! @derivedFrom(field: "recipient")
 }
 
-type RoyaltyRecipientXOffer @entity {
+type RoyaltyRecipientXOffer @entity(immutable: false) {
   id: ID!
   recipient: RoyaltyRecipient!
   bps: BigInt!
   offer: Offer!
 }
 
-type RoyaltyInfo @entity {
+type RoyaltyInfo @entity(immutable: false) {
   id: ID!
   offer: Offer!
   recipients: [RoyaltyRecipientXOffer!]
@@ -555,7 +560,7 @@ type RoyaltyInfo @entity {
 """
 Offer
 """
-type Offer @entity {
+type Offer @entity(immutable: false) {
   id: ID!
   createdAt: BigInt!
   price: BigInt!
@@ -587,7 +592,7 @@ type Offer @entity {
   disputeResolver: DisputeResolver!
   disputeResolutionTerms: DisputeResolutionTermsEntity!
   sellerId: BigInt!
-  seller: Seller!
+  seller: Seller
   exchangeToken: ExchangeToken!
   priceType: Int!
   royaltyInfos: [RoyaltyInfo!]! @derivedFrom(field: "offer")
@@ -595,6 +600,9 @@ type Offer @entity {
   voidedAt: BigInt
   exchanges: [Exchange!]! @derivedFrom(field: "offer")
   condition: ConditionEntity
+  creator: Int!
+  buyerId: BigInt!
+  buyer: Buyer
 
   "Range"
   range: RangeEntity
@@ -607,7 +615,7 @@ type Offer @entity {
 """
 Offer Collection
 """
-type OfferCollection @entity {
+type OfferCollection @entity(immutable: true) {
   id: ID!
   seller: Seller!
   sellerId: BigInt!
@@ -622,7 +630,7 @@ type OfferCollection @entity {
 """
 Collection Contract
 """
-type CollectionContract @entity {
+type CollectionContract @entity(immutable: false) {
   id: ID!
   address: Bytes!
   contractUri: String!
@@ -632,7 +640,7 @@ type CollectionContract @entity {
 """
 Nft Contract Metadata
 """
-type NftContractMetadata @entity {
+type NftContractMetadata @entity(immutable: false) {
   id: ID!
   createdAt: BigInt!
   name: String
@@ -654,7 +662,7 @@ enum ExchangeState {
   DISPUTED
 }
 
-type Exchange @entity {
+type Exchange @entity(immutable: false) {
   id: ID!
   offer: Offer!
   buyer: Buyer!
@@ -673,6 +681,7 @@ type Exchange @entity {
   expired: Boolean!
   dispute: Dispute
   protocolFeeCollected: ProtocolFeeCollected @derivedFrom(field: "exchange")
+  mutualizerAddress: Bytes!
 }
 
 """
@@ -684,7 +693,7 @@ interface Account {
   logs: [EventLog!]! @derivedFrom(field: "account")
 }
 
-type PendingSeller @entity {
+type PendingSeller @entity(immutable: false) {
   id: ID!
   assistant: Bytes
   admin: Bytes
@@ -695,7 +704,7 @@ type PendingSeller @entity {
   metadataUri: String!
 }
 
-type Seller implements Account @entity {
+type Seller implements Account @entity(immutable: false) {
   id: ID! # Offer.sellerId
   sellerId: BigInt! # Allows sorting numerically by id
   offers: [Offer!]! @derivedFrom(field: "seller")
@@ -718,7 +727,7 @@ type Seller implements Account @entity {
   metadata: SellerMetadata
 }
 
-type Buyer implements Account @entity {
+type Buyer implements Account @entity(immutable: false) {
   id: ID!
   exchanges: [Exchange!]! @derivedFrom(field: "buyer")
   wallet: Bytes!
@@ -727,7 +736,7 @@ type Buyer implements Account @entity {
   logs: [EventLog!]! @derivedFrom(field: "account")
 }
 
-type PendingDisputeResolver @entity {
+type PendingDisputeResolver @entity(immutable: false) {
   id: ID!
   assistant: Bytes
   admin: Bytes
@@ -735,7 +744,7 @@ type PendingDisputeResolver @entity {
   disputeResolver: DisputeResolver!
 }
 
-type DisputeResolver implements Account @entity {
+type DisputeResolver implements Account @entity(immutable: false) {
   id: ID!
   escalationResponsePeriod: BigInt!
   admin: Bytes!
@@ -752,7 +761,7 @@ type DisputeResolver implements Account @entity {
   pendingDisputeResolver: PendingDisputeResolver @derivedFrom(field: "disputeResolver")
 }
 
-type DisputeResolutionTermsEntity @entity {
+type DisputeResolutionTermsEntity @entity(immutable: false) {
   "<DISPUTE_RESOLVER_ID>-terms"
   id: ID!
   disputeResolverId: BigInt!
@@ -761,9 +770,10 @@ type DisputeResolutionTermsEntity @entity {
   buyerEscalationDeposit: BigInt!
   disputeResolver: DisputeResolver!
   offer: Offer!
+  mutualizerAddress: Bytes!
 }
 
-type DisputeResolverFee @entity {
+type DisputeResolverFee @entity(immutable: false) {
   "<DISPUTE_RESOLVER_ID>-<TOKEN_ADDRESS>-fee"
   id: ID!
   tokenAddress: Bytes!
@@ -784,7 +794,7 @@ enum DisputeState {
   REFUSED
 }
 
-type Dispute @entity {
+type Dispute @entity(immutable: false) {
   id: ID!
   exchangeId: BigInt!
   exchange: Exchange!
@@ -806,7 +816,7 @@ type Dispute @entity {
 """
 Funds
 """
-type FundsEntity @entity {
+type FundsEntity @entity(immutable: false) {
   id: ID! # sellerId + "-" + tokenAddress
   availableAmount: BigInt!
   tokenAddress: Bytes!
@@ -818,7 +828,7 @@ type FundsEntity @entity {
 """
 Tokens
 """
-type ExchangeToken @entity {
+type ExchangeToken @entity(immutable: true) {
   id: ID!
   address: Bytes!
   decimals: BigInt!
@@ -884,7 +894,7 @@ interface EventLog {
   account: Account!
 }
 
-type AccountEventLog implements EventLog @entity {
+type AccountEventLog implements EventLog @entity(immutable: true) {
   id: ID!
   hash: String!
   type: EventType!
@@ -893,7 +903,7 @@ type AccountEventLog implements EventLog @entity {
   account: Account!
 }
 
-type OfferEventLog implements EventLog @entity {
+type OfferEventLog implements EventLog @entity(immutable: true) {
   id: ID!
   hash: String!
   type: EventType!
@@ -904,7 +914,7 @@ type OfferEventLog implements EventLog @entity {
   offer: Offer!
 }
 
-type ExchangeEventLog implements EventLog @entity {
+type ExchangeEventLog implements EventLog @entity(immutable: true) {
   id: ID!
   hash: String!
   type: EventType!
@@ -915,7 +925,7 @@ type ExchangeEventLog implements EventLog @entity {
   exchange: Exchange!
 }
 
-type ConditionalCommitAuthorizedEventLog @entity {
+type ConditionalCommitAuthorizedEventLog @entity(immutable: true) {
   id: ID!
   hash: String!
   type: EventType!
@@ -930,7 +940,7 @@ type ConditionalCommitAuthorizedEventLog @entity {
   maxCommits: BigInt!
 }
 
-type FundsEventLog implements EventLog @entity {
+type FundsEventLog implements EventLog @entity(immutable: true) {
   id: ID!
   hash: String!
   type: EventType!
@@ -941,7 +951,7 @@ type FundsEventLog implements EventLog @entity {
   funds: FundsEntity!
 }
 
-type ProtocolFeeCollected @entity {
+type ProtocolFeeCollected @entity(immutable: true) {
   id: ID!
   exchangeId: BigInt!,
   exchange: Exchange!,
@@ -950,7 +960,7 @@ type ProtocolFeeCollected @entity {
   executedBy: Bytes!
 }
 
-type DisputeEventLog implements EventLog @entity {
+type DisputeEventLog implements EventLog @entity(immutable: true) {
   id: ID!
   hash: String!
   type: EventType!
@@ -964,7 +974,7 @@ type DisputeEventLog implements EventLog @entity {
 """
 Groups
 """
-type ConditionEntity @entity {
+type ConditionEntity @entity(immutable: false) {
   id: ID! # groupId
   method: Int!
   tokenType: Int!
@@ -980,7 +990,7 @@ type ConditionEntity @entity {
 """
 Offer Ranges
 """
-type RangeEntity @entity {
+type RangeEntity @entity(immutable: false) {
   id: ID! # rangeId
   start: BigInt!
   end: BigInt!

@@ -1,3 +1,4 @@
+import { OfferCreator } from "@bosonprotocol/common/src/types/enums";
 import { Exchange, Offer } from "./../generated/schema";
 import {
   beforeEach,
@@ -6,7 +7,7 @@ import {
   clearStore,
   mockIpfsFile
 } from "matchstick-as/assembly/index";
-import { BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { BaseMetadataEntity } from "../generated/schema";
 import {
   handleBuyerCommittedEvent,
@@ -37,6 +38,7 @@ import { getOfferCollectionId } from "../src/mappings/account-handler";
 import { getDisputeResolutionTermsId } from "../src/entities/dispute-resolution";
 import { handleGroupCreatedEvent } from "../src/mappings/group-handler";
 import { getEventLogId } from "../src/entities/event-log";
+import { ZERO_ADDRESS } from "../src/utils/eth";
 
 const executedBy = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 
@@ -86,6 +88,8 @@ test("handle BuyerCommittedEvent", () => {
   offer.exchangeToken = "0xaaaaabbbbbcccccdddddeeeeefffff0000011111";
   offer.numberOfCommits = BigInt.fromI32(0);
   offer.numberOfRedemptions = BigInt.fromI32(0);
+  offer.creator = OfferCreator.Seller;
+  offer.buyerId = BigInt.fromI32(0);
   offer.save();
 
   assert.fieldEquals("Offer", offerId.toString(), "quantityAvailable", "1");
@@ -155,6 +159,7 @@ test("handle VoucherExtendedEvent", () => {
   exchange.committedDate = BigInt.fromI32(1);
   exchange.validUntilDate = BigInt.fromI32(1234567);
   exchange.expired = false;
+  exchange.mutualizerAddress = Address.fromString(ZERO_ADDRESS);
   exchange.save();
 
   const validUntil = 2345678;

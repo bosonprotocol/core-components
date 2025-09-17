@@ -124,17 +124,31 @@ module.exports = {
         viaIR: true
       },
       {
+        version: "0.8.21",
+        settings: {
+          viaIR: false,
+          optimizer: {
+            enabled: true,
+            runs: 100,
+            details: {
+              yul: true
+            }
+          },
+          evmVersion: "shanghai" // for ethereum mainnet, use shanghai, for polygon, use london
+        },
+      },
+      {
         version: "0.8.22",
         settings: {
           viaIR: false,
           optimizer: {
             enabled: true,
-            runs: 200,
+            runs: 100,
             details: {
               yul: true
             }
           },
-          evmVersion: "london" // for ethereum mainnet, use shanghai, for polygon, use london
+          evmVersion: "shanghai" // for ethereum mainnet, use shanghai, for polygon, use london
         }
       },
       {
@@ -148,7 +162,7 @@ module.exports = {
         settings: {
           optimizer: {
             enabled: true,
-            runs: 200,
+            runs: 190,
             details: {
               yul: true
             }
@@ -223,6 +237,7 @@ module.exports = {
       "ProtocolDiamond",
       "IBosonAccountHandler",
       "IBosonExchangeHandler",
+      "IBosonExchangeCommit",
       "IBosonFundsHandler",
       "IBosonOfferHandler",
       "IBosonOrchestrationHandler",
@@ -236,8 +251,10 @@ module.exports = {
       "IBosonPriceDiscoveryHandler",
       "Seaport",
       "OpenSeaWrapper",
-      "OpenSeaWrapperFactory"
-    ]
+      "OpenSeaWrapperFactory",
+      "DRFeeMutualizer"
+    ],
+    except: ["MockDRFeeMutualizer"]
   }
 };
 
@@ -319,7 +336,7 @@ function getWrapperConfig(chainId) {
       return {
         protocolAddress: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
         priceDiscoveryClient: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
-        seaport: "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF"
+        seaport: "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf"
       };
     }
   }

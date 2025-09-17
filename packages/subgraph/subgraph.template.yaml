@@ -31,7 +31,7 @@ dataSources:
         - name: ERC20SymbolBytes
           file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
-        - event: OfferCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,uint256,uint256,uint256),(uint256,uint256),indexed uint256,address)
+        - event: OfferCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,uint256,uint256,uint256,address),(uint256,uint256),indexed uint256,address)
           handler: handleOfferCreatedEvent
         - event: OfferVoided(indexed uint256,indexed uint256,indexed address)
           handler: handleOfferVoidedEvent
@@ -41,6 +41,38 @@ dataSources:
           handler: handleRangeReservedEvent
         - event: OfferRoyaltyInfoUpdated(indexed uint256,indexed uint256,(address[],uint256[]),indexed address)
           handler: handleOfferRoyaltyInfoUpdatedEvent
+      file: ./src/mappings/offer-handler.ts
+  - kind: ethereum/contract
+    name: BosonOfferHandler240
+    network: {{network}}
+    source:
+      address: "{{protocolDiamond}}"
+      abi: IBosonOfferHandler240
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - BaseMetadataEntity
+        - ProductV1MetadataEntity
+        - Offer
+        - ExchangeToken
+        - ProductV1Brand
+      abis:
+        - name: IBosonOfferHandler240
+          file: ../common/src/abis/IBosonOfferHandler240.json
+        - name: ERC20
+          file: ../common/src/abis/ERC20.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+      eventHandlers:
+        - event: OfferCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,string,string,bool,uint256,(address[],uint256[])[]),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,uint256,uint256,uint256),(uint256,uint256),indexed uint256,address)
+          handler: handleOfferCreatedEvent240
+        - event: OfferVoided(indexed uint256,indexed uint256,indexed address)
+          handler: handleOfferVoidedEvent240
       file: ./src/mappings/offer-handler.ts
   - kind: ethereum/contract
     name: BosonOfferHandler230
@@ -193,6 +225,33 @@ dataSources:
           handler: handleDisputeResolverActivatedEvent
       file: ./src/mappings/account-handler.ts
   - kind: ethereum/contract
+    name: BosonExchangeHandler240
+    network: {{network}}
+    source:
+      address: "{{protocolDiamond}}"
+      abi: IBosonExchangeHandler240
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Offer
+        - Exchange
+      abis:
+        - name: IBosonExchangeHandler240
+          file: ../common/src/abis/IBosonExchangeHandler240.json
+        - name: ERC20
+          file: ../common/src/abis/ERC20.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+      eventHandlers:
+        - event: BuyerCommitted(indexed uint256,indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint8),(uint256,uint256,uint256,bool),address)
+          handler: handleBuyerCommittedEvent240
+      file: ./src/mappings/exchange-handler.ts
+  - kind: ethereum/contract
     name: BosonExchangeHandler
     network: {{network}}
     source:
@@ -216,7 +275,7 @@ dataSources:
         - name: ERC20SymbolBytes
           file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
-        - event: BuyerCommitted(indexed uint256,indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint8),(uint256,uint256,uint256,bool),address)
+        - event: BuyerCommitted(indexed uint256,indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint8,address),(uint256,uint256,uint256,bool),address)
           handler: handleBuyerCommittedEvent
         - event: VoucherExtended(indexed uint256,indexed uint256,uint256,indexed address)
           handler: handleVoucherExtendedEvent

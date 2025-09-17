@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Address, BigInt, log } from "@graphprotocol/graph-ts";
+import { OfferCreator } from "@bosonprotocol/common/src/types/enums";
 import {
   OfferCreated,
   OfferVoided,
@@ -7,6 +8,10 @@ import {
   RangeReserved,
   OfferRoyaltyInfoUpdated
 } from "../../generated/BosonOfferHandler/IBosonOfferHandler";
+import {
+  OfferCreated as OfferCreated240,
+  OfferVoided as OfferVoided240
+} from "../../generated/BosonOfferHandler240/IBosonOfferHandler240";
 import { OfferCreated as OfferCreated230 } from "../../generated/BosonOfferHandler230/IBosonOfferHandler230";
 import { OfferCreated as OfferCreatedLegacy } from "../../generated/BosonOfferHandlerLegacy/IBosonOfferHandlerLegacy";
 
@@ -23,6 +28,7 @@ import {
   getDisputeResolutionTermsId,
   saveDisputeResolutionTerms,
   saveDisputeResolutionTerms230,
+  saveDisputeResolutionTerms240,
   saveDisputeResolutionTermsLegacy
 } from "../entities/dispute-resolution";
 import { saveOfferEventLog } from "../entities/event-log";
@@ -71,13 +77,21 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     offer.resolutionPeriodDuration = offerDurationsStruct.resolutionPeriod;
     offer.disputeResolverId = disputeResolutionTermsStruct.disputeResolverId;
     offer.sellerId = offerStruct.sellerId;
+    offer.creator = offerStruct.creator;
+    offer.buyerId = offerStruct.buyerId;
     offer.disputeResolver =
       disputeResolutionTermsStruct.disputeResolverId.toString();
     offer.disputeResolutionTerms = getDisputeResolutionTermsId(
       disputeResolutionTermsStruct.disputeResolverId.toString(),
       offerId.toString()
     );
-    offer.seller = offerStruct.sellerId.toString();
+    if (offerStruct.creator == OfferCreator.Buyer) {
+      offer.seller = null;
+      offer.buyer = offerStruct.buyerId.toString();
+    } else {
+      offer.seller = offerStruct.sellerId.toString();
+      offer.buyer = null;
+    }
     offer.exchangeToken = offerStruct.exchangeToken.toHexString();
     offer.metadataUri = offerStruct.metadataUri;
     offer.metadataHash = offerStruct.metadataHash;
@@ -180,6 +194,98 @@ function saveRoyaltyRecipientXOffer(
   return royaltyRecipientXOfferId;
 }
 
+export function handleOfferCreatedEvent240(event: OfferCreated240): void {
+  const offerId = event.params.offerId;
+
+  let offer = Offer.load(offerId.toString());
+
+  if (!offer) {
+    const offerStruct = event.params.offer;
+    const offerDatesStruct = event.params.offerDates;
+    const offerDurationsStruct = event.params.offerDurations;
+    const offerFeesStruct = event.params.offerFees;
+    const disputeResolutionTermsStruct = event.params.disputeResolutionTerms;
+
+    if (!checkSellerExist(offerStruct.sellerId)) {
+      log.warning(
+        "Offer '{}' won't be created because seller '{}' does not exist",
+        [offerId.toString(), offerStruct.sellerId.toString()]
+      );
+      return;
+    }
+
+    offer = new Offer(offerId.toString());
+    offer.createdAt = event.block.timestamp;
+    offer.price = offerStruct.price;
+    offer.sellerDeposit = offerStruct.sellerDeposit;
+    offer.protocolFee = offerFeesStruct.protocolFee;
+    offer.agentFee = offerFeesStruct.agentFee;
+    offer.agentId = event.params.agentId;
+    offer.buyerCancelPenalty = offerStruct.buyerCancelPenalty;
+    offer.quantityInitial = offerStruct.quantityAvailable;
+    offer.quantityAvailable = offerStruct.quantityAvailable;
+    offer.validFromDate = offerDatesStruct.validFrom;
+    offer.validUntilDate = offerDatesStruct.validUntil;
+    offer.voucherRedeemableFromDate = offerDatesStruct.voucherRedeemableFrom;
+    offer.voucherRedeemableUntilDate = offerDatesStruct.voucherRedeemableUntil;
+    offer.disputePeriodDuration = offerDurationsStruct.disputePeriod;
+    offer.voucherValidDuration = offerDurationsStruct.voucherValid;
+    offer.resolutionPeriodDuration = offerDurationsStruct.resolutionPeriod;
+    offer.disputeResolverId = disputeResolutionTermsStruct.disputeResolverId;
+    offer.sellerId = offerStruct.sellerId;
+    offer.creator = i8(OfferCreator.Seller);
+    offer.buyerId = BigInt.fromI32(0);
+    offer.disputeResolver =
+      disputeResolutionTermsStruct.disputeResolverId.toString();
+    offer.disputeResolutionTerms = getDisputeResolutionTermsId(
+      disputeResolutionTermsStruct.disputeResolverId.toString(),
+      offerId.toString()
+    );
+    offer.seller = offerStruct.sellerId.toString();
+    offer.exchangeToken = offerStruct.exchangeToken.toHexString();
+    offer.metadataUri = offerStruct.metadataUri;
+    offer.metadataHash = offerStruct.metadataHash;
+    offer.priceType = offerStruct.priceType;
+    const royaltyInfos = offerStruct.royaltyInfo;
+    for (let i = 0; i < royaltyInfos.length; i++) {
+      saveRoyaltyInfo(
+        offerId.toString(),
+        royaltyInfos[i].recipients,
+        royaltyInfos[i].bps,
+        i8(i),
+        event.block.timestamp
+      );
+    }
+    offer.metadata = offerId.toString() + "-metadata";
+    offer.voided = false;
+    offer.collectionIndex = offerStruct.collectionIndex;
+    offer.collection = getOfferCollectionId(
+      offerStruct.sellerId.toString(),
+      offerStruct.collectionIndex.toString()
+    );
+    offer.numberOfCommits = BigInt.fromI32(0);
+    offer.numberOfRedemptions = BigInt.fromI32(0);
+
+    offer.save();
+
+    saveExchangeToken(offerStruct.exchangeToken);
+    saveMetadata(offer, event.block.timestamp);
+    saveDisputeResolutionTerms240(
+      disputeResolutionTermsStruct,
+      offerId.toString()
+    );
+    saveOfferEventLog(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "OFFER_CREATED",
+      event.block.timestamp,
+      event.params.executedBy,
+      offerStruct.sellerId.toString(),
+      offerId.toString()
+    );
+  }
+}
+
 export function handleOfferCreatedEvent230(event: OfferCreated230): void {
   const offerId = event.params.offerId;
 
@@ -240,6 +346,8 @@ export function handleOfferCreatedEvent230(event: OfferCreated230): void {
     offer.numberOfRedemptions = BigInt.fromI32(0);
     offer.priceType = i8(0); // default value for legacy offers
     // TODO: set default royalty recipients for legacy offers?
+    offer.creator = i8(OfferCreator.Seller);
+    offer.buyerId = BigInt.fromI32(0);
 
     offer.save();
 
@@ -323,6 +431,8 @@ export function handleOfferCreatedEventLegacy(event: OfferCreatedLegacy): void {
     offer.numberOfRedemptions = BigInt.fromI32(0);
     offer.priceType = i8(0); // default value for legacy offers
     // TODO: set default royalty recipients for legacy offers?
+    offer.creator = i8(OfferCreator.Seller);
+    offer.buyerId = BigInt.fromI32(0);
 
     offer.save();
 
@@ -362,7 +472,31 @@ export function handleOfferVoidedEvent(event: OfferVoided): void {
       "OFFER_VOIDED",
       event.block.timestamp,
       event.params.executedBy,
-      offer.sellerId.toString(),
+      event.params.creatorId.toString(),
+      offerId.toString()
+    );
+  }
+}
+
+export function handleOfferVoidedEvent240(event: OfferVoided240): void {
+  const offerId = event.params.offerId;
+
+  const offer = Offer.load(offerId.toString());
+
+  if (offer) {
+    offer.voided = true;
+    offer.voidedAt = event.block.timestamp;
+
+    offer.save();
+
+    saveMetadata(offer, offer.createdAt);
+    saveOfferEventLog(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "OFFER_VOIDED",
+      event.block.timestamp,
+      event.params.executedBy,
+      event.params.sellerId.toString(),
       offerId.toString()
     );
   }

@@ -2,7 +2,7 @@ import {
   encodeCreateOffer,
   bosonOfferHandlerIface
 } from "../../src/offers/interface";
-import { PriceType, utils } from "@bosonprotocol/common";
+import { OfferCreator, PriceType, utils } from "@bosonprotocol/common";
 import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
 import { getAddress } from "@ethersproject/address";
 import { AddressZero } from "@ethersproject/constants";
@@ -38,12 +38,14 @@ describe("#encodeCreateOffer()", () => {
       quantityAvailable,
       exchangeToken,
       priceType,
+      creator,
       metadataUri,
       metadataHash,
       voided,
       collectionIndex,
-      ...royaltyInfos
-    ] = decodedCalldata[0].toString().split(","); // Offer struct
+      [royaltyInfos],
+      buyerId
+    ] = decodedCalldata[0]; // Offer struct
     const [
       validFrom,
       validUntil,
@@ -53,24 +55,29 @@ describe("#encodeCreateOffer()", () => {
     const [disputePeriod, voucherValid, resolutionPeriod] = decodedCalldata[2]
       .toString()
       .split(","); // OfferDurations struct
-    const disputeResolverId = decodedCalldata[3].toString();
+    const [disputeResolverId, mutualizerAddress] = decodedCalldata[3]
+      .toString()
+      .split(",");
     const agentId = decodedCalldata[4].toString();
 
     expect(id).toBeTruthy();
     expect(sellerId).toBeTruthy();
-    expect(voided).toBeTruthy();
-    expect(price).toBe(mockedCreateOfferArgs.price.toString());
-    expect(sellerDeposit).toBe(mockedCreateOfferArgs.sellerDeposit.toString());
-    expect(buyerCancelPenalty).toBe(
+    expect(voided).toEqual(false);
+    expect(price.toString()).toBe(mockedCreateOfferArgs.price.toString());
+    expect(sellerDeposit.toString()).toBe(
+      mockedCreateOfferArgs.sellerDeposit.toString()
+    );
+    expect(buyerCancelPenalty.toString()).toBe(
       mockedCreateOfferArgs.buyerCancelPenalty.toString()
     );
-    expect(quantityAvailable).toBe(
+    expect(quantityAvailable.toString()).toBe(
       mockedCreateOfferArgs.quantityAvailable.toString()
     );
-    expect(disputeResolverId).toBe(
+    expect(disputeResolverId.toString()).toBe(
       mockedCreateOfferArgs.disputeResolverId.toString()
     );
-    expect(agentId).toBe(mockedCreateOfferArgs.agentId.toString());
+    expect(mutualizerAddress).toBe(AddressZero);
+    expect(agentId.toString()).toBe(mockedCreateOfferArgs.agentId.toString());
     expect(validFrom).toBe(
       utils.timestamp
         .msToSec(mockedCreateOfferArgs.validFromDateInMS)
@@ -109,12 +116,14 @@ describe("#encodeCreateOffer()", () => {
     expect(exchangeToken).toBe(mockedCreateOfferArgs.exchangeToken);
     expect(metadataUri).toBe(mockedCreateOfferArgs.metadataUri);
     expect(metadataHash).toBe(mockedCreateOfferArgs.metadataHash);
-    expect(priceType).toBe(PriceType.Static.toString());
-    expect(collectionIndex).toBe("0");
-    expect(royaltyInfos.length).toBe(4);
-    expect(royaltyInfos[0]).toBe(royaltyRecipients[0]);
-    expect(royaltyInfos[1]).toBe(royaltyRecipients[1]);
-    expect(royaltyInfos[2]).toBe(royaltyBps[0].toString());
-    expect(royaltyInfos[3]).toBe(royaltyBps[1].toString());
+    expect(priceType).toBe(PriceType.Static);
+    expect(creator).toBe(OfferCreator.Seller);
+    expect(collectionIndex.toString()).toBe("0");
+    expect(royaltyInfos.length).toBe(royaltyRecipients.length);
+    expect(royaltyInfos[0]).toEqual(royaltyRecipients);
+    expect(royaltyInfos[1].length).toEqual(royaltyBps.length);
+    expect(royaltyInfos[1][0].toString()).toBe(royaltyBps[0].toString());
+    expect(royaltyInfos[1][1].toString()).toBe(royaltyBps[1].toString());
+    expect(buyerId.toString()).toBe("0");
   });
 });

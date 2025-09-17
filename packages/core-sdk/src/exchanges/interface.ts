@@ -6,8 +6,12 @@ export const bosonExchangeHandlerIface = new Interface(
   abis.IBosonExchangeHandlerABI
 );
 
+export const bosonExchangeCommitHandlerIface = new Interface(
+  abis.IBosonExchangeCommitHandlerABI
+);
+
 export function encodeCommitToOffer(buyer: string, offerId: BigNumberish) {
-  return bosonExchangeHandlerIface.encodeFunctionData("commitToOffer", [
+  return bosonExchangeCommitHandlerIface.encodeFunctionData("commitToOffer", [
     buyer,
     offerId
   ]);
@@ -18,7 +22,7 @@ export function encodeCommitToConditionalOffer(
   offerId: BigNumberish,
   tokenId: BigNumberish
 ) {
-  return bosonExchangeHandlerIface.encodeFunctionData(
+  return bosonExchangeCommitHandlerIface.encodeFunctionData(
     "commitToConditionalOffer",
     [buyer, offerId, tokenId]
   );

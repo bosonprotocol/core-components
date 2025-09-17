@@ -188,38 +188,71 @@ export async function expireDisputeBatch(args: {
 }
 
 // Overload: returnTxInfo is true → returns TransactionRequest
-export async function resolveDispute(args: {
-  exchangeId: BigNumberish;
-  buyerPercentBasisPoints: BigNumberish;
-  sigR: BytesLike;
-  sigS: BytesLike;
-  sigV: BigNumberish;
-  contractAddress: string;
-  web3Lib: Web3LibAdapter;
-  returnTxInfo: true;
-}): Promise<TransactionRequest>;
+export async function resolveDispute(
+  args:
+    | {
+        exchangeId: BigNumberish;
+        buyerPercentBasisPoints: BigNumberish;
+        sigR: BytesLike;
+        sigS: BytesLike;
+        sigV: BigNumberish;
+        contractAddress: string;
+        web3Lib: Web3LibAdapter;
+        returnTxInfo: true;
+      }
+    | {
+        exchangeId: BigNumberish;
+        buyerPercentBasisPoints: BigNumberish;
+        signature: string;
+        contractAddress: string;
+        web3Lib: Web3LibAdapter;
+        returnTxInfo: true;
+      }
+): Promise<TransactionRequest>;
 // Overload: returnTxInfo is false or undefined → returns TransactionResponse
-export async function resolveDispute(args: {
-  exchangeId: BigNumberish;
-  buyerPercentBasisPoints: BigNumberish;
-  sigR: BytesLike;
-  sigS: BytesLike;
-  sigV: BigNumberish;
-  contractAddress: string;
-  web3Lib: Web3LibAdapter;
-  returnTxInfo?: false | undefined;
-}): Promise<TransactionResponse>;
+export async function resolveDispute(
+  args:
+    | {
+        exchangeId: BigNumberish;
+        buyerPercentBasisPoints: BigNumberish;
+        sigR: BytesLike;
+        sigS: BytesLike;
+        sigV: BigNumberish;
+        contractAddress: string;
+        web3Lib: Web3LibAdapter;
+        returnTxInfo?: false | undefined;
+      }
+    | {
+        exchangeId: BigNumberish;
+        buyerPercentBasisPoints: BigNumberish;
+        signature: string;
+        contractAddress: string;
+        web3Lib: Web3LibAdapter;
+        returnTxInfo?: false | undefined;
+      }
+): Promise<TransactionResponse>;
 // Implementation
-export async function resolveDispute(args: {
-  exchangeId: BigNumberish;
-  buyerPercentBasisPoints: BigNumberish;
-  sigR: BytesLike;
-  sigS: BytesLike;
-  sigV: BigNumberish;
-  contractAddress: string;
-  web3Lib: Web3LibAdapter;
-  returnTxInfo?: boolean;
-}): Promise<TransactionResponse | TransactionRequest> {
+export async function resolveDispute(
+  args:
+    | {
+        exchangeId: BigNumberish;
+        buyerPercentBasisPoints: BigNumberish;
+        sigR: BytesLike;
+        sigS: BytesLike;
+        sigV: BigNumberish;
+        contractAddress: string;
+        web3Lib: Web3LibAdapter;
+        returnTxInfo?: boolean;
+      }
+    | {
+        exchangeId: BigNumberish;
+        buyerPercentBasisPoints: BigNumberish;
+        signature: string;
+        contractAddress: string;
+        web3Lib: Web3LibAdapter;
+        returnTxInfo?: boolean;
+      }
+): Promise<TransactionResponse | TransactionRequest> {
   const transactionRequest = {
     to: args.contractAddress,
     data: encodeResolveDispute(args)

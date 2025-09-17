@@ -41,12 +41,12 @@ export function saveMetadataAttributes(
 
     if (!metadataAttribute) {
       metadataAttribute = new MetadataAttribute(attributeId);
+      metadataAttribute.traitType = traitType;
+      metadataAttribute.value = value;
+      metadataAttribute.displayType = displayType;
+      metadataAttribute.save();
     }
 
-    metadataAttribute.traitType = traitType;
-    metadataAttribute.value = value;
-    metadataAttribute.displayType = displayType;
-    metadataAttribute.save();
     savedMetadataAttributeIds.push(attributeId);
   }
 
@@ -77,12 +77,12 @@ export function saveTerms(
 
     if (!term) {
       term = new Term(termId);
+      term.key = key;
+      term.value = value;
+      term.displayKey = displayKey;
+      term.save();
     }
 
-    term.key = key;
-    term.value = value;
-    term.displayKey = displayKey;
-    term.save();
     savedTermsIds.push(termId);
   }
 

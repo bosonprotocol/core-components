@@ -21,8 +21,8 @@ export class FundsMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
 
   /**
    * Deposit funds by calling the `FundsHandlerFacet` contract.
-   * This transaction only succeeds if there is an existing seller account for connected signer.
-   * @param sellerId - ID of seller account to deposit funds for.
+   * This transaction only succeeds if there is an existing entity account for connected signer.
+   * @param entityId - ID of the account to deposit funds for.
    * @param fundsAmount - Amount of funds.
    * @param fundsTokenAddress - Address of funds token.
    * @param overrides - Optional overrides.
@@ -30,7 +30,7 @@ export class FundsMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    */
   // Overload: returnTxInfo is true → returns TransactionRequest
   public async depositFunds(
-    sellerId: BigNumberish,
+    entityId: BigNumberish,
     fundsAmount: BigNumberish,
     fundsTokenAddress: string,
     overrides: Partial<{
@@ -42,7 +42,7 @@ export class FundsMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
 
   // Overload: returnTxInfo is false or undefined → returns TransactionResponse
   public async depositFunds(
-    sellerId: BigNumberish,
+    entityId: BigNumberish,
     fundsAmount: BigNumberish,
     fundsTokenAddress?: string,
     overrides?: Partial<{
@@ -54,7 +54,7 @@ export class FundsMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
 
   // Implementation
   public async depositFunds(
-    sellerId: BigNumberish,
+    entityId: BigNumberish,
     fundsAmount: BigNumberish,
     fundsTokenAddress: string = AddressZero,
     overrides: Partial<{
@@ -66,7 +66,7 @@ export class FundsMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
     const { returnTxInfo } = overrides;
 
     const depositArgs = {
-      sellerId,
+      entityId,
       fundsAmount,
       fundsTokenAddress,
       web3Lib: this._web3Lib,

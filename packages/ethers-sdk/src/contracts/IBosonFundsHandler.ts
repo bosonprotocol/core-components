@@ -103,6 +103,8 @@ export interface IBosonFundsHandlerInterface extends utils.Interface {
   ): Result;
 
   events: {
+    "DRFeeRequested(uint256,address,uint256,address,address)": EventFragment;
+    "DRFeeReturned(uint256,address,uint256,address,address)": EventFragment;
     "FundsDeposited(uint256,address,address,uint256)": EventFragment;
     "FundsEncumbered(uint256,address,uint256,address)": EventFragment;
     "FundsReleased(uint256,uint256,address,uint256,address)": EventFragment;
@@ -110,12 +112,40 @@ export interface IBosonFundsHandlerInterface extends utils.Interface {
     "ProtocolFeeCollected(uint256,address,uint256,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "DRFeeRequested"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DRFeeReturned"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsDeposited"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsEncumbered"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsReleased"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsWithdrawn"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ProtocolFeeCollected"): EventFragment;
 }
+
+export type DRFeeRequestedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string, string],
+  {
+    exchangeId: BigNumber;
+    tokenAddress: string;
+    feeAmount: BigNumber;
+    mutualizerAddress: string;
+    executedBy: string;
+  }
+>;
+
+export type DRFeeRequestedEventFilter = TypedEventFilter<DRFeeRequestedEvent>;
+
+export type DRFeeReturnedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string, string],
+  {
+    exchangeId: BigNumber;
+    tokenAddress: string;
+    returnAmount: BigNumber;
+    mutualizerAddress: string;
+    executedBy: string;
+  }
+>;
+
+export type DRFeeReturnedEventFilter = TypedEventFilter<DRFeeReturnedEvent>;
 
 export type FundsDepositedEvent = TypedEvent<
   [BigNumber, string, string, BigNumber],
@@ -209,7 +239,7 @@ export interface IBosonFundsHandler extends BaseContract {
 
   functions: {
     depositFunds(
-      _sellerId: BigNumberish,
+      _entityId: BigNumberish,
       _tokenAddress: string,
       _amount: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -261,7 +291,7 @@ export interface IBosonFundsHandler extends BaseContract {
   };
 
   depositFunds(
-    _sellerId: BigNumberish,
+    _entityId: BigNumberish,
     _tokenAddress: string,
     _amount: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -305,7 +335,7 @@ export interface IBosonFundsHandler extends BaseContract {
 
   callStatic: {
     depositFunds(
-      _sellerId: BigNumberish,
+      _entityId: BigNumberish,
       _tokenAddress: string,
       _amount: BigNumberish,
       overrides?: CallOverrides
@@ -349,6 +379,36 @@ export interface IBosonFundsHandler extends BaseContract {
   };
 
   filters: {
+    "DRFeeRequested(uint256,address,uint256,address,address)"(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      feeAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeRequestedEventFilter;
+    DRFeeRequested(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      feeAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeRequestedEventFilter;
+
+    "DRFeeReturned(uint256,address,uint256,address,address)"(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: null,
+      executedBy?: null
+    ): DRFeeReturnedEventFilter;
+    DRFeeReturned(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: null,
+      executedBy?: null
+    ): DRFeeReturnedEventFilter;
+
     "FundsDeposited(uint256,address,address,uint256)"(
       sellerId?: BigNumberish | null,
       executedBy?: string | null,
@@ -421,7 +481,7 @@ export interface IBosonFundsHandler extends BaseContract {
 
   estimateGas: {
     depositFunds(
-      _sellerId: BigNumberish,
+      _entityId: BigNumberish,
       _tokenAddress: string,
       _amount: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -466,7 +526,7 @@ export interface IBosonFundsHandler extends BaseContract {
 
   populateTransaction: {
     depositFunds(
-      _sellerId: BigNumberish,
+      _entityId: BigNumberish,
       _tokenAddress: string,
       _amount: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }

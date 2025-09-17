@@ -107,6 +107,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "DRFeeMutualizerCannotProvideCoverage",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "DRUnsupportedFee",
     type: "error",
   },
@@ -182,12 +187,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "FeeAmountNotYetSupported",
+    name: "FeeAmountTooHigh",
     type: "error",
   },
   {
     inputs: [],
-    name: "FeeAmountTooHigh",
+    name: "FeeTableAssetNotSupported",
     type: "error",
   },
   {
@@ -267,7 +272,17 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "InvalidBuyerOfferFields",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "InvalidBuyerPercent",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidCollectionIndex",
     type: "error",
   },
   {
@@ -312,6 +327,16 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "InvalidOffer",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidOfferCreator",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "InvalidOfferPenalty",
     type: "error",
   },
@@ -323,6 +348,11 @@ const _abi = [
   {
     inputs: [],
     name: "InvalidPriceDiscovery",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidPriceDiscoveryPrice",
     type: "error",
   },
   {
@@ -378,6 +408,11 @@ const _abi = [
   {
     inputs: [],
     name: "InvalidRoyaltyRecipientId",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidSellerOfferFields",
     type: "error",
   },
   {
@@ -502,6 +537,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "NoSuchEntity",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "NoSuchExchange",
     type: "error",
   },
@@ -533,6 +573,11 @@ const _abi = [
   {
     inputs: [],
     name: "NoUpdateApplied",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NonAscendingOrder",
     type: "error",
   },
   {
@@ -578,6 +623,11 @@ const _abi = [
   {
     inputs: [],
     name: "NotDisputeResolverAssistant",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NotOfferCreator",
     type: "error",
   },
   {
@@ -657,6 +707,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "PriceDoesNotCoverPenalty",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "PriceMismatch",
     type: "error",
   },
@@ -676,13 +731,24 @@ const _abi = [
     type: "error",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "enum BosonTypes.PausableRegion",
+        name: "region",
+        type: "uint8",
+      },
+    ],
     name: "RegionPaused",
     type: "error",
   },
   {
     inputs: [],
     name: "RoyaltyRecipientIdsNotSorted",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "SameMutualizerAddress",
     type: "error",
   },
   {
@@ -702,12 +768,17 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "SellerParametersNotAllowed",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "SellerSaltNotUnique",
     type: "error",
   },
   {
     inputs: [],
-    name: "SignerAndSignatureDoNotMatch",
+    name: "SignatureValidationFailed",
     type: "error",
   },
   {
@@ -766,8 +837,24 @@ const _abi = [
     type: "error",
   },
   {
+    inputs: [
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "UnexpectedDataReturned",
+    type: "error",
+  },
+  {
     inputs: [],
     name: "UnexpectedERC721Received",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "UnsupportedMutualizer",
     type: "error",
   },
   {
@@ -888,6 +975,11 @@ const _abi = [
             name: "state",
             type: "uint8",
           },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
         ],
         indexed: false,
         internalType: "struct BosonTypes.Exchange",
@@ -942,6 +1034,66 @@ const _abi = [
         type: "uint256",
       },
       {
+        indexed: true,
+        internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
+          {
+            components: [
+              {
+                internalType: "address payable[]",
+                name: "recipients",
+                type: "address[]",
+              },
+              {
+                internalType: "uint256[]",
+                name: "bps",
+                type: "uint256[]",
+              },
+            ],
+            internalType: "struct BosonTypes.RoyaltyInfo",
+            name: "royaltyInfo",
+            type: "tuple",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.SellerOfferParams",
+        name: "sellerParams",
+        type: "tuple",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "BuyerInitiatedOfferSetSellerParams",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
         indexed: false,
         internalType: "enum BosonTypes.GatingType",
         name: "gating",
@@ -973,6 +1125,80 @@ const _abi = [
       },
     ],
     name: "ConditionalCommitAuthorized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "feeAmount",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "mutualizerAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "DRFeeRequested",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "returnAmount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address payable",
+        name: "mutualizerAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "DRFeeReturned",
     type: "event",
   },
   {
@@ -1140,6 +1366,103 @@ const _abi = [
       },
     ],
     name: "ProtocolFeeCollected",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "offerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "finalizedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.ExchangeState",
+            name: "state",
+            type: "uint8",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.Exchange",
+        name: "exchange",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "committedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntilDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "redeemedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "bool",
+            name: "expired",
+            type: "bool",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.Voucher",
+        name: "voucher",
+        type: "tuple",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "SellerCommitted",
     type: "event",
   },
   {
@@ -1524,47 +1847,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address payable",
-        name: "_buyer",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "_offerId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_tokenId",
-        type: "uint256",
-      },
-    ],
-    name: "commitToConditionalOffer",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address payable",
-        name: "_buyer",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "_offerId",
-        type: "uint256",
-      },
-    ],
-    name: "commitToOffer",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint256",
         name: "_exchangeId",
         type: "uint256",
@@ -1689,6 +1971,11 @@ const _abi = [
             internalType: "enum BosonTypes.ExchangeState",
             name: "state",
             type: "uint8",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
           },
         ],
         internalType: "struct BosonTypes.Exchange",
@@ -1992,45 +2279,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_buyer",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "_offerId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_tokenId",
-        type: "uint256",
-      },
-    ],
-    name: "isEligibleToCommit",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "isEligible",
-        type: "bool",
-      },
-      {
-        internalType: "uint256",
-        name: "commitCount",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "maxCommits",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint256",
         name: "_exchangeId",
         type: "uint256",
@@ -2050,40 +2298,6 @@ const _abi = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_tokenId",
-        type: "uint256",
-      },
-      {
-        internalType: "address payable",
-        name: "_to",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "_from",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "_rangeOwner",
-        type: "address",
-      },
-    ],
-    name: "onPremintedVoucherTransferred",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "committed",
-        type: "bool",
-      },
-    ],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {

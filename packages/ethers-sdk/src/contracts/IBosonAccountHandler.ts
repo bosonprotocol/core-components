@@ -147,13 +147,6 @@ export declare namespace BosonTypes {
     collectionSalt: string;
   };
 
-  export type RoyaltyRecipientStruct = { id: BigNumberish; wallet: string };
-
-  export type RoyaltyRecipientStructOutput = [BigNumber, string] & {
-    id: BigNumber;
-    wallet: string;
-  };
-
   export type CollectionStruct = {
     collectionAddress: string;
     externalId: string;
@@ -901,8 +894,8 @@ export interface IBosonAccountHandler extends BaseContract {
       _sellerId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [BosonTypes.RoyaltyRecipientStructOutput[]] & {
-        royaltyRecipients: BosonTypes.RoyaltyRecipientStructOutput[];
+      [BosonTypes.RoyaltyRecipientInfoStructOutput[]] & {
+        royaltyRecipients: BosonTypes.RoyaltyRecipientInfoStructOutput[];
       }
     >;
 
@@ -1170,7 +1163,7 @@ export interface IBosonAccountHandler extends BaseContract {
   getRoyaltyRecipients(
     _sellerId: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<BosonTypes.RoyaltyRecipientStructOutput[]>;
+  ): Promise<BosonTypes.RoyaltyRecipientInfoStructOutput[]>;
 
   getSeller(
     _sellerId: BigNumberish,
@@ -1436,7 +1429,7 @@ export interface IBosonAccountHandler extends BaseContract {
     getRoyaltyRecipients(
       _sellerId: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BosonTypes.RoyaltyRecipientStructOutput[]>;
+    ): Promise<BosonTypes.RoyaltyRecipientInfoStructOutput[]>;
 
     getSeller(
       _sellerId: BigNumberish,

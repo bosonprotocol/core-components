@@ -250,6 +250,7 @@ describe("core-sdk", () => {
         maxCommits: "3"
       };
       const groupToCreate = {
+        sellerId: offer1.seller.id,
         offerIds,
         ...condition
       };
@@ -300,6 +301,7 @@ describe("core-sdk", () => {
         maxCommits: "3"
       };
       const groupToCreate = {
+        sellerId: offer1.seller.id,
         offerIds,
         ...condition
       };
@@ -522,6 +524,7 @@ describe("core-sdk", () => {
             maxCommits: "3"
           };
           groupToCreate = {
+            sellerId: createdOffer.seller.id,
             offerIds: [createdOffer.id],
             ...condition
           };
@@ -539,6 +542,7 @@ describe("core-sdk", () => {
             maxCommits: "3"
           };
           groupToCreate = {
+            sellerId: createdOffer.seller.id,
             offerIds: [createdOffer.id],
             ...condition
           };
@@ -556,6 +560,7 @@ describe("core-sdk", () => {
             maxCommits: "1"
           };
           groupToCreate = {
+            sellerId: createdOffer.seller.id,
             offerIds: [createdOffer.id],
             ...condition
           };
@@ -619,6 +624,7 @@ describe("core-sdk", () => {
         if (token === "ERC721") {
           await ensureMintedERC721(buyerWallet, tokenId);
           groupToCreate = {
+            sellerId: createdOffer.seller.id,
             offerIds: [createdOffer.id],
             method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
@@ -633,6 +639,7 @@ describe("core-sdk", () => {
         if (token === "ERC1155") {
           await ensureMintedERC1155(buyerWallet, tokenId, "3");
           groupToCreate = {
+            sellerId: createdOffer.seller.id,
             offerIds: [createdOffer.id],
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.MultiToken,
@@ -647,6 +654,7 @@ describe("core-sdk", () => {
         if (token === "ERC20") {
           await ensureMintedAndAllowedTokens([buyerWallet], "5");
           groupToCreate = {
+            sellerId: createdOffer.seller.id,
             offerIds: [createdOffer.id],
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.FungibleToken,
@@ -934,7 +942,7 @@ describe("core-sdk", () => {
             maxCommits: "3"
           };
         } else if (token === "ERC721-pertokenid-tokenrange-high-tokenid") {
-          const tokenId3 = (Number.MAX_SAFE_INTEGER + 1).toString();
+          const tokenId3 = constants.MaxUint256.sub(Date.now()).toString(); // Ensure the value is new at each test execution
           await ensureMintedERC721(buyerWallet, tokenId3);
           conditionToCreate = {
             method: EvaluationMethod.TokenRange,
@@ -947,8 +955,8 @@ describe("core-sdk", () => {
             maxCommits: "3"
           };
         } else if (token === "ERC721-pertokenid-tokenrange-wide-range") {
-          await ensureMintedERC721(buyerWallet, "100");
-          await ensureMintedERC721(buyerWallet, "10000000000");
+          await ensureMintedERC721(buyerWallet, "100", true);
+          await ensureMintedERC721(buyerWallet, "10000000000", true);
           conditionToCreate = {
             method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
@@ -1546,7 +1554,8 @@ describe("core-sdk", () => {
           exchange.id,
           buyerPercent,
           sellerCoreSDK,
-          buyerCoreSDK
+          buyerCoreSDK,
+          true
         );
 
         await checkDisputeResolved(exchange.id, buyerPercent, sellerCoreSDK);
@@ -1813,27 +1822,37 @@ async function resolveDispute(
   exchangeId: string,
   buyerPercentBasisPoints: string,
   resolverSDK: CoreSDK,
-  signerSDK: CoreSDK
+  signerSDK: CoreSDK,
+  useRSV = false
 ) {
   {
     // sign the message from seller
     const {
       r: sigR,
       s: sigS,
-      v: sigV
+      v: sigV,
+      signature
     } = await signerSDK.signDisputeResolutionProposal({
       exchangeId,
       buyerPercentBasisPoints
     });
 
     // send the Resolve transaction from buyer
-    const txResponse = await resolverSDK.resolveDispute({
-      exchangeId: exchangeId,
-      buyerPercentBasisPoints,
-      sigR,
-      sigS,
-      sigV
-    });
+    const txResponse = await resolverSDK.resolveDispute(
+      useRSV
+        ? {
+            exchangeId: exchangeId,
+            buyerPercentBasisPoints,
+            sigR,
+            sigS,
+            sigV
+          }
+        : {
+            exchangeId: exchangeId,
+            buyerPercentBasisPoints,
+            signature
+          }
+    );
     await txResponse.wait();
     await resolverSDK.waitForGraphNodeIndexing(txResponse);
   }

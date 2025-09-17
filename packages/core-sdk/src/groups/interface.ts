@@ -21,7 +21,7 @@ export function createGroupArgsToStructs(
   return [
     {
       id: "0",
-      sellerId: "0",
+      sellerId: args.sellerId,
       offerIds: args.offerIds
     },
     conditionArgsToStructs(args)

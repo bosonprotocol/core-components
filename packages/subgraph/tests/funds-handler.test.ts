@@ -20,12 +20,13 @@ import {
   createSellerCreatedEventLegacy,
   mockBosonVoucherContractCalls
 } from "./mocks";
+import { ZERO_ADDRESS } from "../src/utils/eth";
 
 const sellerId = 1;
 const buyerId = 2;
 const exchangeId = 3;
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
-const tokenAddress = "0x0000000000000000000000000000000000000000";
+const tokenAddress = ZERO_ADDRESS;
 const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
 const sellerMetadataHash = "QmZffs1Uv6pmf4649UpMqinDord9QBerJaWcwRgdenAto1";
 

@@ -140,7 +140,7 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
       {
         symbol: "WETH",
         name: "testErc20",
-        address: "0x998abeb3E57409262aE5b751f60747921B33613E",
+        address: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49",
         decimals: "18"
       }
     ]

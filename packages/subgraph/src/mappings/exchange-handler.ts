@@ -1,4 +1,4 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { Address, BigInt, log } from "@graphprotocol/graph-ts";
 import {
   BuyerCommitted,
   VoucherCanceled,
@@ -10,6 +10,7 @@ import {
   VoucherExpired,
   ConditionalCommitAuthorized
 } from "../../generated/BosonExchangeHandler/IBosonExchangeHandler";
+import { BuyerCommitted as BuyerCommitted240 } from "../../generated/BosonExchangeHandler240/IBosonExchangeHandler240";
 import { ConditionEntity, Exchange, Offer } from "../../generated/schema";
 
 import { saveMetadata } from "../entities/metadata/handler";
@@ -17,6 +18,7 @@ import {
   saveConditionalCommitAuthorizedEventLog,
   saveExchangeEventLogs
 } from "../entities/event-log";
+import { ZERO_ADDRESS } from "../utils/eth";
 
 export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   const exchangeFromEvent = event.params.exchange;
@@ -36,7 +38,7 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
 
     saveMetadata(offer, offer.createdAt);
 
-    exchange.seller = offer.seller;
+    exchange.seller = offer.seller as string; // We assume seller in defined when BuyerCommitted is emitted
     exchange.disputeResolver = offer.disputeResolver;
   } else {
     log.warning("Unable to find Offer with id '{}'", [
@@ -51,6 +53,54 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   exchange.committedDate = event.params.voucher.committedDate;
   exchange.validUntilDate = event.params.voucher.validUntilDate;
   exchange.expired = false;
+  exchange.mutualizerAddress = exchangeFromEvent.mutualizerAddress;
+
+  exchange.save();
+
+  saveExchangeEventLogs(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "BUYER_COMMITTED",
+    event.block.timestamp,
+    event.params.executedBy,
+    exchangeId
+  );
+}
+
+export function handleBuyerCommittedEvent240(event: BuyerCommitted240): void {
+  const exchangeFromEvent = event.params.exchange;
+  const exchangeId = exchangeFromEvent.id.toString();
+
+  let exchange = Exchange.load(exchangeId);
+
+  if (!exchange) {
+    exchange = new Exchange(exchangeId);
+  }
+
+  const offer = Offer.load(exchangeFromEvent.offerId.toString());
+  if (offer) {
+    offer.quantityAvailable = offer.quantityAvailable.minus(BigInt.fromI32(1));
+    offer.numberOfCommits = offer.numberOfCommits.plus(BigInt.fromI32(1));
+    offer.save();
+
+    saveMetadata(offer, offer.createdAt);
+
+    exchange.seller = offer.seller as string; // We assume seller is defined when BuyerCommitted is emitted
+    exchange.disputeResolver = offer.disputeResolver;
+  } else {
+    log.warning("Unable to find Offer with id '{}'", [
+      exchangeFromEvent.offerId.toString()
+    ]);
+  }
+
+  exchange.buyer = exchangeFromEvent.buyerId.toString();
+  exchange.offer = exchangeFromEvent.offerId.toString();
+  exchange.disputed = false;
+  exchange.state = "COMMITTED";
+  exchange.committedDate = event.params.voucher.committedDate;
+  exchange.validUntilDate = event.params.voucher.validUntilDate;
+  exchange.expired = false;
+  exchange.mutualizerAddress = Address.fromString(ZERO_ADDRESS);
 
   exchange.save();
 

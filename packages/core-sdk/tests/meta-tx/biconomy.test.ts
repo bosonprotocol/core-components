@@ -39,12 +39,16 @@ describe("Biconomy handler", () => {
     expect(response.txHash).toEqual("txHash");
   });
   test("GET /api/v1/meta-tx/resubmitted should fail", async () => {
-    await expect(
-      new Biconomy(BICONOMY_URL + "xxx").getResubmitted({
+    nock(BICONOMY_URL)
+      .persist()
+      .get("/api/v1/meta-tx/resubmitted?networkId=31337&transactionHash=txHash")
+      .replyWithError("something awful happened");
+    await expect(() =>
+      new Biconomy(BICONOMY_URL).getResubmitted({
         networkId: 31337,
         transactionHash: "txHash"
       })
-    ).rejects.toThrow(/reason: getaddrinfo ENOTFOUND/);
+    ).rejects.toThrow(/something awful happened/);
   });
   test("POST /api/v2/meta-tx/native should not fail after 2 errors", async () => {
     nock(BICONOMY_URL)

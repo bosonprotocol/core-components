@@ -33,14 +33,13 @@ export function saveAccountEventLog(
 
   if (!eventLog) {
     eventLog = new AccountEventLog(eventLogId);
+    eventLog.type = type;
+    eventLog.hash = txHash;
+    eventLog.timestamp = timestamp;
+    eventLog.executedBy = executedBy;
+    eventLog.account = accountId;
+    eventLog.save();
   }
-
-  eventLog.type = type;
-  eventLog.hash = txHash;
-  eventLog.timestamp = timestamp;
-  eventLog.executedBy = executedBy;
-  eventLog.account = accountId;
-  eventLog.save();
 
   return eventLogId;
 }
@@ -60,15 +59,14 @@ export function saveOfferEventLog(
 
   if (!eventLog) {
     eventLog = new OfferEventLog(eventLogId);
+    eventLog.type = type;
+    eventLog.hash = txHash;
+    eventLog.timestamp = timestamp;
+    eventLog.executedBy = executedBy;
+    eventLog.account = accountId;
+    eventLog.offer = offerId;
+    eventLog.save();
   }
-
-  eventLog.type = type;
-  eventLog.hash = txHash;
-  eventLog.timestamp = timestamp;
-  eventLog.executedBy = executedBy;
-  eventLog.account = accountId;
-  eventLog.offer = offerId;
-  eventLog.save();
 
   return eventLogId;
 }
@@ -120,15 +118,14 @@ function saveExchangeEventLog(
 
   if (!eventLog) {
     eventLog = new ExchangeEventLog(eventLogId);
+    eventLog.type = type;
+    eventLog.hash = txHash;
+    eventLog.timestamp = timestamp;
+    eventLog.executedBy = executedBy;
+    eventLog.account = accountId;
+    eventLog.exchange = exchangeId;
+    eventLog.save();
   }
-
-  eventLog.type = type;
-  eventLog.hash = txHash;
-  eventLog.timestamp = timestamp;
-  eventLog.executedBy = executedBy;
-  eventLog.account = accountId;
-  eventLog.exchange = exchangeId;
-  eventLog.save();
 
   return eventLogId;
 }
@@ -148,15 +145,14 @@ export function saveFundsEventLog(
 
   if (!eventLog) {
     eventLog = new FundsEventLog(eventLogId);
+    eventLog.type = type;
+    eventLog.hash = txHash;
+    eventLog.timestamp = timestamp;
+    eventLog.executedBy = executedBy;
+    eventLog.account = accountId;
+    eventLog.funds = fundsId;
+    eventLog.save();
   }
-
-  eventLog.type = type;
-  eventLog.hash = txHash;
-  eventLog.timestamp = timestamp;
-  eventLog.executedBy = executedBy;
-  eventLog.account = accountId;
-  eventLog.funds = fundsId;
-  eventLog.save();
 
   return eventLogId;
 }
@@ -217,15 +213,14 @@ function saveDisputeEventLog(
 
   if (!eventLog) {
     eventLog = new DisputeEventLog(eventLogId);
+    eventLog.type = type;
+    eventLog.hash = txHash;
+    eventLog.timestamp = timestamp;
+    eventLog.executedBy = executedBy;
+    eventLog.account = accountId;
+    eventLog.dispute = disputeId;
+    eventLog.save();
   }
-
-  eventLog.type = type;
-  eventLog.hash = txHash;
-  eventLog.timestamp = timestamp;
-  eventLog.executedBy = executedBy;
-  eventLog.account = accountId;
-  eventLog.dispute = disputeId;
-  eventLog.save();
 
   return eventLogId;
 }
@@ -249,19 +244,18 @@ export function saveConditionalCommitAuthorizedEventLog(
 
   if (!eventLog) {
     eventLog = new ConditionalCommitAuthorizedEventLog(eventLogId);
+    eventLog.hash = txHash;
+    eventLog.type = type;
+    eventLog.timestamp = timestamp;
+    eventLog.buyerAddress = buyerAddress;
+    eventLog.commitCount = commitCount;
+    eventLog.maxCommits = maxCommits;
+    eventLog.gating = gating;
+    eventLog.tokenId = tokenId;
+    eventLog.groupId = groupId;
+    eventLog.offerId = offerId.toString();
+    eventLog.save();
   }
-
-  eventLog.hash = txHash;
-  eventLog.type = type;
-  eventLog.timestamp = timestamp;
-  eventLog.buyerAddress = buyerAddress;
-  eventLog.commitCount = commitCount;
-  eventLog.maxCommits = maxCommits;
-  eventLog.gating = gating;
-  eventLog.tokenId = tokenId;
-  eventLog.groupId = groupId;
-  eventLog.offerId = offerId.toString();
-  eventLog.save();
 
   return eventLogId;
 }

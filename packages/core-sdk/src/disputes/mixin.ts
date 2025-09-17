@@ -254,40 +254,76 @@ export class DisputesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * - `args.sigV` - v signature value of counterparty.
    * @returns Transaction response.
    */
-  public async resolveDispute(args: {
-    exchangeId: BigNumberish;
-    buyerPercentBasisPoints: BigNumberish;
-    sigR: BytesLike;
-    sigS: BytesLike;
-    sigV: BigNumberish;
-    returnTxInfo: true;
-  }): Promise<TransactionRequest>;
-  public async resolveDispute(args: {
-    exchangeId: BigNumberish;
-    buyerPercentBasisPoints: BigNumberish;
-    sigR: BytesLike;
-    sigS: BytesLike;
-    sigV: BigNumberish;
-    returnTxInfo?: false | undefined;
-  }): Promise<TransactionResponse>;
-  public async resolveDispute(args: {
-    exchangeId: BigNumberish;
-    buyerPercentBasisPoints: BigNumberish;
-    sigR: BytesLike;
-    sigS: BytesLike;
-    sigV: BigNumberish;
-    returnTxInfo?: boolean;
-  }): Promise<TransactionResponse | TransactionRequest> {
+  public async resolveDispute(
+    args:
+      | {
+          exchangeId: BigNumberish;
+          buyerPercentBasisPoints: BigNumberish;
+          sigR: BytesLike;
+          sigS: BytesLike;
+          sigV: BigNumberish;
+          returnTxInfo: true;
+        }
+      | {
+          exchangeId: BigNumberish;
+          buyerPercentBasisPoints: BigNumberish;
+          signature: string;
+          returnTxInfo: true;
+        }
+  ): Promise<TransactionRequest>;
+  public async resolveDispute(
+    args:
+      | {
+          exchangeId: BigNumberish;
+          buyerPercentBasisPoints: BigNumberish;
+          sigR: BytesLike;
+          sigS: BytesLike;
+          sigV: BigNumberish;
+          returnTxInfo?: false | undefined;
+        }
+      | {
+          exchangeId: BigNumberish;
+          buyerPercentBasisPoints: BigNumberish;
+          signature: string;
+          returnTxInfo?: false | undefined;
+        }
+  ): Promise<TransactionResponse>;
+  public async resolveDispute(
+    args:
+      | {
+          exchangeId: BigNumberish;
+          buyerPercentBasisPoints: BigNumberish;
+          sigR: BytesLike;
+          sigS: BytesLike;
+          sigV: BigNumberish;
+          returnTxInfo?: boolean;
+        }
+      | {
+          exchangeId: BigNumberish;
+          buyerPercentBasisPoints: BigNumberish;
+          signature: string;
+          returnTxInfo?: boolean;
+        }
+  ): Promise<TransactionResponse | TransactionRequest> {
     const { returnTxInfo } = args;
-    const resolveArgs = {
-      exchangeId: args.exchangeId,
-      buyerPercentBasisPoints: args.buyerPercentBasisPoints,
-      sigR: args.sigR,
-      sigS: args.sigS,
-      sigV: args.sigV,
-      contractAddress: this._protocolDiamond,
-      web3Lib: this._web3Lib
-    } as const satisfies Parameters<typeof resolveDispute>[0];
+    const resolveArgs =
+      "signature" in args
+        ? {
+            exchangeId: args.exchangeId,
+            buyerPercentBasisPoints: args.buyerPercentBasisPoints,
+            signature: args.signature,
+            contractAddress: this._protocolDiamond,
+            web3Lib: this._web3Lib
+          }
+        : ({
+            exchangeId: args.exchangeId,
+            buyerPercentBasisPoints: args.buyerPercentBasisPoints,
+            sigR: args.sigR,
+            sigS: args.sigS,
+            sigV: args.sigV,
+            contractAddress: this._protocolDiamond,
+            web3Lib: this._web3Lib
+          } as const satisfies Parameters<typeof resolveDispute>[0]);
 
     if (returnTxInfo === true) {
       return resolveDispute({

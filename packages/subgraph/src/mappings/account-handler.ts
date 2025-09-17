@@ -753,8 +753,8 @@ export function saveRoyaltyRecipient(wallet: Address): string {
   let royaltyRecipient = RoyaltyRecipient.load(royaltyRecipientId);
   if (!royaltyRecipient) {
     royaltyRecipient = new RoyaltyRecipient(royaltyRecipientId);
+    royaltyRecipient.wallet = wallet;
+    royaltyRecipient.save();
   }
-  royaltyRecipient.wallet = wallet;
-  royaltyRecipient.save();
   return royaltyRecipientId;
 }

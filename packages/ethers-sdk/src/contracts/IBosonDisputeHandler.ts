@@ -66,7 +66,7 @@ export interface IBosonDisputeHandlerInterface extends utils.Interface {
     "isDisputeFinalized(uint256)": FunctionFragment;
     "raiseDispute(uint256)": FunctionFragment;
     "refuseEscalatedDispute(uint256)": FunctionFragment;
-    "resolveDispute(uint256,uint256,bytes32,bytes32,uint8)": FunctionFragment;
+    "resolveDispute(uint256,uint256,bytes)": FunctionFragment;
     "retractDispute(uint256)": FunctionFragment;
   };
 
@@ -120,7 +120,7 @@ export interface IBosonDisputeHandlerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "resolveDispute",
-    values: [BigNumberish, BigNumberish, BytesLike, BytesLike, BigNumberish]
+    values: [BigNumberish, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "retractDispute",
@@ -182,6 +182,8 @@ export interface IBosonDisputeHandlerInterface extends utils.Interface {
   ): Result;
 
   events: {
+    "DRFeeRequested(uint256,address,uint256,address,address)": EventFragment;
+    "DRFeeReturned(uint256,address,uint256,address,address)": EventFragment;
     "DisputeDecided(uint256,uint256,address)": EventFragment;
     "DisputeEscalated(uint256,uint256,address)": EventFragment;
     "DisputeExpired(uint256,address)": EventFragment;
@@ -197,6 +199,8 @@ export interface IBosonDisputeHandlerInterface extends utils.Interface {
     "ProtocolFeeCollected(uint256,address,uint256,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "DRFeeRequested"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DRFeeReturned"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisputeDecided"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisputeEscalated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisputeExpired"): EventFragment;
@@ -211,6 +215,32 @@ export interface IBosonDisputeHandlerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "FundsWithdrawn"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ProtocolFeeCollected"): EventFragment;
 }
+
+export type DRFeeRequestedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string, string],
+  {
+    exchangeId: BigNumber;
+    tokenAddress: string;
+    feeAmount: BigNumber;
+    mutualizerAddress: string;
+    executedBy: string;
+  }
+>;
+
+export type DRFeeRequestedEventFilter = TypedEventFilter<DRFeeRequestedEvent>;
+
+export type DRFeeReturnedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string, string],
+  {
+    exchangeId: BigNumber;
+    tokenAddress: string;
+    returnAmount: BigNumber;
+    mutualizerAddress: string;
+    executedBy: string;
+  }
+>;
+
+export type DRFeeReturnedEventFilter = TypedEventFilter<DRFeeReturnedEvent>;
 
 export type DisputeDecidedEvent = TypedEvent<
   [BigNumber, BigNumber, string],
@@ -439,9 +469,7 @@ export interface IBosonDisputeHandler extends BaseContract {
     resolveDispute(
       _exchangeId: BigNumberish,
       _buyerPercent: BigNumberish,
-      _sigR: BytesLike,
-      _sigS: BytesLike,
-      _sigV: BigNumberish,
+      _signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -526,9 +554,7 @@ export interface IBosonDisputeHandler extends BaseContract {
   resolveDispute(
     _exchangeId: BigNumberish,
     _buyerPercent: BigNumberish,
-    _sigR: BytesLike,
-    _sigS: BytesLike,
-    _sigV: BigNumberish,
+    _signature: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -613,9 +639,7 @@ export interface IBosonDisputeHandler extends BaseContract {
     resolveDispute(
       _exchangeId: BigNumberish,
       _buyerPercent: BigNumberish,
-      _sigR: BytesLike,
-      _sigS: BytesLike,
-      _sigV: BigNumberish,
+      _signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -626,6 +650,36 @@ export interface IBosonDisputeHandler extends BaseContract {
   };
 
   filters: {
+    "DRFeeRequested(uint256,address,uint256,address,address)"(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      feeAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeRequestedEventFilter;
+    DRFeeRequested(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      feeAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeRequestedEventFilter;
+
+    "DRFeeReturned(uint256,address,uint256,address,address)"(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: null,
+      executedBy?: null
+    ): DRFeeReturnedEventFilter;
+    DRFeeReturned(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: null,
+      executedBy?: null
+    ): DRFeeReturnedEventFilter;
+
     "DisputeDecided(uint256,uint256,address)"(
       exchangeId?: BigNumberish | null,
       _buyerPercent?: null,
@@ -842,9 +896,7 @@ export interface IBosonDisputeHandler extends BaseContract {
     resolveDispute(
       _exchangeId: BigNumberish,
       _buyerPercent: BigNumberish,
-      _sigR: BytesLike,
-      _sigS: BytesLike,
-      _sigV: BigNumberish,
+      _signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -920,9 +972,7 @@ export interface IBosonDisputeHandler extends BaseContract {
     resolveDispute(
       _exchangeId: BigNumberish,
       _buyerPercent: BigNumberish,
-      _sigR: BytesLike,
-      _sigS: BytesLike,
-      _sigV: BigNumberish,
+      _signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

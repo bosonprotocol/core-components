@@ -5,12 +5,15 @@ import {
   OfferDatesStruct,
   OfferDurationsStruct,
   PriceType,
-  RoyaltyInfo
+  RoyaltyInfo,
+  OfferCreator,
+  DRParametersStruct
 } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { getAddress } from "@ethersproject/address";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { CreateOfferArgs } from "./types";
+import { AddressZero } from "@ethersproject/constants";
 
 export const bosonOfferHandlerIface = new Interface(abis.IBosonOfferHandlerABI);
 
@@ -46,7 +49,7 @@ export function encodeCreateOfferBatch(argsBatch: CreateOfferArgs[]) {
     Partial<OfferStruct>,
     Partial<OfferDatesStruct>,
     Partial<OfferDurationsStruct>,
-    BigNumberish,
+    Partial<DRParametersStruct>,
     BigNumberish,
     BigNumberish
   ][] = argsBatch.map((args) => createOfferArgsToStructs(args));
@@ -54,23 +57,32 @@ export function encodeCreateOfferBatch(argsBatch: CreateOfferArgs[]) {
     offers,
     offerDates,
     offerDurations,
-    disputeResolverIds,
+    drParameters,
     agentIds,
     feeLimits
   ]: [
     Partial<OfferStruct>[],
     Partial<OfferDatesStruct>[],
     Partial<OfferDurationsStruct>[],
-    BigNumberish[],
+    Partial<DRParametersStruct>[],
     BigNumberish[],
     BigNumberish[]
-  ] = argsTuples.reduce(
+  ] = argsTuples.reduce<
+    [
+      Partial<OfferStruct>[],
+      Partial<OfferDatesStruct>[],
+      Partial<OfferDurationsStruct>[],
+      Partial<DRParametersStruct>[],
+      BigNumberish[],
+      BigNumberish[]
+    ]
+  >(
     (acc, tuple) => {
       const [
         offer,
         offerDates,
         offerDurations,
-        disputeResolverId,
+        drParameters,
         agentId,
         feeLimit
       ] = tuple;
@@ -78,7 +90,7 @@ export function encodeCreateOfferBatch(argsBatch: CreateOfferArgs[]) {
         [...acc[0], offer],
         [...acc[1], offerDates],
         [...acc[2], offerDurations],
-        [...acc[3], disputeResolverId],
+        [...acc[3], drParameters],
         [...acc[4], agentId],
         [...acc[5], feeLimit]
       ];
@@ -90,7 +102,7 @@ export function encodeCreateOfferBatch(argsBatch: CreateOfferArgs[]) {
     offers,
     offerDates,
     offerDurations,
-    disputeResolverIds,
+    drParameters,
     agentIds,
     feeLimits
   ]);
@@ -102,7 +114,7 @@ export function createOfferArgsToStructs(
   Partial<OfferStruct>,
   Partial<OfferDatesStruct>,
   Partial<OfferDurationsStruct>,
-  BigNumberish,
+  Partial<DRParametersStruct>,
   BigNumberish,
   BigNumberish
 ] {
@@ -111,7 +123,7 @@ export function createOfferArgsToStructs(
     argsToOfferStruct(args),
     argsToOfferDatesStruct(args),
     argsToOfferDurationsStruct(args),
-    args.disputeResolverId,
+    argsToDRParametersStruct(args),
     args.agentId,
     feeLimit
   ];
@@ -122,6 +134,8 @@ export function argsToOfferStruct(args: CreateOfferArgs): Partial<OfferStruct> {
 
   const priceType =
     args.priceType !== undefined ? args.priceType : PriceType.Static;
+  const creator =
+    args.creator !== undefined ? args.creator : OfferCreator.Seller;
   const royaltyInfo =
     args.royaltyInfo !== undefined
       ? args.royaltyInfo
@@ -135,6 +149,7 @@ export function argsToOfferStruct(args: CreateOfferArgs): Partial<OfferStruct> {
   return {
     id: "0",
     sellerId: "0",
+    buyerId: "0",
     ...restArgs,
     exchangeToken: getAddress(exchangeToken),
     priceType,
@@ -145,7 +160,8 @@ export function argsToOfferStruct(args: CreateOfferArgs): Partial<OfferStruct> {
           getAddress(recipient)
         )
       };
-    })
+    }),
+    creator
   };
 }
 
@@ -184,6 +200,15 @@ export function argsToOfferDurationsStruct(
     disputePeriod: utils.timestamp.msToSec(disputePeriodDurationInMS),
     voucherValid: utils.timestamp.msToSec(voucherValidDurationInMS),
     resolutionPeriod: utils.timestamp.msToSec(resolutionPeriodDurationInMS)
+  };
+}
+
+export function argsToDRParametersStruct(
+  args: CreateOfferArgs
+): Partial<DRParametersStruct> {
+  return {
+    disputeResolverId: args.disputeResolverId,
+    mutualizerAddress: args.mutualizerAddress || AddressZero
   };
 }
 

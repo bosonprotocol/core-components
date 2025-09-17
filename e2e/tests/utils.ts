@@ -97,15 +97,15 @@ const getFirstEnvConfig = (arg0: Parameters<typeof getEnvConfigs>[0]) =>
 
 export const MOCK_ERC20_ADDRESS =
   (getFirstEnvConfig("local").contracts.testErc20 as string) ||
-  "0x998abeb3E57409262aE5b751f60747921B33613E";
+  "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49";
 
 export const MOCK_ERC721_ADDRESS =
   (getFirstEnvConfig("local").contracts.testErc721 as string) ||
-  "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90";
+  "0x4826533B4897376654Bb4d4AD88B7faFD0C98528";
 
 export const MOCK_ERC1155_ADDRESS =
   (getFirstEnvConfig("local").contracts.testErc1155 as string) ||
-  "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1";
+  "0x99bbA657f2BbC93c02D617f8bA121cB8Fc104Acf";
 
 export const MOCK_FORWARDER_ADDRESS =
   (getFirstEnvConfig("local").contracts.forwarder as string) ||
@@ -113,7 +113,7 @@ export const MOCK_FORWARDER_ADDRESS =
 
 export const MOCK_SEAPORT_ADDRESS =
   (getFirstEnvConfig("local").contracts.seaport as string) ||
-  "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF";
+  "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf";
 
 export const OPENSEA_FEE_RECIPIENT =
   "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
@@ -401,10 +401,23 @@ export async function ensureMintedAndAllowedTokens(
 
 export async function ensureMintedERC721(
   wallet: Wallet,
-  tokenId: BigNumberish
+  tokenId: BigNumberish,
+  increment = false
 ) {
-  const tx = await mockErc721Contract.connect(wallet).mint(tokenId, 1);
-  await tx.wait();
+  let loop = true;
+  while (loop) {
+    try {
+      const tx = await mockErc721Contract.connect(wallet).mint(tokenId, 1);
+      await tx.wait();
+      loop = false;
+    } catch (e) {
+      if (increment && e.toString().includes("ERC721: token already minted")) {
+        tokenId = BigNumber.from(tokenId).add(1);
+      } else {
+        throw e;
+      }
+    }
+  }
 }
 
 export async function ensureMintedERC1155(
@@ -586,6 +599,7 @@ export async function createPremintedOfferAddToGroup(
   coreSDK: CoreSDK,
   condition: ConditionStruct,
   premintParameters: PremintParametersStruct,
+  sellerId: string,
   overrides: {
     offerParams?: Partial<CreateOfferArgs>;
     metadata?: Partial<base.BaseMetadata>;
@@ -604,6 +618,7 @@ export async function createPremintedOfferAddToGroup(
     ...overrides.offerParams
   });
   const groupToCreate = {
+    sellerId: sellerId,
     offerIds: [],
     ...condition
   };

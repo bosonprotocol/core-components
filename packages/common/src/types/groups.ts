@@ -35,5 +35,6 @@ export type ConditionStruct = {
 };
 
 export type CreateGroupArgs = ConditionStruct & {
+  sellerId: BigNumberish;
   offerIds: BigNumberish[];
 };

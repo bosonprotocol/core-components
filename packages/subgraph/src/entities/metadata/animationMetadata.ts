@@ -26,18 +26,13 @@ export function saveAnimationMetadata(
 
   let animationMetadataEntity = AnimationMetadata.load(animationMetadataId);
 
-  if (animationMetadataEntity) {
-    animationMetadataEntity.height = height;
-    animationMetadataEntity.width = width;
-    animationMetadataEntity.type = type;
-  } else {
+  if (!animationMetadataEntity) {
     animationMetadataEntity = new AnimationMetadata(animationMetadataId);
     animationMetadataEntity.height = height;
     animationMetadataEntity.type = type;
     animationMetadataEntity.width = width;
+    animationMetadataEntity.save();
   }
-
-  animationMetadataEntity.save();
 
   return animationMetadataId;
 }

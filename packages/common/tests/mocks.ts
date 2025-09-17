@@ -13,7 +13,8 @@ import {
   OfferDurationsStruct,
   TransactionRequest,
   TransactionReceipt,
-  PriceType
+  PriceType,
+  OfferCreator
 } from "../src/types";
 import { MetadataType } from "@bosonprotocol/metadata";
 
@@ -37,6 +38,8 @@ export function mockOfferStruct(overrides?: Partial<OfferStruct>): OfferStruct {
     metadataHash: IPFS_HASH,
     priceType: PriceType.Static,
     royaltyInfo: [{ recipients: [AddressZero], bps: [0] }],
+    buyerId: "0",
+    creator: OfferCreator.Seller,
     ...overrides
   };
 }
@@ -226,10 +229,12 @@ export class MockMetadataStorage implements MetadataStorage {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getMetadata(metadataUri: string): Promise<AnyMetadata> {
     return this._returnValues.getMetadata;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async storeMetadata(metadata: AnyMetadata): Promise<string> {
     return this._returnValues.storeMetadata;
   }

@@ -107,6 +107,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "DRFeeMutualizerCannotProvideCoverage",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "DRUnsupportedFee",
     type: "error",
   },
@@ -182,12 +187,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "FeeAmountNotYetSupported",
+    name: "FeeAmountTooHigh",
     type: "error",
   },
   {
     inputs: [],
-    name: "FeeAmountTooHigh",
+    name: "FeeTableAssetNotSupported",
     type: "error",
   },
   {
@@ -267,7 +272,17 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "InvalidBuyerOfferFields",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "InvalidBuyerPercent",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidCollectionIndex",
     type: "error",
   },
   {
@@ -312,6 +327,16 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "InvalidOffer",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidOfferCreator",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "InvalidOfferPenalty",
     type: "error",
   },
@@ -323,6 +348,11 @@ const _abi = [
   {
     inputs: [],
     name: "InvalidPriceDiscovery",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidPriceDiscoveryPrice",
     type: "error",
   },
   {
@@ -378,6 +408,11 @@ const _abi = [
   {
     inputs: [],
     name: "InvalidRoyaltyRecipientId",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidSellerOfferFields",
     type: "error",
   },
   {
@@ -502,6 +537,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "NoSuchEntity",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "NoSuchExchange",
     type: "error",
   },
@@ -533,6 +573,11 @@ const _abi = [
   {
     inputs: [],
     name: "NoUpdateApplied",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NonAscendingOrder",
     type: "error",
   },
   {
@@ -578,6 +623,11 @@ const _abi = [
   {
     inputs: [],
     name: "NotDisputeResolverAssistant",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NotOfferCreator",
     type: "error",
   },
   {
@@ -657,6 +707,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "PriceDoesNotCoverPenalty",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "PriceMismatch",
     type: "error",
   },
@@ -676,13 +731,24 @@ const _abi = [
     type: "error",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "enum BosonTypes.PausableRegion",
+        name: "region",
+        type: "uint8",
+      },
+    ],
     name: "RegionPaused",
     type: "error",
   },
   {
     inputs: [],
     name: "RoyaltyRecipientIdsNotSorted",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "SameMutualizerAddress",
     type: "error",
   },
   {
@@ -702,12 +768,17 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "SellerParametersNotAllowed",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "SellerSaltNotUnique",
     type: "error",
   },
   {
     inputs: [],
-    name: "SignerAndSignatureDoNotMatch",
+    name: "SignatureValidationFailed",
     type: "error",
   },
   {
@@ -766,8 +837,24 @@ const _abi = [
     type: "error",
   },
   {
+    inputs: [
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "UnexpectedDataReturned",
+    type: "error",
+  },
+  {
     inputs: [],
     name: "UnexpectedERC721Received",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "UnsupportedMutualizer",
     type: "error",
   },
   {
@@ -2500,17 +2587,17 @@ const _abi = [
       {
         components: [
           {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
             internalType: "address payable",
             name: "wallet",
             type: "address",
           },
+          {
+            internalType: "uint256",
+            name: "minRoyaltyPercentage",
+            type: "uint256",
+          },
         ],
-        internalType: "struct BosonTypes.RoyaltyRecipient[]",
+        internalType: "struct BosonTypes.RoyaltyRecipientInfo[]",
         name: "royaltyRecipients",
         type: "tuple[]",
       },

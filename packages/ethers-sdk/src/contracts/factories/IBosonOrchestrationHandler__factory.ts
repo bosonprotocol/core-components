@@ -107,6 +107,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "DRFeeMutualizerCannotProvideCoverage",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "DRUnsupportedFee",
     type: "error",
   },
@@ -182,12 +187,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "FeeAmountNotYetSupported",
+    name: "FeeAmountTooHigh",
     type: "error",
   },
   {
     inputs: [],
-    name: "FeeAmountTooHigh",
+    name: "FeeTableAssetNotSupported",
     type: "error",
   },
   {
@@ -267,7 +272,17 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "InvalidBuyerOfferFields",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "InvalidBuyerPercent",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidCollectionIndex",
     type: "error",
   },
   {
@@ -312,6 +327,16 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "InvalidOffer",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidOfferCreator",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "InvalidOfferPenalty",
     type: "error",
   },
@@ -323,6 +348,11 @@ const _abi = [
   {
     inputs: [],
     name: "InvalidPriceDiscovery",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidPriceDiscoveryPrice",
     type: "error",
   },
   {
@@ -378,6 +408,11 @@ const _abi = [
   {
     inputs: [],
     name: "InvalidRoyaltyRecipientId",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidSellerOfferFields",
     type: "error",
   },
   {
@@ -502,6 +537,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "NoSuchEntity",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "NoSuchExchange",
     type: "error",
   },
@@ -533,6 +573,11 @@ const _abi = [
   {
     inputs: [],
     name: "NoUpdateApplied",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NonAscendingOrder",
     type: "error",
   },
   {
@@ -578,6 +623,11 @@ const _abi = [
   {
     inputs: [],
     name: "NotDisputeResolverAssistant",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NotOfferCreator",
     type: "error",
   },
   {
@@ -657,6 +707,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "PriceDoesNotCoverPenalty",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "PriceMismatch",
     type: "error",
   },
@@ -676,13 +731,24 @@ const _abi = [
     type: "error",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "enum BosonTypes.PausableRegion",
+        name: "region",
+        type: "uint8",
+      },
+    ],
     name: "RegionPaused",
     type: "error",
   },
   {
     inputs: [],
     name: "RoyaltyRecipientIdsNotSorted",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "SameMutualizerAddress",
     type: "error",
   },
   {
@@ -702,12 +768,17 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "SellerParametersNotAllowed",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "SellerSaltNotUnique",
     type: "error",
   },
   {
     inputs: [],
-    name: "SignerAndSignatureDoNotMatch",
+    name: "SignatureValidationFailed",
     type: "error",
   },
   {
@@ -766,8 +837,24 @@ const _abi = [
     type: "error",
   },
   {
+    inputs: [
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "UnexpectedDataReturned",
+    type: "error",
+  },
+  {
     inputs: [],
     name: "UnexpectedERC721Received",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "UnsupportedMutualizer",
     type: "error",
   },
   {
@@ -1699,6 +1786,31 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "bytes32",
+        name: "offerHash",
+        type: "bytes32",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offererId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "NonListedOfferVoided",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "uint256",
         name: "offerId",
@@ -1753,6 +1865,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -1788,6 +1905,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         indexed: false,
@@ -1867,6 +1989,11 @@ const _abi = [
             internalType: "uint256",
             name: "buyerEscalationDeposit",
             type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
           },
         ],
         indexed: false,
@@ -1955,6 +2082,37 @@ const _abi = [
         type: "uint256",
       },
       {
+        indexed: true,
+        internalType: "address",
+        name: "newMutualizer",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "OfferMutualizerUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
+      },
+      {
         components: [
           {
             internalType: "address payable[]",
@@ -1994,7 +2152,7 @@ const _abi = [
       {
         indexed: true,
         internalType: "uint256",
-        name: "sellerId",
+        name: "creatorId",
         type: "uint256",
       },
       {
@@ -2643,6 +2801,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -2678,6 +2841,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -2734,9 +2902,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         internalType: "uint256",
@@ -2804,6 +2984,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -2839,6 +3024,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -2895,9 +3085,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -3002,6 +3204,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -3037,6 +3244,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -3093,9 +3305,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -3205,6 +3429,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -3240,6 +3469,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -3296,9 +3530,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -3450,6 +3696,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -3485,6 +3736,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -3541,9 +3797,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -3628,6 +3896,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -3663,6 +3936,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -3719,9 +3997,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -3843,6 +4133,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -3878,6 +4173,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -3934,9 +4234,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -4063,6 +4375,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -4098,6 +4415,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -4154,9 +4476,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -4367,6 +4701,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -4402,6 +4741,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -4458,9 +4802,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -4604,6 +4960,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -4639,6 +5000,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -4695,9 +5061,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -4883,6 +5261,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -4918,6 +5301,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -4974,9 +5362,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -5167,6 +5567,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -5202,6 +5607,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -5258,9 +5668,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -5493,6 +5915,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -5528,6 +5955,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -5584,9 +6016,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -5747,6 +6191,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -5782,6 +6231,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -5838,9 +6292,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -6043,6 +6509,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -6078,6 +6549,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -6134,9 +6610,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
@@ -6344,6 +6832,11 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "enum BosonTypes.OfferCreator",
+            name: "creator",
+            type: "uint8",
+          },
+          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -6379,6 +6872,11 @@ const _abi = [
             internalType: "struct BosonTypes.RoyaltyInfo[]",
             name: "royaltyInfo",
             type: "tuple[]",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -6435,9 +6933,21 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "uint256",
-        name: "_disputeResolverId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "mutualizerAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct BosonTypes.DRParameters",
+        name: "_drParameters",
+        type: "tuple",
       },
       {
         components: [
