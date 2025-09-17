@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.44.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.43.3...@bosonprotocol/core-sdk@1.44.0) (2025-09-17)
+
+
+### Features
+
+* accept returnTypedDataToSign for prepareDataSignatureParameters ([#958](https://github.com/bosonprotocol/core-components/issues/958)) ([1bb5f4f](https://github.com/bosonprotocol/core-components/commit/1bb5f4f5c5cf6b95246f8d6656efdf6a4b60292e))
+* add getCurrentTimeMs in web3libadapter for assertCompletableExc… ([#961](https://github.com/bosonprotocol/core-components/issues/961)) ([5fac132](https://github.com/bosonprotocol/core-components/commit/5fac132f6913df35a7ec6ebbf358145e61674e78))
+* add txRequest override to createOffer ([#946](https://github.com/bosonprotocol/core-components/issues/946)) ([19bc0a9](https://github.com/bosonprotocol/core-components/commit/19bc0a95f8cfd51a52e992e3e6469132fcc93188))
+* allow createOfferWithCondition to return tx data ([#960](https://github.com/bosonprotocol/core-components/issues/960)) ([95a7a81](https://github.com/bosonprotocol/core-components/commit/95a7a817b9cc9fdc36a8ee87079d97b53576faf4))
+* check if dispute resolver supports fee on create offer ([#959](https://github.com/bosonprotocol/core-components/issues/959)) ([500fc50](https://github.com/bosonprotocol/core-components/commit/500fc50818494432da05d004b8b63bba082b4e64))
+* create agent adapter ([#947](https://github.com/bosonprotocol/core-components/issues/947)) ([75d6432](https://github.com/bosonprotocol/core-components/commit/75d64325fb654a4e2112bddf611231b1387b90bc)), closes [#948](https://github.com/bosonprotocol/core-components/issues/948)
+* improve types protocolConfig ([#951](https://github.com/bosonprotocol/core-components/issues/951)) ([088bf9c](https://github.com/bosonprotocol/core-components/commit/088bf9ca43e21827a6a791837e096a12bbdd9f9c))
+* retrieve seller id from seller update in getPendingSellerUpdateFromLogs ([#962](https://github.com/bosonprotocol/core-components/issues/962)) ([a80c69e](https://github.com/bosonprotocol/core-components/commit/a80c69e918ca12d2b9c6e380565411aed145f54e))
+
+
+
+
+
 ## [1.43.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.43.2...@bosonprotocol/core-sdk@1.43.3) (2025-04-08)
 
 **Note:** Version bump only for package @bosonprotocol/core-sdk
