@@ -85,7 +85,7 @@ export function handleBuyerCommittedEvent240(event: BuyerCommitted240): void {
 
     saveMetadata(offer, offer.createdAt);
 
-    exchange.seller = offer.seller as string; // We assume seller in defined when BuyerCommitted is emitted
+    exchange.seller = offer.seller as string; // We assume seller is defined when BuyerCommitted is emitted
     exchange.disputeResolver = offer.disputeResolver;
   } else {
     log.warning("Unable to find Offer with id '{}'", [
