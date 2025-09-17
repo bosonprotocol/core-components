@@ -8,7 +8,8 @@ import {
   VoucherTransferred,
   ExchangeCompleted,
   VoucherExpired,
-  ConditionalCommitAuthorized
+  ConditionalCommitAuthorized,
+  SellerCommitted
 } from "../../generated/BosonExchangeHandler/IBosonExchangeHandler";
 import { BuyerCommitted as BuyerCommitted240 } from "../../generated/BosonExchangeHandler240/IBosonExchangeHandler240";
 import { ConditionEntity, Exchange, Offer } from "../../generated/schema";
@@ -61,6 +62,53 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
     event.transaction.hash.toHexString(),
     event.logIndex,
     "BUYER_COMMITTED",
+    event.block.timestamp,
+    event.params.executedBy,
+    exchangeId
+  );
+}
+
+export function handleSellerCommittedEvent(event: SellerCommitted): void {
+  const exchangeFromEvent = event.params.exchange;
+  const exchangeId = exchangeFromEvent.id.toString();
+
+  let exchange = Exchange.load(exchangeId);
+
+  if (!exchange) {
+    exchange = new Exchange(exchangeId);
+  }
+
+  const offer = Offer.load(exchangeFromEvent.offerId.toString());
+  if (offer) {
+    offer.quantityAvailable = offer.quantityAvailable.minus(BigInt.fromI32(1));
+    offer.numberOfCommits = offer.numberOfCommits.plus(BigInt.fromI32(1));
+    offer.save();
+
+    saveMetadata(offer, offer.createdAt);
+
+    exchange.buyer = offer.buyerId.toString();
+    exchange.disputeResolver = offer.disputeResolver;
+  } else {
+    log.warning("Unable to find Offer with id '{}'", [
+      exchangeFromEvent.offerId.toString()
+    ]);
+  }
+
+  exchange.seller = event.params.sellerId.toString();
+  exchange.offer = event.params.offerId.toString();
+  exchange.disputed = false;
+  exchange.state = "COMMITTED";
+  exchange.committedDate = event.params.voucher.committedDate;
+  exchange.validUntilDate = event.params.voucher.validUntilDate;
+  exchange.expired = false;
+  exchange.mutualizerAddress = exchangeFromEvent.mutualizerAddress;
+
+  exchange.save();
+
+  saveExchangeEventLogs(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "SELLER_COMMITTED",
     event.block.timestamp,
     event.params.executedBy,
     exchangeId

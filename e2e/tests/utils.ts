@@ -85,6 +85,7 @@ import bundleMetadataMinimal from "../../packages/metadata/tests/bundle/valid/mi
 import { Chain, OpenSeaSDK } from "opensea-js";
 import { Seaport } from "@opensea/seaport-js";
 import { hexlify, randomBytes } from "ethers/lib/utils";
+import { SellerOfferArgs } from "@bosonprotocol/common";
 
 export type DeepPartial<T> = T extends object
   ? {
@@ -1116,6 +1117,30 @@ export async function commitToOffer(args: {
   }
   await args.buyerCoreSDK.waitForGraphNodeIndexing(commitToOfferTxReceipt);
   const exchange = await args.buyerCoreSDK.getExchangeById(exchangeId);
+  return exchange;
+}
+
+export async function commitToBuyerOffer(args: {
+  sellerCoreSDK: CoreSDK;
+  offerId: BigNumberish;
+  sellerParams?: SellerOfferArgs;
+}) {
+  const commitToBuyerOfferTxResponse =
+    await args.sellerCoreSDK.commitToBuyerOffer(
+      args.offerId,
+      args.sellerParams
+    );
+  const commitToBuyerOfferTxReceipt = await commitToBuyerOfferTxResponse.wait();
+  const exchangeId = args.sellerCoreSDK.getCommittedExchangeIdFromLogs(
+    commitToBuyerOfferTxReceipt.logs
+  );
+  if (!exchangeId) {
+    throw new Error("exchangeId is not defined");
+  }
+  await args.sellerCoreSDK.waitForGraphNodeIndexing(
+    commitToBuyerOfferTxReceipt
+  );
+  const exchange = await args.sellerCoreSDK.getExchangeById(exchangeId);
   return exchange;
 }
 

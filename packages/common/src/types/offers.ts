@@ -54,6 +54,12 @@ export type OfferStruct = {
   royaltyInfo: RoyaltyInfo[];
 };
 
+export type SellerOfferArgs = {
+  collectionIndex?: BigNumberish;
+  royaltyInfo?: RoyaltyInfo;
+  mutualizerAddress?: string;
+};
+
 export type OfferDatesStruct = {
   validFrom: BigNumberish;
   validUntil: BigNumberish;
