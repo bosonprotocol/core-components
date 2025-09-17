@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.40.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.39.1...@bosonprotocol/react-kit@0.40.0) (2025-09-17)
+
+
+### Features
+
+* add getCurrentTimeMs in web3libadapter for assertCompletableExc… ([#961](https://github.com/bosonprotocol/core-components/issues/961)) ([5fac132](https://github.com/bosonprotocol/core-components/commit/5fac132f6913df35a7ec6ebbf358145e61674e78))
+* allow showing or hiding full text for connected wallet ([#955](https://github.com/bosonprotocol/core-components/issues/955)) ([9d93386](https://github.com/bosonprotocol/core-components/commit/9d9338617b11d0e4330caa90cc7a24fd32a189b3))
+* upload with images compression ([#943](https://github.com/bosonprotocol/core-components/issues/943)) ([d842b23](https://github.com/bosonprotocol/core-components/commit/d842b23fa9bdf6043f726cc5e3f2aada96030575))
+
+
+
+
+
 ## [0.39.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.39.0...@bosonprotocol/react-kit@0.39.1) (2025-04-08)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit
