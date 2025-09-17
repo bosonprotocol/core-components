@@ -40,13 +40,13 @@ export type OfferStruct = {
   id: BigNumberish;
   sellerId: BigNumberish;
   buyerId: BigNumberish;
-  creator: number;
+  creator: OfferCreator;
   price: BigNumberish;
   sellerDeposit: BigNumberish;
   buyerCancelPenalty: BigNumberish;
   quantityAvailable: BigNumberish;
   exchangeToken: string;
-  priceType: number;
+  priceType: PriceType;
   metadataUri: string;
   metadataHash: string;
   voided: boolean;
