@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.30.6...@bosonprotocol/common@1.31.0) (2025-09-17)
+
+
+### Features
+
+* add getCurrentTimeMs in web3libadapter for assertCompletableExc… ([#961](https://github.com/bosonprotocol/core-components/issues/961)) ([5fac132](https://github.com/bosonprotocol/core-components/commit/5fac132f6913df35a7ec6ebbf358145e61674e78))
+* create agent adapter ([#947](https://github.com/bosonprotocol/core-components/issues/947)) ([75d6432](https://github.com/bosonprotocol/core-components/commit/75d64325fb654a4e2112bddf611231b1387b90bc)), closes [#948](https://github.com/bosonprotocol/core-components/issues/948)
+* improve types protocolConfig ([#951](https://github.com/bosonprotocol/core-components/issues/951)) ([088bf9c](https://github.com/bosonprotocol/core-components/commit/088bf9ca43e21827a6a791837e096a12bbdd9f9c))
+
+
+
+
+
 ## [1.30.6](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.30.5...@bosonprotocol/common@1.30.6) (2025-04-08)
 
 **Note:** Version bump only for package @bosonprotocol/common

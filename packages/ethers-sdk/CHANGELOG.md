@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.15.7...@bosonprotocol/ethers-sdk@1.16.0) (2025-09-17)
+
+
+### Features
+
+* add getCurrentTimeMs in web3libadapter for assertCompletableExc… ([#961](https://github.com/bosonprotocol/core-components/issues/961)) ([5fac132](https://github.com/bosonprotocol/core-components/commit/5fac132f6913df35a7ec6ebbf358145e61674e78))
+* create agent adapter ([#947](https://github.com/bosonprotocol/core-components/issues/947)) ([75d6432](https://github.com/bosonprotocol/core-components/commit/75d64325fb654a4e2112bddf611231b1387b90bc)), closes [#948](https://github.com/bosonprotocol/core-components/issues/948)
+
+
+
+
+
 ## [1.15.7](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.15.6...@bosonprotocol/ethers-sdk@1.15.7) (2025-04-08)
 
 **Note:** Version bump only for package @bosonprotocol/ethers-sdk
