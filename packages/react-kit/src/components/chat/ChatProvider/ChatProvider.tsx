@@ -1,4 +1,4 @@
-import { BosonXmtpClient } from "@bosonprotocol/chat-sdk";
+import { BosonXmtpBrowserClient } from "@bosonprotocol/chat-sdk";
 import React, { ReactNode, useEffect, useState } from "react";
 import { useCoreSDKWithContext } from "../../../hooks/core-sdk/useCoreSdkWithContext";
 import { useEnvContext } from "../../environment/EnvironmentContext";
@@ -15,7 +15,7 @@ export default function ChatProvider({ children }: Props) {
   const signer = useSigner();
   const [initialize, setInitialized] = useState<number>(0);
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [bosonXmtp, setBosonXmtp] = useState<BosonXmtpClient>();
+  const [bosonXmtp, setBosonXmtp] = useState<BosonXmtpBrowserClient>();
   const [chatEnvName, setChatEnvName] = useState<AuthorityIdEnvName>(
     "undefined" as AuthorityIdEnvName
   );
@@ -26,7 +26,7 @@ export default function ChatProvider({ children }: Props) {
       const newChatEnvName = getChatEnvName(envName, coreSDK.contracts);
       setChatEnvName(newChatEnvName);
       setLoading(true);
-      BosonXmtpClient.initialise(
+      BosonXmtpBrowserClient.initialise(
         signer,
         envName === "production" ? "production" : "dev",
         newChatEnvName
