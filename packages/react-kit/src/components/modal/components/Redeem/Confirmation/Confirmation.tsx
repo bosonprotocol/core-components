@@ -1,7 +1,4 @@
-import {
-  MessageType,
-  version
-} from "@bosonprotocol/chat-sdk/dist/esm/util/v0.0.1/definitions";
+import { MessageType, version } from "@bosonprotocol/chat-sdk";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Provider } from "@bosonprotocol/ethers-sdk";
 import * as Sentry from "@sentry/browser";
