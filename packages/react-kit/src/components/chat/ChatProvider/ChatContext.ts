@@ -1,9 +1,9 @@
-import { BosonXmtpClient } from "@bosonprotocol/chat-sdk";
+import { BosonXmtpBrowserClient } from "@bosonprotocol/chat-sdk";
 import { createContext, Dispatch, SetStateAction, useContext } from "react";
 import { AuthorityIdEnvName } from "./const";
 
 export const Context = createContext<{
-  bosonXmtp: BosonXmtpClient | undefined;
+  bosonXmtp: BosonXmtpBrowserClient | undefined;
   initialize: Dispatch<SetStateAction<void>>;
   chatEnvName: AuthorityIdEnvName;
   isInitializing: boolean;

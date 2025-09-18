@@ -1,4 +1,4 @@
-import { BosonXmtpClient } from "@bosonprotocol/chat-sdk";
+import { BosonXmtpBrowserClient } from "@bosonprotocol/chat-sdk";
 import { useEffect, useState } from "react";
 import { useEnvContext } from "../environment/EnvironmentContext";
 import { useChatContext } from "./ChatProvider/ChatContext";
@@ -29,7 +29,7 @@ export const useChatStatus = (): {
     } else if (address && chatInitializationStatus !== "ALREADY_INITIALIZED") {
       setError(null);
 
-      BosonXmtpClient.isXmtpEnabled(
+      BosonXmtpBrowserClient.isXmtpEnabled(
         address,
         envName === "production" ? "production" : "dev",
         chatEnvName
