@@ -64,6 +64,16 @@ describe("core-sdk-offers", () => {
       expect(buyerInitiatedOffer.creator).toEqual(OfferCreator.Buyer);
     });
     test("Seller commits to the offer", async () => {
+      // check buyer funds before the exchange
+      let [buyerFunds] = await buyerCoreSDK.getFunds({
+        fundsFilter: {
+          accountId: buyerInitiatedOffer.buyerId,
+          tokenAddress: buyerInitiatedOffer.exchangeToken.address
+        }
+      });
+      expect(buyerFunds).toBeTruthy();
+      expect(buyerFunds.availableAmount).toEqual(buyerInitiatedOffer.price);
+
       const exchange = await commitToBuyerOffer({
         sellerCoreSDK: sellerCoreSDK,
         offerId: buyerInitiatedOffer.id
@@ -80,6 +90,22 @@ describe("core-sdk-offers", () => {
       expect(exchange.buyer).toBeTruthy();
       expect(exchange.buyer?.id).toEqual(buyerInitiatedOffer.buyerId);
       expect(exchange.buyer?.wallet).toEqual(buyerWallet.address.toLowerCase());
+
+      // check buyer funds moved from buyer to exchange escrow
+      [buyerFunds] = await buyerCoreSDK.getFunds({
+        fundsFilter: {
+          accountId: buyerInitiatedOffer.buyerId,
+          tokenAddress: buyerInitiatedOffer.exchangeToken.address
+        }
+      });
+      expect(buyerFunds).toBeTruthy();
+      expect(buyerFunds.availableAmount).toEqual("0");
+      // check seller is now set in the offer object
+      buyerInitiatedOffer = await buyerCoreSDK.getOfferById(
+        buyerInitiatedOffer.id
+      );
+      expect(buyerInitiatedOffer.seller).toBeTruthy();
+      expect(buyerInitiatedOffer.seller?.id).toEqual(seller.id);
     });
     test("commitToOffer() fails on buyer initiated offer", async () => {
       await expect(
@@ -107,6 +133,7 @@ describe("core-sdk-offers", () => {
         `Offer with id ${sellerInitiatedOffer.id} is not buyer initiated`
       );
     });
+    // TODO: add tests with seller sets royaltyInfo, collectionIndex, mutualizerAddress, and check they are saved on the offer
   });
   test("Quantity must be 1 for buyer initiated offers", async () => {
     const { coreSDK } = await initCoreSDKWithFundedWallet(seedWallet);

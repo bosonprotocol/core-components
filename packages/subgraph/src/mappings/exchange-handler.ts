@@ -9,7 +9,8 @@ import {
   ExchangeCompleted,
   VoucherExpired,
   ConditionalCommitAuthorized,
-  SellerCommitted
+  SellerCommitted,
+  BuyerInitiatedOfferSetSellerParams
 } from "../../generated/BosonExchangeHandler/IBosonExchangeHandler";
 import { BuyerCommitted as BuyerCommitted240 } from "../../generated/BosonExchangeHandler240/IBosonExchangeHandler240";
 import { ConditionEntity, Exchange, Offer } from "../../generated/schema";
@@ -20,6 +21,8 @@ import {
   saveExchangeEventLogs
 } from "../entities/event-log";
 import { ZERO_ADDRESS } from "../utils/eth";
+import { getOfferCollectionId } from "./account-handler";
+import { saveRoyaltyInfo } from "./offer-handler";
 
 export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   const exchangeFromEvent = event.params.exchange;
@@ -113,6 +116,34 @@ export function handleSellerCommittedEvent(event: SellerCommitted): void {
     event.params.executedBy,
     exchangeId
   );
+}
+
+export function handleBuyerInitiatedOfferSetSellerParamsEvent(
+  event: BuyerInitiatedOfferSetSellerParams
+): void {
+  const offerId = event.params.offerId.toString();
+
+  const offer = Offer.load(offerId);
+
+  if (offer) {
+    offer.seller = event.params.sellerId.toString();
+    offer.collectionIndex = event.params.sellerParams.collectionIndex;
+    offer.collection = getOfferCollectionId(
+      event.params.sellerId.toString(),
+      event.params.sellerParams.collectionIndex.toString()
+    );
+    const royaltyInfo = event.params.sellerParams.royaltyInfo;
+    saveRoyaltyInfo(
+      offerId,
+      royaltyInfo.recipients,
+      royaltyInfo.bps,
+      0,
+      event.block.timestamp
+    );
+    offer.save();
+  } else {
+    log.warning("Unable to find Offer with id '{}'", [offerId]);
+  }
 }
 
 export function handleBuyerCommittedEvent240(event: BuyerCommitted240): void {

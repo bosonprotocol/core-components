@@ -145,7 +145,7 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
   }
 }
 
-function saveRoyaltyInfo(
+export function saveRoyaltyInfo(
   offerId: string,
   recipients: Address[],
   bps: BigInt[],
