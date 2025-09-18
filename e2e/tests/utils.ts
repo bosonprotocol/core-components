@@ -11,7 +11,8 @@ import {
   utils,
   Contract,
   BigNumber,
-  BigNumberish
+  BigNumberish,
+  constants
 } from "ethers";
 import {
   Wallet as WalletV6,
@@ -72,6 +73,7 @@ import {
   ACCOUNT_24
 } from "../../contracts/accounts";
 import {
+  DR_FEE_MUTUALIZER_ABI,
   MOCK_ERC1155_ABI,
   MOCK_ERC20_ABI,
   MOCK_ERC721_ABI,
@@ -121,7 +123,10 @@ export const OPENSEA_FEE_RECIPIENT =
 
 export const OPENSEA_WRAPPER_FACTORY =
   (getFirstEnvConfig("local").contracts.openseaWrapper as string) ||
-  "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf";
+  "0x9d4454B023096f34B160D6B654540c56A1F81688";
+
+export const DR_FEE_MUTUALIZER_ADDRESS =
+  "0x5eb3Bc0a489C5A8288765d2336659EbCA68FCd00";
 
 export const metadata = {
   name: "name",
@@ -233,6 +238,12 @@ export const mockErc721Contract = new Contract(
 export const mockErc1155Contract = new Contract(
   MOCK_ERC1155_ADDRESS,
   MOCK_ERC1155_ABI,
+  provider
+);
+
+export const dRFeeMutualizerContract = new Contract(
+  DR_FEE_MUTUALIZER_ADDRESS,
+  DR_FEE_MUTUALIZER_ABI,
   provider
 );
 
@@ -1482,4 +1493,80 @@ export async function approveIfNeeded(
     });
     await approveTx.wait();
   }
+}
+
+export async function depositFundsToDRFeeMutualizer(
+  fundingWallet: Wallet,
+  tokenAddress: string,
+  amount: BigNumberish
+) {
+  const tx = await dRFeeMutualizerContract
+    .connect(fundingWallet)
+    .deposit(tokenAddress, amount, {
+      value: tokenAddress === constants.AddressZero ? amount : 0
+    });
+  await tx.wait();
+}
+
+export async function newAgreementToDRFeeMutualizer(
+  sellerId: BigNumberish,
+  tokenAddress: string,
+  disputeResolverId: BigNumberish,
+  maxAmountPerTx: BigNumberish,
+  maxAmountTotal: BigNumberish,
+  timePeriod: BigNumberish,
+  premium: BigNumberish,
+  refundOnCancel: boolean
+): Promise<{
+  agreementId: BigNumber;
+  sellerId: BigNumber;
+  tokenAddress: string;
+  disputeresolverId: BigNumber;
+}> {
+  const tx = await dRFeeMutualizerContract
+    .connect(deployerWallet)
+    .newAgreement(
+      sellerId,
+      tokenAddress,
+      disputeResolverId,
+      maxAmountPerTx,
+      maxAmountTotal,
+      timePeriod,
+      premium,
+      refundOnCancel
+    );
+  const txReceipt = await tx.wait();
+  const [agreementCreatedEvent] = txReceipt.logs
+    .map((log) => {
+      try {
+        return dRFeeMutualizerContract.interface.parseLog(log);
+      } catch (error) {
+        // assume that failing to parse is irrelevant log
+        return null;
+      }
+    })
+    .filter((log) => log !== null)
+    .filter((log) => log.name === "AgreementCreated");
+  expect(agreementCreatedEvent).toBeTruthy();
+  return {
+    agreementId: agreementCreatedEvent.args["agreementId"],
+    disputeresolverId: agreementCreatedEvent.args["disputeresolverId"],
+    sellerId: agreementCreatedEvent.args["sellerId"],
+    tokenAddress: agreementCreatedEvent.args["tokenAddress"]
+  };
+}
+
+export async function payPremiumToDRFeeMutualizer(
+  fundingWallet: Wallet,
+  agreementId: BigNumberish,
+  sellerId: BigNumberish,
+  tokenAddress: string,
+  amount: BigNumberish
+) {
+  const tx = await dRFeeMutualizerContract
+    .connect(fundingWallet)
+    .payPremium(agreementId, sellerId, {
+      value: tokenAddress === constants.AddressZero ? amount : 0
+    });
+  await tx.wait();
 }

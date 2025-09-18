@@ -82,7 +82,7 @@ export function argsToSellerOfferStruct(
       ? {
           ...args.royaltyInfo,
           recipients: args.royaltyInfo.recipients.map((recipient) =>
-            getAddress(recipient)
+            getAddress(recipient.toLowerCase())
           )
         }
       : {
@@ -93,6 +93,8 @@ export function argsToSellerOfferStruct(
   return {
     collectionIndex: args.collectionIndex || 0,
     royaltyInfo,
-    mutualizerAddress: args.mutualizerAddress || AddressZero
+    mutualizerAddress: args.mutualizerAddress
+      ? getAddress(args.mutualizerAddress.toLowerCase())
+      : AddressZero
   };
 }
