@@ -1,4 +1,8 @@
-import { commitToOffer, completeExchange } from "../../src/exchanges/handler";
+import {
+  commitToBuyerOffer,
+  commitToOffer,
+  completeExchange
+} from "../../src/exchanges/handler";
 import { MockWeb3LibAdapter, ADDRESS } from "@bosonprotocol/common/tests/mocks";
 import {
   interceptSubgraph,
@@ -10,6 +14,7 @@ import {
 } from "../mocks";
 import { ExtendedExchangeState, getExchangeState } from "../../src/exchanges";
 import { ExchangeFieldsFragment, ExchangeState } from "../../src/subgraph";
+import { OfferCreator } from "@bosonprotocol/common";
 
 describe("#commitToOffer()", () => {
   test("throw if offer not existent", async () => {
@@ -123,6 +128,171 @@ describe("#commitToOffer()", () => {
       subgraphUrl: SUBGRAPH_URL,
       offerId: 1,
       web3Lib: new MockWeb3LibAdapter()
+    });
+
+    expect(typeof txResponse.hash === "string").toBeTruthy();
+  });
+});
+
+describe("#commitToBuyerOffer()", () => {
+  const buyerIntiatedOfferOverrides = {
+    creator: OfferCreator.Buyer,
+    buyerId: "1",
+    buyer: {
+      id: "1",
+      wallet: ZERO_ADDRESS,
+      active: true
+    },
+    sellerId: "0",
+    seller: null
+  };
+  test("throw if offer not existent", async () => {
+    interceptSubgraph().reply(200, {
+      data: {
+        offer: null
+      }
+    });
+
+    await expect(
+      commitToBuyerOffer({
+        contractAddress: ADDRESS,
+        subgraphUrl: SUBGRAPH_URL,
+        offerId: 1,
+        web3Lib: new MockWeb3LibAdapter(),
+        sellerParams: {
+          collectionIndex: 0
+        }
+      })
+    ).rejects.toThrow(/not exist/);
+  });
+
+  test("throw if offer already voided", async () => {
+    interceptSubgraph().reply(200, {
+      data: {
+        offer: mockRawOfferFromSubgraph({
+          ...buyerIntiatedOfferOverrides,
+          voidedAt: String(Math.floor(Date.now() / 1000))
+        })
+      }
+    });
+
+    await expect(
+      commitToBuyerOffer({
+        contractAddress: ADDRESS,
+        subgraphUrl: SUBGRAPH_URL,
+        offerId: 1,
+        web3Lib: new MockWeb3LibAdapter(),
+        sellerParams: {
+          collectionIndex: 0
+        }
+      })
+    ).rejects.toThrow(/voided/);
+  });
+
+  test("throw if offer is not valid yet", async () => {
+    interceptSubgraph().reply(200, {
+      data: {
+        offer: mockRawOfferFromSubgraph({
+          ...buyerIntiatedOfferOverrides,
+          validFromDate: String(Math.floor((Date.now() + DAY_IN_MS) / 1000))
+        })
+      }
+    });
+
+    await expect(
+      commitToBuyerOffer({
+        contractAddress: ADDRESS,
+        subgraphUrl: SUBGRAPH_URL,
+        offerId: 1,
+        web3Lib: new MockWeb3LibAdapter(),
+        sellerParams: {
+          collectionIndex: 0
+        }
+      })
+    ).rejects.toThrow(/not valid/);
+  });
+
+  test("throw if offer is not valid anymore", async () => {
+    interceptSubgraph().reply(200, {
+      data: {
+        offer: mockRawOfferFromSubgraph({
+          ...buyerIntiatedOfferOverrides,
+          validUntilDate: String(Math.floor((Date.now() - DAY_IN_MS) / 1000))
+        })
+      }
+    });
+
+    await expect(
+      commitToBuyerOffer({
+        contractAddress: ADDRESS,
+        subgraphUrl: SUBGRAPH_URL,
+        offerId: 1,
+        web3Lib: new MockWeb3LibAdapter(),
+        sellerParams: {
+          collectionIndex: 0
+        }
+      })
+    ).rejects.toThrow(/not valid/);
+  });
+
+  test("throw if offer is sold out", async () => {
+    interceptSubgraph().reply(200, {
+      data: {
+        offer: mockRawOfferFromSubgraph({
+          ...buyerIntiatedOfferOverrides,
+          quantityAvailable: "0"
+        })
+      }
+    });
+
+    await expect(
+      commitToBuyerOffer({
+        contractAddress: ADDRESS,
+        subgraphUrl: SUBGRAPH_URL,
+        offerId: 1,
+        web3Lib: new MockWeb3LibAdapter(),
+        sellerParams: {
+          collectionIndex: 0
+        }
+      })
+    ).rejects.toThrow(/sold out/);
+  });
+
+  test("throw if offer is seller initiated", async () => {
+    interceptSubgraph().reply(200, {
+      data: {
+        offer: mockRawOfferFromSubgraph()
+      }
+    });
+
+    await expect(
+      commitToBuyerOffer({
+        contractAddress: ADDRESS,
+        subgraphUrl: SUBGRAPH_URL,
+        offerId: 1,
+        web3Lib: new MockWeb3LibAdapter(),
+        sellerParams: {
+          collectionIndex: 0
+        }
+      })
+    ).rejects.toThrow(/Offer with id 1 is not buyer initiated/);
+  });
+
+  test("return tx response", async () => {
+    interceptSubgraph().reply(200, {
+      data: {
+        offer: mockRawOfferFromSubgraph(buyerIntiatedOfferOverrides)
+      }
+    });
+
+    const txResponse = await commitToBuyerOffer({
+      contractAddress: ADDRESS,
+      subgraphUrl: SUBGRAPH_URL,
+      offerId: 1,
+      web3Lib: new MockWeb3LibAdapter(),
+      sellerParams: {
+        collectionIndex: 0
+      }
     });
 
     expect(typeof txResponse.hash === "string").toBeTruthy();

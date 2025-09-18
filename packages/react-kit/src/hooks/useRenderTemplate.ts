@@ -118,7 +118,7 @@ function buildOfferData(offerFields: OfferFieldsFragment): {
       disputeResolverId: offerFields.disputeResolverId as string,
       metadataHash: offerFields.metadataHash as string,
       metadataUri: offerFields.metadataUri as string,
-      collectionIndex: offerFields.collectionIndex,
+      collectionIndex: offerFields.collectionIndex || 0,
       feeLimit: offerFields.price, // feeLimit is never stored on-chain. By default, set it to offer price
       priceType: PriceType.Static,
       royaltyInfo: [

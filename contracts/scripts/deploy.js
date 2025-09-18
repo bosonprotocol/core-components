@@ -24,6 +24,7 @@ const {
 const { deploySeaport } = require("./deploy-seaport");
 const { ZeroAddress } = require("ethers");
 const { deployWrappers } = require("./deploy-wrappers.js");
+const { deployDRFeeMutualizer } = require("./deploy-dRFeeMutualizer.js");
 
 async function main() {
   const { addresses } = await deployAndMintMockNFTAuthTokens();
@@ -118,6 +119,15 @@ async function main() {
   );
   console.log(
     `✅ OpenSeaWrapperFactory Contract has been deployed at ${await openSeaWrapperFactory.getAddress()}`
+  );
+  // Deploy DRFeeMutualizer
+  const dRFeeMutualizer = await deployDRFeeMutualizer(
+    protocolDiamond,
+    process.env.FORWARDER_ADDRESS
+  );
+  const dRFeeMutualizerAddress = await dRFeeMutualizer.getAddress();
+  console.log(
+    `✅ DRFeeMutualizer Contract has been deployed at ${dRFeeMutualizerAddress}`
   );
   // Set specific configuration values (needed for tests)
   const deployer = accounts[0];

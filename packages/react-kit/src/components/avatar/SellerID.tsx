@@ -56,7 +56,7 @@ const SellerID: React.FC<
   {
     children?: React.ReactNode;
     offer: Offer;
-    buyerOrSeller: Buyer | Seller;
+    buyerOrSeller?: Buyer | Seller;
     accountImageSize?: number;
     withProfileImage: boolean;
     withProfileText?: boolean;

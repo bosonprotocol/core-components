@@ -7,11 +7,7 @@ import {
   FundsEncumbered,
   ProtocolFeeCollected as ProtocolFeeCollectedEvent
 } from "../../generated/BosonFundsHandler/IBosonFundsHandler";
-import {
-  FundsEntity,
-  Seller,
-  ProtocolFeeCollected
-} from "../../generated/schema";
+import { FundsEntity, ProtocolFeeCollected } from "../../generated/schema";
 import { saveExchangeToken } from "../entities/token";
 import { saveFundsEventLog } from "../entities/event-log";
 
@@ -52,25 +48,21 @@ export function handleFundsReleasedEvent(event: FundsReleased): void {
 }
 
 export function handleFundsEncumberedEvent(event: FundsEncumbered): void {
-  const seller = Seller.load(event.params.entityId.toString());
+  handleDecreasingFundsEvent(
+    event.params.entityId,
+    event.params.amount,
+    event.params.exchangeToken
+  );
 
-  if (seller) {
-    handleDecreasingFundsEvent(
-      event.params.entityId,
-      event.params.amount,
-      event.params.exchangeToken
-    );
-
-    saveFundsEventLog(
-      event.transaction.hash.toHexString(),
-      event.logIndex,
-      "FUNDS_ENCUMBERED",
-      event.block.timestamp,
-      event.params.executedBy,
-      event.params.entityId.toString(),
-      getFundsEntityId(event.params.entityId, event.params.exchangeToken)
-    );
-  }
+  saveFundsEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "FUNDS_ENCUMBERED",
+    event.block.timestamp,
+    event.params.executedBy,
+    event.params.entityId.toString(),
+    getFundsEntityId(event.params.entityId, event.params.exchangeToken)
+  );
 }
 
 export function handleFundsWithdrawnEvent(event: FundsWithdrawn): void {

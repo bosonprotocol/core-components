@@ -88,6 +88,7 @@ export function mockCreateOfferArgs(
     disputeResolverId: "1",
     metadataUri: IPFS_URI,
     metadataHash: IPFS_HASH,
+    creator: OfferCreator.Seller,
     ...overrides
   };
 }
