@@ -212,7 +212,7 @@
   },
   "overrides": {
     "typescript": "^5.1.6",
-    "multiformats": "^10.0.3",
+    "multiformats": "^9.9.0",
     "ws": "^8.18.0"
   }
 }
