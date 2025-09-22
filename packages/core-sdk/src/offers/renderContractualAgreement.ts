@@ -175,6 +175,7 @@ function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
   return {
     offerData: {
       ...offerDataSubGraph,
+      collectionIndex: offerDataSubGraph.collectionIndex || 0,
       validFromDateInMS: offerDataSubGraph.validFromDate,
       validUntilDateInMS: offerDataSubGraph.validUntilDate,
       voucherRedeemableFromDateInMS:

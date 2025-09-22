@@ -3,7 +3,9 @@ import { AddressZero } from "@ethersproject/constants";
 import {
   Web3LibAdapter,
   TransactionResponse,
-  TransactionRequest
+  TransactionRequest,
+  SellerOfferArgs,
+  OfferCreator
 } from "@bosonprotocol/common";
 import {
   encodeCancelVoucher,
@@ -13,7 +15,8 @@ import {
   encodeRevokeVoucher,
   encodeExpireVoucher,
   encodeRedeemVoucher,
-  encodeCommitToConditionalOffer
+  encodeCommitToConditionalOffer,
+  encodeCommitToBuyerOffer
 } from "./interface";
 import { getOfferById } from "../offers/subgraph";
 import { getExchangeById, getExchanges } from "../exchanges/subgraph";
@@ -85,6 +88,12 @@ export async function commitToOffer(
 
   await checkOfferIsCommittable(args.offerId, offer);
 
+  if (offer.creator !== OfferCreator.Seller) {
+    throw new Error(
+      `Offer with id ${args.offerId.toString()} is not seller initiated`
+    );
+  }
+
   if (offer.condition) {
     // keep compatibility with previous version
     if (args.returnTxInfo) {
@@ -118,6 +127,69 @@ export async function commitToOffer(
     to: args.contractAddress,
     data: encodeCommitToOffer(args.buyer, args.offerId),
     value: offer.exchangeToken.address === AddressZero ? offer.price : "0"
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
+}
+
+// Overload: returnTxInfo is true → returns TransactionRequest
+export async function commitToBuyerOffer(
+  args: BaseExchangeHandlerArgs & {
+    offerId: BigNumberish;
+    sellerParams: SellerOfferArgs;
+    returnTxInfo: true;
+  }
+): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function commitToBuyerOffer(
+  args: BaseExchangeHandlerArgs & {
+    offerId: BigNumberish;
+    sellerParams: SellerOfferArgs;
+    returnTxInfo?: false | undefined;
+  }
+): Promise<TransactionResponse>;
+
+// Implementation
+export async function commitToBuyerOffer(
+  args: BaseExchangeHandlerArgs & {
+    offerId: BigNumberish;
+    sellerParams: SellerOfferArgs;
+    returnTxInfo?: boolean;
+  }
+): Promise<TransactionRequest | TransactionResponse> {
+  const offer = await getOfferById(args.subgraphUrl, args.offerId);
+
+  await checkOfferIsCommittable(args.offerId, offer);
+
+  if (offer.creator !== OfferCreator.Buyer) {
+    throw new Error(
+      `Offer with id ${args.offerId.toString()} is not buyer initiated`
+    );
+  }
+
+  const caller = await args.web3Lib.getSignerAddress();
+  if (offer.exchangeToken.address !== AddressZero) {
+    // check if we need the committer to approve the token first
+    await ensureAllowance({
+      owner: caller,
+      spender: args.contractAddress,
+      contractAddress: offer.exchangeToken.address,
+      value: offer.price,
+      web3Lib: args.web3Lib
+    });
+  }
+
+  const transactionRequest = {
+    from: caller,
+    to: args.contractAddress,
+    data: encodeCommitToBuyerOffer(args.offerId, args.sellerParams),
+    value:
+      offer.exchangeToken.address === AddressZero ? offer.sellerDeposit : "0"
   } satisfies TransactionRequest;
 
   if (args.returnTxInfo) {

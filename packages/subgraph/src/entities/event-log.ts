@@ -135,6 +135,7 @@ export function saveFundsEventLog(
   logIndex: BigInt,
   type: string,
   timestamp: BigInt,
+  amount: BigInt,
   executedBy: Bytes,
   accountId: string,
   fundsId: string
@@ -151,6 +152,7 @@ export function saveFundsEventLog(
     eventLog.executedBy = executedBy;
     eventLog.account = accountId;
     eventLog.funds = fundsId;
+    eventLog.amount = amount;
     eventLog.save();
   }
 

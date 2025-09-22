@@ -586,8 +586,8 @@ type Offer @entity(immutable: false) {
   metadataUri: String!
   metadataHash: String!
   voided: Boolean!
-  collectionIndex: BigInt!
-  collection: OfferCollection!
+  collectionIndex: BigInt
+  collection: OfferCollection
   disputeResolverId: BigInt!
   disputeResolver: DisputeResolver!
   disputeResolutionTerms: DisputeResolutionTermsEntity!
@@ -867,6 +867,7 @@ enum EventType {
   VOUCHER_TRANSFERRED
   VOUCHER_EXPIRED
   EXCHANGE_COMPLETED
+  SELLER_COMMITTED
   "FundsHandler events"
   FUNDS_DEPOSITED
   FUNDS_RELEASED
@@ -947,7 +948,7 @@ type FundsEventLog implements EventLog @entity(immutable: true) {
   timestamp: BigInt!
   executedBy: Bytes!
   account: Account!
-
+  amount: BigInt!
   funds: FundsEntity!
 }
 
@@ -996,4 +997,16 @@ type RangeEntity @entity(immutable: false) {
   end: BigInt!
   owner: Bytes!
   minted: BigInt!
+}
+
+type DRFeeRequestedEvent @entity(immutable: true) {
+  id: ID! # exchangeId
+  txHash: String!
+  logIndex: BigInt!
+  exchangeId: BigInt!
+  tokenAddress: Bytes!
+  feeAmount: BigInt!
+  mutualizerAddress: Bytes!
+  timestamp: BigInt!
+  executedBy: Bytes!
 }

@@ -8,7 +8,9 @@ import {
   VoucherTransferred,
   ExchangeCompleted,
   VoucherExpired,
-  ConditionalCommitAuthorized
+  ConditionalCommitAuthorized,
+  SellerCommitted,
+  BuyerInitiatedOfferSetSellerParams
 } from "../../generated/BosonExchangeHandler/IBosonExchangeHandler";
 import { BuyerCommitted as BuyerCommitted240 } from "../../generated/BosonExchangeHandler240/IBosonExchangeHandler240";
 import { ConditionEntity, Exchange, Offer } from "../../generated/schema";
@@ -19,6 +21,9 @@ import {
   saveExchangeEventLogs
 } from "../entities/event-log";
 import { ZERO_ADDRESS } from "../utils/eth";
+import { getOfferCollectionId } from "./account-handler";
+import { saveRoyaltyInfo } from "./offer-handler";
+import { processDRFeeRequestedEvent } from "./funds-handler";
 
 export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   const exchangeFromEvent = event.params.exchange;
@@ -65,6 +70,89 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
     event.params.executedBy,
     exchangeId
   );
+
+  if (offer) {
+    // Deal with a potential DRFeeRequested event for the same exchange
+    processDRFeeRequestedEvent(exchangeFromEvent.id, offer.sellerId);
+  }
+}
+
+export function handleSellerCommittedEvent(event: SellerCommitted): void {
+  const exchangeFromEvent = event.params.exchange;
+  const exchangeId = exchangeFromEvent.id.toString();
+
+  let exchange = Exchange.load(exchangeId);
+
+  if (!exchange) {
+    exchange = new Exchange(exchangeId);
+  }
+
+  const offer = Offer.load(exchangeFromEvent.offerId.toString());
+  if (offer) {
+    offer.quantityAvailable = offer.quantityAvailable.minus(BigInt.fromI32(1));
+    offer.numberOfCommits = offer.numberOfCommits.plus(BigInt.fromI32(1));
+    offer.save();
+
+    saveMetadata(offer, offer.createdAt);
+
+    exchange.buyer = offer.buyerId.toString();
+    exchange.disputeResolver = offer.disputeResolver;
+  } else {
+    log.warning("Unable to find Offer with id '{}'", [
+      exchangeFromEvent.offerId.toString()
+    ]);
+  }
+
+  exchange.seller = event.params.sellerId.toString();
+  exchange.offer = event.params.offerId.toString();
+  exchange.disputed = false;
+  exchange.state = "COMMITTED";
+  exchange.committedDate = event.params.voucher.committedDate;
+  exchange.validUntilDate = event.params.voucher.validUntilDate;
+  exchange.expired = false;
+  exchange.mutualizerAddress = exchangeFromEvent.mutualizerAddress;
+
+  exchange.save();
+
+  saveExchangeEventLogs(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "SELLER_COMMITTED",
+    event.block.timestamp,
+    event.params.executedBy,
+    exchangeId
+  );
+
+  // Deal with a potential DRFeeRequested event for the same exchange
+  processDRFeeRequestedEvent(exchangeFromEvent.id, event.params.sellerId);
+}
+
+export function handleBuyerInitiatedOfferSetSellerParamsEvent(
+  event: BuyerInitiatedOfferSetSellerParams
+): void {
+  const offerId = event.params.offerId.toString();
+
+  const offer = Offer.load(offerId);
+
+  if (offer) {
+    offer.seller = event.params.sellerId.toString();
+    offer.collectionIndex = event.params.sellerParams.collectionIndex;
+    offer.collection = getOfferCollectionId(
+      event.params.sellerId.toString(),
+      event.params.sellerParams.collectionIndex.toString()
+    );
+    const royaltyInfo = event.params.sellerParams.royaltyInfo;
+    saveRoyaltyInfo(
+      offerId,
+      royaltyInfo.recipients,
+      royaltyInfo.bps,
+      0,
+      event.block.timestamp
+    );
+    offer.save();
+  } else {
+    log.warning("Unable to find Offer with id '{}'", [offerId]);
+  }
 }
 
 export function handleBuyerCommittedEvent240(event: BuyerCommitted240): void {
