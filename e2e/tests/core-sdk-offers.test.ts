@@ -1,7 +1,12 @@
 import { parseEther } from "@ethersproject/units";
 import { constants, Wallet } from "ethers";
 import { CoreSDK } from "../../packages/core-sdk/src";
-import { ExchangeState } from "../../packages/core-sdk/src/subgraph";
+import {
+  DisputeResolverFieldsFragment,
+  ExchangeState,
+  OfferFieldsFragment,
+  SellerFieldsFragment
+} from "../../packages/core-sdk/src/subgraph";
 import {
   commitToBuyerOffer,
   commitToOffer,
@@ -31,14 +36,14 @@ describe("core-sdk-offers", () => {
   describe("buyer initiated offers", () => {
     let buyerCoreSDK: CoreSDK;
     let buyerWallet: Wallet;
-    let buyerInitiatedOffer;
+    let buyerInitiatedOffer: OfferFieldsFragment;
     let sellerCoreSDK: CoreSDK;
     let sellerWallet: Wallet;
-    let seller;
+    let seller: SellerFieldsFragment;
     let disputeResolverCoreSDK: CoreSDK;
-    let disputeResolver;
+    let disputeResolver: DisputeResolverFieldsFragment;
     const exchangeToken = constants.AddressZero;
-    const drFeeAmount = parseEther("0.01");
+    const drFeeAmount = parseEther("0.0123");
     beforeAll(async () => {
       // Create another disputeResolver to ensure the DR feeAmount is not zero
       const drWallet = await createFundedWallet(seedWallet);
@@ -77,7 +82,7 @@ describe("core-sdk-offers", () => {
         buyerInitiatedOffer.price,
         exchangeToken
       );
-      // Seller needs to deposit drFeeAmount to unlock committing
+      // Seller needs to deposit drFeeAmount to unlock committing (unless there is a mutualizer contract)
       const tx = await sellerCoreSDK.depositFunds(
         seller.id,
         drFeeAmount,
@@ -119,6 +124,16 @@ describe("core-sdk-offers", () => {
       expect(buyerFunds).toBeTruthy();
       expect(buyerFunds.availableAmount).toEqual(buyerInitiatedOffer.price);
 
+      // check seller funds before the exchange
+      let [sellerFunds] = await buyerCoreSDK.getFunds({
+        fundsFilter: {
+          accountId: seller.id,
+          tokenAddress: buyerInitiatedOffer.exchangeToken.address
+        }
+      });
+      expect(sellerFunds).toBeTruthy();
+      expect(sellerFunds.availableAmount).toEqual(drFeeAmount.toString());
+
       const exchange = await commitToBuyerOffer({
         sellerCoreSDK: sellerCoreSDK,
         offerId: buyerInitiatedOffer.id
@@ -136,7 +151,7 @@ describe("core-sdk-offers", () => {
       expect(exchange.buyer?.id).toEqual(buyerInitiatedOffer.buyerId);
       expect(exchange.buyer?.wallet).toEqual(buyerWallet.address.toLowerCase());
 
-      // check buyer funds moved from buyer to exchange escrow
+      // check buyer funds moved from buyer to exchange escrow (offer.price)
       [buyerFunds] = await buyerCoreSDK.getFunds({
         fundsFilter: {
           accountId: buyerInitiatedOffer.buyerId,
@@ -145,6 +160,15 @@ describe("core-sdk-offers", () => {
       });
       expect(buyerFunds).toBeTruthy();
       expect(buyerFunds.availableAmount).toEqual("0");
+      // check buyer funds moved from seller to exchange escrow (drFeeAmount)
+      [sellerFunds] = await sellerCoreSDK.getFunds({
+        fundsFilter: {
+          accountId: seller.id,
+          tokenAddress: buyerInitiatedOffer.exchangeToken.address
+        }
+      });
+      expect(sellerFunds).toBeTruthy();
+      expect(sellerFunds.availableAmount).toEqual("0");
       // check seller is now set in the offer object
       buyerInitiatedOffer = await buyerCoreSDK.getOfferById(
         buyerInitiatedOffer.id

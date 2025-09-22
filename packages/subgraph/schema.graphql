@@ -948,7 +948,7 @@ type FundsEventLog implements EventLog @entity(immutable: true) {
   timestamp: BigInt!
   executedBy: Bytes!
   account: Account!
-
+  amount: BigInt!
   funds: FundsEntity!
 }
 
@@ -997,4 +997,16 @@ type RangeEntity @entity(immutable: false) {
   end: BigInt!
   owner: Bytes!
   minted: BigInt!
+}
+
+type DRFeeRequestedEvent @entity(immutable: true) {
+  id: ID! # exchangeId
+  txHash: String!
+  logIndex: BigInt!
+  exchangeId: BigInt!
+  tokenAddress: Bytes!
+  feeAmount: BigInt!
+  mutualizerAddress: Bytes!
+  timestamp: BigInt!
+  executedBy: Bytes!
 }

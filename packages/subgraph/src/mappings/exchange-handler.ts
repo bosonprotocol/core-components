@@ -23,6 +23,7 @@ import {
 import { ZERO_ADDRESS } from "../utils/eth";
 import { getOfferCollectionId } from "./account-handler";
 import { saveRoyaltyInfo } from "./offer-handler";
+import { processDRFeeRequestedEvent } from "./funds-handler";
 
 export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   const exchangeFromEvent = event.params.exchange;
@@ -69,6 +70,11 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
     event.params.executedBy,
     exchangeId
   );
+
+  if (offer) {
+    // Deal with a potential DRFeeRequested event for the same exchange
+    processDRFeeRequestedEvent(exchangeFromEvent.id, offer.sellerId);
+  }
 }
 
 export function handleSellerCommittedEvent(event: SellerCommitted): void {
@@ -116,6 +122,9 @@ export function handleSellerCommittedEvent(event: SellerCommitted): void {
     event.params.executedBy,
     exchangeId
   );
+
+  // Deal with a potential DRFeeRequested event for the same exchange
+  processDRFeeRequestedEvent(exchangeFromEvent.id, event.params.sellerId);
 }
 
 export function handleBuyerInitiatedOfferSetSellerParamsEvent(
