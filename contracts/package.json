@@ -1,7 +1,7 @@
 {
   "name": "hardhat-project",
   "scripts": {
-    "postinstall": "patch-package && node ./scripts/postinstall.js --protocolVersion=2.4.2",
+    "postinstall": "patch-package && node ./scripts/postinstall.js --protocolVersion=2.5.0",
     "deploy": "hardhat run ./scripts/deploy.js --network localhost",
     "deploy:ropsten": "hardhat run ./scripts/deploy.js --network ropsten",
     "deploy:kovan": "hardhat run ./scripts/deploy.js --network kovan",
