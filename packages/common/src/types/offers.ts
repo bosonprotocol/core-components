@@ -1,5 +1,6 @@
 import { BigNumberish } from "@ethersproject/bignumber";
 import { OfferCreator } from "./enums";
+import { ConditionStruct } from "./groups";
 
 export enum PriceType {
   Static = 0,
@@ -34,6 +35,44 @@ export type CreateOfferArgs = {
   royaltyInfo?: RoyaltyInfo[];
   creator?: OfferCreator;
   mutualizerAddress?: string;
+};
+
+export type SellerOfferParams = {
+  collectionIndex: BigNumberish;
+  royaltyInfo: RoyaltyInfo[];
+  mutualizerAddress: string;
+};
+
+export type CreateOfferAndCommitArgs = {
+  price: BigNumberish;
+  sellerDeposit: BigNumberish;
+  agentId: BigNumberish;
+  buyerCancelPenalty: BigNumberish;
+  quantityAvailable: BigNumberish;
+  validFromDateInMS: BigNumberish;
+  validUntilDateInMS: BigNumberish;
+  voucherRedeemableFromDateInMS: BigNumberish;
+  voucherRedeemableUntilDateInMS: BigNumberish;
+  disputePeriodDurationInMS: BigNumberish;
+  voucherValidDurationInMS?: BigNumberish;
+  resolutionPeriodDurationInMS: BigNumberish;
+  exchangeToken: string;
+  disputeResolverId: BigNumberish;
+  metadataUri: string;
+  metadataHash: string;
+  collectionIndex: BigNumberish;
+  feeLimit?: BigNumberish;
+  priceType?: PriceType;
+  royaltyInfo?: RoyaltyInfo[];
+  creator?: OfferCreator;
+  offerCreator: string;
+  committer: string;
+  mutualizerAddress?: string;
+  condition: ConditionStruct;
+  useDepositedFunds: boolean;
+  signature: string;
+  sellerId: BigNumberish;
+  sellerOfferParams: SellerOfferParams;
 };
 
 export type OfferStruct = {

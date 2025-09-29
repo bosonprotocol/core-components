@@ -3,7 +3,9 @@ import { AddressZero } from "@ethersproject/constants";
 import {
   Web3LibAdapter,
   TransactionResponse,
-  TransactionRequest
+  TransactionRequest,
+  utils,
+  MetadataStorage
 } from "@bosonprotocol/common";
 import {
   encodeCancelVoucher,
@@ -13,7 +15,8 @@ import {
   encodeRevokeVoucher,
   encodeExpireVoucher,
   encodeRedeemVoucher,
-  encodeCommitToConditionalOffer
+  encodeCommitToConditionalOffer,
+  encodeCreateOfferAndCommit
 } from "./interface";
 import { getOfferById } from "../offers/subgraph";
 import { getExchangeById, getExchanges } from "../exchanges/subgraph";
@@ -23,6 +26,10 @@ import {
   OfferFieldsFragment
 } from "../subgraph";
 import { ensureAllowance } from "../erc20/handler";
+import { CreateOfferAndCommitArgs } from "@bosonprotocol/common/src";
+import { getDisputeResolverById } from "../accounts/subgraph";
+import { storeMetadataOnTheGraph } from "../offers/storage";
+import { storeMetadataItems } from "../metadata/storeMetadataItems";
 
 type BaseExchangeHandlerArgs = {
   contractAddress: string;
@@ -187,6 +194,93 @@ export async function commitToConditionalOffer(
     return transactionRequest;
   } else {
     return args.web3Lib.sendTransaction(transactionRequest);
+  }
+}
+
+// Overload: returnTxInfo is true → returns TransactionRequest
+export async function createOfferAndCommit(args: {
+  createOfferAndCommitArgs: CreateOfferAndCommitArgs;
+  returnTxInfo: true;
+  subgraphUrl: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  txRequest?: TransactionRequest;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function createOfferAndCommit(args: {
+  createOfferAndCommitArgs: CreateOfferAndCommitArgs;
+  returnTxInfo?: false | undefined;
+  subgraphUrl: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  txRequest?: TransactionRequest;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function createOfferAndCommit(args: {
+  createOfferAndCommitArgs: CreateOfferAndCommitArgs;
+  returnTxInfo?: boolean;
+  subgraphUrl: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  txRequest?: TransactionRequest;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+}): Promise<TransactionRequest | TransactionResponse> {
+  utils.validation.createOfferAndCommitArgsSchema.validateSync(
+    args.createOfferAndCommitArgs,
+    {
+      abortEarly: false
+    }
+  );
+
+  const { disputeResolverId, exchangeToken } = args.createOfferAndCommitArgs;
+  const disputeResolver = await getDisputeResolverById(
+    args.subgraphUrl,
+    disputeResolverId
+  );
+  if (!disputeResolver) {
+    throw new Error(
+      `Dispute resolver with id "${disputeResolverId}" does not exist`
+    );
+  }
+  if (
+    !disputeResolver.fees.some(
+      (fee) => fee.token.address.toLowerCase() === exchangeToken.toLowerCase()
+    )
+  ) {
+    throw new Error(
+      `Dispute resolver with id "${disputeResolverId}" does not support exchange token "${exchangeToken}"`
+    );
+  }
+
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.createOfferAndCommitArgs.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
+
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.createOfferAndCommitArgs]
+  });
+
+  const transactionRequest = {
+    ...args.txRequest,
+    to: args.contractAddress,
+    data: encodeCreateOfferAndCommit(args.createOfferAndCommitArgs)
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    const txResponse = await args.web3Lib.sendTransaction(transactionRequest);
+    return txResponse;
   }
 }
 

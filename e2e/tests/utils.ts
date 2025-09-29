@@ -85,6 +85,7 @@ import bundleMetadataMinimal from "../../packages/metadata/tests/bundle/valid/mi
 import { Chain, OpenSeaSDK } from "opensea-js";
 import { Seaport } from "@opensea/seaport-js";
 import { hexlify, randomBytes } from "ethers/lib/utils";
+import { CreateOfferAndCommitArgs } from "@bosonprotocol/common";
 
 export type DeepPartial<T> = T extends object
   ? {
@@ -546,6 +547,51 @@ export async function createOfferWithCondition(
     offerArgs,
     condition
   );
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  await coreSDK.waitForGraphNodeIndexing(createOfferTxReceipt);
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return offer;
+}
+export async function createOfferAndCommit(
+  coreSDK: CoreSDK,
+  condition: ConditionStruct,
+  args: Pick<
+    CreateOfferAndCommitArgs,
+    | "committer"
+    | "offerCreator"
+    | "useDepositedFunds"
+    | "signature"
+    | "sellerId"
+    | "sellerOfferParams"
+  >,
+  overrides: {
+    offerAndCommitParams?: Partial<CreateOfferAndCommitArgs>;
+    metadata?: Partial<base.BaseMetadata>;
+  } = {}
+) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE",
+    ...overrides.metadata
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const offerArgs = mockCreateOfferArgs({
+    metadataHash,
+    metadataUri,
+    ...overrides.offerAndCommitParams
+  });
+
+  const createOfferTxResponse = await coreSDK.createOfferAndCommit({
+    condition,
+    ...args,
+    ...offerArgs
+  });
   const createOfferTxReceipt = await createOfferTxResponse.wait();
   const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
     createOfferTxReceipt.logs

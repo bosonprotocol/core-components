@@ -4,7 +4,8 @@ import {
   TransactionResponse,
   TransactionRequest,
   Log,
-  Web3LibAdapter
+  Web3LibAdapter,
+  CreateOfferAndCommitArgs
 } from "@bosonprotocol/common";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { getValueFromLogs } from "../utils/logs";
@@ -22,6 +23,7 @@ import {
 } from "./handler";
 import { getExchangeById, getExchanges } from "./subgraph";
 import { bosonExchangeHandlerIface } from "./interface";
+import { exchanges } from "..";
 
 export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
@@ -156,6 +158,68 @@ export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
     } else {
       return commitToConditionalOffer({
         ...commitArgs,
+        returnTxInfo: false
+      });
+    }
+  }
+
+  /**
+   * Creates an offer and commits to it immediately.
+   * @param createOfferAndCommitArgs - Offer and commit arguments.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  // Overload: returnTxInfo is true → returns TransactionRequest
+  public async createOfferAndCommit(
+    createOfferAndCommitArgs: CreateOfferAndCommitArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async createOfferAndCommit(
+    createOfferAndCommitArgs: CreateOfferAndCommitArgs,
+    overrides?: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async createOfferAndCommit(
+    createOfferAndCommitArgs: CreateOfferAndCommitArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const offerArgs = {
+      createOfferAndCommitArgs,
+      web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      txRequest: overrides.txRequest
+    } as const satisfies Parameters<
+      typeof exchanges.handler.createOfferAndCommit
+    >[0];
+
+    if (returnTxInfo === true) {
+      return exchanges.handler.createOfferAndCommit({
+        ...offerArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return exchanges.handler.createOfferAndCommit({
+        ...offerArgs,
         returnTxInfo: false
       });
     }

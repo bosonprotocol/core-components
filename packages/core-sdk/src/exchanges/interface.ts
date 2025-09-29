@@ -1,6 +1,20 @@
-import { abis } from "@bosonprotocol/common";
+import {
+  abis,
+  ConditionStruct,
+  DRParametersStruct,
+  OfferDatesStruct,
+  OfferDurationsStruct,
+  OfferStruct
+} from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { BigNumberish } from "@ethersproject/bignumber";
+import {
+  argsToDRParametersStruct,
+  argsToOfferDatesStruct,
+  argsToOfferDurationsStruct,
+  argsToOfferStruct
+} from "../offers/interface";
+import { CreateOfferAndCommitArgs } from "@bosonprotocol/common/src";
 
 export const bosonExchangeHandlerIface = new Interface(
   abis.IBosonExchangeHandlerABI
@@ -26,6 +40,38 @@ export function encodeCommitToConditionalOffer(
     "commitToConditionalOffer",
     [buyer, offerId, tokenId]
   );
+}
+
+export function encodeCreateOfferAndCommit(args: CreateOfferAndCommitArgs) {
+  return bosonExchangeCommitHandlerIface.encodeFunctionData(
+    "createOfferAndCommit",
+    createOfferAndCommitArgsToStructs(args)
+  );
+}
+
+export function createOfferAndCommitArgsToStructs(
+  args: CreateOfferAndCommitArgs
+): [
+  Partial<OfferStruct>,
+  Partial<OfferDatesStruct>,
+  Partial<OfferDurationsStruct>,
+  Partial<DRParametersStruct>,
+  Partial<ConditionStruct>,
+  BigNumberish,
+  BigNumberish,
+  boolean
+] {
+  const feeLimit = args.feeLimit !== undefined ? args.feeLimit : args.price;
+  return [
+    argsToOfferStruct(args),
+    argsToOfferDatesStruct(args),
+    argsToOfferDurationsStruct(args),
+    argsToDRParametersStruct(args),
+    args.condition,
+    args.agentId,
+    feeLimit,
+    args.useDepositedFunds
+  ];
 }
 
 export function encodeCompleteExchange(exchangeId: BigNumberish) {

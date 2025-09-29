@@ -42,9 +42,11 @@ import {
   createOfferArgs,
   mockProductV1Metadata,
   getCollectionMetadataUri,
-  getSellerMetadataUri
+  getSellerMetadataUri,
+  createOfferAndCommit
 } from "./utils";
 import { EvaluationMethod, GatingType, TokenType } from "../../packages/common";
+import { ConditionStruct } from "@bosonprotocol/common/src";
 
 const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
@@ -143,6 +145,49 @@ describe("core-sdk", () => {
       expect(
         BigNumber.from(createdOffer.voucherRedeemableUntilDate).eq(0)
       ).toBe(true);
+    });
+    test("create seller, then createOfferAndCommit", async () => {
+      const { sellerCoreSDK, sellerWallet, buyerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
+
+      const seller = await createSeller(sellerCoreSDK, sellerWallet.address);
+      expect(seller).toBeTruthy();
+
+      await checkDisputeResolver(sellerCoreSDK, seller.id, 1);
+
+      const condition = {
+        method: EvaluationMethod.None,
+        tokenType: TokenType.MultiToken,
+        tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+        gatingType: GatingType.PerAddress,
+        minTokenId: 0,
+        maxTokenId: 0,
+        threshold: 0,
+        maxCommits: 0
+      } satisfies ConditionStruct;
+
+      const buyerSignature = await buyerWallet.signMessage("test message");
+
+      const args = {
+        committer: sellerWallet.address, // seller for buyer-created offers
+        offerCreator: buyerWallet.address,
+        sellerId: seller.id,
+        sellerOfferParams: {
+          collectionIndex: 0,
+          mutualizerAddress: "",
+          royaltyInfo: []
+        },
+        signature: buyerSignature,
+        useDepositedFunds: true
+      } satisfies Parameters<typeof createOfferAndCommit>[2];
+
+      // Create an offer with validity duration instead of period
+      const createdOffer = await createOfferAndCommit(
+        sellerCoreSDK,
+        condition,
+        args
+      );
+      expect(createdOffer).toBeTruthy();
     });
 
     test("void offer", async () => {

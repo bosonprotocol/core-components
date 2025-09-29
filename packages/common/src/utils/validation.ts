@@ -1,6 +1,7 @@
-import { object, string } from "yup";
+import { object, string, boolean, mixed, array, number } from "yup";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { isAddress } from "@ethersproject/address";
+import { EvaluationMethod, GatingType, TokenType } from "../types";
 
 export { validateMetadata } from "@bosonprotocol/metadata";
 
@@ -18,6 +19,18 @@ const addressTestArgs = [
   "is-address",
   "${path} has to be a valid address",
   (value: string | undefined) => isAddress(value || "")
+] as const;
+const isBigNumberTestArgs = [
+  "is-valid-big-number",
+  "${path} has to be a valid big number",
+  function (value: unknown) {
+    try {
+      BigNumber.from(value);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 ] as const;
 
 export const createOfferArgsSchema = object({
@@ -140,6 +153,65 @@ export const createOfferArgsSchema = object({
     ),
   metadataHash: string().required()
   // TODO: add agentId
+});
+
+export const createOfferAndCommitArgsSchema = object({
+  ...createOfferArgsSchema.shape,
+  offerCreator: string()
+    .required()
+    .test(...addressTestArgs),
+  committer: string()
+    .required()
+    .test(...addressTestArgs),
+  condition: object({
+    method: number()
+      .required()
+      .test(
+        "is-valid-method",
+        "${path} has to be a valid method",
+        function (value) {
+          return Object.values(EvaluationMethod).includes(value);
+        }
+      ),
+    tokenType: number()
+      .required()
+      .test(
+        "is-valid-token-type",
+        "${path} has to be a valid token type",
+        function (value) {
+          return Object.values(TokenType).includes(value);
+        }
+      ),
+    tokenAddress: string()
+      .required()
+      .test(...addressTestArgs),
+    gatingType: number()
+      .required()
+      .test(
+        "is-valid-gating-type",
+        "${path} has to be a valid gating type",
+        function (value) {
+          return Object.values(GatingType).includes(value);
+        }
+      ),
+    minTokenId: mixed().test(...isBigNumberTestArgs),
+    maxTokenId: mixed().test(...isBigNumberTestArgs),
+    threshold: mixed().test(...isBigNumberTestArgs),
+    maxCommits: mixed().test(...isBigNumberTestArgs)
+  }),
+  useDepositedFunds: boolean(),
+  signature: string(),
+  sellerId: mixed().test(...isBigNumberTestArgs),
+  sellerOfferParams: object({
+    collectionIndex: mixed().test(...isBigNumberTestArgs),
+    royaltyInfo: object({
+      recipients: array(string()),
+      bps: array(mixed().test(...isBigNumberTestArgs))
+    }),
+    mutualizerAddress: string()
+      .required()
+      .test(...addressTestArgs)
+  })
 });
 
 export const createSellerArgsSchema = object({
