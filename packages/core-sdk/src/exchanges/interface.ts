@@ -1,6 +1,5 @@
 import {
   abis,
-  ConditionStruct,
   DRParametersStruct,
   OfferDatesStruct,
   OfferDurationsStruct,
@@ -52,25 +51,67 @@ export function encodeCreateOfferAndCommit(args: CreateOfferAndCommitArgs) {
 export function createOfferAndCommitArgsToStructs(
   args: CreateOfferAndCommitArgs
 ): [
-  Partial<OfferStruct>,
-  Partial<OfferDatesStruct>,
-  Partial<OfferDurationsStruct>,
-  Partial<DRParametersStruct>,
-  Partial<ConditionStruct>,
+  [
+    Partial<OfferStruct>,
+    Partial<OfferDatesStruct>,
+    Partial<OfferDurationsStruct>,
+    Partial<DRParametersStruct>,
+    [
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish
+    ],
+    BigNumberish,
+    BigNumberish,
+    boolean
+  ],
+  string,
+  string,
+  string,
   BigNumberish,
-  BigNumberish,
-  boolean
+  [BigNumberish, [string[], BigNumberish[]], BigNumberish]
 ] {
   const feeLimit = args.feeLimit !== undefined ? args.feeLimit : args.price;
+
   return [
-    argsToOfferStruct(args),
-    argsToOfferDatesStruct(args),
-    argsToOfferDurationsStruct(args),
-    argsToDRParametersStruct(args),
-    args.condition,
-    args.agentId,
-    feeLimit,
-    args.useDepositedFunds
+    [
+      // fullOffer
+      argsToOfferStruct(args),
+      argsToOfferDatesStruct(args),
+      argsToOfferDurationsStruct(args),
+      argsToDRParametersStruct(args),
+      [
+        // condition
+        args.condition.method,
+        args.condition.tokenType,
+        args.condition.tokenAddress,
+        args.condition.gatingType,
+        args.condition.minTokenId,
+        args.condition.threshold,
+        args.condition.maxCommits,
+        args.condition.maxTokenId
+      ],
+      args.agentId,
+      feeLimit,
+      args.useDepositedFunds
+    ],
+    args.offerCreator,
+    args.committer,
+    args.signature,
+    args.conditionalTokenId || "0",
+    [
+      args.sellerOfferParams.collectionIndex,
+      [
+        args.sellerOfferParams.royaltyInfo.recipients,
+        args.sellerOfferParams.royaltyInfo.bps
+      ],
+      args.sellerOfferParams.mutualizerAddress
+    ]
   ];
 }
 

@@ -232,12 +232,17 @@ export async function createOfferAndCommit(args: {
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
 }): Promise<TransactionRequest | TransactionResponse> {
-  utils.validation.createOfferAndCommitArgsSchema.validateSync(
-    args.createOfferAndCommitArgs,
-    {
-      abortEarly: false
-    }
-  );
+  try {
+    utils.validation.createOfferAndCommitArgsSchema.validateSync(
+      args.createOfferAndCommitArgs,
+      {
+        abortEarly: false
+      }
+    );
+  } catch (error) {
+    console.error("error", error);
+    throw error;
+  }
 
   const { disputeResolverId, exchangeToken } = args.createOfferAndCommitArgs;
   const disputeResolver = await getDisputeResolverById(

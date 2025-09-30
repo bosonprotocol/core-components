@@ -567,7 +567,9 @@ export async function createOfferAndCommit(
     | "useDepositedFunds"
     | "signature"
     | "sellerId"
+    | "buyerId"
     | "sellerOfferParams"
+    | "creator"
   >,
   overrides: {
     offerAndCommitParams?: Partial<CreateOfferAndCommitArgs>;

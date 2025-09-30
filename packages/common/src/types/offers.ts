@@ -39,7 +39,7 @@ export type CreateOfferArgs = {
 
 export type SellerOfferParams = {
   collectionIndex: BigNumberish;
-  royaltyInfo: RoyaltyInfo[];
+  royaltyInfo: RoyaltyInfo;
   mutualizerAddress: string;
 };
 
@@ -72,7 +72,9 @@ export type CreateOfferAndCommitArgs = {
   useDepositedFunds: boolean;
   signature: string;
   sellerId: BigNumberish;
+  buyerId: BigNumberish;
   sellerOfferParams: SellerOfferParams;
+  conditionalTokenId?: BigNumberish;
 };
 
 export type OfferStruct = {

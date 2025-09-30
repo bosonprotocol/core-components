@@ -39,15 +39,16 @@ services:
       - host.docker.internal:host-gateway
 
   boson-protocol-node:
-    image: boson-protocol-node:6a14c31bead936ed03b2d51ab82010ecd1047f40_0
-    build:
-      context: ../.
-      dockerfile: ./contracts/Dockerfile
+    # image: boson-protocol-node:6a14c31bead936ed03b2d51ab82010ecd1047f40_1
+    image: ghcr.io/bosonprotocol/core-components/boson-protocol-node:main
+    # build:
+    #   context: ../.
+    #   dockerfile: ./contracts/Dockerfile
     ports:
       - "8545:8545"
 
   boson-subgraph:
-    image: boson-subgraph:6a14c31bead936ed03b2d51ab82010ecd1047f40_0
+    image: boson-subgraph:6a14c31bead936ed03b2d51ab82010ecd1047f40_1
     build:
       context: ../
       dockerfile: ./packages/subgraph/Dockerfile
@@ -88,7 +89,7 @@ services:
       [
         "postgres",
         "-cshared_preload_libraries=pg_stat_statements",
-        "-cmax_connections=200"
+        "-cmax_connections=200",
       ]
     environment:
       POSTGRES_USER: graph-node

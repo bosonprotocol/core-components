@@ -45,8 +45,14 @@ import {
   getSellerMetadataUri,
   createOfferAndCommit
 } from "./utils";
-import { EvaluationMethod, GatingType, TokenType } from "../../packages/common";
+import {
+  EvaluationMethod,
+  GatingType,
+  OfferCreator,
+  TokenType
+} from "../../packages/common";
 import { ConditionStruct } from "@bosonprotocol/common/src";
+import { AddressZero } from "@ethersproject/constants";
 
 const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
@@ -146,8 +152,8 @@ describe("core-sdk", () => {
         BigNumber.from(createdOffer.voucherRedeemableUntilDate).eq(0)
       ).toBe(true);
     });
-    test("create seller, then createOfferAndCommit", async () => {
-      const { sellerCoreSDK, sellerWallet, buyerWallet } =
+    test.only("create seller, then createOfferAndCommit", async () => {
+      const { sellerCoreSDK, sellerWallet, buyerWallet, buyerCoreSDK } =
         await initSellerAndBuyerSDKs(seedWallet);
 
       const seller = await createSeller(sellerCoreSDK, sellerWallet.address);
@@ -158,7 +164,7 @@ describe("core-sdk", () => {
       const condition = {
         method: EvaluationMethod.None,
         tokenType: TokenType.MultiToken,
-        tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+        tokenAddress: AddressZero,
         gatingType: GatingType.PerAddress,
         minTokenId: 0,
         maxTokenId: 0,
@@ -174,11 +180,13 @@ describe("core-sdk", () => {
         sellerId: seller.id,
         sellerOfferParams: {
           collectionIndex: 0,
-          mutualizerAddress: "",
-          royaltyInfo: []
+          mutualizerAddress: "0x0000000000000000000000000000000000000000",
+          royaltyInfo: { recipients: [], bps: [] }
         },
         signature: buyerSignature,
-        useDepositedFunds: true
+        useDepositedFunds: true,
+        buyerId: "0",
+        creator: OfferCreator.Seller
       } satisfies Parameters<typeof createOfferAndCommit>[2];
 
       // Create an offer with validity duration instead of period

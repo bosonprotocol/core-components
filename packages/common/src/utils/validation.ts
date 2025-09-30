@@ -202,16 +202,34 @@ export const createOfferAndCommitArgsSchema = object({
   useDepositedFunds: boolean(),
   signature: string(),
   sellerId: mixed().test(...isBigNumberTestArgs),
+  buyerId: mixed().test(...isBigNumberTestArgs),
   sellerOfferParams: object({
     collectionIndex: mixed().test(...isBigNumberTestArgs),
     royaltyInfo: object({
       recipients: array(string()),
       bps: array(mixed().test(...isBigNumberTestArgs))
     }),
-    mutualizerAddress: string()
-      .required()
-      .test(...addressTestArgs)
-  })
+    mutualizerAddress: string().test(
+      "is-address",
+      "${path} has to be a valid address",
+      (value: string | undefined) => (value ? isAddress(value) : true)
+    )
+  }),
+  conditionalTokenId: mixed().test(
+    "is-valid-big-number",
+    "${path} has to be a valid big number",
+    function (value: unknown) {
+      if (!value) {
+        return true; // it can be optional
+      }
+      try {
+        BigNumber.from(value);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+  )
 });
 
 export const createSellerArgsSchema = object({
