@@ -5,7 +5,8 @@ import {
   MetadataStorage,
   utils,
   RoyaltyInfo,
-  TransactionRequest
+  TransactionRequest,
+  FullOfferArgs
 } from "@bosonprotocol/common";
 import {
   bosonOfferHandlerIface,
@@ -13,7 +14,8 @@ import {
   encodeCreateOfferBatch,
   encodeReserveRange,
   encodeUpdateOfferRoyaltyRecipients,
-  encodeUpdateOfferRoyaltyRecipientsBatch
+  encodeUpdateOfferRoyaltyRecipientsBatch,
+  encodeVoidNonListedOffer
 } from "./interface";
 import { getOfferById, getOffers } from "./subgraph";
 import { storeMetadataOnTheGraph } from "./storage";
@@ -319,6 +321,65 @@ export async function voidOfferBatch(args: {
     data: bosonOfferHandlerIface.encodeFunctionData("voidOfferBatch", [
       args.offerIds
     ])
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
+}
+
+// Overload: returnTxInfo is true → returns TransactionRequest
+export async function voidNonListedOffer(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  fullOffer: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function voidNonListedOffer(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  fullOffer: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function voidNonListedOffer(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  fullOffer: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
+  const transactionRequest = {
+    to: args.contractAddress,
+    data: encodeVoidNonListedOffer(args.fullOffer)
   } satisfies TransactionRequest;
 
   if (args.returnTxInfo) {

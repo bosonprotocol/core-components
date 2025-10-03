@@ -15,7 +15,8 @@ import {
   GatingType,
   RoyaltyInfo,
   TransactionRequest,
-  Web3LibAdapter
+  Web3LibAdapter,
+  FullOfferArgs
 } from "@bosonprotocol/common";
 import groupBy from "lodash/groupBy";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
@@ -356,6 +357,77 @@ export class OfferMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
     } else {
       return offers.handler.voidOfferBatch({
         ...batchArgs,
+        returnTxInfo: false
+      });
+    }
+  }
+
+  // Overload: returnTxInfo is true → returns TransactionRequest
+  public async voidNonListedOffer(
+    fullOffer: Omit<
+      FullOfferArgs,
+      | "offerCreator"
+      | "committer"
+      | "signature"
+      | "conditionalTokenId"
+      | "sellerOfferParams"
+    >,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async voidNonListedOffer(
+    fullOffer: Omit<
+      FullOfferArgs,
+      | "offerCreator"
+      | "committer"
+      | "signature"
+      | "conditionalTokenId"
+      | "sellerOfferParams"
+    >,
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async voidNonListedOffer(
+    fullOffer: Omit<
+      FullOfferArgs,
+      | "offerCreator"
+      | "committer"
+      | "signature"
+      | "conditionalTokenId"
+      | "sellerOfferParams"
+    >,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const voidArgs = {
+      fullOffer,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    } as const satisfies Parameters<
+      typeof offers.handler.voidNonListedOffer
+    >[0];
+
+    if (returnTxInfo === true) {
+      return offers.handler.voidNonListedOffer({
+        ...voidArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return offers.handler.voidNonListedOffer({
+        ...voidArgs,
         returnTxInfo: false
       });
     }

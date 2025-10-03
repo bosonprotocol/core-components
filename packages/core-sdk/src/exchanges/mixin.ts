@@ -5,7 +5,7 @@ import {
   TransactionRequest,
   Log,
   Web3LibAdapter,
-  CreateOfferAndCommitArgs
+  FullOfferArgs
 } from "@bosonprotocol/common";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { getValueFromLogs } from "../utils/logs";
@@ -173,7 +173,7 @@ export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    */
   // Overload: returnTxInfo is true → returns TransactionRequest
   public async createOfferAndCommit(
-    createOfferAndCommitArgs: CreateOfferAndCommitArgs,
+    createOfferAndCommitArgs: FullOfferArgs,
     overrides: Partial<{
       contractAddress: string;
       txRequest: TransactionRequest;
@@ -183,7 +183,7 @@ export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
 
   // Overload: returnTxInfo is false or undefined → returns TransactionResponse
   public async createOfferAndCommit(
-    createOfferAndCommitArgs: CreateOfferAndCommitArgs,
+    createOfferAndCommitArgs: FullOfferArgs,
     overrides?: Partial<{
       contractAddress: string;
       txRequest: TransactionRequest;
@@ -193,7 +193,7 @@ export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
 
   // Implementation
   public async createOfferAndCommit(
-    createOfferAndCommitArgs: CreateOfferAndCommitArgs,
+    createOfferAndCommitArgs: FullOfferArgs,
     overrides: Partial<{
       contractAddress: string;
       txRequest: TransactionRequest;
@@ -229,20 +229,20 @@ export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
 
   /**
    * Signs the full offer data for an off-chain buyer- or seller-initiated offer.
-   * @param args - Arguments including `createOfferAndCommitArgs` and `returnTypedDataToSign`.
+   * @param args - Arguments including `fullOfferArgsUnsigned` and `returnTypedDataToSign`.
    * @returns Either the structured data to sign or the signature parameters, depending on `returnTypedDataToSign`.
    */
 
   public async signFullOffer(args: {
-    createOfferAndCommitArgs: Omit<CreateOfferAndCommitArgs, "signature">;
+    fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
     returnTypedDataToSign: true;
   }): Promise<StructuredData>;
   public async signFullOffer(args: {
-    createOfferAndCommitArgs: Omit<CreateOfferAndCommitArgs, "signature">;
+    fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
     returnTypedDataToSign?: false;
   }): Promise<ReturnType<typeof getSignatureParameters>>;
   public async signFullOffer(args: {
-    createOfferAndCommitArgs: Omit<CreateOfferAndCommitArgs, "signature">;
+    fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
     returnTypedDataToSign?: boolean;
   }): Promise<StructuredData | ReturnType<typeof getSignatureParameters>> {
     const { returnTypedDataToSign, ...argsWithoutReturnTypedDataToSign } = args;

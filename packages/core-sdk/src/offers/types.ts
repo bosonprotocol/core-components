@@ -1,5 +1,5 @@
 export {
   CreateOfferArgs,
   PriceType,
-  CreateOfferAndCommitArgs
+  FullOfferArgs
 } from "@bosonprotocol/common";

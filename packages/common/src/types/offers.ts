@@ -43,7 +43,7 @@ export type SellerOfferParams = {
   mutualizerAddress: string;
 };
 
-export type CreateOfferAndCommitArgs = CreateOfferArgs & {
+export type FullOfferArgs = CreateOfferArgs & {
   offerCreator: string;
   committer: string;
   condition: ConditionStruct;

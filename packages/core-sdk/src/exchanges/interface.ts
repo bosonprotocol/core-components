@@ -1,5 +1,6 @@
 import {
   abis,
+  ConditionStruct,
   DRParametersStruct,
   OfferDatesStruct,
   OfferDurationsStruct,
@@ -13,7 +14,8 @@ import {
   argsToOfferDurationsStruct,
   argsToOfferStruct
 } from "../offers/interface";
-import { CreateOfferAndCommitArgs } from "@bosonprotocol/common/src";
+import { FullOfferArgs } from "@bosonprotocol/common/src";
+import { conditionArgsToStructs } from "../groups/interface";
 
 export const bosonExchangeHandlerIface = new Interface(
   abis.IBosonExchangeHandlerABI
@@ -41,31 +43,22 @@ export function encodeCommitToConditionalOffer(
   );
 }
 
-export function encodeCreateOfferAndCommit(args: CreateOfferAndCommitArgs) {
+export function encodeCreateOfferAndCommit(args: FullOfferArgs) {
   return bosonExchangeCommitHandlerIface.encodeFunctionData(
     "createOfferAndCommit",
-    createOfferAndCommitArgsToStructs(args)
+    fullOfferArgsToStructs(args)
   );
 }
 
-export function createOfferAndCommitArgsToStructs(
-  args: CreateOfferAndCommitArgs
+function fullOfferArgsToStructs(
+  args: FullOfferArgs
 ): [
   [
     Partial<OfferStruct>,
     Partial<OfferDatesStruct>,
     Partial<OfferDurationsStruct>,
     Partial<DRParametersStruct>,
-    [
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish
-    ],
+    Omit<ConditionStruct, "gatingType"> & { gating: number },
     BigNumberish,
     BigNumberish,
     boolean
@@ -76,30 +69,8 @@ export function createOfferAndCommitArgsToStructs(
   BigNumberish,
   [BigNumberish, [string[], BigNumberish[]], BigNumberish]
 ] {
-  const feeLimit = args.feeLimit !== undefined ? args.feeLimit : args.price;
-
   return [
-    [
-      // fullOffer
-      argsToOfferStruct(args),
-      argsToOfferDatesStruct(args),
-      argsToOfferDurationsStruct(args),
-      argsToDRParametersStruct(args),
-      [
-        // condition
-        args.condition.method,
-        args.condition.tokenType,
-        args.condition.tokenAddress,
-        args.condition.gatingType,
-        args.condition.minTokenId,
-        args.condition.threshold,
-        args.condition.maxCommits,
-        args.condition.maxTokenId
-      ],
-      args.agentId,
-      feeLimit,
-      args.useDepositedFunds
-    ],
+    fullOfferArgsToStruct(args),
     args.offerCreator,
     args.committer,
     args.signature,
@@ -112,6 +83,40 @@ export function createOfferAndCommitArgsToStructs(
       ],
       args.sellerOfferParams.mutualizerAddress
     ]
+  ];
+}
+
+export function fullOfferArgsToStruct(
+  args: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >
+): [
+  Partial<OfferStruct>,
+  Partial<OfferDatesStruct>,
+  Partial<OfferDurationsStruct>,
+  Partial<DRParametersStruct>,
+  Omit<ConditionStruct, "gatingType"> & { gating: number },
+  BigNumberish,
+  BigNumberish,
+  boolean
+] {
+  const feeLimit = args.feeLimit !== undefined ? args.feeLimit : args.price;
+
+  return [
+    // fullOffer
+    argsToOfferStruct(args),
+    argsToOfferDatesStruct(args),
+    argsToOfferDurationsStruct(args),
+    argsToDRParametersStruct(args),
+    conditionArgsToStructs(args.condition),
+    args.agentId,
+    feeLimit.toString(),
+    args.useDepositedFunds
   ];
 }
 

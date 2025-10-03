@@ -86,7 +86,7 @@ import bundleMetadataMinimal from "../../packages/metadata/tests/bundle/valid/mi
 import { Chain, OpenSeaSDK } from "opensea-js";
 import { Seaport } from "@opensea/seaport-js";
 import { hexlify, randomBytes } from "ethers/lib/utils";
-import { CreateOfferAndCommitArgs } from "@bosonprotocol/common";
+import { FullOfferArgs } from "@bosonprotocol/common";
 
 export type DeepPartial<T> = T extends object
   ? {
@@ -558,12 +558,13 @@ export async function createOfferWithCondition(
 
   return offer;
 }
-export async function createOfferAndCommit(
+
+export async function buildFullOfferArgs(
   committerCoreSDK: CoreSDK,
   offerCreatorCoreSDK: CoreSDK,
   condition: ConditionStruct,
   args: Pick<
-    CreateOfferAndCommitArgs,
+    FullOfferArgs,
     | "committer"
     | "offerCreator"
     | "useDepositedFunds"
@@ -576,7 +577,7 @@ export async function createOfferAndCommit(
     offerParams?: Partial<CreateOfferArgs>;
     metadata?: Partial<base.BaseMetadata>;
   } = {}
-) {
+): Promise<Omit<FullOfferArgs, "signature">> {
   const metadataHash = await committerCoreSDK.storeMetadata({
     ...metadata,
     type: "BASE",
@@ -623,21 +624,27 @@ export async function createOfferAndCommit(
     await offerCreatorCoreSDK.depositFunds(creatorId, creatorDepositFunds)
   ).wait();
 
-  const fullOfferArgs = {
+  return {
     condition,
     ...args,
     ...offerArgs,
     buyerId,
     sellerId
-  } as Omit<CreateOfferAndCommitArgs, "signature">;
+  } as Omit<FullOfferArgs, "signature">;
+}
 
+export async function createOfferAndCommit(
+  committerCoreSDK: CoreSDK,
+  offerCreatorCoreSDK: CoreSDK,
+  fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">
+) {
   // Offer creator signs the full offer
   const { signature } = await offerCreatorCoreSDK.signFullOffer({
-    createOfferAndCommitArgs: fullOfferArgs
+    fullOfferArgsUnsigned
   });
 
   const createOfferTxResponse = await committerCoreSDK.createOfferAndCommit({
-    ...fullOfferArgs,
+    ...fullOfferArgsUnsigned,
     signature
   });
   const createOfferTxReceipt = await createOfferTxResponse.wait();

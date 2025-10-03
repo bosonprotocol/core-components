@@ -26,10 +26,7 @@ import {
   OfferFieldsFragment
 } from "../subgraph";
 import { ensureAllowance } from "../erc20/handler";
-import {
-  CreateOfferAndCommitArgs,
-  OfferCreator
-} from "@bosonprotocol/common/src";
+import { FullOfferArgs, OfferCreator } from "@bosonprotocol/common/src";
 import { getDisputeResolverById } from "../accounts/subgraph";
 import { storeMetadataOnTheGraph } from "../offers/storage";
 import { storeMetadataItems } from "../metadata/storeMetadataItems";
@@ -213,7 +210,7 @@ export async function commitToConditionalOffer(
 
 // Overload: returnTxInfo is true → returns TransactionRequest
 export async function createOfferAndCommit(args: {
-  createOfferAndCommitArgs: CreateOfferAndCommitArgs;
+  createOfferAndCommitArgs: FullOfferArgs;
   returnTxInfo: true;
   subgraphUrl: string;
   contractAddress: string;
@@ -225,7 +222,7 @@ export async function createOfferAndCommit(args: {
 
 // Overload: returnTxInfo is false or undefined → returns TransactionResponse
 export async function createOfferAndCommit(args: {
-  createOfferAndCommitArgs: CreateOfferAndCommitArgs;
+  createOfferAndCommitArgs: FullOfferArgs;
   returnTxInfo?: false | undefined;
   subgraphUrl: string;
   contractAddress: string;
@@ -237,7 +234,7 @@ export async function createOfferAndCommit(args: {
 
 // Implementation
 export async function createOfferAndCommit(args: {
-  createOfferAndCommitArgs: CreateOfferAndCommitArgs;
+  createOfferAndCommitArgs: FullOfferArgs;
   returnTxInfo?: boolean;
   subgraphUrl: string;
   contractAddress: string;
@@ -321,35 +318,33 @@ export async function createOfferAndCommit(args: {
 }
 
 export async function signFullOffer(args: {
-  createOfferAndCommitArgs: Omit<CreateOfferAndCommitArgs, "signature">;
+  fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
   chainId: number;
   returnTypedDataToSign: true;
 }): Promise<StructuredData>;
 export async function signFullOffer(args: {
-  createOfferAndCommitArgs: Omit<CreateOfferAndCommitArgs, "signature">;
+  fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
   chainId: number;
   returnTypedDataToSign?: false;
 }): Promise<ReturnType<typeof getSignatureParameters>>;
 export async function signFullOffer(args: {
-  createOfferAndCommitArgs: Omit<CreateOfferAndCommitArgs, "signature">;
+  fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
   chainId: number;
   returnTypedDataToSign?: boolean;
 }): Promise<StructuredData | ReturnType<typeof getSignatureParameters>> {
-  const offerStruct = argsToOfferStruct(args.createOfferAndCommitArgs);
-  const offerDatesStruct = argsToOfferDatesStruct(
-    args.createOfferAndCommitArgs
-  );
+  const offerStruct = argsToOfferStruct(args.fullOfferArgsUnsigned);
+  const offerDatesStruct = argsToOfferDatesStruct(args.fullOfferArgsUnsigned);
   const offerDurationsStruct = argsToOfferDurationsStruct(
-    args.createOfferAndCommitArgs
+    args.fullOfferArgsUnsigned
   );
   const drParametersStruct = argsToDRParametersStruct(
-    args.createOfferAndCommitArgs
+    args.fullOfferArgsUnsigned
   );
   const customSignatureType = {
     FullOffer: [
@@ -441,18 +436,18 @@ export async function signFullOffer(args: {
       mutualizerAddress: drParametersStruct.mutualizerAddress
     },
     condition: {
-      method: args.createOfferAndCommitArgs.condition.method,
-      tokenType: args.createOfferAndCommitArgs.condition.tokenType,
-      tokenAddress: args.createOfferAndCommitArgs.condition.tokenAddress,
-      gating: args.createOfferAndCommitArgs.condition.gatingType,
-      minTokenId: args.createOfferAndCommitArgs.condition.minTokenId.toString(),
-      threshold: args.createOfferAndCommitArgs.condition.threshold.toString(),
-      maxCommits: args.createOfferAndCommitArgs.condition.maxCommits.toString(),
-      maxTokenId: args.createOfferAndCommitArgs.condition.maxTokenId.toString()
+      method: args.fullOfferArgsUnsigned.condition.method,
+      tokenType: args.fullOfferArgsUnsigned.condition.tokenType,
+      tokenAddress: args.fullOfferArgsUnsigned.condition.tokenAddress,
+      gating: args.fullOfferArgsUnsigned.condition.gatingType,
+      minTokenId: args.fullOfferArgsUnsigned.condition.minTokenId.toString(),
+      threshold: args.fullOfferArgsUnsigned.condition.threshold.toString(),
+      maxCommits: args.fullOfferArgsUnsigned.condition.maxCommits.toString(),
+      maxTokenId: args.fullOfferArgsUnsigned.condition.maxTokenId.toString()
     },
-    agentId: args.createOfferAndCommitArgs.agentId.toString(),
-    feeLimit: args.createOfferAndCommitArgs.feeLimit.toString(),
-    useDepositedFunds: args.createOfferAndCommitArgs.useDepositedFunds
+    agentId: args.fullOfferArgsUnsigned.agentId.toString(),
+    feeLimit: args.fullOfferArgsUnsigned.feeLimit.toString(),
+    useDepositedFunds: args.fullOfferArgsUnsigned.useDepositedFunds
   };
 
   const signatureArgs = {
