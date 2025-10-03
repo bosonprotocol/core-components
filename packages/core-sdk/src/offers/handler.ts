@@ -57,7 +57,6 @@ export async function createOffer(args: {
   txRequest?: TransactionRequest;
   returnTxInfo?: boolean;
 }): Promise<TransactionRequest | TransactionResponse> {
-  // TODO: Check quantity must be 1 for buyer initiated offers
   utils.validation.createOfferArgsSchema.validateSync(args.offerToCreate, {
     abortEarly: false
   });
