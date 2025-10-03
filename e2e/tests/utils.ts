@@ -3,6 +3,7 @@ import { AddressZero } from "@ethersproject/constants";
 import {
   ConditionStruct,
   CreateSellerArgs,
+  OfferCreator,
   TransactionResponse
 } from "../../packages/common/src/index";
 import {
@@ -558,25 +559,25 @@ export async function createOfferWithCondition(
   return offer;
 }
 export async function createOfferAndCommit(
-  coreSDK: CoreSDK,
+  committerCoreSDK: CoreSDK,
+  offerCreatorCoreSDK: CoreSDK,
   condition: ConditionStruct,
   args: Pick<
     CreateOfferAndCommitArgs,
     | "committer"
     | "offerCreator"
     | "useDepositedFunds"
-    | "signature"
     | "sellerId"
-    | "buyerId"
     | "sellerOfferParams"
     | "creator"
+    | "feeLimit"
   >,
   overrides: {
-    offerAndCommitParams?: Partial<CreateOfferAndCommitArgs>;
+    offerParams?: Partial<CreateOfferArgs>;
     metadata?: Partial<base.BaseMetadata>;
   } = {}
 ) {
-  const metadataHash = await coreSDK.storeMetadata({
+  const metadataHash = await committerCoreSDK.storeMetadata({
     ...metadata,
     type: "BASE",
     ...overrides.metadata
@@ -586,21 +587,66 @@ export async function createOfferAndCommit(
   const offerArgs = mockCreateOfferArgs({
     metadataHash,
     metadataUri,
-    ...overrides.offerAndCommitParams
+    ...overrides.offerParams
   });
 
-  const createOfferTxResponse = await coreSDK.createOfferAndCommit({
+  // Offer creator needs to deposit funds to cover sellerDeposit of the offer
+  const creatorAddress = (
+    await offerCreatorCoreSDK.web3Lib.getSignerAddress()
+  ).toLowerCase();
+  let creatorId = args.sellerId;
+  let creatorDepositFunds = offerArgs.sellerDeposit;
+  let buyerId = "0"; // default to 0 (no buyer) unless creator is buyer
+  let sellerId = args.sellerId; // default setting unless creator is buyer
+  if (args.creator === OfferCreator.Buyer) {
+    let [buyer] = await offerCreatorCoreSDK.getBuyers({
+      buyersFilter: { wallet: creatorAddress }
+    });
+    if (!buyer) {
+      const tx = await offerCreatorCoreSDK.createBuyer({
+        wallet: creatorAddress
+      });
+      await offerCreatorCoreSDK.waitForGraphNodeIndexing(tx);
+      [buyer] = await offerCreatorCoreSDK.getBuyers({
+        buyersFilter: { wallet: creatorAddress }
+      });
+      if (!buyer) {
+        throw new Error("Failed to create buyer");
+      }
+    }
+    creatorId = buyer.id;
+    buyerId = buyer.id;
+    sellerId = "0"; // sellerId must be 0 for buyer-initiated offer
+    creatorDepositFunds = offerArgs.price;
+  }
+  await (
+    await offerCreatorCoreSDK.depositFunds(creatorId, creatorDepositFunds)
+  ).wait();
+
+  const fullOfferArgs = {
     condition,
     ...args,
-    ...offerArgs
+    ...offerArgs,
+    buyerId,
+    sellerId
+  } as Omit<CreateOfferAndCommitArgs, "signature">;
+
+  // Offer creator signs the full offer
+  const { signature } = await offerCreatorCoreSDK.signFullOffer({
+    createOfferAndCommitArgs: fullOfferArgs
+  });
+
+  const createOfferTxResponse = await committerCoreSDK.createOfferAndCommit({
+    ...fullOfferArgs,
+    signature
   });
   const createOfferTxReceipt = await createOfferTxResponse.wait();
-  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+  const createdOfferId = committerCoreSDK.getCreatedOfferIdFromLogs(
     createOfferTxReceipt.logs
   );
 
-  await coreSDK.waitForGraphNodeIndexing(createOfferTxReceipt);
-  const offer = await coreSDK.getOfferById(createdOfferId as string);
+  await committerCoreSDK.waitForGraphNodeIndexing(createOfferTxReceipt);
+  const offer = await committerCoreSDK.getOfferById(createdOfferId as string);
 
   return offer;
 }
@@ -1090,6 +1136,27 @@ export async function mintLensToken(
   await tx.wait();
 
   return tokenId;
+}
+
+export async function createBuyer(coreSDK: CoreSDK, buyerAddress: string) {
+  const createBuyerTxReceipt = await doItAgain(2, async () => {
+    const createBuyerTxResponse = await coreSDK.createBuyer({
+      wallet: buyerAddress
+    });
+    const createBuyerTxReceipt = await createBuyerTxResponse.wait();
+    return createBuyerTxReceipt;
+  });
+
+  const createdBuyerId = coreSDK.getCreatedBuyerIdFromLogs(
+    createBuyerTxReceipt.logs
+  );
+  await coreSDK.waitForGraphNodeIndexing(createBuyerTxReceipt);
+  if (createdBuyerId === null) {
+    throw new Error("Failed to create buyer");
+  }
+  const buyer = await coreSDK.getBuyerById(createdBuyerId);
+
+  return buyer;
 }
 
 export function createSeaportOrder(args: {

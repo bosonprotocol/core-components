@@ -26,10 +26,24 @@ import {
   OfferFieldsFragment
 } from "../subgraph";
 import { ensureAllowance } from "../erc20/handler";
-import { CreateOfferAndCommitArgs } from "@bosonprotocol/common/src";
+import {
+  CreateOfferAndCommitArgs,
+  OfferCreator
+} from "@bosonprotocol/common/src";
 import { getDisputeResolverById } from "../accounts/subgraph";
 import { storeMetadataOnTheGraph } from "../offers/storage";
 import { storeMetadataItems } from "../metadata/storeMetadataItems";
+import {
+  getSignatureParameters,
+  prepareDataSignatureParameters,
+  StructuredData
+} from "../utils/signature";
+import {
+  argsToDRParametersStruct,
+  argsToOfferDatesStruct,
+  argsToOfferDurationsStruct,
+  argsToOfferStruct
+} from "../offers/interface";
 
 type BaseExchangeHandlerArgs = {
   contractAddress: string;
@@ -244,7 +258,8 @@ export async function createOfferAndCommit(args: {
     throw error;
   }
 
-  const { disputeResolverId, exchangeToken } = args.createOfferAndCommitArgs;
+  const { disputeResolverId, exchangeToken, price, sellerDeposit, creator } =
+    args.createOfferAndCommitArgs;
   const disputeResolver = await getDisputeResolverById(
     args.subgraphUrl,
     disputeResolverId
@@ -275,10 +290,26 @@ export async function createOfferAndCommit(args: {
     createOffersArgs: [args.createOfferAndCommitArgs]
   });
 
+  const committerPayment =
+    creator === OfferCreator.Buyer ? sellerDeposit : price;
+
+  if (exchangeToken !== AddressZero) {
+    const owner = await args.web3Lib.getSignerAddress();
+    // check if we need the committer to approve the token first
+    await ensureAllowance({
+      owner,
+      spender: args.contractAddress,
+      contractAddress: exchangeToken,
+      value: committerPayment,
+      web3Lib: args.web3Lib
+    });
+  }
+
   const transactionRequest = {
     ...args.txRequest,
     to: args.contractAddress,
-    data: encodeCreateOfferAndCommit(args.createOfferAndCommitArgs)
+    data: encodeCreateOfferAndCommit(args.createOfferAndCommitArgs),
+    value: exchangeToken === AddressZero ? committerPayment : "0"
   } satisfies TransactionRequest;
 
   if (args.returnTxInfo) {
@@ -286,6 +317,163 @@ export async function createOfferAndCommit(args: {
   } else {
     const txResponse = await args.web3Lib.sendTransaction(transactionRequest);
     return txResponse;
+  }
+}
+
+export async function signFullOffer(args: {
+  createOfferAndCommitArgs: Omit<CreateOfferAndCommitArgs, "signature">;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  chainId: number;
+  returnTypedDataToSign: true;
+}): Promise<StructuredData>;
+export async function signFullOffer(args: {
+  createOfferAndCommitArgs: Omit<CreateOfferAndCommitArgs, "signature">;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  chainId: number;
+  returnTypedDataToSign?: false;
+}): Promise<ReturnType<typeof getSignatureParameters>>;
+export async function signFullOffer(args: {
+  createOfferAndCommitArgs: Omit<CreateOfferAndCommitArgs, "signature">;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  chainId: number;
+  returnTypedDataToSign?: boolean;
+}): Promise<StructuredData | ReturnType<typeof getSignatureParameters>> {
+  const offerStruct = argsToOfferStruct(args.createOfferAndCommitArgs);
+  const offerDatesStruct = argsToOfferDatesStruct(
+    args.createOfferAndCommitArgs
+  );
+  const offerDurationsStruct = argsToOfferDurationsStruct(
+    args.createOfferAndCommitArgs
+  );
+  const drParametersStruct = argsToDRParametersStruct(
+    args.createOfferAndCommitArgs
+  );
+  const customSignatureType = {
+    FullOffer: [
+      { name: "offer", type: "Offer" },
+      { name: "offerDates", type: "OfferDates" },
+      { name: "offerDurations", type: "OfferDurations" },
+      { name: "drParameters", type: "DRParameters" },
+      { name: "condition", type: "Condition" },
+      { name: "agentId", type: "uint256" },
+      { name: "feeLimit", type: "uint256" },
+      { name: "useDepositedFunds", type: "bool" }
+    ],
+    Condition: [
+      { name: "method", type: "uint8" },
+      { name: "tokenType", type: "uint8" },
+      { name: "tokenAddress", type: "address" },
+      { name: "gating", type: "uint8" },
+      { name: "minTokenId", type: "uint256" },
+      { name: "threshold", type: "uint256" },
+      { name: "maxCommits", type: "uint256" },
+      { name: "maxTokenId", type: "uint256" }
+    ],
+    DRParameters: [
+      { name: "disputeResolverId", type: "uint256" },
+      { name: "mutualizerAddress", type: "address" }
+    ],
+    OfferDurations: [
+      { name: "disputePeriod", type: "uint256" },
+      { name: "voucherValid", type: "uint256" },
+      { name: "resolutionPeriod", type: "uint256" }
+    ],
+    OfferDates: [
+      { name: "validFrom", type: "uint256" },
+      { name: "validUntil", type: "uint256" },
+      { name: "voucherRedeemableFrom", type: "uint256" },
+      { name: "voucherRedeemableUntil", type: "uint256" }
+    ],
+    Offer: [
+      { name: "sellerId", type: "uint256" },
+      { name: "price", type: "uint256" },
+      { name: "sellerDeposit", type: "uint256" },
+      { name: "buyerCancelPenalty", type: "uint256" },
+      { name: "quantityAvailable", type: "uint256" },
+      { name: "exchangeToken", type: "address" },
+      { name: "metadataUri", type: "string" },
+      { name: "metadataHash", type: "string" },
+      { name: "collectionIndex", type: "uint256" },
+      { name: "royaltyInfo", type: "RoyaltyInfo" },
+      { name: "creator", type: "uint8" },
+      { name: "buyerId", type: "uint256" }
+    ],
+    RoyaltyInfo: [
+      { name: "recipients", type: "address[]" },
+      { name: "bps", type: "uint256[]" }
+    ]
+  };
+
+  const message = {
+    offer: {
+      sellerId: offerStruct.sellerId.toString(),
+      price: offerStruct.price.toString(),
+      sellerDeposit: offerStruct.sellerDeposit.toString(),
+      buyerCancelPenalty: offerStruct.buyerCancelPenalty.toString(),
+      quantityAvailable: offerStruct.quantityAvailable.toString(),
+      exchangeToken: offerStruct.exchangeToken,
+      metadataUri: offerStruct.metadataUri,
+      metadataHash: offerStruct.metadataHash,
+      collectionIndex: offerStruct.collectionIndex.toString(),
+      royaltyInfo: {
+        recipients: offerStruct.royaltyInfo[0].recipients,
+        bps: offerStruct.royaltyInfo[0].bps.map((bp) => bp.toString())
+      },
+      creator: offerStruct.creator,
+      buyerId: offerStruct.buyerId.toString()
+    },
+    offerDates: {
+      validFrom: offerDatesStruct.validFrom.toString(),
+      validUntil: offerDatesStruct.validUntil.toString(),
+      voucherRedeemableFrom: offerDatesStruct.voucherRedeemableFrom.toString(),
+      voucherRedeemableUntil: offerDatesStruct.voucherRedeemableUntil.toString()
+    },
+    offerDurations: {
+      disputePeriod: offerDurationsStruct.disputePeriod.toString(),
+      voucherValid: offerDurationsStruct.voucherValid.toString(),
+      resolutionPeriod: offerDurationsStruct.resolutionPeriod.toString()
+    },
+    drParameters: {
+      disputeResolverId: drParametersStruct.disputeResolverId.toString(),
+      mutualizerAddress: drParametersStruct.mutualizerAddress
+    },
+    condition: {
+      method: args.createOfferAndCommitArgs.condition.method,
+      tokenType: args.createOfferAndCommitArgs.condition.tokenType,
+      tokenAddress: args.createOfferAndCommitArgs.condition.tokenAddress,
+      gating: args.createOfferAndCommitArgs.condition.gatingType,
+      minTokenId: args.createOfferAndCommitArgs.condition.minTokenId.toString(),
+      threshold: args.createOfferAndCommitArgs.condition.threshold.toString(),
+      maxCommits: args.createOfferAndCommitArgs.condition.maxCommits.toString(),
+      maxTokenId: args.createOfferAndCommitArgs.condition.maxTokenId.toString()
+    },
+    agentId: args.createOfferAndCommitArgs.agentId.toString(),
+    feeLimit: args.createOfferAndCommitArgs.feeLimit.toString(),
+    useDepositedFunds: args.createOfferAndCommitArgs.useDepositedFunds
+  };
+
+  const signatureArgs = {
+    message,
+    customSignatureType,
+    web3Lib: args.web3Lib,
+    verifyingContractAddress: args.contractAddress,
+    chainId: args.chainId,
+    primaryType: "FullOffer"
+  } as const;
+
+  if (args.returnTypedDataToSign) {
+    return prepareDataSignatureParameters({
+      ...signatureArgs,
+      returnTypedDataToSign: true
+    });
+  } else {
+    return prepareDataSignatureParameters({
+      ...signatureArgs,
+      returnTypedDataToSign: false
+    });
   }
 }
 

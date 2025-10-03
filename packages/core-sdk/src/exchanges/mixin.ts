@@ -19,11 +19,13 @@ import {
   expireVoucher,
   commitToConditionalOffer,
   getExchangeTokenId,
-  parseTokenId
+  parseTokenId,
+  signFullOffer
 } from "./handler";
 import { getExchangeById, getExchanges } from "./subgraph";
 import { bosonExchangeHandlerIface } from "./interface";
 import { exchanges } from "..";
+import { getSignatureParameters, StructuredData } from "../utils/signature";
 
 export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
@@ -221,6 +223,44 @@ export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       return exchanges.handler.createOfferAndCommit({
         ...offerArgs,
         returnTxInfo: false
+      });
+    }
+  }
+
+  /**
+   * Signs the full offer data for an off-chain buyer- or seller-initiated offer.
+   * @param args - Arguments including `createOfferAndCommitArgs` and `returnTypedDataToSign`.
+   * @returns Either the structured data to sign or the signature parameters, depending on `returnTypedDataToSign`.
+   */
+
+  public async signFullOffer(args: {
+    createOfferAndCommitArgs: Omit<CreateOfferAndCommitArgs, "signature">;
+    returnTypedDataToSign: true;
+  }): Promise<StructuredData>;
+  public async signFullOffer(args: {
+    createOfferAndCommitArgs: Omit<CreateOfferAndCommitArgs, "signature">;
+    returnTypedDataToSign?: false;
+  }): Promise<ReturnType<typeof getSignatureParameters>>;
+  public async signFullOffer(args: {
+    createOfferAndCommitArgs: Omit<CreateOfferAndCommitArgs, "signature">;
+    returnTypedDataToSign?: boolean;
+  }): Promise<StructuredData | ReturnType<typeof getSignatureParameters>> {
+    const { returnTypedDataToSign, ...argsWithoutReturnTypedDataToSign } = args;
+    const params = {
+      ...argsWithoutReturnTypedDataToSign,
+      web3Lib: this._web3Lib,
+      contractAddress: this._protocolDiamond,
+      chainId: this._chainId
+    };
+    if (returnTypedDataToSign === true) {
+      return signFullOffer({
+        ...params,
+        returnTypedDataToSign: true
+      });
+    } else {
+      return signFullOffer({
+        ...params,
+        returnTypedDataToSign: false
       });
     }
   }

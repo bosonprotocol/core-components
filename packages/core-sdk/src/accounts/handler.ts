@@ -3,7 +3,8 @@ import {
   TransactionResponse,
   TransactionRequest,
   utils,
-  MetadataStorage
+  MetadataStorage,
+  CreateBuyerArgs
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { formatBytes32String } from "@ethersproject/strings";
@@ -28,7 +29,8 @@ import {
   encodeUpdateRoyaltyRecipients,
   encodeGetRoyaltyRecipients,
   decodeGetRoyaltyRecipients,
-  encodeRemoveRoyaltyRecipients
+  encodeRemoveRoyaltyRecipients,
+  encodeCreateBuyer
 } from "./interface";
 import { getDisputeResolverById } from "./subgraph";
 import {
@@ -187,6 +189,44 @@ export async function optInToSellerUpdate(args: {
   const transactionRequest = {
     to: args.contractAddress,
     data: encodeOptInToSellerUpdate(args.sellerUpdates)
+  } satisfies TransactionRequest;
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
+}
+
+// Overload: returnTxInfo is true → returns TransactionRequest
+export async function createBuyer(args: {
+  buyerToCreate: CreateBuyerArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function createBuyer(args: {
+  buyerToCreate: CreateBuyerArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+// Implementation
+export async function createBuyer(args: {
+  buyerToCreate: CreateBuyerArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+  returnTxInfo?: boolean;
+}): Promise<TransactionResponse | TransactionRequest> {
+  const transactionRequest = {
+    to: args.contractAddress,
+    data: encodeCreateBuyer(args.buyerToCreate)
   } satisfies TransactionRequest;
   if (args.returnTxInfo) {
     return transactionRequest;

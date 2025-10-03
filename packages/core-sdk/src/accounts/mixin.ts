@@ -529,6 +529,58 @@ export class AccountsMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
     return accounts.subgraph.getBuyers(this._subgraphUrl, queryVars);
   }
 
+  // Overload: returnTxInfo is true → returns TransactionRequest
+  public async createBuyer(
+    buyerToCreate: accounts.CreateBuyerArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async createBuyer(
+    buyerToCreate: accounts.CreateBuyerArgs,
+    overrides?: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async createBuyer(
+    buyerToCreate: accounts.CreateBuyerArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const buyerArgs = {
+      buyerToCreate,
+      web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    } as const satisfies Parameters<typeof accounts.handler.createBuyer>[0];
+
+    if (returnTxInfo === true) {
+      return accounts.handler.createBuyer({
+        ...buyerArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return accounts.handler.createBuyer({
+        ...buyerArgs,
+        returnTxInfo: false
+      });
+    }
+  }
+
   /* ---------------------------- Dispute Resolver ---------------------------- */
 
   /**

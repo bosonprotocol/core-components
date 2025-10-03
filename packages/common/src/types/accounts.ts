@@ -84,6 +84,11 @@ export type OptInToSellerUpdateArgs = {
   };
 };
 
+export type CreateBuyerArgs = {
+  /** wallet address of the buyer */
+  wallet: string;
+};
+
 export const DisputeResolverUpdateFields = {
   admin: 0,
   assistant: 1,
@@ -121,6 +126,12 @@ export type SellerStruct = {
 export type AuthTokenStruct = {
   tokenId: BigNumberish;
   tokenType: number;
+};
+
+export type BuyerStruct = {
+  id: BigNumberish;
+  wallet: string;
+  active: boolean;
 };
 
 export type VoucherInitValuesStruct = {

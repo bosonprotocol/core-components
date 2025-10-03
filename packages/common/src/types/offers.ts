@@ -43,31 +43,9 @@ export type SellerOfferParams = {
   mutualizerAddress: string;
 };
 
-export type CreateOfferAndCommitArgs = {
-  price: BigNumberish;
-  sellerDeposit: BigNumberish;
-  agentId: BigNumberish;
-  buyerCancelPenalty: BigNumberish;
-  quantityAvailable: BigNumberish;
-  validFromDateInMS: BigNumberish;
-  validUntilDateInMS: BigNumberish;
-  voucherRedeemableFromDateInMS: BigNumberish;
-  voucherRedeemableUntilDateInMS: BigNumberish;
-  disputePeriodDurationInMS: BigNumberish;
-  voucherValidDurationInMS?: BigNumberish;
-  resolutionPeriodDurationInMS: BigNumberish;
-  exchangeToken: string;
-  disputeResolverId: BigNumberish;
-  metadataUri: string;
-  metadataHash: string;
-  collectionIndex: BigNumberish;
-  feeLimit?: BigNumberish;
-  priceType?: PriceType;
-  royaltyInfo?: RoyaltyInfo[];
-  creator?: OfferCreator;
+export type CreateOfferAndCommitArgs = CreateOfferArgs & {
   offerCreator: string;
   committer: string;
-  mutualizerAddress?: string;
   condition: ConditionStruct;
   useDepositedFunds: boolean;
   signature: string;

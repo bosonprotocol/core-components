@@ -152,7 +152,7 @@ describe("core-sdk", () => {
         BigNumber.from(createdOffer.voucherRedeemableUntilDate).eq(0)
       ).toBe(true);
     });
-    test.only("create seller, then createOfferAndCommit", async () => {
+    test("create seller, then createOfferAndCommit for a seller-initiated offer (buyer committing)", async () => {
       const { sellerCoreSDK, sellerWallet, buyerWallet, buyerCoreSDK } =
         await initSellerAndBuyerSDKs(seedWallet);
 
@@ -172,28 +172,76 @@ describe("core-sdk", () => {
         maxCommits: 0
       } satisfies ConditionStruct;
 
-      const buyerSignature = await buyerWallet.signMessage("test message");
-
       const args = {
-        committer: sellerWallet.address, // seller for buyer-created offers
-        offerCreator: buyerWallet.address,
+        committer: buyerWallet.address, // buyer for seller-initiated offer
+        offerCreator: sellerWallet.address, // seller-initiated offer
         sellerId: seller.id,
         sellerOfferParams: {
           collectionIndex: 0,
           mutualizerAddress: "0x0000000000000000000000000000000000000000",
           royaltyInfo: { recipients: [], bps: [] }
         },
-        signature: buyerSignature,
         useDepositedFunds: true,
-        buyerId: "0",
-        creator: OfferCreator.Seller
-      } satisfies Parameters<typeof createOfferAndCommit>[2];
+        creator: OfferCreator.Seller, // seller-initiated offer
+        feeLimit: parseEther("0.1")
+        // buyerId will be set after creating the buyer (if any) in createOfferAndCommit() below
+      } satisfies Omit<Parameters<typeof createOfferAndCommit>[3], "buyerId">;
 
       // Create an offer with validity duration instead of period
       const createdOffer = await createOfferAndCommit(
-        sellerCoreSDK,
+        buyerCoreSDK, // buyer calls createOfferAndCommit
+        sellerCoreSDK, // seller signs the offer
         condition,
         args
+      );
+      expect(createdOffer).toBeTruthy();
+    });
+    test("create seller, then createOfferAndCommit for a buyer-initiated offer (seller committing)", async () => {
+      const { sellerCoreSDK, sellerWallet, buyerWallet, buyerCoreSDK } =
+        await initSellerAndBuyerSDKs(seedWallet);
+
+      const seller = await createSeller(sellerCoreSDK, sellerWallet.address);
+      expect(seller).toBeTruthy();
+
+      await checkDisputeResolver(sellerCoreSDK, seller.id, 1);
+
+      const condition = {
+        method: EvaluationMethod.None,
+        tokenType: TokenType.MultiToken,
+        tokenAddress: AddressZero,
+        gatingType: GatingType.PerAddress,
+        minTokenId: 0,
+        maxTokenId: 0,
+        threshold: 0,
+        maxCommits: 0
+      } satisfies ConditionStruct;
+
+      const args = {
+        committer: sellerWallet.address, // seller for buyer-initiated offer
+        offerCreator: buyerWallet.address, // buyer-initiated offer
+        sellerId: seller.id,
+        sellerOfferParams: {
+          collectionIndex: 0,
+          mutualizerAddress: "0x0000000000000000000000000000000000000000",
+          royaltyInfo: { recipients: [], bps: [] }
+        },
+        useDepositedFunds: true,
+        creator: OfferCreator.Buyer, // buyer-initiated offer
+        feeLimit: parseEther("0.1")
+        // buyerId will be set after creating the buyer (if any) in createOfferAndCommit() below
+      } satisfies Parameters<typeof createOfferAndCommit>[3];
+
+      // Create an offer with validity duration instead of period
+      const createdOffer = await createOfferAndCommit(
+        sellerCoreSDK, // seller calls createOfferAndCommit
+        buyerCoreSDK, // buyer signs the offer
+        condition,
+        args,
+        {
+          offerParams: {
+            quantityAvailable: 1 // must be 1 for buyer-initiated offer
+          }
+        }
       );
       expect(createdOffer).toBeTruthy();
     });

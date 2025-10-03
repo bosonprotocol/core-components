@@ -226,6 +226,31 @@ export class OfferMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   }
 
   /**
+   * Utility method to retrieve the created `buyerId` from logs after calling `createBuyer`
+   *
+   * @param logs - Logs to search in.
+   * @returns Created buyer id.
+   */
+  public getCreatedBuyerIdFromLogs(logs: Log[]): string | null {
+    const buyerId = getValueFromLogs<BigNumber>({
+      iface: accounts.iface.bosonAccountHandlerIface,
+      logs,
+      eventArgsKey: "buyerId",
+      eventName: "BuyerCreated"
+    });
+
+    return (
+      buyerId ||
+      getValueFromLogs<BigNumber>({
+        iface: orchestration.iface.bosonOrchestrationHandlerIface,
+        logs,
+        eventArgsKey: "buyerId",
+        eventName: "BuyerCreated"
+      })
+    )?.toString();
+  }
+
+  /**
    * Voids an existing offer by calling the `OfferHandlerFacet` contract.
    * This transaction only succeeds if the connected signer is the `assistant`.
    * @param offerId - ID of offer to void.

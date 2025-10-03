@@ -17,7 +17,8 @@ import {
   updateSeller,
   mintLensToken,
   sellerMetadata,
-  getSellerMetadataUri
+  getSellerMetadataUri,
+  createBuyer
 } from "./utils";
 import { AuthTokenType } from "../../packages/common";
 
@@ -865,6 +866,31 @@ describe("CoreSDK - accounts", () => {
       expect(after.length).toBeGreaterThan(before.length);
       exist = after.some((s) => s.id === seller.id);
       expect(exist).toBe(true);
+    });
+  });
+
+  describe("buyer", () => {
+    test("createBuyer", async () => {
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet3);
+
+      const buyer = await createBuyer(coreSDK, fundedWallet.address);
+      expect(buyer).toBeTruthy();
+      expect(buyer.wallet).toEqual(fundedWallet.address.toLowerCase());
+      expect(buyer.active).toBe(true);
+    });
+    test("createBuyer: check transaction data", async () => {
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet3);
+
+      const txData = await coreSDK.createBuyer(
+        {
+          wallet: fundedWallet.address
+        },
+        { returnTxInfo: true }
+      );
+
+      expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
     });
   });
 });
