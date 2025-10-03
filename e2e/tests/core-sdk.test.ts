@@ -1497,7 +1497,7 @@ describe("core-sdk", () => {
         await ensureCreatedSeller(sellerWallet);
 
         const createdOffer = await createOffer(sellerCoreSDK, {
-          resolutionPeriodDurationInMS: 1000 // TODO: test failed. Minimum should be changed in deployment script
+          resolutionPeriodDurationInMS: 1000
         });
         await depositFunds({
           coreSDK: sellerCoreSDK,
