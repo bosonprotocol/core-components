@@ -1683,6 +1683,128 @@ export enum ConditionalCommitAuthorizedEventLog_OrderBy {
   TYPE = "type"
 }
 
+export type DrFeeRequestedEvent = {
+  __typename?: "DRFeeRequestedEvent";
+  exchangeId: Scalars["BigInt"]["output"];
+  executedBy: Scalars["Bytes"]["output"];
+  feeAmount: Scalars["BigInt"]["output"];
+  id: Scalars["ID"]["output"];
+  logIndex: Scalars["BigInt"]["output"];
+  mutualizerAddress: Scalars["Bytes"]["output"];
+  timestamp: Scalars["BigInt"]["output"];
+  tokenAddress: Scalars["Bytes"]["output"];
+  txHash: Scalars["String"]["output"];
+};
+
+export type DrFeeRequestedEvent_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<DrFeeRequestedEvent_Filter>>>;
+  exchangeId?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  exchangeId_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  executedBy?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  executedBy_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  feeAmount?: InputMaybe<Scalars["BigInt"]["input"]>;
+  feeAmount_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  feeAmount_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  feeAmount_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  feeAmount_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  feeAmount_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  feeAmount_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  feeAmount_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  id?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_lte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  logIndex?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  logIndex_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  mutualizerAddress?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  mutualizerAddress_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  or?: InputMaybe<Array<InputMaybe<DrFeeRequestedEvent_Filter>>>;
+  timestamp?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  timestamp_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  tokenAddress?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  tokenAddress_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  txHash?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_contains?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_gt?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_gte?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  txHash_lt?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_lte?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  txHash_not_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export enum DrFeeRequestedEvent_OrderBy {
+  EXCHANGEID = "exchangeId",
+  EXECUTEDBY = "executedBy",
+  FEEAMOUNT = "feeAmount",
+  ID = "id",
+  LOGINDEX = "logIndex",
+  MUTUALIZERADDRESS = "mutualizerAddress",
+  TIMESTAMP = "timestamp",
+  TOKENADDRESS = "tokenAddress",
+  TXHASH = "txHash"
+}
+
 export type Dispute = {
   __typename?: "Dispute";
   buyer: Buyer;
@@ -2641,7 +2763,6 @@ export enum EventType {
   DISPUTE_DECIDED = "DISPUTE_DECIDED",
   DISPUTE_ESCALATED = "DISPUTE_ESCALATED",
   DISPUTE_EXPIRED = "DISPUTE_EXPIRED",
-  SELLER_COMMITTED = "SELLER_COMMITTED",
   /** DisputeHandler events */
   DISPUTE_RAISED = "DISPUTE_RAISED",
   DISPUTE_RESOLVED = "DISPUTE_RESOLVED",
@@ -2665,6 +2786,7 @@ export enum EventType {
   OFFER_EXTENDED = "OFFER_EXTENDED",
   OFFER_RANGE_RESERVED = "OFFER_RANGE_RESERVED",
   OFFER_VOIDED = "OFFER_VOIDED",
+  SELLER_COMMITTED = "SELLER_COMMITTED",
   /** AccountHandler events */
   SELLER_CREATED = "SELLER_CREATED",
   SELLER_UPDATED = "SELLER_UPDATED",
@@ -3384,6 +3506,7 @@ export enum FundsEntity_OrderBy {
 export type FundsEventLog = EventLog & {
   __typename?: "FundsEventLog";
   account: Account;
+  amount: Scalars["BigInt"]["output"];
   executedBy: Scalars["Bytes"]["output"];
   funds: FundsEntity;
   hash: Scalars["String"]["output"];
@@ -3416,6 +3539,14 @@ export type FundsEventLog_Filter = {
   account_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
   account_starts_with?: InputMaybe<Scalars["String"]["input"]>;
   account_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  amount?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  amount_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
   and?: InputMaybe<Array<InputMaybe<FundsEventLog_Filter>>>;
   executedBy?: InputMaybe<Scalars["Bytes"]["input"]>;
   executedBy_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
@@ -3494,6 +3625,7 @@ export type FundsEventLog_Filter = {
 export enum FundsEventLog_OrderBy {
   ACCOUNT = "account",
   ACCOUNT__ID = "account__id",
+  AMOUNT = "amount",
   EXECUTEDBY = "executedBy",
   FUNDS = "funds",
   FUNDS__ACCOUNTID = "funds__accountId",
@@ -10533,6 +10665,8 @@ export type Query = {
   disputeResolverFees: Array<DisputeResolverFee>;
   disputeResolvers: Array<DisputeResolver>;
   disputes: Array<Dispute>;
+  drfeeRequestedEvent?: Maybe<DrFeeRequestedEvent>;
+  drfeeRequestedEvents: Array<DrFeeRequestedEvent>;
   eventLog?: Maybe<EventLog>;
   eventLogs: Array<EventLog>;
   exchange?: Maybe<Exchange>;
@@ -10850,6 +10984,22 @@ export type QueryDisputesArgs = {
   skip?: InputMaybe<Scalars["Int"]["input"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Dispute_Filter>;
+};
+
+export type QueryDrfeeRequestedEventArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryDrfeeRequestedEventsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<DrFeeRequestedEvent_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<DrFeeRequestedEvent_Filter>;
 };
 
 export type QueryEventLogArgs = {
@@ -13186,6 +13336,8 @@ export type Subscription = {
   disputeResolverFees: Array<DisputeResolverFee>;
   disputeResolvers: Array<DisputeResolver>;
   disputes: Array<Dispute>;
+  drfeeRequestedEvent?: Maybe<DrFeeRequestedEvent>;
+  drfeeRequestedEvents: Array<DrFeeRequestedEvent>;
   eventLog?: Maybe<EventLog>;
   eventLogs: Array<EventLog>;
   exchange?: Maybe<Exchange>;
@@ -13503,6 +13655,22 @@ export type SubscriptionDisputesArgs = {
   skip?: InputMaybe<Scalars["Int"]["input"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Dispute_Filter>;
+};
+
+export type SubscriptionDrfeeRequestedEventArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionDrfeeRequestedEventsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<DrFeeRequestedEvent_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<DrFeeRequestedEvent_Filter>;
 };
 
 export type SubscriptionEventLogArgs = {
