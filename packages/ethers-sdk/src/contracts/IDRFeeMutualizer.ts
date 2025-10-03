@@ -9,7 +9,6 @@ import {
   CallOverrides,
   ContractTransaction,
   Overrides,
-  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -21,12 +20,16 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface IDRFeeMutualizerInterface extends utils.Interface {
   contractName: "IDRFeeMutualizer";
   functions: {
+    "finalizeExchange(uint256,uint256)": FunctionFragment;
     "isSellerCovered(uint256,uint256,address,uint256)": FunctionFragment;
     "requestDRFee(uint256,uint256,address,uint256,uint256)": FunctionFragment;
-    "returnDRFee(uint256,uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "finalizeExchange",
+    values: [BigNumberish, BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "isSellerCovered",
     values: [BigNumberish, BigNumberish, string, BigNumberish]
@@ -36,24 +39,20 @@ export interface IDRFeeMutualizerInterface extends utils.Interface {
     values: [BigNumberish, BigNumberish, string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "returnDRFee",
-    values: [BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "finalizeExchange",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "isSellerCovered",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "requestDRFee",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "returnDRFee",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -92,6 +91,12 @@ export interface IDRFeeMutualizer extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    finalizeExchange(
+      _exchangeId: BigNumberish,
+      _feeAmount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     isSellerCovered(
       _sellerId: BigNumberish,
       _feeAmount: BigNumberish,
@@ -109,17 +114,17 @@ export interface IDRFeeMutualizer extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    returnDRFee(
-      _exchangeId: BigNumberish,
-      _feeAmount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
+
+  finalizeExchange(
+    _exchangeId: BigNumberish,
+    _feeAmount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   isSellerCovered(
     _sellerId: BigNumberish,
@@ -138,18 +143,18 @@ export interface IDRFeeMutualizer extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  returnDRFee(
-    _exchangeId: BigNumberish,
-    _feeAmount: BigNumberish,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   supportsInterface(
     interfaceId: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   callStatic: {
+    finalizeExchange(
+      _exchangeId: BigNumberish,
+      _feeAmount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     isSellerCovered(
       _sellerId: BigNumberish,
       _feeAmount: BigNumberish,
@@ -166,12 +171,6 @@ export interface IDRFeeMutualizer extends BaseContract {
       _disputeResolverId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
-
-    returnDRFee(
-      _exchangeId: BigNumberish,
-      _feeAmount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     supportsInterface(
       interfaceId: BytesLike,
@@ -182,6 +181,12 @@ export interface IDRFeeMutualizer extends BaseContract {
   filters: {};
 
   estimateGas: {
+    finalizeExchange(
+      _exchangeId: BigNumberish,
+      _feeAmount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     isSellerCovered(
       _sellerId: BigNumberish,
       _feeAmount: BigNumberish,
@@ -197,12 +202,6 @@ export interface IDRFeeMutualizer extends BaseContract {
       _exchangeId: BigNumberish,
       _disputeResolverId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    returnDRFee(
-      _exchangeId: BigNumberish,
-      _feeAmount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     supportsInterface(
@@ -212,6 +211,12 @@ export interface IDRFeeMutualizer extends BaseContract {
   };
 
   populateTransaction: {
+    finalizeExchange(
+      _exchangeId: BigNumberish,
+      _feeAmount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     isSellerCovered(
       _sellerId: BigNumberish,
       _feeAmount: BigNumberish,
@@ -227,12 +232,6 @@ export interface IDRFeeMutualizer extends BaseContract {
       _exchangeId: BigNumberish,
       _disputeResolverId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    returnDRFee(
-      _exchangeId: BigNumberish,
-      _feeAmount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     supportsInterface(

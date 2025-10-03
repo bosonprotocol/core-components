@@ -20,7 +20,7 @@ import { saveFundsEventLog } from "../entities/event-log";
 
 export function handleFundsDepositedEvent(event: FundsDeposited): void {
   handleIncreasingFundsEvent(
-    event.params.sellerId,
+    event.params.entityId,
     event.params.amount,
     event.params.tokenAddress
   );
@@ -32,8 +32,8 @@ export function handleFundsDepositedEvent(event: FundsDeposited): void {
     event.block.timestamp,
     event.params.amount,
     event.params.executedBy,
-    event.params.sellerId.toString(),
-    getFundsEntityId(event.params.sellerId, event.params.tokenAddress)
+    event.params.entityId.toString(),
+    getFundsEntityId(event.params.entityId, event.params.tokenAddress)
   );
 }
 

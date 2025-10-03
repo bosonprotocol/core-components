@@ -183,6 +183,7 @@ export interface IBosonDisputeHandlerInterface extends utils.Interface {
 
   events: {
     "DRFeeRequested(uint256,address,uint256,address,address)": EventFragment;
+    "DRFeeReturnFailed(uint256,address,uint256,address,address)": EventFragment;
     "DRFeeReturned(uint256,address,uint256,address,address)": EventFragment;
     "DisputeDecided(uint256,uint256,address)": EventFragment;
     "DisputeEscalated(uint256,uint256,address)": EventFragment;
@@ -193,6 +194,7 @@ export interface IBosonDisputeHandlerInterface extends utils.Interface {
     "DisputeTimeoutExtended(uint256,uint256,address)": EventFragment;
     "EscalatedDisputeExpired(uint256,address)": EventFragment;
     "EscalatedDisputeRefused(uint256,address)": EventFragment;
+    "FundsDeposited(uint256,address,address,uint256)": EventFragment;
     "FundsEncumbered(uint256,address,uint256,address)": EventFragment;
     "FundsReleased(uint256,uint256,address,uint256,address)": EventFragment;
     "FundsWithdrawn(uint256,address,address,uint256,address)": EventFragment;
@@ -200,6 +202,7 @@ export interface IBosonDisputeHandlerInterface extends utils.Interface {
   };
 
   getEvent(nameOrSignatureOrTopic: "DRFeeRequested"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DRFeeReturnFailed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DRFeeReturned"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisputeDecided"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisputeEscalated"): EventFragment;
@@ -210,6 +213,7 @@ export interface IBosonDisputeHandlerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "DisputeTimeoutExtended"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "EscalatedDisputeExpired"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "EscalatedDisputeRefused"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "FundsDeposited"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsEncumbered"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsReleased"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsWithdrawn"): EventFragment;
@@ -228,6 +232,20 @@ export type DRFeeRequestedEvent = TypedEvent<
 >;
 
 export type DRFeeRequestedEventFilter = TypedEventFilter<DRFeeRequestedEvent>;
+
+export type DRFeeReturnFailedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string, string],
+  {
+    exchangeId: BigNumber;
+    tokenAddress: string;
+    returnAmount: BigNumber;
+    mutualizerAddress: string;
+    executedBy: string;
+  }
+>;
+
+export type DRFeeReturnFailedEventFilter =
+  TypedEventFilter<DRFeeReturnFailedEvent>;
 
 export type DRFeeReturnedEvent = TypedEvent<
   [BigNumber, string, BigNumber, string, string],
@@ -314,6 +332,18 @@ export type EscalatedDisputeRefusedEvent = TypedEvent<
 
 export type EscalatedDisputeRefusedEventFilter =
   TypedEventFilter<EscalatedDisputeRefusedEvent>;
+
+export type FundsDepositedEvent = TypedEvent<
+  [BigNumber, string, string, BigNumber],
+  {
+    entityId: BigNumber;
+    executedBy: string;
+    tokenAddress: string;
+    amount: BigNumber;
+  }
+>;
+
+export type FundsDepositedEventFilter = TypedEventFilter<FundsDepositedEvent>;
 
 export type FundsEncumberedEvent = TypedEvent<
   [BigNumber, string, BigNumber, string],
@@ -665,18 +695,33 @@ export interface IBosonDisputeHandler extends BaseContract {
       executedBy?: null
     ): DRFeeRequestedEventFilter;
 
+    "DRFeeReturnFailed(uint256,address,uint256,address,address)"(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeReturnFailedEventFilter;
+    DRFeeReturnFailed(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeReturnFailedEventFilter;
+
     "DRFeeReturned(uint256,address,uint256,address,address)"(
       exchangeId?: BigNumberish | null,
       tokenAddress?: string | null,
       returnAmount?: null,
-      mutualizerAddress?: null,
+      mutualizerAddress?: string | null,
       executedBy?: null
     ): DRFeeReturnedEventFilter;
     DRFeeReturned(
       exchangeId?: BigNumberish | null,
       tokenAddress?: string | null,
       returnAmount?: null,
-      mutualizerAddress?: null,
+      mutualizerAddress?: string | null,
       executedBy?: null
     ): DRFeeReturnedEventFilter;
 
@@ -772,6 +817,19 @@ export interface IBosonDisputeHandler extends BaseContract {
       exchangeId?: BigNumberish | null,
       executedBy?: string | null
     ): EscalatedDisputeRefusedEventFilter;
+
+    "FundsDeposited(uint256,address,address,uint256)"(
+      entityId?: BigNumberish | null,
+      executedBy?: string | null,
+      tokenAddress?: string | null,
+      amount?: null
+    ): FundsDepositedEventFilter;
+    FundsDeposited(
+      entityId?: BigNumberish | null,
+      executedBy?: string | null,
+      tokenAddress?: string | null,
+      amount?: null
+    ): FundsDepositedEventFilter;
 
     "FundsEncumbered(uint256,address,uint256,address)"(
       entityId?: BigNumberish | null,

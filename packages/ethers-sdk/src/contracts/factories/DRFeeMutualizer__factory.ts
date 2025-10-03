@@ -22,6 +22,11 @@ const _abi = [
         name: "_forwarder",
         type: "address",
       },
+      {
+        internalType: "address",
+        name: "_wNative",
+        type: "address",
+      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -73,7 +78,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "InsufficientValueReceived",
+    name: "InvalidAddress",
     type: "error",
   },
   {
@@ -114,11 +119,6 @@ const _abi = [
   {
     inputs: [],
     name: "MaxTotalMustBeGreaterThanOrEqualToMaxPerTx",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "NativeNotAllowed",
     type: "error",
   },
   {
@@ -270,6 +270,19 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "bool",
+        name: "restricted",
+        type: "bool",
+      },
+    ],
+    name: "DepositRestrictionApplied",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "address",
         name: "depositor",
@@ -388,6 +401,24 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_exchangeId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_returnedFeeAmount",
+        type: "uint256",
+      },
+    ],
+    name: "finalizeExchange",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -716,24 +747,6 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_exchangeId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_returnedFeeAmount",
-        type: "uint256",
-      },
-    ],
-    name: "returnDRFee",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
         name: "",
         type: "uint256",
       },
@@ -839,6 +852,10 @@ const _abi = [
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
+  },
+  {
+    stateMutability: "payable",
+    type: "receive",
   },
 ];
 

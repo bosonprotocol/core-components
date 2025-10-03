@@ -63,6 +63,7 @@ export interface DRFeeMutualizerInterface extends utils.Interface {
     "deposit(address,uint256)": FunctionFragment;
     "depositRestrictedToOwner()": FunctionFragment;
     "feeInfoByExchange(uint256)": FunctionFragment;
+    "finalizeExchange(uint256,uint256)": FunctionFragment;
     "getAgreement(uint256)": FunctionFragment;
     "getAgreementId(uint256,address,uint256)": FunctionFragment;
     "getPoolBalance(address)": FunctionFragment;
@@ -74,7 +75,6 @@ export interface DRFeeMutualizerInterface extends utils.Interface {
     "poolBalances(address)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "requestDRFee(uint256,uint256,address,uint256,uint256)": FunctionFragment;
-    "returnDRFee(uint256,uint256)": FunctionFragment;
     "sellerToTokenToDisputeResolverToAgreement(uint256,address,uint256)": FunctionFragment;
     "setDepositRestriction(bool)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
@@ -94,6 +94,10 @@ export interface DRFeeMutualizerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "feeInfoByExchange",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "finalizeExchange",
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getAgreement",
@@ -146,10 +150,6 @@ export interface DRFeeMutualizerInterface extends utils.Interface {
     values: [BigNumberish, BigNumberish, string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "returnDRFee",
-    values: [BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "sellerToTokenToDisputeResolverToAgreement",
     values: [BigNumberish, string, BigNumberish]
   ): string;
@@ -181,6 +181,10 @@ export interface DRFeeMutualizerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "feeInfoByExchange",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "finalizeExchange",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -222,10 +226,6 @@ export interface DRFeeMutualizerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "returnDRFee",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "sellerToTokenToDisputeResolverToAgreement",
     data: BytesLike
   ): Result;
@@ -253,6 +253,7 @@ export interface DRFeeMutualizerInterface extends utils.Interface {
     "AgreementVoided(uint256,bool,uint256)": EventFragment;
     "DRFeeProvided(uint256,uint256,uint256)": EventFragment;
     "DRFeeReturned(uint256,uint256,uint256)": EventFragment;
+    "DepositRestrictionApplied(bool)": EventFragment;
     "FundsDeposited(address,address,uint256)": EventFragment;
     "FundsWithdrawn(address,address,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
@@ -263,6 +264,7 @@ export interface DRFeeMutualizerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "AgreementVoided"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DRFeeProvided"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DRFeeReturned"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DepositRestrictionApplied"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsDeposited"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsWithdrawn"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
@@ -317,6 +319,14 @@ export type DRFeeReturnedEvent = TypedEvent<
 >;
 
 export type DRFeeReturnedEventFilter = TypedEventFilter<DRFeeReturnedEvent>;
+
+export type DepositRestrictionAppliedEvent = TypedEvent<
+  [boolean],
+  { restricted: boolean }
+>;
+
+export type DepositRestrictionAppliedEventFilter =
+  TypedEventFilter<DepositRestrictionAppliedEvent>;
 
 export type FundsDepositedEvent = TypedEvent<
   [string, string, BigNumber],
@@ -380,6 +390,12 @@ export interface DRFeeMutualizer extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string, BigNumber] & { token: string; amount: BigNumber }>;
+
+    finalizeExchange(
+      _exchangeId: BigNumberish,
+      _returnedFeeAmount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     getAgreement(
       _agreementId: BigNumberish,
@@ -446,12 +462,6 @@ export interface DRFeeMutualizer extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    returnDRFee(
-      _exchangeId: BigNumberish,
-      _returnedFeeAmount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     sellerToTokenToDisputeResolverToAgreement(
       arg0: BigNumberish,
       arg1: string,
@@ -499,6 +509,12 @@ export interface DRFeeMutualizer extends BaseContract {
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<[string, BigNumber] & { token: string; amount: BigNumber }>;
+
+  finalizeExchange(
+    _exchangeId: BigNumberish,
+    _returnedFeeAmount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   getAgreement(
     _agreementId: BigNumberish,
@@ -565,12 +581,6 @@ export interface DRFeeMutualizer extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  returnDRFee(
-    _exchangeId: BigNumberish,
-    _returnedFeeAmount: BigNumberish,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   sellerToTokenToDisputeResolverToAgreement(
     arg0: BigNumberish,
     arg1: string,
@@ -618,6 +628,12 @@ export interface DRFeeMutualizer extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string, BigNumber] & { token: string; amount: BigNumber }>;
+
+    finalizeExchange(
+      _exchangeId: BigNumberish,
+      _returnedFeeAmount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     getAgreement(
       _agreementId: BigNumberish,
@@ -681,12 +697,6 @@ export interface DRFeeMutualizer extends BaseContract {
       _disputeResolverId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
-
-    returnDRFee(
-      _exchangeId: BigNumberish,
-      _returnedFeeAmount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     sellerToTokenToDisputeResolverToAgreement(
       arg0: BigNumberish,
@@ -779,6 +789,13 @@ export interface DRFeeMutualizer extends BaseContract {
       returnedAmount?: null
     ): DRFeeReturnedEventFilter;
 
+    "DepositRestrictionApplied(bool)"(
+      restricted?: null
+    ): DepositRestrictionAppliedEventFilter;
+    DepositRestrictionApplied(
+      restricted?: null
+    ): DepositRestrictionAppliedEventFilter;
+
     "FundsDeposited(address,address,uint256)"(
       depositor?: string | null,
       tokenAddress?: string | null,
@@ -823,6 +840,12 @@ export interface DRFeeMutualizer extends BaseContract {
     feeInfoByExchange(
       arg0: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    finalizeExchange(
+      _exchangeId: BigNumberish,
+      _returnedFeeAmount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     getAgreement(
@@ -890,12 +913,6 @@ export interface DRFeeMutualizer extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    returnDRFee(
-      _exchangeId: BigNumberish,
-      _returnedFeeAmount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     sellerToTokenToDisputeResolverToAgreement(
       arg0: BigNumberish,
       arg1: string,
@@ -945,6 +962,12 @@ export interface DRFeeMutualizer extends BaseContract {
     feeInfoByExchange(
       arg0: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    finalizeExchange(
+      _exchangeId: BigNumberish,
+      _returnedFeeAmount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     getAgreement(
@@ -1013,12 +1036,6 @@ export interface DRFeeMutualizer extends BaseContract {
       _exchangeId: BigNumberish,
       _disputeResolverId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    returnDRFee(
-      _exchangeId: BigNumberish,
-      _returnedFeeAmount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     sellerToTokenToDisputeResolverToAgreement(

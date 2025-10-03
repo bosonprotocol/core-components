@@ -388,8 +388,10 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     "BuyerInitiatedOfferSetSellerParams(uint256,uint256,tuple,address)": EventFragment;
     "ConditionalCommitAuthorized(uint256,uint8,address,uint256,uint256,uint256)": EventFragment;
     "DRFeeRequested(uint256,address,uint256,address,address)": EventFragment;
+    "DRFeeReturnFailed(uint256,address,uint256,address,address)": EventFragment;
     "DRFeeReturned(uint256,address,uint256,address,address)": EventFragment;
     "ExchangeCompleted(uint256,uint256,uint256,address)": EventFragment;
+    "FundsDeposited(uint256,address,address,uint256)": EventFragment;
     "FundsEncumbered(uint256,address,uint256,address)": EventFragment;
     "FundsReleased(uint256,uint256,address,uint256,address)": EventFragment;
     "FundsWithdrawn(uint256,address,address,uint256,address)": EventFragment;
@@ -416,8 +418,10 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     nameOrSignatureOrTopic: "ConditionalCommitAuthorized"
   ): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DRFeeRequested"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DRFeeReturnFailed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DRFeeReturned"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExchangeCompleted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "FundsDeposited"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsEncumbered"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsReleased"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsWithdrawn"): EventFragment;
@@ -498,6 +502,20 @@ export type DRFeeRequestedEvent = TypedEvent<
 
 export type DRFeeRequestedEventFilter = TypedEventFilter<DRFeeRequestedEvent>;
 
+export type DRFeeReturnFailedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string, string],
+  {
+    exchangeId: BigNumber;
+    tokenAddress: string;
+    returnAmount: BigNumber;
+    mutualizerAddress: string;
+    executedBy: string;
+  }
+>;
+
+export type DRFeeReturnFailedEventFilter =
+  TypedEventFilter<DRFeeReturnFailedEvent>;
+
 export type DRFeeReturnedEvent = TypedEvent<
   [BigNumber, string, BigNumber, string, string],
   {
@@ -523,6 +541,18 @@ export type ExchangeCompletedEvent = TypedEvent<
 
 export type ExchangeCompletedEventFilter =
   TypedEventFilter<ExchangeCompletedEvent>;
+
+export type FundsDepositedEvent = TypedEvent<
+  [BigNumber, string, string, BigNumber],
+  {
+    entityId: BigNumber;
+    executedBy: string;
+    tokenAddress: string;
+    amount: BigNumber;
+  }
+>;
+
+export type FundsDepositedEventFilter = TypedEventFilter<FundsDepositedEvent>;
 
 export type FundsEncumberedEvent = TypedEvent<
   [BigNumber, string, BigNumber, string],
@@ -1072,18 +1102,33 @@ export interface IBosonExchangeHandler extends BaseContract {
       executedBy?: null
     ): DRFeeRequestedEventFilter;
 
+    "DRFeeReturnFailed(uint256,address,uint256,address,address)"(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeReturnFailedEventFilter;
+    DRFeeReturnFailed(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeReturnFailedEventFilter;
+
     "DRFeeReturned(uint256,address,uint256,address,address)"(
       exchangeId?: BigNumberish | null,
       tokenAddress?: string | null,
       returnAmount?: null,
-      mutualizerAddress?: null,
+      mutualizerAddress?: string | null,
       executedBy?: null
     ): DRFeeReturnedEventFilter;
     DRFeeReturned(
       exchangeId?: BigNumberish | null,
       tokenAddress?: string | null,
       returnAmount?: null,
-      mutualizerAddress?: null,
+      mutualizerAddress?: string | null,
       executedBy?: null
     ): DRFeeReturnedEventFilter;
 
@@ -1099,6 +1144,19 @@ export interface IBosonExchangeHandler extends BaseContract {
       exchangeId?: BigNumberish | null,
       executedBy?: null
     ): ExchangeCompletedEventFilter;
+
+    "FundsDeposited(uint256,address,address,uint256)"(
+      entityId?: BigNumberish | null,
+      executedBy?: string | null,
+      tokenAddress?: string | null,
+      amount?: null
+    ): FundsDepositedEventFilter;
+    FundsDeposited(
+      entityId?: BigNumberish | null,
+      executedBy?: string | null,
+      tokenAddress?: string | null,
+      amount?: null
+    ): FundsDepositedEventFilter;
 
     "FundsEncumbered(uint256,address,uint256,address)"(
       entityId?: BigNumberish | null,

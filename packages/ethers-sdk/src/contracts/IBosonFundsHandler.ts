@@ -104,6 +104,7 @@ export interface IBosonFundsHandlerInterface extends utils.Interface {
 
   events: {
     "DRFeeRequested(uint256,address,uint256,address,address)": EventFragment;
+    "DRFeeReturnFailed(uint256,address,uint256,address,address)": EventFragment;
     "DRFeeReturned(uint256,address,uint256,address,address)": EventFragment;
     "FundsDeposited(uint256,address,address,uint256)": EventFragment;
     "FundsEncumbered(uint256,address,uint256,address)": EventFragment;
@@ -113,6 +114,7 @@ export interface IBosonFundsHandlerInterface extends utils.Interface {
   };
 
   getEvent(nameOrSignatureOrTopic: "DRFeeRequested"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DRFeeReturnFailed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DRFeeReturned"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsDeposited"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsEncumbered"): EventFragment;
@@ -134,6 +136,20 @@ export type DRFeeRequestedEvent = TypedEvent<
 
 export type DRFeeRequestedEventFilter = TypedEventFilter<DRFeeRequestedEvent>;
 
+export type DRFeeReturnFailedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string, string],
+  {
+    exchangeId: BigNumber;
+    tokenAddress: string;
+    returnAmount: BigNumber;
+    mutualizerAddress: string;
+    executedBy: string;
+  }
+>;
+
+export type DRFeeReturnFailedEventFilter =
+  TypedEventFilter<DRFeeReturnFailedEvent>;
+
 export type DRFeeReturnedEvent = TypedEvent<
   [BigNumber, string, BigNumber, string, string],
   {
@@ -150,7 +166,7 @@ export type DRFeeReturnedEventFilter = TypedEventFilter<DRFeeReturnedEvent>;
 export type FundsDepositedEvent = TypedEvent<
   [BigNumber, string, string, BigNumber],
   {
-    sellerId: BigNumber;
+    entityId: BigNumber;
     executedBy: string;
     tokenAddress: string;
     amount: BigNumber;
@@ -394,29 +410,44 @@ export interface IBosonFundsHandler extends BaseContract {
       executedBy?: null
     ): DRFeeRequestedEventFilter;
 
+    "DRFeeReturnFailed(uint256,address,uint256,address,address)"(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeReturnFailedEventFilter;
+    DRFeeReturnFailed(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeReturnFailedEventFilter;
+
     "DRFeeReturned(uint256,address,uint256,address,address)"(
       exchangeId?: BigNumberish | null,
       tokenAddress?: string | null,
       returnAmount?: null,
-      mutualizerAddress?: null,
+      mutualizerAddress?: string | null,
       executedBy?: null
     ): DRFeeReturnedEventFilter;
     DRFeeReturned(
       exchangeId?: BigNumberish | null,
       tokenAddress?: string | null,
       returnAmount?: null,
-      mutualizerAddress?: null,
+      mutualizerAddress?: string | null,
       executedBy?: null
     ): DRFeeReturnedEventFilter;
 
     "FundsDeposited(uint256,address,address,uint256)"(
-      sellerId?: BigNumberish | null,
+      entityId?: BigNumberish | null,
       executedBy?: string | null,
       tokenAddress?: string | null,
       amount?: null
     ): FundsDepositedEventFilter;
     FundsDeposited(
-      sellerId?: BigNumberish | null,
+      entityId?: BigNumberish | null,
       executedBy?: string | null,
       tokenAddress?: string | null,
       amount?: null

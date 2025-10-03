@@ -25,6 +25,7 @@ const { deploySeaport } = require("./deploy-seaport");
 const { ZeroAddress } = require("ethers");
 const { deployWrappers } = require("./deploy-wrappers.js");
 const { deployDRFeeMutualizer } = require("./deploy-dRFeeMutualizer.js");
+const { deployWeth } = require("./deploy-weth.js");
 
 async function main() {
   const { addresses } = await deployAndMintMockNFTAuthTokens();
@@ -120,10 +121,16 @@ async function main() {
   console.log(
     `✅ OpenSeaWrapperFactory Contract has been deployed at ${await openSeaWrapperFactory.getAddress()}`
   );
+  // Deploy WETH contract
+  const weth = await deployWeth();
+  const wethAddress = await weth.getAddress();
+  console.log(`✅ WETH Contract has been deployed at ${wethAddress}`);
+  process.env.WETH_ADDRESS = wethAddress;
   // Deploy DRFeeMutualizer
   const dRFeeMutualizer = await deployDRFeeMutualizer(
     protocolDiamond,
-    process.env.FORWARDER_ADDRESS
+    process.env.FORWARDER_ADDRESS,
+    wethAddress
   );
   const dRFeeMutualizerAddress = await dRFeeMutualizer.getAddress();
   console.log(
