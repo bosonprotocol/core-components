@@ -4,7 +4,7 @@ import {
   DisputeState,
   ExchangeFieldsFragment
 } from "./../../packages/core-sdk/src/subgraph";
-import { utils, constants, BigNumber, BigNumberish } from "ethers";
+import { utils, constants, BigNumber, BigNumberish, Wallet } from "ethers";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import {
@@ -53,6 +53,7 @@ import {
 } from "../../packages/common";
 import { ConditionStruct } from "@bosonprotocol/common/src";
 import { AddressZero } from "@ethersproject/constants";
+import { subgraph } from "@bosonprotocol/core-sdk";
 
 const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
@@ -152,98 +153,154 @@ describe("core-sdk", () => {
         BigNumber.from(createdOffer.voucherRedeemableUntilDate).eq(0)
       ).toBe(true);
     });
-    test("create seller, then createOfferAndCommit for a seller-initiated offer (buyer committing)", async () => {
-      const { sellerCoreSDK, sellerWallet, buyerWallet, buyerCoreSDK } =
-        await initSellerAndBuyerSDKs(seedWallet);
+    describe("create offer and commit", () => {
+      let sellerCoreSDK: CoreSDK;
+      let sellerWallet: Wallet;
+      let buyerWallet: Wallet;
+      let buyerCoreSDK: CoreSDK;
+      let condition: ConditionStruct;
+      let sellerId: string;
 
-      const seller = await createSeller(sellerCoreSDK, sellerWallet.address);
-      expect(seller).toBeTruthy();
+      beforeEach(async () => {
+        ({ sellerCoreSDK, sellerWallet, buyerWallet, buyerCoreSDK } =
+          await initSellerAndBuyerSDKs(seedWallet));
 
-      await checkDisputeResolver(sellerCoreSDK, seller.id, 1);
+        const seller = await createSeller(sellerCoreSDK, sellerWallet.address);
+        expect(seller).toBeTruthy();
+        sellerId = seller.id;
 
-      const condition = {
-        method: EvaluationMethod.None,
-        tokenType: TokenType.MultiToken,
-        tokenAddress: AddressZero,
-        gatingType: GatingType.PerAddress,
-        minTokenId: 0,
-        maxTokenId: 0,
-        threshold: 0,
-        maxCommits: 0
-      } satisfies ConditionStruct;
+        await checkDisputeResolver(sellerCoreSDK, sellerId, 1);
 
-      const args = {
-        committer: buyerWallet.address, // buyer for seller-initiated offer
-        offerCreator: sellerWallet.address, // seller-initiated offer
-        sellerId: seller.id,
-        sellerOfferParams: {
-          collectionIndex: 0,
-          mutualizerAddress: "0x0000000000000000000000000000000000000000",
-          royaltyInfo: { recipients: [], bps: [] }
-        },
-        useDepositedFunds: true,
-        creator: OfferCreator.Seller, // seller-initiated offer
-        feeLimit: parseEther("0.1")
-        // buyerId will be set after creating the buyer (if any) in createOfferAndCommit() below
-      } satisfies Omit<Parameters<typeof createOfferAndCommit>[3], "buyerId">;
+        condition = {
+          method: EvaluationMethod.None,
+          tokenType: TokenType.MultiToken,
+          tokenAddress: AddressZero,
+          gatingType: GatingType.PerAddress,
+          minTokenId: 0,
+          maxTokenId: 0,
+          threshold: 0,
+          maxCommits: 0
+        } satisfies ConditionStruct;
+      });
 
-      // Create an offer with validity duration instead of period
-      const createdOffer = await createOfferAndCommit(
-        buyerCoreSDK, // buyer calls createOfferAndCommit
-        sellerCoreSDK, // seller signs the offer
-        condition,
-        args
-      );
-      expect(createdOffer).toBeTruthy();
-    });
-    test("create seller, then createOfferAndCommit for a buyer-initiated offer (seller committing)", async () => {
-      const { sellerCoreSDK, sellerWallet, buyerWallet, buyerCoreSDK } =
-        await initSellerAndBuyerSDKs(seedWallet);
+      describe("seller-initiated offer", () => {
+        let createdOffer: subgraph.OfferFieldsFragment;
+        let createdExchange: subgraph.ExchangeFieldsFragment;
+        beforeEach(async () => {
+          const args = {
+            committer: buyerWallet.address, // buyer for seller-initiated offer
+            offerCreator: sellerWallet.address, // seller-initiated offer
+            sellerId,
+            sellerOfferParams: {
+              collectionIndex: 0,
+              mutualizerAddress: "0x0000000000000000000000000000000000000000",
+              royaltyInfo: { recipients: [], bps: [] }
+            },
+            useDepositedFunds: true,
+            creator: OfferCreator.Seller, // seller-initiated offer
+            feeLimit: parseEther("0.1")
+            // buyerId will be set after creating the buyer (if any) in createOfferAndCommit() below
+          } satisfies Omit<
+            Parameters<typeof createOfferAndCommit>[3],
+            "buyerId"
+          >;
 
-      const seller = await createSeller(sellerCoreSDK, sellerWallet.address);
-      expect(seller).toBeTruthy();
+          ({ offer: createdOffer, exchange: createdExchange } =
+            await createOfferAndCommit(
+              buyerCoreSDK, // buyer calls createOfferAndCommit
+              sellerCoreSDK, // seller signs the offer
+              condition,
+              args
+            ));
+          expect(createdOffer).toBeTruthy();
+        });
+        test("buyer committed", async () => {
+          expect(createdOffer.voided).toBeFalsy();
+          expect(createdOffer.seller.id).toBe(sellerId);
+          expect(Number(createdOffer.quantityInitial)).toBeGreaterThan(1);
+          expect(Number(createdOffer.quantityAvailable)).toEqual(
+            Number(createdOffer.quantityInitial) - 1
+          );
+          expect(createdExchange).toBeTruthy();
+          expect(createdExchange.state).toBe(ExchangeState.COMMITTED);
+          expect(createdExchange.buyer).toBeTruthy();
+          expect(createdExchange.buyer?.wallet).toEqual(
+            buyerWallet.address.toLowerCase()
+          );
+        });
+        test("another buyer can commit to the same offer", async () => {
+          const { coreSDK: anotherBuyerSdk } =
+            await initCoreSDKWithFundedWallet(seedWallet);
+          await (
+            await sellerCoreSDK.depositFunds(
+              sellerId,
+              createdOffer.sellerDeposit,
+              createdOffer.exchangeToken.address
+            )
+          ).wait();
 
-      await checkDisputeResolver(sellerCoreSDK, seller.id, 1);
+          const anotherExchange = await commitToOffer({
+            buyerCoreSDK: anotherBuyerSdk,
+            sellerCoreSDK,
+            offerId: createdOffer.id
+          });
+          expect(anotherExchange).toBeTruthy();
+        });
+        test("seller can void the offer (calling voidOffer)", async () => {
+          const txResponse = await sellerCoreSDK.voidOffer(createdOffer.id);
+          await sellerCoreSDK.waitForGraphNodeIndexing(txResponse);
+          const offer = await sellerCoreSDK.getOfferById(createdOffer.id);
+          expect(offer.voided).toBe(true);
+        });
+      });
 
-      const condition = {
-        method: EvaluationMethod.None,
-        tokenType: TokenType.MultiToken,
-        tokenAddress: AddressZero,
-        gatingType: GatingType.PerAddress,
-        minTokenId: 0,
-        maxTokenId: 0,
-        threshold: 0,
-        maxCommits: 0
-      } satisfies ConditionStruct;
+      describe("buyer-initiated offer", () => {
+        let createdOffer: subgraph.OfferFieldsFragment;
+        let createdExchange: subgraph.ExchangeFieldsFragment;
+        beforeEach(async () => {
+          const args = {
+            committer: sellerWallet.address, // seller for buyer-initiated offer
+            offerCreator: buyerWallet.address, // buyer-initiated offer
+            sellerId: sellerId,
+            sellerOfferParams: {
+              collectionIndex: 0,
+              mutualizerAddress: "0x0000000000000000000000000000000000000000",
+              royaltyInfo: { recipients: [], bps: [] }
+            },
+            useDepositedFunds: true,
+            creator: OfferCreator.Buyer, // buyer-initiated offer
+            feeLimit: parseEther("0.1")
+            // buyerId will be set after creating the buyer (if any) in createOfferAndCommit() below
+          } satisfies Parameters<typeof createOfferAndCommit>[3];
 
-      const args = {
-        committer: sellerWallet.address, // seller for buyer-initiated offer
-        offerCreator: buyerWallet.address, // buyer-initiated offer
-        sellerId: seller.id,
-        sellerOfferParams: {
-          collectionIndex: 0,
-          mutualizerAddress: "0x0000000000000000000000000000000000000000",
-          royaltyInfo: { recipients: [], bps: [] }
-        },
-        useDepositedFunds: true,
-        creator: OfferCreator.Buyer, // buyer-initiated offer
-        feeLimit: parseEther("0.1")
-        // buyerId will be set after creating the buyer (if any) in createOfferAndCommit() below
-      } satisfies Parameters<typeof createOfferAndCommit>[3];
-
-      // Create an offer with validity duration instead of period
-      const createdOffer = await createOfferAndCommit(
-        sellerCoreSDK, // seller calls createOfferAndCommit
-        buyerCoreSDK, // buyer signs the offer
-        condition,
-        args,
-        {
-          offerParams: {
-            quantityAvailable: 1 // must be 1 for buyer-initiated offer
-          }
-        }
-      );
-      expect(createdOffer).toBeTruthy();
+          // Create an offer with validity duration instead of period
+          const quantityAvailable = 1; // must be 1 for buyer-initiated offer
+          ({ offer: createdOffer, exchange: createdExchange } =
+            await createOfferAndCommit(
+              sellerCoreSDK, // seller calls createOfferAndCommit
+              buyerCoreSDK, // buyer signs the offer
+              condition,
+              args,
+              {
+                offerParams: {
+                  quantityAvailable
+                }
+              }
+            ));
+          expect(createdOffer).toBeTruthy();
+        });
+        test("seller committed", async () => {
+          expect(createdOffer.voided).toBeFalsy();
+          expect(createdOffer.seller.id).toBe(sellerId);
+          expect(Number(createdOffer.quantityAvailable)).toEqual(0);
+          expect(createdExchange).toBeTruthy();
+          expect(createdExchange.state).toBe(ExchangeState.COMMITTED);
+          expect(createdExchange.buyer).toBeTruthy();
+          expect(createdExchange.buyer?.wallet).toEqual(
+            buyerWallet.address.toLowerCase()
+          );
+        });
+      });
     });
 
     test("void offer", async () => {
@@ -280,6 +337,11 @@ describe("core-sdk", () => {
       });
 
       expect(Object.keys(txData).sort()).toStrictEqual(["data", "to"].sort());
+    });
+
+    test("void non listed offer", async () => {
+      // seller-initiated offer created and committed to by the buyer in 1 step
+      // quantity > 1 so another buyer can commit to it, unless it is voided
     });
 
     test("commit (native currency offer)", async () => {

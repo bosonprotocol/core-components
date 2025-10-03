@@ -644,11 +644,16 @@ export async function createOfferAndCommit(
   const createdOfferId = committerCoreSDK.getCreatedOfferIdFromLogs(
     createOfferTxReceipt.logs
   );
-
+  expect(createdOfferId).toBeTruthy();
+  const exchangeId = committerCoreSDK.getCommittedExchangeIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+  expect(exchangeId).toBeTruthy();
   await committerCoreSDK.waitForGraphNodeIndexing(createOfferTxReceipt);
   const offer = await committerCoreSDK.getOfferById(createdOfferId as string);
+  const exchange = await committerCoreSDK.getExchangeById(exchangeId as string);
 
-  return offer;
+  return { offer, exchange };
 }
 
 export async function createPremintedOfferWithCondition(
