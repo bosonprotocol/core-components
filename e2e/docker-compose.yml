@@ -39,7 +39,7 @@ services:
       - host.docker.internal:host-gateway
 
   boson-protocol-node:
-    image: boson-protocol-node:6a14c31bead936ed03b2d51ab82010ecd1047f40_1
+    image: boson-protocol-node:efd5d1a8f23c3bca7c25273ea4c912a367250119_0
     build:
       context: ../.
       dockerfile: ./contracts/Dockerfile
