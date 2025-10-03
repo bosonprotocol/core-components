@@ -433,6 +433,77 @@ export class OfferMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
     }
   }
 
+  // Overload: returnTxInfo is true → returns TransactionRequest
+  public async voidNonListedOfferBatch(
+    fullOffers: Omit<
+      FullOfferArgs,
+      | "offerCreator"
+      | "committer"
+      | "signature"
+      | "conditionalTokenId"
+      | "sellerOfferParams"
+    >[],
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async voidNonListedOfferBatch(
+    fullOffers: Omit<
+      FullOfferArgs,
+      | "offerCreator"
+      | "committer"
+      | "signature"
+      | "conditionalTokenId"
+      | "sellerOfferParams"
+    >[],
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async voidNonListedOfferBatch(
+    fullOffers: Omit<
+      FullOfferArgs,
+      | "offerCreator"
+      | "committer"
+      | "signature"
+      | "conditionalTokenId"
+      | "sellerOfferParams"
+    >[],
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const voidArgs = {
+      fullOffers,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    } as const satisfies Parameters<
+      typeof offers.handler.voidNonListedOfferBatch
+    >[0];
+
+    if (returnTxInfo === true) {
+      return offers.handler.voidNonListedOfferBatch({
+        ...voidArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return offers.handler.voidNonListedOfferBatch({
+        ...voidArgs,
+        returnTxInfo: false
+      });
+    }
+  }
+
   /**
    * Extends an existing offer by calling the `OfferHandlerFacet` contract.
    * This transaction only succeeds if the connected signer is the `assistant`.

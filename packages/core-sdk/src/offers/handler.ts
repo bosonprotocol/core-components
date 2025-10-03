@@ -15,7 +15,8 @@ import {
   encodeReserveRange,
   encodeUpdateOfferRoyaltyRecipients,
   encodeUpdateOfferRoyaltyRecipientsBatch,
-  encodeVoidNonListedOffer
+  encodeVoidNonListedOffer,
+  encodeVoidNonListedOfferBatch
 } from "./interface";
 import { getOfferById, getOffers } from "./subgraph";
 import { storeMetadataOnTheGraph } from "./storage";
@@ -380,6 +381,65 @@ export async function voidNonListedOffer(args: {
   const transactionRequest = {
     to: args.contractAddress,
     data: encodeVoidNonListedOffer(args.fullOffer)
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
+}
+
+// Overload: returnTxInfo is true → returns TransactionRequest
+export async function voidNonListedOfferBatch(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  fullOffers: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >[];
+  web3Lib: Web3LibAdapter;
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function voidNonListedOfferBatch(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  fullOffers: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >[];
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function voidNonListedOfferBatch(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  fullOffers: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >[];
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
+  const transactionRequest = {
+    to: args.contractAddress,
+    data: encodeVoidNonListedOfferBatch(args.fullOffers)
   } satisfies TransactionRequest;
 
   if (args.returnTxInfo) {

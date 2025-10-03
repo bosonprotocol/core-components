@@ -193,7 +193,6 @@ describe("core-sdk", () => {
             buyerCoreSDK, // buyer calls createOfferAndCommit
             sellerCoreSDK, // seller signs the offer
             condition,
-
             {
               committer: buyerWallet.address, // buyer for seller-initiated offer
               offerCreator: sellerWallet.address, // seller-initiated offer
@@ -297,6 +296,49 @@ describe("core-sdk", () => {
               fullOfferArgs
             )
           ).rejects.toThrow(/OfferHasBeenVoided/);
+        });
+        test("voidNonListedOfferBatch", async () => {
+          const fullOffers = [];
+          for (let i = 0; i < 3; i++) {
+            fullOffers.push(
+              await buildFullOfferArgs(
+                buyerCoreSDK, // buyer calls createOfferAndCommit
+                sellerCoreSDK, // seller signs the offer
+                condition,
+                {
+                  committer: buyerWallet.address, // buyer for seller-initiated offer
+                  offerCreator: sellerWallet.address, // seller-initiated offer
+                  sellerId,
+                  sellerOfferParams: {
+                    collectionIndex: 0,
+                    mutualizerAddress:
+                      "0x0000000000000000000000000000000000000000",
+                    royaltyInfo: { recipients: [], bps: [] }
+                  },
+                  useDepositedFunds: true,
+                  creator: OfferCreator.Seller, // seller-initiated offer
+                  feeLimit: parseEther("0.1")
+                },
+                {
+                  metadata: {
+                    name: `Offer to void ${i}`
+                  }
+                }
+              )
+            );
+          }
+          await (
+            await sellerCoreSDK.voidNonListedOfferBatch(fullOffers)
+          ).wait();
+          for (const fullOffer of fullOffers) {
+            await expect(
+              createOfferAndCommit(
+                buyerCoreSDK, // buyer calls createOfferAndCommit
+                sellerCoreSDK, // seller signs the offer
+                fullOffer
+              )
+            ).rejects.toThrow(/OfferHasBeenVoided/);
+          }
         });
       });
 

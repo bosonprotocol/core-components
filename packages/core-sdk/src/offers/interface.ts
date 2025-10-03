@@ -241,3 +241,19 @@ export function encodeVoidNonListedOffer(
     fullOfferArgsToStruct(args)
   ]);
 }
+
+export function encodeVoidNonListedOfferBatch(
+  argsBatch: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >[]
+) {
+  const argsStructs = argsBatch.map((args) => fullOfferArgsToStruct(args));
+  return bosonOfferHandlerIface.encodeFunctionData("voidNonListedOfferBatch", [
+    argsStructs
+  ]);
+}
