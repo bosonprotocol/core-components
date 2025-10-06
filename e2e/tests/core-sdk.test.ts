@@ -217,7 +217,8 @@ describe("core-sdk", () => {
             ));
           expect(createdOffer).toBeTruthy();
           expect(createdOffer.voided).toBeFalsy();
-          expect(createdOffer.seller.id).toBe(sellerId);
+          expect(createdOffer.seller).toBeTruthy();
+          expect(createdOffer.seller?.id).toBe(sellerId);
           expect(Number(createdOffer.quantityInitial)).toBeGreaterThan(1);
           expect(Number(createdOffer.quantityAvailable)).toEqual(
             Number(createdOffer.quantityInitial) - 1
@@ -297,7 +298,7 @@ describe("core-sdk", () => {
             )
           ).rejects.toThrow(/OfferHasBeenVoided/);
         });
-        test("voidNonListedOfferBatch", async () => {
+        test("seller calls voidNonListedOfferBatch", async () => {
           const fullOffers = [];
           for (let i = 0; i < 3; i++) {
             fullOffers.push(
@@ -390,6 +391,101 @@ describe("core-sdk", () => {
           expect(createdExchange.buyer?.wallet).toEqual(
             buyerWallet.address.toLowerCase()
           );
+        });
+        test("another buyer can not commit to the same offer", async () => {
+          ({ offer: createdOffer, exchange: createdExchange } =
+            await createOfferAndCommit(
+              sellerCoreSDK, // seller calls createOfferAndCommit
+              buyerCoreSDK, // buyer signs the offer
+              fullOfferArgs
+            ));
+          expect(createdOffer).toBeTruthy();
+          const { coreSDK: anotherBuyerSdk } =
+            await initCoreSDKWithFundedWallet(seedWallet);
+          await (
+            await sellerCoreSDK.depositFunds(
+              sellerId,
+              createdOffer.sellerDeposit,
+              createdOffer.exchangeToken.address
+            )
+          ).wait();
+
+          await expect(
+            commitToOffer({
+              buyerCoreSDK: anotherBuyerSdk,
+              sellerCoreSDK,
+              offerId: createdOffer.id
+            })
+          ).rejects.toThrow(/Offer with id \d+ is sold out/);
+        });
+        test("buyer can void the offer after the first commit (calling voidOffer)", async () => {
+          ({ offer: createdOffer, exchange: createdExchange } =
+            await createOfferAndCommit(
+              sellerCoreSDK, // seller calls createOfferAndCommit
+              buyerCoreSDK, // buyer signs the offer
+              fullOfferArgs
+            ));
+          expect(createdOffer).toBeTruthy();
+          const txResponse = await buyerCoreSDK.voidOffer(createdOffer.id);
+          await buyerCoreSDK.waitForGraphNodeIndexing(txResponse);
+          const offer = await buyerCoreSDK.getOfferById(createdOffer.id);
+          expect(offer.voided).toBe(true);
+        });
+        test("buyer can void the offer before the first commit (calling voidNonListedOffer)", async () => {
+          await buyerCoreSDK.voidNonListedOffer({
+            ...fullOfferArgs
+          });
+          await expect(
+            createOfferAndCommit(
+              sellerCoreSDK, // seller calls createOfferAndCommit
+              buyerCoreSDK, // buyer signs the offer
+              fullOfferArgs
+            )
+          ).rejects.toThrow(/OfferHasBeenVoided/);
+        });
+        test("buyer calls voidNonListedOfferBatch", async () => {
+          const fullOffers = [];
+          for (let i = 0; i < 3; i++) {
+            fullOffers.push(
+              await buildFullOfferArgs(
+                sellerCoreSDK, // seller calls createOfferAndCommit
+                buyerCoreSDK, // buyer signs the offer
+                condition,
+                {
+                  committer: sellerWallet.address, // seller for buyer-initiated offer
+                  offerCreator: buyerWallet.address, // buyer-initiated offer
+                  sellerId: sellerId,
+                  sellerOfferParams: {
+                    collectionIndex: 0,
+                    mutualizerAddress:
+                      "0x0000000000000000000000000000000000000000",
+                    royaltyInfo: { recipients: [], bps: [] }
+                  },
+                  useDepositedFunds: true,
+                  creator: OfferCreator.Buyer, // buyer-initiated offer
+                  feeLimit: parseEther("0.1")
+                },
+                {
+                  offerParams: {
+                    quantityAvailable
+                  },
+                  metadata: {
+                    name: `Offer to void ${i}`
+                  }
+                }
+              )
+            );
+          }
+          await (await buyerCoreSDK.voidNonListedOfferBatch(fullOffers)).wait();
+          for (const fullOffer of fullOffers) {
+            await expect(
+              createOfferAndCommit(
+                sellerCoreSDK, // seller calls createOfferAndCommit
+                buyerCoreSDK, // buyer signs the offer
+                fullOffer
+              )
+            ).rejects.toThrow(/OfferHasBeenVoided/);
+          }
         });
       });
     });

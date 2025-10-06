@@ -6,7 +6,8 @@ import {
   utils,
   RoyaltyInfo,
   TransactionRequest,
-  FullOfferArgs
+  FullOfferArgs,
+  OfferCreator
 } from "@bosonprotocol/common";
 import {
   bosonOfferHandlerIface,
@@ -627,11 +628,22 @@ function checkIfOfferVoidable(
   }
 
   if (
+    offerFromSubgraph.creator === OfferCreator.Seller &&
     offerFromSubgraph.seller.assistant.toLowerCase() !==
-    signerAddress.toLowerCase()
+      signerAddress.toLowerCase()
   ) {
     throw new Error(
       `Signer with address "${signerAddress}" is not the assistant "${offerFromSubgraph.seller.assistant}" of offer with id "${offerId}"`
+    );
+  }
+
+  if (
+    offerFromSubgraph.creator === OfferCreator.Buyer &&
+    offerFromSubgraph.buyer?.wallet.toLowerCase() !==
+      signerAddress.toLowerCase()
+  ) {
+    throw new Error(
+      `Signer with address "${signerAddress}" is not the creator's wallet "${offerFromSubgraph.buyer?.wallet}" of offer with id "${offerId}"`
     );
   }
 }
