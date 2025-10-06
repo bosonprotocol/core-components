@@ -638,8 +638,8 @@ export async function buildFullOfferArgs(
 
   return {
     condition,
-    ...args,
     ...offerArgs,
+    ...args,
     buyerId,
     sellerId
   } as Omit<FullOfferArgs, "signature">;

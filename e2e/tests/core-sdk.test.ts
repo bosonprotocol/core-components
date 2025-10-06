@@ -381,7 +381,8 @@ describe("core-sdk", () => {
             ));
           expect(createdOffer).toBeTruthy();
           expect(createdOffer.voided).toBeFalsy();
-          expect(createdOffer.seller.id).toBe(sellerId);
+          expect(createdOffer.seller).toBeTruthy();
+          expect(createdOffer.seller?.id).toBe(sellerId);
           expect(Number(createdOffer.quantityAvailable)).toEqual(0);
           expect(createdExchange).toBeTruthy();
           expect(createdExchange.state).toBe(ExchangeState.COMMITTED);
