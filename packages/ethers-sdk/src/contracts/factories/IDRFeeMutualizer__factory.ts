@@ -14,6 +14,24 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
+        name: "_exchangeId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_feeAmount",
+        type: "uint256",
+      },
+    ],
+    name: "finalizeExchange",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
         name: "_sellerId",
         type: "uint256",
       },
@@ -81,24 +99,6 @@ const _abi = [
       },
     ],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_exchangeId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_feeAmount",
-        type: "uint256",
-      },
-    ],
-    name: "returnDRFee",
-    outputs: [],
-    stateMutability: "payable",
     type: "function",
   },
   {

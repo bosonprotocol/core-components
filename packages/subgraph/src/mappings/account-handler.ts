@@ -60,6 +60,11 @@ export function checkSellerExist(sellerId: BigInt): boolean {
   return !!seller;
 }
 
+export function checkBuyerExist(buyerId: BigInt): boolean {
+  const buyer = Buyer.load(buyerId.toString());
+  return !!buyer;
+}
+
 export function handleSellerCreatedEventWithoutMetadataUri(
   event: SellerCreatedLegacy
 ): void {

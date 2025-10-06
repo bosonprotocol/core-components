@@ -42,6 +42,7 @@ fragment BaseExchangeFields on Exchange {
   completedDate
   disputedDate
   expired
+  mutualizerAddress
   dispute {
     ...BaseDisputeFields
   }
