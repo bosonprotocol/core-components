@@ -63,7 +63,7 @@ export function SellerAndDescription({
     <Container flex="1" gap="1rem">
       <SellerID
         offer={offer}
-        buyerOrSeller={offer?.seller}
+        buyerOrSeller={offer?.seller || undefined}
         justifyContent="flex-start"
         withProfileImage
         className="seller-id"

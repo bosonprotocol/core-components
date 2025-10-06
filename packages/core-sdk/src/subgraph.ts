@@ -660,8 +660,10 @@ export enum BaseMetadataEntity_OrderBy {
   OFFER__AGENTFEE = "offer__agentFee",
   OFFER__AGENTID = "offer__agentId",
   OFFER__BUYERCANCELPENALTY = "offer__buyerCancelPenalty",
+  OFFER__BUYERID = "offer__buyerId",
   OFFER__COLLECTIONINDEX = "offer__collectionIndex",
   OFFER__CREATEDAT = "offer__createdAt",
+  OFFER__CREATOR = "offer__creator",
   OFFER__DISPUTEPERIODDURATION = "offer__disputePeriodDuration",
   OFFER__DISPUTERESOLVERID = "offer__disputeResolverId",
   OFFER__ID = "offer__id",
@@ -1193,8 +1195,10 @@ export enum BundleMetadataEntity_OrderBy {
   OFFER__AGENTFEE = "offer__agentFee",
   OFFER__AGENTID = "offer__agentId",
   OFFER__BUYERCANCELPENALTY = "offer__buyerCancelPenalty",
+  OFFER__BUYERID = "offer__buyerId",
   OFFER__COLLECTIONINDEX = "offer__collectionIndex",
   OFFER__CREATEDAT = "offer__createdAt",
+  OFFER__CREATOR = "offer__creator",
   OFFER__DISPUTEPERIODDURATION = "offer__disputePeriodDuration",
   OFFER__DISPUTERESOLVERID = "offer__disputeResolverId",
   OFFER__ID = "offer__id",
@@ -1679,6 +1683,128 @@ export enum ConditionalCommitAuthorizedEventLog_OrderBy {
   TYPE = "type"
 }
 
+export type DrFeeRequestedEvent = {
+  __typename?: "DRFeeRequestedEvent";
+  exchangeId: Scalars["BigInt"]["output"];
+  executedBy: Scalars["Bytes"]["output"];
+  feeAmount: Scalars["BigInt"]["output"];
+  id: Scalars["ID"]["output"];
+  logIndex: Scalars["BigInt"]["output"];
+  mutualizerAddress: Scalars["Bytes"]["output"];
+  timestamp: Scalars["BigInt"]["output"];
+  tokenAddress: Scalars["Bytes"]["output"];
+  txHash: Scalars["String"]["output"];
+};
+
+export type DrFeeRequestedEvent_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<DrFeeRequestedEvent_Filter>>>;
+  exchangeId?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  exchangeId_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  exchangeId_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  executedBy?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  executedBy_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  feeAmount?: InputMaybe<Scalars["BigInt"]["input"]>;
+  feeAmount_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  feeAmount_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  feeAmount_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  feeAmount_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  feeAmount_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  feeAmount_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  feeAmount_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  id?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_lte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  logIndex?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  logIndex_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  mutualizerAddress?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  mutualizerAddress_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  or?: InputMaybe<Array<InputMaybe<DrFeeRequestedEvent_Filter>>>;
+  timestamp?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  timestamp_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  tokenAddress?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  tokenAddress_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  tokenAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  txHash?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_contains?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_gt?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_gte?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  txHash_lt?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_lte?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  txHash_not_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export enum DrFeeRequestedEvent_OrderBy {
+  EXCHANGEID = "exchangeId",
+  EXECUTEDBY = "executedBy",
+  FEEAMOUNT = "feeAmount",
+  ID = "id",
+  LOGINDEX = "logIndex",
+  MUTUALIZERADDRESS = "mutualizerAddress",
+  TIMESTAMP = "timestamp",
+  TOKENADDRESS = "tokenAddress",
+  TXHASH = "txHash"
+}
+
 export type Dispute = {
   __typename?: "Dispute";
   buyer: Buyer;
@@ -1841,6 +1967,7 @@ export type DisputeResolutionTermsEntity = {
   feeAmount: Scalars["BigInt"]["output"];
   /** <DISPUTE_RESOLVER_ID>-terms */
   id: Scalars["ID"]["output"];
+  mutualizerAddress: Scalars["Bytes"]["output"];
   offer: Offer;
 };
 
@@ -1913,6 +2040,16 @@ export type DisputeResolutionTermsEntity_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]["input"]>;
   id_not?: InputMaybe<Scalars["ID"]["input"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  mutualizerAddress?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  mutualizerAddress_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
   offer?: InputMaybe<Scalars["String"]["input"]>;
   offer_?: InputMaybe<Offer_Filter>;
   offer_contains?: InputMaybe<Scalars["String"]["input"]>;
@@ -1952,12 +2089,15 @@ export enum DisputeResolutionTermsEntity_OrderBy {
   ESCALATIONRESPONSEPERIOD = "escalationResponsePeriod",
   FEEAMOUNT = "feeAmount",
   ID = "id",
+  MUTUALIZERADDRESS = "mutualizerAddress",
   OFFER = "offer",
   OFFER__AGENTFEE = "offer__agentFee",
   OFFER__AGENTID = "offer__agentId",
   OFFER__BUYERCANCELPENALTY = "offer__buyerCancelPenalty",
+  OFFER__BUYERID = "offer__buyerId",
   OFFER__COLLECTIONINDEX = "offer__collectionIndex",
   OFFER__CREATEDAT = "offer__createdAt",
+  OFFER__CREATOR = "offer__creator",
   OFFER__DISPUTEPERIODDURATION = "offer__disputePeriodDuration",
   OFFER__DISPUTERESOLVERID = "offer__disputeResolverId",
   OFFER__ID = "offer__id",
@@ -2486,6 +2626,7 @@ export enum Dispute_OrderBy {
   EXCHANGE__EXPIRED = "exchange__expired",
   EXCHANGE__FINALIZEDDATE = "exchange__finalizedDate",
   EXCHANGE__ID = "exchange__id",
+  EXCHANGE__MUTUALIZERADDRESS = "exchange__mutualizerAddress",
   EXCHANGE__REDEEMEDDATE = "exchange__redeemedDate",
   EXCHANGE__REVOKEDDATE = "exchange__revokedDate",
   EXCHANGE__STATE = "exchange__state",
@@ -2645,6 +2786,7 @@ export enum EventType {
   OFFER_EXTENDED = "OFFER_EXTENDED",
   OFFER_RANGE_RESERVED = "OFFER_RANGE_RESERVED",
   OFFER_VOIDED = "OFFER_VOIDED",
+  SELLER_COMMITTED = "SELLER_COMMITTED",
   /** AccountHandler events */
   SELLER_CREATED = "SELLER_CREATED",
   SELLER_UPDATED = "SELLER_UPDATED",
@@ -2669,6 +2811,7 @@ export type Exchange = {
   expired: Scalars["Boolean"]["output"];
   finalizedDate?: Maybe<Scalars["BigInt"]["output"]>;
   id: Scalars["ID"]["output"];
+  mutualizerAddress: Scalars["Bytes"]["output"];
   offer: Offer;
   protocolFeeCollected?: Maybe<ProtocolFeeCollected>;
   redeemedDate?: Maybe<Scalars["BigInt"]["output"]>;
@@ -2800,6 +2943,7 @@ export enum ExchangeEventLog_OrderBy {
   EXCHANGE__EXPIRED = "exchange__expired",
   EXCHANGE__FINALIZEDDATE = "exchange__finalizedDate",
   EXCHANGE__ID = "exchange__id",
+  EXCHANGE__MUTUALIZERADDRESS = "exchange__mutualizerAddress",
   EXCHANGE__REDEEMEDDATE = "exchange__redeemedDate",
   EXCHANGE__REVOKEDDATE = "exchange__revokedDate",
   EXCHANGE__STATE = "exchange__state",
@@ -3073,6 +3217,16 @@ export type Exchange_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]["input"]>;
   id_not?: InputMaybe<Scalars["ID"]["input"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  mutualizerAddress?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  mutualizerAddress_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  mutualizerAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
   offer?: InputMaybe<Scalars["String"]["input"]>;
   offer_?: InputMaybe<Offer_Filter>;
   offer_contains?: InputMaybe<Scalars["String"]["input"]>;
@@ -3182,12 +3336,15 @@ export enum Exchange_OrderBy {
   EXPIRED = "expired",
   FINALIZEDDATE = "finalizedDate",
   ID = "id",
+  MUTUALIZERADDRESS = "mutualizerAddress",
   OFFER = "offer",
   OFFER__AGENTFEE = "offer__agentFee",
   OFFER__AGENTID = "offer__agentId",
   OFFER__BUYERCANCELPENALTY = "offer__buyerCancelPenalty",
+  OFFER__BUYERID = "offer__buyerId",
   OFFER__COLLECTIONINDEX = "offer__collectionIndex",
   OFFER__CREATEDAT = "offer__createdAt",
+  OFFER__CREATOR = "offer__creator",
   OFFER__DISPUTEPERIODDURATION = "offer__disputePeriodDuration",
   OFFER__DISPUTERESOLVERID = "offer__disputeResolverId",
   OFFER__ID = "offer__id",
@@ -3349,6 +3506,7 @@ export enum FundsEntity_OrderBy {
 export type FundsEventLog = EventLog & {
   __typename?: "FundsEventLog";
   account: Account;
+  amount: Scalars["BigInt"]["output"];
   executedBy: Scalars["Bytes"]["output"];
   funds: FundsEntity;
   hash: Scalars["String"]["output"];
@@ -3381,6 +3539,14 @@ export type FundsEventLog_Filter = {
   account_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
   account_starts_with?: InputMaybe<Scalars["String"]["input"]>;
   account_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  amount?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  amount_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  amount_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
   and?: InputMaybe<Array<InputMaybe<FundsEventLog_Filter>>>;
   executedBy?: InputMaybe<Scalars["Bytes"]["input"]>;
   executedBy_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
@@ -3459,6 +3625,7 @@ export type FundsEventLog_Filter = {
 export enum FundsEventLog_OrderBy {
   ACCOUNT = "account",
   ACCOUNT__ID = "account__id",
+  AMOUNT = "amount",
   EXECUTEDBY = "executedBy",
   FUNDS = "funds",
   FUNDS__ACCOUNTID = "funds__accountId",
@@ -4084,8 +4251,10 @@ export enum MetadataInterface_OrderBy {
   OFFER__AGENTFEE = "offer__agentFee",
   OFFER__AGENTID = "offer__agentId",
   OFFER__BUYERCANCELPENALTY = "offer__buyerCancelPenalty",
+  OFFER__BUYERID = "offer__buyerId",
   OFFER__COLLECTIONINDEX = "offer__collectionIndex",
   OFFER__CREATEDAT = "offer__createdAt",
+  OFFER__CREATOR = "offer__creator",
   OFFER__DISPUTEPERIODDURATION = "offer__disputePeriodDuration",
   OFFER__DISPUTERESOLVERID = "offer__disputeResolverId",
   OFFER__ID = "offer__id",
@@ -4651,11 +4820,14 @@ export type Offer = {
   __typename?: "Offer";
   agentFee: Scalars["BigInt"]["output"];
   agentId: Scalars["BigInt"]["output"];
+  buyer?: Maybe<Buyer>;
   buyerCancelPenalty: Scalars["BigInt"]["output"];
-  collection: OfferCollection;
-  collectionIndex: Scalars["BigInt"]["output"];
+  buyerId: Scalars["BigInt"]["output"];
+  collection?: Maybe<OfferCollection>;
+  collectionIndex?: Maybe<Scalars["BigInt"]["output"]>;
   condition?: Maybe<ConditionEntity>;
   createdAt: Scalars["BigInt"]["output"];
+  creator: Scalars["Int"]["output"];
   /** Offer durations */
   disputePeriodDuration: Scalars["BigInt"]["output"];
   disputeResolutionTerms: DisputeResolutionTermsEntity;
@@ -4679,7 +4851,7 @@ export type Offer = {
   range?: Maybe<RangeEntity>;
   resolutionPeriodDuration: Scalars["BigInt"]["output"];
   royaltyInfos: Array<RoyaltyInfo>;
-  seller: Seller;
+  seller?: Maybe<Seller>;
   sellerDeposit: Scalars["BigInt"]["output"];
   sellerId: Scalars["BigInt"]["output"];
   /** Offer dates */
@@ -4910,6 +5082,11 @@ export enum OfferCollection_OrderBy {
   SELLER__VOUCHERCLONEADDRESS = "seller__voucherCloneAddress"
 }
 
+export enum OfferCreator {
+  BUYER = "BUYER",
+  SELLER = "SELLER"
+}
+
 export type OfferEventLog = EventLog & {
   __typename?: "OfferEventLog";
   account: Account;
@@ -5030,8 +5207,10 @@ export enum OfferEventLog_OrderBy {
   OFFER__AGENTFEE = "offer__agentFee",
   OFFER__AGENTID = "offer__agentId",
   OFFER__BUYERCANCELPENALTY = "offer__buyerCancelPenalty",
+  OFFER__BUYERID = "offer__buyerId",
   OFFER__COLLECTIONINDEX = "offer__collectionIndex",
   OFFER__CREATEDAT = "offer__createdAt",
+  OFFER__CREATOR = "offer__creator",
   OFFER__DISPUTEPERIODDURATION = "offer__disputePeriodDuration",
   OFFER__DISPUTERESOLVERID = "offer__disputeResolverId",
   OFFER__ID = "offer__id",
@@ -5078,6 +5257,7 @@ export type Offer_Filter = {
   agentId_not?: InputMaybe<Scalars["BigInt"]["input"]>;
   agentId_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
   and?: InputMaybe<Array<InputMaybe<Offer_Filter>>>;
+  buyer?: InputMaybe<Scalars["String"]["input"]>;
   buyerCancelPenalty?: InputMaybe<Scalars["BigInt"]["input"]>;
   buyerCancelPenalty_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
   buyerCancelPenalty_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
@@ -5086,6 +5266,34 @@ export type Offer_Filter = {
   buyerCancelPenalty_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
   buyerCancelPenalty_not?: InputMaybe<Scalars["BigInt"]["input"]>;
   buyerCancelPenalty_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  buyerId?: InputMaybe<Scalars["BigInt"]["input"]>;
+  buyerId_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  buyerId_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  buyerId_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  buyerId_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  buyerId_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  buyerId_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  buyerId_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  buyer_?: InputMaybe<Buyer_Filter>;
+  buyer_contains?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_gt?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_gte?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  buyer_lt?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_lte?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_not?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_not_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_not_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_not_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_not_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  buyer_not_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  buyer_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
   collection?: InputMaybe<Scalars["String"]["input"]>;
   collectionIndex?: InputMaybe<Scalars["BigInt"]["input"]>;
   collectionIndex_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
@@ -5144,6 +5352,14 @@ export type Offer_Filter = {
   createdAt_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
   createdAt_not?: InputMaybe<Scalars["BigInt"]["input"]>;
   createdAt_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  creator?: InputMaybe<Scalars["Int"]["input"]>;
+  creator_gt?: InputMaybe<Scalars["Int"]["input"]>;
+  creator_gte?: InputMaybe<Scalars["Int"]["input"]>;
+  creator_in?: InputMaybe<Array<Scalars["Int"]["input"]>>;
+  creator_lt?: InputMaybe<Scalars["Int"]["input"]>;
+  creator_lte?: InputMaybe<Scalars["Int"]["input"]>;
+  creator_not?: InputMaybe<Scalars["Int"]["input"]>;
+  creator_not_in?: InputMaybe<Array<Scalars["Int"]["input"]>>;
   disputePeriodDuration?: InputMaybe<Scalars["BigInt"]["input"]>;
   disputePeriodDuration_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
   disputePeriodDuration_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
@@ -5496,7 +5712,12 @@ export type Offer_Filter = {
 export enum Offer_OrderBy {
   AGENTFEE = "agentFee",
   AGENTID = "agentId",
+  BUYER = "buyer",
   BUYERCANCELPENALTY = "buyerCancelPenalty",
+  BUYERID = "buyerId",
+  BUYER__ACTIVE = "buyer__active",
+  BUYER__ID = "buyer__id",
+  BUYER__WALLET = "buyer__wallet",
   COLLECTION = "collection",
   COLLECTIONINDEX = "collectionIndex",
   COLLECTION__COLLECTIONINDEX = "collection__collectionIndex",
@@ -5515,6 +5736,7 @@ export enum Offer_OrderBy {
   CONDITION__TOKENADDRESS = "condition__tokenAddress",
   CONDITION__TOKENTYPE = "condition__tokenType",
   CREATEDAT = "createdAt",
+  CREATOR = "creator",
   DISPUTEPERIODDURATION = "disputePeriodDuration",
   DISPUTERESOLUTIONTERMS = "disputeResolutionTerms",
   DISPUTERESOLUTIONTERMS__BUYERESCALATIONDEPOSIT = "disputeResolutionTerms__buyerEscalationDeposit",
@@ -5522,6 +5744,7 @@ export enum Offer_OrderBy {
   DISPUTERESOLUTIONTERMS__ESCALATIONRESPONSEPERIOD = "disputeResolutionTerms__escalationResponsePeriod",
   DISPUTERESOLUTIONTERMS__FEEAMOUNT = "disputeResolutionTerms__feeAmount",
   DISPUTERESOLUTIONTERMS__ID = "disputeResolutionTerms__id",
+  DISPUTERESOLUTIONTERMS__MUTUALIZERADDRESS = "disputeResolutionTerms__mutualizerAddress",
   DISPUTERESOLVER = "disputeResolver",
   DISPUTERESOLVERID = "disputeResolverId",
   DISPUTERESOLVER__ACTIVE = "disputeResolver__active",
@@ -7204,8 +7427,10 @@ export enum ProductV1MetadataEntity_OrderBy {
   OFFER__AGENTFEE = "offer__agentFee",
   OFFER__AGENTID = "offer__agentId",
   OFFER__BUYERCANCELPENALTY = "offer__buyerCancelPenalty",
+  OFFER__BUYERID = "offer__buyerId",
   OFFER__COLLECTIONINDEX = "offer__collectionIndex",
   OFFER__CREATEDAT = "offer__createdAt",
+  OFFER__CREATOR = "offer__creator",
   OFFER__DISPUTEPERIODDURATION = "offer__disputePeriodDuration",
   OFFER__DISPUTERESOLVERID = "offer__disputeResolverId",
   OFFER__ID = "offer__id",
@@ -10208,8 +10433,10 @@ export enum ProductV1Variant_OrderBy {
   OFFER__AGENTFEE = "offer__agentFee",
   OFFER__AGENTID = "offer__agentId",
   OFFER__BUYERCANCELPENALTY = "offer__buyerCancelPenalty",
+  OFFER__BUYERID = "offer__buyerId",
   OFFER__COLLECTIONINDEX = "offer__collectionIndex",
   OFFER__CREATEDAT = "offer__createdAt",
+  OFFER__CREATOR = "offer__creator",
   OFFER__DISPUTEPERIODDURATION = "offer__disputePeriodDuration",
   OFFER__DISPUTERESOLVERID = "offer__disputeResolverId",
   OFFER__ID = "offer__id",
@@ -10398,6 +10625,7 @@ export enum ProtocolFeeCollected_OrderBy {
   EXCHANGE__EXPIRED = "exchange__expired",
   EXCHANGE__FINALIZEDDATE = "exchange__finalizedDate",
   EXCHANGE__ID = "exchange__id",
+  EXCHANGE__MUTUALIZERADDRESS = "exchange__mutualizerAddress",
   EXCHANGE__REDEEMEDDATE = "exchange__redeemedDate",
   EXCHANGE__REVOKEDDATE = "exchange__revokedDate",
   EXCHANGE__STATE = "exchange__state",
@@ -10437,6 +10665,8 @@ export type Query = {
   disputeResolverFees: Array<DisputeResolverFee>;
   disputeResolvers: Array<DisputeResolver>;
   disputes: Array<Dispute>;
+  drfeeRequestedEvent?: Maybe<DrFeeRequestedEvent>;
+  drfeeRequestedEvents: Array<DrFeeRequestedEvent>;
   eventLog?: Maybe<EventLog>;
   eventLogs: Array<EventLog>;
   exchange?: Maybe<Exchange>;
@@ -10754,6 +10984,22 @@ export type QueryDisputesArgs = {
   skip?: InputMaybe<Scalars["Int"]["input"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Dispute_Filter>;
+};
+
+export type QueryDrfeeRequestedEventArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryDrfeeRequestedEventsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<DrFeeRequestedEvent_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<DrFeeRequestedEvent_Filter>;
 };
 
 export type QueryEventLogArgs = {
@@ -11667,8 +11913,10 @@ export enum RoyaltyInfo_OrderBy {
   OFFER__AGENTFEE = "offer__agentFee",
   OFFER__AGENTID = "offer__agentId",
   OFFER__BUYERCANCELPENALTY = "offer__buyerCancelPenalty",
+  OFFER__BUYERID = "offer__buyerId",
   OFFER__COLLECTIONINDEX = "offer__collectionIndex",
   OFFER__CREATEDAT = "offer__createdAt",
+  OFFER__CREATOR = "offer__creator",
   OFFER__DISPUTEPERIODDURATION = "offer__disputePeriodDuration",
   OFFER__DISPUTERESOLVERID = "offer__disputeResolverId",
   OFFER__ID = "offer__id",
@@ -11799,8 +12047,10 @@ export enum RoyaltyRecipientXOffer_OrderBy {
   OFFER__AGENTFEE = "offer__agentFee",
   OFFER__AGENTID = "offer__agentId",
   OFFER__BUYERCANCELPENALTY = "offer__buyerCancelPenalty",
+  OFFER__BUYERID = "offer__buyerId",
   OFFER__COLLECTIONINDEX = "offer__collectionIndex",
   OFFER__CREATEDAT = "offer__createdAt",
+  OFFER__CREATOR = "offer__creator",
   OFFER__DISPUTEPERIODDURATION = "offer__disputePeriodDuration",
   OFFER__DISPUTERESOLVERID = "offer__disputeResolverId",
   OFFER__ID = "offer__id",
@@ -13086,6 +13336,8 @@ export type Subscription = {
   disputeResolverFees: Array<DisputeResolverFee>;
   disputeResolvers: Array<DisputeResolver>;
   disputes: Array<Dispute>;
+  drfeeRequestedEvent?: Maybe<DrFeeRequestedEvent>;
+  drfeeRequestedEvents: Array<DrFeeRequestedEvent>;
   eventLog?: Maybe<EventLog>;
   eventLogs: Array<EventLog>;
   exchange?: Maybe<Exchange>;
@@ -13403,6 +13655,22 @@ export type SubscriptionDisputesArgs = {
   skip?: InputMaybe<Scalars["Int"]["input"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Dispute_Filter>;
+};
+
+export type SubscriptionDrfeeRequestedEventArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionDrfeeRequestedEventsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<DrFeeRequestedEvent_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<DrFeeRequestedEvent_Filter>;
 };
 
 export type SubscriptionEventLogArgs = {
@@ -14570,7 +14838,10 @@ export type GetSellerByIdQueryQuery = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -14588,7 +14859,7 @@ export type GetSellerByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -14639,13 +14910,13 @@ export type GetSellerByIdQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -14729,8 +15000,14 @@ export type GetSellerByIdQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -14752,7 +15029,7 @@ export type GetSellerByIdQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -14795,6 +15072,7 @@ export type GetSellerByIdQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -15756,6 +16034,7 @@ export type GetSellerByIdQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      mutualizerAddress: string;
       dispute?: {
         __typename?: "Dispute";
         id: string;
@@ -16108,7 +16387,10 @@ export type GetSellersQueryQuery = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -16126,7 +16408,7 @@ export type GetSellersQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -16177,13 +16459,13 @@ export type GetSellersQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -16267,8 +16549,14 @@ export type GetSellersQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -16290,7 +16578,7 @@ export type GetSellersQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -16333,6 +16621,7 @@ export type GetSellersQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -17294,6 +17583,7 @@ export type GetSellersQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      mutualizerAddress: string;
       dispute?: {
         __typename?: "Dispute";
         id: string;
@@ -17607,6 +17897,7 @@ export type GetBuyerByIdQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      mutualizerAddress: string;
       dispute?: {
         __typename?: "Dispute";
         id: string;
@@ -17858,6 +18149,7 @@ export type GetBuyersQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      mutualizerAddress: string;
       dispute?: {
         __typename?: "Dispute";
         id: string;
@@ -18082,7 +18374,10 @@ export type GetDisputeResolverByIdQueryQuery = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -18100,7 +18395,7 @@ export type GetDisputeResolverByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -18151,13 +18446,13 @@ export type GetDisputeResolverByIdQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -18241,8 +18536,14 @@ export type GetDisputeResolverByIdQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -18264,7 +18565,7 @@ export type GetDisputeResolverByIdQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -18307,6 +18608,7 @@ export type GetDisputeResolverByIdQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -19386,7 +19688,10 @@ export type GetDisputeResolversQueryQuery = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -19404,7 +19709,7 @@ export type GetDisputeResolversQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -19455,13 +19760,13 @@ export type GetDisputeResolversQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -19545,8 +19850,14 @@ export type GetDisputeResolversQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -19568,7 +19879,7 @@ export type GetDisputeResolversQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -19611,6 +19922,7 @@ export type GetDisputeResolversQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -20785,7 +21097,10 @@ export type GetOfferCollectionsQueryQuery = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -20803,7 +21118,7 @@ export type GetOfferCollectionsQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -20854,13 +21169,13 @@ export type GetOfferCollectionsQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -20944,8 +21259,14 @@ export type GetOfferCollectionsQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -20967,7 +21288,7 @@ export type GetOfferCollectionsQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -21010,6 +21331,7 @@ export type GetOfferCollectionsQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -22088,7 +22410,10 @@ export type OfferCollectionFieldsFragment = {
     id: string;
     createdAt: string;
     price: string;
+    sellerId: string;
     sellerDeposit: string;
+    buyerId: string;
+    creator: number;
     protocolFee: string;
     agentFee: string;
     agentId: string;
@@ -22106,7 +22431,7 @@ export type OfferCollectionFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -22157,13 +22482,13 @@ export type OfferCollectionFieldsFragment = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
       }> | null;
     } | null;
-    seller: {
+    seller?: {
       __typename?: "Seller";
       id: string;
       assistant: string;
@@ -22247,8 +22572,14 @@ export type OfferCollectionFieldsFragment = {
           }> | null;
         }> | null;
       } | null;
-    };
-    collection: {
+    } | null;
+    buyer?: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    } | null;
+    collection?: {
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
@@ -22270,7 +22601,7 @@ export type OfferCollectionFieldsFragment = {
         createdAt: string;
         collaborators?: Array<string> | null;
       } | null;
-    };
+    } | null;
     exchangeToken: {
       __typename?: "ExchangeToken";
       id: string;
@@ -22313,6 +22644,7 @@ export type OfferCollectionFieldsFragment = {
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      mutualizerAddress: string;
     };
     metadata?:
       | {
@@ -23351,7 +23683,10 @@ export type SellerFieldsFragment = {
     id: string;
     createdAt: string;
     price: string;
+    sellerId: string;
     sellerDeposit: string;
+    buyerId: string;
+    creator: number;
     protocolFee: string;
     agentFee: string;
     agentId: string;
@@ -23369,7 +23704,7 @@ export type SellerFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -23420,13 +23755,13 @@ export type SellerFieldsFragment = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
       }> | null;
     } | null;
-    seller: {
+    seller?: {
       __typename?: "Seller";
       id: string;
       assistant: string;
@@ -23510,8 +23845,14 @@ export type SellerFieldsFragment = {
           }> | null;
         }> | null;
       } | null;
-    };
-    collection: {
+    } | null;
+    buyer?: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    } | null;
+    collection?: {
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
@@ -23533,7 +23874,7 @@ export type SellerFieldsFragment = {
         createdAt: string;
         collaborators?: Array<string> | null;
       } | null;
-    };
+    } | null;
     exchangeToken: {
       __typename?: "ExchangeToken";
       id: string;
@@ -23576,6 +23917,7 @@ export type SellerFieldsFragment = {
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      mutualizerAddress: string;
     };
     metadata?:
       | {
@@ -24525,6 +24867,7 @@ export type SellerFieldsFragment = {
     completedDate?: string | null;
     disputedDate?: string | null;
     expired: boolean;
+    mutualizerAddress: string;
     dispute?: {
       __typename?: "Dispute";
       id: string;
@@ -24964,6 +25307,7 @@ export type BuyerFieldsFragment = {
     completedDate?: string | null;
     disputedDate?: string | null;
     expired: boolean;
+    mutualizerAddress: string;
     dispute?: {
       __typename?: "Dispute";
       id: string;
@@ -25176,7 +25520,10 @@ export type DisputeResolverFieldsFragment = {
     id: string;
     createdAt: string;
     price: string;
+    sellerId: string;
     sellerDeposit: string;
+    buyerId: string;
+    creator: number;
     protocolFee: string;
     agentFee: string;
     agentId: string;
@@ -25194,7 +25541,7 @@ export type DisputeResolverFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -25245,13 +25592,13 @@ export type DisputeResolverFieldsFragment = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
       }> | null;
     } | null;
-    seller: {
+    seller?: {
       __typename?: "Seller";
       id: string;
       assistant: string;
@@ -25335,8 +25682,14 @@ export type DisputeResolverFieldsFragment = {
           }> | null;
         }> | null;
       } | null;
-    };
-    collection: {
+    } | null;
+    buyer?: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    } | null;
+    collection?: {
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
@@ -25358,7 +25711,7 @@ export type DisputeResolverFieldsFragment = {
         createdAt: string;
         collaborators?: Array<string> | null;
       } | null;
-    };
+    } | null;
     exchangeToken: {
       __typename?: "ExchangeToken";
       id: string;
@@ -25401,6 +25754,7 @@ export type DisputeResolverFieldsFragment = {
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      mutualizerAddress: string;
     };
     metadata?:
       | {
@@ -26481,6 +26835,7 @@ export type BaseDisputeResolutionTermsEntityFieldsFragment = {
   escalationResponsePeriod: string;
   feeAmount: string;
   buyerEscalationDeposit: string;
+  mutualizerAddress: string;
 };
 
 export type BaseConditionalCommitAuthorizedEventLogsFieldsFragment = {
@@ -26538,6 +26893,7 @@ export type GetDisputeByIdQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      mutualizerAddress: string;
       dispute?: {
         __typename?: "Dispute";
         id: string;
@@ -26781,6 +27137,7 @@ export type GetDisputesQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      mutualizerAddress: string;
       dispute?: {
         __typename?: "Dispute";
         id: string;
@@ -27014,6 +27371,7 @@ export type DisputeFieldsFragment = {
     completedDate?: string | null;
     disputedDate?: string | null;
     expired: boolean;
+    mutualizerAddress: string;
     dispute?: {
       __typename?: "Dispute";
       id: string;
@@ -27264,7 +27622,10 @@ export type GetExchangeTokenByIdQueryQuery = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -27282,7 +27643,7 @@ export type GetExchangeTokenByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -27333,13 +27694,13 @@ export type GetExchangeTokenByIdQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -27423,8 +27784,14 @@ export type GetExchangeTokenByIdQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -27446,7 +27813,7 @@ export type GetExchangeTokenByIdQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -27489,6 +27856,7 @@ export type GetExchangeTokenByIdQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -28479,7 +28847,10 @@ export type GetExchangeTokensQueryQuery = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -28497,7 +28868,7 @@ export type GetExchangeTokensQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -28548,13 +28919,13 @@ export type GetExchangeTokensQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -28638,8 +29009,14 @@ export type GetExchangeTokensQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -28661,7 +29038,7 @@ export type GetExchangeTokensQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -28704,6 +29081,7 @@ export type GetExchangeTokensQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -29672,7 +30050,10 @@ export type ExchangeTokenFieldsFragment = {
     id: string;
     createdAt: string;
     price: string;
+    sellerId: string;
     sellerDeposit: string;
+    buyerId: string;
+    creator: number;
     protocolFee: string;
     agentFee: string;
     agentId: string;
@@ -29690,7 +30071,7 @@ export type ExchangeTokenFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -29741,13 +30122,13 @@ export type ExchangeTokenFieldsFragment = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
       }> | null;
     } | null;
-    seller: {
+    seller?: {
       __typename?: "Seller";
       id: string;
       assistant: string;
@@ -29831,8 +30212,14 @@ export type ExchangeTokenFieldsFragment = {
           }> | null;
         }> | null;
       } | null;
-    };
-    collection: {
+    } | null;
+    buyer?: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    } | null;
+    collection?: {
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
@@ -29854,7 +30241,7 @@ export type ExchangeTokenFieldsFragment = {
         createdAt: string;
         collaborators?: Array<string> | null;
       } | null;
-    };
+    } | null;
     exchangeToken: {
       __typename?: "ExchangeToken";
       id: string;
@@ -29897,6 +30284,7 @@ export type ExchangeTokenFieldsFragment = {
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      mutualizerAddress: string;
     };
     metadata?:
       | {
@@ -31031,12 +31419,16 @@ export type GetExchangeByIdQueryQuery = {
     completedDate?: string | null;
     disputedDate?: string | null;
     expired: boolean;
+    mutualizerAddress: string;
     offer: {
       __typename?: "Offer";
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -31054,7 +31446,7 @@ export type GetExchangeByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -31105,13 +31497,13 @@ export type GetExchangeByIdQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -31195,8 +31587,14 @@ export type GetExchangeByIdQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -31218,7 +31616,7 @@ export type GetExchangeByIdQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -31261,6 +31659,7 @@ export type GetExchangeByIdQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -32345,12 +32744,16 @@ export type GetExchangesQueryQuery = {
     completedDate?: string | null;
     disputedDate?: string | null;
     expired: boolean;
+    mutualizerAddress: string;
     offer: {
       __typename?: "Offer";
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -32368,7 +32771,7 @@ export type GetExchangesQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -32419,13 +32822,13 @@ export type GetExchangesQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -32509,8 +32912,14 @@ export type GetExchangesQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -32532,7 +32941,7 @@ export type GetExchangesQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -32575,6 +32984,7 @@ export type GetExchangesQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -33649,12 +34059,16 @@ export type ExchangeFieldsFragment = {
   completedDate?: string | null;
   disputedDate?: string | null;
   expired: boolean;
+  mutualizerAddress: string;
   offer: {
     __typename?: "Offer";
     id: string;
     createdAt: string;
     price: string;
+    sellerId: string;
     sellerDeposit: string;
+    buyerId: string;
+    creator: number;
     protocolFee: string;
     agentFee: string;
     agentId: string;
@@ -33672,7 +34086,7 @@ export type ExchangeFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -33723,13 +34137,13 @@ export type ExchangeFieldsFragment = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
       }> | null;
     } | null;
-    seller: {
+    seller?: {
       __typename?: "Seller";
       id: string;
       assistant: string;
@@ -33813,8 +34227,14 @@ export type ExchangeFieldsFragment = {
           }> | null;
         }> | null;
       } | null;
-    };
-    collection: {
+    } | null;
+    buyer?: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    } | null;
+    collection?: {
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
@@ -33836,7 +34256,7 @@ export type ExchangeFieldsFragment = {
         createdAt: string;
         collaborators?: Array<string> | null;
       } | null;
-    };
+    } | null;
     exchangeToken: {
       __typename?: "ExchangeToken";
       id: string;
@@ -33879,6 +34299,7 @@ export type ExchangeFieldsFragment = {
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      mutualizerAddress: string;
     };
     metadata?:
       | {
@@ -34935,6 +35356,7 @@ export type BaseExchangeFieldsFragment = {
   completedDate?: string | null;
   disputedDate?: string | null;
   expired: boolean;
+  mutualizerAddress: string;
   dispute?: {
     __typename?: "Dispute";
     id: string;
@@ -35145,7 +35567,7 @@ export type BaseConditionFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -35200,7 +35622,10 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -35218,7 +35643,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -35269,13 +35694,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -35359,8 +35784,14 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -35382,7 +35813,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -35425,6 +35856,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -36515,7 +36947,10 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -36533,7 +36968,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -36584,13 +37019,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -36674,8 +37109,14 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -36697,7 +37138,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -36740,6 +37181,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -37820,7 +38262,10 @@ export type BaseMetadataEntityFieldsFragment = {
     id: string;
     createdAt: string;
     price: string;
+    sellerId: string;
     sellerDeposit: string;
+    buyerId: string;
+    creator: number;
     protocolFee: string;
     agentFee: string;
     agentId: string;
@@ -37838,7 +38283,7 @@ export type BaseMetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -37889,13 +38334,13 @@ export type BaseMetadataEntityFieldsFragment = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
       }> | null;
     } | null;
-    seller: {
+    seller?: {
       __typename?: "Seller";
       id: string;
       assistant: string;
@@ -37979,8 +38424,14 @@ export type BaseMetadataEntityFieldsFragment = {
           }> | null;
         }> | null;
       } | null;
-    };
-    collection: {
+    } | null;
+    buyer?: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    } | null;
+    collection?: {
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
@@ -38002,7 +38453,7 @@ export type BaseMetadataEntityFieldsFragment = {
         createdAt: string;
         collaborators?: Array<string> | null;
       } | null;
-    };
+    } | null;
     exchangeToken: {
       __typename?: "ExchangeToken";
       id: string;
@@ -38045,6 +38496,7 @@ export type BaseMetadataEntityFieldsFragment = {
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      mutualizerAddress: string;
     };
     metadata?:
       | {
@@ -39112,7 +39564,10 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     id: string;
     createdAt: string;
     price: string;
+    sellerId: string;
     sellerDeposit: string;
+    buyerId: string;
+    creator: number;
     protocolFee: string;
     agentFee: string;
     agentId: string;
@@ -39130,7 +39585,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -39181,13 +39636,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
       }> | null;
     } | null;
-    seller: {
+    seller?: {
       __typename?: "Seller";
       id: string;
       assistant: string;
@@ -39271,8 +39726,14 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           }> | null;
         }> | null;
       } | null;
-    };
-    collection: {
+    } | null;
+    buyer?: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    } | null;
+    collection?: {
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
@@ -39294,7 +39755,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
         createdAt: string;
         collaborators?: Array<string> | null;
       } | null;
-    };
+    } | null;
     exchangeToken: {
       __typename?: "ExchangeToken";
       id: string;
@@ -39337,6 +39798,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      mutualizerAddress: string;
     };
     metadata?:
       | {
@@ -40417,7 +40879,10 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -40435,7 +40900,7 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -40454,6 +40919,7 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
         completedDate?: string | null;
         disputedDate?: string | null;
         expired: boolean;
+        mutualizerAddress: string;
         dispute?: {
           __typename?: "Dispute";
           id: string;
@@ -40611,13 +41077,13 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -40701,8 +41167,14 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -40724,7 +41196,7 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -40767,6 +41239,7 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -42307,7 +42780,10 @@ export type GetBundleMetadataEntitiesQueryQuery = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -42325,7 +42801,7 @@ export type GetBundleMetadataEntitiesQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -42344,6 +42820,7 @@ export type GetBundleMetadataEntitiesQueryQuery = {
         completedDate?: string | null;
         disputedDate?: string | null;
         expired: boolean;
+        mutualizerAddress: string;
         dispute?: {
           __typename?: "Dispute";
           id: string;
@@ -42501,13 +42978,13 @@ export type GetBundleMetadataEntitiesQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -42591,8 +43068,14 @@ export type GetBundleMetadataEntitiesQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -42614,7 +43097,7 @@ export type GetBundleMetadataEntitiesQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -42657,6 +43140,7 @@ export type GetBundleMetadataEntitiesQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -44187,7 +44671,10 @@ export type BundleMetadataEntityFieldsFragment = {
     id: string;
     createdAt: string;
     price: string;
+    sellerId: string;
     sellerDeposit: string;
+    buyerId: string;
+    creator: number;
     protocolFee: string;
     agentFee: string;
     agentId: string;
@@ -44205,7 +44692,7 @@ export type BundleMetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -44224,6 +44711,7 @@ export type BundleMetadataEntityFieldsFragment = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      mutualizerAddress: string;
       dispute?: {
         __typename?: "Dispute";
         id: string;
@@ -44381,13 +44869,13 @@ export type BundleMetadataEntityFieldsFragment = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
       }> | null;
     } | null;
-    seller: {
+    seller?: {
       __typename?: "Seller";
       id: string;
       assistant: string;
@@ -44471,8 +44959,14 @@ export type BundleMetadataEntityFieldsFragment = {
           }> | null;
         }> | null;
       } | null;
-    };
-    collection: {
+    } | null;
+    buyer?: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    } | null;
+    collection?: {
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
@@ -44494,7 +44988,7 @@ export type BundleMetadataEntityFieldsFragment = {
         createdAt: string;
         collaborators?: Array<string> | null;
       } | null;
-    };
+    } | null;
     exchangeToken: {
       __typename?: "ExchangeToken";
       id: string;
@@ -44537,6 +45031,7 @@ export type BundleMetadataEntityFieldsFragment = {
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      mutualizerAddress: string;
     };
     metadata?:
       | {
@@ -46054,7 +46549,10 @@ export type BaseBundleMetadataEntityFieldsFragment = {
     id: string;
     createdAt: string;
     price: string;
+    sellerId: string;
     sellerDeposit: string;
+    buyerId: string;
+    creator: number;
     protocolFee: string;
     agentFee: string;
     agentId: string;
@@ -46072,7 +46570,7 @@ export type BaseBundleMetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -46091,6 +46589,7 @@ export type BaseBundleMetadataEntityFieldsFragment = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      mutualizerAddress: string;
       dispute?: {
         __typename?: "Dispute";
         id: string;
@@ -46248,13 +46747,13 @@ export type BaseBundleMetadataEntityFieldsFragment = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
       }> | null;
     } | null;
-    seller: {
+    seller?: {
       __typename?: "Seller";
       id: string;
       assistant: string;
@@ -46338,8 +46837,14 @@ export type BaseBundleMetadataEntityFieldsFragment = {
           }> | null;
         }> | null;
       } | null;
-    };
-    collection: {
+    } | null;
+    buyer?: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    } | null;
+    collection?: {
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
@@ -46361,7 +46866,7 @@ export type BaseBundleMetadataEntityFieldsFragment = {
         createdAt: string;
         collaborators?: Array<string> | null;
       } | null;
-    };
+    } | null;
     exchangeToken: {
       __typename?: "ExchangeToken";
       id: string;
@@ -46404,6 +46909,7 @@ export type BaseBundleMetadataEntityFieldsFragment = {
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      mutualizerAddress: string;
     };
     metadata?:
       | {
@@ -48176,7 +48682,10 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         id: string;
         createdAt: string;
         price: string;
+        sellerId: string;
         sellerDeposit: string;
+        buyerId: string;
+        creator: number;
         protocolFee: string;
         agentFee: string;
         agentId: string;
@@ -48194,7 +48703,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
@@ -48213,6 +48722,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           completedDate?: string | null;
           disputedDate?: string | null;
           expired: boolean;
+          mutualizerAddress: string;
           dispute?: {
             __typename?: "Dispute";
             id: string;
@@ -48370,13 +48880,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             metadataHash: string;
             voided: boolean;
             voidedAt?: string | null;
-            collectionIndex: string;
+            collectionIndex?: string | null;
             disputeResolverId: string;
             numberOfCommits: string;
             numberOfRedemptions: string;
           }> | null;
         } | null;
-        seller: {
+        seller?: {
           __typename?: "Seller";
           id: string;
           assistant: string;
@@ -48460,8 +48970,14 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               }> | null;
             }> | null;
           } | null;
-        };
-        collection: {
+        } | null;
+        buyer?: {
+          __typename?: "Buyer";
+          id: string;
+          wallet: string;
+          active: boolean;
+        } | null;
+        collection?: {
           __typename?: "OfferCollection";
           id: string;
           sellerId: string;
@@ -48483,7 +48999,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             createdAt: string;
             collaborators?: Array<string> | null;
           } | null;
-        };
+        } | null;
         exchangeToken: {
           __typename?: "ExchangeToken";
           id: string;
@@ -48526,6 +49042,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           escalationResponsePeriod: string;
           feeAmount: string;
           buyerEscalationDeposit: string;
+          mutualizerAddress: string;
         };
         metadata?:
           | {
@@ -49518,7 +50035,10 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           id: string;
           createdAt: string;
           price: string;
+          sellerId: string;
           sellerDeposit: string;
+          buyerId: string;
+          creator: number;
           protocolFee: string;
           agentFee: string;
           agentId: string;
@@ -49536,7 +50056,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
@@ -49555,6 +50075,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             completedDate?: string | null;
             disputedDate?: string | null;
             expired: boolean;
+            mutualizerAddress: string;
             dispute?: {
               __typename?: "Dispute";
               id: string;
@@ -49712,13 +50233,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               metadataHash: string;
               voided: boolean;
               voidedAt?: string | null;
-              collectionIndex: string;
+              collectionIndex?: string | null;
               disputeResolverId: string;
               numberOfCommits: string;
               numberOfRedemptions: string;
             }> | null;
           } | null;
-          seller: {
+          seller?: {
             __typename?: "Seller";
             id: string;
             assistant: string;
@@ -49802,8 +50323,14 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 }> | null;
               }> | null;
             } | null;
-          };
-          collection: {
+          } | null;
+          buyer?: {
+            __typename?: "Buyer";
+            id: string;
+            wallet: string;
+            active: boolean;
+          } | null;
+          collection?: {
             __typename?: "OfferCollection";
             id: string;
             sellerId: string;
@@ -49825,7 +50352,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               createdAt: string;
               collaborators?: Array<string> | null;
             } | null;
-          };
+          } | null;
           exchangeToken: {
             __typename?: "ExchangeToken";
             id: string;
@@ -49868,6 +50395,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             escalationResponsePeriod: string;
             feeAmount: string;
             buyerEscalationDeposit: string;
+            mutualizerAddress: string;
           };
           metadata?:
             | {
@@ -51603,7 +52131,10 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         id: string;
         createdAt: string;
         price: string;
+        sellerId: string;
         sellerDeposit: string;
+        buyerId: string;
+        creator: number;
         protocolFee: string;
         agentFee: string;
         agentId: string;
@@ -51621,7 +52152,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
@@ -51640,6 +52171,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           completedDate?: string | null;
           disputedDate?: string | null;
           expired: boolean;
+          mutualizerAddress: string;
           dispute?: {
             __typename?: "Dispute";
             id: string;
@@ -51797,13 +52329,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             metadataHash: string;
             voided: boolean;
             voidedAt?: string | null;
-            collectionIndex: string;
+            collectionIndex?: string | null;
             disputeResolverId: string;
             numberOfCommits: string;
             numberOfRedemptions: string;
           }> | null;
         } | null;
-        seller: {
+        seller?: {
           __typename?: "Seller";
           id: string;
           assistant: string;
@@ -51887,8 +52419,14 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               }> | null;
             }> | null;
           } | null;
-        };
-        collection: {
+        } | null;
+        buyer?: {
+          __typename?: "Buyer";
+          id: string;
+          wallet: string;
+          active: boolean;
+        } | null;
+        collection?: {
           __typename?: "OfferCollection";
           id: string;
           sellerId: string;
@@ -51910,7 +52448,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             createdAt: string;
             collaborators?: Array<string> | null;
           } | null;
-        };
+        } | null;
         exchangeToken: {
           __typename?: "ExchangeToken";
           id: string;
@@ -51953,6 +52491,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           escalationResponsePeriod: string;
           feeAmount: string;
           buyerEscalationDeposit: string;
+          mutualizerAddress: string;
         };
         metadata?:
           | {
@@ -52945,7 +53484,10 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           id: string;
           createdAt: string;
           price: string;
+          sellerId: string;
           sellerDeposit: string;
+          buyerId: string;
+          creator: number;
           protocolFee: string;
           agentFee: string;
           agentId: string;
@@ -52963,7 +53505,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
@@ -52982,6 +53524,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             completedDate?: string | null;
             disputedDate?: string | null;
             expired: boolean;
+            mutualizerAddress: string;
             dispute?: {
               __typename?: "Dispute";
               id: string;
@@ -53139,13 +53682,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               metadataHash: string;
               voided: boolean;
               voidedAt?: string | null;
-              collectionIndex: string;
+              collectionIndex?: string | null;
               disputeResolverId: string;
               numberOfCommits: string;
               numberOfRedemptions: string;
             }> | null;
           } | null;
-          seller: {
+          seller?: {
             __typename?: "Seller";
             id: string;
             assistant: string;
@@ -53229,8 +53772,14 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 }> | null;
               }> | null;
             } | null;
-          };
-          collection: {
+          } | null;
+          buyer?: {
+            __typename?: "Buyer";
+            id: string;
+            wallet: string;
+            active: boolean;
+          } | null;
+          collection?: {
             __typename?: "OfferCollection";
             id: string;
             sellerId: string;
@@ -53252,7 +53801,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               createdAt: string;
               collaborators?: Array<string> | null;
             } | null;
-          };
+          } | null;
           exchangeToken: {
             __typename?: "ExchangeToken";
             id: string;
@@ -53295,6 +53844,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             escalationResponsePeriod: string;
             feeAmount: string;
             buyerEscalationDeposit: string;
+            mutualizerAddress: string;
           };
           metadata?:
             | {
@@ -55044,7 +55594,10 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -55062,7 +55615,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -55081,6 +55634,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         completedDate?: string | null;
         disputedDate?: string | null;
         expired: boolean;
+        mutualizerAddress: string;
         dispute?: {
           __typename?: "Dispute";
           id: string;
@@ -55238,13 +55792,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -55328,8 +55882,14 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -55351,7 +55911,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -55394,6 +55954,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -56825,7 +57386,10 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -56843,7 +57407,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -56862,6 +57426,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         completedDate?: string | null;
         disputedDate?: string | null;
         expired: boolean;
+        mutualizerAddress: string;
         dispute?: {
           __typename?: "Dispute";
           id: string;
@@ -57019,13 +57584,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -57109,8 +57674,14 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -57132,7 +57703,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -57175,6 +57746,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -58596,7 +59168,10 @@ export type ProductV1MetadataEntityFieldsFragment = {
     id: string;
     createdAt: string;
     price: string;
+    sellerId: string;
     sellerDeposit: string;
+    buyerId: string;
+    creator: number;
     protocolFee: string;
     agentFee: string;
     agentId: string;
@@ -58614,7 +59189,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -58633,6 +59208,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      mutualizerAddress: string;
       dispute?: {
         __typename?: "Dispute";
         id: string;
@@ -58790,13 +59366,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
       }> | null;
     } | null;
-    seller: {
+    seller?: {
       __typename?: "Seller";
       id: string;
       assistant: string;
@@ -58880,8 +59456,14 @@ export type ProductV1MetadataEntityFieldsFragment = {
           }> | null;
         }> | null;
       } | null;
-    };
-    collection: {
+    } | null;
+    buyer?: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    } | null;
+    collection?: {
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
@@ -58903,7 +59485,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
         createdAt: string;
         collaborators?: Array<string> | null;
       } | null;
-    };
+    } | null;
     exchangeToken: {
       __typename?: "ExchangeToken";
       id: string;
@@ -58946,6 +59528,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      mutualizerAddress: string;
     };
     metadata?:
       | {
@@ -60354,7 +60937,10 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     id: string;
     createdAt: string;
     price: string;
+    sellerId: string;
     sellerDeposit: string;
+    buyerId: string;
+    creator: number;
     protocolFee: string;
     agentFee: string;
     agentId: string;
@@ -60372,7 +60958,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -60391,6 +60977,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      mutualizerAddress: string;
       dispute?: {
         __typename?: "Dispute";
         id: string;
@@ -60548,13 +61135,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
       }> | null;
     } | null;
-    seller: {
+    seller?: {
       __typename?: "Seller";
       id: string;
       assistant: string;
@@ -60638,8 +61225,14 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           }> | null;
         }> | null;
       } | null;
-    };
-    collection: {
+    } | null;
+    buyer?: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    } | null;
+    collection?: {
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
@@ -60661,7 +61254,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         createdAt: string;
         collaborators?: Array<string> | null;
       } | null;
-    };
+    } | null;
     exchangeToken: {
       __typename?: "ExchangeToken";
       id: string;
@@ -60704,6 +61297,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      mutualizerAddress: string;
     };
     metadata?:
       | {
@@ -62338,7 +62932,10 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -62356,7 +62953,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -62375,6 +62972,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         completedDate?: string | null;
         disputedDate?: string | null;
         expired: boolean;
+        mutualizerAddress: string;
         dispute?: {
           __typename?: "Dispute";
           id: string;
@@ -62532,13 +63130,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -62622,8 +63220,14 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -62645,7 +63249,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -62688,6 +63292,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -63680,7 +64285,10 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         id: string;
         createdAt: string;
         price: string;
+        sellerId: string;
         sellerDeposit: string;
+        buyerId: string;
+        creator: number;
         protocolFee: string;
         agentFee: string;
         agentId: string;
@@ -63698,7 +64306,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
@@ -63717,6 +64325,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           completedDate?: string | null;
           disputedDate?: string | null;
           expired: boolean;
+          mutualizerAddress: string;
           dispute?: {
             __typename?: "Dispute";
             id: string;
@@ -63874,13 +64483,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             metadataHash: string;
             voided: boolean;
             voidedAt?: string | null;
-            collectionIndex: string;
+            collectionIndex?: string | null;
             disputeResolverId: string;
             numberOfCommits: string;
             numberOfRedemptions: string;
           }> | null;
         } | null;
-        seller: {
+        seller?: {
           __typename?: "Seller";
           id: string;
           assistant: string;
@@ -63964,8 +64573,14 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               }> | null;
             }> | null;
           } | null;
-        };
-        collection: {
+        } | null;
+        buyer?: {
+          __typename?: "Buyer";
+          id: string;
+          wallet: string;
+          active: boolean;
+        } | null;
+        collection?: {
           __typename?: "OfferCollection";
           id: string;
           sellerId: string;
@@ -63987,7 +64602,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             createdAt: string;
             collaborators?: Array<string> | null;
           } | null;
-        };
+        } | null;
         exchangeToken: {
           __typename?: "ExchangeToken";
           id: string;
@@ -64030,6 +64645,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           escalationResponsePeriod: string;
           feeAmount: string;
           buyerEscalationDeposit: string;
+          mutualizerAddress: string;
         };
         metadata?:
           | {
@@ -65754,7 +66370,10 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       id: string;
       createdAt: string;
       price: string;
+      sellerId: string;
       sellerDeposit: string;
+      buyerId: string;
+      creator: number;
       protocolFee: string;
       agentFee: string;
       agentId: string;
@@ -65772,7 +66391,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -65791,6 +66410,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         completedDate?: string | null;
         disputedDate?: string | null;
         expired: boolean;
+        mutualizerAddress: string;
         dispute?: {
           __typename?: "Dispute";
           id: string;
@@ -65948,13 +66568,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           metadataHash: string;
           voided: boolean;
           voidedAt?: string | null;
-          collectionIndex: string;
+          collectionIndex?: string | null;
           disputeResolverId: string;
           numberOfCommits: string;
           numberOfRedemptions: string;
         }> | null;
       } | null;
-      seller: {
+      seller?: {
         __typename?: "Seller";
         id: string;
         assistant: string;
@@ -66038,8 +66658,14 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             }> | null;
           }> | null;
         } | null;
-      };
-      collection: {
+      } | null;
+      buyer?: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      } | null;
+      collection?: {
         __typename?: "OfferCollection";
         id: string;
         sellerId: string;
@@ -66061,7 +66687,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           createdAt: string;
           collaborators?: Array<string> | null;
         } | null;
-      };
+      } | null;
       exchangeToken: {
         __typename?: "ExchangeToken";
         id: string;
@@ -66104,6 +66730,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         escalationResponsePeriod: string;
         feeAmount: string;
         buyerEscalationDeposit: string;
+        mutualizerAddress: string;
       };
       metadata?:
         | {
@@ -67096,7 +67723,10 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         id: string;
         createdAt: string;
         price: string;
+        sellerId: string;
         sellerDeposit: string;
+        buyerId: string;
+        creator: number;
         protocolFee: string;
         agentFee: string;
         agentId: string;
@@ -67114,7 +67744,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
@@ -67133,6 +67763,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           completedDate?: string | null;
           disputedDate?: string | null;
           expired: boolean;
+          mutualizerAddress: string;
           dispute?: {
             __typename?: "Dispute";
             id: string;
@@ -67290,13 +67921,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             metadataHash: string;
             voided: boolean;
             voidedAt?: string | null;
-            collectionIndex: string;
+            collectionIndex?: string | null;
             disputeResolverId: string;
             numberOfCommits: string;
             numberOfRedemptions: string;
           }> | null;
         } | null;
-        seller: {
+        seller?: {
           __typename?: "Seller";
           id: string;
           assistant: string;
@@ -67380,8 +68011,14 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               }> | null;
             }> | null;
           } | null;
-        };
-        collection: {
+        } | null;
+        buyer?: {
+          __typename?: "Buyer";
+          id: string;
+          wallet: string;
+          active: boolean;
+        } | null;
+        collection?: {
           __typename?: "OfferCollection";
           id: string;
           sellerId: string;
@@ -67403,7 +68040,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             createdAt: string;
             collaborators?: Array<string> | null;
           } | null;
-        };
+        } | null;
         exchangeToken: {
           __typename?: "ExchangeToken";
           id: string;
@@ -67446,6 +68083,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           escalationResponsePeriod: string;
           feeAmount: string;
           buyerEscalationDeposit: string;
+          mutualizerAddress: string;
         };
         metadata?:
           | {
@@ -69386,7 +70024,10 @@ export type GetOfferByIdQueryQuery = {
     id: string;
     createdAt: string;
     price: string;
+    sellerId: string;
     sellerDeposit: string;
+    buyerId: string;
+    creator: number;
     protocolFee: string;
     agentFee: string;
     agentId: string;
@@ -69404,7 +70045,7 @@ export type GetOfferByIdQueryQuery = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -69423,6 +70064,7 @@ export type GetOfferByIdQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      mutualizerAddress: string;
       dispute?: {
         __typename?: "Dispute";
         id: string;
@@ -69580,13 +70222,13 @@ export type GetOfferByIdQueryQuery = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
       }> | null;
     } | null;
-    seller: {
+    seller?: {
       __typename?: "Seller";
       id: string;
       assistant: string;
@@ -69670,8 +70312,14 @@ export type GetOfferByIdQueryQuery = {
           }> | null;
         }> | null;
       } | null;
-    };
-    collection: {
+    } | null;
+    buyer?: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    } | null;
+    collection?: {
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
@@ -69693,7 +70341,7 @@ export type GetOfferByIdQueryQuery = {
         createdAt: string;
         collaborators?: Array<string> | null;
       } | null;
-    };
+    } | null;
     exchangeToken: {
       __typename?: "ExchangeToken";
       id: string;
@@ -69736,6 +70384,7 @@ export type GetOfferByIdQueryQuery = {
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      mutualizerAddress: string;
     };
     metadata?:
       | {
@@ -70694,7 +71343,10 @@ export type GetOffersQueryQuery = {
     id: string;
     createdAt: string;
     price: string;
+    sellerId: string;
     sellerDeposit: string;
+    buyerId: string;
+    creator: number;
     protocolFee: string;
     agentFee: string;
     agentId: string;
@@ -70712,7 +71364,7 @@ export type GetOffersQueryQuery = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
-    collectionIndex: string;
+    collectionIndex?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -70731,6 +71383,7 @@ export type GetOffersQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      mutualizerAddress: string;
       dispute?: {
         __typename?: "Dispute";
         id: string;
@@ -70888,13 +71541,13 @@ export type GetOffersQueryQuery = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
-        collectionIndex: string;
+        collectionIndex?: string | null;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
       }> | null;
     } | null;
-    seller: {
+    seller?: {
       __typename?: "Seller";
       id: string;
       assistant: string;
@@ -70978,8 +71631,14 @@ export type GetOffersQueryQuery = {
           }> | null;
         }> | null;
       } | null;
-    };
-    collection: {
+    } | null;
+    buyer?: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    } | null;
+    collection?: {
       __typename?: "OfferCollection";
       id: string;
       sellerId: string;
@@ -71001,7 +71660,7 @@ export type GetOffersQueryQuery = {
         createdAt: string;
         collaborators?: Array<string> | null;
       } | null;
-    };
+    } | null;
     exchangeToken: {
       __typename?: "ExchangeToken";
       id: string;
@@ -71044,6 +71703,7 @@ export type GetOffersQueryQuery = {
       escalationResponsePeriod: string;
       feeAmount: string;
       buyerEscalationDeposit: string;
+      mutualizerAddress: string;
     };
     metadata?:
       | {
@@ -72094,7 +72754,10 @@ export type OfferFieldsFragment = {
   id: string;
   createdAt: string;
   price: string;
+  sellerId: string;
   sellerDeposit: string;
+  buyerId: string;
+  creator: number;
   protocolFee: string;
   agentFee: string;
   agentId: string;
@@ -72112,7 +72775,7 @@ export type OfferFieldsFragment = {
   metadataHash: string;
   voided: boolean;
   voidedAt?: string | null;
-  collectionIndex: string;
+  collectionIndex?: string | null;
   disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
@@ -72131,6 +72794,7 @@ export type OfferFieldsFragment = {
     completedDate?: string | null;
     disputedDate?: string | null;
     expired: boolean;
+    mutualizerAddress: string;
     dispute?: {
       __typename?: "Dispute";
       id: string;
@@ -72288,13 +72952,13 @@ export type OfferFieldsFragment = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
     }> | null;
   } | null;
-  seller: {
+  seller?: {
     __typename?: "Seller";
     id: string;
     assistant: string;
@@ -72378,8 +73042,14 @@ export type OfferFieldsFragment = {
         }> | null;
       }> | null;
     } | null;
-  };
-  collection: {
+  } | null;
+  buyer?: {
+    __typename?: "Buyer";
+    id: string;
+    wallet: string;
+    active: boolean;
+  } | null;
+  collection?: {
     __typename?: "OfferCollection";
     id: string;
     sellerId: string;
@@ -72401,7 +73071,7 @@ export type OfferFieldsFragment = {
       createdAt: string;
       collaborators?: Array<string> | null;
     } | null;
-  };
+  } | null;
   exchangeToken: {
     __typename?: "ExchangeToken";
     id: string;
@@ -72444,6 +73114,7 @@ export type OfferFieldsFragment = {
     escalationResponsePeriod: string;
     feeAmount: string;
     buyerEscalationDeposit: string;
+    mutualizerAddress: string;
   };
   metadata?:
     | {
@@ -73385,7 +74056,10 @@ export type BaseOfferFieldsFragment = {
   id: string;
   createdAt: string;
   price: string;
+  sellerId: string;
   sellerDeposit: string;
+  buyerId: string;
+  creator: number;
   protocolFee: string;
   agentFee: string;
   agentId: string;
@@ -73403,7 +74077,7 @@ export type BaseOfferFieldsFragment = {
   metadataHash: string;
   voided: boolean;
   voidedAt?: string | null;
-  collectionIndex: string;
+  collectionIndex?: string | null;
   disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
@@ -73454,13 +74128,13 @@ export type BaseOfferFieldsFragment = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
-      collectionIndex: string;
+      collectionIndex?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
     }> | null;
   } | null;
-  seller: {
+  seller?: {
     __typename?: "Seller";
     id: string;
     assistant: string;
@@ -73544,8 +74218,14 @@ export type BaseOfferFieldsFragment = {
         }> | null;
       }> | null;
     } | null;
-  };
-  collection: {
+  } | null;
+  buyer?: {
+    __typename?: "Buyer";
+    id: string;
+    wallet: string;
+    active: boolean;
+  } | null;
+  collection?: {
     __typename?: "OfferCollection";
     id: string;
     sellerId: string;
@@ -73567,7 +74247,7 @@ export type BaseOfferFieldsFragment = {
       createdAt: string;
       collaborators?: Array<string> | null;
     } | null;
-  };
+  } | null;
   exchangeToken: {
     __typename?: "ExchangeToken";
     id: string;
@@ -73610,6 +74290,7 @@ export type BaseOfferFieldsFragment = {
     escalationResponsePeriod: string;
     feeAmount: string;
     buyerEscalationDeposit: string;
+    mutualizerAddress: string;
   };
   metadata?:
     | {
@@ -74717,6 +75398,13 @@ export const BaseConditionFieldsFragmentDoc = gql`
     }
   }
 `;
+export const BaseBuyerFieldsFragmentDoc = gql`
+  fragment BaseBuyerFields on Buyer {
+    id
+    wallet
+    active
+  }
+`;
 export const BaseExchangeTokenFieldsFragmentDoc = gql`
   fragment BaseExchangeTokenFields on ExchangeToken {
     id
@@ -74762,6 +75450,7 @@ export const BaseDisputeResolutionTermsEntityFieldsFragmentDoc = gql`
     escalationResponsePeriod
     feeAmount
     buyerEscalationDeposit
+    mutualizerAddress
   }
 `;
 export const BaseAnimationMetadataFieldsFragmentDoc = gql`
@@ -75001,7 +75690,10 @@ export const BaseOfferFieldsFragmentDoc = gql`
     id
     createdAt
     price
+    sellerId
     sellerDeposit
+    buyerId
+    creator
     protocolFee
     agentFee
     agentId
@@ -75039,6 +75731,9 @@ export const BaseOfferFieldsFragmentDoc = gql`
     }
     seller {
       ...BaseSellerFields
+    }
+    buyer {
+      ...BaseBuyerFields
     }
     collection {
       ...BaseOfferCollectionFields
@@ -75168,6 +75863,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
   }
   ${BaseConditionFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
+  ${BaseBuyerFieldsFragmentDoc}
   ${BaseOfferCollectionFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
   ${BaseDisputeResolverFieldsFragmentDoc}
@@ -75243,13 +75939,6 @@ export const BaseDisputeFieldsFragmentDoc = gql`
     timeout
   }
 `;
-export const BaseBuyerFieldsFragmentDoc = gql`
-  fragment BaseBuyerFields on Buyer {
-    id
-    wallet
-    active
-  }
-`;
 export const BaseExchangeFieldsFragmentDoc = gql`
   fragment BaseExchangeFields on Exchange {
     id
@@ -75264,6 +75953,7 @@ export const BaseExchangeFieldsFragmentDoc = gql`
     completedDate
     disputedDate
     expired
+    mutualizerAddress
     dispute {
       ...BaseDisputeFields
     }
@@ -76612,15 +77302,17 @@ export function getSdk(
   return {
     getSellerByIdQuery(
       variables: GetSellerByIdQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetSellerByIdQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetSellerByIdQueryQuery>(
-            GetSellerByIdQueryDocument,
+          client.request<GetSellerByIdQueryQuery>({
+            document: GetSellerByIdQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getSellerByIdQuery",
         "query",
         variables
@@ -76628,15 +77320,17 @@ export function getSdk(
     },
     getSellersQuery(
       variables?: GetSellersQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetSellersQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetSellersQueryQuery>(
-            GetSellersQueryDocument,
+          client.request<GetSellersQueryQuery>({
+            document: GetSellersQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getSellersQuery",
         "query",
         variables
@@ -76644,15 +77338,17 @@ export function getSdk(
     },
     getBuyerByIdQuery(
       variables: GetBuyerByIdQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetBuyerByIdQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetBuyerByIdQueryQuery>(
-            GetBuyerByIdQueryDocument,
+          client.request<GetBuyerByIdQueryQuery>({
+            document: GetBuyerByIdQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getBuyerByIdQuery",
         "query",
         variables
@@ -76660,15 +77356,17 @@ export function getSdk(
     },
     getBuyersQuery(
       variables?: GetBuyersQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetBuyersQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetBuyersQueryQuery>(
-            GetBuyersQueryDocument,
+          client.request<GetBuyersQueryQuery>({
+            document: GetBuyersQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getBuyersQuery",
         "query",
         variables
@@ -76676,15 +77374,17 @@ export function getSdk(
     },
     getDisputeResolverByIdQuery(
       variables: GetDisputeResolverByIdQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetDisputeResolverByIdQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetDisputeResolverByIdQueryQuery>(
-            GetDisputeResolverByIdQueryDocument,
+          client.request<GetDisputeResolverByIdQueryQuery>({
+            document: GetDisputeResolverByIdQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getDisputeResolverByIdQuery",
         "query",
         variables
@@ -76692,15 +77392,17 @@ export function getSdk(
     },
     getDisputeResolversQuery(
       variables?: GetDisputeResolversQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetDisputeResolversQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetDisputeResolversQueryQuery>(
-            GetDisputeResolversQueryDocument,
+          client.request<GetDisputeResolversQueryQuery>({
+            document: GetDisputeResolversQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getDisputeResolversQuery",
         "query",
         variables
@@ -76708,15 +77410,17 @@ export function getSdk(
     },
     getConditionalCommitAuthorizedEventLogsQuery(
       variables?: GetConditionalCommitAuthorizedEventLogsQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetConditionalCommitAuthorizedEventLogsQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetConditionalCommitAuthorizedEventLogsQueryQuery>(
-            GetConditionalCommitAuthorizedEventLogsQueryDocument,
+          client.request<GetConditionalCommitAuthorizedEventLogsQueryQuery>({
+            document: GetConditionalCommitAuthorizedEventLogsQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getConditionalCommitAuthorizedEventLogsQuery",
         "query",
         variables
@@ -76724,15 +77428,17 @@ export function getSdk(
     },
     getOfferCollectionsQuery(
       variables?: GetOfferCollectionsQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetOfferCollectionsQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetOfferCollectionsQueryQuery>(
-            GetOfferCollectionsQueryDocument,
+          client.request<GetOfferCollectionsQueryQuery>({
+            document: GetOfferCollectionsQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getOfferCollectionsQuery",
         "query",
         variables
@@ -76740,15 +77446,17 @@ export function getSdk(
     },
     getAuthTokenIds(
       variables?: GetAuthTokenIdsQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetAuthTokenIdsQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetAuthTokenIdsQuery>(
-            GetAuthTokenIdsDocument,
+          client.request<GetAuthTokenIdsQuery>({
+            document: GetAuthTokenIdsDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getAuthTokenIds",
         "query",
         variables
@@ -76756,15 +77464,17 @@ export function getSdk(
     },
     getDisputeByIdQuery(
       variables: GetDisputeByIdQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetDisputeByIdQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetDisputeByIdQueryQuery>(
-            GetDisputeByIdQueryDocument,
+          client.request<GetDisputeByIdQueryQuery>({
+            document: GetDisputeByIdQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getDisputeByIdQuery",
         "query",
         variables
@@ -76772,15 +77482,17 @@ export function getSdk(
     },
     getDisputesQuery(
       variables?: GetDisputesQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetDisputesQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetDisputesQueryQuery>(
-            GetDisputesQueryDocument,
+          client.request<GetDisputesQueryQuery>({
+            document: GetDisputesQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getDisputesQuery",
         "query",
         variables
@@ -76788,15 +77500,17 @@ export function getSdk(
     },
     getExchangeTokenByIdQuery(
       variables: GetExchangeTokenByIdQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetExchangeTokenByIdQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetExchangeTokenByIdQueryQuery>(
-            GetExchangeTokenByIdQueryDocument,
+          client.request<GetExchangeTokenByIdQueryQuery>({
+            document: GetExchangeTokenByIdQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getExchangeTokenByIdQuery",
         "query",
         variables
@@ -76804,15 +77518,17 @@ export function getSdk(
     },
     getExchangeTokensQuery(
       variables?: GetExchangeTokensQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetExchangeTokensQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetExchangeTokensQueryQuery>(
-            GetExchangeTokensQueryDocument,
+          client.request<GetExchangeTokensQueryQuery>({
+            document: GetExchangeTokensQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getExchangeTokensQuery",
         "query",
         variables
@@ -76820,15 +77536,17 @@ export function getSdk(
     },
     getEventLogsQuery(
       variables?: GetEventLogsQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetEventLogsQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetEventLogsQueryQuery>(
-            GetEventLogsQueryDocument,
+          client.request<GetEventLogsQueryQuery>({
+            document: GetEventLogsQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getEventLogsQuery",
         "query",
         variables
@@ -76836,15 +77554,17 @@ export function getSdk(
     },
     getExchangeByIdQuery(
       variables: GetExchangeByIdQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetExchangeByIdQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetExchangeByIdQueryQuery>(
-            GetExchangeByIdQueryDocument,
+          client.request<GetExchangeByIdQueryQuery>({
+            document: GetExchangeByIdQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getExchangeByIdQuery",
         "query",
         variables
@@ -76852,15 +77572,17 @@ export function getSdk(
     },
     getExchangesQuery(
       variables?: GetExchangesQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetExchangesQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetExchangesQueryQuery>(
-            GetExchangesQueryDocument,
+          client.request<GetExchangesQueryQuery>({
+            document: GetExchangesQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getExchangesQuery",
         "query",
         variables
@@ -76868,13 +77590,16 @@ export function getSdk(
     },
     getFundsById(
       variables: GetFundsByIdQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetFundsByIdQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetFundsByIdQuery>(GetFundsByIdDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders
+          client.request<GetFundsByIdQuery>({
+            document: GetFundsByIdDocument,
+            variables,
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
           }),
         "getFundsById",
         "query",
@@ -76883,13 +77608,16 @@ export function getSdk(
     },
     getFunds(
       variables?: GetFundsQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetFundsQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetFundsQuery>(GetFundsDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders
+          client.request<GetFundsQuery>({
+            document: GetFundsDocument,
+            variables,
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
           }),
         "getFunds",
         "query",
@@ -76898,15 +77626,17 @@ export function getSdk(
     },
     getBaseMetadataEntityByIdQuery(
       variables: GetBaseMetadataEntityByIdQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetBaseMetadataEntityByIdQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetBaseMetadataEntityByIdQueryQuery>(
-            GetBaseMetadataEntityByIdQueryDocument,
+          client.request<GetBaseMetadataEntityByIdQueryQuery>({
+            document: GetBaseMetadataEntityByIdQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getBaseMetadataEntityByIdQuery",
         "query",
         variables
@@ -76914,15 +77644,17 @@ export function getSdk(
     },
     getBaseMetadataEntitiesQuery(
       variables?: GetBaseMetadataEntitiesQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetBaseMetadataEntitiesQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetBaseMetadataEntitiesQueryQuery>(
-            GetBaseMetadataEntitiesQueryDocument,
+          client.request<GetBaseMetadataEntitiesQueryQuery>({
+            document: GetBaseMetadataEntitiesQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getBaseMetadataEntitiesQuery",
         "query",
         variables
@@ -76930,15 +77662,17 @@ export function getSdk(
     },
     getBundleMetadataEntityByIdQuery(
       variables: GetBundleMetadataEntityByIdQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetBundleMetadataEntityByIdQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetBundleMetadataEntityByIdQueryQuery>(
-            GetBundleMetadataEntityByIdQueryDocument,
+          client.request<GetBundleMetadataEntityByIdQueryQuery>({
+            document: GetBundleMetadataEntityByIdQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getBundleMetadataEntityByIdQuery",
         "query",
         variables
@@ -76946,15 +77680,17 @@ export function getSdk(
     },
     getBundleMetadataEntitiesQuery(
       variables?: GetBundleMetadataEntitiesQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetBundleMetadataEntitiesQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetBundleMetadataEntitiesQueryQuery>(
-            GetBundleMetadataEntitiesQueryDocument,
+          client.request<GetBundleMetadataEntitiesQueryQuery>({
+            document: GetBundleMetadataEntitiesQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getBundleMetadataEntitiesQuery",
         "query",
         variables
@@ -76962,15 +77698,17 @@ export function getSdk(
     },
     getProductV1BrandsQuery(
       variables?: GetProductV1BrandsQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetProductV1BrandsQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetProductV1BrandsQueryQuery>(
-            GetProductV1BrandsQueryDocument,
+          client.request<GetProductV1BrandsQueryQuery>({
+            document: GetProductV1BrandsQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getProductV1BrandsQuery",
         "query",
         variables
@@ -76978,15 +77716,17 @@ export function getSdk(
     },
     getProductV1ProductsQuery(
       variables?: GetProductV1ProductsQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetProductV1ProductsQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetProductV1ProductsQueryQuery>(
-            GetProductV1ProductsQueryDocument,
+          client.request<GetProductV1ProductsQueryQuery>({
+            document: GetProductV1ProductsQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getProductV1ProductsQuery",
         "query",
         variables
@@ -76994,15 +77734,17 @@ export function getSdk(
     },
     getProductV1ProductsWithVariantsQuery(
       variables?: GetProductV1ProductsWithVariantsQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetProductV1ProductsWithVariantsQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetProductV1ProductsWithVariantsQueryQuery>(
-            GetProductV1ProductsWithVariantsQueryDocument,
+          client.request<GetProductV1ProductsWithVariantsQueryQuery>({
+            document: GetProductV1ProductsWithVariantsQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getProductV1ProductsWithVariantsQuery",
         "query",
         variables
@@ -77010,15 +77752,17 @@ export function getSdk(
     },
     getAllProductsWithNotVoidedVariantsQuery(
       variables?: GetAllProductsWithNotVoidedVariantsQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetAllProductsWithNotVoidedVariantsQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetAllProductsWithNotVoidedVariantsQueryQuery>(
-            GetAllProductsWithNotVoidedVariantsQueryDocument,
+          client.request<GetAllProductsWithNotVoidedVariantsQueryQuery>({
+            document: GetAllProductsWithNotVoidedVariantsQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getAllProductsWithNotVoidedVariantsQuery",
         "query",
         variables
@@ -77026,15 +77770,17 @@ export function getSdk(
     },
     getProductV1CategoriesQuery(
       variables?: GetProductV1CategoriesQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetProductV1CategoriesQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetProductV1CategoriesQueryQuery>(
-            GetProductV1CategoriesQueryDocument,
+          client.request<GetProductV1CategoriesQueryQuery>({
+            document: GetProductV1CategoriesQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getProductV1CategoriesQuery",
         "query",
         variables
@@ -77042,15 +77788,17 @@ export function getSdk(
     },
     getProductV1MetadataEntityByIdQuery(
       variables: GetProductV1MetadataEntityByIdQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetProductV1MetadataEntityByIdQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetProductV1MetadataEntityByIdQueryQuery>(
-            GetProductV1MetadataEntityByIdQueryDocument,
+          client.request<GetProductV1MetadataEntityByIdQueryQuery>({
+            document: GetProductV1MetadataEntityByIdQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getProductV1MetadataEntityByIdQuery",
         "query",
         variables
@@ -77058,15 +77806,17 @@ export function getSdk(
     },
     getProductV1MetadataEntitiesQuery(
       variables?: GetProductV1MetadataEntitiesQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetProductV1MetadataEntitiesQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetProductV1MetadataEntitiesQueryQuery>(
-            GetProductV1MetadataEntitiesQueryDocument,
+          client.request<GetProductV1MetadataEntitiesQueryQuery>({
+            document: GetProductV1MetadataEntitiesQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getProductV1MetadataEntitiesQuery",
         "query",
         variables
@@ -77074,15 +77824,17 @@ export function getSdk(
     },
     getOfferByIdQuery(
       variables: GetOfferByIdQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetOfferByIdQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetOfferByIdQueryQuery>(
-            GetOfferByIdQueryDocument,
+          client.request<GetOfferByIdQueryQuery>({
+            document: GetOfferByIdQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getOfferByIdQuery",
         "query",
         variables
@@ -77090,15 +77842,17 @@ export function getSdk(
     },
     getOffersQuery(
       variables?: GetOffersQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetOffersQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetOffersQueryQuery>(
-            GetOffersQueryDocument,
+          client.request<GetOffersQueryQuery>({
+            document: GetOffersQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getOffersQuery",
         "query",
         variables
@@ -77106,15 +77860,17 @@ export function getSdk(
     },
     getOffersMediaQuery(
       variables?: GetOffersMediaQueryQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
     ): Promise<GetOffersMediaQueryQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<GetOffersMediaQueryQuery>(
-            GetOffersMediaQueryDocument,
+          client.request<GetOffersMediaQueryQuery>({
+            document: GetOffersMediaQueryDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
         "getOffersMediaQuery",
         "query",
         variables

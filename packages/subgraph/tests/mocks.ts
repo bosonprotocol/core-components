@@ -1028,7 +1028,7 @@ export function createBuyerCreatedEvent(
 }
 
 export function createFundsDepositedEvent(
-  sellerId: i32,
+  entityId: i32,
   depositedBy: string,
   tokenAddress: string,
   amount: i32
@@ -1036,9 +1036,9 @@ export function createFundsDepositedEvent(
   const fundsDepositedEvent = changetype<FundsDeposited>(newMockEvent());
   fundsDepositedEvent.parameters = [];
 
-  const sellerIdParam = new ethereum.EventParam(
-    "sellerId",
-    ethereum.Value.fromI32(sellerId)
+  const entityIdParam = new ethereum.EventParam(
+    "entityId",
+    ethereum.Value.fromI32(entityId)
   );
   const depositedByParam = new ethereum.EventParam(
     "depositedBy",
@@ -1053,7 +1053,7 @@ export function createFundsDepositedEvent(
     ethereum.Value.fromI32(amount)
   );
 
-  fundsDepositedEvent.parameters.push(sellerIdParam);
+  fundsDepositedEvent.parameters.push(entityIdParam);
   fundsDepositedEvent.parameters.push(depositedByParam);
   fundsDepositedEvent.parameters.push(tokenAddressParam);
   fundsDepositedEvent.parameters.push(amountParam);

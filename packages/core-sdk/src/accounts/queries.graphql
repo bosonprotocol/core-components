@@ -535,6 +535,7 @@ fragment BaseDisputeResolutionTermsEntityFields on DisputeResolutionTermsEntity 
   escalationResponsePeriod
   feeAmount
   buyerEscalationDeposit
+  mutualizerAddress
 }
 
 fragment BaseConditionalCommitAuthorizedEventLogsFields on ConditionalCommitAuthorizedEventLog {

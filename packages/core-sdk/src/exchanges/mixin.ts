@@ -5,7 +5,8 @@ import {
   TransactionRequest,
   Log,
   Web3LibAdapter,
-  FullOfferArgs
+  FullOfferArgs,
+  SellerOfferArgs
 } from "@bosonprotocol/common";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { getValueFromLogs } from "../utils/logs";
@@ -20,7 +21,8 @@ import {
   commitToConditionalOffer,
   getExchangeTokenId,
   parseTokenId,
-  signFullOffer
+  signFullOffer,
+  commitToBuyerOffer
 } from "./handler";
 import { getExchangeById, getExchanges } from "./subgraph";
 import { bosonExchangeHandlerIface } from "./interface";
@@ -57,8 +59,8 @@ export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   }
 
   /**
-   * Commits to an offer by calling the `ExchangeHandlerContract`.
-   * This transaction only succeeds if the seller has deposited funds.
+   * Commits to a seller initiated offer by calling the `ExchangeCommitFacet`.
+   * This transaction only succeeds if the seller has deposited enough funds to lock the offer's sellerDeposit.
    * @param offerId - ID of offer to commit to.
    * @param overrides - Optional overrides.
    * @returns Transaction response.
@@ -102,6 +104,57 @@ export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       });
     } else {
       return commitToOffer({
+        ...commitArgs,
+        returnTxInfo: false
+      });
+    }
+  }
+
+  /**
+   * Commits to a buyer initiated offer by calling the `ExchangeCommitFacet`.
+   * This transaction only succeeds if the buyer has deposited enough funds to lock the offer's price.
+   * @param offerId - ID of offer to commit to.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async commitToBuyerOffer(
+    offerId: BigNumberish,
+    sellerParams: SellerOfferArgs,
+    overrides: Partial<{
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+  public async commitToBuyerOffer(
+    offerId: BigNumberish,
+    sellerParams?: SellerOfferArgs,
+    overrides?: Partial<{
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+  public async commitToBuyerOffer(
+    offerId: BigNumberish,
+    sellerParams: SellerOfferArgs = {},
+    overrides: Partial<{
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const commitArgs = {
+      offerId,
+      sellerParams: sellerParams || {},
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: this._protocolDiamond
+    } as const satisfies Parameters<typeof commitToBuyerOffer>[0];
+
+    if (returnTxInfo === true) {
+      return commitToBuyerOffer({
+        ...commitArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return commitToBuyerOffer({
         ...commitArgs,
         returnTxInfo: false
       });
@@ -266,17 +319,25 @@ export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   }
 
   /**
-   * Utility method to retrieve the created `exchangeId` from logs after calling `commitToOffer`.
+   * Utility method to retrieve the created `exchangeId` from logs after calling `commitToOffer` or `commitToBuyerOffer`.
    * @param logs - Logs to search in.
    * @returns Created exchange id.
    */
   public getCommittedExchangeIdFromLogs(logs: Log[]): string | null {
-    return getValueFromLogs({
-      iface: bosonExchangeHandlerIface,
-      logs,
-      eventArgsKey: "exchangeId",
-      eventName: "BuyerCommitted"
-    });
+    return (
+      getValueFromLogs({
+        iface: bosonExchangeHandlerIface,
+        logs,
+        eventArgsKey: "exchangeId",
+        eventName: "BuyerCommitted"
+      }) ||
+      getValueFromLogs({
+        iface: bosonExchangeHandlerIface,
+        logs,
+        eventArgsKey: "exchangeId",
+        eventName: "SellerCommitted"
+      })
+    );
   }
 
   /**

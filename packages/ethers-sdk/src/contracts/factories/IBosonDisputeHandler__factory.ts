@@ -986,8 +986,45 @@ const _abi = [
         type: "uint256",
       },
       {
+        indexed: true,
+        internalType: "address",
+        name: "mutualizerAddress",
+        type: "address",
+      },
+      {
         indexed: false,
-        internalType: "address payable",
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "DRFeeReturnFailed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "returnAmount",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
         name: "mutualizerAddress",
         type: "address",
       },
@@ -1206,6 +1243,37 @@ const _abi = [
       },
     ],
     name: "EscalatedDisputeRefused",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "entityId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "FundsDeposited",
     type: "event",
   },
   {

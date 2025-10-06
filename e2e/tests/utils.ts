@@ -12,7 +12,8 @@ import {
   utils,
   Contract,
   BigNumber,
-  BigNumberish
+  BigNumberish,
+  constants
 } from "ethers";
 import {
   Wallet as WalletV6,
@@ -73,6 +74,7 @@ import {
   ACCOUNT_24
 } from "../../contracts/accounts";
 import {
+  DR_FEE_MUTUALIZER_ABI,
   MOCK_ERC1155_ABI,
   MOCK_ERC20_ABI,
   MOCK_ERC721_ABI,
@@ -86,7 +88,7 @@ import bundleMetadataMinimal from "../../packages/metadata/tests/bundle/valid/mi
 import { Chain, OpenSeaSDK } from "opensea-js";
 import { Seaport } from "@opensea/seaport-js";
 import { hexlify, randomBytes } from "ethers/lib/utils";
-import { FullOfferArgs } from "@bosonprotocol/common";
+import { FullOfferArgs, SellerOfferArgs } from "@bosonprotocol/common";
 
 export type DeepPartial<T> = T extends object
   ? {
@@ -122,7 +124,10 @@ export const OPENSEA_FEE_RECIPIENT =
 
 export const OPENSEA_WRAPPER_FACTORY =
   (getFirstEnvConfig("local").contracts.openseaWrapper as string) ||
-  "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf";
+  "0x9d4454B023096f34B160D6B654540c56A1F81688";
+
+export const DR_FEE_MUTUALIZER_ADDRESS =
+  "0x36C02dA8a0983159322a80FFE9F24b1acfF8B570";
 
 export const metadata = {
   name: "name",
@@ -203,6 +208,7 @@ export const seedWallet14 = new Wallet(ACCOUNT_14.privateKey, provider);
 export const seedWallet15 = new Wallet(ACCOUNT_15.privateKey, provider);
 // seedWallets used by core-sdk-extend-offer test
 export const seedWallet16 = new Wallet(ACCOUNT_16.privateKey, provider);
+// seedWallets used by core-sdk-offers test
 export const seedWallet17 = new Wallet(ACCOUNT_17.privateKey, provider);
 // seedWallets used by core-sdk-set-contract-uri
 export const seedWallet18 = new Wallet(ACCOUNT_18.privateKey, provider);
@@ -233,6 +239,12 @@ export const mockErc721Contract = new Contract(
 export const mockErc1155Contract = new Contract(
   MOCK_ERC1155_ADDRESS,
   MOCK_ERC1155_ABI,
+  provider
+);
+
+export const dRFeeMutualizerContract = new Contract(
+  DR_FEE_MUTUALIZER_ADDRESS,
+  DR_FEE_MUTUALIZER_ABI,
   provider
 );
 
@@ -1245,6 +1257,30 @@ export async function commitToOffer(args: {
   return exchange;
 }
 
+export async function commitToBuyerOffer(args: {
+  sellerCoreSDK: CoreSDK;
+  offerId: BigNumberish;
+  sellerParams?: SellerOfferArgs;
+}) {
+  const commitToBuyerOfferTxResponse =
+    await args.sellerCoreSDK.commitToBuyerOffer(
+      args.offerId,
+      args.sellerParams
+    );
+  const commitToBuyerOfferTxReceipt = await commitToBuyerOfferTxResponse.wait();
+  const exchangeId = args.sellerCoreSDK.getCommittedExchangeIdFromLogs(
+    commitToBuyerOfferTxReceipt.logs
+  );
+  if (!exchangeId) {
+    throw new Error("exchangeId is not defined");
+  }
+  await args.sellerCoreSDK.waitForGraphNodeIndexing(
+    commitToBuyerOfferTxReceipt
+  );
+  const exchange = await args.sellerCoreSDK.getExchangeById(exchangeId);
+  return exchange;
+}
+
 export async function publishNftContractMetadata(
   coreSDK: CoreSDK,
   metadata: Record<string, unknown>
@@ -1583,4 +1619,80 @@ export async function approveIfNeeded(
     });
     await approveTx.wait();
   }
+}
+
+export async function depositFundsToDRFeeMutualizer(
+  fundingWallet: Wallet,
+  tokenAddress: string,
+  amount: BigNumberish
+) {
+  const tx = await dRFeeMutualizerContract
+    .connect(fundingWallet)
+    .deposit(tokenAddress, amount, {
+      value: tokenAddress === constants.AddressZero ? amount : 0
+    });
+  await tx.wait();
+}
+
+export async function newAgreementToDRFeeMutualizer(
+  sellerId: BigNumberish,
+  tokenAddress: string,
+  disputeResolverId: BigNumberish,
+  maxAmountPerTx: BigNumberish,
+  maxAmountTotal: BigNumberish,
+  timePeriod: BigNumberish,
+  premium: BigNumberish,
+  refundOnCancel: boolean
+): Promise<{
+  agreementId: BigNumber;
+  sellerId: BigNumber;
+  tokenAddress: string;
+  disputeresolverId: BigNumber;
+}> {
+  const tx = await dRFeeMutualizerContract
+    .connect(deployerWallet)
+    .newAgreement(
+      sellerId,
+      tokenAddress,
+      disputeResolverId,
+      maxAmountPerTx,
+      maxAmountTotal,
+      timePeriod,
+      premium,
+      refundOnCancel
+    );
+  const txReceipt = await tx.wait();
+  const [agreementCreatedEvent] = txReceipt.logs
+    .map((log) => {
+      try {
+        return dRFeeMutualizerContract.interface.parseLog(log);
+      } catch (error) {
+        // assume that failing to parse is irrelevant log
+        return null;
+      }
+    })
+    .filter((log) => log !== null)
+    .filter((log) => log.name === "AgreementCreated");
+  expect(agreementCreatedEvent).toBeTruthy();
+  return {
+    agreementId: agreementCreatedEvent.args["agreementId"],
+    disputeresolverId: agreementCreatedEvent.args["disputeresolverId"],
+    sellerId: agreementCreatedEvent.args["sellerId"],
+    tokenAddress: agreementCreatedEvent.args["tokenAddress"]
+  };
+}
+
+export async function payPremiumToDRFeeMutualizer(
+  fundingWallet: Wallet,
+  agreementId: BigNumberish,
+  sellerId: BigNumberish,
+  tokenAddress: string,
+  amount: BigNumberish
+) {
+  const tx = await dRFeeMutualizerContract
+    .connect(fundingWallet)
+    .payPremium(agreementId, sellerId, {
+      value: tokenAddress === constants.AddressZero ? amount : 0
+    });
+  await tx.wait();
 }

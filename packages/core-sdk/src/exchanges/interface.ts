@@ -4,17 +4,20 @@ import {
   DRParametersStruct,
   OfferDatesStruct,
   OfferDurationsStruct,
-  OfferStruct
+  OfferStruct,
+  SellerOfferArgs,
+  FullOfferArgs
 } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
+import { getAddress } from "@ethersproject/address";
 import { BigNumberish } from "@ethersproject/bignumber";
+import { AddressZero } from "@ethersproject/constants";
 import {
   argsToDRParametersStruct,
   argsToOfferDatesStruct,
   argsToOfferDurationsStruct,
   argsToOfferStruct
 } from "../offers/interface";
-import { FullOfferArgs } from "@bosonprotocol/common/src";
 import { conditionArgsToStructs } from "../groups/interface";
 
 export const bosonExchangeHandlerIface = new Interface(
@@ -30,6 +33,16 @@ export function encodeCommitToOffer(buyer: string, offerId: BigNumberish) {
     buyer,
     offerId
   ]);
+}
+
+export function encodeCommitToBuyerOffer(
+  offerId: BigNumberish,
+  sellerParams: SellerOfferArgs
+) {
+  return bosonExchangeCommitHandlerIface.encodeFunctionData(
+    "commitToBuyerOffer",
+    [offerId, argsToSellerOfferStruct(sellerParams)]
+  );
 }
 
 export function encodeCommitToConditionalOffer(
@@ -152,4 +165,29 @@ export function encodeRedeemVoucher(exchangeId: BigNumberish) {
   return bosonExchangeHandlerIface.encodeFunctionData("redeemVoucher", [
     exchangeId
   ]);
+}
+
+export function argsToSellerOfferStruct(
+  args: SellerOfferArgs
+): Partial<SellerOfferArgs> {
+  const royaltyInfo =
+    args.royaltyInfo !== undefined
+      ? {
+          ...args.royaltyInfo,
+          recipients: args.royaltyInfo.recipients.map((recipient) =>
+            getAddress(recipient.toLowerCase())
+          )
+        }
+      : {
+          recipients: [],
+          bps: []
+        };
+
+  return {
+    collectionIndex: args.collectionIndex || 0,
+    royaltyInfo,
+    mutualizerAddress: args.mutualizerAddress
+      ? getAddress(args.mutualizerAddress.toLowerCase())
+      : AddressZero
+  };
 }

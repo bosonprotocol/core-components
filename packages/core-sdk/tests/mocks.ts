@@ -1,4 +1,4 @@
-import { utils } from "@bosonprotocol/common";
+import { OfferCreator, utils } from "@bosonprotocol/common";
 import {
   SellerFieldsFragment,
   OfferFieldsFragment,
@@ -136,6 +136,7 @@ export function mockRawOfferFromSubgraph(
         ]
       }
     ],
+    sellerId: "1",
     seller: {
       id: "1",
       assistant: ZERO_ADDRESS,
@@ -167,6 +168,9 @@ export function mockRawOfferFromSubgraph(
       ],
       ...seller
     },
+    creator: OfferCreator.Seller,
+    buyerId: overrides.buyerId || "0",
+    buyer: overrides.buyer || null,
     exchangeToken: {
       id: ZERO_ADDRESS,
       address: ZERO_ADDRESS,
@@ -195,6 +199,7 @@ export function mockRawOfferFromSubgraph(
         .toString(),
       feeAmount: "0",
       buyerEscalationDeposit: "0",
+      mutualizerAddress: ZERO_ADDRESS,
       ...disputeResolutionTerms
     },
     disputeResolver: {
@@ -238,6 +243,7 @@ export function mockRawExchangeFromSubgraph(
       active: true,
       ...buyer
     },
+    mutualizerAddress: ZERO_ADDRESS,
     seller: {
       id: "3",
       assistant: ZERO_ADDRESS,

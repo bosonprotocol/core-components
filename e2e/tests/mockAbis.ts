@@ -1267,3 +1267,127 @@ export const MOCK_NFT_AUTH_721_ABI = [
     type: "function"
   }
 ];
+
+export const DR_FEE_MUTUALIZER_ABI = [
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "agreementId",
+        type: "uint256"
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "sellerId",
+        type: "uint256"
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address"
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "disputeResolverId",
+        type: "uint256"
+      }
+    ],
+    name: "AgreementCreated",
+    type: "event"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_tokenAddress",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256"
+      }
+    ],
+    name: "deposit",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_sellerId",
+        type: "uint256"
+      },
+      {
+        internalType: "address",
+        name: "_tokenAddress",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "_maxAmountPerTx",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "_maxAmountTotal",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "_timePeriod",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "_premium",
+        type: "uint256"
+      },
+      {
+        internalType: "bool",
+        name: "_refundOnCancel",
+        type: "bool"
+      }
+    ],
+    name: "newAgreement",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "agreementId",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_agreementId",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "_sellerId",
+        type: "uint256"
+      }
+    ],
+    name: "payPremium",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function"
+  }
+];

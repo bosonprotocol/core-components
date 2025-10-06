@@ -133,7 +133,10 @@ fragment BaseOfferFields on Offer {
   id
   createdAt
   price
+  sellerId
   sellerDeposit
+  buyerId
+  creator
   protocolFee
   agentFee
   agentId
@@ -171,6 +174,9 @@ fragment BaseOfferFields on Offer {
   }
   seller {
     ...BaseSellerFields
+  }
+  buyer {
+    ...BaseBuyerFields
   }
   collection {
     ...BaseOfferCollectionFields

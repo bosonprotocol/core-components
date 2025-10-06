@@ -1,7 +1,13 @@
-import { object, string, boolean, mixed, array, number } from "yup";
+import { object, string, boolean, mixed, array, number, lazy } from "yup";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { isAddress } from "@ethersproject/address";
-import { EvaluationMethod, GatingType, TokenType } from "../types";
+import {
+  EvaluationMethod,
+  GatingType,
+  TokenType,
+  OfferCreator,
+  PriceType
+} from "../types";
 
 export { validateMetadata } from "@bosonprotocol/metadata";
 
@@ -37,6 +43,26 @@ export const createOfferArgsSchema = object({
   price: string()
     .required()
     .test(...positiveIntTestArgs),
+  priceType: number()
+    .optional()
+    .oneOf(
+      Object.values(PriceType).filter((v) => typeof v === "number") as number[]
+    ),
+  creator: number()
+    .optional()
+    .oneOf(
+      Object.values(OfferCreator).filter(
+        (v) => typeof v === "number"
+      ) as number[]
+    ),
+  mutualizerAddress: lazy((val) => {
+    if (val === null || val === undefined) {
+      return string().nullable().notRequired();
+    }
+    return string()
+      .optional()
+      .test(...addressTestArgs);
+  }),
   sellerDeposit: string()
     .required()
     .test(...positiveIntTestArgs),
@@ -51,7 +77,17 @@ export const createOfferArgsSchema = object({
     ),
   quantityAvailable: string()
     .required()
-    .test(...positiveIntTestArgs),
+    .test(...positiveIntTestArgs)
+    .test(
+      "is-valid-buyer-quantity",
+      "Quantity must be 1 for buyer initiated offers",
+      (value, ctx) => {
+        if (ctx.parent.creator === OfferCreator.Buyer) {
+          return BigNumber.from(value).eq(1);
+        }
+        return true;
+      }
+    ),
   validFromDateInMS: string()
     .required()
     .test(...positiveIntTestArgs)
