@@ -11,8 +11,10 @@ import {
 } from "@bosonprotocol/common";
 import {
   bosonOfferHandlerIface,
+  decodeGetOfferHash,
   encodeCreateOffer,
   encodeCreateOfferBatch,
+  encodeGetOfferHash,
   encodeReserveRange,
   encodeUpdateOfferRoyaltyRecipients,
   encodeUpdateOfferRoyaltyRecipientsBatch,
@@ -663,4 +665,16 @@ function checkIfOfferReservable(
   if (offerFromSubgraph.quantityAvailable < length) {
     throw new Error(`Range length is too large`);
   }
+}
+
+export async function getOfferHash(args: {
+  fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<string> {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: encodeGetOfferHash(args.fullOfferArgsUnsigned)
+  });
+  return decodeGetOfferHash(result);
 }

@@ -228,7 +228,7 @@ export function encodeReserveRange(
 }
 
 export function encodeVoidNonListedOffer(
-  args: Omit<
+  fullOfferArgsUnsigned: Omit<
     FullOfferArgs,
     | "offerCreator"
     | "committer"
@@ -238,7 +238,7 @@ export function encodeVoidNonListedOffer(
   >
 ) {
   return bosonOfferHandlerIface.encodeFunctionData("voidNonListedOffer", [
-    fullOfferArgsToStruct(args)
+    fullOfferArgsToStruct(fullOfferArgsUnsigned)
   ]);
 }
 
@@ -256,4 +256,27 @@ export function encodeVoidNonListedOfferBatch(
   return bosonOfferHandlerIface.encodeFunctionData("voidNonListedOfferBatch", [
     argsStructs
   ]);
+}
+
+export function encodeGetOfferHash(
+  fullOfferArgsUnsigned: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >
+) {
+  return bosonOfferHandlerIface.encodeFunctionData("getOfferHash", [
+    fullOfferArgsToStruct(fullOfferArgsUnsigned)
+  ]);
+}
+
+export function decodeGetOfferHash(result: string): string {
+  const [offerHash] = bosonOfferHandlerIface.decodeFunctionResult(
+    "getOfferHash",
+    result
+  );
+  return offerHash;
 }

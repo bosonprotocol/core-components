@@ -1,3 +1,4 @@
+import { TypedDataEncoder } from "ethers-v6";
 import { parseEther } from "@ethersproject/units";
 import { DAY_IN_MS, DAY_IN_SEC } from "./../../packages/core-sdk/tests/mocks";
 import {
@@ -208,6 +209,21 @@ describe("core-sdk", () => {
             }
           );
         });
+        test("check offer hash", async () => {
+          const structuredData = await buyerCoreSDK.signFullOffer({
+            fullOfferArgsUnsigned: fullOfferArgs,
+            returnTypedDataToSign: true
+          });
+          if (structuredData.types && structuredData.types.EIP712Domain) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            delete (structuredData.types as any).EIP712Domain; // we don't need to hash the domain
+          }
+          const expectedHash = new TypedDataEncoder(structuredData.types).hash(
+            structuredData.message
+          );
+          const offerHash = await buyerCoreSDK.getOfferHash(fullOfferArgs);
+          expect(offerHash).toBe(expectedHash);
+        });
         test("buyer committed", async () => {
           ({ offer: createdOffer, exchange: createdExchange } =
             await createOfferAndCommit(
@@ -372,6 +388,21 @@ describe("core-sdk", () => {
               }
             }
           );
+        });
+        test("check offer hash", async () => {
+          const structuredData = await sellerCoreSDK.signFullOffer({
+            fullOfferArgsUnsigned: fullOfferArgs,
+            returnTypedDataToSign: true
+          });
+          if (structuredData.types && structuredData.types.EIP712Domain) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            delete (structuredData.types as any).EIP712Domain; // we don't need to hash the domain
+          }
+          const expectedHash = new TypedDataEncoder(structuredData.types).hash(
+            structuredData.message
+          );
+          const offerHash = await sellerCoreSDK.getOfferHash(fullOfferArgs);
+          expect(offerHash).toBe(expectedHash);
         });
         test("seller committed", async () => {
           ({ offer: createdOffer, exchange: createdExchange } =

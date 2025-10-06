@@ -1261,4 +1261,17 @@ export class OfferMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       });
     }
   }
+
+  public async getOfferHash(
+    fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ) {
+    return offers.handler.getOfferHash({
+      fullOfferArgsUnsigned,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
 }
