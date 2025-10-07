@@ -1,11 +1,15 @@
+import { _TypedDataEncoder } from "@ethersproject/hash";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import {
   Web3LibAdapter,
   TransactionResponse,
   TransactionRequest,
+  utils,
+  MetadataStorage,
   SellerOfferArgs,
-  OfferCreator
+  OfferCreator,
+  FullOfferArgs
 } from "@bosonprotocol/common";
 import {
   encodeCancelVoucher,
@@ -16,16 +20,35 @@ import {
   encodeExpireVoucher,
   encodeRedeemVoucher,
   encodeCommitToConditionalOffer,
+  encodeCreateOfferAndCommit,
   encodeCommitToBuyerOffer
 } from "./interface";
 import { getOfferById } from "../offers/subgraph";
-import { getExchangeById, getExchanges } from "../exchanges/subgraph";
+import {
+  getExchangeById,
+  getExchanges,
+  getNonListedOfferVoided
+} from "../exchanges/subgraph";
 import {
   ExchangeFieldsFragment,
   ExchangeState,
   OfferFieldsFragment
 } from "../subgraph";
 import { ensureAllowance } from "../erc20/handler";
+import { getDisputeResolverById } from "../accounts/subgraph";
+import { storeMetadataOnTheGraph } from "../offers/storage";
+import { storeMetadataItems } from "../metadata/storeMetadataItems";
+import {
+  getSignatureParameters,
+  prepareDataSignatureParameters,
+  StructuredData
+} from "../utils/signature";
+import {
+  argsToDRParametersStruct,
+  argsToOfferDatesStruct,
+  argsToOfferDurationsStruct,
+  argsToOfferStruct
+} from "../offers/interface";
 
 type BaseExchangeHandlerArgs = {
   contractAddress: string;
@@ -259,6 +282,310 @@ export async function commitToConditionalOffer(
     return transactionRequest;
   } else {
     return args.web3Lib.sendTransaction(transactionRequest);
+  }
+}
+
+// Overload: returnTxInfo is true → returns TransactionRequest
+export async function createOfferAndCommit(args: {
+  createOfferAndCommitArgs: FullOfferArgs;
+  returnTxInfo: true;
+  subgraphUrl: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  txRequest?: TransactionRequest;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function createOfferAndCommit(args: {
+  createOfferAndCommitArgs: FullOfferArgs;
+  returnTxInfo?: false | undefined;
+  subgraphUrl: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  txRequest?: TransactionRequest;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+}): Promise<TransactionResponse>;
+// Implementation
+export async function createOfferAndCommit(args: {
+  createOfferAndCommitArgs: FullOfferArgs;
+  returnTxInfo?: boolean;
+  subgraphUrl: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  txRequest?: TransactionRequest;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+}): Promise<TransactionRequest | TransactionResponse> {
+  try {
+    utils.validation.createOfferAndCommitArgsSchema.validateSync(
+      args.createOfferAndCommitArgs,
+      {
+        abortEarly: false
+      }
+    );
+  } catch (error) {
+    console.error("error", error);
+    throw error;
+  }
+
+  const { disputeResolverId, exchangeToken, price, sellerDeposit, creator } =
+    args.createOfferAndCommitArgs;
+  const disputeResolver = await getDisputeResolverById(
+    args.subgraphUrl,
+    disputeResolverId
+  );
+  if (!disputeResolver) {
+    throw new Error(
+      `Dispute resolver with id "${disputeResolverId}" does not exist`
+    );
+  }
+  if (
+    !disputeResolver.fees.some(
+      (fee) => fee.token.address.toLowerCase() === exchangeToken.toLowerCase()
+    )
+  ) {
+    throw new Error(
+      `Dispute resolver with id "${disputeResolverId}" does not support exchange token "${exchangeToken}"`
+    );
+  }
+
+  // check the offer is not voided
+  if (
+    await isFullOfferVoided({
+      ...args,
+      fullOfferArgsUnsigned: args.createOfferAndCommitArgs
+    })
+  ) {
+    throw new Error(`The offer has been voided`);
+  }
+
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.createOfferAndCommitArgs.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
+
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.createOfferAndCommitArgs]
+  });
+
+  const committerPayment =
+    creator === OfferCreator.Buyer ? sellerDeposit : price;
+
+  if (exchangeToken !== AddressZero) {
+    const owner = await args.web3Lib.getSignerAddress();
+    // check if we need the committer to approve the token first
+    await ensureAllowance({
+      owner,
+      spender: args.contractAddress,
+      contractAddress: exchangeToken,
+      value: committerPayment,
+      web3Lib: args.web3Lib
+    });
+  }
+
+  const transactionRequest = {
+    ...args.txRequest,
+    to: args.contractAddress,
+    data: encodeCreateOfferAndCommit(args.createOfferAndCommitArgs),
+    value: exchangeToken === AddressZero ? committerPayment : "0"
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    const txResponse = await args.web3Lib.sendTransaction(transactionRequest);
+    return txResponse;
+  }
+}
+
+async function isFullOfferVoided(args: {
+  fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  subgraphUrl: string;
+}): Promise<boolean> {
+  // Compute the offer hash
+  const structuredData = await signFullOffer({
+    ...args,
+    chainId: await args.web3Lib.getChainId(),
+    returnTypedDataToSign: true
+  });
+  if (structuredData.types && structuredData.types.EIP712Domain) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (structuredData.types as any).EIP712Domain; // we don't need to hash the domain
+  }
+  const offerHash = _TypedDataEncoder.hashStruct(
+    "FullOffer",
+    structuredData.types,
+    structuredData.message
+  );
+  // Check NonListedOfferVoided events for this offer hash
+  const [nonListedOfferVoided] = await getNonListedOfferVoided(
+    args.subgraphUrl,
+    {
+      nonListedOfferVoidedsFilter: { id: offerHash }
+    }
+  );
+  return !!nonListedOfferVoided;
+}
+
+export async function signFullOffer(args: {
+  fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  chainId: number;
+  returnTypedDataToSign: true;
+}): Promise<StructuredData>;
+export async function signFullOffer(args: {
+  fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  chainId: number;
+  returnTypedDataToSign?: false;
+}): Promise<ReturnType<typeof getSignatureParameters>>;
+export async function signFullOffer(args: {
+  fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  chainId: number;
+  returnTypedDataToSign?: boolean;
+}): Promise<StructuredData | ReturnType<typeof getSignatureParameters>> {
+  const offerStruct = argsToOfferStruct(args.fullOfferArgsUnsigned);
+  const offerDatesStruct = argsToOfferDatesStruct(args.fullOfferArgsUnsigned);
+  const offerDurationsStruct = argsToOfferDurationsStruct(
+    args.fullOfferArgsUnsigned
+  );
+  const drParametersStruct = argsToDRParametersStruct(
+    args.fullOfferArgsUnsigned
+  );
+  const customSignatureType = {
+    FullOffer: [
+      { name: "offer", type: "Offer" },
+      { name: "offerDates", type: "OfferDates" },
+      { name: "offerDurations", type: "OfferDurations" },
+      { name: "drParameters", type: "DRParameters" },
+      { name: "condition", type: "Condition" },
+      { name: "agentId", type: "uint256" },
+      { name: "feeLimit", type: "uint256" },
+      { name: "useDepositedFunds", type: "bool" }
+    ],
+    Condition: [
+      { name: "method", type: "uint8" },
+      { name: "tokenType", type: "uint8" },
+      { name: "tokenAddress", type: "address" },
+      { name: "gating", type: "uint8" },
+      { name: "minTokenId", type: "uint256" },
+      { name: "threshold", type: "uint256" },
+      { name: "maxCommits", type: "uint256" },
+      { name: "maxTokenId", type: "uint256" }
+    ],
+    DRParameters: [
+      { name: "disputeResolverId", type: "uint256" },
+      { name: "mutualizerAddress", type: "address" }
+    ],
+    OfferDurations: [
+      { name: "disputePeriod", type: "uint256" },
+      { name: "voucherValid", type: "uint256" },
+      { name: "resolutionPeriod", type: "uint256" }
+    ],
+    OfferDates: [
+      { name: "validFrom", type: "uint256" },
+      { name: "validUntil", type: "uint256" },
+      { name: "voucherRedeemableFrom", type: "uint256" },
+      { name: "voucherRedeemableUntil", type: "uint256" }
+    ],
+    Offer: [
+      { name: "sellerId", type: "uint256" },
+      { name: "price", type: "uint256" },
+      { name: "sellerDeposit", type: "uint256" },
+      { name: "buyerCancelPenalty", type: "uint256" },
+      { name: "quantityAvailable", type: "uint256" },
+      { name: "exchangeToken", type: "address" },
+      { name: "metadataUri", type: "string" },
+      { name: "metadataHash", type: "string" },
+      { name: "collectionIndex", type: "uint256" },
+      { name: "royaltyInfo", type: "RoyaltyInfo" },
+      { name: "creator", type: "uint8" },
+      { name: "buyerId", type: "uint256" }
+    ],
+    RoyaltyInfo: [
+      { name: "recipients", type: "address[]" },
+      { name: "bps", type: "uint256[]" }
+    ]
+  };
+
+  const message = {
+    offer: {
+      sellerId: offerStruct.sellerId.toString(),
+      price: offerStruct.price.toString(),
+      sellerDeposit: offerStruct.sellerDeposit.toString(),
+      buyerCancelPenalty: offerStruct.buyerCancelPenalty.toString(),
+      quantityAvailable: offerStruct.quantityAvailable.toString(),
+      exchangeToken: offerStruct.exchangeToken,
+      metadataUri: offerStruct.metadataUri,
+      metadataHash: offerStruct.metadataHash,
+      collectionIndex: offerStruct.collectionIndex.toString(),
+      royaltyInfo: {
+        recipients: offerStruct.royaltyInfo[0].recipients,
+        bps: offerStruct.royaltyInfo[0].bps.map((bp) => bp.toString())
+      },
+      creator: offerStruct.creator,
+      buyerId: offerStruct.buyerId.toString()
+    },
+    offerDates: {
+      validFrom: offerDatesStruct.validFrom.toString(),
+      validUntil: offerDatesStruct.validUntil.toString(),
+      voucherRedeemableFrom: offerDatesStruct.voucherRedeemableFrom.toString(),
+      voucherRedeemableUntil: offerDatesStruct.voucherRedeemableUntil.toString()
+    },
+    offerDurations: {
+      disputePeriod: offerDurationsStruct.disputePeriod.toString(),
+      voucherValid: offerDurationsStruct.voucherValid.toString(),
+      resolutionPeriod: offerDurationsStruct.resolutionPeriod.toString()
+    },
+    drParameters: {
+      disputeResolverId: drParametersStruct.disputeResolverId.toString(),
+      mutualizerAddress: drParametersStruct.mutualizerAddress
+    },
+    condition: {
+      method: args.fullOfferArgsUnsigned.condition.method,
+      tokenType: args.fullOfferArgsUnsigned.condition.tokenType,
+      tokenAddress: args.fullOfferArgsUnsigned.condition.tokenAddress,
+      gating: args.fullOfferArgsUnsigned.condition.gatingType,
+      minTokenId: args.fullOfferArgsUnsigned.condition.minTokenId.toString(),
+      threshold: args.fullOfferArgsUnsigned.condition.threshold.toString(),
+      maxCommits: args.fullOfferArgsUnsigned.condition.maxCommits.toString(),
+      maxTokenId: args.fullOfferArgsUnsigned.condition.maxTokenId.toString()
+    },
+    agentId: args.fullOfferArgsUnsigned.agentId.toString(),
+    feeLimit: args.fullOfferArgsUnsigned.feeLimit.toString(),
+    useDepositedFunds: args.fullOfferArgsUnsigned.useDepositedFunds
+  };
+
+  const signatureArgs = {
+    message,
+    customSignatureType,
+    web3Lib: args.web3Lib,
+    verifyingContractAddress: args.contractAddress,
+    chainId: args.chainId,
+    primaryType: "FullOffer"
+  } as const;
+
+  if (args.returnTypedDataToSign) {
+    return prepareDataSignatureParameters({
+      ...signatureArgs,
+      returnTypedDataToSign: true
+    });
+  } else {
+    return prepareDataSignatureParameters({
+      ...signatureArgs,
+      returnTypedDataToSign: false
+    });
   }
 }
 

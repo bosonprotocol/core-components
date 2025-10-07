@@ -5,15 +5,21 @@ import {
   MetadataStorage,
   utils,
   RoyaltyInfo,
-  TransactionRequest
+  TransactionRequest,
+  FullOfferArgs,
+  OfferCreator
 } from "@bosonprotocol/common";
 import {
   bosonOfferHandlerIface,
+  decodeGetOfferHash,
   encodeCreateOffer,
   encodeCreateOfferBatch,
+  encodeGetOfferHash,
   encodeReserveRange,
   encodeUpdateOfferRoyaltyRecipients,
-  encodeUpdateOfferRoyaltyRecipientsBatch
+  encodeUpdateOfferRoyaltyRecipientsBatch,
+  encodeVoidNonListedOffer,
+  encodeVoidNonListedOfferBatch
 } from "./interface";
 import { getOfferById, getOffers } from "./subgraph";
 import { storeMetadataOnTheGraph } from "./storage";
@@ -329,6 +335,124 @@ export async function voidOfferBatch(args: {
 }
 
 // Overload: returnTxInfo is true → returns TransactionRequest
+export async function voidNonListedOffer(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  fullOffer: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function voidNonListedOffer(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  fullOffer: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function voidNonListedOffer(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  fullOffer: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >;
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
+  const transactionRequest = {
+    to: args.contractAddress,
+    data: encodeVoidNonListedOffer(args.fullOffer)
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
+}
+
+// Overload: returnTxInfo is true → returns TransactionRequest
+export async function voidNonListedOfferBatch(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  fullOffers: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >[];
+  web3Lib: Web3LibAdapter;
+  returnTxInfo: true;
+}): Promise<TransactionRequest>;
+
+// Overload: returnTxInfo is false or undefined → returns TransactionResponse
+export async function voidNonListedOfferBatch(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  fullOffers: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >[];
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: false | undefined;
+}): Promise<TransactionResponse>;
+
+// Implementation
+export async function voidNonListedOfferBatch(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  fullOffers: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >[];
+  web3Lib: Web3LibAdapter;
+  returnTxInfo?: boolean;
+}): Promise<TransactionRequest | TransactionResponse> {
+  const transactionRequest = {
+    to: args.contractAddress,
+    data: encodeVoidNonListedOfferBatch(args.fullOffers)
+  } satisfies TransactionRequest;
+
+  if (args.returnTxInfo) {
+    return transactionRequest;
+  } else {
+    return args.web3Lib.sendTransaction(transactionRequest);
+  }
+}
+
+// Overload: returnTxInfo is true → returns TransactionRequest
 export async function extendOffer(args: {
   contractAddress: string;
   subgraphUrl: string;
@@ -506,11 +630,22 @@ function checkIfOfferVoidable(
   }
 
   if (
+    offerFromSubgraph.creator === OfferCreator.Seller &&
     offerFromSubgraph.seller.assistant.toLowerCase() !==
-    signerAddress.toLowerCase()
+      signerAddress.toLowerCase()
   ) {
     throw new Error(
       `Signer with address "${signerAddress}" is not the assistant "${offerFromSubgraph.seller.assistant}" of offer with id "${offerId}"`
+    );
+  }
+
+  if (
+    offerFromSubgraph.creator === OfferCreator.Buyer &&
+    offerFromSubgraph.buyer?.wallet.toLowerCase() !==
+      signerAddress.toLowerCase()
+  ) {
+    throw new Error(
+      `Signer with address "${signerAddress}" is not the creator's wallet "${offerFromSubgraph.buyer?.wallet}" of offer with id "${offerId}"`
     );
   }
 }
@@ -530,4 +665,16 @@ function checkIfOfferReservable(
   if (offerFromSubgraph.quantityAvailable < length) {
     throw new Error(`Range length is too large`);
   }
+}
+
+export async function getOfferHash(args: {
+  fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<string> {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: encodeGetOfferHash(args.fullOfferArgsUnsigned)
+  });
+  return decodeGetOfferHash(result);
 }

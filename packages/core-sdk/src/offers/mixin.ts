@@ -15,7 +15,8 @@ import {
   GatingType,
   RoyaltyInfo,
   TransactionRequest,
-  Web3LibAdapter
+  Web3LibAdapter,
+  FullOfferArgs
 } from "@bosonprotocol/common";
 import groupBy from "lodash/groupBy";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
@@ -226,6 +227,31 @@ export class OfferMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   }
 
   /**
+   * Utility method to retrieve the created `buyerId` from logs after calling `createBuyer`
+   *
+   * @param logs - Logs to search in.
+   * @returns Created buyer id.
+   */
+  public getCreatedBuyerIdFromLogs(logs: Log[]): string | null {
+    const buyerId = getValueFromLogs<BigNumber>({
+      iface: accounts.iface.bosonAccountHandlerIface,
+      logs,
+      eventArgsKey: "buyerId",
+      eventName: "BuyerCreated"
+    });
+
+    return (
+      buyerId ||
+      getValueFromLogs<BigNumber>({
+        iface: orchestration.iface.bosonOrchestrationHandlerIface,
+        logs,
+        eventArgsKey: "buyerId",
+        eventName: "BuyerCreated"
+      })
+    )?.toString();
+  }
+
+  /**
    * Voids an existing offer by calling the `OfferHandlerFacet` contract.
    * This transaction only succeeds if the connected signer is the `assistant`.
    * @param offerId - ID of offer to void.
@@ -331,6 +357,148 @@ export class OfferMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
     } else {
       return offers.handler.voidOfferBatch({
         ...batchArgs,
+        returnTxInfo: false
+      });
+    }
+  }
+
+  // Overload: returnTxInfo is true → returns TransactionRequest
+  public async voidNonListedOffer(
+    fullOffer: Omit<
+      FullOfferArgs,
+      | "offerCreator"
+      | "committer"
+      | "signature"
+      | "conditionalTokenId"
+      | "sellerOfferParams"
+    >,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async voidNonListedOffer(
+    fullOffer: Omit<
+      FullOfferArgs,
+      | "offerCreator"
+      | "committer"
+      | "signature"
+      | "conditionalTokenId"
+      | "sellerOfferParams"
+    >,
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async voidNonListedOffer(
+    fullOffer: Omit<
+      FullOfferArgs,
+      | "offerCreator"
+      | "committer"
+      | "signature"
+      | "conditionalTokenId"
+      | "sellerOfferParams"
+    >,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const voidArgs = {
+      fullOffer,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    } as const satisfies Parameters<
+      typeof offers.handler.voidNonListedOffer
+    >[0];
+
+    if (returnTxInfo === true) {
+      return offers.handler.voidNonListedOffer({
+        ...voidArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return offers.handler.voidNonListedOffer({
+        ...voidArgs,
+        returnTxInfo: false
+      });
+    }
+  }
+
+  // Overload: returnTxInfo is true → returns TransactionRequest
+  public async voidNonListedOfferBatch(
+    fullOffers: Omit<
+      FullOfferArgs,
+      | "offerCreator"
+      | "committer"
+      | "signature"
+      | "conditionalTokenId"
+      | "sellerOfferParams"
+    >[],
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async voidNonListedOfferBatch(
+    fullOffers: Omit<
+      FullOfferArgs,
+      | "offerCreator"
+      | "committer"
+      | "signature"
+      | "conditionalTokenId"
+      | "sellerOfferParams"
+    >[],
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async voidNonListedOfferBatch(
+    fullOffers: Omit<
+      FullOfferArgs,
+      | "offerCreator"
+      | "committer"
+      | "signature"
+      | "conditionalTokenId"
+      | "sellerOfferParams"
+    >[],
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const voidArgs = {
+      fullOffers,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    } as const satisfies Parameters<
+      typeof offers.handler.voidNonListedOfferBatch
+    >[0];
+
+    if (returnTxInfo === true) {
+      return offers.handler.voidNonListedOfferBatch({
+        ...voidArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return offers.handler.voidNonListedOfferBatch({
+        ...voidArgs,
         returnTxInfo: false
       });
     }
@@ -1092,5 +1260,18 @@ export class OfferMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
         returnTxInfo: false
       });
     }
+  }
+
+  public async getOfferHash(
+    fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ) {
+    return offers.handler.getOfferHash({
+      fullOfferArgsUnsigned,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
   }
 }

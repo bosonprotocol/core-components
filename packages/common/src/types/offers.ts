@@ -1,5 +1,6 @@
 import { BigNumberish } from "@ethersproject/bignumber";
 import { OfferCreator } from "./enums";
+import { ConditionStruct } from "./groups";
 
 export enum PriceType {
   Static = 0,
@@ -34,6 +35,24 @@ export type CreateOfferArgs = {
   royaltyInfo?: RoyaltyInfo[];
   creator?: OfferCreator;
   mutualizerAddress?: string;
+};
+
+export type SellerOfferParams = {
+  collectionIndex: BigNumberish;
+  royaltyInfo: RoyaltyInfo;
+  mutualizerAddress: string;
+};
+
+export type FullOfferArgs = CreateOfferArgs & {
+  offerCreator: string;
+  committer: string;
+  condition: ConditionStruct;
+  useDepositedFunds: boolean;
+  signature: string;
+  sellerId: BigNumberish;
+  buyerId: BigNumberish;
+  sellerOfferParams: SellerOfferParams;
+  conditionalTokenId?: BigNumberish;
 };
 
 export type OfferStruct = {

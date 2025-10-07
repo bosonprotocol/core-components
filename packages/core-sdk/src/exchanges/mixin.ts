@@ -5,6 +5,7 @@ import {
   TransactionRequest,
   Log,
   Web3LibAdapter,
+  FullOfferArgs,
   SellerOfferArgs
 } from "@bosonprotocol/common";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
@@ -20,10 +21,13 @@ import {
   commitToConditionalOffer,
   getExchangeTokenId,
   parseTokenId,
+  signFullOffer,
   commitToBuyerOffer
 } from "./handler";
 import { getExchangeById, getExchanges } from "./subgraph";
 import { bosonExchangeHandlerIface } from "./interface";
+import { exchanges } from "..";
+import { getSignatureParameters, StructuredData } from "../utils/signature";
 
 export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
@@ -210,6 +214,106 @@ export class ExchangesMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       return commitToConditionalOffer({
         ...commitArgs,
         returnTxInfo: false
+      });
+    }
+  }
+
+  /**
+   * Creates an offer and commits to it immediately.
+   * @param createOfferAndCommitArgs - Offer and commit arguments.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  // Overload: returnTxInfo is true → returns TransactionRequest
+  public async createOfferAndCommit(
+    createOfferAndCommitArgs: FullOfferArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async createOfferAndCommit(
+    createOfferAndCommitArgs: FullOfferArgs,
+    overrides?: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: false | undefined;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async createOfferAndCommit(
+    createOfferAndCommitArgs: FullOfferArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const offerArgs = {
+      createOfferAndCommitArgs,
+      web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      txRequest: overrides.txRequest
+    } as const satisfies Parameters<
+      typeof exchanges.handler.createOfferAndCommit
+    >[0];
+
+    if (returnTxInfo === true) {
+      return exchanges.handler.createOfferAndCommit({
+        ...offerArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return exchanges.handler.createOfferAndCommit({
+        ...offerArgs,
+        returnTxInfo: false
+      });
+    }
+  }
+
+  /**
+   * Signs the full offer data for an off-chain buyer- or seller-initiated offer.
+   * @param args - Arguments including `fullOfferArgsUnsigned` and `returnTypedDataToSign`.
+   * @returns Either the structured data to sign or the signature parameters, depending on `returnTypedDataToSign`.
+   */
+
+  public async signFullOffer(args: {
+    fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
+    returnTypedDataToSign: true;
+  }): Promise<StructuredData>;
+  public async signFullOffer(args: {
+    fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
+    returnTypedDataToSign?: false;
+  }): Promise<ReturnType<typeof getSignatureParameters>>;
+  public async signFullOffer(args: {
+    fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
+    returnTypedDataToSign?: boolean;
+  }): Promise<StructuredData | ReturnType<typeof getSignatureParameters>> {
+    const { returnTypedDataToSign, ...argsWithoutReturnTypedDataToSign } = args;
+    const params = {
+      ...argsWithoutReturnTypedDataToSign,
+      web3Lib: this._web3Lib,
+      contractAddress: this._protocolDiamond,
+      chainId: this._chainId
+    };
+    if (returnTypedDataToSign === true) {
+      return signFullOffer({
+        ...params,
+        returnTypedDataToSign: true
+      });
+    } else {
+      return signFullOffer({
+        ...params,
+        returnTypedDataToSign: false
       });
     }
   }

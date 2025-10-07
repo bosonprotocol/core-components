@@ -7,13 +7,15 @@ import {
   PriceType,
   RoyaltyInfo,
   OfferCreator,
-  DRParametersStruct
+  DRParametersStruct,
+  FullOfferArgs
 } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { getAddress } from "@ethersproject/address";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { CreateOfferArgs } from "./types";
 import { AddressZero } from "@ethersproject/constants";
+import { fullOfferArgsToStruct } from "../exchanges/interface";
 
 export const bosonOfferHandlerIface = new Interface(abis.IBosonOfferHandlerABI);
 
@@ -150,6 +152,7 @@ export function argsToOfferStruct(args: CreateOfferArgs): Partial<OfferStruct> {
     id: "0",
     sellerId: "0",
     buyerId: "0",
+    voided: false,
     ...restArgs,
     exchangeToken: getAddress(exchangeToken),
     priceType,
@@ -222,4 +225,58 @@ export function encodeReserveRange(
     length,
     to
   ]);
+}
+
+export function encodeVoidNonListedOffer(
+  fullOfferArgsUnsigned: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >
+) {
+  return bosonOfferHandlerIface.encodeFunctionData("voidNonListedOffer", [
+    fullOfferArgsToStruct(fullOfferArgsUnsigned)
+  ]);
+}
+
+export function encodeVoidNonListedOfferBatch(
+  argsBatch: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >[]
+) {
+  const argsStructs = argsBatch.map((args) => fullOfferArgsToStruct(args));
+  return bosonOfferHandlerIface.encodeFunctionData("voidNonListedOfferBatch", [
+    argsStructs
+  ]);
+}
+
+export function encodeGetOfferHash(
+  fullOfferArgsUnsigned: Omit<
+    FullOfferArgs,
+    | "offerCreator"
+    | "committer"
+    | "signature"
+    | "conditionalTokenId"
+    | "sellerOfferParams"
+  >
+) {
+  return bosonOfferHandlerIface.encodeFunctionData("getOfferHash", [
+    fullOfferArgsToStruct(fullOfferArgsUnsigned)
+  ]);
+}
+
+export function decodeGetOfferHash(result: string): string {
+  const [offerHash] = bosonOfferHandlerIface.decodeFunctionResult(
+    "getOfferHash",
+    result
+  );
+  return offerHash;
 }

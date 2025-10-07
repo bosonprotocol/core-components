@@ -5,6 +5,7 @@ export {
   CreateSellerArgs,
   UpdateSellerArgs,
   SellerStruct,
+  CreateBuyerArgs,
   AuthTokenStruct,
   VoucherInitValuesStruct,
   abis,

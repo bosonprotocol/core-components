@@ -17,10 +17,12 @@ import {
   OptInToDisputeResolverUpdateArgs,
   DisputeResolverUpdateFields,
   CreateCollectionArgs,
-  RoyaltyRecipientInfo
+  RoyaltyRecipientInfo,
+  CreateBuyerArgs
 } from "./types";
 import { AddressZero } from "@ethersproject/constants";
 import { INITIAL_COLLECTION_ID } from "./handler";
+import { BuyerStruct } from "@bosonprotocol/common";
 
 export const bosonAccountHandlerIface = new Interface(
   abis.IBosonAccountHandlerABI
@@ -66,6 +68,13 @@ export function encodeOptInToSellerUpdate(seller: OptInToSellerUpdateArgs) {
   return bosonAccountHandlerIface.encodeFunctionData("optInToSellerUpdate", [
     seller.id,
     fieldsToUpdate
+  ]);
+}
+
+export function encodeCreateBuyer(buyer: CreateBuyerArgs) {
+  const buyerStruct = argsToBuyerStruct(buyer);
+  return bosonAccountHandlerIface.encodeFunctionData("createBuyer", [
+    buyerStruct
   ]);
 }
 
@@ -226,6 +235,19 @@ function argsToSellerStruct(args: {
     id: "0",
     active: true,
     clerk: AddressZero,
+    ...args
+  };
+}
+
+function argsToBuyerStruct(args: {
+  wallet: string;
+}): Pick<BuyerStruct, "id" | "wallet" | "active"> {
+  return {
+    // NOTE: It doesn't matter which values we set for `id` and `active` here
+    // as they will be overridden by the contract. But to conform to the struct
+    // we need to set some arbitrary values.
+    id: "0",
+    active: true,
     ...args
   };
 }
