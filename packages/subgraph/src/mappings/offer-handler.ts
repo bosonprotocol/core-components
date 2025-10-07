@@ -6,7 +6,8 @@ import {
   OfferVoided,
   OfferExtended,
   RangeReserved,
-  OfferRoyaltyInfoUpdated
+  OfferRoyaltyInfoUpdated,
+  NonListedOfferVoided as NonListedOfferVoidedEvent
 } from "../../generated/BosonOfferHandler/IBosonOfferHandler";
 import {
   OfferCreated as OfferCreated240,
@@ -16,6 +17,7 @@ import { OfferCreated as OfferCreated230 } from "../../generated/BosonOfferHandl
 import { OfferCreated as OfferCreatedLegacy } from "../../generated/BosonOfferHandlerLegacy/IBosonOfferHandlerLegacy";
 
 import {
+  NonListedOfferVoided,
   Offer,
   RangeEntity,
   RoyaltyInfo,
@@ -594,5 +596,30 @@ export function handleOfferRoyaltyInfoUpdatedEvent(
     );
   } else {
     log.warning("Offer with ID '{}' not found", [offerId.toString()]);
+  }
+}
+
+export function handleNonListedOfferVoidedEvent(
+  event: NonListedOfferVoidedEvent
+): void {
+  const offerHash = event.params.offerHash;
+  const offererId = event.params.offererId;
+  const nonListedOfferVoidedId = offerHash.toHexString();
+
+  let nonListedOfferVoided = NonListedOfferVoided.load(nonListedOfferVoidedId);
+  if (nonListedOfferVoided) {
+    log.error(
+      "NonListedOfferVoided with ID '{}' already exists. Duplicate event?",
+      [nonListedOfferVoidedId]
+    );
+  } else {
+    nonListedOfferVoided = new NonListedOfferVoided(nonListedOfferVoidedId);
+    nonListedOfferVoided.txHash = event.transaction.hash.toHexString();
+    nonListedOfferVoided.logIndex = event.logIndex;
+    nonListedOfferVoided.offerHash = offerHash;
+    nonListedOfferVoided.offererId = offererId;
+    nonListedOfferVoided.executedBy = event.params.executedBy;
+    nonListedOfferVoided.timestamp = event.block.timestamp;
+    nonListedOfferVoided.save();
   }
 }

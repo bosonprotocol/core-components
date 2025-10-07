@@ -4812,6 +4812,106 @@ export enum NftItemMetadataEntity_OrderBy {
   YOUTUBEURL = "youtubeUrl"
 }
 
+export type NonListedOfferVoided = {
+  __typename?: "NonListedOfferVoided";
+  executedBy: Scalars["Bytes"]["output"];
+  id: Scalars["ID"]["output"];
+  logIndex: Scalars["BigInt"]["output"];
+  offerHash: Scalars["Bytes"]["output"];
+  offererId: Scalars["BigInt"]["output"];
+  timestamp: Scalars["BigInt"]["output"];
+  txHash: Scalars["String"]["output"];
+};
+
+export type NonListedOfferVoided_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<NonListedOfferVoided_Filter>>>;
+  executedBy?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  executedBy_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  id?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_gte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]["input"]>;
+  id_lte?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not?: InputMaybe<Scalars["ID"]["input"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]["input"]>>;
+  logIndex?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  logIndex_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  logIndex_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  offerHash?: InputMaybe<Scalars["Bytes"]["input"]>;
+  offerHash_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  offerHash_gt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  offerHash_gte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  offerHash_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  offerHash_lt?: InputMaybe<Scalars["Bytes"]["input"]>;
+  offerHash_lte?: InputMaybe<Scalars["Bytes"]["input"]>;
+  offerHash_not?: InputMaybe<Scalars["Bytes"]["input"]>;
+  offerHash_not_contains?: InputMaybe<Scalars["Bytes"]["input"]>;
+  offerHash_not_in?: InputMaybe<Array<Scalars["Bytes"]["input"]>>;
+  offererId?: InputMaybe<Scalars["BigInt"]["input"]>;
+  offererId_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  offererId_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  offererId_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  offererId_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  offererId_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  offererId_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  offererId_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  or?: InputMaybe<Array<InputMaybe<NonListedOfferVoided_Filter>>>;
+  timestamp?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_gt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_gte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  timestamp_lt?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_lte?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_not?: InputMaybe<Scalars["BigInt"]["input"]>;
+  timestamp_not_in?: InputMaybe<Array<Scalars["BigInt"]["input"]>>;
+  txHash?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_contains?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_gt?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_gte?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  txHash_lt?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_lte?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_contains_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_ends_with?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_ends_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_in?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  txHash_not_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_not_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_starts_with?: InputMaybe<Scalars["String"]["input"]>;
+  txHash_starts_with_nocase?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export enum NonListedOfferVoided_OrderBy {
+  EXECUTEDBY = "executedBy",
+  ID = "id",
+  LOGINDEX = "logIndex",
+  OFFERHASH = "offerHash",
+  OFFERERID = "offererId",
+  TIMESTAMP = "timestamp",
+  TXHASH = "txHash"
+}
+
 /**
  * Offer
  *
@@ -10688,6 +10788,8 @@ export type Query = {
   nftContractMetadata: Array<NftContractMetadata>;
   nftItemMetadataEntities: Array<NftItemMetadataEntity>;
   nftItemMetadataEntity?: Maybe<NftItemMetadataEntity>;
+  nonListedOfferVoided?: Maybe<NonListedOfferVoided>;
+  nonListedOfferVoideds: Array<NonListedOfferVoided>;
   offer?: Maybe<Offer>;
   offerCollection?: Maybe<OfferCollection>;
   offerCollections: Array<OfferCollection>;
@@ -11170,6 +11272,22 @@ export type QueryNftItemMetadataEntityArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"]["input"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryNonListedOfferVoidedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryNonListedOfferVoidedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<NonListedOfferVoided_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<NonListedOfferVoided_Filter>;
 };
 
 export type QueryOfferArgs = {
@@ -13359,6 +13477,8 @@ export type Subscription = {
   nftContractMetadata: Array<NftContractMetadata>;
   nftItemMetadataEntities: Array<NftItemMetadataEntity>;
   nftItemMetadataEntity?: Maybe<NftItemMetadataEntity>;
+  nonListedOfferVoided?: Maybe<NonListedOfferVoided>;
+  nonListedOfferVoideds: Array<NonListedOfferVoided>;
   offer?: Maybe<Offer>;
   offerCollection?: Maybe<OfferCollection>;
   offerCollections: Array<OfferCollection>;
@@ -13841,6 +13961,22 @@ export type SubscriptionNftItemMetadataEntityArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"]["input"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionNonListedOfferVoidedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"]["input"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionNonListedOfferVoidedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<NonListedOfferVoided_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<NonListedOfferVoided_Filter>;
 };
 
 export type SubscriptionOfferArgs = {
@@ -35462,6 +35598,39 @@ export type BaseExchangeFieldsFragment = {
     __typename?: "ProtocolFeeCollected";
     amount: string;
   } | null;
+};
+
+export type NonListedOfferVoidedFieldsFragment = {
+  __typename?: "NonListedOfferVoided";
+  id: string;
+  txHash: string;
+  logIndex: string;
+  offerHash: string;
+  offererId: string;
+  executedBy: string;
+  timestamp: string;
+};
+
+export type GetNonListedOfferVoidedQueryQueryVariables = Exact<{
+  nonListedOfferVoidedsSkip?: InputMaybe<Scalars["Int"]["input"]>;
+  nonListedOfferVoidedsFirst?: InputMaybe<Scalars["Int"]["input"]>;
+  nonListedOfferVoidedsOrderBy?: InputMaybe<NonListedOfferVoided_OrderBy>;
+  nonListedOfferVoidedsOrderDirection?: InputMaybe<OrderDirection>;
+  nonListedOfferVoidedsFilter?: InputMaybe<NonListedOfferVoided_Filter>;
+}>;
+
+export type GetNonListedOfferVoidedQueryQuery = {
+  __typename?: "Query";
+  nonListedOfferVoideds: Array<{
+    __typename?: "NonListedOfferVoided";
+    id: string;
+    txHash: string;
+    logIndex: string;
+    offerHash: string;
+    offererId: string;
+    executedBy: string;
+    timestamp: string;
+  }>;
 };
 
 export type GetFundsByIdQueryVariables = Exact<{
@@ -76209,6 +76378,17 @@ export const ExchangeFieldsFragmentDoc = gql`
   ${BaseExchangeFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
 `;
+export const NonListedOfferVoidedFieldsFragmentDoc = gql`
+  fragment NonListedOfferVoidedFields on NonListedOfferVoided {
+    id
+    txHash
+    logIndex
+    offerHash
+    offererId
+    executedBy
+    timestamp
+  }
+`;
 export const BaseBaseMetadataEntityFieldsFragmentDoc = gql`
   fragment BaseBaseMetadataEntityFields on BaseMetadataEntity {
     id
@@ -76924,6 +77104,26 @@ export const GetExchangesQueryDocument = gql`
   }
   ${ExchangeFieldsFragmentDoc}
 `;
+export const GetNonListedOfferVoidedQueryDocument = gql`
+  query getNonListedOfferVoidedQuery(
+    $nonListedOfferVoidedsSkip: Int
+    $nonListedOfferVoidedsFirst: Int
+    $nonListedOfferVoidedsOrderBy: NonListedOfferVoided_orderBy
+    $nonListedOfferVoidedsOrderDirection: OrderDirection
+    $nonListedOfferVoidedsFilter: NonListedOfferVoided_filter
+  ) {
+    nonListedOfferVoideds(
+      skip: $nonListedOfferVoidedsSkip
+      first: $nonListedOfferVoidedsFirst
+      orderBy: $nonListedOfferVoidedsOrderBy
+      orderDirection: $nonListedOfferVoidedsOrderDirection
+      where: $nonListedOfferVoidedsFilter
+    ) {
+      ...NonListedOfferVoidedFields
+    }
+  }
+  ${NonListedOfferVoidedFieldsFragmentDoc}
+`;
 export const GetFundsByIdDocument = gql`
   query getFundsById($fundsId: ID!) {
     fundsEntity(id: $fundsId) {
@@ -77584,6 +77784,24 @@ export function getSdk(
             signal
           }),
         "getExchangesQuery",
+        "query",
+        variables
+      );
+    },
+    getNonListedOfferVoidedQuery(
+      variables?: GetNonListedOfferVoidedQueryQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
+    ): Promise<GetNonListedOfferVoidedQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetNonListedOfferVoidedQueryQuery>({
+            document: GetNonListedOfferVoidedQueryDocument,
+            variables,
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
+        "getNonListedOfferVoidedQuery",
         "query",
         variables
       );

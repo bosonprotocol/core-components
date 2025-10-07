@@ -1,3 +1,4 @@
+import { _TypedDataEncoder } from "@ethersproject/hash";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import {
@@ -23,7 +24,11 @@ import {
   encodeCommitToBuyerOffer
 } from "./interface";
 import { getOfferById } from "../offers/subgraph";
-import { getExchangeById, getExchanges } from "../exchanges/subgraph";
+import {
+  getExchangeById,
+  getExchanges,
+  getNonListedOfferVoided
+} from "../exchanges/subgraph";
 import {
   ExchangeFieldsFragment,
   ExchangeState,
@@ -303,7 +308,6 @@ export async function createOfferAndCommit(args: {
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
 }): Promise<TransactionResponse>;
-
 // Implementation
 export async function createOfferAndCommit(args: {
   createOfferAndCommitArgs: FullOfferArgs;
@@ -348,6 +352,16 @@ export async function createOfferAndCommit(args: {
     );
   }
 
+  // check the offer is not voided
+  if (
+    await isFullOfferVoided({
+      ...args,
+      fullOfferArgsUnsigned: args.createOfferAndCommitArgs
+    })
+  ) {
+    throw new Error(`The offer has been voided`);
+  }
+
   await storeMetadataOnTheGraph({
     metadataUriOrHash: args.createOfferAndCommitArgs.metadataUri,
     metadataStorage: args.metadataStorage,
@@ -387,6 +401,37 @@ export async function createOfferAndCommit(args: {
     const txResponse = await args.web3Lib.sendTransaction(transactionRequest);
     return txResponse;
   }
+}
+
+async function isFullOfferVoided(args: {
+  fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  subgraphUrl: string;
+}): Promise<boolean> {
+  // Compute the offer hash
+  const structuredData = await signFullOffer({
+    ...args,
+    chainId: await args.web3Lib.getChainId(),
+    returnTypedDataToSign: true
+  });
+  if (structuredData.types && structuredData.types.EIP712Domain) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (structuredData.types as any).EIP712Domain; // we don't need to hash the domain
+  }
+  const offerHash = _TypedDataEncoder.hashStruct(
+    "FullOffer",
+    structuredData.types,
+    structuredData.message
+  );
+  // Check NonListedOfferVoided events for this offer hash
+  const [nonListedOfferVoided] = await getNonListedOfferVoided(
+    args.subgraphUrl,
+    {
+      nonListedOfferVoidedsFilter: { id: offerHash }
+    }
+  );
+  return !!nonListedOfferVoided;
 }
 
 export async function signFullOffer(args: {

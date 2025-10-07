@@ -2,7 +2,9 @@ import { getSubgraphSdk } from "../utils/graphql";
 import {
   ExchangeFieldsFragment,
   GetExchangesQueryQueryVariables,
-  GetExchangeByIdQueryQueryVariables
+  GetExchangeByIdQueryQueryVariables,
+  GetNonListedOfferVoidedQueryQueryVariables,
+  NonListedOfferVoidedFieldsFragment
 } from "../subgraph";
 import { BigNumberish } from "@ethersproject/bignumber";
 
@@ -32,4 +34,13 @@ export async function getExchangeById(
   });
 
   return exchange;
+}
+
+export async function getNonListedOfferVoided(
+  subgraphUrl: string,
+  queryVars: GetNonListedOfferVoidedQueryQueryVariables = {}
+): Promise<NonListedOfferVoidedFieldsFragment[]> {
+  const sdk = getSubgraphSdk(subgraphUrl);
+  const { nonListedOfferVoideds } = await sdk.getNonListedOfferVoidedQuery(queryVars);
+  return nonListedOfferVoideds;
 }

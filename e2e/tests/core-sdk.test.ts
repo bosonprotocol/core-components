@@ -1,4 +1,4 @@
-import { TypedDataEncoder } from "ethers-v6";
+import { _TypedDataEncoder } from "@ethersproject/hash";
 import { parseEther } from "@ethersproject/units";
 import { DAY_IN_MS, DAY_IN_SEC } from "./../../packages/core-sdk/tests/mocks";
 import {
@@ -218,7 +218,9 @@ describe("core-sdk", () => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             delete (structuredData.types as any).EIP712Domain; // we don't need to hash the domain
           }
-          const expectedHash = new TypedDataEncoder(structuredData.types).hash(
+          const expectedHash = _TypedDataEncoder.hashStruct(
+            "FullOffer",
+            structuredData.types,
             structuredData.message
           );
           const offerHash = await buyerCoreSDK.getOfferHash(fullOfferArgs);
@@ -302,17 +304,18 @@ describe("core-sdk", () => {
           ).rejects.toThrow(/Offer with id \d+ has been voided/);
         });
         test("seller can void the offer before the first commit (calling voidNonListedOffer)", async () => {
-          await sellerCoreSDK.voidNonListedOffer({
+          const tx = await sellerCoreSDK.voidNonListedOffer({
             ...fullOfferArgs,
             buyerId: "0"
           });
+          await sellerCoreSDK.waitForGraphNodeIndexing(tx);
           await expect(
             createOfferAndCommit(
               buyerCoreSDK, // buyer calls createOfferAndCommit
               sellerCoreSDK, // seller signs the offer
               fullOfferArgs
             )
-          ).rejects.toThrow(/OfferHasBeenVoided/);
+          ).rejects.toThrow(/The offer has been voided/);
         });
         test("seller calls voidNonListedOfferBatch", async () => {
           const fullOffers = [];
@@ -344,9 +347,8 @@ describe("core-sdk", () => {
               )
             );
           }
-          await (
-            await sellerCoreSDK.voidNonListedOfferBatch(fullOffers)
-          ).wait();
+          const tx = await sellerCoreSDK.voidNonListedOfferBatch(fullOffers);
+          await sellerCoreSDK.waitForGraphNodeIndexing(tx);
           for (const fullOffer of fullOffers) {
             await expect(
               createOfferAndCommit(
@@ -354,7 +356,7 @@ describe("core-sdk", () => {
                 sellerCoreSDK, // seller signs the offer
                 fullOffer
               )
-            ).rejects.toThrow(/OfferHasBeenVoided/);
+            ).rejects.toThrow(/The offer has been voided/);
           }
         });
       });
@@ -398,7 +400,9 @@ describe("core-sdk", () => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             delete (structuredData.types as any).EIP712Domain; // we don't need to hash the domain
           }
-          const expectedHash = new TypedDataEncoder(structuredData.types).hash(
+          const expectedHash = _TypedDataEncoder.hashStruct(
+            "FullOffer",
+            structuredData.types,
             structuredData.message
           );
           const offerHash = await sellerCoreSDK.getOfferHash(fullOfferArgs);
@@ -463,16 +467,17 @@ describe("core-sdk", () => {
           expect(offer.voided).toBe(true);
         });
         test("buyer can void the offer before the first commit (calling voidNonListedOffer)", async () => {
-          await buyerCoreSDK.voidNonListedOffer({
+          const tx = await buyerCoreSDK.voidNonListedOffer({
             ...fullOfferArgs
           });
+          await buyerCoreSDK.waitForGraphNodeIndexing(tx);
           await expect(
             createOfferAndCommit(
               sellerCoreSDK, // seller calls createOfferAndCommit
               buyerCoreSDK, // buyer signs the offer
               fullOfferArgs
             )
-          ).rejects.toThrow(/OfferHasBeenVoided/);
+          ).rejects.toThrow(/The offer has been voided/);
         });
         test("buyer calls voidNonListedOfferBatch", async () => {
           const fullOffers = [];
@@ -507,7 +512,8 @@ describe("core-sdk", () => {
               )
             );
           }
-          await (await buyerCoreSDK.voidNonListedOfferBatch(fullOffers)).wait();
+          const tx = await buyerCoreSDK.voidNonListedOfferBatch(fullOffers);
+          await buyerCoreSDK.waitForGraphNodeIndexing(tx);
           for (const fullOffer of fullOffers) {
             await expect(
               createOfferAndCommit(
@@ -515,7 +521,7 @@ describe("core-sdk", () => {
                 buyerCoreSDK, // buyer signs the offer
                 fullOffer
               )
-            ).rejects.toThrow(/OfferHasBeenVoided/);
+            ).rejects.toThrow(/The offer has been voided/);
           }
         });
       });

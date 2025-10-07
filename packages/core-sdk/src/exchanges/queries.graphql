@@ -56,3 +56,31 @@ fragment BaseExchangeFields on Exchange {
     amount
   }
 }
+
+fragment NonListedOfferVoidedFields on NonListedOfferVoided {
+  id
+  txHash
+  logIndex
+  offerHash
+  offererId
+  executedBy
+  timestamp
+}
+
+query getNonListedOfferVoidedQuery(
+  $nonListedOfferVoidedsSkip: Int
+  $nonListedOfferVoidedsFirst: Int
+  $nonListedOfferVoidedsOrderBy: NonListedOfferVoided_orderBy
+  $nonListedOfferVoidedsOrderDirection: OrderDirection
+  $nonListedOfferVoidedsFilter: NonListedOfferVoided_filter
+) {
+  nonListedOfferVoideds(
+    skip: $nonListedOfferVoidedsSkip
+    first: $nonListedOfferVoidedsFirst
+    orderBy: $nonListedOfferVoidedsOrderBy
+    orderDirection: $nonListedOfferVoidedsOrderDirection
+    where: $nonListedOfferVoidedsFilter
+  ) {
+    ...NonListedOfferVoidedFields
+  }
+}

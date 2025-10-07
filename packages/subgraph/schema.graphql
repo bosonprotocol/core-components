@@ -1010,3 +1010,13 @@ type DRFeeRequestedEvent @entity(immutable: true) {
   timestamp: BigInt!
   executedBy: Bytes!
 }
+
+type NonListedOfferVoided @entity(immutable: true) {
+  id: ID! # offerHash
+  txHash: String!
+  logIndex: BigInt!
+  offerHash: Bytes!
+  offererId: BigInt!
+  executedBy: Bytes!
+  timestamp: BigInt!
+}
