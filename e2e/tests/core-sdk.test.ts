@@ -226,6 +226,22 @@ describe("core-sdk", () => {
           const offerHash = await buyerCoreSDK.getOfferHash(fullOfferArgs);
           expect(offerHash).toBe(expectedHash);
         });
+        test("check transaction data for createOfferAndCommit", async () => {
+          // Offer creator signs the full offer
+          const { signature } = await sellerCoreSDK.signFullOffer({
+            fullOfferArgsUnsigned: fullOfferArgs
+          });
+          const txData = await buyerCoreSDK.createOfferAndCommit(
+            {
+              ...fullOfferArgs,
+              signature
+            },
+            { returnTxInfo: true }
+          );
+          expect(Object.keys(txData).sort()).toStrictEqual(
+            ["data", "to", "value"].sort()
+          );
+        });
         test("buyer commits to native offer", async () => {
           ({ offer: createdOffer, exchange: createdExchange } =
             await createOfferAndCommit(
@@ -372,6 +388,18 @@ describe("core-sdk", () => {
             )
           ).rejects.toThrow(/The offer has been voided/);
         });
+        test("check transaction data for voidNonListedOffer", async () => {
+          const txData = await sellerCoreSDK.voidNonListedOffer(
+            {
+              ...fullOfferArgs,
+              buyerId: "0"
+            },
+            { returnTxInfo: true }
+          );
+          expect(Object.keys(txData).sort()).toStrictEqual(
+            ["data", "to"].sort()
+          );
+        });
         test("seller calls voidNonListedOfferBatch", async () => {
           const fullOffers = [];
           for (let i = 0; i < 3; i++) {
@@ -413,6 +441,46 @@ describe("core-sdk", () => {
               )
             ).rejects.toThrow(/The offer has been voided/);
           }
+        });
+        test("check transaction data for voidNonListedOfferBatch", async () => {
+          const fullOffers = [];
+          for (let i = 0; i < 3; i++) {
+            fullOffers.push(
+              await buildFullOfferArgs(
+                buyerCoreSDK, // buyer calls createOfferAndCommit
+                sellerCoreSDK, // seller signs the offer
+                condition,
+                {
+                  committer: buyerWallet.address, // buyer for seller-initiated offer
+                  offerCreator: sellerWallet.address, // seller-initiated offer
+                  sellerId,
+                  sellerOfferParams: {
+                    collectionIndex: 0,
+                    mutualizerAddress:
+                      "0x0000000000000000000000000000000000000000",
+                    royaltyInfo: { recipients: [], bps: [] }
+                  },
+                  useDepositedFunds: true,
+                  creator: OfferCreator.Seller, // seller-initiated offer
+                  feeLimit: parseEther("0.1")
+                },
+                {
+                  metadata: {
+                    name: `Offer to void ${i}`
+                  }
+                }
+              )
+            );
+          }
+          const txData = await sellerCoreSDK.voidNonListedOfferBatch(
+            fullOffers,
+            {
+              returnTxInfo: true
+            }
+          );
+          expect(Object.keys(txData).sort()).toStrictEqual(
+            ["data", "to"].sort()
+          );
         });
       });
 
