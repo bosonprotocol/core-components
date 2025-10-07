@@ -191,8 +191,7 @@ export const createOfferArgsSchema = object({
   // TODO: add agentId
 });
 
-export const createOfferAndCommitArgsSchema = object({
-  ...createOfferArgsSchema.shape,
+export const createOfferAndCommitArgsSchema = createOfferArgsSchema.shape({
   offerCreator: string()
     .required()
     .test(...addressTestArgs),
