@@ -226,7 +226,7 @@ describe("core-sdk", () => {
           const offerHash = await buyerCoreSDK.getOfferHash(fullOfferArgs);
           expect(offerHash).toBe(expectedHash);
         });
-        test("buyer committed", async () => {
+        test("buyer commits to native offer", async () => {
           ({ offer: createdOffer, exchange: createdExchange } =
             await createOfferAndCommit(
               buyerCoreSDK, // buyer calls createOfferAndCommit
@@ -240,6 +240,61 @@ describe("core-sdk", () => {
           expect(Number(createdOffer.quantityInitial)).toBeGreaterThan(1);
           expect(Number(createdOffer.quantityAvailable)).toEqual(
             Number(createdOffer.quantityInitial) - 1
+          );
+          expect(createdExchange).toBeTruthy();
+          expect(createdExchange.state).toBe(ExchangeState.COMMITTED);
+          expect(createdExchange.buyer).toBeTruthy();
+          expect(createdExchange.buyer?.wallet).toEqual(
+            buyerWallet.address.toLowerCase()
+          );
+        });
+        test("buyer commits to ERC20 offer", async () => {
+          await ensureMintedAndAllowedTokens(
+            [buyerWallet, sellerWallet],
+            1_000_000,
+            false
+          );
+          const fullOfferArgs2 = await buildFullOfferArgs(
+            buyerCoreSDK, // buyer calls createOfferAndCommit
+            sellerCoreSDK, // seller signs the offer
+            condition,
+            {
+              committer: buyerWallet.address, // buyer for seller-initiated offer
+              offerCreator: sellerWallet.address, // seller-initiated offer
+              sellerId,
+              sellerOfferParams: {
+                collectionIndex: 0,
+                mutualizerAddress: "0x0000000000000000000000000000000000000000",
+                royaltyInfo: { recipients: [], bps: [] }
+              },
+              useDepositedFunds: true,
+              creator: OfferCreator.Seller, // seller-initiated offer
+              feeLimit: parseEther("0.1")
+            },
+            {
+              offerParams: {
+                exchangeToken: MOCK_ERC20_ADDRESS
+              }
+            }
+          );
+          ({ offer: createdOffer, exchange: createdExchange } =
+            await createOfferAndCommit(
+              buyerCoreSDK, // buyer calls createOfferAndCommit
+              sellerCoreSDK, // seller signs the offer
+              {
+                ...fullOfferArgs2
+              }
+            ));
+          expect(createdOffer).toBeTruthy();
+          expect(createdOffer.voided).toBeFalsy();
+          expect(createdOffer.seller).toBeTruthy();
+          expect(createdOffer.seller?.id).toBe(sellerId);
+          expect(Number(createdOffer.quantityInitial)).toBeGreaterThan(1);
+          expect(Number(createdOffer.quantityAvailable)).toEqual(
+            Number(createdOffer.quantityInitial) - 1
+          );
+          expect(createdOffer.exchangeToken.address).toBe(
+            MOCK_ERC20_ADDRESS.toLowerCase()
           );
           expect(createdExchange).toBeTruthy();
           expect(createdExchange.state).toBe(ExchangeState.COMMITTED);
@@ -408,7 +463,7 @@ describe("core-sdk", () => {
           const offerHash = await sellerCoreSDK.getOfferHash(fullOfferArgs);
           expect(offerHash).toBe(expectedHash);
         });
-        test("seller committed", async () => {
+        test("seller commits to native offer", async () => {
           ({ offer: createdOffer, exchange: createdExchange } =
             await createOfferAndCommit(
               sellerCoreSDK, // seller calls createOfferAndCommit
@@ -420,6 +475,59 @@ describe("core-sdk", () => {
           expect(createdOffer.seller).toBeTruthy();
           expect(createdOffer.seller?.id).toBe(sellerId);
           expect(Number(createdOffer.quantityAvailable)).toEqual(0);
+          expect(createdExchange).toBeTruthy();
+          expect(createdExchange.state).toBe(ExchangeState.COMMITTED);
+          expect(createdExchange.buyer).toBeTruthy();
+          expect(createdExchange.buyer?.wallet).toEqual(
+            buyerWallet.address.toLowerCase()
+          );
+        });
+        test("seller commits to ERC20 offer", async () => {
+          await ensureMintedAndAllowedTokens(
+            [buyerWallet, sellerWallet],
+            1_000_000,
+            false
+          );
+          const fullOfferArgs2 = await buildFullOfferArgs(
+            sellerCoreSDK, // seller calls createOfferAndCommit
+            buyerCoreSDK, // buyer signs the offer
+            condition,
+            {
+              committer: sellerWallet.address, // seller for buyer-initiated offer
+              offerCreator: buyerWallet.address, // buyer-initiated offer
+              sellerId: sellerId,
+              sellerOfferParams: {
+                collectionIndex: 0,
+                mutualizerAddress: "0x0000000000000000000000000000000000000000",
+                royaltyInfo: { recipients: [], bps: [] }
+              },
+              useDepositedFunds: true,
+              creator: OfferCreator.Buyer, // buyer-initiated offer
+              feeLimit: parseEther("0.1")
+            },
+            {
+              offerParams: {
+                quantityAvailable,
+                exchangeToken: MOCK_ERC20_ADDRESS
+              }
+            }
+          );
+          ({ offer: createdOffer, exchange: createdExchange } =
+            await createOfferAndCommit(
+              sellerCoreSDK, // seller calls createOfferAndCommit
+              buyerCoreSDK, // buyer signs the offer
+              {
+                ...fullOfferArgs2
+              }
+            ));
+          expect(createdOffer).toBeTruthy();
+          expect(createdOffer.voided).toBeFalsy();
+          expect(createdOffer.seller).toBeTruthy();
+          expect(createdOffer.seller?.id).toBe(sellerId);
+          expect(Number(createdOffer.quantityAvailable)).toEqual(0);
+          expect(createdOffer.exchangeToken.address).toBe(
+            MOCK_ERC20_ADDRESS.toLowerCase()
+          );
           expect(createdExchange).toBeTruthy();
           expect(createdExchange.state).toBe(ExchangeState.COMMITTED);
           expect(createdExchange.buyer).toBeTruthy();

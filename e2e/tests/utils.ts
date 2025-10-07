@@ -632,8 +632,20 @@ export async function buildFullOfferArgs(
     sellerId = "0"; // sellerId must be 0 for buyer-initiated offer
     creatorDepositFunds = offerArgs.price;
   }
+  if (offerArgs.exchangeToken !== constants.AddressZero) {
+    await (
+      await offerCreatorCoreSDK.approveExchangeToken(
+        offerArgs.exchangeToken,
+        creatorDepositFunds
+      )
+    ).wait();
+  }
   await (
-    await offerCreatorCoreSDK.depositFunds(creatorId, creatorDepositFunds)
+    await offerCreatorCoreSDK.depositFunds(
+      creatorId,
+      creatorDepositFunds,
+      offerArgs.exchangeToken
+    )
   ).wait();
 
   return {
