@@ -41,6 +41,7 @@ export async function getNonListedOfferVoided(
   queryVars: GetNonListedOfferVoidedQueryQueryVariables = {}
 ): Promise<NonListedOfferVoidedFieldsFragment[]> {
   const sdk = getSubgraphSdk(subgraphUrl);
-  const { nonListedOfferVoideds } = await sdk.getNonListedOfferVoidedQuery(queryVars);
+  const { nonListedOfferVoideds } =
+    await sdk.getNonListedOfferVoidedQuery(queryVars);
   return nonListedOfferVoideds;
 }
