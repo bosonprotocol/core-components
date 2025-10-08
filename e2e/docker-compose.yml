@@ -47,7 +47,7 @@ services:
       - "8545:8545"
 
   boson-subgraph:
-    image: boson-subgraph:efd5d1a8f23c3bca7c25273ea4c912a367250119_2
+    image: boson-subgraph:efd5d1a8f23c3bca7c25273ea4c912a367250119_3
     build:
       context: ../
       dockerfile: ./packages/subgraph/Dockerfile
