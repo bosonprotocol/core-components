@@ -449,7 +449,7 @@ type ProductV1Seller @entity(immutable: false) {
   """
   Refs
   """
-  seller: Seller!
+  seller: Seller
 }
 
 type ProductV1SellerContactLink @entity(immutable: true) {
