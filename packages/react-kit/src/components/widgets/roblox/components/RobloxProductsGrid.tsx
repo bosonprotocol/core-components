@@ -183,8 +183,8 @@ export const RobloxProductsGrid = ({
                       }}
                       onCardClick={isMobile ? onCardClick : undefined}
                       CTAOnHover={
-                        !isLoggedInWithRoblox ? (
-                          <LoginWithRoblox sellerId={seller.id} />
+                        !isLoggedInWithRoblox && !!seller ? (
+                          <LoginWithRoblox sellerId={seller?.id} />
                         ) : !address ? (
                           <ConnectWalletWithLogic
                             connectWalletButtonDisabled={false}
