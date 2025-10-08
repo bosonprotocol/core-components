@@ -30,7 +30,7 @@ interface MetadataInterface {
   References to entities
   """
   offer: Offer!
-  seller: Seller!
+  seller: Seller
   exchangeToken: ExchangeToken!
   """
   Enriched fields from offer entity to allow nested query workaround
@@ -149,7 +149,7 @@ type BaseMetadataEntity implements MetadataInterface @entity(immutable: false) {
   References to entities
   """
   offer: Offer!
-  seller: Seller!
+  seller: Seller
   exchangeToken: ExchangeToken!
   """
   Enriched fields from offer entity to allow nested query workaround
@@ -184,7 +184,7 @@ type ProductV1MetadataEntity implements MetadataInterface @entity(immutable: fal
   References to entities
   """
   offer: Offer!
-  seller: Seller!
+  seller: Seller
   exchangeToken: ExchangeToken!
   """
   Enriched fields from offer entity to allow nested query workaround
@@ -231,7 +231,7 @@ type BundleMetadataEntity implements MetadataInterface @entity(immutable: false)
   References to entities
   """
   offer: Offer!
-  seller: Seller!
+  seller: Seller
   exchangeToken: ExchangeToken!
   """
   Enriched fields from offer entity to allow nested query workaround
