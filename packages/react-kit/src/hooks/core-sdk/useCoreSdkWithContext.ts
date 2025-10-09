@@ -6,7 +6,7 @@ import { Token } from "../../components/widgets/finance/convertion-rate/Converti
 import { useSigner } from "../connection/connection";
 import { useMemo } from "react";
 import { useExternalSigner } from "../../components/signer/useExternalSigner";
-import { hooks } from "../..";
+import { EthersAdapter, hooks } from "../..";
 
 export function useCoreSDKWithContext(): CoreSDK {
   const { envName, configId, metaTx } = useEnvContext();
@@ -15,9 +15,19 @@ export function useCoreSDKWithContext(): CoreSDK {
   const defaultConfig = getEnvConfigById(envName, configId);
   const overrides = useMemo(() => {
     return externalSigner
-      ? { web3Lib: externalSigner.externalWeb3LibAdapter }
-      : undefined;
-  }, [externalSigner]);
+      ? {
+          web3Lib: externalSigner.externalWeb3LibAdapter
+        }
+      : signer && signer.provider
+        ? {
+            web3Lib: new EthersAdapter(
+              signer.provider as providers.Web3Provider,
+              undefined,
+              signer
+            )
+          }
+        : undefined;
+  }, [externalSigner, signer]);
   return hooks.useCoreSdk(
     {
       envName,
