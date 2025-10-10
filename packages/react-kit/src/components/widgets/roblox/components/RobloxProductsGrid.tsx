@@ -16,7 +16,7 @@ import { Bundle, isBundle, isProductV1 } from "../../../../lib/offer/filter";
 import { ProductCardSkeleton } from "../../../skeleton/ProductCardSkeleton";
 import { ProductType } from "../../../productCard/const";
 import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
-import { BosonRobloxProductWithAvailability } from "@bosonprotocol/roblox-sdk";
+import { BosonRobloxProductWithAvailability } from "../../../../lib/roblox/types";
 import { Typography } from "../../../ui/Typography";
 import { isTruthy } from "../../../../types/helpers";
 import { LoginWithRoblox } from "./LoginWithRoblox";

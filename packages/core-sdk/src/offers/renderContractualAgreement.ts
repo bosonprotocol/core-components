@@ -187,12 +187,10 @@ function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
       exchangeToken: offerDataSubGraph.exchangeToken.address,
       feeLimit: offerDataSubGraph.price, // feeLimit is never stored on-chain. By default, set it to offer price
       priceType: PriceType.Static,
-      royaltyInfo: [
-        {
-          recipients: [AddressZero], // AddressZero means Seller's treasury account
-          bps: ["0"] // Values should be greater or equal than Seller's minimum royalty amount
-        }
-      ]
+      royaltyInfo: {
+        recipients: [AddressZero], // AddressZero means Seller's treasury account
+        bps: ["0"] // Values should be greater or equal than Seller's minimum royalty amount
+      }
     },
     offerMetadata: {
       sellerContactMethod: (

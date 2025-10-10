@@ -18,7 +18,7 @@ import { ConnectWalletWithLogic } from "./ConnectWalletWithLogic";
 import {
   BosonRobloxExchange,
   GetExchangesResponse
-} from "@bosonprotocol/roblox-sdk";
+} from "../../../../lib/roblox/types";
 import { Typography } from "../../../ui/Typography";
 import { isTruthy } from "../../../../types/helpers";
 import { ExchangeCard } from "../../../exchangeCard/ExchangeCard";
@@ -141,7 +141,7 @@ export const RobloxExchangesGrid = ({
                     height: 500
                   };
                   const imageSrc = getImageUrl(
-                    (mainImage || metadata?.image) ?? "",
+                    (mainImage || (metadata?.image as string)) ?? "",
                     ipfsImageGateway,
                     imageOptimizationOptions
                   );

@@ -2,7 +2,7 @@ import { useInfiniteQuery, useQueryClient } from "react-query";
 import {
   GetProductsResponse,
   ProductAvailabilityStatus
-} from "@bosonprotocol/roblox-sdk";
+} from "../../lib/roblox/types";
 import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
 import { mutationKeys } from "./mutationKeys";
 

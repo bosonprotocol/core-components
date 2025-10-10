@@ -32,7 +32,7 @@ export type CreateOfferArgs = {
   collectionIndex: BigNumberish;
   feeLimit?: BigNumberish;
   priceType?: PriceType;
-  royaltyInfo?: RoyaltyInfo[];
+  royaltyInfo?: RoyaltyInfo;
   creator?: OfferCreator;
   mutualizerAddress?: string;
 };
@@ -70,7 +70,7 @@ export type OfferStruct = {
   metadataHash: string;
   voided: boolean;
   collectionIndex: BigNumberish;
-  royaltyInfo: RoyaltyInfo[];
+  royaltyInfo: RoyaltyInfo[]; // protocol expects an array with exactly 1 item
 };
 
 export type SellerOfferArgs = {

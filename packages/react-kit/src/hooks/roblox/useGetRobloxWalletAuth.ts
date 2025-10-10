@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from "react-query";
 import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
 import { mutationKeys } from "./mutationKeys";
-import { GetWalletAuthResponse } from "@bosonprotocol/roblox-sdk";
+import { GetWalletAuthResponse } from "../../lib/roblox/types";
 import { productsPageSize } from "../../components/widgets/roblox/components/const";
 type UseGetRobloxWalletAuthProps = {
   sellerId: string;
