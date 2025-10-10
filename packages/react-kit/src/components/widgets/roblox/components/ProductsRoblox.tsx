@@ -8,7 +8,7 @@ import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";
 import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges";
 import { useAccount } from "../../../../hooks";
 import { RobloxExchangesGrid } from "./RobloxExchangesGrid";
-import { BosonRobloxExchange } from "@bosonprotocol/roblox-sdk";
+import { BosonRobloxExchange } from "../../../../lib/roblox/types";
 import { CancelExchange } from "../../../modal/components/Redeem/ExchangeView/cancellation/CancelExchange";
 import NonModal from "../../../modal/nonModal/NonModal";
 import { useIsRobloxLoggedIn } from "../../../../hooks/roblox/useIsRobloxLoggedIn";

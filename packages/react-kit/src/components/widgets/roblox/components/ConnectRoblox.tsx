@@ -23,7 +23,7 @@ import { useCookies } from "react-cookie";
 import {
   ROBLOX_OAUTH_COOKIE_NAME,
   WEB3AUTH_COOKIE_NAME
-} from "@bosonprotocol/roblox-sdk";
+} from "../../../../lib/roblox/constants";
 import { useRobloxProducts } from "../../../../hooks/roblox/useRobloxProducts";
 import { useRobloxExchanges } from "../../../../hooks/roblox/useRobloxExchanges";
 import { LoginWithRoblox } from "./LoginWithRoblox";

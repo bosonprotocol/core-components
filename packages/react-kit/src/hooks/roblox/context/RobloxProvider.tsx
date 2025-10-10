@@ -1,7 +1,7 @@
 import { ConfigId, EnvironmentType } from "@bosonprotocol/core-sdk";
 import { useEnvContext } from "../../../components/environment/EnvironmentContext";
 import { RobloxContext } from "./RobloxContext";
-import { envConfigs } from "@bosonprotocol/roblox-sdk";
+import { envConfigs } from "../../../lib/roblox/config";
 import React, { useMemo } from "react";
 
 const getBackendOrigin = ({

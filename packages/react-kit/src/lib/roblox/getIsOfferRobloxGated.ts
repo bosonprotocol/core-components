@@ -1,6 +1,6 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { isProductV1 } from "../offer/filter";
-import { filterRobloxProduct } from "@bosonprotocol/roblox-sdk";
+import { filterRobloxProduct } from "./utils";
 type GetIsOfferRobloxGatedProps = {
   offer: subgraph.OfferFieldsFragment;
 };

@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "react-query";
-import { GetExchangesResponse } from "@bosonprotocol/roblox-sdk";
+import { GetExchangesResponse } from "../../lib/roblox/types";
 import { useRobloxConfigContext } from "./context/useRobloxConfigContext";
 import { mutationKeys } from "./mutationKeys";
 

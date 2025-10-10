@@ -1,5 +1,5 @@
 import { useLocalStorage } from "../storage/useLocalStorage";
-import { GetLoggedInResponse } from "@bosonprotocol/roblox-sdk";
+import { GetLoggedInResponse } from "../../lib/roblox/types";
 import { robloxLocalStorageKey } from "./const";
 
 export const useRobloxLocalStorage = () => {

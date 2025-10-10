@@ -140,7 +140,14 @@ export function argsToOfferStruct(args: CreateOfferArgs): Partial<OfferStruct> {
     args.creator !== undefined ? args.creator : OfferCreator.Seller;
   const royaltyInfo =
     args.royaltyInfo !== undefined
-      ? args.royaltyInfo
+      ? [
+          {
+            recipients: args.royaltyInfo.recipients.map((recipient) =>
+              getAddress(recipient)
+            ),
+            bps: args.royaltyInfo.bps
+          }
+        ]
       : [
           {
             recipients: [],
@@ -156,14 +163,7 @@ export function argsToOfferStruct(args: CreateOfferArgs): Partial<OfferStruct> {
     ...restArgs,
     exchangeToken: getAddress(exchangeToken),
     priceType,
-    royaltyInfo: royaltyInfo.map((royaltyInfoItem) => {
-      return {
-        ...royaltyInfoItem,
-        recipients: royaltyInfoItem.recipients.map((recipient) =>
-          getAddress(recipient)
-        )
-      };
-    }),
+    royaltyInfo,
     creator
   };
 }

@@ -121,12 +121,10 @@ function buildOfferData(offerFields: OfferFieldsFragment): {
       collectionIndex: offerFields.collectionIndex || 0,
       feeLimit: offerFields.price, // feeLimit is never stored on-chain. By default, set it to offer price
       priceType: PriceType.Static,
-      royaltyInfo: [
-        {
-          recipients: [ethers.constants.AddressZero], // AddressZero means Seller's treasury account
-          bps: ["0"] // Values should be greater or equal than Seller's minimum royalty amount
-        }
-      ]
+      royaltyInfo: {
+        recipients: [ethers.constants.AddressZero], // AddressZero means Seller's treasury account
+        bps: ["0"] // Values should be greater or equal than Seller's minimum royalty amount
+      }
     },
     offerMetadata: {
       sellerContactMethod:
