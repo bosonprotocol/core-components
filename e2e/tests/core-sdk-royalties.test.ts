@@ -468,12 +468,10 @@ describe("Offer royalties recipients", () => {
     await createSeller(coreSDK, fundedWallet.address);
     const treasuryPercentage = "100"; // 1%
     const createdOffer = await createOffer(coreSDK, {
-      royaltyInfo: [
-        {
-          recipients: [ZERO_ADDRESS],
-          bps: [treasuryPercentage]
-        }
-      ]
+      royaltyInfo: {
+        recipients: [ZERO_ADDRESS],
+        bps: [treasuryPercentage]
+      }
     });
     expect(createdOffer.royaltyInfos).toBeTruthy();
     expect(createdOffer.royaltyInfos.length).toEqual(1);
@@ -503,23 +501,19 @@ describe("Offer royalties recipients", () => {
     (
       await expect(
         createOffer(coreSDK, {
-          royaltyInfo: [
-            {
-              recipients: [ZERO_ADDRESS],
-              bps: ["50"] // less than the minimum
-            }
-          ]
+          royaltyInfo: {
+            recipients: [ZERO_ADDRESS],
+            bps: ["50"] // less than the minimum
+          }
         })
       )
     ).rejects.toThrow(/InvalidRoyaltyPercentage()/);
     // Create an offer with all royalties for treasury
     const createdOffer = await createOffer(coreSDK, {
-      royaltyInfo: [
-        {
-          recipients: [ZERO_ADDRESS],
-          bps: [minTreasuryPercentage]
-        }
-      ]
+      royaltyInfo: {
+        recipients: [ZERO_ADDRESS],
+        bps: [minTreasuryPercentage]
+      }
     });
     expect(createdOffer.royaltyInfos).toBeTruthy();
     expect(createdOffer.royaltyInfos.length).toEqual(1);
@@ -563,12 +557,10 @@ describe("Offer royalties recipients", () => {
     );
     await tx.wait();
     const createdOffer = await createOffer(coreSDK, {
-      royaltyInfo: [
-        {
-          recipients,
-          bps: recipientsPercentage
-        }
-      ]
+      royaltyInfo: {
+        recipients,
+        bps: recipientsPercentage
+      }
     });
     expect(createdOffer.royaltyInfos).toBeTruthy();
     expect(createdOffer.royaltyInfos.length).toEqual(1);

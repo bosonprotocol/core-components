@@ -16,12 +16,10 @@ describe("#encodeCreateOffer()", () => {
     const royaltyBps = [2, 1];
     const mockedCreateOfferArgs = mockCreateOfferArgs({
       voucherValidDurationInMS: 1000,
-      royaltyInfo: [
-        {
-          recipients: royaltyRecipients,
-          bps: royaltyBps
-        }
-      ]
+      royaltyInfo: {
+        recipients: royaltyRecipients,
+        bps: royaltyBps
+      }
     });
 
     const encodedCalldata = encodeCreateOffer(mockedCreateOfferArgs);
