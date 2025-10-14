@@ -47,7 +47,7 @@ const CONFIGS: Record<
       "11155111-sepolia",
       "84532-basesepolia",
       "11155420-optimismsepolia",
-      "421614-arbitrum-sepolia"
+      "421614-arbitrumsepolia"
     ],
     suffix: "test"
   },
@@ -57,7 +57,7 @@ const CONFIGS: Record<
       "11155111-sepolia",
       "84532-basesepolia",
       "11155420-optimismsepolia",
-      "421614-arbitrum-sepolia"
+      "421614-arbitrumsepolia"
     ],
     suffix: "staging"
   },
