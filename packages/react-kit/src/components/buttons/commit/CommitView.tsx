@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../../../assets/logo.svg";
+import Logo from "../../../assets/logo.svg?react";
 import { SvgImage } from "../../ui/SvgImage";
 import { Grid } from "../../ui/Grid";
 
