@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.45.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.44.0...@bosonprotocol/core-sdk@1.45.0) (2025-10-29)
+
+
+### Bug Fixes
+
+* seller shall not be mandatory in the offer metadata structure ([#979](https://github.com/bosonprotocol/core-components/issues/979)) ([a3e6f40](https://github.com/bosonprotocol/core-components/commit/a3e6f40a0cad84ed542b9ef381b457b17038d21e))
+
+
+### Features
+
+* add create offer and commit ([#973](https://github.com/bosonprotocol/core-components/issues/973)) ([4d88ead](https://github.com/bosonprotocol/core-components/commit/4d88ead86160fb1cb0c733ee1a8fe389171608fc))
+* change royaltyInfo struct expected to create offer ([#980](https://github.com/bosonprotocol/core-components/issues/980)) ([97a8d20](https://github.com/bosonprotocol/core-components/commit/97a8d203e280fcdb009090d5a21acaab89312e74))
+* manage buyer-initiated offers ([#968](https://github.com/bosonprotocol/core-components/issues/968)) ([3e8d680](https://github.com/bosonprotocol/core-components/commit/3e8d68047ef8ce411b7e570fff26a09a1785b4be))
+
+
+
+
+
 # [1.44.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.43.3...@bosonprotocol/core-sdk@1.44.0) (2025-09-17)
 
 

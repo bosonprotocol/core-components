@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.16.0...@bosonprotocol/ethers-sdk@1.17.0) (2025-10-29)
+
+
+### Features
+
+* manage buyer-initiated offers ([#968](https://github.com/bosonprotocol/core-components/issues/968)) ([3e8d680](https://github.com/bosonprotocol/core-components/commit/3e8d68047ef8ce411b7e570fff26a09a1785b4be))
+
+
+
+
+
 # [1.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.15.7...@bosonprotocol/ethers-sdk@1.16.0) (2025-09-17)
 
 

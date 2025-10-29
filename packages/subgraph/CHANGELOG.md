@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.35.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.34.10...@bosonprotocol/subgraph@1.35.0) (2025-10-29)
+
+
+### Bug Fixes
+
+* seller shall not be mandatory in the offer metadata structure ([#979](https://github.com/bosonprotocol/core-components/issues/979)) ([a3e6f40](https://github.com/bosonprotocol/core-components/commit/a3e6f40a0cad84ed542b9ef381b457b17038d21e))
+
+
+### Features
+
+* add create offer and commit ([#973](https://github.com/bosonprotocol/core-components/issues/973)) ([4d88ead](https://github.com/bosonprotocol/core-components/commit/4d88ead86160fb1cb0c733ee1a8fe389171608fc))
+* manage buyer-initiated offers ([#968](https://github.com/bosonprotocol/core-components/issues/968)) ([3e8d680](https://github.com/bosonprotocol/core-components/commit/3e8d68047ef8ce411b7e570fff26a09a1785b4be))
+
+
+
+
+
 ## [1.34.10](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.34.9...@bosonprotocol/subgraph@1.34.10) (2025-09-17)
 
 

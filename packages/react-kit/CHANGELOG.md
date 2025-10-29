@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.41.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.40.0...@bosonprotocol/react-kit@0.41.0) (2025-10-29)
+
+
+### Bug Fixes
+
+* hover on commit button when used in vite dapps ([#972](https://github.com/bosonprotocol/core-components/issues/972)) ([646472c](https://github.com/bosonprotocol/core-components/commit/646472c3ff2f0b8533183e87ae9589ba58859685))
+* seller shall not be mandatory in the offer metadata structure ([#979](https://github.com/bosonprotocol/core-components/issues/979)) ([a3e6f40](https://github.com/bosonprotocol/core-components/commit/a3e6f40a0cad84ed542b9ef381b457b17038d21e))
+
+
+### Features
+
+* change royaltyInfo struct expected to create offer ([#980](https://github.com/bosonprotocol/core-components/issues/980)) ([97a8d20](https://github.com/bosonprotocol/core-components/commit/97a8d203e280fcdb009090d5a21acaab89312e74))
+* manage buyer-initiated offers ([#968](https://github.com/bosonprotocol/core-components/issues/968)) ([3e8d680](https://github.com/bosonprotocol/core-components/commit/3e8d68047ef8ce411b7e570fff26a09a1785b4be))
+
+
+
+
+
 # [0.40.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.39.1...@bosonprotocol/react-kit@0.40.0) (2025-09-17)
 
 
