@@ -34,7 +34,9 @@ const Template: ComponentStory<typeof ReserveRangeButton> = (
   );
 };
 
-export const Simple: ComponentStory<typeof ReserveRangeButton> = Template.bind({});
+export const Simple: ComponentStory<typeof ReserveRangeButton> = Template.bind(
+  {}
+);
 
 Simple.args = {
   coreSdkConfig: {
