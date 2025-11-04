@@ -35,6 +35,7 @@ export interface CurrencyDisplayProps {
   gap?: number | string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any;
+  isPriceDiscoveryOffer?: boolean;
 }
 
 export const CurrencyDisplay = ({
@@ -45,6 +46,7 @@ export const CurrencyDisplay = ({
   iconSize,
   color,
   gap,
+  isPriceDiscoveryOffer,
   ...rest
 }: CurrencyDisplayProps) => {
   return (
@@ -60,7 +62,7 @@ export const CurrencyDisplay = ({
           $gap={gap}
           $color={color}
         >
-          {value}
+          {isPriceDiscoveryOffer ? "??" : value}
         </CurrencyDisplayValue>
       )}
     </CurrencyDisplayValueWrapper>

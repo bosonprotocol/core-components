@@ -28,6 +28,7 @@ import { DetailViewProps } from "./types";
 import { useGetOfferDetailData } from "./useGetOfferDetailData";
 import { SvgImage } from "../../../../ui/SvgImage";
 import { getIsOfferRobloxGated } from "../../../../../lib/roblox/getIsOfferRobloxGated";
+import { PriceType } from "@bosonprotocol/common";
 
 const StyledPrice = styled(Price)`
   h3 {
@@ -116,6 +117,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
               tag="h3"
               convert
               withAsterisk={showPriceAsterisk}
+              isPriceDiscoveryOffer={offer.priceType === PriceType.Discovery}
             />
             {priceSibling}
           </WidgetUpperGrid>

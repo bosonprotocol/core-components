@@ -48,6 +48,7 @@ import dayjs from "dayjs";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
 import { LabelType, labelValueToText } from "../../../../exchangeCard/const";
 import { ExchangeStatus } from "../../../../exchangeCard/ExchangeCard.styles";
+import { PriceType } from "@bosonprotocol/common";
 
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
 
@@ -168,6 +169,7 @@ export default function InnerCommitDetailView(
   };
   const isVoidedOffer = !!offer.voidedAt;
   const isPreview = !offer.id;
+  const isPriceDiscoveryOffer = offer.priceType === PriceType.Discovery;
   const isCommitDisabled =
     !address ||
     !hasSellerEnoughFunds ||
@@ -178,7 +180,8 @@ export default function InnerCommitDetailView(
     isPreview ||
     isOfferNotValidYet ||
     isBuyerInsufficientFunds ||
-    (offer.condition && !isConditionMet);
+    (offer.condition && !isConditionMet) ||
+    isPriceDiscoveryOffer;
   const handleOnGetSignerAddress = useCallback(
     (signerAddress: string | undefined) => {
       const isConnectWalletFromCommit = getItemFromStorage(

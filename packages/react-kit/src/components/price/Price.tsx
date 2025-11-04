@@ -56,6 +56,7 @@ interface IProps {
   isExchange?: boolean;
   tag?: keyof JSX.IntrinsicElements;
   withAsterisk?: boolean;
+  isPriceDiscoveryOffer?: boolean;
 }
 
 export default function Price({
@@ -66,6 +67,7 @@ export default function Price({
   isExchange = false,
   tag = "h4",
   withAsterisk,
+  isPriceDiscoveryOffer = false,
   ...rest
 }: IProps) {
   const [isSymbolShown] = useState<boolean>(false); // TODO: remove once CSS :has is supported
@@ -86,27 +88,51 @@ export default function Price({
           flexWrap="wrap"
           data-testid="price-grid"
         >
-          <Typography
-            tag={tag}
-            style={{
-              fontWeight: "600",
-              letterSpacing: "-1px",
-              margin: "0",
-              wordBreak: "break-word"
-            }}
-            data-icon-price
-            {...(isSymbolShown && { "data-with-symbol": true })}
-          >
-            <Tooltip content={currencySymbol} wrap={false}>
-              <CurrencyDisplay
-                currency={currencySymbol as Currencies}
-                height={18}
-              />
-            </Tooltip>
-            {displayFloat(price.price)}
-            {withAsterisk && <div>*</div>}
-          </Typography>
-          {convert && price?.currency && (
+          {isPriceDiscoveryOffer ? (
+            <Typography
+              tag={tag}
+              style={{
+                fontSize: "20px",
+                fontWeight: "500",
+                fontStyle: "italic",
+                margin: "0",
+                wordBreak: "break-word"
+              }}
+              data-icon-price
+              {...(isSymbolShown && { "data-with-symbol": true })}
+            >
+              <Tooltip content={currencySymbol} wrap={false}>
+                <CurrencyDisplay
+                  currency={currencySymbol as Currencies}
+                  height={18}
+                />
+              </Tooltip>
+              Price on discovery
+              {withAsterisk && <div>*</div>}
+            </Typography>
+          ) : (
+            <Typography
+              tag={tag}
+              style={{
+                fontWeight: "600",
+                letterSpacing: "-1px",
+                margin: "0",
+                wordBreak: "break-word"
+              }}
+              data-icon-price
+              {...(isSymbolShown && { "data-with-symbol": true })}
+            >
+              <Tooltip content={currencySymbol} wrap={false}>
+                <CurrencyDisplay
+                  currency={currencySymbol as Currencies}
+                  height={18}
+                />
+              </Tooltip>
+              {displayFloat(price.price)}
+              {withAsterisk && <div>*</div>}
+            </Typography>
+          )}
+          {convert && !isPriceDiscoveryOffer && price?.currency && (
             <ConvertedPrice price={price} isExchange={isExchange} />
           )}
         </Grid>
