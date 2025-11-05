@@ -310,4 +310,5 @@ fragment BaseRangeFields on RangeEntity {
   start
   end
   owner
+  minted
 }
