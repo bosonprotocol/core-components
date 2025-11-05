@@ -70,7 +70,8 @@ ProductCardPrimary.args = {
       errorImageText: "Unable to ..."
     }
   },
-  bottomText: "Redeemable until 30 days after commit"
+  bottomText: "Redeemable until 30 days after commit",
+  isPriceDiscoveryOffer: false
 };
 
 ProductCardPrimary.decorators = [(Story) => wrapper(Story)];

@@ -16154,6 +16154,7 @@ export type GetSellerByIdQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     }>;
     exchanges?: Array<{
@@ -17703,6 +17704,7 @@ export type GetSellersQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     }>;
     exchanges?: Array<{
@@ -19690,6 +19692,7 @@ export type GetDisputeResolverByIdQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     }>;
     logs?: Array<
@@ -21004,6 +21007,7 @@ export type GetDisputeResolversQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     }>;
     logs?: Array<
@@ -22413,6 +22417,7 @@ export type GetOfferCollectionsQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     }>;
     collectionContract: {
@@ -23714,6 +23719,7 @@ export type OfferCollectionFieldsFragment = {
       start: string;
       end: string;
       owner: string;
+      minted: string;
     } | null;
   }>;
   collectionContract: {
@@ -24987,6 +24993,7 @@ export type SellerFieldsFragment = {
       start: string;
       end: string;
       owner: string;
+      minted: string;
     } | null;
   }>;
   exchanges?: Array<{
@@ -26824,6 +26831,7 @@ export type DisputeResolverFieldsFragment = {
       start: string;
       end: string;
       owner: string;
+      minted: string;
     } | null;
   }>;
   logs?: Array<
@@ -28938,6 +28946,7 @@ export type GetExchangeTokenByIdQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     }>;
     funds?: Array<{
@@ -30163,6 +30172,7 @@ export type GetExchangeTokensQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     }>;
     funds?: Array<{
@@ -31354,6 +31364,7 @@ export type ExchangeTokenFieldsFragment = {
       start: string;
       end: string;
       owner: string;
+      minted: string;
     } | null;
   }>;
   funds?: Array<{
@@ -32741,6 +32752,7 @@ export type GetExchangeByIdQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     };
     dispute?: {
@@ -34066,6 +34078,7 @@ export type GetExchangesQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     };
     dispute?: {
@@ -35369,6 +35382,7 @@ export type ExchangeFieldsFragment = {
       start: string;
       end: string;
       owner: string;
+      minted: string;
     } | null;
   };
   dispute?: {
@@ -36971,6 +36985,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     };
     seller?: {
@@ -38296,6 +38311,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     };
     seller?: {
@@ -39599,6 +39615,7 @@ export type BaseMetadataEntityFieldsFragment = {
       start: string;
       end: string;
       owner: string;
+      minted: string;
     } | null;
   };
   seller?: {
@@ -40901,6 +40918,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       start: string;
       end: string;
       owner: string;
+      minted: string;
     } | null;
   };
   seller?: {
@@ -42354,6 +42372,7 @@ export type GetBundleMetadataEntityByIdQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     };
     seller?: {
@@ -44255,6 +44274,7 @@ export type GetBundleMetadataEntitiesQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     };
     seller?: {
@@ -46134,6 +46154,7 @@ export type BundleMetadataEntityFieldsFragment = {
       start: string;
       end: string;
       owner: string;
+      minted: string;
     } | null;
   };
   seller?: {
@@ -48012,6 +48033,7 @@ export type BaseBundleMetadataEntityFieldsFragment = {
       start: string;
       end: string;
       owner: string;
+      minted: string;
     } | null;
   };
   seller?: {
@@ -50157,6 +50179,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           start: string;
           end: string;
           owner: string;
+          minted: string;
         } | null;
       };
       variations?: Array<{
@@ -51510,6 +51533,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             start: string;
             end: string;
             owner: string;
+            minted: string;
           } | null;
         };
         seller?: {
@@ -53606,6 +53630,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           start: string;
           end: string;
           owner: string;
+          minted: string;
         } | null;
       };
       variations?: Array<{
@@ -54959,6 +54984,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             start: string;
             end: string;
             owner: string;
+            minted: string;
           } | null;
         };
         seller?: {
@@ -57069,6 +57095,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     };
     seller?: {
@@ -58861,6 +58888,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     };
     seller?: {
@@ -60631,6 +60659,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       start: string;
       end: string;
       owner: string;
+      minted: string;
     } | null;
   };
   seller?: {
@@ -62400,6 +62429,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       start: string;
       end: string;
       owner: string;
+      minted: string;
     } | null;
   };
   seller?: {
@@ -64407,6 +64437,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     };
     variations?: Array<{
@@ -65760,6 +65791,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           start: string;
           end: string;
           owner: string;
+          minted: string;
         } | null;
       };
       seller?: {
@@ -67845,6 +67877,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         start: string;
         end: string;
         owner: string;
+        minted: string;
       } | null;
     };
     variations?: Array<{
@@ -69198,6 +69231,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           start: string;
           end: string;
           owner: string;
+          minted: string;
         } | null;
       };
       seller?: {
@@ -71487,6 +71521,7 @@ export type GetOfferByIdQueryQuery = {
       start: string;
       end: string;
       owner: string;
+      minted: string;
     } | null;
   } | null;
 };
@@ -72806,6 +72841,7 @@ export type GetOffersQueryQuery = {
       start: string;
       end: string;
       owner: string;
+      minted: string;
     } | null;
   }>;
 };
@@ -74217,6 +74253,7 @@ export type OfferFieldsFragment = {
     start: string;
     end: string;
     owner: string;
+    minted: string;
   } | null;
 };
 
@@ -75393,6 +75430,7 @@ export type BaseOfferFieldsFragment = {
     start: string;
     end: string;
     owner: string;
+    minted: string;
   } | null;
 };
 
@@ -75402,6 +75440,7 @@ export type BaseRangeFieldsFragment = {
   start: string;
   end: string;
   owner: string;
+  minted: string;
 };
 
 export const BaseOfferCollectionFieldsFragmentDoc = gql`
@@ -75852,6 +75891,7 @@ export const BaseRangeFieldsFragmentDoc = gql`
     start
     end
     owner
+    minted
   }
 `;
 export const BaseOfferFieldsFragmentDoc = gql`

@@ -1,6 +1,7 @@
 import { ArrowRight, ArrowsLeftRight } from "phosphor-react";
 import React, { useMemo } from "react";
 import styled from "styled-components";
+import { PriceType } from "@bosonprotocol/common";
 import { Button } from "../../../../buttons/Button";
 import { Grid } from "../../../../ui/Grid";
 import { InnerDetailViewWithPortal } from "../../common/detail/InnerDetailViewWithPortal";
@@ -50,6 +51,7 @@ export function InnerCommitDetailViewWithPortal(
   );
 
   const isOfferEmpty = quantity < 1;
+  const isPriceDiscoveryOffer = offer.priceType === PriceType.Discovery;
 
   const isNotCommittableOffer =
     isOfferEmpty ||
@@ -57,7 +59,8 @@ export function InnerCommitDetailViewWithPortal(
     isExpiredOffer ||
     offer.voided ||
     !hasSellerEnoughFunds ||
-    isBuyerInsufficientFunds;
+    isBuyerInsufficientFunds ||
+    isPriceDiscoveryOffer;
 
   const tokenOrCoinSymbol = offer.exchangeToken.symbol;
   return (

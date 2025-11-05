@@ -60,6 +60,7 @@ export interface IProductCard {
   className?: string;
   currencyColor?: CurrencyDisplayProps["color"];
   status?: ExchangeCardStatus;
+  isPriceDiscoveryOffer?: boolean;
 }
 
 const Wrapper = ({
@@ -99,7 +100,8 @@ export const ProductCard = (props: IProductCard) => {
     isImageFitCover = false,
     className,
     productType,
-    currencyColor
+    currencyColor,
+    isPriceDiscoveryOffer = false
   } = props;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -152,6 +154,7 @@ export const ProductCard = (props: IProductCard) => {
                 color={currencyColor}
                 iconSize={16}
                 gap={"0.3125rem"}
+                isPriceDiscoveryOffer={isPriceDiscoveryOffer}
                 style={{
                   alignItems: "center",
                   justifyContent: "center"

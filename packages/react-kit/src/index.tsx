@@ -27,6 +27,8 @@ export * from "./components/cta/offer/CommitButton";
 export * from "./components/cta/offer/ThemedCommitButton";
 export * from "./components/cta/offer/CreateOfferButton";
 export * from "./components/cta/offer/VoidButton";
+export * from "./components/cta/offer/ReserveRangeButton";
+export * from "./components/cta/offer/PreMintButton";
 export * from "./components/currencyDisplay/CurrencyDisplay";
 export * from "./components/error/ErrorMessage";
 export * from "./components/error/SimpleError";

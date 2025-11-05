@@ -22,6 +22,7 @@ import {
 import { Exchange } from "../../../../../types/exchange";
 import { PhygitalProduct } from "../detail/PhygitalProduct";
 import { getIsOfferRobloxGated } from "../../../../../lib/roblox/getIsOfferRobloxGated";
+import { PriceType } from "@bosonprotocol/common";
 
 const StyledPrice = styled(Price)`
   h3 {
@@ -105,6 +106,7 @@ export const GeneralProductData: React.FC<GeneralProductDataProps> = ({
             tag="h3"
             convert
             withAsterisk={false}
+            isPriceDiscoveryOffer={offer.priceType === PriceType.Discovery}
           />
         </Grid>
       </GridContainer>
