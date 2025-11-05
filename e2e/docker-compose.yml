@@ -15,7 +15,6 @@ services:
       - API_KEYS=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
       - 'API_IDS={"BOSON": ["xxxxxxxx-xxxx-xxxx-xxxx-111111111111"], "FERMION": ["xxxxxxxx-xxxx-xxxx-xxxx-222222222222"], "ERC20": ["xxxxxxxx-xxxx-xxxx-xxxx-333333333333"], "FORWARDER": ["xxxxxxxx-xxxx-xxxx-xxxx-444444444444"]}'
       - BOSON_VOUCHER_INTERFACE_ID=0x6a474d2c
-      - 'BOSON_META_TX_ABI=[{"inputs":[{"internalType":"address","name":"_userAddress","type":"address"},{"internalType":"string","name":"_functionName","type":"string"},{"internalType":"bytes","name":"_functionSignature","type":"bytes"},{"internalType":"uint256","name":"_nonce","type":"uint256"},{"internalType":"bytes","name":"_signature","type":"bytes"}],"name":"executeMetaTransaction","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"payable","type":"function"}]'
       - MOCK_ERC20_ADDRESS=0x70e0bA845a1A0F2DA3359C97E0285013525FFC49
     depends_on:
       - boson-protocol-node
