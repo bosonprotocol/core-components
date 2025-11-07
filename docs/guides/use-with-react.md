@@ -15,14 +15,18 @@ npm i @bosonprotocol/react-kit ethers
 The most convenient way to initialize the `core-sdk` in a react environment, is to use the `useCoreSdk` hook
 
 ```ts
+import { hooks } from "@bosonprotocol/react-kit";
+
 // read-only
-const readOnlyCoreSdk = useCoreSdk({
-  envName: "testing"
+const readOnlyCoreSdk = hooks.useCoreSdk({
+  envName: "testing",
+  configId: "testing-80002-0"
 });
 
 // with write capabilities
-const writeCoreSdk = useCoreSdk({
+const writeCoreSdk = hooks.useCoreSdk({
   envName: "testing",
+  configId: "testing-80002-0",
   web3Provider: provider // ethers provider / signer
 });
 ```
