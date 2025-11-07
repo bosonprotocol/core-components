@@ -1,0 +1,74 @@
+{
+  "local": {
+    "local-31337-0": {
+      "theGraphIpfsUrl": "http://127.0.0.1:5001",
+      "ipfsMetadataUrl": "http://127.0.0.1:5001"
+    }
+  },
+  "testing": {
+    "testing-80002-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    },
+    "testing-11155111-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    },
+    "testing-84532-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    },
+    "testing-11155420-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    },
+    "testing-421614-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    }
+  },
+  "staging": {
+    "staging-80002-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    },
+    "staging-11155111-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    },
+    "staging-84532-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    },
+    "staging-11155420-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    },
+    "staging-421614-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    }
+  },
+  "production": {
+    "production-137-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    },
+    "production-1-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    },
+    "production-8453-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    },
+    "production-10-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    },
+    "production-42161-0": {
+      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
+      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+    }
+  }
+}
