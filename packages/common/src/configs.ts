@@ -68,8 +68,10 @@ export const envConfigs = {
       getTxExplorerUrl: chainIdToGraphTx.get(80002),
       subgraphUrl: subgraphsJson.testing["testing-80002-0"][0],
       jsonRpcUrl: rpcUrlsJson.testing["testing-80002-0"][0],
-      theGraphIpfsUrl: ipfsGatewaysJson.testing["testing-80002-0"].theGraphIpfsUrl,
-      ipfsMetadataUrl: ipfsGatewaysJson.testing["testing-80002-0"].ipfsMetadataUrl,
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.testing["testing-80002-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.testing["testing-80002-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.testing[80002].protocolDiamond,
         priceDiscoveryClient:
