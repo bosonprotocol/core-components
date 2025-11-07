@@ -84,17 +84,17 @@ The following table recaps all configurations, per environment
 <tr><td>local</td><td>
 <table>
 <tr><th>Configuration</th><th>Blockchain</th><th>Subgraph</th></tr>
-<tr><td>local-31337-0</td><td>local (testnet)</td><td>http://127.0.0.1:8000/subgraphs/name/boson/corecomponents</td></tr>
+<tr><td>local-31337-0</td><td>local (testnet)</td><td><a href="http://127.0.0.1:8000/subgraphs/name/boson/corecomponents">http://127.0.0.1:8000/subgraphs/name/boson/corecomponents</a></td></tr>
 </table>
 <table>
 <tr><th>dApps</th><th></th></tr>
-<tr><td>Marketplace</td><td>http://localhost:3333</td></tr>
-<tr><td>Dispute Resolution Center</td><td>http://localhost:3333</td></tr>
+<tr><td>Marketplace</td><td><a href="http://localhost:3333">http://localhost:3333</a></td></tr>
+<tr><td>Dispute Resolution Center</td><td><a href="http://localhost:3333">http://localhost:3333</a></td></tr>
 </table>
 <table>
 <tr><th>Widgets</th><th></th></tr>
-<tr><td>Redemption</td><td>http://localhost:3000/#/redeem</td></tr>
-<tr><td>Commit</td><td>http://localhost:3000/#/commit</td></tr>
-<tr><td>Finance</td><td>http://localhost:3000/#/finance</td></tr></table>
+<tr><td>Redemption</td><td><a href="http://localhost:3000/#/redeem">http://localhost:3000/#/redeem</a></td></tr>
+<tr><td>Commit</td><td><a href="http://localhost:3000/#/commit">http://localhost:3000/#/commit</a></td></tr>
+<tr><td>Finance</td><td><a href="http://localhost:3000/#/finance">http://localhost:3000/#/finance</a></td></tr></table>
 </td></tr>
 </table>
