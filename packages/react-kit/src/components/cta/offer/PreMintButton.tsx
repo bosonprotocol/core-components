@@ -21,9 +21,11 @@ type Props = {
    * Amount of vouchers to premint.
    */
   amount: number;
+  metaTxApiId?: string;
 } & CtaButtonProps<{
   offerId: BigNumberish;
   amount: number;
+  metaTxApiId?: string;
 }>;
 
 export const PreMintButton = withQueryClientProvider(
@@ -42,6 +44,7 @@ export const PreMintButton = withQueryClientProvider(
     variant = "secondaryFill",
     children,
     coreSdkConfig,
+    metaTxApiId,
     ...rest
   }: Props) => {
     const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
@@ -68,13 +71,21 @@ export const PreMintButton = withQueryClientProvider(
                     amount
                   });
 
-                txResponse = await coreSdk.relayBiconomyMetaTransaction(to, {
-                  request: request as forwarder.biconomy.ERC20ForwardRequest,
-                  domainSeparator:
-                    domainSeparator ??
-                    "0x305def757d40eaccb764a44e4a9d5ec89af56886451ff9348822884eb7a9674a",
-                  signature
-                });
+                txResponse = await coreSdk.relayBiconomyMetaTransaction(
+                  to,
+                  {
+                    request: request as forwarder.biconomy.ERC20ForwardRequest,
+                    domainSeparator:
+                      domainSeparator ??
+                      "0x305def757d40eaccb764a44e4a9d5ec89af56886451ff9348822884eb7a9674a",
+                    signature
+                  },
+                  {
+                    metaTxConfig: {
+                      apiId: metaTxApiId
+                    }
+                  }
+                );
               } else {
                 txResponse = await coreSdk.preMint(offerId, amount);
               }
