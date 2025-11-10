@@ -75,19 +75,24 @@ type CoreSdkOverrides = { web3Lib?: Web3LibAdapter };
  */
 export function useCoreSdk(
   config: CoreSdkConfig,
-  overrides?: CoreSdkOverrides
+  overrides?: CoreSdkOverrides,
+  options: {
+    enabled?: boolean;
+  } = {}
 ): CoreSDK {
-  const [coreSdk, setCoreSdk] = useState<CoreSDK>(
-    initCoreSdk(config, overrides)
+  const [coreSdk, setCoreSdk] = useState<CoreSDK | undefined>(
+    options.enabled !== false ? initCoreSdk(config, overrides) : undefined
   );
 
   useEffect(() => {
-    const newCoreSdk = initCoreSdk(config, overrides);
-    setCoreSdk(newCoreSdk);
+    if (options.enabled !== false) {
+      const newCoreSdk = initCoreSdk(config, overrides);
+      setCoreSdk(newCoreSdk);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [config.web3Provider, config.configId, overrides]);
+  }, [config.web3Provider, config.configId, overrides, options.enabled]);
 
-  return coreSdk;
+  return coreSdk as CoreSDK; // Force cast as CoreSDK since it's enabled by default
 }
 
 function initCoreSdk(config: CoreSdkConfig, overrides?: CoreSdkOverrides) {

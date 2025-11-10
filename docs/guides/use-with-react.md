@@ -30,3 +30,42 @@ const writeCoreSdk = hooks.useCoreSdk({
   web3Provider: provider // ethers provider / signer
 });
 ```
+
+## Get Offers
+
+```ts
+import { hooks, withQueryClientProvider } from "@bosonprotocol/react-kit";
+
+export const OffersTable = withQueryClientProvider(() => {
+  const offers = hooks.useOffers(
+    {
+      envName: "testing",
+      configId: "testing-80002-0"
+    },
+    {
+      offersFirst: 10 // return the first 10 offers
+    }
+  );
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Offer ID</th>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {offers.data?.map((offer) => (
+          <tr key={offer.id}>
+            <td>{offer.id}</td>
+            <td>{offer.metadata?.name}</td>
+            <td>{offer.metadata?.description}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+});
+
+```

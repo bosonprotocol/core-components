@@ -40,3 +40,4 @@ scripts/abi-signatures.csv
 /temp
 storybook-static
 .qodo
+.env

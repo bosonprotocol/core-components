@@ -38,3 +38,4 @@ export * from "./useMetaTx";
 export * from "./useMetaTx";
 export * from "./usePrevious";
 export * from "./useSignerAddress";
+export * from "./useOffers";
