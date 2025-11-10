@@ -1,0 +1,58 @@
+{
+  "local": {
+    "local-31337-0": [
+      "http://127.0.0.1:8545"
+    ]
+  },
+  "testing": {
+    "testing-80002-0": [
+      "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300"
+    ],
+    "testing-11155111-0": [
+      "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300"
+    ],
+    "testing-84532-0": [
+      "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300"
+    ],
+    "testing-11155420-0": [
+      "https://optimism-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300"
+    ],
+    "testing-421614-0": [
+      "https://arbitrum-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300"
+    ]
+  },
+  "staging": {
+    "staging-80002-0": [
+      "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300"
+    ],
+    "staging-11155111-0": [
+      "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300"
+    ],
+    "staging-84532-0": [
+      "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300"
+    ],
+    "staging-11155420-0": [
+      "https://optimism-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300"
+    ],
+    "staging-421614-0": [
+      "https://arbitrum-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300"
+    ]
+  },
+  "production": {
+    "production-137-0": [
+      "https://polygon-mainnet.infura.io/v3/383117b55d614525b07f03b5979c5f19"
+    ],
+    "production-1-0": [
+      "https://mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e"
+    ],
+    "production-8453-0": [
+      "https://base-mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e"
+    ],
+    "production-10-0": [
+      "https://optimism-mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e"
+    ],
+    "production-42161-0": [
+      "https://arbitrum-mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e"
+    ]
+  }
+}

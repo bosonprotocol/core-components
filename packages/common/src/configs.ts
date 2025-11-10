@@ -11,6 +11,9 @@ import {
   ProtocolConfig
 } from "./types";
 import protocolAddressesJson from "./generated/protocolAddresses.json";
+import subgraphsJson from "./inputs/subgraphs.json";
+import rpcUrlsJson from "./inputs/rpcUrls.json";
+import ipfsGatewaysJson from "./inputs/ipfsGateways.json";
 
 const protocolAddresses = protocolAddressesJson as ProtocolAddressesConfig;
 
@@ -26,10 +29,10 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(31337),
       nativeCoin: chainIdToInfo.get(31337),
       getTxExplorerUrl: chainIdToGraphTx.get(31337),
-      subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
-      jsonRpcUrl: "http://127.0.0.1:8545",
-      theGraphIpfsUrl: "http://127.0.0.1:5001",
-      ipfsMetadataUrl: "http://127.0.0.1:5001",
+      subgraphUrl: subgraphsJson.local["local-31337-0"][0],
+      jsonRpcUrl: rpcUrlsJson.local["local-31337-0"][0],
+      theGraphIpfsUrl: ipfsGatewaysJson.local["local-31337-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl: ipfsGatewaysJson.local["local-31337-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
         priceDiscoveryClient: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
@@ -63,12 +66,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(80002),
       nativeCoin: chainIdToInfo.get(80002),
       getTxExplorerUrl: chainIdToGraphTx.get(80002),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-amoy/latest/gn",
-      jsonRpcUrl:
-        "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.testing["testing-80002-0"][0],
+      jsonRpcUrl: rpcUrlsJson.testing["testing-80002-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.testing["testing-80002-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.testing["testing-80002-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.testing[80002].protocolDiamond,
         priceDiscoveryClient:
@@ -97,12 +100,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(11155111),
       nativeCoin: chainIdToInfo.get(11155111),
       getTxExplorerUrl: chainIdToGraphTx.get(11155111),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-sepolia/latest/gn",
-      jsonRpcUrl:
-        "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.testing["testing-11155111-0"][0],
+      jsonRpcUrl: rpcUrlsJson.testing["testing-11155111-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.testing["testing-11155111-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.testing["testing-11155111-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.testing[11155111].protocolDiamond,
         priceDiscoveryClient:
@@ -125,12 +128,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(84532),
       nativeCoin: chainIdToInfo.get(84532),
       getTxExplorerUrl: chainIdToGraphTx.get(84532),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-base/latest/gn",
-      jsonRpcUrl:
-        "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.testing["testing-84532-0"][0],
+      jsonRpcUrl: rpcUrlsJson.testing["testing-84532-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.testing["testing-84532-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.testing["testing-84532-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.testing[84532].protocolDiamond,
         priceDiscoveryClient:
@@ -157,12 +160,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(11155420),
       nativeCoin: chainIdToInfo.get(11155420),
       getTxExplorerUrl: chainIdToGraphTx.get(11155420),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-optimism/latest/gn",
-      jsonRpcUrl:
-        "https://optimism-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.testing["testing-11155420-0"][0],
+      jsonRpcUrl: rpcUrlsJson.testing["testing-11155420-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.testing["testing-11155420-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.testing["testing-11155420-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.testing[11155420].protocolDiamond,
         priceDiscoveryClient:
@@ -189,12 +192,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(421614),
       nativeCoin: chainIdToInfo.get(421614),
       getTxExplorerUrl: chainIdToGraphTx.get(421614),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-arbitrum/latest/gn",
-      jsonRpcUrl:
-        "https://arbitrum-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.testing["testing-421614-0"][0],
+      jsonRpcUrl: rpcUrlsJson.testing["testing-421614-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.testing["testing-421614-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.testing["testing-421614-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.testing[421614].protocolDiamond,
         priceDiscoveryClient:
@@ -223,12 +226,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(80002),
       nativeCoin: chainIdToInfo.get(80002),
       getTxExplorerUrl: chainIdToGraphTx.get(80002),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/da9367fc-3453-4e08-824f-19fb4281b6a1/subgraphs/boson-staging-amoy/latest/gn",
-      jsonRpcUrl:
-        "https://polygon-amoy.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.staging["staging-80002-0"][0],
+      jsonRpcUrl: rpcUrlsJson.staging["staging-80002-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.staging["staging-80002-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.staging["staging-80002-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.staging[80002].protocolDiamond,
         priceDiscoveryClient:
@@ -257,12 +260,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(11155111),
       nativeCoin: chainIdToInfo.get(11155111),
       getTxExplorerUrl: chainIdToGraphTx.get(11155111),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/da9367fc-3453-4e08-824f-19fb4281b6a1/subgraphs/boson-staging-sepolia/latest/gn",
-      jsonRpcUrl:
-        "https://sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.staging["staging-11155111-0"][0],
+      jsonRpcUrl: rpcUrlsJson.staging["staging-11155111-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.staging["staging-11155111-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.staging["staging-11155111-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.staging[11155111].protocolDiamond,
         priceDiscoveryClient:
@@ -284,12 +287,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(84532),
       nativeCoin: chainIdToInfo.get(84532),
       getTxExplorerUrl: chainIdToGraphTx.get(84532),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/da9367fc-3453-4e08-824f-19fb4281b6a1/subgraphs/boson-staging-base/latest/gn",
-      jsonRpcUrl:
-        "https://base-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.staging["staging-84532-0"][0],
+      jsonRpcUrl: rpcUrlsJson.staging["staging-84532-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.staging["staging-84532-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.staging["staging-84532-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.staging[84532].protocolDiamond,
         priceDiscoveryClient:
@@ -315,12 +318,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(11155420),
       nativeCoin: chainIdToInfo.get(11155420),
       getTxExplorerUrl: chainIdToGraphTx.get(11155420),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/da9367fc-3453-4e08-824f-19fb4281b6a1/subgraphs/boson-staging-optimism/latest/gn",
-      jsonRpcUrl:
-        "https://optimism-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.staging["staging-11155420-0"][0],
+      jsonRpcUrl: rpcUrlsJson.staging["staging-11155420-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.staging["staging-11155420-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.staging["staging-11155420-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.staging[11155420].protocolDiamond,
         priceDiscoveryClient:
@@ -346,12 +349,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(421614),
       nativeCoin: chainIdToInfo.get(421614),
       getTxExplorerUrl: chainIdToGraphTx.get(421614),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/da9367fc-3453-4e08-824f-19fb4281b6a1/subgraphs/boson-staging-arbitrum/latest/gn",
-      jsonRpcUrl:
-        "https://arbitrum-sepolia.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.staging["staging-421614-0"][0],
+      jsonRpcUrl: rpcUrlsJson.staging["staging-421614-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.staging["staging-421614-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.staging["staging-421614-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.staging[421614].protocolDiamond,
         priceDiscoveryClient:
@@ -379,12 +382,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(137),
       nativeCoin: chainIdToInfo.get(137),
       getTxExplorerUrl: chainIdToGraphTx.get(137),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/b521f6b7-36c4-4117-8ad5-6b21c6eeb195/subgraphs/boson-polygon/latest/gn",
-      jsonRpcUrl:
-        "https://polygon-mainnet.infura.io/v3/383117b55d614525b07f03b5979c5f19",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.production["production-137-0"][0],
+      jsonRpcUrl: rpcUrlsJson.production["production-137-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.production["production-137-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.production["production-137-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.production[137].protocolDiamond,
         priceDiscoveryClient:
@@ -411,12 +414,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(1),
       nativeCoin: chainIdToInfo.get(1),
       getTxExplorerUrl: chainIdToGraphTx.get(1),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/b521f6b7-36c4-4117-8ad5-6b21c6eeb195/subgraphs/boson-ethereum/latest/gn",
-      jsonRpcUrl:
-        "https://mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.production["production-1-0"][0],
+      jsonRpcUrl: rpcUrlsJson.production["production-1-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.production["production-1-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.production["production-1-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.production[1].protocolDiamond,
         priceDiscoveryClient:
@@ -438,12 +441,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(8453),
       nativeCoin: chainIdToInfo.get(8453),
       getTxExplorerUrl: chainIdToGraphTx.get(8453),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/b521f6b7-36c4-4117-8ad5-6b21c6eeb195/subgraphs/boson-base/latest/gn",
-      jsonRpcUrl:
-        "https://base-mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.production["production-8453-0"][0],
+      jsonRpcUrl: rpcUrlsJson.production["production-8453-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.production["production-8453-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.production["production-8453-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.production[8453].protocolDiamond,
         priceDiscoveryClient:
@@ -469,12 +472,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(10),
       nativeCoin: chainIdToInfo.get(10),
       getTxExplorerUrl: chainIdToGraphTx.get(10),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/b521f6b7-36c4-4117-8ad5-6b21c6eeb195/subgraphs/boson-optimism/latest/gn",
-      jsonRpcUrl:
-        "https://optimism-mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.production["production-10-0"][0],
+      jsonRpcUrl: rpcUrlsJson.production["production-10-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.production["production-10-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.production["production-10-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.production[10].protocolDiamond,
         priceDiscoveryClient:
@@ -500,12 +503,12 @@ export const envConfigs = {
       defaultTokens: chainIdToDefaultTokens.get(42161),
       nativeCoin: chainIdToInfo.get(42161),
       getTxExplorerUrl: chainIdToGraphTx.get(42161),
-      subgraphUrl:
-        "https://api.0xgraph.xyz/api/public/b521f6b7-36c4-4117-8ad5-6b21c6eeb195/subgraphs/boson-arbitrum/latest/gn",
-      jsonRpcUrl:
-        "https://arbitrum-mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e",
-      theGraphIpfsUrl: "https://api.0xgraph.xyz/ipfs",
-      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      subgraphUrl: subgraphsJson.production["production-42161-0"][0],
+      jsonRpcUrl: rpcUrlsJson.production["production-42161-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.production["production-42161-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.production["production-42161-0"].ipfsMetadataUrl,
       contracts: {
         protocolDiamond: protocolAddresses.production[42161].protocolDiamond,
         priceDiscoveryClient:
