@@ -193,6 +193,7 @@ export const PhygitalProduct: React.FC<PhygitalProductProps> = ({ offer }) => {
                   flexDirection="column"
                   alignItems="flex-start"
                   style={{ wordBreak: "break-all" }}
+                  flex={1}
                 >
                   {name} {rangeText}
                 </Grid>
