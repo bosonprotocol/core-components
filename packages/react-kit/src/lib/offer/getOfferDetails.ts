@@ -90,13 +90,15 @@ export const getOfferDetails = (
   const shippingInfo = {
     returnPeriodInDays:
       productV1ItemMetadataEntity?.shipping?.returnPeriodInDays ||
-      isProductV1(offer)
+      (isProductV1(offer)
         ? (offer.metadata as ProductV1Sub).shipping?.returnPeriodInDays
-        : undefined,
+        : undefined),
     shippingTable:
-      (productV1ItemMetadataEntity?.shipping || isProductV1(offer)
-        ? (offer.metadata as ProductV1Sub).shipping
-        : undefined
+      (
+        productV1ItemMetadataEntity?.shipping ||
+        (isProductV1(offer)
+          ? (offer.metadata as ProductV1Sub).shipping
+          : undefined)
       )?.supportedJurisdictions?.map((jurisdiction) => ({
         name: jurisdiction.label,
         value: jurisdiction.deliveryTime
