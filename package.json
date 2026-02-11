@@ -86,7 +86,7 @@
     "form-data": "^4.0.0",
     "graphql": "^16.8.1",
     "ipfs-utils": "^9.0.14",
-    "lerna": "5.5.1",
+    "lerna": "^9.0.4",
     "opensea-js": "^7.1.13",
     "prettier": "^3.2.5",
     "run-script-os": "^1.1.6",
@@ -99,8 +99,7 @@
     "node-fetch": "2.6.13",
     "autoprefixer": "10.4.5",
     "typescript": "^5.1.6",
-    "is-ipfs": "0.6.3",
-    "lerna": "5.5.1"
+    "is-ipfs": "0.6.3"
   },
   "volta": {
     "node": "16.16.0",
