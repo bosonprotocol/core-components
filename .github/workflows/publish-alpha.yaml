@@ -27,6 +27,8 @@ jobs:
     outputs:
       SUBGRAPH_CHANGES: ${{ steps.export-changed-subgraph-files.outputs.SUBGRAPH_CHANGES }}
     permissions:
+      contents: write # Required to push commit with updated versions
+      packages: write # Allows publishing and modifying packages
       id-token: write # Required for trusted publishing (https://docs.npmjs.com/trusted-publishers)
     steps:
       - name: Checkout
@@ -107,6 +109,8 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ inputs.publish_latest }}
     permissions:
+      contents: write # Required to push commit with updated versions
+      packages: write # Allows publishing and modifying packages
       id-token: write # Required for trusted publishing (https://docs.npmjs.com/trusted-publishers)
     steps:
       - name: Checkout
