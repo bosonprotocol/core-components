@@ -23,7 +23,7 @@ jobs:
   publish:
     name: Publish alpha packages
     runs-on: ubuntu-latest
-    if: ${{ inputs.publish_latest }} != 'true'
+    if: ${{ !inputs.publish_latest }}
     outputs:
       SUBGRAPH_CHANGES: ${{ steps.export-changed-subgraph-files.outputs.SUBGRAPH_CHANGES }}
     permissions:
@@ -105,7 +105,7 @@ jobs:
   publish_latest_release:
     name: Publish latest packages
     runs-on: ubuntu-latest
-    if: ${{ inputs.publish_latest }} == 'true'
+    if: ${{ inputs.publish_latest }}
     permissions:
       id-token: write # Required for trusted publishing (https://docs.npmjs.com/trusted-publishers)
     steps:
