@@ -9,6 +9,7 @@ on:
       publish_latest:
         required: true
         type: boolean
+        default: false
     secrets:
       ORMI_0x_GRAPH_API_KEY_TESTING:
         required: true
