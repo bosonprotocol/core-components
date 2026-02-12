@@ -45,7 +45,7 @@ Commit.args = {
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
@@ -80,7 +80,7 @@ CommitTokenGated_ERC20.args = {
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
@@ -114,7 +114,7 @@ CommitWithColorAndSizeVariations.args = {
   ...BASE_ARGS,
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
@@ -151,7 +151,7 @@ CommitTokenGated_ERC721.args = {
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
@@ -188,7 +188,7 @@ CommitTokenGated_ERC721_2.args = {
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
@@ -225,7 +225,7 @@ CommitTokenGated_ERC1155.args = {
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
@@ -262,7 +262,7 @@ CommitBundle.args = {
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,

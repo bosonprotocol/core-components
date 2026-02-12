@@ -27,12 +27,14 @@ export type YupPropertyDef = {
 };
 
 export type CheckExchangePolicyRules = {
+  // Keep default type for backward compatibility, but also support multiple schemas for different metadata types (e.g., PRODUCT_V1 and BUNDLE)
   yupSchema: {
     $schema?: string;
     $id?: string;
     title?: string;
     description?: string;
     type: string;
+    metadataType?: string;
     properties: {
       [key: string]: YupPropertyDef;
     };
@@ -49,20 +51,51 @@ export type CheckExchangePolicyRules = {
       };
     };
   };
+  // Extend the type to support multiple schemas (for different metadata types, e.g., PRODUCT_V1 and BUNDLE)
+  yupSchemas?: {
+    $schema?: string;
+    $id?: string;
+    title?: string;
+    description?: string;
+    type: string;
+    metadataType: string;
+    properties: {
+      [key: string]: YupPropertyDef;
+    };
+  }[];
 };
 
 export function checkExchangePolicy(
   offerData: OfferFieldsFragment,
   rules: CheckExchangePolicyRules
 ): CheckExchangePolicyResult {
-  const baseSchema: Schema<unknown> = buildYup(
-    rules.yupSchema,
-    rules.yupConfig
-  );
+  let baseSchema: Schema<unknown>;
+
+  const metadataType = offerData.metadata?.type;
+
+  if (
+    !rules.yupSchema.metadataType ||
+    metadataType === rules.yupSchema.metadataType
+  ) {
+    baseSchema = buildYup(rules.yupSchema, rules.yupConfig);
+  } else {
+    // For multiple schemas, use the one matching metadata.type
+    const rulesTemplate = rules.yupSchemas.find(
+      (schema) => schema.metadataType === metadataType
+    );
+    baseSchema = rulesTemplate
+      ? buildYup(rulesTemplate, rules.yupConfig)
+      : buildYup(rules.yupSchema, rules.yupConfig); // fallback to default schema if no matching metadataType found
+  }
+
+  let result = {
+    isValid: true,
+    errors: []
+  };
   try {
     baseSchema.validateSync(offerData, { abortEarly: false });
   } catch (e) {
-    return {
+    result = {
       isValid: false,
       errors:
         e.inner?.map((error) => {
@@ -70,8 +103,35 @@ export function checkExchangePolicy(
         }) || []
     };
   }
-  return {
-    isValid: true,
-    errors: []
-  };
+  if (metadataType === "BUNDLE") {
+    try {
+      // For BUNDLE metadata, check each item in the bundle
+      const bundleItems = (
+        offerData.metadata as { items?: { type?: string }[] }
+      )?.items;
+      for (const item of bundleItems) {
+        const itemType = item.type;
+        const itemRulesTemplate =
+          "yupSchemas" in rules
+            ? rules.yupSchemas.find(
+                (schema) => schema.metadataType === itemType
+              )
+            : undefined;
+        const itemSchema = itemRulesTemplate
+          ? buildYup(itemRulesTemplate, rules.yupConfig)
+          : undefined;
+        if (itemSchema) {
+          itemSchema.validateSync(item, { abortEarly: false });
+        }
+      }
+    } catch (e) {
+      result.isValid = false;
+      result.errors = result.errors.concat(
+        e.inner?.map((error) => {
+          return { ...error };
+        }) || []
+      );
+    }
+  }
+  return result;
 }

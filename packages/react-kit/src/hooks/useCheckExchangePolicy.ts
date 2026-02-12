@@ -32,30 +32,88 @@ const getRulesTemplate = async (
   const rulesTemplate = JSON.parse(
     rulesTemplateText
   ) as offers.CheckExchangePolicyRules;
-  // replace DEFAULT_DISPUTE_RESOLVER_ID (environment dependent)
-  const disputeResolverId_matches =
-    rulesTemplate?.yupSchema?.properties?.disputeResolverId?.matches?.replace(
-      "<DEFAULT_DISPUTE_RESOLVER_ID>",
-      defaultDisputeResolverId
-    );
-  if (disputeResolverId_matches) {
-    rulesTemplate.yupSchema.properties.disputeResolverId.matches =
-      disputeResolverId_matches;
-  }
-  // replace TOKENS_LIST (environment dependent)
   const tokensList = defaultTokens.map((token) => token.address);
-  const tokensList_pattern =
-    rulesTemplate?.yupSchema?.properties?.exchangeToken?.properties?.address?.pattern?.replace(
-      "<TOKENS_LIST>",
-      tokensList.join("|")
-    );
-  if (
-    rulesTemplate.yupSchema.properties.exchangeToken.properties &&
-    tokensList_pattern
-  ) {
-    rulesTemplate.yupSchema.properties.exchangeToken.properties.address.pattern =
-      tokensList_pattern;
+  // // replace DEFAULT_DISPUTE_RESOLVER_ID (environment dependent)
+  // const disputeResolverId_matches =
+  //   rulesTemplate?.yupSchema?.properties?.disputeResolverId?.matches?.replace(
+  //     "<DEFAULT_DISPUTE_RESOLVER_ID>",
+  //     defaultDisputeResolverId
+  //   );
+  // if (disputeResolverId_matches) {
+  //   rulesTemplate.yupSchema.properties.disputeResolverId.matches =
+  //     disputeResolverId_matches;
+  // }
+  // // replace TOKENS_LIST (environment dependent)
+  // const tokensList_pattern =
+  //   rulesTemplate?.yupSchema?.properties?.exchangeToken?.properties?.address?.pattern?.replace(
+  //     "<TOKENS_LIST>",
+  //     tokensList.join("|")
+  //   );
+  // if (
+  //   rulesTemplate.yupSchema.properties.exchangeToken.properties &&
+  //   tokensList_pattern
+  // ) {
+  //   rulesTemplate.yupSchema.properties.exchangeToken.properties.address.pattern =
+  //     tokensList_pattern;
+  // }
+  // for (const schema of [
+  //   rulesTemplate.yupSchemas[0],
+  //   rulesTemplate.yupSchemas[1]
+  // ] || []) {
+  //   // replace DEFAULT_DISPUTE_RESOLVER_ID (environment dependent)
+  //   if (schema.properties?.disputeResolverId?.matches) {
+  //     const disputeResolverId_matches =
+  //       schema.properties?.disputeResolverId?.matches?.replace(
+  //         "<DEFAULT_DISPUTE_RESOLVER_ID>",
+  //         defaultDisputeResolverId
+  //       );
+  //     if (disputeResolverId_matches) {
+  //       schema.properties.disputeResolverId.matches = disputeResolverId_matches;
+  //     }
+  //   }
+  //   if (schema.properties?.exchangeToken?.properties?.address?.pattern) {
+  //     const tokensList_pattern =
+  //       schema.properties?.exchangeToken?.properties?.address?.pattern?.replace(
+  //         "<TOKENS_LIST>",
+  //         tokensList.join("|")
+  //       );
+  //     if (schema.properties.exchangeToken.properties && tokensList_pattern) {
+  //       console.log("schema before replacement", schema);
+  //       schema.properties.exchangeToken.properties.address.pattern =
+  //         tokensList_pattern;
+  //     }
+  //   }
+  // }
+  for (const schema of [
+    rulesTemplate.yupSchema,
+    ...(rulesTemplate.yupSchemas || [])
+  ]) {
+    // replace DEFAULT_DISPUTE_RESOLVER_ID (environment dependent)
+    if (schema.properties?.disputeResolverId?.matches) {
+      const disputeResolverId_matches =
+        schema.properties?.disputeResolverId?.matches?.replace(
+          "<DEFAULT_DISPUTE_RESOLVER_ID>",
+          defaultDisputeResolverId
+        );
+      if (disputeResolverId_matches) {
+        schema.properties.disputeResolverId.matches = disputeResolverId_matches;
+      }
+    }
+    // replace TOKENS_LIST (environment dependent)
+    if (schema.properties?.exchangeToken?.properties?.address?.pattern) {
+      const tokensList = defaultTokens.map((token) => token.address);
+      const tokensList_pattern =
+        schema.properties?.exchangeToken?.properties?.address?.pattern?.replace(
+          "<TOKENS_LIST>",
+          tokensList.join("|")
+        );
+      if (schema.properties.exchangeToken.properties && tokensList_pattern) {
+        schema.properties.exchangeToken.properties.address.pattern =
+          tokensList_pattern;
+      }
+    }
   }
+  console.log("rulesTemplate", rulesTemplate);
   return rulesTemplate;
 };
 
@@ -78,13 +136,15 @@ export default function useCheckExchangePolicy({
       defaultDisputeResolverId,
       defaultTokens
     ],
-    () => {
-      return getRulesTemplate(
+    async () => {
+      const rulesTemplate = await getRulesTemplate(
         fairExchangePolicyRules,
         ipfsGateway,
         defaultDisputeResolverId,
         defaultTokens
       );
+      console.log("rulesTemplate", rulesTemplate);
+      return rulesTemplate;
     }
   );
   useEffect(() => {
