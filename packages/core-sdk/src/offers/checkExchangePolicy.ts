@@ -80,7 +80,7 @@ export function checkExchangePolicy(
     baseSchema = buildYup(rules.yupSchema, rules.yupConfig);
   } else {
     // For multiple schemas, use the one matching metadata.type
-    const rulesTemplate = rules.yupSchemas.find(
+    const rulesTemplate = rules.yupSchemas?.find(
       (schema) => schema.metadataType === metadataType
     );
     baseSchema = rulesTemplate
