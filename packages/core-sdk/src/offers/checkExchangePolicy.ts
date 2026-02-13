@@ -111,12 +111,9 @@ export function checkExchangePolicy(
       )?.items;
       for (const item of bundleItems) {
         const itemType = item.type;
-        const itemRulesTemplate =
-          "yupSchemas" in rules
-            ? rules.yupSchemas.find(
-                (schema) => schema.metadataType === itemType
-              )
-            : undefined;
+        const itemRulesTemplate = Array.isArray(rules.yupSchemas)
+          ? rules.yupSchemas.find((schema) => schema.metadataType === itemType)
+          : undefined;
         const itemSchema = itemRulesTemplate
           ? buildYup(itemRulesTemplate, rules.yupConfig)
           : undefined;
