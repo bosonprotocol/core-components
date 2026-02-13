@@ -65,6 +65,17 @@ export type CheckExchangePolicyRules = {
   }[];
 };
 
+/**
+ * Helper function to safely extract validation errors from a Yup ValidationError.
+ * Returns an empty array if the error is not a valid Yup ValidationError.
+ */
+function extractValidationErrors(error: unknown): Array<{ message: string; path: string; value: unknown }> {
+  if (error && typeof error === "object" && "inner" in error && Array.isArray(error.inner)) {
+    return error.inner.map((e) => ({ ...e }));
+  }
+  return [];
+}
+
 export function checkExchangePolicy(
   offerData: OfferFieldsFragment,
   rules: CheckExchangePolicyRules
@@ -109,12 +120,7 @@ export function checkExchangePolicy(
   } catch (e) {
     result = {
       isValid: false,
-      errors:
-        e && typeof e === "object" && "inner" in e && Array.isArray(e.inner)
-          ? e.inner.map((error) => {
-              return { ...error };
-            })
-          : []
+      errors: extractValidationErrors(e)
     };
   }
   if (metadataType === "BUNDLE") {
@@ -145,13 +151,7 @@ export function checkExchangePolicy(
             itemSchema.validateSync(item, { abortEarly: false });
           } catch (e) {
             result.isValid = false;
-            result.errors = result.errors.concat(
-              e && typeof e === "object" && "inner" in e && Array.isArray(e.inner)
-                ? e.inner.map((error) => {
-                    return { ...error };
-                  })
-                : []
-            );
+            result.errors = result.errors.concat(extractValidationErrors(e));
           }
         }
       }
