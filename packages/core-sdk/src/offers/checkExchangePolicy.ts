@@ -93,8 +93,8 @@ function extractValidationErrors(
       if (e && typeof e === "object") {
         return {
           message: "message" in e ? String(e.message) : "",
-          path: "path" in e ? String(e.path) : "",
-          value: "value" in e ? e.value : undefined
+          path: (e as { path: string }).path || "",
+          value: (e as { value?: unknown }).value || undefined
         };
       }
       return { message: "", path: "", value: undefined };
