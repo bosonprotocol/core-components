@@ -110,9 +110,11 @@ export function checkExchangePolicy(
     result = {
       isValid: false,
       errors:
-        e.inner?.map((error) => {
-          return { ...error };
-        }) || []
+        e && typeof e === "object" && "inner" in e && Array.isArray(e.inner)
+          ? e.inner.map((error) => {
+              return { ...error };
+            })
+          : []
     };
   }
   if (metadataType === "BUNDLE") {
@@ -144,9 +146,11 @@ export function checkExchangePolicy(
           } catch (e) {
             result.isValid = false;
             result.errors = result.errors.concat(
-              e.inner?.map((error) => {
-                return { ...error };
-              }) || []
+              e && typeof e === "object" && "inner" in e && Array.isArray(e.inner)
+                ? e.inner.map((error) => {
+                    return { ...error };
+                  })
+                : []
             );
           }
         }
