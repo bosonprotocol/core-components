@@ -6,6 +6,7 @@ import { ProgressStatus } from "../lib/progress/progressStatus";
 import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
 
 import { useIpfsStorage } from "./useIpfsStorage";
+import { isBundle } from "..";
 
 type OfferFieldsFragment = subgraph.OfferFieldsFragment;
 type AdditionalOfferMetadata = offers.AdditionalOfferMetadata;
@@ -81,6 +82,13 @@ function buildOfferData(offerFields: OfferFieldsFragment): {
   offerArgs: CreateOfferArgs;
   offerMetadata: AdditionalOfferMetadata;
 } {
+  const productItemMetadata = isBundle(offerFields)
+    ? (offerFields.metadata as subgraph.BundleMetadataEntity).items?.find(
+        (item): item is subgraph.ProductV1ItemMetadataEntity =>
+          item.type === subgraph.ItemMetadataType.ITEM_PRODUCT_V1
+      )
+    : undefined;
+
   return {
     offerArgs: {
       price: offerFields.price as string,
@@ -101,6 +109,11 @@ function buildOfferData(offerFields: OfferFieldsFragment): {
         .toString(),
       voucherRedeemableUntilDateInMS: ethers.BigNumber.from(
         offerFields.voucherRedeemableUntilDate
+      )
+        .mul(1000)
+        .toString(),
+      voucherValidDurationInMS: ethers.BigNumber.from(
+        offerFields.voucherValidDuration
       )
         .mul(1000)
         .toString(),
@@ -128,11 +141,15 @@ function buildOfferData(offerFields: OfferFieldsFragment): {
     },
     offerMetadata: {
       sellerContactMethod:
-        (offerFields.metadata as ProductV1MetadataFields)?.exchangePolicy
-          ?.sellerContactMethod || "undefined",
+        (
+          productItemMetadata ||
+          (offerFields.metadata as ProductV1MetadataFields)
+        )?.exchangePolicy?.sellerContactMethod || "undefined",
       disputeResolverContactMethod:
-        (offerFields.metadata as ProductV1MetadataFields)?.exchangePolicy
-          ?.disputeResolverContactMethod || "undefined",
+        (
+          productItemMetadata ||
+          (offerFields.metadata as ProductV1MetadataFields)
+        )?.exchangePolicy?.disputeResolverContactMethod || "undefined",
       escalationDeposit:
         offerFields.disputeResolutionTerms.buyerEscalationDeposit,
       escalationResponsePeriodInSec:
@@ -141,8 +158,10 @@ function buildOfferData(offerFields: OfferFieldsFragment): {
         (offerFields.metadata as ProductV1MetadataFields)?.productV1Seller
           ?.name || "undefined",
       returnPeriodInDays:
-        (offerFields.metadata as ProductV1MetadataFields)?.shipping
-          ?.returnPeriodInDays || 0
+        (
+          productItemMetadata ||
+          (offerFields.metadata as ProductV1MetadataFields)
+        )?.shipping?.returnPeriodInDays || 0
     }
   };
 }

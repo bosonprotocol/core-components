@@ -15,6 +15,7 @@ import { Typography } from "../../../../ui/Typography";
 import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { DetailViewProps } from "./types";
 import { colors, getCssVar } from "../../../../../theme";
+import { isBundle } from "../../../../..";
 
 const fontSizeExchangePolicy = "0.625rem";
 
@@ -48,9 +49,17 @@ export const useGetOfferDetailData = ({
   const { formatted: sellerFormatted } = calcPercentage(offer, "sellerDeposit");
   const redeemableForXDays =
     Number(`${offer.voucherValidDuration}000`) / 86400000;
+  const productItemMetadata = isBundle(offer)
+    ? offer.metadata.items?.find(
+        (item): item is subgraph.ProductV1ItemMetadataEntity =>
+          item.type === subgraph.ItemMetadataType.ITEM_PRODUCT_V1
+      )
+    : undefined;
   const exchangePolicyLabel = (
+    productItemMetadata?.exchangePolicy?.label ||
     (offer.metadata as subgraph.ProductV1MetadataEntity)?.exchangePolicy
-      ?.label || "Unspecified"
+      ?.label ||
+    "Unspecified"
   ).replace("fairExchangePolicy", "Fair Exchange Policy");
   const redeemableFromValues =
     offer.voucherRedeemableFromDate && redeemableFromDayJs.isAfter(Date.now())

@@ -1,0 +1,601 @@
+{
+  "id": "10",
+  "createdAt": "1683819387",
+  "price": "100000000000000",
+  "sellerDeposit": "0",
+  "protocolFee": "500000000000",
+  "agentFee": "0",
+  "agentId": "0",
+  "buyerCancelPenalty": "0",
+  "quantityAvailable": "97",
+  "quantityInitial": "100",
+  "validFromDate": "1683819900",
+  "validUntilDate": "1685570340",
+  "voucherRedeemableFromDate": "1683819600",
+  "voucherRedeemableUntilDate": "1685570340",
+  "disputePeriodDuration": "2591999",
+  "voucherValidDuration": "0",
+  "resolutionPeriodDuration": "1295999",
+  "metadataUri": "ipfs://QmSpHGbRyfXqAqJ5xHv8E2TZjy6LDmUYoXUGHrcx7RrqGB",
+  "metadataHash": "QmSpHGbRyfXqAqJ5xHv8E2TZjy6LDmUYoXUGHrcx7RrqGB",
+  "voided": false,
+  "voidedAt": null,
+  "disputeResolverId": "12",
+  "numberOfCommits": "3",
+  "numberOfRedemptions": "3",
+  "condition": null,
+  "seller": {
+    "id": "30",
+    "assistant": "0xe28b648541a5376383865672dc1589c02634ec42",
+    "admin": "0xe28b648541a5376383865672dc1589c02634ec42",
+    "clerk": "0xe28b648541a5376383865672dc1589c02634ec42",
+    "treasury": "0xe28b648541a5376383865672dc1589c02634ec42",
+    "authTokenId": "0",
+    "authTokenType": 0,
+    "voucherCloneAddress": "0x87ef301c97c72648bab63c0ea77eddf145d4317b",
+    "active": true,
+    "metadataUri": "ipfs://QmeebkVhK1jgwwX4mKnBSfNv47vqDeeAZ6MZ5SjLUv7c31",
+    "metadata": {
+      "id": "30-seller-metadata",
+      "createdAt": "1687943706",
+      "name": "reg",
+      "description": "reg",
+      "legalTradingName": "legal reg",
+      "type": "SELLER",
+      "kind": "regular",
+      "website": "www.reg2.com",
+      "images": [
+        {
+          "id": "https://bosonprotocol.infura-ipfs.io/ipfs/qmnvfqgaszimjciuxypim4brpun2nxkiqmth6rtbcmvbnn-profile",
+          "url": "https://bosonprotocol.infura-ipfs.io/ipfs/QmNvFQGASzimJciuXyPiM4brpuN2nXKiqMtH6RtBcmvBNN",
+          "tag": "profile",
+          "type": "image/png",
+          "width": 200,
+          "height": 200,
+          "fit": null,
+          "position": null
+        },
+        {
+          "id": "https://bosonprotocol.infura-ipfs.io/ipfs/qmqsvfkcua3l9kxixtphym6vtzvvet5y4eayjnuuycp1kg-cover",
+          "url": "https://bosonprotocol.infura-ipfs.io/ipfs/QmQSVFKCua3L9kxiXtpHYM6Vtzvvet5Y4EAyjnuUyCP1kG",
+          "tag": "cover",
+          "type": "image/jpeg",
+          "width": 1531,
+          "height": 190,
+          "fit": null,
+          "position": null
+        }
+      ],
+      "contactLinks": [
+        {
+          "id": "reg@email.com-email-contact-link",
+          "url": "reg@email.com",
+          "tag": "email"
+        }
+      ],
+      "contactPreference": "xmtp_and_email",
+      "socialLinks": [],
+      "salesChannels": [
+        {
+          "id": "30-custom storefront-customstore1-sale-channel",
+          "tag": "Custom storefront",
+          "name": "customstore1",
+          "settingsUri": null,
+          "settingsEditor": null,
+          "link": null,
+          "deployments": [
+            {
+              "id": "30-custom storefront-customstore1-sale-channel-https://bosonprotocol.infura-ipfs.io/ipfs/qmvsxnwynzhetbyahbsmgvuhqnkyyqsjrsem5xambde7hs-deployment",
+              "product": null,
+              "status": null,
+              "link": "https://bosonprotocol.infura-ipfs.io/ipfs/QmVsxnWyNZhETbYahBsmgVuhqNKYyQsjrSeM5XAMbDE7hS",
+              "lastUpdated": "1687773517"
+            }
+          ]
+        },
+        {
+          "id": "30-custom storefront-hola-sale-channel",
+          "tag": "Custom storefront",
+          "name": "hola",
+          "settingsUri": null,
+          "settingsEditor": null,
+          "link": null,
+          "deployments": [
+            {
+              "id": "30-custom storefront-hola-sale-channel-https://bosonprotocol.infura-ipfs.io/ipfs/qmrhxgik53crhkx11m518tku8p3ybddcjado3mcrt9hjfj-deployment",
+              "product": null,
+              "status": null,
+              "link": "https://bosonprotocol.infura-ipfs.io/ipfs/QmRhXgik53crHKX11M518tKU8p3yBddCJADo3Mcrt9HJFj",
+              "lastUpdated": "1687862702"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "exchangeToken": {
+    "id": "0x6982508145454Ce325dDbE47a25d4ec3d2311934",
+    "address": "0x6982508145454Ce325dDbE47a25d4ec3d2311934",
+    "decimals": "18",
+    "symbol": "FAKE",
+    "name": "Fake"
+  },
+  "disputeResolver": {
+    "id": "13",
+    "escalationResponsePeriod": "7775999",
+    "admin": "0xd347c4a2248b231b39fce4eeb6b3f6e3289d897c",
+    "clerk": "0xd347c4a2248b231b39fce4eeb6b3f6e3289d897c",
+    "treasury": "0xd347c4a2248b231b39fce4eeb6b3f6e3289d897c",
+    "assistant": "0xd347c4a2248b231b39fce4eeb6b3f6e3289d897c",
+    "metadataUri": "ipfs://dispute-resolver-uri",
+    "active": true,
+    "sellerAllowList": [],
+    "fees": [
+      {
+        "id": "13-0x0000000000000000000000000000000000000000-fee",
+        "tokenAddress": "0x0000000000000000000000000000000000000000",
+        "tokenName": "ETH",
+        "token": {
+          "id": "0x0000000000000000000000000000000000000000",
+          "address": "0x0000000000000000000000000000000000000000",
+          "decimals": "18",
+          "symbol": "MATIC",
+          "name": "Matic"
+        },
+        "feeAmount": "0"
+      },
+      {
+        "id": "13-0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f-fee",
+        "tokenAddress": "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
+        "tokenName": "DAI",
+        "token": {
+          "id": "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
+          "address": "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
+          "decimals": "18",
+          "symbol": "DAI",
+          "name": "DAI"
+        },
+        "feeAmount": "0"
+      },
+      {
+        "id": "13-0x1f5431e8679630790e8eba3a9b41d1bb4d41aed0-fee",
+        "tokenAddress": "0x1f5431e8679630790e8eba3a9b41d1bb4d41aed0",
+        "tokenName": "BOSON",
+        "token": {
+          "id": "0x1f5431e8679630790e8eba3a9b41d1bb4d41aed0",
+          "address": "0x1f5431e8679630790e8eba3a9b41d1bb4d41aed0",
+          "decimals": "18",
+          "symbol": "BOSON",
+          "name": "Boson Token (PoS)"
+        },
+        "feeAmount": "0"
+      },
+      {
+        "id": "13-0xa02f6adc7926efebbd59fd43a84f4e0c0c91e832-fee",
+        "tokenAddress": "0xa02f6adc7926efebbd59fd43a84f4e0c0c91e832",
+        "tokenName": "USDT",
+        "token": {
+          "id": "0xa02f6adc7926efebbd59fd43a84f4e0c0c91e832",
+          "address": "0xa02f6adc7926efebbd59fd43a84f4e0c0c91e832",
+          "decimals": "6",
+          "symbol": "USDT",
+          "name": "Tether USD"
+        },
+        "feeAmount": "0"
+      },
+      {
+        "id": "13-0xa6fa4fb5f76172d178d61b04b0ecd319c5d1c0aa-fee",
+        "tokenAddress": "0xa6fa4fb5f76172d178d61b04b0ecd319c5d1c0aa",
+        "tokenName": "WETH",
+        "token": {
+          "id": "0xa6fa4fb5f76172d178d61b04b0ecd319c5d1c0aa",
+          "address": "0xa6fa4fb5f76172d178d61b04b0ecd319c5d1c0aa",
+          "decimals": "18",
+          "symbol": "WETH",
+          "name": "Wrapped Ether"
+        },
+        "feeAmount": "0"
+      },
+      {
+        "id": "13-0xe6b8a5cf854791412c1f6efc7caf629f5df1c747-fee",
+        "tokenAddress": "0xe6b8a5cf854791412c1f6efc7caf629f5df1c747",
+        "tokenName": "USDC",
+        "token": {
+          "id": "0xe6b8a5cf854791412c1f6efc7caf629f5df1c747",
+          "address": "0xe6b8a5cf854791412c1f6efc7caf629f5df1c747",
+          "decimals": "6",
+          "symbol": "USDC",
+          "name": "Mumbai USD Coin"
+        },
+        "feeAmount": "0"
+      }
+    ]
+  },
+  "disputeResolutionTerms": {
+    "id": "13-10-terms",
+    "disputeResolverId": "13",
+    "escalationResponsePeriod": "7775999",
+    "feeAmount": "0",
+    "buyerEscalationDeposit": "0"
+  },
+  "metadata": {
+    "__typename": "BundleMetadataEntity",
+    "name": "test phygital",
+    "description": "test phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\nv\nvtest phygital\ntest phygitaltest phygital\nv\ntest phygital\nv\ntest phygitalvvtest phygital\ntest phygitaltest phygitaltest phygitaltest phygitaltest phygital\nv\ntest phygital\ntest phygital\ntest phygital\ntest phygital\n\n\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\n",
+    "externalUrl": "https://interface-a9d.pages.dev/#/bundles/2/d0d3fb4-34cd-0e78-a3a8-adeb2a434f",
+    "animationUrl": null,
+    "animationMetadata": null,
+    "licenseUrl": "https://interface-a9d.pages.dev/#/license-bundle/2/d0d3fb4-34cd-0e78-a3a8-adeb2a434f",
+    "condition": null,
+    "schemaUrl": "https://schema.org/",
+    "type": "BUNDLE",
+    "image": "ipfs://QmRxSekCqbHq9AGJR5HKQjTh6kTcH53XTgVh1HpCVqh7wX",
+    "bundleUuid": "d0d3fb4-34cd-0e78-a3a8-adeb2a434f",
+    "attributes": [
+        {
+            "traitType": "Redeemable After X Days",
+            "value": "30",
+            "displayType": ""
+        },
+        {
+            "traitType": "Redeemable At",
+            "value": "https://interface-a9d.pages.dev",
+            "displayType": ""
+        },
+        {
+            "traitType": "Seller",
+            "value": "Seller A",
+            "displayType": ""
+        },
+        {
+            "traitType": "Token Type",
+            "value": "BOSON rNFT",
+            "displayType": ""
+        }
+    ],
+    "createdAt": "1770905279",
+    "voided": false,
+    "validFromDate": "1769904000",
+    "validUntilDate": "9007199254740",
+    "quantityAvailable": "98",
+    "productV1Seller": {
+        "id": "2-product-v1",
+        "defaultVersion": 1,
+        "name": "Seller A",
+        "description": "Seller A",
+        "externalUrl": null,
+        "tokenId": null,
+        "sellerId": "2",
+        "images": [
+            {
+                "id": "https://bosonprotocol.infura-ipfs.io/ipfs/qmplp8fcgayjh38mgnwwzqj6cd5nswuttxn9yx8lluybyu-cover",
+                "url": "https://bosonprotocol.infura-ipfs.io/ipfs/QmPLp8fcGaYJh38MgnWwzqJ6CD5nSWuTtxN9YX8LLUyBYu",
+                "tag": "cover",
+                "type": "IMAGE",
+                "width": 997,
+                "height": 667
+            },
+            {
+                "id": "https://bosonprotocol.infura-ipfs.io/ipfs/qmseh7iayh3t8cs3wyrd4mum7j75ocvvjjpvbbqkfmmjt4-profile",
+                "url": "https://bosonprotocol.infura-ipfs.io/ipfs/QmSeH7iAYH3t8CS3WYrD4MuM7J75ocvVJJpvbBQKfMMJt4",
+                "tag": "profile",
+                "type": "IMAGE",
+                "width": 200,
+                "height": 200
+            }
+        ],
+        "contactLinks": [
+            {
+                "id": "sellera@mail.com-email",
+                "url": "sellerA@mail.com",
+                "tag": "email"
+            }
+        ],
+        "contactPreference": "xmtp_and_email",
+        "seller": {
+            "id": "2",
+            "assistant": "0xc2e8f052924ca9432f0a416a1b9f9daedabaebf2",
+            "admin": "0xc2e8f052924ca9432f0a416a1b9f9daedabaebf2",
+            "clerk": "0x0000000000000000000000000000000000000000",
+            "treasury": "0xc2e8f052924ca9432f0a416a1b9f9daedabaebf2",
+            "authTokenId": "0",
+            "authTokenType": 0,
+            "voucherCloneAddress": "0x041f56fe77ac1558cc415de46f7777234d9d141a",
+            "active": true,
+            "royaltyRecipients": [
+                {
+                    "id": "2-royalty-0x0000000000000000000000000000000000000000",
+                    "recipient": {
+                        "id": "0x0000000000000000000000000000000000000000",
+                        "wallet": "0x0000000000000000000000000000000000000000",
+                        "royalties": []
+                    },
+                    "minRoyaltyPercentage": "200"
+                }
+            ],
+            "metadataUri": "ipfs://QmRW6tPiNB3ZaFbJPtHsWvie6f2gAPQqY5qAJWeQ9h7BXm",
+            "metadata": {
+                "id": "2-seller-metadata",
+                "createdAt": "1749129277",
+                "name": "Seller A",
+                "description": "Seller A",
+                "legalTradingName": "Seller A",
+                "type": "SELLER",
+                "kind": "regular",
+                "website": "www.sellerA.com",
+                "images": [
+                    {
+                        "id": "https://bosonprotocol.infura-ipfs.io/ipfs/qmplp8fcgayjh38mgnwwzqj6cd5nswuttxn9yx8lluybyu-cover",
+                        "url": "https://bosonprotocol.infura-ipfs.io/ipfs/QmPLp8fcGaYJh38MgnWwzqJ6CD5nSWuTtxN9YX8LLUyBYu",
+                        "tag": "cover",
+                        "type": "image/webp",
+                        "width": 997,
+                        "height": 667,
+                        "fit": null,
+                        "position": null
+                    },
+                    {
+                        "id": "https://bosonprotocol.infura-ipfs.io/ipfs/qmseh7iayh3t8cs3wyrd4mum7j75ocvvjjpvbbqkfmmjt4-profile",
+                        "url": "https://bosonprotocol.infura-ipfs.io/ipfs/QmSeH7iAYH3t8CS3WYrD4MuM7J75ocvVJJpvbBQKfMMJt4",
+                        "tag": "profile",
+                        "type": "image/jpeg",
+                        "width": 200,
+                        "height": 200,
+                        "fit": null,
+                        "position": null
+                    }
+                ],
+                "contactLinks": [
+                    {
+                        "id": "sellera@mail.com-email-contact-link",
+                        "url": "sellerA@mail.com",
+                        "tag": "email"
+                    }
+                ],
+                "contactPreference": "xmtp_and_email",
+                "socialLinks": [],
+                "salesChannels": []
+            }
+        }
+    },
+    "items": [
+        {
+            "type": "ITEM_NFT",
+            "metadataUri": "ipfs://QmTKiaGdKyhiW5D4cXdut9nxQ19CKzNv7wMVCwAWowPEoE",
+            "name": "test phygital",
+            "description": "test phygitaltest phygitaltest phygitaltest phygitaltest phygitaltest phygitaltest phygitaltest phygital test phygitaltest phygitaltest phygitaltest phygital test phygitaltest phygitaltest phygitaltest phygital",
+            "image": "ipfs://QmdgJp23Ugora26tjYYa2AnD5u5BrymN4Sf1siiyZveS4Z",
+            "externalUrl": null,
+            "animationUrl": "ipfs://QmQjmRttKbzKohTpBeTjVG7B9Y7K43yqjNSFj3edwsq7oF",
+            "youtubeUrl": null,
+            "chainId": 80002,
+            "contract": null,
+            "tokenId": null,
+            "tokenIdRange": null,
+            "terms": [
+                {
+                    "key": "buyerTransferInfo",
+                    "value": "walletAddress",
+                    "displayKey": "Buyer information required for transfer"
+                },
+                {
+                    "key": "newNftTransferCriteria",
+                    "value": "ddvsdvsdvbdsvds",
+                    "displayKey": "Transfer criteria"
+                },
+                {
+                    "key": "newNftTransferTime",
+                    "value": "15 Days",
+                    "displayKey": "Transfer time"
+                }
+            ],
+            "quantity": 1,
+            "attributes": [
+                {
+                    "traitType": "nft-type",
+                    "value": "other",
+                    "displayType": "NFT type"
+                },
+                {
+                    "traitType": "type",
+                    "value": "digital-nft",
+                    "displayType": "Type"
+                }
+            ]
+        },
+        {
+            "type": "ITEM_PRODUCT_V1",
+            "metadataUri": "ipfs://QmcDu5EtgvnVTSAydp1xeMgTLhSa99KjMmVW9nANW7dooL",
+            "uuid": "d0d3fb4-34cd-0e78-a3a8-adeb2a434f",
+            "product": {
+                "id": "2-fac263d-8577-f2c0-2275-3c1e2633e4b2-1",
+                "uuid": "fac263d-8577-f2c0-2275-3c1e2633e4b2",
+                "version": 1,
+                "title": "test phygital",
+                "description": "test phygital\nvtest phygital\nvtest phygitaltest phygitaltest phygital\nvtest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygitaltest phygitalvtest phygital\ntest phygital\nv\ntest phygital\ntest phygital\ntest phygital\ntest phygital\ntest phygital\n",
+                "identification_sKU": null,
+                "identification_productId": null,
+                "identification_productIdType": null,
+                "productionInformation_brandName": "Seller A",
+                "brand": {
+                    "id": "seller a",
+                    "name": "Seller A"
+                },
+                "productionInformation_manufacturer": null,
+                "productionInformation_manufacturerPartNumber": null,
+                "productionInformation_modelNumber": null,
+                "productionInformation_materials": [],
+                "details_category": "jewelry",
+                "category": {
+                    "id": "jewelry",
+                    "name": "jewelry"
+                },
+                "details_subCategory": null,
+                "subCategory": null,
+                "details_subCategory2": null,
+                "subCategory2": null,
+                "details_offerCategory": "PHYGITAL",
+                "offerCategory": "PHYGITAL",
+                "details_tags": [
+                    "test"
+                ],
+                "tags": [
+                    {
+                        "id": "test",
+                        "name": "test"
+                    }
+                ],
+                "details_sections": [],
+                "sections": [],
+                "details_personalisation": [],
+                "personalisation": [],
+                "visuals_images": [
+                    {
+                        "id": "ipfs://qmrxsekcqbhq9agjr5hkqjth6ktch53xtgvh1hpcvqh7wx-product_image",
+                        "url": "ipfs://QmRxSekCqbHq9AGJR5HKQjTh6kTcH53XTgVh1HpCVqh7wX",
+                        "tag": "product_image",
+                        "type": "IMAGE",
+                        "width": 2080,
+                        "height": 4160
+                    }
+                ],
+                "visuals_videos": [],
+                "packaging_packageQuantity": null,
+                "packaging_dimensions_length": null,
+                "packaging_dimensions_width": null,
+                "packaging_dimensions_height": null,
+                "packaging_dimensions_unit": "m",
+                "packaging_weight_value": null,
+                "packaging_weight_unit": "kg",
+                "productV1Seller": {
+                    "id": "2-product-v1",
+                    "defaultVersion": 1,
+                    "name": "Seller A",
+                    "description": "Seller A",
+                    "externalUrl": null,
+                    "tokenId": null,
+                    "sellerId": "2",
+                    "images": [
+                        {
+                            "id": "https://bosonprotocol.infura-ipfs.io/ipfs/qmplp8fcgayjh38mgnwwzqj6cd5nswuttxn9yx8lluybyu-cover",
+                            "url": "https://bosonprotocol.infura-ipfs.io/ipfs/QmPLp8fcGaYJh38MgnWwzqJ6CD5nSWuTtxN9YX8LLUyBYu",
+                            "tag": "cover",
+                            "type": "IMAGE",
+                            "width": 997,
+                            "height": 667
+                        },
+                        {
+                            "id": "https://bosonprotocol.infura-ipfs.io/ipfs/qmseh7iayh3t8cs3wyrd4mum7j75ocvvjjpvbbqkfmmjt4-profile",
+                            "url": "https://bosonprotocol.infura-ipfs.io/ipfs/QmSeH7iAYH3t8CS3WYrD4MuM7J75ocvVJJpvbBQKfMMJt4",
+                            "tag": "profile",
+                            "type": "IMAGE",
+                            "width": 200,
+                            "height": 200
+                        }
+                    ],
+                    "contactLinks": [
+                        {
+                            "id": "sellera@mail.com-email",
+                            "url": "sellerA@mail.com",
+                            "tag": "email"
+                        }
+                    ],
+                    "contactPreference": "xmtp_and_email",
+                    "seller": {
+                        "id": "2",
+                        "assistant": "0xc2e8f052924ca9432f0a416a1b9f9daedabaebf2",
+                        "admin": "0xc2e8f052924ca9432f0a416a1b9f9daedabaebf2",
+                        "clerk": "0x0000000000000000000000000000000000000000",
+                        "treasury": "0xc2e8f052924ca9432f0a416a1b9f9daedabaebf2",
+                        "authTokenId": "0",
+                        "authTokenType": 0,
+                        "voucherCloneAddress": "0x041f56fe77ac1558cc415de46f7777234d9d141a",
+                        "active": true,
+                        "royaltyRecipients": [
+                            {
+                                "id": "2-royalty-0x0000000000000000000000000000000000000000",
+                                "recipient": {
+                                    "id": "0x0000000000000000000000000000000000000000",
+                                    "wallet": "0x0000000000000000000000000000000000000000",
+                                    "royalties": []
+                                },
+                                "minRoyaltyPercentage": "200"
+                            }
+                        ],
+                        "metadataUri": "ipfs://QmRW6tPiNB3ZaFbJPtHsWvie6f2gAPQqY5qAJWeQ9h7BXm",
+                        "metadata": {
+                            "id": "2-seller-metadata",
+                            "createdAt": "1749129277",
+                            "name": "Seller A",
+                            "description": "Seller A",
+                            "legalTradingName": "Seller A",
+                            "type": "SELLER",
+                            "kind": "regular",
+                            "website": "www.sellerA.com",
+                            "images": [
+                                {
+                                    "id": "https://bosonprotocol.infura-ipfs.io/ipfs/qmplp8fcgayjh38mgnwwzqj6cd5nswuttxn9yx8lluybyu-cover",
+                                    "url": "https://bosonprotocol.infura-ipfs.io/ipfs/QmPLp8fcGaYJh38MgnWwzqJ6CD5nSWuTtxN9YX8LLUyBYu",
+                                    "tag": "cover",
+                                    "type": "image/webp",
+                                    "width": 997,
+                                    "height": 667,
+                                    "fit": null,
+                                    "position": null
+                                },
+                                {
+                                    "id": "https://bosonprotocol.infura-ipfs.io/ipfs/qmseh7iayh3t8cs3wyrd4mum7j75ocvvjjpvbbqkfmmjt4-profile",
+                                    "url": "https://bosonprotocol.infura-ipfs.io/ipfs/QmSeH7iAYH3t8CS3WYrD4MuM7J75ocvVJJpvbBQKfMMJt4",
+                                    "tag": "profile",
+                                    "type": "image/jpeg",
+                                    "width": 200,
+                                    "height": 200,
+                                    "fit": null,
+                                    "position": null
+                                }
+                            ],
+                            "contactLinks": [
+                                {
+                                    "id": "sellera@mail.com-email-contact-link",
+                                    "url": "sellerA@mail.com",
+                                    "tag": "email"
+                                }
+                            ],
+                            "contactPreference": "xmtp_and_email",
+                            "socialLinks": [],
+                            "salesChannels": []
+                        }
+                    }
+                },
+                "salesChannels": []
+            },
+            "variations": [],
+            "exchangePolicy": {
+                "id": "338-item-1-metadata-exchange-policy",
+                "uuid": "1770905261813",
+                "version": 1,
+                "label": "Fair Exchange Policy",
+                "template": "unfairExchangePolicy",
+                "sellerContactMethod": "Chat App in the dApp",
+                "disputeResolverContactMethod": "email to: disputes@redeemeum.com"
+            },
+            "shipping": {
+                "id": "338-item-1-metadata-shipping",
+                "defaultVersion": 1,
+                "countryOfOrigin": null,
+                "supportedJurisdictions": [
+                    {
+                        "id": "338-item-1-metadata-jurisdiction-uk",
+                        "label": "uk",
+                        "deliveryTime": "15 days"
+                    }
+                ],
+                "redemptionPoint": "https://interface-a9d.pages.dev",
+                "returnPeriodInDays": 14
+            },
+            "productOverrides": null
+        }
+    ]
+  },
+  "range": null
+}

@@ -10,6 +10,7 @@ import { subgraph } from "@bosonprotocol/core-sdk";
 import { useBosonContext } from "../boson/BosonProvider";
 import { SimpleError } from "../error/SimpleError";
 import Loading from "../ui/loading/LoadingWrapper";
+import { isBundle } from "../..";
 
 interface ContractualAgreementProps {
   offerId: string | undefined;
@@ -19,15 +20,25 @@ interface ContractualAgreementProps {
 const getTemplate = (
   offer: subgraph.OfferFieldsFragment | undefined
 ): string | undefined => {
-  return (offer?.metadata as subgraph.ProductV1MetadataEntity)?.exchangePolicy
-    ?.template;
+  const productItemMetadata =
+    offer && isBundle(offer)
+      ? offer.metadata.items?.find(
+          (item): item is subgraph.ProductV1ItemMetadataEntity =>
+            item.type === subgraph.ItemMetadataType.ITEM_PRODUCT_V1
+        )
+      : undefined;
+
+  return (
+    productItemMetadata?.exchangePolicy?.template ||
+    (offer?.metadata as subgraph.ProductV1MetadataEntity)?.exchangePolicy
+      ?.template
+  );
 };
 
 export default function ContractualAgreement({
   offerId,
   offerData
 }: ContractualAgreementProps) {
-  // TODO: get the template from the offer metadata (BP390 - https://app.asana.com/0/1200803815983047/1203080300620356)
   const { buyerSellerAgreementTemplate } = useBosonContext();
   const template = getTemplate(offerData);
   const templateUrl =

@@ -45,7 +45,7 @@ Commit.args = {
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
@@ -80,7 +80,7 @@ CommitTokenGated_ERC20.args = {
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
@@ -88,8 +88,8 @@ CommitTokenGated_ERC20.args = {
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
   bundleUuid: "",
-  productUuid: "cc482a1-c004-d003-c3ca-a1ed7537af1", // token gated no variations
-  sellerId: "138",
+  productUuid: "ee68e2-d038-f433-e421-d053af38c887", // token gated no variations
+  sellerId: "33",
   metaTx: {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
     apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
@@ -114,7 +114,7 @@ CommitWithColorAndSizeVariations.args = {
   ...BASE_ARGS,
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
@@ -122,8 +122,8 @@ CommitWithColorAndSizeVariations.args = {
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
   bundleUuid: "",
-  productUuid: "1d4573d-42e-f557-0032-b1ab8170c102", // with color and size variations
-  sellerId: "138",
+  productUuid: "f4bb0f8-2f2c-d151-2801-0d3c6250461", // with color and size variations
+  sellerId: "20",
   metaTx: {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
     apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
@@ -151,7 +151,7 @@ CommitTokenGated_ERC721.args = {
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
@@ -159,8 +159,8 @@ CommitTokenGated_ERC721.args = {
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
   bundleUuid: "",
-  productUuid: "ce7faab-00c-26-a351-c71f615c07c2",
-  sellerId: "138",
+  productUuid: "5366841-ded3-b381-0d8-1536bc1d83a4",
+  sellerId: "2",
   metaTx: {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
     apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
@@ -188,7 +188,7 @@ CommitTokenGated_ERC721_2.args = {
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
@@ -225,7 +225,7 @@ CommitTokenGated_ERC1155.args = {
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
@@ -233,8 +233,8 @@ CommitTokenGated_ERC1155.args = {
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
   bundleUuid: "",
-  productUuid: "d75860e-da32-224-870e-2a884c51a2ee", // token gated 1155
-  sellerId: "138",
+  productUuid: "5b60fd-de6d-f33-db11-7c70e20bb70e", // token gated 1155
+  sellerId: "6",
   metaTx: {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
     apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
@@ -262,7 +262,7 @@ CommitBundle.args = {
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+    "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,

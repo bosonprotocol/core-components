@@ -62,7 +62,7 @@ export function BosonProvider({
           rest.minimumDisputeResolutionPeriodDays || 15,
         fairExchangePolicyRules:
           rest.fairExchangePolicyRules ||
-          "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+          "ipfs://QmPBjCyxLdYFGQRJnD1xfdtBTEUsviwJV5Y4ZN3rCBo2QQ",
         contactSellerForExchangeUrl:
           rest.contactSellerForExchangeUrl || "https://bosonapp.io/#/chat/{id}",
         buyerSellerAgreementTemplate:

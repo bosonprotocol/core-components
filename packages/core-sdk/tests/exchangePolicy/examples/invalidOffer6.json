@@ -13,14 +13,14 @@
   "validUntilDate": "1685570340",
   "voucherRedeemableFromDate": "1683819600",
   "voucherRedeemableUntilDate": "1685570340",
-  "disputePeriodDuration": "2591999",
+  "disputePeriodDuration": "2592000",
   "voucherValidDuration": "0",
-  "resolutionPeriodDuration": "1295999",
+  "resolutionPeriodDuration": "1296000",
   "metadataUri": "ipfs://QmSpHGbRyfXqAqJ5xHv8E2TZjy6LDmUYoXUGHrcx7RrqGB",
   "metadataHash": "QmSpHGbRyfXqAqJ5xHv8E2TZjy6LDmUYoXUGHrcx7RrqGB",
   "voided": false,
   "voidedAt": null,
-  "disputeResolverId": "12",
+  "disputeResolverId": "13",
   "numberOfCommits": "3",
   "numberOfRedemptions": "3",
   "condition": null,
@@ -114,11 +114,11 @@
     }
   },
   "exchangeToken": {
-    "id": "0x6982508145454Ce325dDbE47a25d4ec3d2311934",
-    "address": "0x6982508145454Ce325dDbE47a25d4ec3d2311934",
+    "id": "0x0000000000000000000000000000000000000000",
+    "address": "0x0000000000000000000000000000000000000000",
     "decimals": "18",
-    "symbol": "FAKE",
-    "name": "Fake"
+    "symbol": "MATIC",
+    "name": "Matic"
   },
   "disputeResolver": {
     "id": "13",
@@ -227,7 +227,7 @@
     "licenseUrl": "http://localhost:3000/#/license/0eaefa-3f54-72ce-0c5a-65a6c201",
     "condition": null,
     "schemaUrl": "https://schema.org/",
-    "type": "PRODUCT_V1",
+    "type": "NON_STANDARD_TYPE",
     "image": "ipfs://QmQh2JgEhkqFke4o8LdVYPcNwdQipuRvH55jCCzUWZ96Kx",
     "attributes": [
       {
@@ -573,7 +573,7 @@
       "uuid": "1683819377084",
       "version": 1,
       "label": "Fair Exchange Policy",
-      "template": "unfairExchangePolicy",
+      "template": "ipfs://QmS6SUVL1mhRq9wyNho914vcHwj3gC491vq7wtdoe34SUz",
       "sellerContactMethod": "Chat App in the dApp",
       "disputeResolverContactMethod": "email to: disputes-test@redeemeum.com"
     },
@@ -583,7 +583,7 @@
       "countryOfOrigin": null,
       "supportedJurisdictions": [],
       "redemptionPoint": null,
-      "returnPeriodInDays": 14
+      "returnPeriodInDays": 15
     }
   },
   "range": null

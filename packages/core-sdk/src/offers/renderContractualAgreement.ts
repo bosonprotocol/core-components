@@ -9,7 +9,10 @@ import { CreateOfferArgs } from "./types";
 import {
   OfferFieldsFragment,
   MetadataType,
-  ProductV1MetadataEntity
+  ProductV1MetadataEntity,
+  ProductV1ItemMetadataEntity,
+  ItemMetadataType,
+  BundleMetadataEntity
 } from "../subgraph";
 import { AddressZero } from "@ethersproject/constants";
 
@@ -172,6 +175,13 @@ function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
   offerMetadata: AdditionalOfferMetadata;
   tokenInfo: ITokenInfo;
 } {
+  const productItemMetadata =
+    offerDataSubGraph.metadata?.type === MetadataType.BUNDLE
+      ? (offerDataSubGraph.metadata as BundleMetadataEntity).items?.find(
+          (item): item is ProductV1ItemMetadataEntity =>
+            item.type === ItemMetadataType.ITEM_PRODUCT_V1
+        )
+      : undefined;
   return {
     offerData: {
       ...offerDataSubGraph,
@@ -182,6 +192,7 @@ function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
         offerDataSubGraph.voucherRedeemableFromDate,
       voucherRedeemableUntilDateInMS:
         offerDataSubGraph.voucherRedeemableUntilDate,
+      voucherValidDurationInMS: offerDataSubGraph.voucherValidDuration,
       disputePeriodDurationInMS: offerDataSubGraph.disputePeriodDuration,
       resolutionPeriodDurationInMS: offerDataSubGraph.resolutionPeriodDuration,
       exchangeToken: offerDataSubGraph.exchangeToken.address,
@@ -197,16 +208,20 @@ function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
         offerDataSubGraph.metadata as ProductV1MetadataEntity
       )?.exchangePolicy.sellerContactMethod,
       disputeResolverContactMethod: (
-        offerDataSubGraph.metadata as ProductV1MetadataEntity
+        productItemMetadata ||
+        (offerDataSubGraph.metadata as ProductV1MetadataEntity)
       )?.exchangePolicy.disputeResolverContactMethod,
       escalationDeposit:
         offerDataSubGraph.disputeResolutionTerms.buyerEscalationDeposit,
       escalationResponsePeriodInSec:
         offerDataSubGraph.disputeResolutionTerms.escalationResponsePeriod,
-      sellerTradingName: (offerDataSubGraph.metadata as ProductV1MetadataEntity)
-        ?.productV1Seller?.name,
+      sellerTradingName: (
+        productItemMetadata ||
+        (offerDataSubGraph.metadata as ProductV1MetadataEntity)
+      )?.productV1Seller?.name,
       returnPeriodInDays: (
-        offerDataSubGraph.metadata as ProductV1MetadataEntity
+        productItemMetadata ||
+        (offerDataSubGraph.metadata as ProductV1MetadataEntity)
       )?.shipping.returnPeriodInDays
     },
     tokenInfo: {
