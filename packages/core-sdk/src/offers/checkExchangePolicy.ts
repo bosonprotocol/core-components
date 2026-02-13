@@ -71,7 +71,11 @@ export type CheckExchangePolicyRules = {
  */
 function extractValidationErrors(error: unknown): Array<{ message: string; path: string; value: unknown }> {
   if (error && typeof error === "object" && "inner" in error && Array.isArray(error.inner)) {
-    return error.inner.map((e) => ({ ...e }));
+    return error.inner.map((e: any) => ({
+      message: e.message,
+      path: e.path,
+      value: e.value
+    }));
   }
   return [];
 }
