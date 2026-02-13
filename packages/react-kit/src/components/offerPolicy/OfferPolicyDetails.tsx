@@ -14,6 +14,7 @@ import DetailTable from "../modal/components/common/detail/DetailTable";
 import useCheckExchangePolicy from "../../hooks/useCheckExchangePolicy";
 import { useConfigContext } from "../config/ConfigContext";
 import { useBosonContext } from "../boson/BosonProvider";
+import { isBundle } from "../..";
 
 const NoPaddingButton = styled(ThemedButton)`
   padding: 0 !important;
@@ -48,17 +49,26 @@ export default function OfferPolicyDetails({
         (error) => error.path === "metadata.exchangePolicy.template"
       ));
 
+  const productItemMetadata = isBundle(offerData)
+    ? offerData.metadata.items?.find(
+        (item): item is subgraph.ProductV1ItemMetadataEntity =>
+          item.type === subgraph.ItemMetadataType.ITEM_PRODUCT_V1
+      )
+    : undefined;
+  const exchangePolicyData =
+    productItemMetadata?.exchangePolicy ||
+    (offerData?.metadata as subgraph.ProductV1MetadataEntity)?.exchangePolicy;
+  const shippingData =
+    productItemMetadata?.shipping ||
+    (offerData?.metadata as subgraph.ProductV1MetadataEntity)?.shipping;
   const exchangePolicy = {
-    name: (
-      (offerData?.metadata as subgraph.ProductV1MetadataEntity)?.exchangePolicy
-        ?.label || "unspecified"
-    ).replace("fairExchangePolicy", "Fair Exchange Policy"),
-    version: (offerData?.metadata as subgraph.ProductV1MetadataEntity)
-      ?.exchangePolicy?.version
-      ? "v" +
-        (
-          offerData?.metadata as subgraph.ProductV1MetadataEntity
-        )?.exchangePolicy?.version?.toString()
+    name:
+      exchangePolicyData?.label?.replace(
+        "fairExchangePolicy",
+        "Fair Exchange Policy"
+      ) || "unspecified",
+    version: exchangePolicyData?.version
+      ? "v" + exchangePolicyData.version.toString()
       : "",
     disputePeriod: offerData?.disputePeriodDuration
       ? parseInt(offerData?.disputePeriodDuration) / (3600 * 24)
@@ -66,9 +76,7 @@ export default function OfferPolicyDetails({
     escalationPeriod: offerData?.resolutionPeriodDuration
       ? parseInt(offerData?.resolutionPeriodDuration) / (3600 * 24)
       : "unspecified",
-    returnPeriod:
-      (offerData?.metadata as subgraph.ProductV1MetadataEntity)?.shipping
-        ?.returnPeriodInDays || "unspecified",
+    returnPeriod: shippingData?.returnPeriodInDays || "unspecified",
     contractualAgreement: {
       title: isExchangePolicyValid ? (
         "Commerce Agreement"
