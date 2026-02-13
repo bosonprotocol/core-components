@@ -65,16 +65,42 @@ export type CheckExchangePolicyRules = {
   }[];
 };
 
-// Type guard to check if an error is a Yup ValidationError with inner errors
-function isValidationErrorWithInner(
+/**
+ * Helper function to safely extract validation errors from a Yup ValidationError.
+ *
+ * @param error - The error object to extract validation errors from
+ * @returns An array of error objects, each containing:
+ *   - message: The error message string
+ *   - path: The path to the invalid field
+ *   - value: The invalid value
+ *
+ * Returns an empty array if:
+ * - The error is not a valid Yup ValidationError
+ * - The error doesn't have an `inner` property
+ * - The `inner` property is not an array
+ */
+function extractValidationErrors(
   error: unknown
-): error is { inner: Array<{ message: string; path?: string; value?: unknown }> } {
-  return (
+): Array<{ message: string; path: string; value: unknown }> {
+  if (
+    error &&
     typeof error === "object" &&
-    error !== null &&
     "inner" in error &&
-    Array.isArray((error as { inner: unknown }).inner)
-  );
+    Array.isArray(error.inner)
+  ) {
+    return error.inner.map((e: unknown) => {
+      // Extract only the needed properties from the error object
+      if (e && typeof e === "object") {
+        return {
+          message: "message" in e ? String(e.message) : "",
+          path: "path" in e ? String(e.path) : "",
+          value: "value" in e ? e.value : undefined
+        };
+      }
+      return { message: "", path: "", value: undefined };
+    });
+  }
+  return [];
 }
 
 export function checkExchangePolicy(
@@ -121,18 +147,7 @@ export function checkExchangePolicy(
   } catch (e) {
     result = {
       isValid: false,
-      errors: isValidationErrorWithInner(e)
-        ? e.inner.map((error) => {
-            return { ...error };
-          })
-        : [
-            {
-              message:
-                e instanceof Error ? e.message : "Validation failed with unknown error",
-              path: "",
-              value: undefined
-            }
-          ]
+      errors: extractValidationErrors(e)
     };
   }
   if (metadataType === "BUNDLE") {
@@ -163,22 +178,7 @@ export function checkExchangePolicy(
             itemSchema.validateSync(item, { abortEarly: false });
           } catch (e) {
             result.isValid = false;
-            result.errors = result.errors.concat(
-              isValidationErrorWithInner(e)
-                ? e.inner.map((error) => {
-                    return { ...error };
-                  })
-                : [
-                    {
-                      message:
-                        e instanceof Error
-                          ? e.message
-                          : "Validation failed with unknown error",
-                      path: "",
-                      value: undefined
-                    }
-                  ]
-            );
+            result.errors = result.errors.concat(extractValidationErrors(e));
           }
         }
       }
