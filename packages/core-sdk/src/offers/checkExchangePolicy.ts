@@ -80,7 +80,7 @@ export function checkExchangePolicy(
     baseSchema = buildYup(rules.yupSchema, rules.yupConfig);
   } else {
     // For multiple schemas, use the one matching metadata.type
-    const rulesTemplate = rules.yupSchemas.find(
+    const rulesTemplate = rules.yupSchemas?.find(
       (schema) => schema.metadataType === metadataType
     );
     baseSchema = rulesTemplate
@@ -104,30 +104,29 @@ export function checkExchangePolicy(
     };
   }
   if (metadataType === "BUNDLE") {
-    try {
-      // For BUNDLE metadata, check each item in the bundle
-      const bundleItems = (
-        offerData.metadata as { items?: { type?: string }[] }
-      )?.items;
-      for (const item of bundleItems) {
-        const itemType = item.type;
-        const itemRulesTemplate = Array.isArray(rules.yupSchemas)
-          ? rules.yupSchemas.find((schema) => schema.metadataType === itemType)
-          : undefined;
-        const itemSchema = itemRulesTemplate
-          ? buildYup(itemRulesTemplate, rules.yupConfig)
-          : undefined;
-        if (itemSchema) {
+    // For BUNDLE metadata, check each item in the bundle
+    const bundleItems = (offerData.metadata as { items?: { type?: string }[] })
+      ?.items;
+    for (const item of bundleItems) {
+      const itemType = item.type;
+      const itemRulesTemplate = Array.isArray(rules.yupSchemas)
+        ? rules.yupSchemas.find((schema) => schema.metadataType === itemType)
+        : undefined;
+      const itemSchema = itemRulesTemplate
+        ? buildYup(itemRulesTemplate, rules.yupConfig)
+        : undefined;
+      if (itemSchema) {
+        try {
           itemSchema.validateSync(item, { abortEarly: false });
+        } catch (e) {
+          result.isValid = false;
+          result.errors = result.errors.concat(
+            e.inner?.map((error) => {
+              return { ...error };
+            }) || []
+          );
         }
       }
-    } catch (e) {
-      result.isValid = false;
-      result.errors = result.errors.concat(
-        e.inner?.map((error) => {
-          return { ...error };
-        }) || []
-      );
     }
   }
   return result;

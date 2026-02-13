@@ -90,7 +90,6 @@ export default function useCheckExchangePolicy({
         defaultDisputeResolverId,
         defaultTokens
       );
-      console.log("rulesTemplate", rulesTemplate);
       return rulesTemplate;
     }
   );
