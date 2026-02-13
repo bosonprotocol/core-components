@@ -177,7 +177,9 @@ export default function OfferPolicyDetails({
             info: undefined,
             value: period(
               exchangePolicy.returnPeriod,
-              "metadata.shipping.returnPeriodInDays",
+              isBundle(offerData)
+                ? "shipping.returnPeriodInDays"
+                : "metadata.shipping.returnPeriodInDays",
               exchangePolicyCheckResult
             )
           },
