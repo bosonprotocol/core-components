@@ -67,7 +67,17 @@ export type CheckExchangePolicyRules = {
 
 /**
  * Helper function to safely extract validation errors from a Yup ValidationError.
- * Returns an empty array if the error is not a valid Yup ValidationError.
+ * 
+ * @param error - The error object to extract validation errors from
+ * @returns An array of error objects, each containing:
+ *   - message: The error message string
+ *   - path: The path to the invalid field
+ *   - value: The invalid value
+ * 
+ * Returns an empty array if:
+ * - The error is not a valid Yup ValidationError
+ * - The error doesn't have an `inner` property
+ * - The `inner` property is not an array
  */
 function extractValidationErrors(error: unknown): Array<{ message: string; path: string; value: unknown }> {
   if (error && typeof error === "object" && "inner" in error && Array.isArray(error.inner)) {
