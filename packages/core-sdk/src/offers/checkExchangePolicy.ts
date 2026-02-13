@@ -65,6 +65,18 @@ export type CheckExchangePolicyRules = {
   }[];
 };
 
+// Type guard to check if an error is a Yup ValidationError with inner errors
+function isValidationErrorWithInner(
+  error: unknown
+): error is { inner: Array<{ message: string; path?: string; value?: unknown }> } {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "inner" in error &&
+    Array.isArray((error as { inner: unknown }).inner)
+  );
+}
+
 export function checkExchangePolicy(
   offerData: OfferFieldsFragment,
   rules: CheckExchangePolicyRules
@@ -109,10 +121,18 @@ export function checkExchangePolicy(
   } catch (e) {
     result = {
       isValid: false,
-      errors:
-        e.inner?.map((error) => {
-          return { ...error };
-        }) || []
+      errors: isValidationErrorWithInner(e)
+        ? e.inner.map((error) => {
+            return { ...error };
+          })
+        : [
+            {
+              message:
+                e instanceof Error ? e.message : "Validation failed with unknown error",
+              path: "",
+              value: undefined
+            }
+          ]
     };
   }
   if (metadataType === "BUNDLE") {
@@ -144,9 +164,20 @@ export function checkExchangePolicy(
           } catch (e) {
             result.isValid = false;
             result.errors = result.errors.concat(
-              e.inner?.map((error) => {
-                return { ...error };
-              }) || []
+              isValidationErrorWithInner(e)
+                ? e.inner.map((error) => {
+                    return { ...error };
+                  })
+                : [
+                    {
+                      message:
+                        e instanceof Error
+                          ? e.message
+                          : "Validation failed with unknown error",
+                      path: "",
+                      value: undefined
+                    }
+                  ]
             );
           }
         }
