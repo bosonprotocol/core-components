@@ -83,9 +83,21 @@ export function checkExchangePolicy(
     const rulesTemplate = rules.yupSchemas?.find(
       (schema) => schema.metadataType === metadataType
     );
-    baseSchema = rulesTemplate
-      ? buildYup(rulesTemplate, rules.yupConfig)
-      : buildYup(rules.yupSchema, rules.yupConfig); // fallback to default schema if no matching metadataType found
+
+    if (!rulesTemplate) {
+      return {
+        isValid: false,
+        errors: [
+          {
+            message: `Unsupported metadata type: ${String(metadataType)}`,
+            path: "metadata.type",
+            value: metadataType
+          }
+        ]
+      };
+    }
+
+    baseSchema = buildYup(rulesTemplate, rules.yupConfig);
   }
 
   let result = {
