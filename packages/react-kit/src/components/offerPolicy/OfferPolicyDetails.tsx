@@ -46,7 +46,9 @@ export default function OfferPolicyDetails({
     exchangePolicyCheckResult &&
     (exchangePolicyCheckResult.isValid ||
       !exchangePolicyCheckResult.errors.find(
-        (error) => error.path === "metadata.exchangePolicy.template"
+        (error) =>
+          error.path === "metadata.exchangePolicy.template" ||
+          error.path === "exchangePolicy.template"
       ));
 
   const productItemMetadata = isBundle(offerData)
