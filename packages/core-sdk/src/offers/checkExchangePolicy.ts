@@ -104,33 +104,33 @@ export function checkExchangePolicy(
     };
   }
   if (metadataType === "BUNDLE") {
-    try {
-      // For BUNDLE metadata, check each item in the bundle
-      const bundleItems = (
-        offerData.metadata as { items?: { type?: string }[] }
-      )?.items;
-      for (const item of bundleItems) {
-        const itemType = item.type;
-        const itemRulesTemplate =
-          "yupSchemas" in rules
-            ? rules.yupSchemas.find(
-                (schema) => schema.metadataType === itemType
-              )
-            : undefined;
-        const itemSchema = itemRulesTemplate
-          ? buildYup(itemRulesTemplate, rules.yupConfig)
+    // For BUNDLE metadata, check each item in the bundle
+    const bundleItems = (
+      offerData.metadata as { items?: { type?: string }[] }
+    )?.items;
+    for (const item of bundleItems) {
+      const itemType = item.type;
+      const itemRulesTemplate =
+        "yupSchemas" in rules
+          ? rules.yupSchemas.find(
+              (schema) => schema.metadataType === itemType
+            )
           : undefined;
-        if (itemSchema) {
+      const itemSchema = itemRulesTemplate
+        ? buildYup(itemRulesTemplate, rules.yupConfig)
+        : undefined;
+      if (itemSchema) {
+        try {
           itemSchema.validateSync(item, { abortEarly: false });
+        } catch (e) {
+          result.isValid = false;
+          result.errors = result.errors.concat(
+            e.inner?.map((error) => {
+              return { ...error };
+            }) || []
+          );
         }
       }
-    } catch (e) {
-      result.isValid = false;
-      result.errors = result.errors.concat(
-        e.inner?.map((error) => {
-          return { ...error };
-        }) || []
-      );
     }
   }
   return result;
