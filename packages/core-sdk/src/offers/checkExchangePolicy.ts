@@ -117,7 +117,7 @@ export function checkExchangePolicy(
     errors: []
   };
   try {
-    baseSchema.validateSync(offerData, { abortEarly: false});
+    baseSchema.validateSync(offerData, { abortEarly: false });
   } catch (e) {
     result = {
       isValid: false,
