@@ -107,24 +107,36 @@ export function checkExchangePolicy(
     // For BUNDLE metadata, check each item in the bundle
     const bundleItems =
       (offerData.metadata as { items?: { type?: string }[] })?.items || [];
-    for (const item of bundleItems) {
-      const itemType = item.type;
-      const itemRulesTemplate = Array.isArray(rules.yupSchemas)
-        ? rules.yupSchemas.find((schema) => schema.metadataType === itemType)
-        : undefined;
-      const itemSchema = itemRulesTemplate
-        ? buildYup(itemRulesTemplate, rules.yupConfig)
-        : undefined;
-      if (itemSchema) {
-        try {
-          itemSchema.validateSync(item, { abortEarly: false });
-        } catch (e) {
-          result.isValid = false;
-          result.errors = result.errors.concat(
-            e.inner?.map((error) => {
-              return { ...error };
-            }) || []
-          );
+    if (bundleItems.length === 0) {
+      // An empty bundle is semantically invalid
+      result.isValid = false;
+      result.errors = result.errors.concat([
+        {
+          message: "Bundle metadata must contain at least one item.",
+          path: "metadata.items",
+          value: bundleItems
+        }
+      ]);
+    } else {
+      for (const item of bundleItems) {
+        const itemType = item.type;
+        const itemRulesTemplate = Array.isArray(rules.yupSchemas)
+          ? rules.yupSchemas.find((schema) => schema.metadataType === itemType)
+          : undefined;
+        const itemSchema = itemRulesTemplate
+          ? buildYup(itemRulesTemplate, rules.yupConfig)
+          : undefined;
+        if (itemSchema) {
+          try {
+            itemSchema.validateSync(item, { abortEarly: false });
+          } catch (e) {
+            result.isValid = false;
+            result.errors = result.errors.concat(
+              e.inner?.map((error) => {
+                return { ...error };
+              }) || []
+            );
+          }
         }
       }
     }
