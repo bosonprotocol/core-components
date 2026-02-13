@@ -105,8 +105,8 @@ export function checkExchangePolicy(
   }
   if (metadataType === "BUNDLE") {
     // For BUNDLE metadata, check each item in the bundle
-    const bundleItems = (offerData.metadata as { items?: { type?: string }[] })
-      ?.items;
+    const bundleItems =
+      (offerData.metadata as { items?: { type?: string }[] })?.items || [];
     for (const item of bundleItems) {
       const itemType = item.type;
       const itemRulesTemplate = Array.isArray(rules.yupSchemas)
