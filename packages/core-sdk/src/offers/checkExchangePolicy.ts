@@ -152,6 +152,20 @@ export function checkExchangePolicy(
         }
       }
     }
+    // Ensure bundle contains at least one ITEM_PRODUCT_V1 item,
+    // as required by the UI logic to extract exchange policy and shipping data.
+    const hasRequiredProductItem = bundleItems.some(
+      (item) => item.type === "ITEM_PRODUCT_V1"
+    );
+    if (!hasRequiredProductItem) {
+      result.isValid = false;
+      result.errors = result.errors.concat({
+        message:
+          "Bundle metadata must contain at least one ITEM_PRODUCT_V1 item to provide exchange policy and shipping information.",
+        path: "metadata.items",
+        value: bundleItems
+      });
+    }
   }
   return result;
 }
