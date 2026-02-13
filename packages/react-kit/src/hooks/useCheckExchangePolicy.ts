@@ -83,15 +83,15 @@ export default function useCheckExchangePolicy({
       defaultDisputeResolverId,
       defaultTokens
     ],
-    async () => {
-      const rulesTemplate = await getRulesTemplate(
+    async () =>
+      getRulesTemplate(
         fairExchangePolicyRules,
         ipfsGateway,
         defaultDisputeResolverId,
         defaultTokens
-      );
-      return rulesTemplate;
-    }
+      )
+    
+    
   );
   useEffect(() => {
     if (!core || !offerId || !fairExchangePolicyRules || !rulesTemplate) {
