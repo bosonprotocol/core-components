@@ -3,398 +3,213 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.8.1...@bosonprotocol/eth-connect-sdk@1.8.2) (2026-02-16)
+
+**Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
+
 ## [1.8.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.8.0...@bosonprotocol/eth-connect-sdk@1.8.1) (2025-10-29)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 # [1.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.7.7...@bosonprotocol/eth-connect-sdk@1.8.0) (2025-09-17)
-
 
 ### Features
 
-* add getCurrentTimeMs in web3libadapter for assertCompletableExc… ([#961](https://github.com/bosonprotocol/core-components/issues/961)) ([5fac132](https://github.com/bosonprotocol/core-components/commit/5fac132f6913df35a7ec6ebbf358145e61674e78))
-* create agent adapter ([#947](https://github.com/bosonprotocol/core-components/issues/947)) ([75d6432](https://github.com/bosonprotocol/core-components/commit/75d64325fb654a4e2112bddf611231b1387b90bc)), closes [#948](https://github.com/bosonprotocol/core-components/issues/948)
-
-
-
-
+- add getCurrentTimeMs in web3libadapter for assertCompletableExc… ([#961](https://github.com/bosonprotocol/core-components/issues/961)) ([5fac132](https://github.com/bosonprotocol/core-components/commit/5fac132f6913df35a7ec6ebbf358145e61674e78))
+- create agent adapter ([#947](https://github.com/bosonprotocol/core-components/issues/947)) ([75d6432](https://github.com/bosonprotocol/core-components/commit/75d64325fb654a4e2112bddf611231b1387b90bc)), closes [#948](https://github.com/bosonprotocol/core-components/issues/948)
 
 ## [1.7.7](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.7.6...@bosonprotocol/eth-connect-sdk@1.7.7) (2025-04-08)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.7.6](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.7.5...@bosonprotocol/eth-connect-sdk@1.7.6) (2025-03-31)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.7.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.7.4...@bosonprotocol/eth-connect-sdk@1.7.5) (2025-03-19)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.7.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.7.3...@bosonprotocol/eth-connect-sdk@1.7.4) (2025-02-07)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.7.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.7.2...@bosonprotocol/eth-connect-sdk@1.7.3) (2025-01-29)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.7.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.7.1...@bosonprotocol/eth-connect-sdk@1.7.2) (2025-01-28)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.7.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.7.0...@bosonprotocol/eth-connect-sdk@1.7.1) (2025-01-28)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 # [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.6.8...@bosonprotocol/eth-connect-sdk@1.7.0) (2024-11-20)
-
 
 ### Features
 
-* add estimateGas in Web3LibAdapter ([#803](https://github.com/bosonprotocol/core-components/issues/803)) ([3be665b](https://github.com/bosonprotocol/core-components/commit/3be665b1dca4249c627b89eb76bc6b61a914b2f0))
-
-
-
-
+- add estimateGas in Web3LibAdapter ([#803](https://github.com/bosonprotocol/core-components/issues/803)) ([3be665b](https://github.com/bosonprotocol/core-components/commit/3be665b1dca4249c627b89eb76bc6b61a914b2f0))
 
 ## [1.6.8](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.6.7...@bosonprotocol/eth-connect-sdk@1.6.8) (2024-07-29)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.6.7](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.6.6...@bosonprotocol/eth-connect-sdk@1.6.7) (2024-06-11)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.6.6](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.6.5...@bosonprotocol/eth-connect-sdk@1.6.6) (2024-05-21)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.6.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.6.4...@bosonprotocol/eth-connect-sdk@1.6.5) (2024-05-13)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.6.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.6.3...@bosonprotocol/eth-connect-sdk@1.6.4) (2024-04-15)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.6.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.6.2...@bosonprotocol/eth-connect-sdk@1.6.3) (2024-04-05)
-
 
 ### Bug Fixes
 
-* race condition in useSignerAddress and add uuid to web3lib adapters ([#685](https://github.com/bosonprotocol/core-components/issues/685)) ([f8e37e9](https://github.com/bosonprotocol/core-components/commit/f8e37e9dda6730c720817e093ae1a5d906b4f472))
-
-
-
-
+- race condition in useSignerAddress and add uuid to web3lib adapters ([#685](https://github.com/bosonprotocol/core-components/issues/685)) ([f8e37e9](https://github.com/bosonprotocol/core-components/commit/f8e37e9dda6730c720817e093ae1a5d906b4f472))
 
 ## [1.6.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.6.1...@bosonprotocol/eth-connect-sdk@1.6.2) (2024-03-13)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.6.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.6.0...@bosonprotocol/eth-connect-sdk@1.6.1) (2024-03-08)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 # [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.13...@bosonprotocol/eth-connect-sdk@1.6.0) (2024-02-23)
-
 
 ### Features
 
-* deactivate use of meta-transaction when the connected wallet is… ([#671](https://github.com/bosonprotocol/core-components/issues/671)) ([20cadab](https://github.com/bosonprotocol/core-components/commit/20cadaba47310d905d626b12f374fbfe92baeb10))
-
-
-
-
+- deactivate use of meta-transaction when the connected wallet is… ([#671](https://github.com/bosonprotocol/core-components/issues/671)) ([20cadab](https://github.com/bosonprotocol/core-components/commit/20cadaba47310d905d626b12f374fbfe92baeb10))
 
 ## [1.5.13](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.12...@bosonprotocol/eth-connect-sdk@1.5.13) (2024-02-05)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.5.12](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.11...@bosonprotocol/eth-connect-sdk@1.5.12) (2024-01-24)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.5.11](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.10...@bosonprotocol/eth-connect-sdk@1.5.11) (2023-12-18)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.5.10](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.9...@bosonprotocol/eth-connect-sdk@1.5.10) (2023-12-05)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.5.9](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.8...@bosonprotocol/eth-connect-sdk@1.5.9) (2023-10-03)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.5.8](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.7...@bosonprotocol/eth-connect-sdk@1.5.8) (2023-09-29)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.5.7](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.6...@bosonprotocol/eth-connect-sdk@1.5.7) (2023-09-27)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.5.6](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.5...@bosonprotocol/eth-connect-sdk@1.5.6) (2023-08-10)
-
 
 ### Bug Fixes
 
-* ensure connection with wallet connect (upgrade wagmi / rainbowkit) ([#524](https://github.com/bosonprotocol/core-components/issues/524)) ([4b372ea](https://github.com/bosonprotocol/core-components/commit/4b372ea1e9a448764d9eda50e38c2093219e5ccd))
-
-
-
-
+- ensure connection with wallet connect (upgrade wagmi / rainbowkit) ([#524](https://github.com/bosonprotocol/core-components/issues/524)) ([4b372ea](https://github.com/bosonprotocol/core-components/commit/4b372ea1e9a448764d9eda50e38c2093219e5ccd))
 
 ## [1.5.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.4...@bosonprotocol/eth-connect-sdk@1.5.5) (2023-07-05)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.5.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.3...@bosonprotocol/eth-connect-sdk@1.5.4) (2023-06-28)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.5.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.2...@bosonprotocol/eth-connect-sdk@1.5.3) (2023-06-22)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.5.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.1...@bosonprotocol/eth-connect-sdk@1.5.2) (2023-05-17)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.5.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.0...@bosonprotocol/eth-connect-sdk@1.5.1) (2023-05-15)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 # [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.4.4...@bosonprotocol/eth-connect-sdk@1.5.0) (2023-05-12)
-
 
 ### Bug Fixes
 
-* revert "feat: support eth_signTypedData_v4 in eth_connect adapter ([#4](https://github.com/bosonprotocol/core-components/issues/4)… ([#440](https://github.com/bosonprotocol/core-components/issues/440)) ([abec42b](https://github.com/bosonprotocol/core-components/commit/abec42b360bb994ed1f5588d8540e096aafb7fde)), closes [#434](https://github.com/bosonprotocol/core-components/issues/434)
-
+- revert "feat: support eth_signTypedData_v4 in eth_connect adapter ([#4](https://github.com/bosonprotocol/core-components/issues/4)… ([#440](https://github.com/bosonprotocol/core-components/issues/440)) ([abec42b](https://github.com/bosonprotocol/core-components/commit/abec42b360bb994ed1f5588d8540e096aafb7fde)), closes [#434](https://github.com/bosonprotocol/core-components/issues/434)
 
 ### Features
 
-* eth-connect-adapter - allow to set  different providers for sig… ([#442](https://github.com/bosonprotocol/core-components/issues/442)) ([c8f72f3](https://github.com/bosonprotocol/core-components/commit/c8f72f3f89b45474a799675da9036b9bf14d7903))
-* support eth_signTypedData_v4 in eth_connect adapter ([#434](https://github.com/bosonprotocol/core-components/issues/434)) ([a89c607](https://github.com/bosonprotocol/core-components/commit/a89c607b00ef09f37347ecd926116f18e5da7fb2))
-
-
-
-
+- eth-connect-adapter - allow to set different providers for sig… ([#442](https://github.com/bosonprotocol/core-components/issues/442)) ([c8f72f3](https://github.com/bosonprotocol/core-components/commit/c8f72f3f89b45474a799675da9036b9bf14d7903))
+- support eth_signTypedData_v4 in eth_connect adapter ([#434](https://github.com/bosonprotocol/core-components/issues/434)) ([a89c607](https://github.com/bosonprotocol/core-components/commit/a89c607b00ef09f37347ecd926116f18e5da7fb2))
 
 ## [1.4.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.4.3...@bosonprotocol/eth-connect-sdk@1.4.4) (2022-12-01)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.4.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.4.2...@bosonprotocol/eth-connect-sdk@1.4.3) (2022-11-22)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.4.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.4.1...@bosonprotocol/eth-connect-sdk@1.4.2) (2022-11-17)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.4.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.4.0...@bosonprotocol/eth-connect-sdk@1.4.1) (2022-10-28)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 # [1.4.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.3.5...@bosonprotocol/eth-connect-sdk@1.4.0) (2022-10-26)
-
 
 ### Features
 
-* ensure approve is called when needed  before committing to an offer ([#326](https://github.com/bosonprotocol/core-components/issues/326)) ([cb20d73](https://github.com/bosonprotocol/core-components/commit/cb20d73a418a6c07aea325553a4646ed9ac925a9))
-
-
-
-
+- ensure approve is called when needed before committing to an offer ([#326](https://github.com/bosonprotocol/core-components/issues/326)) ([cb20d73](https://github.com/bosonprotocol/core-components/commit/cb20d73a418a6c07aea325553a4646ed9ac925a9))
 
 ## [1.3.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.3.4...@bosonprotocol/eth-connect-sdk@1.3.5) (2022-10-19)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.3.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.3.3...@bosonprotocol/eth-connect-sdk@1.3.4) (2022-10-18)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.3.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.3.2...@bosonprotocol/eth-connect-sdk@1.3.3) (2022-10-13)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 ## [1.3.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.3.1...@bosonprotocol/eth-connect-sdk@1.3.2) (2022-10-13)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.3.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.3.0...@bosonprotocol/eth-connect-sdk@1.3.1) (2022-10-12)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
 
-
-
-
-
 # [1.3.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.2.12...@bosonprotocol/eth-connect-sdk@1.3.0) (2022-10-05)
-
 
 ### Features
 
-* fix npm publish config ([#286](https://github.com/bosonprotocol/core-components/issues/286)) ([d57bc91](https://github.com/bosonprotocol/core-components/commit/d57bc91b348f5225d0890cc3256ac464bb8ad122))
-* mkae npm packages public ([#287](https://github.com/bosonprotocol/core-components/issues/287)) ([98927c2](https://github.com/bosonprotocol/core-components/commit/98927c233740616b80da66a7de30e911e85ab09c))
-* set up prod config & ci ([#284](https://github.com/bosonprotocol/core-components/issues/284)) ([830f193](https://github.com/bosonprotocol/core-components/commit/830f1939de1e4c232b5b575d391bff3d3ccfdbe7))
-
-
-
-
+- fix npm publish config ([#286](https://github.com/bosonprotocol/core-components/issues/286)) ([d57bc91](https://github.com/bosonprotocol/core-components/commit/d57bc91b348f5225d0890cc3256ac464bb8ad122))
+- mkae npm packages public ([#287](https://github.com/bosonprotocol/core-components/issues/287)) ([98927c2](https://github.com/bosonprotocol/core-components/commit/98927c233740616b80da66a7de30e911e85ab09c))
+- set up prod config & ci ([#284](https://github.com/bosonprotocol/core-components/issues/284)) ([830f193](https://github.com/bosonprotocol/core-components/commit/830f1939de1e4c232b5b575d391bff3d3ccfdbe7))
 
 ## [1.2.12](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.2.11...@bosonprotocol/eth-connect-sdk@1.2.12) (2022-10-03)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
-
-
-
-
 
 ## [1.2.11](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.2.10...@bosonprotocol/eth-connect-sdk@1.2.11) (2022-09-08)
 
@@ -432,8 +247,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-* esm builds ([#196](https://github.com/bosonprotocol/core-components/issues/196)) ([32cf63a](https://github.com/bosonprotocol/core-components/commit/32cf63a11008b65d2c2c2156add5b2f1636e1544))
-* rollup bundle compatibility ([#202](https://github.com/bosonprotocol/core-components/issues/202)) ([9da246b](https://github.com/bosonprotocol/core-components/commit/9da246b68be635026d493756e0a9b6dece80cf38))
+- esm builds ([#196](https://github.com/bosonprotocol/core-components/issues/196)) ([32cf63a](https://github.com/bosonprotocol/core-components/commit/32cf63a11008b65d2c2c2156add5b2f1636e1544))
+- rollup bundle compatibility ([#202](https://github.com/bosonprotocol/core-components/issues/202)) ([9da246b](https://github.com/bosonprotocol/core-components/commit/9da246b68be635026d493756e0a9b6dece80cf38))
 
 ## [1.2.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.2.1...@bosonprotocol/eth-connect-sdk@1.2.2) (2022-07-12)
 
@@ -447,7 +262,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* adapt to new set of contracts ([#131](https://github.com/bosonprotocol/core-components/issues/131)) ([ffe5fc7](https://github.com/bosonprotocol/core-components/commit/ffe5fc7c64f5743b06212fb969f293cd64046459))
+- adapt to new set of contracts ([#131](https://github.com/bosonprotocol/core-components/issues/131)) ([ffe5fc7](https://github.com/bosonprotocol/core-components/commit/ffe5fc7c64f5743b06212fb969f293cd64046459))
 
 ## [1.1.8](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.1.7...@bosonprotocol/eth-connect-sdk@1.1.8) (2022-06-20)
 
@@ -481,15 +296,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-* include ts files to fix sourcemap warnings ([#61](https://github.com/bosonprotocol/core-components/issues/61)) ([e815e31](https://github.com/bosonprotocol/core-components/commit/e815e31f13c667522b1f3c18460a4f1a7de37b53))
+- include ts files to fix sourcemap warnings ([#61](https://github.com/bosonprotocol/core-components/issues/61)) ([e815e31](https://github.com/bosonprotocol/core-components/commit/e815e31f13c667522b1f3c18460a4f1a7de37b53))
 
 # 1.1.0 (2022-04-21)
 
 ### Features
 
-* add rudimentary ipfs metadata storage ([#7](https://github.com/bosonprotocol/core-components/issues/7)) ([1cded98](https://github.com/bosonprotocol/core-components/commit/1cded9833deaf6ebdc93a07ab6840de263c70158))
-* composable sdk structure ([#3](https://github.com/bosonprotocol/core-components/issues/3)) ([dc5c9ac](https://github.com/bosonprotocol/core-components/commit/dc5c9acfbffc319cd1bf3eb37a9012a0dcf21230))
-* **core-sdk:** approve exchange token ([#18](https://github.com/bosonprotocol/core-components/issues/18)) ([002b44c](https://github.com/bosonprotocol/core-components/commit/002b44c4f46b0ef9ae36647a4fad78e07a98dfee))
-* **ethers-sdk:** allow custom signer ([#41](https://github.com/bosonprotocol/core-components/issues/41)) ([57d928b](https://github.com/bosonprotocol/core-components/commit/57d928b876f12edb10c2a1483f1e3dea53d82c2f))
-* integrate widgets core-sdk widgets-sdk ([#15](https://github.com/bosonprotocol/core-components/issues/15)) ([176b65d](https://github.com/bosonprotocol/core-components/commit/176b65d1a8a723567cadde2403ff45547a19cc0d))
-* monorepo setup tweaks ([#10](https://github.com/bosonprotocol/core-components/issues/10)) ([b8cf248](https://github.com/bosonprotocol/core-components/commit/b8cf2481a684b7d0917c31478cad06354454115d))
+- add rudimentary ipfs metadata storage ([#7](https://github.com/bosonprotocol/core-components/issues/7)) ([1cded98](https://github.com/bosonprotocol/core-components/commit/1cded9833deaf6ebdc93a07ab6840de263c70158))
+- composable sdk structure ([#3](https://github.com/bosonprotocol/core-components/issues/3)) ([dc5c9ac](https://github.com/bosonprotocol/core-components/commit/dc5c9acfbffc319cd1bf3eb37a9012a0dcf21230))
+- **core-sdk:** approve exchange token ([#18](https://github.com/bosonprotocol/core-components/issues/18)) ([002b44c](https://github.com/bosonprotocol/core-components/commit/002b44c4f46b0ef9ae36647a4fad78e07a98dfee))
+- **ethers-sdk:** allow custom signer ([#41](https://github.com/bosonprotocol/core-components/issues/41)) ([57d928b](https://github.com/bosonprotocol/core-components/commit/57d928b876f12edb10c2a1483f1e3dea53d82c2f))
+- integrate widgets core-sdk widgets-sdk ([#15](https://github.com/bosonprotocol/core-components/issues/15)) ([176b65d](https://github.com/bosonprotocol/core-components/commit/176b65d1a8a723567cadde2403ff45547a19cc0d))
+- monorepo setup tweaks ([#10](https://github.com/bosonprotocol/core-components/issues/10)) ([b8cf248](https://github.com/bosonprotocol/core-components/commit/b8cf2481a684b7d0917c31478cad06354454115d))

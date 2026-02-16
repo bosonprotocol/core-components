@@ -3,154 +3,122 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [0.41.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.40.0...@bosonprotocol/react-kit@0.41.0) (2025-10-29)
-
+# [0.42.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.41.0...@bosonprotocol/react-kit@0.42.0) (2026-02-16)
 
 ### Bug Fixes
 
-* hover on commit button when used in vite dapps ([#972](https://github.com/bosonprotocol/core-components/issues/972)) ([646472c](https://github.com/bosonprotocol/core-components/commit/646472c3ff2f0b8533183e87ae9589ba58859685))
-* seller shall not be mandatory in the offer metadata structure ([#979](https://github.com/bosonprotocol/core-components/issues/979)) ([a3e6f40](https://github.com/bosonprotocol/core-components/commit/a3e6f40a0cad84ed542b9ef381b457b17038d21e))
-
+- (PR [#997](https://github.com/bosonprotocol/core-components/issues/997)) add repository field to package.json (required by lerna for trusted publishing) ([4ad460d](https://github.com/bosonprotocol/core-components/commit/4ad460d59947b98c9cde6345bf8cb333bc5aa2f1))
+- add metaTxApiId property to PreMintButton ([#988](https://github.com/bosonprotocol/core-components/issues/988)) ([75330c3](https://github.com/bosonprotocol/core-components/commit/75330c38f1ec233a7a833becec86d0e81be4b339)), closes [#991](https://github.com/bosonprotocol/core-components/issues/991)
+- missing shipping info for phygital item ([#995](https://github.com/bosonprotocol/core-components/issues/995)) ([ab01a43](https://github.com/bosonprotocol/core-components/commit/ab01a43486c0ea9e6ff8bc22ed5492f4ff1913a0))
+- text is not readable ([#994](https://github.com/bosonprotocol/core-components/issues/994)) ([de6b93a](https://github.com/bosonprotocol/core-components/commit/de6b93ad43b72dcb668325a64ce43dfc19084ca5))
 
 ### Features
 
-* change royaltyInfo struct expected to create offer ([#980](https://github.com/bosonprotocol/core-components/issues/980)) ([97a8d20](https://github.com/bosonprotocol/core-components/commit/97a8d203e280fcdb009090d5a21acaab89312e74))
-* manage buyer-initiated offers ([#968](https://github.com/bosonprotocol/core-components/issues/968)) ([3e8d680](https://github.com/bosonprotocol/core-components/commit/3e8d68047ef8ce411b7e570fff26a09a1785b4be))
+- adapt check exchange policy for bundle offers ([#999](https://github.com/bosonprotocol/core-components/issues/999)) ([6799fb5](https://github.com/bosonprotocol/core-components/commit/6799fb5903f1a547178b825969300c1e42e713d6)), closes [#1000](https://github.com/bosonprotocol/core-components/issues/1000)
+- add PreMintButton and ReserveRangeButton ([#983](https://github.com/bosonprotocol/core-components/issues/983)) ([7188cf3](https://github.com/bosonprotocol/core-components/commit/7188cf3310fd36dac589605380dc9e99902ad940))
+- create a hook useOffers() to simply get offers in a react app ([#987](https://github.com/bosonprotocol/core-components/issues/987)) ([3a92c2d](https://github.com/bosonprotocol/core-components/commit/3a92c2d41e22b81a9640ecc817ddfafa0b217688)), closes [#990](https://github.com/bosonprotocol/core-components/issues/990)
 
+# [0.41.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.40.0...@bosonprotocol/react-kit@0.41.0) (2025-10-29)
 
+### Bug Fixes
 
+- hover on commit button when used in vite dapps ([#972](https://github.com/bosonprotocol/core-components/issues/972)) ([646472c](https://github.com/bosonprotocol/core-components/commit/646472c3ff2f0b8533183e87ae9589ba58859685))
+- seller shall not be mandatory in the offer metadata structure ([#979](https://github.com/bosonprotocol/core-components/issues/979)) ([a3e6f40](https://github.com/bosonprotocol/core-components/commit/a3e6f40a0cad84ed542b9ef381b457b17038d21e))
 
+### Features
+
+- change royaltyInfo struct expected to create offer ([#980](https://github.com/bosonprotocol/core-components/issues/980)) ([97a8d20](https://github.com/bosonprotocol/core-components/commit/97a8d203e280fcdb009090d5a21acaab89312e74))
+- manage buyer-initiated offers ([#968](https://github.com/bosonprotocol/core-components/issues/968)) ([3e8d680](https://github.com/bosonprotocol/core-components/commit/3e8d68047ef8ce411b7e570fff26a09a1785b4be))
 
 # [0.40.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.39.1...@bosonprotocol/react-kit@0.40.0) (2025-09-17)
 
-
 ### Features
 
-* add getCurrentTimeMs in web3libadapter for assertCompletableExc… ([#961](https://github.com/bosonprotocol/core-components/issues/961)) ([5fac132](https://github.com/bosonprotocol/core-components/commit/5fac132f6913df35a7ec6ebbf358145e61674e78))
-* allow showing or hiding full text for connected wallet ([#955](https://github.com/bosonprotocol/core-components/issues/955)) ([9d93386](https://github.com/bosonprotocol/core-components/commit/9d9338617b11d0e4330caa90cc7a24fd32a189b3))
-* upload with images compression ([#943](https://github.com/bosonprotocol/core-components/issues/943)) ([d842b23](https://github.com/bosonprotocol/core-components/commit/d842b23fa9bdf6043f726cc5e3f2aada96030575))
-
-
-
-
+- add getCurrentTimeMs in web3libadapter for assertCompletableExc… ([#961](https://github.com/bosonprotocol/core-components/issues/961)) ([5fac132](https://github.com/bosonprotocol/core-components/commit/5fac132f6913df35a7ec6ebbf358145e61674e78))
+- allow showing or hiding full text for connected wallet ([#955](https://github.com/bosonprotocol/core-components/issues/955)) ([9d93386](https://github.com/bosonprotocol/core-components/commit/9d9338617b11d0e4330caa90cc7a24fd32a189b3))
+- upload with images compression ([#943](https://github.com/bosonprotocol/core-components/issues/943)) ([d842b23](https://github.com/bosonprotocol/core-components/commit/d842b23fa9bdf6043f726cc5e3f2aada96030575))
 
 ## [0.39.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.39.0...@bosonprotocol/react-kit@0.39.1) (2025-04-08)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit
 
-
-
-
-
 # [0.39.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.38.0...@bosonprotocol/react-kit@0.39.0) (2025-03-31)
-
 
 ### Bug Fixes
 
-* select ref types ([#935](https://github.com/bosonprotocol/core-components/issues/935)) ([c8f7509](https://github.com/bosonprotocol/core-components/commit/c8f750993be295144b32bea661d1ced82d1ea347))
-
+- select ref types ([#935](https://github.com/bosonprotocol/core-components/issues/935)) ([c8f7509](https://github.com/bosonprotocol/core-components/commit/c8f750993be295144b32bea661d1ced82d1ea347))
 
 ### Features
 
-* add ref to select ([#934](https://github.com/bosonprotocol/core-components/issues/934)) ([b837e0e](https://github.com/bosonprotocol/core-components/commit/b837e0e4bcc8cfb9f3507f9fea1f9a6c274b9a42))
-* add tag prop to grid component ([#928](https://github.com/bosonprotocol/core-components/issues/928)) ([48f5818](https://github.com/bosonprotocol/core-components/commit/48f5818823d6aa0d1f15f621b9ae830981fb7384))
-* exports erc20 hooks ([#931](https://github.com/bosonprotocol/core-components/issues/931)) ([1261b2a](https://github.com/bosonprotocol/core-components/commit/1261b2add29251d9d18629ab37895b3b3d8bbf10))
-* make uploaded single pdf clickable ([#927](https://github.com/bosonprotocol/core-components/issues/927)) ([bd047df](https://github.com/bosonprotocol/core-components/commit/bd047df6efc836cdfa4e067c1b007cd90f3c228f))
-* remove explicit onclick prop typography ([#930](https://github.com/bosonprotocol/core-components/issues/930)) ([15c7403](https://github.com/bosonprotocol/core-components/commit/15c7403cd9356bd904b1c036aab0d7fe6bfb1ba1))
-
-
-
-
+- add ref to select ([#934](https://github.com/bosonprotocol/core-components/issues/934)) ([b837e0e](https://github.com/bosonprotocol/core-components/commit/b837e0e4bcc8cfb9f3507f9fea1f9a6c274b9a42))
+- add tag prop to grid component ([#928](https://github.com/bosonprotocol/core-components/issues/928)) ([48f5818](https://github.com/bosonprotocol/core-components/commit/48f5818823d6aa0d1f15f621b9ae830981fb7384))
+- exports erc20 hooks ([#931](https://github.com/bosonprotocol/core-components/issues/931)) ([1261b2a](https://github.com/bosonprotocol/core-components/commit/1261b2add29251d9d18629ab37895b3b3d8bbf10))
+- make uploaded single pdf clickable ([#927](https://github.com/bosonprotocol/core-components/issues/927)) ([bd047df](https://github.com/bosonprotocol/core-components/commit/bd047df6efc836cdfa4e067c1b007cd90f3c228f))
+- remove explicit onclick prop typography ([#930](https://github.com/bosonprotocol/core-components/issues/930)) ([15c7403](https://github.com/bosonprotocol/core-components/commit/15c7403cd9356bd904b1c036aab0d7fe6bfb1ba1))
 
 # [0.38.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.37.0...@bosonprotocol/react-kit@0.38.0) (2025-03-19)
 
-
 ### Bug Fixes
 
-* loading bubble styles ([#922](https://github.com/bosonprotocol/core-components/issues/922)) ([0097aab](https://github.com/bosonprotocol/core-components/commit/0097aabbb9422746ac290cb42d4073f2fa77c4a4))
-* props commit button view in stories ([#914](https://github.com/bosonprotocol/core-components/issues/914)) ([0f2784b](https://github.com/bosonprotocol/core-components/commit/0f2784bd7c27f56c238309a5b4dce87576a77164))
-
+- loading bubble styles ([#922](https://github.com/bosonprotocol/core-components/issues/922)) ([0097aab](https://github.com/bosonprotocol/core-components/commit/0097aabbb9422746ac290cb42d4073f2fa77c4a4))
+- props commit button view in stories ([#914](https://github.com/bosonprotocol/core-components/issues/914)) ([0f2784b](https://github.com/bosonprotocol/core-components/commit/0f2784bd7c27f56c238309a5b4dce87576a77164))
 
 ### Features
 
-* add items per row grid container for xxs breakpoint ([#925](https://github.com/bosonprotocol/core-components/issues/925)) ([d4aec77](https://github.com/bosonprotocol/core-components/commit/d4aec771f9ce02fcc5ca012eaefc2ccf994bf7c5))
-* add select with custom label ([#916](https://github.com/bosonprotocol/core-components/issues/916)) ([9de2ac7](https://github.com/bosonprotocol/core-components/commit/9de2ac735e316cc748420f812cda8add951b48cc))
-* export detail slider without default ([#921](https://github.com/bosonprotocol/core-components/issues/921)) ([3c7a6eb](https://github.com/bosonprotocol/core-components/commit/3c7a6eb4fd6a75a760bb4479b9fddc14260ee789))
-* export media sliders ([#920](https://github.com/bosonprotocol/core-components/issues/920)) ([8d14c11](https://github.com/bosonprotocol/core-components/commit/8d14c115778078116ae319d78d346dbf356e9627))
-* export offer utilities ([#919](https://github.com/bosonprotocol/core-components/issues/919)) ([159861e](https://github.com/bosonprotocol/core-components/commit/159861e07d8246cdc71526211e8845c18ed47271))
-
-
-
-
+- add items per row grid container for xxs breakpoint ([#925](https://github.com/bosonprotocol/core-components/issues/925)) ([d4aec77](https://github.com/bosonprotocol/core-components/commit/d4aec771f9ce02fcc5ca012eaefc2ccf994bf7c5))
+- add select with custom label ([#916](https://github.com/bosonprotocol/core-components/issues/916)) ([9de2ac7](https://github.com/bosonprotocol/core-components/commit/9de2ac735e316cc748420f812cda8add951b48cc))
+- export detail slider without default ([#921](https://github.com/bosonprotocol/core-components/issues/921)) ([3c7a6eb](https://github.com/bosonprotocol/core-components/commit/3c7a6eb4fd6a75a760bb4479b9fddc14260ee789))
+- export media sliders ([#920](https://github.com/bosonprotocol/core-components/issues/920)) ([8d14c11](https://github.com/bosonprotocol/core-components/commit/8d14c115778078116ae319d78d346dbf356e9627))
+- export offer utilities ([#919](https://github.com/bosonprotocol/core-components/issues/919)) ([159861e](https://github.com/bosonprotocol/core-components/commit/159861e07d8246cdc71526211e8845c18ed47271))
 
 # [0.37.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.36.2...@bosonprotocol/react-kit@0.37.0) (2025-02-07)
 
-
 ### Bug Fixes
 
-* process is not defined error ([#895](https://github.com/bosonprotocol/core-components/issues/895)) ([0b39b1a](https://github.com/bosonprotocol/core-components/commit/0b39b1a0da50dac88bb700a3acdd312968cfd339))
-* select component ([#899](https://github.com/bosonprotocol/core-components/issues/899)) ([aba7368](https://github.com/bosonprotocol/core-components/commit/aba736899fbf839427f767bcefb846aaaa780c3b))
-* select component set haserror to useFixSelectFont hook ([#901](https://github.com/bosonprotocol/core-components/issues/901)) ([937dd7e](https://github.com/bosonprotocol/core-components/commit/937dd7e58ed0d23cc106e297f8d1a02b6d59eb37))
-* use fix select font hook ([#900](https://github.com/bosonprotocol/core-components/issues/900)) ([b3a6296](https://github.com/bosonprotocol/core-components/commit/b3a62964a62a52b75b018720503bfc83f0f1dcd9))
-* useFixSelectFont hook ([#902](https://github.com/bosonprotocol/core-components/issues/902)) ([e04159f](https://github.com/bosonprotocol/core-components/commit/e04159faf26cd50f6cdfa630b473293065183f12))
-
+- process is not defined error ([#895](https://github.com/bosonprotocol/core-components/issues/895)) ([0b39b1a](https://github.com/bosonprotocol/core-components/commit/0b39b1a0da50dac88bb700a3acdd312968cfd339))
+- select component ([#899](https://github.com/bosonprotocol/core-components/issues/899)) ([aba7368](https://github.com/bosonprotocol/core-components/commit/aba736899fbf839427f767bcefb846aaaa780c3b))
+- select component set haserror to useFixSelectFont hook ([#901](https://github.com/bosonprotocol/core-components/issues/901)) ([937dd7e](https://github.com/bosonprotocol/core-components/commit/937dd7e58ed0d23cc106e297f8d1a02b6d59eb37))
+- use fix select font hook ([#900](https://github.com/bosonprotocol/core-components/issues/900)) ([b3a6296](https://github.com/bosonprotocol/core-components/commit/b3a62964a62a52b75b018720503bfc83f0f1dcd9))
+- useFixSelectFont hook ([#902](https://github.com/bosonprotocol/core-components/issues/902)) ([e04159f](https://github.com/bosonprotocol/core-components/commit/e04159faf26cd50f6cdfa630b473293065183f12))
 
 ### Features
 
-* change types to select ([#903](https://github.com/bosonprotocol/core-components/issues/903)) ([cc53579](https://github.com/bosonprotocol/core-components/commit/cc5357997fa044b096ccd16e286fac7a8b87bbc3))
-* exchange card visual changes ([#867](https://github.com/bosonprotocol/core-components/issues/867)) ([10f5c2e](https://github.com/bosonprotocol/core-components/commit/10f5c2e1c6ea6b60e3c2b8a35ddce6156844ad72))
-* export getDateTimestamp ([#906](https://github.com/bosonprotocol/core-components/issues/906)) ([d84fa1e](https://github.com/bosonprotocol/core-components/commit/d84fa1ee9211b7ac91ca09c851c0c95ba808cd99))
-* improve select types ([#904](https://github.com/bosonprotocol/core-components/issues/904)) ([3430988](https://github.com/bosonprotocol/core-components/commit/343098861f73d88c4fbe5fe2bc5a5a724f7b9df5))
-* pdf uploader typography change ([#905](https://github.com/bosonprotocol/core-components/issues/905)) ([70057f4](https://github.com/bosonprotocol/core-components/commit/70057f470211beb192124852bfe6528a180b7053))
-
-
-
-
+- change types to select ([#903](https://github.com/bosonprotocol/core-components/issues/903)) ([cc53579](https://github.com/bosonprotocol/core-components/commit/cc5357997fa044b096ccd16e286fac7a8b87bbc3))
+- exchange card visual changes ([#867](https://github.com/bosonprotocol/core-components/issues/867)) ([10f5c2e](https://github.com/bosonprotocol/core-components/commit/10f5c2e1c6ea6b60e3c2b8a35ddce6156844ad72))
+- export getDateTimestamp ([#906](https://github.com/bosonprotocol/core-components/issues/906)) ([d84fa1e](https://github.com/bosonprotocol/core-components/commit/d84fa1ee9211b7ac91ca09c851c0c95ba808cd99))
+- improve select types ([#904](https://github.com/bosonprotocol/core-components/issues/904)) ([3430988](https://github.com/bosonprotocol/core-components/commit/343098861f73d88c4fbe5fe2bc5a5a724f7b9df5))
+- pdf uploader typography change ([#905](https://github.com/bosonprotocol/core-components/issues/905)) ([70057f4](https://github.com/bosonprotocol/core-components/commit/70057f470211beb192124852bfe6528a180b7053))
 
 ## [0.36.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.36.1...@bosonprotocol/react-kit@0.36.2) (2025-01-29)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit
 
-
-
-
-
 ## [0.36.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.36.0...@bosonprotocol/react-kit@0.36.1) (2025-01-28)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit
 
-
-
-
-
 # [0.36.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.35.0...@bosonprotocol/react-kit@0.36.0) (2025-01-28)
-
 
 ### Bug Fixes
 
-* add missing config for base-sepolia and polygon-amoy networks ([#885](https://github.com/bosonprotocol/core-components/issues/885)) ([fd50459](https://github.com/bosonprotocol/core-components/commit/fd504590f5e0844a36bc7a235e7b9e368daedcfb))
-* built and svgImage ([#884](https://github.com/bosonprotocol/core-components/issues/884)) ([9f191de](https://github.com/bosonprotocol/core-components/commit/9f191de92773be7b373717854d4ad3cc9ee34c34))
-* class name roblox for widget ([#874](https://github.com/bosonprotocol/core-components/issues/874)) ([db9f6ef](https://github.com/bosonprotocol/core-components/commit/db9f6ef2cd9906da9d082f4ade25ae710a187316))
-* finances widget get seller ([#880](https://github.com/bosonprotocol/core-components/issues/880)) ([1a8c55b](https://github.com/bosonprotocol/core-components/commit/1a8c55b2b5c5808ab12507a777c9a4a442478d0c))
-* ipfs image race condition ([#886](https://github.com/bosonprotocol/core-components/issues/886)) ([dc032ce](https://github.com/bosonprotocol/core-components/commit/dc032ceafc262b75c50d0263670e22c23759c4cc))
-* missing Base Sepolia WETH token definition ([#881](https://github.com/bosonprotocol/core-components/issues/881)) ([0065869](https://github.com/bosonprotocol/core-components/commit/0065869324b01de1b065e5d6421f20ff0cf741ad))
-* upload for videos ([#882](https://github.com/bosonprotocol/core-components/issues/882)) ([c744f8f](https://github.com/bosonprotocol/core-components/commit/c744f8ff064bb01391ddaa4918d7080331a6c4dc))
-
+- add missing config for base-sepolia and polygon-amoy networks ([#885](https://github.com/bosonprotocol/core-components/issues/885)) ([fd50459](https://github.com/bosonprotocol/core-components/commit/fd504590f5e0844a36bc7a235e7b9e368daedcfb))
+- built and svgImage ([#884](https://github.com/bosonprotocol/core-components/issues/884)) ([9f191de](https://github.com/bosonprotocol/core-components/commit/9f191de92773be7b373717854d4ad3cc9ee34c34))
+- class name roblox for widget ([#874](https://github.com/bosonprotocol/core-components/issues/874)) ([db9f6ef](https://github.com/bosonprotocol/core-components/commit/db9f6ef2cd9906da9d082f4ade25ae710a187316))
+- finances widget get seller ([#880](https://github.com/bosonprotocol/core-components/issues/880)) ([1a8c55b](https://github.com/bosonprotocol/core-components/commit/1a8c55b2b5c5808ab12507a777c9a4a442478d0c))
+- ipfs image race condition ([#886](https://github.com/bosonprotocol/core-components/issues/886)) ([dc032ce](https://github.com/bosonprotocol/core-components/commit/dc032ceafc262b75c50d0263670e22c23759c4cc))
+- missing Base Sepolia WETH token definition ([#881](https://github.com/bosonprotocol/core-components/issues/881)) ([0065869](https://github.com/bosonprotocol/core-components/commit/0065869324b01de1b065e5d6421f20ff0cf741ad))
+- upload for videos ([#882](https://github.com/bosonprotocol/core-components/issues/882)) ([c744f8f](https://github.com/bosonprotocol/core-components/commit/c744f8ff064bb01391ddaa4918d7080331a6c4dc))
 
 ### Features
 
-* add border width prop to loading ([#870](https://github.com/bosonprotocol/core-components/issues/870)) ([feb0f1d](https://github.com/bosonprotocol/core-components/commit/feb0f1d4a5178bc5f88d1b77ae439228628b7e64))
-* add colors ([#877](https://github.com/bosonprotocol/core-components/issues/877)) ([418a2c0](https://github.com/bosonprotocol/core-components/commit/418a2c0ca4c2d7ba523fe49af112ece4bb8257bc))
-* add colors ([#878](https://github.com/bosonprotocol/core-components/issues/878)) ([d65e2ef](https://github.com/bosonprotocol/core-components/commit/d65e2efa7c3eae2b94f47ebdf85fa95ff77e563d))
-* add missing providers to widgets ([#879](https://github.com/bosonprotocol/core-components/issues/879)) ([afd494a](https://github.com/bosonprotocol/core-components/commit/afd494a4ffc2fa9601ab3b1244b308ea4076b80e))
-* create roblox frontend widget ([#807](https://github.com/bosonprotocol/core-components/issues/807)) ([d124039](https://github.com/bosonprotocol/core-components/commit/d1240399dcab2be49cc253148c5a047f7fe1cff9))
-* enhance multi pdf file upload ([#861](https://github.com/bosonprotocol/core-components/issues/861)) ([0d675a7](https://github.com/bosonprotocol/core-components/commit/0d675a73bb065127e66ebacfe4a0c804f45677b7))
-* extract block number provider ([#883](https://github.com/bosonprotocol/core-components/issues/883)) ([704c47e](https://github.com/bosonprotocol/core-components/commit/704c47e4bf5192e8a9cffacc37408751d5d3db7a))
-* use top window to open links ([#875](https://github.com/bosonprotocol/core-components/issues/875)) ([9f45e1d](https://github.com/bosonprotocol/core-components/commit/9f45e1d7bd5cf7d3b49a02295d4365edf636f73b))
-
-
-
-
+- add border width prop to loading ([#870](https://github.com/bosonprotocol/core-components/issues/870)) ([feb0f1d](https://github.com/bosonprotocol/core-components/commit/feb0f1d4a5178bc5f88d1b77ae439228628b7e64))
+- add colors ([#877](https://github.com/bosonprotocol/core-components/issues/877)) ([418a2c0](https://github.com/bosonprotocol/core-components/commit/418a2c0ca4c2d7ba523fe49af112ece4bb8257bc))
+- add colors ([#878](https://github.com/bosonprotocol/core-components/issues/878)) ([d65e2ef](https://github.com/bosonprotocol/core-components/commit/d65e2efa7c3eae2b94f47ebdf85fa95ff77e563d))
+- add missing providers to widgets ([#879](https://github.com/bosonprotocol/core-components/issues/879)) ([afd494a](https://github.com/bosonprotocol/core-components/commit/afd494a4ffc2fa9601ab3b1244b308ea4076b80e))
+- create roblox frontend widget ([#807](https://github.com/bosonprotocol/core-components/issues/807)) ([d124039](https://github.com/bosonprotocol/core-components/commit/d1240399dcab2be49cc253148c5a047f7fe1cff9))
+- enhance multi pdf file upload ([#861](https://github.com/bosonprotocol/core-components/issues/861)) ([0d675a7](https://github.com/bosonprotocol/core-components/commit/0d675a73bb065127e66ebacfe4a0c804f45677b7))
+- extract block number provider ([#883](https://github.com/bosonprotocol/core-components/issues/883)) ([704c47e](https://github.com/bosonprotocol/core-components/commit/704c47e4bf5192e8a9cffacc37408751d5d3db7a))
+- use top window to open links ([#875](https://github.com/bosonprotocol/core-components/issues/875)) ([9f45e1d](https://github.com/bosonprotocol/core-components/commit/9f45e1d7bd5cf7d3b49a02295d4365edf636f73b))
 
 # [0.35.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.34.0...@bosonprotocol/react-kit@0.35.0) (2024-11-22)
 
