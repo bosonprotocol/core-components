@@ -15,7 +15,7 @@ jobs:
   publish:
     name: Publish alpha packages
     runs-on: ubuntu-latest
-    if: ${{ env.PUBLISH_LATEST != 'true' }}
+    if: ${{ $PUBLISH_LATEST != 'true' }}
     outputs:
       SUBGRAPH_CHANGES: ${{ steps.export-changed-subgraph-files.outputs.SUBGRAPH_CHANGES }}
     permissions:
@@ -99,7 +99,7 @@ jobs:
   publish_latest_release:
     name: Publish latest packages
     runs-on: ubuntu-latest
-    if: ${{ env.PUBLISH_LATEST == 'true' }}
+    if: ${{ $PUBLISH_LATEST == 'true' }}
     permissions:
       contents: write # Required to push commit with updated versions
       packages: write # Allows publishing and modifying packages
