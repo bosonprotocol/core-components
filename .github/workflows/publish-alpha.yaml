@@ -1,28 +1,21 @@
 name: "Publish alpha/latest release"
 
+env:
+  PUBLISH_LATEST: ${{ github.event_name == 'workflow_dispatch' }}
+
+# Manually launch to create a RELEASE and publish to latest tag.
+# Automatically launch on push to main to publish alpha versions.
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_call:
-    inputs:
-      publish_latest:
-        required: true
-        type: boolean
-        default: false
-    secrets:
-      ORMI_0x_GRAPH_API_KEY_TESTING:
-        required: true
-      THE_GRAPH_STUDIO_DEPLOY_KEY:
-        required: true
-      BSNORG_ACTIONS_SECRET:
-        required: true
 
 jobs:
   publish:
     name: Publish alpha packages
     runs-on: ubuntu-latest
-    if: ${{ !inputs.publish_latest }}
+    if: ${{ !$PUBLISH_LATEST }}
     outputs:
       SUBGRAPH_CHANGES: ${{ steps.export-changed-subgraph-files.outputs.SUBGRAPH_CHANGES }}
     permissions:
@@ -106,7 +99,7 @@ jobs:
   publish_latest_release:
     name: Publish latest packages
     runs-on: ubuntu-latest
-    if: ${{ inputs.publish_latest }}
+    if: ${{ $PUBLISH_LATEST }}
     permissions:
       contents: write # Required to push commit with updated versions
       packages: write # Allows publishing and modifying packages
