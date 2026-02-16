@@ -1,8 +1,5 @@
 name: "Publish alpha/latest release"
 
-env:
-  PUBLISH_LATEST: ${{ github.event_name == 'workflow_dispatch' }}
-
 # Manually launch to create a RELEASE and publish to latest tag.
 # Automatically launch on push to main to publish alpha versions.
 on:
@@ -15,7 +12,8 @@ jobs:
   publish:
     name: Publish alpha packages
     runs-on: ubuntu-latest
-    if: ${{ $PUBLISH_LATEST != 'true' }}
+    if: ${{ github.event_name != 'workflow_dispatch' }}
+    # is automatically triggered on push to main
     outputs:
       SUBGRAPH_CHANGES: ${{ steps.export-changed-subgraph-files.outputs.SUBGRAPH_CHANGES }}
     permissions:
@@ -99,7 +97,8 @@ jobs:
   publish_latest_release:
     name: Publish latest packages
     runs-on: ubuntu-latest
-    if: ${{ $PUBLISH_LATEST == 'true' }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    # is manually triggered to publish latest release
     permissions:
       contents: write # Required to push commit with updated versions
       packages: write # Allows publishing and modifying packages
