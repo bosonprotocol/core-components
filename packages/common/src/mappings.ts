@@ -1,10 +1,10 @@
 import { ChainId, Lens, ProtocolConfig, Token } from "./types";
 
 export const chainIdToInfo = new Map<ChainId, ProtocolConfig["nativeCoin"]>([
-  [80002, { decimals: "18", name: "Matic", symbol: "MATIC" }],
-  [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [1, { decimals: "18", name: "Ether", symbol: "ETH" }],
   [10, { decimals: "18", name: "Ether", symbol: "ETH" }],
+  [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
+  [80002, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [42161, { decimals: "18", name: "Ether", symbol: "ETH" }],
   [11155111, { decimals: "18", name: "sETH", symbol: "sETH" }],
   [31337, { decimals: "18", name: "Ether", symbol: "ETH" }],
