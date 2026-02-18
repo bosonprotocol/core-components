@@ -56,7 +56,7 @@ export const Overview: React.FC<OverviewProps> = ({ offer }) => {
         style={{ alignItems: "center", width: "100%" }}
       >
         <Typography tag="h3">Phygital description</Typography>
-        <Typography tag="p" style={{ whiteSpace: "pre-wrap" }}>
+        <Typography style={{ whiteSpace: "pre-wrap" }}>
           {offer.metadata?.description}
         </Typography>
       </ResponsiveGridContainer>
