@@ -10,10 +10,10 @@ import { breakpoint } from "../../../../../lib/ui/breakpoint";
 // Styled GridContainer with responsive fixed-width first column
 const ResponsiveGridContainer = styled(GridContainer)`
   ${breakpoint.xxs} {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   ${breakpoint.xs} {
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 300px minmax(0, 1fr);
   }
 `;
 
