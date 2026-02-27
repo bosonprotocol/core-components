@@ -1030,3 +1030,196 @@ describe("core-sdk-check-exchange-policy", () => {
     expect(result.errors[0].value).toEqual("unfairExchangePolicy");
   });
 });
+
+describe("search products tests", () => {
+  let coreSDK: CoreSDK;
+  let sellerWallet: Wallet;
+  let template: string;
+  // Use random keywords to allow test to be repeated again and again
+  const random = Math.floor(Math.random() * 10000);
+  // Define 3 keywords and use them in different fields of product metadata
+  //  (name, description, tags) to test that search is working on all these fields
+  const keywords = [
+    `Keyword_1_${random}`,
+    `Keyword_2_${random}`,
+    `Keyword_3_${random}`
+  ];
+  const productMetadatas: {
+    uuid: string;
+    name: string;
+    description: string;
+    tags: string[];
+  }[] = [
+    {
+      uuid: buildUuid(),
+      name: `${keywords[0]} red shirt`,
+      description: "a red shirt",
+      tags: ["clothing", "red", "shirt"]
+    },
+    {
+      uuid: buildUuid(),
+      name: `blue shirt`,
+      description: `${keywords[1]} a blue shirt`,
+      tags: ["clothing", "blue", "shirt"]
+    },
+    {
+      uuid: buildUuid(),
+      name: "green shirt",
+      description: "a green shirt",
+      tags: ["clothing", "green", "shirt", keywords[2]]
+    },
+    {
+      uuid: buildUuid(),
+      name: `${keywords[0]} white shirt`,
+      description: `a white shirt ${keywords[1]}`,
+      tags: ["clothing", "white", "shirt", keywords[2]]
+    },
+    {
+      uuid: buildUuid(),
+      name: `rainbow shirt ${keywords[0]} ${keywords[1]} ${keywords[2]}`,
+      description: `a rainbow shirt ${keywords[1]} ${keywords[2]} ${keywords[0]} `,
+      tags: [
+        "clothing",
+        "rainbow",
+        "shirt",
+        keywords[2],
+        keywords[1],
+        keywords[0]
+      ]
+    },
+    {
+      uuid: buildUuid(),
+      name: "black shirt",
+      description: "a black shirt",
+      tags: ["clothing", "black", "shirt"]
+    }
+  ];
+  beforeAll(async () => {
+    ({ coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet));
+    template =
+      "Hello World!! {{sellerTradingName}} {{disputeResolverContactMethod}} {{sellerContactMethod}} {{returnPeriodInDays}}";
+  });
+  beforeEach(async () => {
+    const offerArgsList: CreateOfferArgs[] = [];
+    for (const productMetadata of productMetadatas) {
+      const metadata = mockProductV1Metadata(template, productMetadata.uuid, {
+        name: productMetadata.name,
+        description: productMetadata.description,
+        product: {
+          title: productMetadata.name,
+          description: productMetadata.description,
+          uuid: productMetadata.uuid,
+          details_tags: productMetadata.tags
+        }
+      });
+      const offerArgs = await createOfferArgs(coreSDK, metadata);
+      resolveDateValidity(offerArgs);
+      offerArgsList.push(offerArgs);
+    }
+    const offers = await createOfferBatch(coreSDK, sellerWallet, offerArgsList);
+    expect(offers.length).toEqual(productMetadatas.length);
+  });
+  test("search with a unused keyword should not find any products", async () => {
+    const results = await coreSDK.searchProducts(["unused_keyword"]);
+    expect(results.length).toEqual(0);
+  });
+  test("search with a keyword put in product name should find the product", async () => {
+    const results = await coreSDK.searchProducts([keywords[0]]);
+    expect(results.length).toEqual(3);
+    let foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[0].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+    foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[3].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+    foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[4].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+  });
+  test("search with a keyword put in product description should find the product", async () => {
+    const results = await coreSDK.searchProducts([keywords[1]]);
+    expect(results.length).toEqual(3);
+    let foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[1].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+    foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[3].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+    foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[4].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+  });
+  test("search with a keyword put in product tags should find the product", async () => {
+    const results = await coreSDK.searchProducts([keywords[2]]);
+    expect(results.length).toEqual(3);
+    let foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[2].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+    foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[3].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+    foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[4].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+  });
+  test("search with several keywords put in product description should find the product - 1", async () => {
+    const results = await coreSDK.searchProducts([keywords[0], keywords[1]]);
+    expect(results.length).toEqual(4);
+    let foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[0].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+    foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[1].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+    foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[3].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+    foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[4].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+  });
+  test("search with several keywords put in product description should find the product - 2", async () => {
+    const results = await coreSDK.searchProducts([keywords[2], keywords[1]]);
+    expect(results.length).toEqual(4);
+    let foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[2].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+    foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[1].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+    foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[3].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+    foundProduct = results.find(
+      (result) => result.uuid === productMetadatas[4].uuid
+    );
+    expect(foundProduct).toBeTruthy();
+  });
+  test("search with all keywords should find the product", async () => {
+    const results = await coreSDK.searchProducts(keywords);
+    expect(results.length).toEqual(5);
+    for (let i = 0; i < 5; i++) {
+      const foundProduct = results.find(
+        (result) => result.uuid === productMetadatas[i].uuid
+      );
+      expect(foundProduct).toBeTruthy();
+    }
+  });
+});

@@ -29,6 +29,7 @@ import { ErrorMixin } from "./errors/mixin";
 import { SubgraphMixin } from "./subgraph/mixin";
 import { PriceDiscoveryMixin } from "./price-discovery/mixin";
 import { MarketplaceMixin } from "./marketplaces/mixin";
+import { SearchMixin } from "./search/mixin";
 
 export class CoreSDK<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /**
@@ -153,7 +154,8 @@ export interface CoreSDK<T extends Web3LibAdapter = Web3LibAdapter>
     ErrorMixin<T>,
     SubgraphMixin<T>,
     PriceDiscoveryMixin<T>,
-    MarketplaceMixin<T> {}
+    MarketplaceMixin<T>,
+    SearchMixin<T> {}
 applyMixins(CoreSDK, [
   MetadataMixin,
   AccountsMixin,
@@ -175,5 +177,6 @@ applyMixins(CoreSDK, [
   ErrorMixin,
   SubgraphMixin,
   PriceDiscoveryMixin,
-  MarketplaceMixin
+  MarketplaceMixin,
+  SearchMixin
 ]);
