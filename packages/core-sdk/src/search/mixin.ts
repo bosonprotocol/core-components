@@ -7,9 +7,13 @@ export class SearchMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /**
    * Search for products matching the given keywords.
    *
-   * Only products that are currently valid (based on their validity dates) are returned.
+   * By default, only products that are currently valid (based on their validity dates) are returned.
+   * This behavior can be controlled via the `includeInvalidOffers` option in the queryVars parameter.
    *
    * @param keywords - List of keywords to match against product title, description, and tags.
+   * @param queryVars - Optional query variables including pagination (productsSkip, productsFirst), 
+   *                   ordering (productsOrderBy, productsOrderDirection), filtering (productsFilter),
+   *                   and includeInvalidOffers flag to control validity filtering.
    * @returns A promise that resolves to an array of product search result fragments.
    */
   public async searchProducts(
