@@ -1033,8 +1033,6 @@ describe("core-sdk-check-exchange-policy", () => {
 
 describe("search products tests", () => {
   let coreSDK: CoreSDK;
-  let sellerWallet: Wallet;
-  let template: string;
   // Use random keywords to allow test to be repeated again and again
   const random = Math.floor(Math.random() * 10000);
   // Define 3 keywords and use them in different fields of product metadata
@@ -1095,12 +1093,11 @@ describe("search products tests", () => {
     }
   ];
   beforeAll(async () => {
+    let sellerWallet: Wallet;
     ({ coreSDK, fundedWallet: sellerWallet } =
       await initCoreSDKWithFundedWallet(seedWallet));
-    template =
+    const template =
       "Hello World!! {{sellerTradingName}} {{disputeResolverContactMethod}} {{sellerContactMethod}} {{returnPeriodInDays}}";
-  });
-  beforeEach(async () => {
     const offerArgsList: CreateOfferArgs[] = [];
     for (const productMetadata of productMetadatas) {
       const metadata = mockProductV1Metadata(template, productMetadata.uuid, {
@@ -1124,7 +1121,7 @@ describe("search products tests", () => {
     const results = await coreSDK.searchProducts(["unused_keyword"]);
     expect(results.length).toEqual(0);
   });
-  test("search with a keyword put in product name should find the product", async () => {
+  test("search with a keyword put in product name should find matching products", async () => {
     const results = await coreSDK.searchProducts([keywords[0]]);
     expect(results.length).toEqual(3);
     let foundProduct = results.find(
@@ -1140,7 +1137,7 @@ describe("search products tests", () => {
     );
     expect(foundProduct).toBeTruthy();
   });
-  test("search with a keyword put in product description should find the product", async () => {
+  test("search with a keyword put in product description should find matching products", async () => {
     const results = await coreSDK.searchProducts([keywords[1]]);
     expect(results.length).toEqual(3);
     let foundProduct = results.find(
@@ -1156,7 +1153,7 @@ describe("search products tests", () => {
     );
     expect(foundProduct).toBeTruthy();
   });
-  test("search with a keyword put in product tags should find the product", async () => {
+  test("search with a keyword put in product tags should find matching products", async () => {
     const results = await coreSDK.searchProducts([keywords[2]]);
     expect(results.length).toEqual(3);
     let foundProduct = results.find(
@@ -1172,7 +1169,7 @@ describe("search products tests", () => {
     );
     expect(foundProduct).toBeTruthy();
   });
-  test("search with several keywords put in product description should find the product - 1", async () => {
+  test("search with multiple keywords should find all matching products - 1", async () => {
     const results = await coreSDK.searchProducts([keywords[0], keywords[1]]);
     expect(results.length).toEqual(4);
     let foundProduct = results.find(
@@ -1192,7 +1189,7 @@ describe("search products tests", () => {
     );
     expect(foundProduct).toBeTruthy();
   });
-  test("search with several keywords put in product description should find the product - 2", async () => {
+  test("search with multiple keywords should find all matching products - 2", async () => {
     const results = await coreSDK.searchProducts([keywords[2], keywords[1]]);
     expect(results.length).toEqual(4);
     let foundProduct = results.find(
@@ -1212,7 +1209,7 @@ describe("search products tests", () => {
     );
     expect(foundProduct).toBeTruthy();
   });
-  test("search with all keywords should find the product", async () => {
+  test("search with all keywords should find all matching products", async () => {
     const results = await coreSDK.searchProducts(keywords);
     expect(results.length).toEqual(5);
     for (let i = 0; i < 5; i++) {
@@ -1221,5 +1218,10 @@ describe("search products tests", () => {
       );
       expect(foundProduct).toBeTruthy();
     }
+  });
+  test("search with empty keywords should return no results", async () => {
+    const results = await coreSDK.searchProducts([]);
+    expect(Array.isArray(results)).toBe(true);
+    expect(results.length).toEqual(0);
   });
 });
