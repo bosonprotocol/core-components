@@ -7,13 +7,13 @@ export class SearchMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   public async searchProducts(
     keywords: string[]
   ): Promise<subgraph.ProductSearchResultFieldsFragment[]> {
-    const now = Math.floor(Date.now() / 1000) + 10; // Add 10 seconds to ensure we don't have issues with products that are just becoming valid
+    const now = Math.floor(Date.now() / 1000);
 
     const productsFilter: subgraph.ProductV1Product_Filter = {
       and: [
         {
           allVariantsVoided_not: true,
-          minValidFromDate_lte: now + "",
+          minValidFromDate_lte: now + 60 + "", // Add 1 minute to ensure we include offers not valid yet, but valid in a very little time
           maxValidUntilDate_gte: now + ""
         },
         {
