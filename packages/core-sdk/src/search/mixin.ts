@@ -4,6 +4,14 @@ import { searchProducts } from "./subgraph";
 import * as subgraph from "../subgraph";
 
 export class SearchMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
+  /**
+   * Search for products matching the given keywords.
+   *
+   * Only products that are currently valid (based on their validity dates) are returned.
+   *
+   * @param keywords - List of keywords to match against product title, description, and tags.
+   * @returns A promise that resolves to an array of product search result fragments.
+   */
   public async searchProducts(
     keywords: string[]
   ): Promise<subgraph.ProductSearchResultFieldsFragment[]> {
