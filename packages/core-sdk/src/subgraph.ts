@@ -75443,6 +75443,143 @@ export type BaseRangeFieldsFragment = {
   minted: string;
 };
 
+export type ProductSearchResultFieldsFragment = {
+  __typename?: "ProductV1Product";
+  id: string;
+  uuid: string;
+  version: number;
+  title: string;
+  description: string;
+  productionInformation_brandName: string;
+  details_category?: string | null;
+  details_subCategory?: string | null;
+  details_subCategory2?: string | null;
+  details_offerCategory: string;
+  details_tags?: Array<string> | null;
+  brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+  visuals_images: Array<{
+    __typename?: "ProductV1Media";
+    id: string;
+    url: string;
+    tag?: string | null;
+    type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
+  }>;
+  visuals_videos?: Array<{
+    __typename?: "ProductV1Media";
+    id: string;
+    url: string;
+    tag?: string | null;
+    type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
+  }> | null;
+  productV1Seller?: {
+    __typename?: "ProductV1Seller";
+    sellerId?: string | null;
+    name?: string | null;
+    description?: string | null;
+  } | null;
+  notVoidedVariants?: Array<{
+    __typename?: "ProductV1Variant";
+    offer: {
+      __typename?: "Offer";
+      id: string;
+      price: string;
+      priceType: number;
+      quantityAvailable: string;
+      validUntilDate: string;
+      protocolFee: string;
+      exchangeToken: {
+        __typename?: "ExchangeToken";
+        name: string;
+        address: string;
+        decimals: string;
+      };
+    };
+    variations?: Array<{
+      __typename?: "ProductV1Variation";
+      type: string;
+      option: string;
+    }> | null;
+  }> | null;
+};
+
+export type SearchProductsQueryQueryVariables = Exact<{
+  productsSkip?: InputMaybe<Scalars["Int"]["input"]>;
+  productsFirst?: InputMaybe<Scalars["Int"]["input"]>;
+  productsOrderBy?: InputMaybe<ProductV1Product_OrderBy>;
+  productsOrderDirection?: InputMaybe<OrderDirection>;
+  productsFilter?: InputMaybe<ProductV1Product_Filter>;
+}>;
+
+export type SearchProductsQueryQuery = {
+  __typename?: "Query";
+  productV1Products: Array<{
+    __typename?: "ProductV1Product";
+    id: string;
+    uuid: string;
+    version: number;
+    title: string;
+    description: string;
+    productionInformation_brandName: string;
+    details_category?: string | null;
+    details_subCategory?: string | null;
+    details_subCategory2?: string | null;
+    details_offerCategory: string;
+    details_tags?: Array<string> | null;
+    brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+    visuals_images: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+    }>;
+    visuals_videos?: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+    }> | null;
+    productV1Seller?: {
+      __typename?: "ProductV1Seller";
+      sellerId?: string | null;
+      name?: string | null;
+      description?: string | null;
+    } | null;
+    notVoidedVariants?: Array<{
+      __typename?: "ProductV1Variant";
+      offer: {
+        __typename?: "Offer";
+        id: string;
+        price: string;
+        priceType: number;
+        quantityAvailable: string;
+        validUntilDate: string;
+        protocolFee: string;
+        exchangeToken: {
+          __typename?: "ExchangeToken";
+          name: string;
+          address: string;
+          decimals: string;
+        };
+      };
+      variations?: Array<{
+        __typename?: "ProductV1Variation";
+        type: string;
+        option: string;
+      }> | null;
+    }> | null;
+  }>;
+};
+
 export const BaseOfferCollectionFieldsFragmentDoc = gql`
   fragment BaseOfferCollectionFields on OfferCollection {
     id
@@ -76735,6 +76872,56 @@ export const OfferFieldsFragmentDoc = gql`
   ${BaseOfferFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
 `;
+export const ProductSearchResultFieldsFragmentDoc = gql`
+  fragment ProductSearchResultFields on ProductV1Product {
+    id
+    uuid
+    version
+    title
+    description
+    productionInformation_brandName
+    brand {
+      ...BaseProductV1BrandFields
+    }
+    details_category
+    details_subCategory
+    details_subCategory2
+    details_offerCategory
+    details_tags
+    visuals_images {
+      ...BaseProductV1MediaFields
+    }
+    visuals_videos {
+      ...BaseProductV1MediaFields
+    }
+    productV1Seller {
+      sellerId
+      name
+      description
+    }
+    notVoidedVariants {
+      offer {
+        id
+        price
+        priceType
+        quantityAvailable
+        validUntilDate
+        protocolFee
+        exchangeToken {
+          name
+          address
+          decimals
+        }
+      }
+      variations {
+        type
+        option
+      }
+    }
+  }
+  ${BaseProductV1BrandFieldsFragmentDoc}
+  ${BaseProductV1MediaFieldsFragmentDoc}
+`;
 export const GetSellerByIdQueryDocument = gql`
   query getSellerByIdQuery(
     $sellerId: ID!
@@ -77520,6 +77707,26 @@ export const GetOffersMediaQueryDocument = gql`
     }
   }
 `;
+export const SearchProductsQueryDocument = gql`
+  query searchProductsQuery(
+    $productsSkip: Int
+    $productsFirst: Int
+    $productsOrderBy: ProductV1Product_orderBy
+    $productsOrderDirection: OrderDirection
+    $productsFilter: ProductV1Product_filter
+  ) {
+    productV1Products(
+      skip: $productsSkip
+      first: $productsFirst
+      orderBy: $productsOrderBy
+      orderDirection: $productsOrderDirection
+      where: $productsFilter
+    ) {
+      ...ProductSearchResultFields
+    }
+  }
+  ${ProductSearchResultFieldsFragmentDoc}
+`;
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -78130,6 +78337,24 @@ export function getSdk(
             signal
           }),
         "getOffersMediaQuery",
+        "query",
+        variables
+      );
+    },
+    searchProductsQuery(
+      variables?: SearchProductsQueryQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"]
+    ): Promise<SearchProductsQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<SearchProductsQueryQuery>({
+            document: SearchProductsQueryDocument,
+            variables,
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal
+          }),
+        "searchProductsQuery",
         "query",
         variables
       );

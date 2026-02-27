@@ -1,0 +1,64 @@
+fragment ProductSearchResultFields on ProductV1Product {
+  id
+  uuid
+  version
+  title
+  description
+  productionInformation_brandName
+  brand {
+    ...BaseProductV1BrandFields
+  }
+  details_category
+  details_subCategory
+  details_subCategory2
+  details_offerCategory
+  details_tags
+  visuals_images {
+    ...BaseProductV1MediaFields
+  }
+  visuals_videos {
+    ...BaseProductV1MediaFields
+  }
+  productV1Seller {
+    sellerId
+    name
+    description
+  }
+  notVoidedVariants {
+    offer {
+      id
+      price
+      priceType
+      quantityAvailable
+      validUntilDate
+      protocolFee
+      exchangeToken {
+        name
+        address
+        decimals
+      }
+    }
+    variations {
+      type
+      option
+    }
+  }
+}
+
+query searchProductsQuery(
+  $productsSkip: Int
+  $productsFirst: Int
+  $productsOrderBy: ProductV1Product_orderBy
+  $productsOrderDirection: OrderDirection
+  $productsFilter: ProductV1Product_filter
+) {
+  productV1Products(
+    skip: $productsSkip
+    first: $productsFirst
+    orderBy: $productsOrderBy
+    orderDirection: $productsOrderDirection
+    where: $productsFilter
+  ) {
+    ...ProductSearchResultFields
+  }
+}
