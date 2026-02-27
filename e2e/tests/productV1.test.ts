@@ -1042,6 +1042,7 @@ describe("search products tests", () => {
     `Keyword_2_${random}`,
     `Keyword_3_${random}`
   ];
+  const voidedOfferUuid = buildUuid();
   const productMetadatas: {
     uuid: string;
     name: string;
@@ -1086,6 +1087,19 @@ describe("search products tests", () => {
       ]
     },
     {
+      uuid: voidedOfferUuid,
+      name: `voided offer ${keywords[0]} ${keywords[1]} ${keywords[2]}`,
+      description: `a voided offer ${keywords[1]} ${keywords[2]} ${keywords[0]} `,
+      tags: [
+        "clothing",
+        "rainbow",
+        "shirt",
+        keywords[2],
+        keywords[1],
+        keywords[0]
+      ]
+    },
+    {
       uuid: buildUuid(),
       name: "black shirt",
       description: "a black shirt",
@@ -1116,6 +1130,14 @@ describe("search products tests", () => {
     }
     const offers = await createOfferBatch(coreSDK, sellerWallet, offerArgsList);
     expect(offers.length).toEqual(productMetadatas.length);
+    const voidedOfferId = offers.find(
+      (offer) =>
+        (offer.metadata as { product: { uuid: string } })?.product?.uuid ===
+        voidedOfferUuid
+    )?.id;
+    expect(voidedOfferId).toBeTruthy();
+    const tx = await coreSDK.voidOffer(voidedOfferId as string);
+    await coreSDK.waitForGraphNodeIndexing(tx);
   });
   test("search with a unused keyword should not find any products", async () => {
     const results = await coreSDK.searchProducts(["unused_keyword"]);
@@ -1210,7 +1232,9 @@ describe("search products tests", () => {
     expect(foundProduct).toBeTruthy();
   });
   test("search with all keywords should find all matching products", async () => {
-    const results = await coreSDK.searchProducts(keywords);
+    const results = await coreSDK.searchProducts(keywords, {
+      includeInvalidOffers: false
+    });
     expect(results.length).toEqual(5);
     for (let i = 0; i < 5; i++) {
       const foundProduct = results.find(
@@ -1218,6 +1242,42 @@ describe("search products tests", () => {
       );
       expect(foundProduct).toBeTruthy();
     }
+  });
+  test("search with pagination", async () => {
+    let results = await coreSDK.searchProducts(keywords, {
+      productsFirst: 4,
+      productsSkip: 0
+    });
+    expect(results.length).toEqual(4);
+    results = await coreSDK.searchProducts(keywords, {
+      productsFirst: 4,
+      productsSkip: 4
+    });
+    expect(results.length).toEqual(1);
+  });
+  test("search with additional criteria", async () => {
+    let results = await coreSDK.searchProducts(keywords, {
+      productsFilter: {
+        uuid_in: [
+          productMetadatas[0].uuid,
+          productMetadatas[1].uuid,
+          voidedOfferUuid
+        ]
+      }
+    });
+    expect(results.length).toEqual(2);
+
+    results = await coreSDK.searchProducts(keywords, {
+      productsFilter: {
+        uuid_in: [
+          productMetadatas[0].uuid,
+          productMetadatas[1].uuid,
+          voidedOfferUuid
+        ]
+      },
+      includeInvalidOffers: true
+    });
+    expect(results.length).toEqual(3);
   });
   test("search with empty keywords should return no results", async () => {
     const results = await coreSDK.searchProducts([]);
