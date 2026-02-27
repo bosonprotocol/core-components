@@ -23,7 +23,10 @@ async function main() {
     );
     process.exit(1);
   }
-  const keywords = keywordsArg.split(",");
+  const keywords = keywordsArg
+    .split(",")
+    .map((keyword) => keyword.trim())
+    .filter((keyword) => keyword.length > 0);
 
   const opts = program.opts();
   const envName = opts.env || "testing";
