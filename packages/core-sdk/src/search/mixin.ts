@@ -15,8 +15,10 @@ export class SearchMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   public async searchProducts(
     keywords: string[]
   ): Promise<subgraph.ProductSearchResultFieldsFragment[]> {
+    if (!keywords || keywords.length === 0) {
+      return [];
+    }
     const now = Math.floor(Date.now() / 1000);
-
     const productsFilter: subgraph.ProductV1Product_Filter = {
       and: [
         {
