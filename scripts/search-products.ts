@@ -17,12 +17,6 @@ program
 
 async function main() {
   const [keywordsArg] = program.args;
-  if (!keywordsArg) {
-    console.error(
-      "Error: KEYWORDS argument is required. Provide a comma-separated list of keywords."
-    );
-    process.exit(1);
-  }
   const keywords = keywordsArg
     .split(",")
     .map((keyword) => keyword.trim())
