@@ -1,5 +1,6 @@
 import { ZERO_ADDRESS } from "./../../packages/core-sdk/tests/mocks";
 import { BigNumberish } from "@ethersproject/bignumber";
+import { parseEther } from "@ethersproject/units";
 import { Wallet, BigNumber, constants } from "ethers";
 import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
@@ -26,12 +27,19 @@ import {
   createOfferWithCondition,
   getCollectionMetadataUri,
   createRandomWallet,
-  META_TX_API_ID_VOUCHER
+  META_TX_API_ID_VOUCHER,
+  createDisputeResolver,
+  deployerWallet,
+  initSellerAndBuyerSDKs
 } from "./utils";
 import { CoreSDK, forwarder } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
 import TokenType from "../../contracts/protocol-contracts/scripts/domain/TokenType";
-import { AuthTokenType, GatingType } from "../../packages/common";
+import { AuthTokenType, GatingType, OfferCreator } from "../../packages/common";
+import {
+  MSEC_PER_DAY,
+  MSEC_PER_SEC
+} from "./../../packages/common/src/utils/timestamp";
 
 const sellerWallet = seedWallet7; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerAddress = sellerWallet.address;
@@ -711,6 +719,98 @@ describe("meta-tx", () => {
 
       // `Relayer` executes meta tx on behalf of `Buyer`
       const metaTx = await buyerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxCommitToBuyerOffer()", () => {
+    test("native exchange token buyer-initiated offer", async () => {
+      const exchangeToken = constants.AddressZero;
+      const drFeeAmount = parseEther("0.005");
+
+      // Create a dispute resolver with a fee amount
+      const { fundedWallet: drFundedWallet } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
+      const drAddress = drFundedWallet.address.toLowerCase();
+      const { disputeResolver } = await createDisputeResolver(
+        drFundedWallet,
+        deployerWallet,
+        {
+          assistant: drAddress,
+          admin: drAddress,
+          treasury: drAddress,
+          metadataUri: "",
+          escalationResponsePeriodInMS:
+            90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
+          fees: [
+            {
+              feeAmount: drFeeAmount,
+              tokenAddress: exchangeToken,
+              tokenName: "Native"
+            }
+          ],
+          sellerAllowList: []
+        }
+      );
+
+      // Create fresh buyer/seller wallets
+      const {
+        sellerCoreSDK: sellerCoreSDKBuyer,
+        buyerCoreSDK: buyerCoreSDKBuyer,
+        sellerWallet: sellerFundedWallet
+      } = await initSellerAndBuyerSDKs(sellerWallet);
+
+      // Buyer creates a buyer-initiated offer
+      const buyerInitiatedOffer = await createOffer(buyerCoreSDKBuyer, {
+        creator: OfferCreator.Buyer,
+        quantityAvailable: 1,
+        disputeResolverId: disputeResolver.id,
+        exchangeToken
+      });
+
+      // Buyer deposits offer.price to allow the seller to commit
+      const buyerDepositTx = await buyerCoreSDKBuyer.depositFunds(
+        buyerInitiatedOffer.buyerId,
+        buyerInitiatedOffer.price,
+        exchangeToken
+      );
+      await buyerCoreSDKBuyer.waitForGraphNodeIndexing(buyerDepositTx);
+
+      // Seller creates a seller account
+      const seller = await createSeller(
+        sellerCoreSDKBuyer,
+        sellerFundedWallet.address
+      );
+
+      // Seller deposits DR fee amount
+      const sellerDepositTx = await sellerCoreSDKBuyer.depositFunds(
+        seller.id,
+        drFeeAmount,
+        exchangeToken
+      );
+      await sellerCoreSDKBuyer.waitForGraphNodeIndexing(sellerDepositTx);
+
+      const nonce = Date.now();
+
+      // Seller signs meta tx for commitToBuyerOffer
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDKBuyer.signMetaTxCommitToBuyerOffer({
+          offerId: buyerInitiatedOffer.id,
+          sellerParams: {},
+          nonce
+        });
+
+      // Relayer executes meta tx on behalf of seller
+      const metaTx = await sellerCoreSDKBuyer.relayMetaTransaction({
         functionName,
         functionSignature,
         nonce,
