@@ -1,5 +1,6 @@
 import { ZERO_ADDRESS } from "./../../packages/core-sdk/tests/mocks";
 import { BigNumberish } from "@ethersproject/bignumber";
+import { parseEther } from "@ethersproject/units";
 import { Wallet, BigNumber, constants } from "ethers";
 import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
@@ -791,6 +792,104 @@ describe("meta-tx", () => {
       // Seller creates a seller account
       await createSeller(sellerCoreSDKBuyer, sellerFundedWallet.address);
       // No seller depositFunds needed: drFeeAmount = 0 and sellerDeposit = 0
+
+      const nonce = Date.now();
+
+      // Seller signs meta tx for commitToBuyerOffer
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDKBuyer.signMetaTxCommitToBuyerOffer({
+          offerId: buyerInitiatedOffer.id,
+          sellerParams: {},
+          nonce
+        });
+
+      // Relayer executes meta tx on behalf of seller
+      const metaTx = await sellerCoreSDKBuyer.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+
+    test("non-native exchange token buyer-initiated offer", async () => {
+      const exchangeToken = MOCK_ERC20_ADDRESS;
+      const drFeeAmount = parseEther("0.001");
+
+      // Create a dispute resolver with an ERC20 fee
+      const { fundedWallet: drFundedWallet } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
+      const drAddress = drFundedWallet.address.toLowerCase();
+      const { disputeResolver } = await createDisputeResolver(
+        drFundedWallet,
+        deployerWallet,
+        {
+          assistant: drAddress,
+          admin: drAddress,
+          treasury: drAddress,
+          metadataUri: "",
+          escalationResponsePeriodInMS:
+            90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
+          fees: [
+            {
+              feeAmount: drFeeAmount,
+              tokenAddress: exchangeToken,
+              tokenName: "ERC20"
+            }
+          ],
+          sellerAllowList: []
+        }
+      );
+
+      // Create fresh buyer/seller wallets
+      const {
+        sellerCoreSDK: sellerCoreSDKBuyer,
+        buyerCoreSDK: buyerCoreSDKBuyer,
+        sellerWallet: sellerFundedWallet
+      } = await initSellerAndBuyerSDKs(sellerWallet);
+
+      // Buyer creates a buyer-initiated offer with ERC20 exchange token.
+      // sellerDeposit is 0 to simplify the test setup.
+      const buyerInitiatedOffer = await createOffer(buyerCoreSDKBuyer, {
+        creator: OfferCreator.Buyer,
+        quantityAvailable: 1,
+        disputeResolverId: disputeResolver.id,
+        exchangeToken,
+        sellerDeposit: "0"
+      });
+
+      // Buyer approves ERC20 and deposits offer.price
+      await approveErc20Token(
+        buyerCoreSDKBuyer,
+        exchangeToken,
+        buyerInitiatedOffer.price
+      );
+      const buyerDepositTx = await buyerCoreSDKBuyer.depositFunds(
+        buyerInitiatedOffer.buyerId,
+        buyerInitiatedOffer.price,
+        exchangeToken
+      );
+      await buyerCoreSDKBuyer.waitForGraphNodeIndexing(buyerDepositTx);
+
+      // Seller creates a seller account
+      const seller = await createSeller(
+        sellerCoreSDKBuyer,
+        sellerFundedWallet.address
+      );
+
+      // Seller approves ERC20 and deposits drFeeAmount into the protocol
+      await approveErc20Token(sellerCoreSDKBuyer, exchangeToken, drFeeAmount);
+      const sellerDepositTx = await sellerCoreSDKBuyer.depositFunds(
+        seller.id,
+        drFeeAmount,
+        exchangeToken
+      );
+      await sellerCoreSDKBuyer.waitForGraphNodeIndexing(sellerDepositTx);
 
       const nonce = Date.now();
 
