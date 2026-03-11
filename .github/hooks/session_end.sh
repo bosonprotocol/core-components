@@ -6,6 +6,9 @@
 # when Copilot commits to a pull request branch.
 # See: https://github.com/orgs/community/discussions/162826
 
+# GitHub username of the Copilot coding agent bot
+COPILOT_BOT_ACTOR="copilot[bot]"
+
 # Get the current branch name
 BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)
 
@@ -14,8 +17,14 @@ if [ -z "$BRANCH" ] || [ "$BRANCH" = "HEAD" ]; then
   exit 0
 fi
 
-# Do not auto-approve workflow runs on protected branches
-PROTECTED_BRANCHES=("main" "master")
+# Detect the repository default branch (fail-safe: default to "main")
+DEFAULT_BRANCH=$(git remote show origin 2>/dev/null | awk '/HEAD branch/ {print $NF}')
+if [ -z "$DEFAULT_BRANCH" ]; then
+  DEFAULT_BRANCH="main"
+fi
+
+# Do not auto-approve workflow runs on protected branches (default branch, main, master)
+PROTECTED_BRANCHES=("$DEFAULT_BRANCH" "main" "master")
 for PROTECTED in "${PROTECTED_BRANCHES[@]}"; do
   if [ "$BRANCH" = "$PROTECTED" ]; then
     echo "Branch '$BRANCH' is protected; skipping workflow auto-approval"
@@ -27,15 +36,18 @@ echo "Copilot session ended on branch: $BRANCH"
 
 # Do not auto-approve if the branch contains any changes to the .github directory.
 # Workflow file changes must be reviewed by a maintainer before CI runs are approved.
-DEFAULT_BRANCH=$(git remote show origin 2>/dev/null | awk '/HEAD branch/ {print $NF}')
-if [ -z "$DEFAULT_BRANCH" ]; then
-  DEFAULT_BRANCH="main"
+# Fail closed: if the diff cannot be computed, skip auto-approval for safety.
+GITHUB_DIR_DIFF_OUTPUT=$(git diff --name-only "origin/${DEFAULT_BRANCH}...HEAD" -- '.github/' 2>&1)
+GITHUB_DIR_DIFF_STATUS=$?
+if [ "$GITHUB_DIR_DIFF_STATUS" -ne 0 ]; then
+  echo "Unable to check .github/ changes (git diff failed); skipping workflow auto-approval for safety"
+  echo "$GITHUB_DIR_DIFF_OUTPUT"
+  exit 0
 fi
-GITHUB_DIR_CHANGES=$(git diff --name-only "origin/${DEFAULT_BRANCH}...HEAD" -- '.github/' 2>/dev/null || true)
-if [ -n "$GITHUB_DIR_CHANGES" ]; then
+if [ -n "$GITHUB_DIR_DIFF_OUTPUT" ]; then
   echo "Branch '$BRANCH' contains changes to .github/; skipping workflow auto-approval for security"
   echo "Changed files:"
-  echo "$GITHUB_DIR_CHANGES"
+  echo "$GITHUB_DIR_DIFF_OUTPUT"
   exit 0
 fi
 
@@ -55,18 +67,20 @@ APPROVED_IDS=""
 
 while [ "$POLL_ELAPSED" -lt "$POLL_MAX" ]; do
   # Find workflow runs that require manual approval for this branch.
-  # Only consider allowlisted CI workflows and safe event types.
+  # Only consider allowlisted CI workflows, safe event types, and runs
+  # triggered by the Copilot bot to avoid auto-approving untrusted code.
   RUN_LIST_OUTPUT=$(gh run list \
     --branch "$BRANCH" \
     --status "action_required" \
-    --json "databaseId,workflowName,event" \
-    --jq '.[] | select((.event == "pull_request" or .event == "push") and (.workflowName == "CI" or .workflowName == "Lint PR")) | .databaseId' 2>&1)
+    --json "databaseId,workflowName,event,actor" \
+    --jq ".[] | select((.event == \"pull_request\" or .event == \"push\") and (.workflowName == \"CI\" or .workflowName == \"Lint PR\") and .actor.login == \"${COPILOT_BOT_ACTOR}\") | .databaseId" 2>&1)
   GH_RUN_LIST_STATUS=$?
 
   if [ "$GH_RUN_LIST_STATUS" -ne 0 ]; then
     echo "Error querying workflow runs for branch '$BRANCH':"
     echo "$RUN_LIST_OUTPUT"
-    exit 1
+    echo "Skipping workflow auto-approval for branch '$BRANCH' due to GitHub CLI/API error"
+    exit 0
   fi
 
   # Approve any newly found runs (skip ones we already approved)
