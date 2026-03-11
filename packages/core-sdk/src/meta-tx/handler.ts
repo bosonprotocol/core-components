@@ -11,7 +11,8 @@ import {
   UpdateSellerArgs,
   OptInToSellerUpdateArgs,
   envConfigs,
-  abis
+  abis,
+  SellerOfferArgs
 } from "@bosonprotocol/common";
 import { storeMetadataOnTheGraph } from "../offers/storage";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
@@ -24,7 +25,8 @@ import {
 } from "../accounts/interface";
 import {
   bosonExchangeCommitHandlerIface,
-  bosonExchangeHandlerIface
+  bosonExchangeHandlerIface,
+  encodeCommitToBuyerOffer
 } from "../exchanges/interface";
 import {
   bosonOfferHandlerIface,
@@ -942,6 +944,22 @@ export async function signMetaTxCommitToConditionalOffer(
       [buyerAddress, args.offerId, args.tokenId]
     )
   };
+}
+
+export async function signMetaTxCommitToBuyerOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    sellerParams: SellerOfferArgs;
+  }
+): Promise<SignedMetaTx> {
+  const functionName =
+    "commitToBuyerOffer(uint256,(uint256,(address[],uint256[]),address))";
+
+  return signMetaTx({
+    ...args,
+    functionName,
+    functionSignature: encodeCommitToBuyerOffer(args.offerId, args.sellerParams)
+  });
 }
 
 export async function signMetaTxCancelVoucher(
