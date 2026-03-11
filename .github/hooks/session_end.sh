@@ -16,20 +16,30 @@ if [ -z "$BRANCH" ] || [ "$BRANCH" = "HEAD" ]; then
   exit 0
 fi
 
+# Do not auto-approve workflow runs on protected branches
+PROTECTED_BRANCHES=("main" "master")
+for PROTECTED in "${PROTECTED_BRANCHES[@]}"; do
+  if [ "$BRANCH" = "$PROTECTED" ]; then
+    echo "Branch '$BRANCH' is protected; skipping workflow auto-approval"
+    exit 0
+  fi
+done
+
 echo "Copilot session ended on branch: $BRANCH"
 
 # Brief delay to allow GitHub to queue workflow runs triggered by the push
 sleep 10
 
-# Find workflow runs that require manual approval for this branch
+# Find workflow runs that require manual approval for this branch.
+# Only consider allowlisted CI workflows and safe event types.
 RUN_IDS=$(gh run list \
   --branch "$BRANCH" \
   --status "action_required" \
-  --json "databaseId" \
-  --jq '.[].databaseId' 2>/dev/null || true)
+  --json "databaseId,workflowName,event" \
+  --jq '.[] | select((.event == "pull_request" or .event == "push") and (.workflowName == "CI" or .workflowName == "Tests")) | .databaseId' 2>/dev/null || true)
 
 if [ -z "$RUN_IDS" ]; then
-  echo "No workflow runs require approval for branch: $BRANCH"
+  echo "No allowlisted CI workflow runs require approval for branch: $BRANCH"
   exit 0
 fi
 
