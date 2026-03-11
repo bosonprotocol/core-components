@@ -1,6 +1,5 @@
 import { ZERO_ADDRESS } from "./../../packages/core-sdk/tests/mocks";
 import { BigNumberish } from "@ethersproject/bignumber";
-import { parseEther } from "@ethersproject/units";
 import { Wallet, BigNumber, constants } from "ethers";
 import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
@@ -735,9 +734,11 @@ describe("meta-tx", () => {
   describe("#signMetaTxCommitToBuyerOffer()", () => {
     test("native exchange token buyer-initiated offer", async () => {
       const exchangeToken = constants.AddressZero;
-      const drFeeAmount = parseEther("0.005");
+      // drFeeAmount must be 0 so the seller doesn't need to deposit funds before
+      // committing via meta-tx (meta-tx can't carry ETH value)
+      const drFeeAmount = "0";
 
-      // Create a dispute resolver with a fee amount
+      // Create a dispute resolver with zero fee (required for meta-tx compatibility)
       const { fundedWallet: drFundedWallet } =
         await initCoreSDKWithFundedWallet(sellerWallet);
       const drAddress = drFundedWallet.address.toLowerCase();
@@ -769,12 +770,14 @@ describe("meta-tx", () => {
         sellerWallet: sellerFundedWallet
       } = await initSellerAndBuyerSDKs(sellerWallet);
 
-      // Buyer creates a buyer-initiated offer
+      // Buyer creates a buyer-initiated offer.
+      // sellerDeposit must be 0 so the meta-tx relayer doesn't need to forward ETH value.
       const buyerInitiatedOffer = await createOffer(buyerCoreSDKBuyer, {
         creator: OfferCreator.Buyer,
         quantityAvailable: 1,
         disputeResolverId: disputeResolver.id,
-        exchangeToken
+        exchangeToken,
+        sellerDeposit: "0"
       });
 
       // Buyer deposits offer.price to allow the seller to commit
@@ -786,18 +789,8 @@ describe("meta-tx", () => {
       await buyerCoreSDKBuyer.waitForGraphNodeIndexing(buyerDepositTx);
 
       // Seller creates a seller account
-      const seller = await createSeller(
-        sellerCoreSDKBuyer,
-        sellerFundedWallet.address
-      );
-
-      // Seller deposits DR fee amount
-      const sellerDepositTx = await sellerCoreSDKBuyer.depositFunds(
-        seller.id,
-        drFeeAmount,
-        exchangeToken
-      );
-      await sellerCoreSDKBuyer.waitForGraphNodeIndexing(sellerDepositTx);
+      await createSeller(sellerCoreSDKBuyer, sellerFundedWallet.address);
+      // No seller depositFunds needed: drFeeAmount = 0 and sellerDeposit = 0
 
       const nonce = Date.now();
 
