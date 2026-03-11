@@ -28,13 +28,27 @@ echo "Copilot session ended on branch: $BRANCH"
 # Brief delay to allow GitHub to queue workflow runs triggered by the push
 sleep 10
 
+# Ensure GitHub CLI is available before attempting to query workflow runs
+if ! command -v gh >/dev/null 2>&1; then
+  echo "GitHub CLI (gh) is not installed; skipping CI workflow approval for branch: $BRANCH"
+  exit 0
+fi
+
 # Find workflow runs that require manual approval for this branch.
 # Only consider allowlisted CI workflows and safe event types.
-RUN_IDS=$(gh run list \
+RUN_LIST_OUTPUT=$(gh run list \
   --branch "$BRANCH" \
   --status "action_required" \
   --json "databaseId,workflowName,event" \
-  --jq '.[] | select((.event == "pull_request" or .event == "push") and (.workflowName == "CI" or .workflowName == "Lint PR")) | .databaseId' 2>/dev/null || true)
+  --jq '.[] | select((.event == "pull_request" or .event == "push") and (.workflowName == "CI" or .workflowName == "Lint PR")) | .databaseId' 2>&1)
+GH_RUN_LIST_STATUS=$?
+
+if [ "$GH_RUN_LIST_STATUS" -ne 0 ]; then
+  echo "Error querying workflow runs for branch '$BRANCH':"
+  echo "$RUN_LIST_OUTPUT"
+  exit 1
+fi
+RUN_IDS="$RUN_LIST_OUTPUT"
 
 if [ -z "$RUN_IDS" ]; then
   echo "No allowlisted CI workflow runs require approval for branch: $BRANCH"
