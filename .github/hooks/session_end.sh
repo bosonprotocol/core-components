@@ -69,23 +69,33 @@ while [ "$POLL_ELAPSED" -lt "$POLL_MAX" ]; do
   # Find workflow runs that require manual approval for this branch.
   # Only consider allowlisted CI workflows, safe event types, and runs
   # triggered by the Copilot bot to avoid auto-approving untrusted code.
+  # Capture stdout and stderr separately so gh warnings don't appear as run IDs.
+  _gh_stderr=$(mktemp 2>/dev/null || echo "/tmp/gh_run_list_stderr.$$")
   RUN_LIST_OUTPUT=$(gh run list \
     --branch "$BRANCH" \
     --status "action_required" \
     --json "databaseId,workflowName,event,actor" \
-    --jq ".[] | select((.event == \"pull_request\" or .event == \"push\") and (.workflowName == \"CI\" or .workflowName == \"Lint PR\") and .actor.login == \"${COPILOT_BOT_ACTOR}\") | .databaseId" 2>&1)
+    --jq ".[] | select((.event == \"pull_request\" or .event == \"push\") and (.workflowName == \"CI\" or .workflowName == \"Lint PR\") and .actor.login == \"${COPILOT_BOT_ACTOR}\") | .databaseId" 2>"$_gh_stderr")
   GH_RUN_LIST_STATUS=$?
 
   if [ "$GH_RUN_LIST_STATUS" -ne 0 ]; then
     echo "Error querying workflow runs for branch '$BRANCH':"
-    echo "$RUN_LIST_OUTPUT"
+    [ -f "$_gh_stderr" ] && cat "$_gh_stderr"
+    rm -f "$_gh_stderr"
     echo "Skipping workflow auto-approval for branch '$BRANCH' due to GitHub CLI/API error"
     exit 0
   fi
+  [ -s "$_gh_stderr" ] && echo "gh run list warnings: $(cat "$_gh_stderr")"
+  rm -f "$_gh_stderr"
 
-  # Approve any newly found runs (skip ones we already approved)
+  # Approve any newly found runs (skip ones we already approved).
+  # Validate each RUN_ID is numeric to guard against any unexpected non-numeric output.
   while IFS= read -r RUN_ID; do
-    if [ -n "$RUN_ID" ] && ! echo "$APPROVED_IDS" | grep -qx "$RUN_ID"; then
+    if [[ ! "$RUN_ID" =~ ^[0-9]+$ ]]; then
+      [ -n "$RUN_ID" ] && echo "Skipping unexpected non-numeric run ID: $RUN_ID"
+      continue
+    fi
+    if ! echo "$APPROVED_IDS" | grep -qx "$RUN_ID"; then
       echo "Approving workflow run: $RUN_ID"
       if gh run approve "$RUN_ID"; then
         echo "Successfully approved run: $RUN_ID"
