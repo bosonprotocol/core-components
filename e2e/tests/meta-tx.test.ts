@@ -1004,7 +1004,8 @@ describe("meta-tx", () => {
         {
           offerParams: {
             disputeResolverId: disputeResolver.id,
-            sellerDeposit
+            sellerDeposit,
+            quantityAvailable: 1 // must be 1 for buyer-initiated offers
           }
         }
       );
@@ -1113,7 +1114,8 @@ describe("meta-tx", () => {
           offerParams: {
             disputeResolverId: disputeResolver.id,
             exchangeToken,
-            sellerDeposit
+            sellerDeposit,
+            quantityAvailable: 1 // must be 1 for buyer-initiated offers
           }
         }
       );
