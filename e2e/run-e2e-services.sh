@@ -8,10 +8,6 @@ function cleanup() {
   exit
 }
 
-echo "Install protocol and dependencies..."
-cd contracts
-npm ci
-cd ..
 cd e2e
 
 docker compose up -d #--build

@@ -9,10 +9,6 @@ function cleanup() {
   exit "$exit_status"
 }
 
-echo "Install protocol and dependencies..."
-cd contracts
-npm ci
-cd ..
 cd e2e
 
 docker compose up -d
