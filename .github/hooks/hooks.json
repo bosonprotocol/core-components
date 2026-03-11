@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionEnd": [
+      {
+        "type": "command",
+        "bash": ".github/hooks/session_end.sh",
+        "timeoutSec": 60
+      }
+    ]
+  }
+}
