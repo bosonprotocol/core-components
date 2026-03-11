@@ -34,7 +34,7 @@ RUN_IDS=$(gh run list \
   --branch "$BRANCH" \
   --status "action_required" \
   --json "databaseId,workflowName,event" \
-  --jq '.[] | select((.event == "pull_request" or .event == "push") and .workflowName == "CI") | .databaseId' 2>/dev/null || true)
+  --jq '.[] | select((.event == "pull_request" or .event == "push") and (.workflowName == "CI" or .workflowName == "Lint PR")) | .databaseId' 2>/dev/null || true)
 
 if [ -z "$RUN_IDS" ]; then
   echo "No allowlisted CI workflow runs require approval for branch: $BRANCH"
