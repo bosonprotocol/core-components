@@ -6,8 +6,6 @@
 # when Copilot commits to a pull request branch.
 # See: https://github.com/orgs/community/discussions/162826
 
-INPUT=$(cat)
-
 # Get the current branch name
 BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)
 
