@@ -5,7 +5,7 @@
       {
         "type": "command",
         "bash": ".github/hooks/session_end.sh",
-        "timeoutSec": 60
+        "timeoutSec": 300
       }
     ]
   }
