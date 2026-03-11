@@ -25,6 +25,20 @@ done
 
 echo "Copilot session ended on branch: $BRANCH"
 
+# Do not auto-approve if the branch contains any changes to the .github directory.
+# Workflow file changes must be reviewed by a maintainer before CI runs are approved.
+DEFAULT_BRANCH=$(git remote show origin 2>/dev/null | awk '/HEAD branch/ {print $NF}')
+if [ -z "$DEFAULT_BRANCH" ]; then
+  DEFAULT_BRANCH="main"
+fi
+GITHUB_DIR_CHANGES=$(git diff --name-only "origin/${DEFAULT_BRANCH}...HEAD" -- '.github/' 2>/dev/null || true)
+if [ -n "$GITHUB_DIR_CHANGES" ]; then
+  echo "Branch '$BRANCH' contains changes to .github/; skipping workflow auto-approval for security"
+  echo "Changed files:"
+  echo "$GITHUB_DIR_CHANGES"
+  exit 0
+fi
+
 # Ensure GitHub CLI is available before attempting to query workflow runs
 if ! command -v gh >/dev/null 2>&1; then
   echo "GitHub CLI (gh) is not installed; skipping CI workflow approval for branch: $BRANCH"
