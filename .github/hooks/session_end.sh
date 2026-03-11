@@ -17,20 +17,17 @@ if [ -z "$BRANCH" ] || [ "$BRANCH" = "HEAD" ]; then
   exit 0
 fi
 
+# Only auto-approve workflow runs on Copilot-managed branches (branch name must start with "copilot/")
+if [[ "$BRANCH" != copilot/* ]]; then
+  echo "Branch '$BRANCH' is not a Copilot branch (must start with 'copilot/'); skipping workflow auto-approval"
+  exit 0
+fi
+
 # Detect the repository default branch (fail-safe: default to "main")
 DEFAULT_BRANCH=$(git remote show origin 2>/dev/null | awk '/HEAD branch/ {print $NF}')
 if [ -z "$DEFAULT_BRANCH" ]; then
   DEFAULT_BRANCH="main"
 fi
-
-# Do not auto-approve workflow runs on protected branches (default branch, main, master)
-PROTECTED_BRANCHES=("$DEFAULT_BRANCH" "main" "master")
-for PROTECTED in "${PROTECTED_BRANCHES[@]}"; do
-  if [ "$BRANCH" = "$PROTECTED" ]; then
-    echo "Branch '$BRANCH' is protected; skipping workflow auto-approval"
-    exit 0
-  fi
-done
 
 echo "Copilot session ended on branch: $BRANCH"
 
