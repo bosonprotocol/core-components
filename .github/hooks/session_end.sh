@@ -60,10 +60,13 @@ fi
 # Poll for workflow runs requiring approval for a bounded period.
 # This handles queue delays and API lag where runs may enter action_required
 # some seconds after the push.
+# Early exit: stop polling once a follow-up poll shows no pending runs remain
+# (i.e., after approving runs, a subsequent empty poll confirms we're done).
 POLL_INTERVAL=10
 POLL_MAX=120
 POLL_ELAPSED=0
 APPROVED_IDS=""
+FOUND_RUNS=false   # becomes true once we see at least one run to approve
 
 while [ "$POLL_ELAPSED" -lt "$POLL_MAX" ]; do
   # Find workflow runs that require manual approval for this branch.
@@ -88,6 +91,13 @@ while [ "$POLL_ELAPSED" -lt "$POLL_MAX" ]; do
   [ -s "$_gh_stderr" ] && echo "gh run list warnings: $(cat "$_gh_stderr")"
   rm -f "$_gh_stderr"
 
+  # If we previously found runs and this poll returned nothing, all runs are
+  # now approved (or no longer action_required) — exit early.
+  if [ "$FOUND_RUNS" = true ] && [ -z "$RUN_LIST_OUTPUT" ]; then
+    echo "All pending workflow runs have been approved; exiting early."
+    break
+  fi
+
   # Approve any newly found runs (skip ones we already approved).
   # Validate each RUN_ID is numeric to guard against any unexpected non-numeric output.
   while IFS= read -r RUN_ID; do
@@ -95,6 +105,7 @@ while [ "$POLL_ELAPSED" -lt "$POLL_MAX" ]; do
       [ -n "$RUN_ID" ] && echo "Skipping unexpected non-numeric run ID: $RUN_ID"
       continue
     fi
+    FOUND_RUNS=true
     if ! echo "$APPROVED_IDS" | grep -qx "$RUN_ID"; then
       echo "Approving workflow run: $RUN_ID"
       if gh run approve "$RUN_ID"; then
