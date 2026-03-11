@@ -18,8 +18,8 @@ fi
 
 echo "Copilot session ended on branch: $BRANCH"
 
-# Small delay to allow GitHub to queue workflow runs triggered by the push
-sleep 5
+# Brief delay to allow GitHub to queue workflow runs triggered by the push
+sleep 10
 
 # Find workflow runs that require manual approval for this branch
 RUN_IDS=$(gh run list \
