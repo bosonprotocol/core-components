@@ -6,6 +6,9 @@
 # when Copilot commits to a pull request branch.
 # See: https://github.com/orgs/community/discussions/162826
 
+# This hook is best-effort: any failure must exit 0 so the overall session-end
+# step is not marked as failed. All error paths below exit 0 explicitly.
+
 # GitHub username of the Copilot coding agent bot
 COPILOT_BOT_ACTOR="copilot[bot]"
 
@@ -104,3 +107,5 @@ if [ -z "$APPROVED_IDS" ]; then
 else
   echo "Done processing workflow approvals for branch: $BRANCH"
 fi
+
+exit 0
