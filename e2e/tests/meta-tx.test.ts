@@ -850,8 +850,16 @@ describe("meta-tx", () => {
       const {
         sellerCoreSDK: sellerCoreSDKBuyer,
         buyerCoreSDK: buyerCoreSDKBuyer,
-        sellerWallet: sellerFundedWallet
+        sellerWallet: sellerFundedWallet,
+        buyerWallet: buyerFundedWallet
       } = await initSellerAndBuyerSDKs(sellerWallet);
+
+      // Mint ERC20 tokens to fresh wallets (they start with 0 ERC20 balance)
+      await ensureMintedAndAllowedTokens(
+        [buyerFundedWallet, sellerFundedWallet],
+        undefined,
+        false
+      );
 
       // Buyer creates a buyer-initiated offer with ERC20 exchange token.
       // sellerDeposit is 0 to simplify the test setup.
