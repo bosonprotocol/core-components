@@ -1218,7 +1218,8 @@ describe("meta-tx", () => {
           offerParams: {
             disputeResolverId: disputeResolver.id,
             price,
-            sellerDeposit
+            sellerDeposit,
+            buyerCancelPenalty: "0" // must be <= price (which is 0)
           }
         }
       );
