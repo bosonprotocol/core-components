@@ -654,6 +654,27 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   }
 
   /**
+   * Encodes and signs a meta transaction for `createOfferAndCommit` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCreateOfferAndCommit(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateOfferAndCommit>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return handler.signMetaTxCreateOfferAndCommit({
+      web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
    * Encodes and signs a meta transaction for `cancelVoucher` that can be relayed.
    * @param args - Meta transaction args.
    * @returns Signature.

@@ -640,13 +640,15 @@ export async function buildFullOfferArgs(
       )
     ).wait();
   }
-  await (
-    await offerCreatorCoreSDK.depositFunds(
-      creatorId,
-      creatorDepositFunds,
-      offerArgs.exchangeToken
-    )
-  ).wait();
+  if (BigNumber.from(creatorDepositFunds).gt(0)) {
+    await (
+      await offerCreatorCoreSDK.depositFunds(
+        creatorId,
+        creatorDepositFunds,
+        offerArgs.exchangeToken
+      )
+    ).wait();
+  }
 
   return {
     condition,

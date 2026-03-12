@@ -30,12 +30,13 @@ import {
   META_TX_API_ID_VOUCHER,
   createDisputeResolver,
   deployerWallet,
-  initSellerAndBuyerSDKs
+  initSellerAndBuyerSDKs,
+  buildFullOfferArgs
 } from "./utils";
 import { CoreSDK, forwarder } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
 import TokenType from "../../contracts/protocol-contracts/scripts/domain/TokenType";
-import { AuthTokenType, GatingType, OfferCreator } from "../../packages/common";
+import { AuthTokenType, GatingType, OfferCreator, FullOfferArgs } from "../../packages/common";
 import {
   MSEC_PER_DAY,
   MSEC_PER_SEC
@@ -911,6 +912,451 @@ describe("meta-tx", () => {
 
       // Relayer executes meta tx on behalf of seller
       const metaTx = await sellerCoreSDKBuyer.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxCreateOfferAndCommit()", () => {
+    const noCondition = {
+      method: EvaluationMethod.None,
+      tokenType: TokenType.MultiToken,
+      tokenAddress: constants.AddressZero,
+      gatingType: GatingType.PerAddress,
+      minTokenId: 0,
+      maxTokenId: 0,
+      threshold: 0,
+      maxCommits: 0
+    };
+
+    test("native exchange token buyer-initiated offer", async () => {
+      const exchangeToken = constants.AddressZero;
+      // sellerDeposit and drFeeAmount are 0 so the seller (committer) doesn't
+      // need to deposit any funds prior to the commit
+      const sellerDeposit = "0";
+      const drFeeAmount = "0";
+
+      // Create a dispute resolver with zero native fee
+      const { fundedWallet: drFundedWallet } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
+      const drAddress = drFundedWallet.address.toLowerCase();
+      const { disputeResolver } = await createDisputeResolver(
+        drFundedWallet,
+        deployerWallet,
+        {
+          assistant: drAddress,
+          admin: drAddress,
+          treasury: drAddress,
+          metadataUri: "",
+          escalationResponsePeriodInMS: 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
+          fees: [
+            {
+              feeAmount: drFeeAmount,
+              tokenAddress: exchangeToken,
+              tokenName: "Native"
+            }
+          ],
+          sellerAllowList: []
+        }
+      );
+
+      // Create fresh buyer/seller wallets
+      const {
+        sellerCoreSDK: sellerCoreSDKNew,
+        buyerCoreSDK: buyerCoreSDKNew,
+        sellerWallet: sellerFundedWallet,
+        buyerWallet: buyerFundedWallet
+      } = await initSellerAndBuyerSDKs(sellerWallet);
+
+      // Create seller account (seller is committer for buyer-initiated offer)
+      const seller = await createSeller(
+        sellerCoreSDKNew,
+        sellerFundedWallet.address
+      );
+
+      // Build full offer args for buyer-initiated offer:
+      // buyer is offer creator, seller is committer
+      const fullOfferArgsUnsigned = await buildFullOfferArgs(
+        sellerCoreSDKNew, // seller calls createOfferAndCommit
+        buyerCoreSDKNew, // buyer signs the offer
+        noCondition,
+        {
+          committer: sellerFundedWallet.address,
+          offerCreator: buyerFundedWallet.address,
+          sellerId: seller.id,
+          sellerOfferParams: {
+            collectionIndex: 0,
+            mutualizerAddress: constants.AddressZero,
+            royaltyInfo: { recipients: [], bps: [] }
+          },
+          useDepositedFunds: true,
+          creator: OfferCreator.Buyer,
+          feeLimit: parseEther("0.1")
+        },
+        {
+          offerParams: {
+            disputeResolverId: disputeResolver.id,
+            sellerDeposit,
+            quantityAvailable: 1 // must be 1 for buyer-initiated offers
+          }
+        }
+      );
+
+      // Buyer (offer creator) signs the full offer
+      const { signature } = await buyerCoreSDKNew.signFullOffer({
+        fullOfferArgsUnsigned
+      });
+      const fullOfferArgs: FullOfferArgs = { ...fullOfferArgsUnsigned, signature };
+
+      const nonce = Date.now();
+
+      // Seller signs meta-tx for createOfferAndCommit
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDKNew.signMetaTxCreateOfferAndCommit({
+          createOfferAndCommitArgs: fullOfferArgs,
+          nonce
+        });
+
+      // Relayer executes meta-tx on behalf of seller
+      const metaTx = await sellerCoreSDKNew.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+
+    test("non-native exchange token buyer-initiated offer", async () => {
+      const exchangeToken = MOCK_ERC20_ADDRESS;
+      // sellerDeposit and drFeeAmount are 0 so the seller (committer) doesn't
+      // need to deposit any ERC20 tokens prior to the commit
+      const sellerDeposit = "0";
+      const drFeeAmount = "0";
+
+      // Create a dispute resolver with zero ERC20 fee
+      const { fundedWallet: drFundedWallet } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
+      const drAddress = drFundedWallet.address.toLowerCase();
+      const { disputeResolver } = await createDisputeResolver(
+        drFundedWallet,
+        deployerWallet,
+        {
+          assistant: drAddress,
+          admin: drAddress,
+          treasury: drAddress,
+          metadataUri: "",
+          escalationResponsePeriodInMS: 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
+          fees: [
+            {
+              feeAmount: drFeeAmount,
+              tokenAddress: exchangeToken,
+              tokenName: "ERC20"
+            }
+          ],
+          sellerAllowList: []
+        }
+      );
+
+      // Create fresh buyer/seller wallets
+      const {
+        sellerCoreSDK: sellerCoreSDKNew,
+        buyerCoreSDK: buyerCoreSDKNew,
+        sellerWallet: sellerFundedWallet,
+        buyerWallet: buyerFundedWallet
+      } = await initSellerAndBuyerSDKs(sellerWallet);
+
+      // Mint ERC20 tokens to fresh wallets (they start with 0 ERC20 balance)
+      await ensureMintedAndAllowedTokens(
+        [buyerFundedWallet, sellerFundedWallet],
+        undefined,
+        false
+      );
+
+      // Create seller account (seller is committer for buyer-initiated offer)
+      const seller = await createSeller(
+        sellerCoreSDKNew,
+        sellerFundedWallet.address
+      );
+
+      // Build full offer args for buyer-initiated offer with ERC20 exchange token:
+      // buyer is offer creator (deposits price in ERC20), seller is committer (pays sellerDeposit=0)
+      const fullOfferArgsUnsigned = await buildFullOfferArgs(
+        sellerCoreSDKNew, // seller calls createOfferAndCommit
+        buyerCoreSDKNew, // buyer signs the offer
+        noCondition,
+        {
+          committer: sellerFundedWallet.address,
+          offerCreator: buyerFundedWallet.address,
+          sellerId: seller.id,
+          sellerOfferParams: {
+            collectionIndex: 0,
+            mutualizerAddress: constants.AddressZero,
+            royaltyInfo: { recipients: [], bps: [] }
+          },
+          useDepositedFunds: true,
+          creator: OfferCreator.Buyer,
+          feeLimit: parseEther("0.1")
+        },
+        {
+          offerParams: {
+            disputeResolverId: disputeResolver.id,
+            exchangeToken,
+            sellerDeposit,
+            quantityAvailable: 1 // must be 1 for buyer-initiated offers
+          }
+        }
+      );
+
+      // Buyer (offer creator) signs the full offer
+      const { signature } = await buyerCoreSDKNew.signFullOffer({
+        fullOfferArgsUnsigned
+      });
+      const fullOfferArgs: FullOfferArgs = { ...fullOfferArgsUnsigned, signature };
+
+      const nonce = Date.now();
+
+      // Seller signs meta-tx for createOfferAndCommit
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDKNew.signMetaTxCreateOfferAndCommit({
+          createOfferAndCommitArgs: fullOfferArgs,
+          nonce
+        });
+
+      // Relayer executes meta-tx on behalf of seller
+      const metaTx = await sellerCoreSDKNew.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+
+    test("native exchange token seller-initiated offer", async () => {
+      const exchangeToken = constants.AddressZero;
+      // price, sellerDeposit, and drFeeAmount are 0 so neither party needs to
+      // forward ETH value through the meta-tx relayer
+      const price = "0";
+      const sellerDeposit = "0";
+      const drFeeAmount = "0";
+
+      // Create a dispute resolver with zero native fee
+      const { fundedWallet: drFundedWallet } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
+      const drAddress = drFundedWallet.address.toLowerCase();
+      const { disputeResolver } = await createDisputeResolver(
+        drFundedWallet,
+        deployerWallet,
+        {
+          assistant: drAddress,
+          admin: drAddress,
+          treasury: drAddress,
+          metadataUri: "",
+          escalationResponsePeriodInMS: 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
+          fees: [
+            {
+              feeAmount: drFeeAmount,
+              tokenAddress: exchangeToken,
+              tokenName: "Native"
+            }
+          ],
+          sellerAllowList: []
+        }
+      );
+
+      // Create fresh buyer/seller wallets
+      const {
+        sellerCoreSDK: sellerCoreSDKNew,
+        buyerCoreSDK: buyerCoreSDKNew,
+        sellerWallet: sellerFundedWallet,
+        buyerWallet: buyerFundedWallet
+      } = await initSellerAndBuyerSDKs(sellerWallet);
+
+      // Create seller account (seller is offer creator for seller-initiated offer)
+      const seller = await createSeller(
+        sellerCoreSDKNew,
+        sellerFundedWallet.address
+      );
+
+      // Build full offer args for seller-initiated offer:
+      // seller is offer creator, buyer is committer (pays price=0)
+      const fullOfferArgsUnsigned = await buildFullOfferArgs(
+        buyerCoreSDKNew, // buyer calls createOfferAndCommit
+        sellerCoreSDKNew, // seller signs the offer
+        noCondition,
+        {
+          committer: buyerFundedWallet.address,
+          offerCreator: sellerFundedWallet.address,
+          sellerId: seller.id,
+          sellerOfferParams: {
+            collectionIndex: 0,
+            mutualizerAddress: constants.AddressZero,
+            royaltyInfo: { recipients: [], bps: [] }
+          },
+          useDepositedFunds: true,
+          creator: OfferCreator.Seller,
+          feeLimit: parseEther("0.1")
+        },
+        {
+          offerParams: {
+            disputeResolverId: disputeResolver.id,
+            price,
+            sellerDeposit,
+            buyerCancelPenalty: "0" // must be <= price (which is 0)
+          }
+        }
+      );
+
+      // Seller (offer creator) signs the full offer
+      const { signature } = await sellerCoreSDKNew.signFullOffer({
+        fullOfferArgsUnsigned
+      });
+      const fullOfferArgs: FullOfferArgs = { ...fullOfferArgsUnsigned, signature };
+
+      const nonce = Date.now();
+
+      // Buyer signs meta-tx for createOfferAndCommit
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDKNew.signMetaTxCreateOfferAndCommit({
+          createOfferAndCommitArgs: fullOfferArgs,
+          nonce
+        });
+
+      // Relayer executes meta-tx on behalf of buyer
+      const metaTx = await buyerCoreSDKNew.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+
+    test("non-native exchange token seller-initiated offer", async () => {
+      const exchangeToken = MOCK_ERC20_ADDRESS;
+      // sellerDeposit and drFeeAmount are 0 so the seller doesn't need to deposit
+      // any funds prior to the commit
+      const sellerDeposit = "0";
+      const drFeeAmount = "0";
+
+      // Create a dispute resolver with zero ERC20 fee
+      const { fundedWallet: drFundedWallet } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
+      const drAddress = drFundedWallet.address.toLowerCase();
+      const { disputeResolver } = await createDisputeResolver(
+        drFundedWallet,
+        deployerWallet,
+        {
+          assistant: drAddress,
+          admin: drAddress,
+          treasury: drAddress,
+          metadataUri: "",
+          escalationResponsePeriodInMS: 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
+          fees: [
+            {
+              feeAmount: drFeeAmount,
+              tokenAddress: exchangeToken,
+              tokenName: "ERC20"
+            }
+          ],
+          sellerAllowList: []
+        }
+      );
+
+      // Create fresh buyer/seller wallets
+      const {
+        sellerCoreSDK: sellerCoreSDKNew,
+        buyerCoreSDK: buyerCoreSDKNew,
+        sellerWallet: sellerFundedWallet,
+        buyerWallet: buyerFundedWallet
+      } = await initSellerAndBuyerSDKs(sellerWallet);
+
+      // Mint ERC20 tokens to fresh wallets (they start with 0 ERC20 balance)
+      await ensureMintedAndAllowedTokens(
+        [buyerFundedWallet, sellerFundedWallet],
+        undefined,
+        false
+      );
+
+      // Create seller account (seller is offer creator for seller-initiated offer)
+      const seller = await createSeller(
+        sellerCoreSDKNew,
+        sellerFundedWallet.address
+      );
+
+      // Build full offer args for seller-initiated offer with ERC20 exchange token:
+      // seller is offer creator (deposits sellerDeposit=0), buyer is committer (pays price in ERC20)
+      const fullOfferArgsUnsigned = await buildFullOfferArgs(
+        buyerCoreSDKNew, // buyer calls createOfferAndCommit
+        sellerCoreSDKNew, // seller signs the offer
+        noCondition,
+        {
+          committer: buyerFundedWallet.address,
+          offerCreator: sellerFundedWallet.address,
+          sellerId: seller.id,
+          sellerOfferParams: {
+            collectionIndex: 0,
+            mutualizerAddress: constants.AddressZero,
+            royaltyInfo: { recipients: [], bps: [] }
+          },
+          useDepositedFunds: true,
+          creator: OfferCreator.Seller,
+          feeLimit: parseEther("0.1")
+        },
+        {
+          offerParams: {
+            disputeResolverId: disputeResolver.id,
+            exchangeToken,
+            sellerDeposit
+          }
+        }
+      );
+
+      // Seller (offer creator) signs the full offer
+      const { signature } = await sellerCoreSDKNew.signFullOffer({
+        fullOfferArgsUnsigned
+      });
+      const fullOfferArgs: FullOfferArgs = { ...fullOfferArgsUnsigned, signature };
+
+      // Buyer (committer) pre-approves ERC20 token for price amount
+      await approveErc20Token(
+        buyerCoreSDKNew,
+        exchangeToken,
+        fullOfferArgsUnsigned.price
+      );
+
+      const nonce = Date.now();
+
+      // Buyer signs meta-tx for createOfferAndCommit
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDKNew.signMetaTxCreateOfferAndCommit({
+          createOfferAndCommitArgs: fullOfferArgs,
+          nonce
+        });
+
+      // Relayer executes meta-tx on behalf of buyer
+      const metaTx = await buyerCoreSDKNew.relayMetaTransaction({
         functionName,
         functionSignature,
         nonce,

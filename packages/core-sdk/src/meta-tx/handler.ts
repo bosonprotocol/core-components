@@ -12,7 +12,8 @@ import {
   OptInToSellerUpdateArgs,
   envConfigs,
   abis,
-  SellerOfferArgs
+  SellerOfferArgs,
+  FullOfferArgs
 } from "@bosonprotocol/common";
 import { storeMetadataOnTheGraph } from "../offers/storage";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
@@ -26,7 +27,8 @@ import {
 import {
   bosonExchangeCommitHandlerIface,
   bosonExchangeHandlerIface,
-  encodeCommitToBuyerOffer
+  encodeCommitToBuyerOffer,
+  encodeCreateOfferAndCommit
 } from "../exchanges/interface";
 import {
   bosonOfferHandlerIface,
@@ -959,6 +961,37 @@ export async function signMetaTxCommitToBuyerOffer(
     ...args,
     functionName,
     functionSignature: encodeCommitToBuyerOffer(args.offerId, args.sellerParams)
+  });
+}
+
+export async function signMetaTxCreateOfferAndCommit(
+  args: BaseMetaTxArgs & {
+    createOfferAndCommitArgs: FullOfferArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+  }
+): Promise<SignedMetaTx> {
+  utils.validation.createOfferAndCommitArgsSchema.validateSync(
+    args.createOfferAndCommitArgs,
+    { abortEarly: false }
+  );
+
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.createOfferAndCommitArgs.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
+
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.createOfferAndCommitArgs]
+  });
+
+  return signMetaTx({
+    ...args,
+    functionName:
+      "createOfferAndCommit(((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256,bool),address,address,bytes,uint256,(uint256,(address[],uint256[]),address))",
+    functionSignature: encodeCreateOfferAndCommit(args.createOfferAndCommitArgs)
   });
 }
 
