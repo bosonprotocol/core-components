@@ -41,7 +41,12 @@ import * as mockInterface from "../../src/forwarder/mock-interface";
 import { StructuredData } from "../../src/utils/signature";
 import nock from "nock";
 import { AddressZero } from "@ethersproject/constants";
-import { AuthTokenType, EvaluationMethod, GatingType, TokenType } from "@bosonprotocol/common";
+import {
+  AuthTokenType,
+  EvaluationMethod,
+  GatingType,
+  TokenType
+} from "@bosonprotocol/common";
 
 jest.setTimeout(60_000);
 
@@ -98,10 +103,7 @@ function assertSignedMetaTx(result: unknown) {
   expect(typeof r.functionSignature).toBe("string");
 }
 
-function assertStructuredData(
-  result: unknown,
-  expectedPrimaryType: string
-) {
+function assertStructuredData(result: unknown, expectedPrimaryType: string) {
   const d = result as StructuredData;
   expect(d.primaryType).toBe(expectedPrimaryType);
   expect(d.domain.name).toBe("Boson Protocol");
@@ -164,7 +166,10 @@ const createGroupArgs = {
 describe("meta-tx handler", () => {
   // ── signMetaTx (base) ──────────────────────────────────────────────────────
   describe("#signMetaTx()", () => {
-    const extraArgs = { functionName: "testFn()", functionSignature: "0xdeadbeef" };
+    const extraArgs = {
+      functionName: "testFn()",
+      functionSignature: "0xdeadbeef"
+    };
 
     test("returns SignedMetaTx without returnTypedDataToSign", async () => {
       const result = await signMetaTx({ ...base(), ...extraArgs });
@@ -172,7 +177,11 @@ describe("meta-tx handler", () => {
     });
 
     test("returns StructuredData with returnTypedDataToSign: true", async () => {
-      const result = await signMetaTx({ ...base(), ...extraArgs, returnTypedDataToSign: true });
+      const result = await signMetaTx({
+        ...base(),
+        ...extraArgs,
+        returnTypedDataToSign: true
+      });
       assertStructuredData(result, "MetaTransaction");
       expect((result as StructuredData).message).toMatchObject({
         functionName: extraArgs.functionName,
@@ -184,7 +193,10 @@ describe("meta-tx handler", () => {
   // ── signMetaTxCreateSeller ─────────────────────────────────────────────────
   describe("#signMetaTxCreateSeller()", () => {
     test("returns SignedMetaTx without returnTypedDataToSign", async () => {
-      const result = await signMetaTxCreateSeller({ ...base(), createSellerArgs });
+      const result = await signMetaTxCreateSeller({
+        ...base(),
+        createSellerArgs
+      });
       assertSignedMetaTx(result);
       expect(result.functionName).toContain("createSeller");
     });
@@ -202,7 +214,10 @@ describe("meta-tx handler", () => {
   // ── signMetaTxUpdateSeller ─────────────────────────────────────────────────
   describe("#signMetaTxUpdateSeller()", () => {
     test("returns SignedMetaTx without returnTypedDataToSign", async () => {
-      const result = await signMetaTxUpdateSeller({ ...base(), updateSellerArgs });
+      const result = await signMetaTxUpdateSeller({
+        ...base(),
+        updateSellerArgs
+      });
       assertSignedMetaTx(result);
       expect(result.functionName).toContain("updateSeller");
     });
@@ -289,7 +304,11 @@ describe("meta-tx handler", () => {
     });
 
     test("returns StructuredData with returnTypedDataToSign: true", async () => {
-      const result = await signMetaTxVoidOffer({ ...base(), offerId: "1", returnTypedDataToSign: true });
+      const result = await signMetaTxVoidOffer({
+        ...base(),
+        offerId: "1",
+        returnTypedDataToSign: true
+      });
       assertStructuredData(result, "MetaTransaction");
     });
   });
@@ -297,7 +316,10 @@ describe("meta-tx handler", () => {
   // ── signMetaTxVoidOfferBatch ───────────────────────────────────────────────
   describe("#signMetaTxVoidOfferBatch()", () => {
     test("returns SignedMetaTx without returnTypedDataToSign", async () => {
-      const result = await signMetaTxVoidOfferBatch({ ...base(), offerIds: ["1", "2"] });
+      const result = await signMetaTxVoidOfferBatch({
+        ...base(),
+        offerIds: ["1", "2"]
+      });
       assertSignedMetaTx(result);
       expect(result.functionName).toBe("voidOfferBatch(uint256[])");
     });
@@ -382,7 +404,10 @@ describe("meta-tx handler", () => {
   // ── signMetaTxExpireVoucher ────────────────────────────────────────────────
   describe("#signMetaTxExpireVoucher()", () => {
     test("returns SignedMetaTx without returnTypedDataToSign", async () => {
-      const result = await signMetaTxExpireVoucher({ ...base(), exchangeId: "1" });
+      const result = await signMetaTxExpireVoucher({
+        ...base(),
+        exchangeId: "1"
+      });
       assertSignedMetaTx(result);
       expect(result.functionName).toBe("expireVoucher(uint256)");
     });
@@ -400,7 +425,10 @@ describe("meta-tx handler", () => {
   // ── signMetaTxRevokeVoucher ────────────────────────────────────────────────
   describe("#signMetaTxRevokeVoucher()", () => {
     test("returns SignedMetaTx without returnTypedDataToSign", async () => {
-      const result = await signMetaTxRevokeVoucher({ ...base(), exchangeId: "1" });
+      const result = await signMetaTxRevokeVoucher({
+        ...base(),
+        exchangeId: "1"
+      });
       assertSignedMetaTx(result);
       expect(result.functionName).toBe("revokeVoucher(uint256)");
     });
@@ -418,7 +446,10 @@ describe("meta-tx handler", () => {
   // ── signMetaTxCreateGroup ──────────────────────────────────────────────────
   describe("#signMetaTxCreateGroup()", () => {
     test("returns SignedMetaTx without returnTypedDataToSign", async () => {
-      const result = await signMetaTxCreateGroup({ ...base(), createGroupArgs });
+      const result = await signMetaTxCreateGroup({
+        ...base(),
+        createGroupArgs
+      });
       assertSignedMetaTx(result);
       expect(result.functionName).toContain("createGroup");
     });
@@ -598,30 +629,55 @@ describe("meta-tx handler", () => {
 
   // ── Exchange meta-tx functions (via makeExchangeMetaTxSigner) ──────────────
   describe.each([
-    ["#signMetaTxCancelVoucher()", signMetaTxCancelVoucher, "cancelVoucher(uint256)"],
-    ["#signMetaTxRedeemVoucher()", signMetaTxRedeemVoucher, "redeemVoucher(uint256)"],
-    ["#signMetaTxCompleteExchange()", signMetaTxCompleteExchange, "completeExchange(uint256)"],
-    ["#signMetaTxRetractDispute()", signMetaTxRetractDispute, "retractDispute(uint256)"],
-    ["#signMetaTxEscalateDispute()", signMetaTxEscalateDispute, "escalateDispute(uint256)"],
-    ["#signMetaTxRaiseDispute()", signMetaTxRaiseDispute, "raiseDispute(uint256)"]
-  ] as const)(
-    "%s",
-    (_name, fn, expectedFunctionName) => {
-      test("returns SignedMetaTx without returnTypedDataToSign", async () => {
-        const result = await fn({ ...base(), exchangeId: "1" });
-        assertSignedMetaTx(result);
-        expect(result.functionName).toBe(expectedFunctionName);
-      });
+    [
+      "#signMetaTxCancelVoucher()",
+      signMetaTxCancelVoucher,
+      "cancelVoucher(uint256)"
+    ],
+    [
+      "#signMetaTxRedeemVoucher()",
+      signMetaTxRedeemVoucher,
+      "redeemVoucher(uint256)"
+    ],
+    [
+      "#signMetaTxCompleteExchange()",
+      signMetaTxCompleteExchange,
+      "completeExchange(uint256)"
+    ],
+    [
+      "#signMetaTxRetractDispute()",
+      signMetaTxRetractDispute,
+      "retractDispute(uint256)"
+    ],
+    [
+      "#signMetaTxEscalateDispute()",
+      signMetaTxEscalateDispute,
+      "escalateDispute(uint256)"
+    ],
+    [
+      "#signMetaTxRaiseDispute()",
+      signMetaTxRaiseDispute,
+      "raiseDispute(uint256)"
+    ]
+  ] as const)("%s", (_name, fn, expectedFunctionName) => {
+    test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+      const result = await fn({ ...base(), exchangeId: "1" });
+      assertSignedMetaTx(result);
+      expect(result.functionName).toBe(expectedFunctionName);
+    });
 
-      test("returns StructuredData with returnTypedDataToSign: true", async () => {
-        const result = await fn({ ...base(), exchangeId: "1", returnTypedDataToSign: true });
-        assertStructuredData(result, "MetaTxExchange");
-        expect((result as StructuredData).message).toMatchObject({
-          functionName: expectedFunctionName
-        });
+    test("returns StructuredData with returnTypedDataToSign: true", async () => {
+      const result = await fn({
+        ...base(),
+        exchangeId: "1",
+        returnTypedDataToSign: true
       });
-    }
-  );
+      assertStructuredData(result, "MetaTxExchange");
+      expect((result as StructuredData).message).toMatchObject({
+        functionName: expectedFunctionName
+      });
+    });
+  });
 
   // ── signMetaTxResolveDispute ───────────────────────────────────────────────
   describe("#signMetaTxResolveDispute()", () => {
@@ -650,7 +706,11 @@ describe("meta-tx handler", () => {
         ...base(),
         exchangeId: 1,
         buyerPercent: 10,
-        counterpartySig: { r: counterpartySig.r, s: counterpartySig.s, v: counterpartySig.v }
+        counterpartySig: {
+          r: counterpartySig.r,
+          s: counterpartySig.s,
+          v: counterpartySig.v
+        }
       });
       expect(signedMetaTx.r).toEqual(EXPECTED_R);
       expect(signedMetaTx.s).toEqual(EXPECTED_S);
@@ -705,7 +765,9 @@ describe("meta-tx handler", () => {
         tokenAmounts: ["1000000000000000000"]
       });
       assertSignedMetaTx(result);
-      expect(result.functionName).toBe("withdrawFunds(uint256,address[],uint256[])");
+      expect(result.functionName).toBe(
+        "withdrawFunds(uint256,address[],uint256[])"
+      );
     });
 
     test("returns StructuredData with returnTypedDataToSign: true", async () => {
