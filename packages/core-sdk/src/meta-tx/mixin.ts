@@ -13,6 +13,8 @@ import { GetRetriedHashesData } from "./biconomy";
 import { accounts } from "..";
 import { AccountsMixin } from "../accounts/mixin";
 import { SellerFieldsFragment } from "../subgraph";
+import { SignedMetaTx } from "./handler";
+import { StructuredData } from "../utils/signature";
 export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
   /*                           Meta Tx related methods                          */
@@ -23,17 +25,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTx(
+    args: Omit<
+      Parameters<typeof handler.signMetaTx>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTx(
+    args: Omit<
+      Parameters<typeof handler.signMetaTx>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTx(
     args: Omit<
       Parameters<typeof handler.signMetaTx>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTx({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTx({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -42,49 +69,128 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxCreateSeller(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateSeller>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCreateSeller(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateSeller>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxCreateSeller(
     args: Omit<
       Parameters<typeof handler.signMetaTxCreateSeller>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCreateSeller({
+        web3Lib: this._web3Lib,
+        theGraphStorage: this._theGraphStorage,
+        metadataStorage: this._metadataStorage,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxCreateSeller({
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxUpdateSeller(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxUpdateSeller>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxUpdateSeller(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxUpdateSeller>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxUpdateSeller(
     args: Omit<
       Parameters<typeof handler.signMetaTxUpdateSeller>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxUpdateSeller({
+        web3Lib: this._web3Lib,
+        theGraphStorage: this._theGraphStorage,
+        metadataStorage: this._metadataStorage,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxUpdateSeller({
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxOptInToSellerUpdate(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxOptInToSellerUpdate>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxOptInToSellerUpdate(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxOptInToSellerUpdate>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxOptInToSellerUpdate(
     args: Omit<
       Parameters<typeof handler.signMetaTxOptInToSellerUpdate>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxOptInToSellerUpdate({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxOptInToSellerUpdate({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -174,19 +280,46 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxCreateOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCreateOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxCreateOffer(
     args: Omit<
       Parameters<typeof handler.signMetaTxCreateOffer>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCreateOffer({
+        web3Lib: this._web3Lib,
+        theGraphStorage: this._theGraphStorage,
+        metadataStorage: this._metadataStorage,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxCreateOffer({
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -195,19 +328,46 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxCreateOfferBatch(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateOfferBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCreateOfferBatch(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateOfferBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxCreateOfferBatch(
     args: Omit<
       Parameters<typeof handler.signMetaTxCreateOfferBatch>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCreateOfferBatch({
+        web3Lib: this._web3Lib,
+        theGraphStorage: this._theGraphStorage,
+        metadataStorage: this._metadataStorage,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxCreateOfferBatch({
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -216,28 +376,81 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxCreateGroup(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateGroup>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCreateGroup(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateGroup>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxCreateGroup(
     args: Omit<
       Parameters<typeof handler.signMetaTxCreateGroup>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCreateGroup({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxCreateGroup({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxReserveRange(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxReserveRange>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId" | "to"
+    > & { to: "seller" | "contract"; returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxReserveRange(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxReserveRange>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId" | "to"
+    > & { to: "seller" | "contract"; returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxReserveRange(
     args: Omit<
       Parameters<typeof handler.signMetaTxReserveRange>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId" | "to"
     > & { to: "seller" | "contract" }
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
     const offer = await getOfferById(this._subgraphUrl, args.offerId);
 
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxReserveRange({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        to:
+          args.to === "contract"
+            ? offer.seller.voucherCloneAddress
+            : offer.seller.assistant,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxReserveRange({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
@@ -246,7 +459,8 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       to:
         args.to === "contract"
           ? offer.seller.voucherCloneAddress
-          : offer.seller.assistant
+          : offer.seller.assistant,
+      returnTypedDataToSign: false
     });
   }
 
@@ -456,19 +670,46 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxCreateOfferWithCondition(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateOfferWithCondition>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCreateOfferWithCondition(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateOfferWithCondition>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxCreateOfferWithCondition(
     args: Omit<
       Parameters<typeof handler.signMetaTxCreateOfferWithCondition>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCreateOfferWithCondition({
+        web3Lib: this._web3Lib,
+        theGraphStorage: this._theGraphStorage,
+        metadataStorage: this._metadataStorage,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxCreateOfferWithCondition({
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -477,17 +718,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxVoidOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxVoidOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxVoidOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxVoidOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxVoidOffer(
     args: Omit<
       Parameters<typeof handler.signMetaTxVoidOffer>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxVoidOffer({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxVoidOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -496,17 +762,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxVoidOfferBatch(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxVoidOfferBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxVoidOfferBatch(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxVoidOfferBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxVoidOfferBatch(
     args: Omit<
       Parameters<typeof handler.signMetaTxVoidOfferBatch>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxVoidOfferBatch({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxVoidOfferBatch({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -515,17 +806,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxExtendOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxExtendOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxExtendOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxExtendOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxExtendOffer(
     args: Omit<
       Parameters<typeof handler.signMetaTxExtendOffer>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxExtendOffer({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxExtendOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -534,17 +850,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxExtendOfferBatch(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxExtendOfferBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxExtendOfferBatch(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxExtendOfferBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxExtendOfferBatch(
     args: Omit<
       Parameters<typeof handler.signMetaTxExtendOfferBatch>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxExtendOfferBatch({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxExtendOfferBatch({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -553,17 +894,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxCompleteExchange(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCompleteExchange>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCompleteExchange(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCompleteExchange>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxCompleteExchange(
     args: Omit<
       Parameters<typeof handler.signMetaTxCompleteExchange>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCompleteExchange({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxCompleteExchange({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -572,17 +938,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxCompleteExchangeBatch(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCompleteExchangeBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCompleteExchangeBatch(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCompleteExchangeBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxCompleteExchangeBatch(
     args: Omit<
       Parameters<typeof handler.signMetaTxCompleteExchangeBatch>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCompleteExchangeBatch({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxCompleteExchangeBatch({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -591,27 +982,60 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxCommitToOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCommitToOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCommitToOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCommitToOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxCommitToOffer(
     args: Omit<
       Parameters<typeof handler.signMetaTxCommitToOffer>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
     const offer = await getOfferById(this._subgraphUrl, args.offerId);
 
     if (offer.condition) {
       // keep compatibility with previous version
-      return this.signMetaTxCommitToConditionalOffer({
-        ...args,
+      // Using type assertion because TypeScript can't resolve overloads inside the implementation body
+      // when the args type comes from a complex Omit<Parameters<...>[0], ...> expression
+      const self = this as {
+        signMetaTxCommitToConditionalOffer: (
+          args: Record<string, unknown>
+        ) => Promise<SignedMetaTx | StructuredData>;
+      };
+      const conditionalArgs = {
+        ...(args as Record<string, unknown>),
         tokenId: offer.condition.minTokenId
-      });
+      };
+      return self.signMetaTxCommitToConditionalOffer(conditionalArgs);
     }
 
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCommitToOffer({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxCommitToOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -620,17 +1044,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxCommitToConditionalOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCommitToConditionalOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCommitToConditionalOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCommitToConditionalOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxCommitToConditionalOffer(
     args: Omit<
       Parameters<typeof handler.signMetaTxCommitToConditionalOffer>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCommitToConditionalOffer({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxCommitToConditionalOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -639,17 +1088,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxCommitToBuyerOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCommitToBuyerOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCommitToBuyerOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCommitToBuyerOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxCommitToBuyerOffer(
     args: Omit<
       Parameters<typeof handler.signMetaTxCommitToBuyerOffer>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCommitToBuyerOffer({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxCommitToBuyerOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -658,19 +1132,46 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxCreateOfferAndCommit(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateOfferAndCommit>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCreateOfferAndCommit(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateOfferAndCommit>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxCreateOfferAndCommit(
     args: Omit<
       Parameters<typeof handler.signMetaTxCreateOfferAndCommit>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCreateOfferAndCommit({
+        web3Lib: this._web3Lib,
+        theGraphStorage: this._theGraphStorage,
+        metadataStorage: this._metadataStorage,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxCreateOfferAndCommit({
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -679,17 +1180,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxCancelVoucher(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCancelVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCancelVoucher(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCancelVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxCancelVoucher(
     args: Omit<
       Parameters<typeof handler.signMetaTxCancelVoucher>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCancelVoucher({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxCancelVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -698,17 +1224,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxRedeemVoucher(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxRedeemVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxRedeemVoucher(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxRedeemVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxRedeemVoucher(
     args: Omit<
       Parameters<typeof handler.signMetaTxRedeemVoucher>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxRedeemVoucher({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxRedeemVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -717,17 +1268,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxExpireVoucher(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxExpireVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxExpireVoucher(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxExpireVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxExpireVoucher(
     args: Omit<
       Parameters<typeof handler.signMetaTxExpireVoucher>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxExpireVoucher({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxExpireVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -736,17 +1312,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxRevokeVoucher(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxRevokeVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxRevokeVoucher(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxRevokeVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxRevokeVoucher(
     args: Omit<
       Parameters<typeof handler.signMetaTxRevokeVoucher>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxRevokeVoucher({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxRevokeVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -755,17 +1356,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxRetractDispute(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxRetractDispute>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxRetractDispute(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxRetractDispute>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxRetractDispute(
     args: Omit<
       Parameters<typeof handler.signMetaTxRetractDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxRetractDispute({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxRetractDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -774,17 +1400,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxEscalateDispute(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxEscalateDispute>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxEscalateDispute(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxEscalateDispute>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxEscalateDispute(
     args: Omit<
       Parameters<typeof handler.signMetaTxEscalateDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxEscalateDispute({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxEscalateDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -793,17 +1444,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxRaiseDispute(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxRaiseDispute>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxRaiseDispute(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxRaiseDispute>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxRaiseDispute(
     args: Omit<
       Parameters<typeof handler.signMetaTxRaiseDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxRaiseDispute({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxRaiseDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -812,17 +1488,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxResolveDispute(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxResolveDispute>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxResolveDispute(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxResolveDispute>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxResolveDispute(
     args: Omit<
       Parameters<typeof handler.signMetaTxResolveDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxResolveDispute({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxResolveDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -831,17 +1532,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxExtendDisputeTimeout(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxExtendDisputeTimeout>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxExtendDisputeTimeout(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxExtendDisputeTimeout>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxExtendDisputeTimeout(
     args: Omit<
       Parameters<typeof handler.signMetaTxExtendDisputeTimeout>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxExtendDisputeTimeout({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxExtendDisputeTimeout({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -850,17 +1576,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxWithdrawFunds(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxWithdrawFunds>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxWithdrawFunds(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxWithdrawFunds>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxWithdrawFunds(
     args: Omit<
       Parameters<typeof handler.signMetaTxWithdrawFunds>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxWithdrawFunds({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxWithdrawFunds({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
@@ -869,17 +1620,42 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signMetaTxDepositFunds(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxDepositFunds>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxDepositFunds(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxDepositFunds>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
   public async signMetaTxDepositFunds(
     args: Omit<
       Parameters<typeof handler.signMetaTxDepositFunds>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
-  ) {
+  ): Promise<SignedMetaTx | StructuredData> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxDepositFunds({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
     return handler.signMetaTxDepositFunds({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      returnTypedDataToSign: false
     });
   }
 
