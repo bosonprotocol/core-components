@@ -890,7 +890,7 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   }
 
   /**
-   * Encodes and signs a meta transaction for `completeExchangeBatch` that can be relayed.
+   * Encodes and signs a meta transaction for `completeExchange` that can be relayed.
    * @param args - Meta transaction args.
    * @returns Signature.
    */
