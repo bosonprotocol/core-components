@@ -1,5 +1,15 @@
-import { AuthTokenType, abis } from "@bosonprotocol/common";
-import { MockWeb3LibAdapter } from "@bosonprotocol/common/tests/mocks";
+import {
+  AuthTokenType,
+  EvaluationMethod,
+  GatingType,
+  TokenType,
+  abis
+} from "@bosonprotocol/common";
+import {
+  MockWeb3LibAdapter,
+  mockCreateOfferArgs
+} from "@bosonprotocol/common/tests/mocks";
+import { AddressZero } from "@ethersproject/constants";
 import { CoreSDK } from "../../src/core-sdk";
 import * as metaTxHandler from "../../src/meta-tx/handler";
 import { StructuredData } from "../../src/utils/signature";
@@ -58,6 +68,23 @@ function makeCoreSDK() {
       forwarder: FORWARDER
     }
   });
+}
+
+/**
+ * Generic StructuredData shape assertion for mixin-level tests.
+ * Verifies the mixin correctly injected PROTOCOL_DIAMOND as verifyingContract.
+ */
+function assertStructuredDataShape(
+  result: unknown,
+  expectedPrimaryType?: string
+) {
+  const d = result as StructuredData;
+  expect(d.domain.verifyingContract).toBe(PROTOCOL_DIAMOND);
+  expect(typeof d.primaryType).toBe("string");
+  if (expectedPrimaryType) expect(d.primaryType).toBe(expectedPrimaryType);
+  expect(typeof d.message).toBe("object");
+  // Must NOT look like a SignedMetaTx
+  expect((d as unknown as { r?: unknown }).r).toBeUndefined();
 }
 
 function assertSignedMetaTx(result: unknown) {
@@ -598,6 +625,75 @@ describe("MetaTxMixin#signMetaTxSetApprovalForAllToContract()", () => {
   });
 });
 
+// ─── Tier 2 shared fixtures ──────────────────────────────────────────────────
+
+const TOKEN = "0x0000000000000000000000000000000000000002";
+const NONCE = 1;
+const VALID_UNTIL = Math.floor(Date.now() / 1000) + 3600;
+
+const createSellerArgsMock = {
+  assistant: SIGNER,
+  admin: SIGNER,
+  treasury: SIGNER,
+  contractUri: "ipfs://contract-uri",
+  royaltyPercentage: "0",
+  authTokenId: "0",
+  authTokenType: AuthTokenType.NONE,
+  metadataUri: "ipfs://seller-metadata"
+};
+
+const updateSellerArgsMock = {
+  id: "1",
+  assistant: SIGNER,
+  admin: SIGNER,
+  treasury: SIGNER,
+  authTokenId: "0",
+  authTokenType: AuthTokenType.NONE,
+  metadataUri: "ipfs://seller-metadata"
+};
+
+const optInToSellerUpdateArgsMock = {
+  id: "1",
+  fieldsToUpdate: { assistant: true }
+};
+
+const conditionStruct = {
+  method: EvaluationMethod.Threshold,
+  tokenType: TokenType.FungibleToken,
+  tokenAddress: TOKEN,
+  gatingType: GatingType.PerAddress,
+  minTokenId: "0",
+  maxTokenId: "0",
+  threshold: "1",
+  maxCommits: "1"
+};
+
+const createGroupArgsMock = {
+  ...conditionStruct,
+  sellerId: "1",
+  offerIds: ["1"]
+};
+
+const createOfferArgsMock = mockCreateOfferArgs();
+
+const sellerParamsMock = {
+  collectionIndex: "0",
+  royaltyInfo: { recipients: [AddressZero], bps: ["0"] },
+  mutualizerAddress: AddressZero
+};
+
+const createOfferAndCommitArgsMock = {
+  ...createOfferArgsMock,
+  offerCreator: SIGNER,
+  committer: SIGNER,
+  condition: conditionStruct,
+  useDepositedFunds: false,
+  signature: "0x020d671b80fbd20466d8cb65cef79a24e3bca3fdf82e9dd89d78e7a4c4c045bd72944c20bb1d839e76ee6bb69fed61f64376c37799598b40b8c49148f3cdd88a1b",
+  sellerId: "1",
+  buyerId: "1",
+  sellerOfferParams: sellerParamsMock
+};
+
 // ─── 7. signMetaTxCallExternalContract ───────────────────────────────────────
 
 describe("MetaTxMixin#signMetaTxCallExternalContract()", () => {
@@ -638,5 +734,440 @@ describe("MetaTxMixin#signMetaTxCallExternalContract()", () => {
       expect.anything()
     );
     spy.mockRestore();
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Tier 2: pure handler-delegating overloads
+// These methods have no mixin-specific logic beyond injecting web3Lib /
+// metaTxHandlerAddress / chainId.  Tests verify the returnTypedDataToSign
+// dispatch is wired correctly and that PROTOCOL_DIAMOND is injected.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ─── Tier 2-A: signMetaTx (base) ─────────────────────────────────────────────
+
+describe("MetaTxMixin#signMetaTx() overload dispatch", () => {
+  const extraArgs = { functionName: "testFn()", functionSignature: "0xdeadbeef" };
+
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTx({ ...extraArgs, nonce: NONCE });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toBe("testFn()");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTx as any)({
+      ...extraArgs,
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
+// ─── Tier 2-B: seller account methods ────────────────────────────────────────
+
+describe("MetaTxMixin#signMetaTxCreateSeller() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxCreateSeller({
+      createSellerArgs: createSellerArgsMock,
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toContain("createSeller");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxCreateSeller as any)({
+      createSellerArgs: createSellerArgsMock,
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
+describe("MetaTxMixin#signMetaTxUpdateSeller() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxUpdateSeller({
+      updateSellerArgs: updateSellerArgsMock,
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toContain("updateSeller");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxUpdateSeller as any)({
+      updateSellerArgs: updateSellerArgsMock,
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
+describe("MetaTxMixin#signMetaTxOptInToSellerUpdate() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxOptInToSellerUpdate({
+      optInToSellerUpdateArgs: optInToSellerUpdateArgsMock,
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toContain("optInToSellerUpdate");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxOptInToSellerUpdate as any)({
+      optInToSellerUpdateArgs: optInToSellerUpdateArgsMock,
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
+// ─── Tier 2-C: offer management ──────────────────────────────────────────────
+
+describe("MetaTxMixin#signMetaTxCreateOffer() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxCreateOffer({
+      createOfferArgs: createOfferArgsMock,
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toContain("createOffer");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxCreateOffer as any)({
+      createOfferArgs: createOfferArgsMock,
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
+describe("MetaTxMixin#signMetaTxCreateOfferBatch() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxCreateOfferBatch({
+      createOffersArgs: [createOfferArgsMock],
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toContain("createOfferBatch");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxCreateOfferBatch as any)({
+      createOffersArgs: [createOfferArgsMock],
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
+describe("MetaTxMixin#signMetaTxCreateGroup() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxCreateGroup({
+      createGroupArgs: createGroupArgsMock,
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toContain("createGroup");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxCreateGroup as any)({
+      createGroupArgs: createGroupArgsMock,
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
+describe("MetaTxMixin#signMetaTxCreateOfferWithCondition() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxCreateOfferWithCondition({
+      offerToCreate: createOfferArgsMock,
+      condition: conditionStruct,
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toContain("createOfferWithCondition");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxCreateOfferWithCondition as any)({
+      offerToCreate: createOfferArgsMock,
+      condition: conditionStruct,
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
+describe.each([
+  ["signMetaTxVoidOffer", "voidOffer(uint256)", { offerId: "1", nonce: NONCE }],
+  [
+    "signMetaTxVoidOfferBatch",
+    "voidOfferBatch(uint256[])",
+    { offerIds: ["1", "2"], nonce: NONCE }
+  ],
+  [
+    "signMetaTxExtendOffer",
+    "extendOffer(uint256,uint256)",
+    { offerId: "1", validUntil: VALID_UNTIL, nonce: NONCE }
+  ],
+  [
+    "signMetaTxExtendOfferBatch",
+    "extendOfferBatch(uint256[],uint256)",
+    { offerIds: ["1", "2"], validUntil: VALID_UNTIL, nonce: NONCE }
+  ],
+  [
+    "signMetaTxCompleteExchangeBatch",
+    "completeExchangeBatch(uint256[])",
+    { exchangeIds: ["1", "2"], nonce: NONCE }
+  ]
+] as const)(
+  "MetaTxMixin#%s() overload dispatch",
+  (methodName, expectedFunctionName, args) => {
+    test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = await (makeCoreSDK() as any)[methodName](args);
+      assertSignedMetaTx(result);
+      expect(result.functionName).toBe(expectedFunctionName);
+    });
+
+    test("returns StructuredData with returnTypedDataToSign: true", async () => {
+      const result = await (makeCoreSDK() as any)[methodName]({
+        ...args,
+        returnTypedDataToSign: true
+      });
+      assertStructuredDataShape(result, "MetaTransaction");
+    });
+  }
+);
+
+// ─── Tier 2-D: commit methods ─────────────────────────────────────────────────
+
+describe("MetaTxMixin#signMetaTxCommitToConditionalOffer() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxCommitToConditionalOffer({
+      offerId: "1",
+      tokenId: "42",
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toBe(
+      "commitToConditionalOffer(address,uint256,uint256)"
+    );
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxCommitToConditionalOffer as any)({
+      offerId: "1",
+      tokenId: "42",
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTxCommitToConditionalOffer");
+  });
+});
+
+describe("MetaTxMixin#signMetaTxCommitToBuyerOffer() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxCommitToBuyerOffer({
+      offerId: "1",
+      sellerParams: sellerParamsMock,
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toContain("commitToBuyerOffer");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxCommitToBuyerOffer as any)({
+      offerId: "1",
+      sellerParams: sellerParamsMock,
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
+describe("MetaTxMixin#signMetaTxCreateOfferAndCommit() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxCreateOfferAndCommit({
+      createOfferAndCommitArgs: createOfferAndCommitArgsMock,
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toContain("createOfferAndCommit");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxCreateOfferAndCommit as any)({
+      createOfferAndCommitArgs: createOfferAndCommitArgsMock,
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
+// ─── Tier 2-E: exchange / dispute methods (exchangeId-only) ──────────────────
+
+describe.each([
+  ["signMetaTxCancelVoucher", "cancelVoucher(uint256)", "MetaTxExchange"],
+  ["signMetaTxRedeemVoucher", "redeemVoucher(uint256)", "MetaTxExchange"],
+  ["signMetaTxCompleteExchange", "completeExchange(uint256)", "MetaTxExchange"],
+  ["signMetaTxExpireVoucher", "expireVoucher(uint256)", "MetaTransaction"],
+  ["signMetaTxRevokeVoucher", "revokeVoucher(uint256)", "MetaTransaction"],
+  ["signMetaTxRetractDispute", "retractDispute(uint256)", "MetaTxExchange"],
+  ["signMetaTxEscalateDispute", "escalateDispute(uint256)", "MetaTxExchange"],
+  ["signMetaTxRaiseDispute", "raiseDispute(uint256)", "MetaTxExchange"]
+] as const)(
+  "MetaTxMixin#%s() overload dispatch",
+  (methodName, expectedFunctionName, expectedPrimaryType) => {
+    const args = { exchangeId: "1", nonce: NONCE };
+
+    test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = await (makeCoreSDK() as any)[methodName](args);
+      assertSignedMetaTx(result);
+      expect(result.functionName).toBe(expectedFunctionName);
+    });
+
+    test("returns StructuredData with returnTypedDataToSign: true", async () => {
+      const result = await (makeCoreSDK() as any)[methodName]({
+        ...args,
+        returnTypedDataToSign: true
+      });
+      assertStructuredDataShape(result, expectedPrimaryType);
+    });
+  }
+);
+
+// ─── Tier 2-F: dispute resolution ────────────────────────────────────────────
+
+describe("MetaTxMixin#signMetaTxResolveDispute() overload dispatch", () => {
+  const COUNTERPARTY_SIG =
+    "0xd093bf19f8e5d7526953f63b7721628b95820e94cf42298f97cd4502b61ff392024b4030ee7db3f74690e721289b287583d72ccd8ad297e69c822eb4f1f87c2a1b";
+
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxResolveDispute({
+      exchangeId: "1",
+      buyerPercent: 10,
+      counterpartySig: COUNTERPARTY_SIG,
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toBe("resolveDispute(uint256,uint256,bytes)");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxResolveDispute as any)({
+      exchangeId: "1",
+      buyerPercent: 10,
+      counterpartySig: COUNTERPARTY_SIG,
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTxDisputeResolution");
+  });
+});
+
+describe("MetaTxMixin#signMetaTxExtendDisputeTimeout() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxExtendDisputeTimeout({
+      exchangeId: "1",
+      newTimeout: VALID_UNTIL,
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toBe("extendDisputeTimeout(uint256,uint256)");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxExtendDisputeTimeout as any)({
+      exchangeId: "1",
+      newTimeout: VALID_UNTIL,
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
+// ─── Tier 2-G: funds ─────────────────────────────────────────────────────────
+
+describe("MetaTxMixin#signMetaTxWithdrawFunds() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxWithdrawFunds({
+      entityId: "1",
+      tokenList: [TOKEN],
+      tokenAmounts: ["1000000000000000000"],
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toBe(
+      "withdrawFunds(uint256,address[],uint256[])"
+    );
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxWithdrawFunds as any)({
+      entityId: "1",
+      tokenList: [TOKEN],
+      tokenAmounts: ["1000000000000000000"],
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTxFund");
+  });
+});
+
+describe("MetaTxMixin#signMetaTxDepositFunds() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxDepositFunds({
+      entityId: "1",
+      fundsTokenAddress: TOKEN,
+      fundsAmount: "1000000000000000000",
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toBe("depositFunds(uint256,address,uint256)");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (makeCoreSDK().signMetaTxDepositFunds as any)({
+      entityId: "1",
+      fundsTokenAddress: TOKEN,
+      fundsAmount: "1000000000000000000",
+      nonce: NONCE,
+      returnTypedDataToSign: true
+    });
+    assertStructuredDataShape(result, "MetaTransaction");
   });
 });
