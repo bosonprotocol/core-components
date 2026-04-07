@@ -688,7 +688,8 @@ const createOfferAndCommitArgsMock = {
   committer: SIGNER,
   condition: conditionStruct,
   useDepositedFunds: false,
-  signature: "0x020d671b80fbd20466d8cb65cef79a24e3bca3fdf82e9dd89d78e7a4c4c045bd72944c20bb1d839e76ee6bb69fed61f64376c37799598b40b8c49148f3cdd88a1b",
+  signature:
+    "0x020d671b80fbd20466d8cb65cef79a24e3bca3fdf82e9dd89d78e7a4c4c045bd72944c20bb1d839e76ee6bb69fed61f64376c37799598b40b8c49148f3cdd88a1b",
   sellerId: "1",
   buyerId: "1",
   sellerOfferParams: sellerParamsMock
@@ -747,10 +748,16 @@ describe("MetaTxMixin#signMetaTxCallExternalContract()", () => {
 // ─── Tier 2-A: signMetaTx (base) ─────────────────────────────────────────────
 
 describe("MetaTxMixin#signMetaTx() overload dispatch", () => {
-  const extraArgs = { functionName: "testFn()", functionSignature: "0xdeadbeef" };
+  const extraArgs = {
+    functionName: "testFn()",
+    functionSignature: "0xdeadbeef"
+  };
 
   test("returns SignedMetaTx without returnTypedDataToSign", async () => {
-    const result = await makeCoreSDK().signMetaTx({ ...extraArgs, nonce: NONCE });
+    const result = await makeCoreSDK().signMetaTx({
+      ...extraArgs,
+      nonce: NONCE
+    });
     assertSignedMetaTx(result);
     expect(result.functionName).toBe("testFn()");
   });
@@ -909,7 +916,9 @@ describe("MetaTxMixin#signMetaTxCreateOfferWithCondition() overload dispatch", (
 
   test("returns StructuredData with returnTypedDataToSign: true", async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result = await (makeCoreSDK().signMetaTxCreateOfferWithCondition as any)({
+    const result = await (
+      makeCoreSDK().signMetaTxCreateOfferWithCondition as any
+    )({
       offerToCreate: createOfferArgsMock,
       condition: conditionStruct,
       nonce: NONCE,
@@ -978,7 +987,9 @@ describe("MetaTxMixin#signMetaTxCommitToConditionalOffer() overload dispatch", (
 
   test("returns StructuredData with returnTypedDataToSign: true", async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result = await (makeCoreSDK().signMetaTxCommitToConditionalOffer as any)({
+    const result = await (
+      makeCoreSDK().signMetaTxCommitToConditionalOffer as any
+    )({
       offerId: "1",
       tokenId: "42",
       nonce: NONCE,
