@@ -305,10 +305,13 @@ describe("MetaTxMixin#signMetaTxUpdateSellerAndOptIn()", () => {
     let relayCount = 0;
     jest
       .spyOn(sdk, "relayMetaTransaction")
-      .mockImplementation(async () => (relayCount++ === 0 ? mockUpdateTx : mockOptInTx));
+      .mockImplementation(async () =>
+        relayCount++ === 0 ? mockUpdateTx : mockOptInTx
+      );
 
     jest.spyOn(sdk, "signMetaTxUpdateSeller").mockResolvedValue({
-      functionName: "updateSeller((uint256,address,address,address,address,uint256,uint8))",
+      functionName:
+        "updateSeller((uint256,address,address,address,address,uint256,uint8))",
       functionSignature: "0xabcd",
       r: "0x",
       s: "0x",
@@ -367,19 +370,17 @@ describe("MetaTxMixin#signMetaTxUpdateSellerAndOptIn()", () => {
     const sdkAny = sdk as any;
     spyOnRelayAndSign(sdkAny);
     // First poll: seller found with pendingSeller.assistant === SIGNER → exits while loop
-    jest
-      .spyOn(sdkAny, "getSellerById")
-      .mockResolvedValue(
-        mockRawSellerFromSubgraph({
-          pendingSeller: {
-            assistant: SIGNER,
-            admin: "0x000000000000000000000000000000000000dead",
-            clerk: null,
-            authTokenId: "0",
-            authTokenType: AuthTokenType.NONE
-          }
-        })
-      );
+    jest.spyOn(sdkAny, "getSellerById").mockResolvedValue(
+      mockRawSellerFromSubgraph({
+        pendingSeller: {
+          assistant: SIGNER,
+          admin: "0x000000000000000000000000000000000000dead",
+          clerk: null,
+          authTokenId: "0",
+          authTokenType: AuthTokenType.NONE
+        }
+      })
+    );
 
     const tx = await sdk.signMetaTxUpdateSellerAndOptIn(sellerUpdates);
 
@@ -395,19 +396,17 @@ describe("MetaTxMixin#signMetaTxUpdateSellerAndOptIn()", () => {
     const sdkAny = sdk as any;
     spyOnRelayAndSign(sdkAny);
     // pendingSeller has neither assistant/admin matching SIGNER, authTokenType is NONE
-    jest
-      .spyOn(sdkAny, "getSellerById")
-      .mockResolvedValue(
-        mockRawSellerFromSubgraph({
-          pendingSeller: {
-            assistant: "0x000000000000000000000000000000000000dead",
-            admin: "0x000000000000000000000000000000000000dead",
-            clerk: null,
-            authTokenId: "0",
-            authTokenType: AuthTokenType.NONE
-          }
-        })
-      );
+    jest.spyOn(sdkAny, "getSellerById").mockResolvedValue(
+      mockRawSellerFromSubgraph({
+        pendingSeller: {
+          assistant: "0x000000000000000000000000000000000000dead",
+          admin: "0x000000000000000000000000000000000000dead",
+          clerk: null,
+          authTokenId: "0",
+          authTokenType: AuthTokenType.NONE
+        }
+      })
+    );
 
     const tx = await sdk.signMetaTxUpdateSellerAndOptIn(sellerUpdates);
 
@@ -482,9 +481,7 @@ describe("MetaTxMixin#signMetaTxPreMint()", () => {
 
     await sdk.signMetaTxPreMint({ offerId: "1", amount: "5" }, { batchId: 7 });
 
-    expect(spy).toHaveBeenCalledWith(
-      expect.objectContaining({ batchId: 7 })
-    );
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining({ batchId: 7 }));
     spy.mockRestore();
   });
 });
@@ -581,7 +578,10 @@ describe("MetaTxMixin#signMetaTxSetApprovalForAllToContract()", () => {
     interceptSellersQuery();
     const spy = jest
       .spyOn(metaTxHandler, "signMetaTxSetApprovalForAllToContract")
-      .mockResolvedValueOnce({ ...mockVoucherMetaTxResult, to: EXPLICIT_VOUCHER });
+      .mockResolvedValueOnce({
+        ...mockVoucherMetaTxResult,
+        to: EXPLICIT_VOUCHER
+      });
     const sdk = makeCoreSDK();
 
     await sdk.signMetaTxSetApprovalForAllToContract({
