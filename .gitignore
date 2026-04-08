@@ -41,3 +41,6 @@ scripts/abi-signatures.csv
 storybook-static
 .qodo
 .env
+
+# claude
+.claude/settings.local.json

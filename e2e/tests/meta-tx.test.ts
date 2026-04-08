@@ -31,12 +31,27 @@ import {
   createDisputeResolver,
   deployerWallet,
   initSellerAndBuyerSDKs,
-  buildFullOfferArgs
+  buildFullOfferArgs,
+  provider,
+  ipfsMetadataStorage,
+  graphMetadataStorage,
+  META_TX_API_KEY,
+  META_TX_API_ID_BOSON,
+  META_TX_API_ID_ERC20s,
+  defaultConfig
 } from "./utils";
 import { CoreSDK, forwarder } from "../../packages/core-sdk/src";
+import { getSignatureParameters } from "../../packages/core-sdk/src/utils/signature";
+import { UnsignedMetaTx } from "../../packages/core-sdk/src/meta-tx/handler";
+import { AgentAdapter } from "../../packages/ethers-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
 import TokenType from "../../contracts/protocol-contracts/scripts/domain/TokenType";
-import { AuthTokenType, GatingType, OfferCreator, FullOfferArgs } from "../../packages/common";
+import {
+  AuthTokenType,
+  GatingType,
+  OfferCreator,
+  FullOfferArgs
+} from "../../packages/common";
 import {
   MSEC_PER_DAY,
   MSEC_PER_SEC
@@ -752,8 +767,7 @@ describe("meta-tx", () => {
           admin: drAddress,
           treasury: drAddress,
           metadataUri: "",
-          escalationResponsePeriodInMS:
-            90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
+          escalationResponsePeriodInMS: 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
           fees: [
             {
               feeAmount: drFeeAmount,
@@ -834,8 +848,7 @@ describe("meta-tx", () => {
           admin: drAddress,
           treasury: drAddress,
           metadataUri: "",
-          escalationResponsePeriodInMS:
-            90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
+          escalationResponsePeriodInMS: 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
           fees: [
             {
               feeAmount: drFeeAmount,
@@ -1014,7 +1027,10 @@ describe("meta-tx", () => {
       const { signature } = await buyerCoreSDKNew.signFullOffer({
         fullOfferArgsUnsigned
       });
-      const fullOfferArgs: FullOfferArgs = { ...fullOfferArgsUnsigned, signature };
+      const fullOfferArgs: FullOfferArgs = {
+        ...fullOfferArgsUnsigned,
+        signature
+      };
 
       const nonce = Date.now();
 
@@ -1124,7 +1140,10 @@ describe("meta-tx", () => {
       const { signature } = await buyerCoreSDKNew.signFullOffer({
         fullOfferArgsUnsigned
       });
-      const fullOfferArgs: FullOfferArgs = { ...fullOfferArgsUnsigned, signature };
+      const fullOfferArgs: FullOfferArgs = {
+        ...fullOfferArgsUnsigned,
+        signature
+      };
 
       const nonce = Date.now();
 
@@ -1228,7 +1247,10 @@ describe("meta-tx", () => {
       const { signature } = await sellerCoreSDKNew.signFullOffer({
         fullOfferArgsUnsigned
       });
-      const fullOfferArgs: FullOfferArgs = { ...fullOfferArgsUnsigned, signature };
+      const fullOfferArgs: FullOfferArgs = {
+        ...fullOfferArgsUnsigned,
+        signature
+      };
 
       const nonce = Date.now();
 
@@ -1337,7 +1359,10 @@ describe("meta-tx", () => {
       const { signature } = await sellerCoreSDKNew.signFullOffer({
         fullOfferArgsUnsigned
       });
-      const fullOfferArgs: FullOfferArgs = { ...fullOfferArgsUnsigned, signature };
+      const fullOfferArgs: FullOfferArgs = {
+        ...fullOfferArgsUnsigned,
+        signature
+      };
 
       // Buyer (committer) pre-approves ERC20 token for price amount
       await approveErc20Token(
@@ -1367,6 +1392,241 @@ describe("meta-tx", () => {
       const metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("open-boson-buyer-flow", () => {
+    test("seller-initiated offer with AgentAdapter and returnTypedDataToSign", async () => {
+      const exchangeToken = MOCK_ERC20_ADDRESS;
+      const sellerDeposit = "0";
+      const drFeeAmount = "0";
+
+      // Create a dispute resolver with zero ERC20 fee
+      const { fundedWallet: drFundedWallet } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
+      const drAddress = drFundedWallet.address.toLowerCase();
+      const { disputeResolver } = await createDisputeResolver(
+        drFundedWallet,
+        deployerWallet,
+        {
+          assistant: drAddress,
+          admin: drAddress,
+          treasury: drAddress,
+          metadataUri: "",
+          escalationResponsePeriodInMS: 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
+          fees: [
+            {
+              feeAmount: drFeeAmount,
+              tokenAddress: exchangeToken,
+              tokenName: "ERC20"
+            }
+          ],
+          sellerAllowList: []
+        }
+      );
+
+      // Create fresh buyer/seller wallets
+      const {
+        sellerCoreSDK: sellerCoreSDKNew,
+        buyerWallet: buyerFundedWallet,
+        sellerWallet: sellerFundedWallet
+      } = await initSellerAndBuyerSDKs(sellerWallet);
+
+      // Mint ERC20 tokens to fresh wallets (they start with 0 ERC20 balance)
+      await ensureMintedAndAllowedTokens(
+        [buyerFundedWallet, sellerFundedWallet],
+        undefined,
+        false
+      );
+
+      // Create seller account
+      const seller = await createSeller(
+        sellerCoreSDKNew,
+        sellerFundedWallet.address
+      );
+
+      // Create buyer CoreSDK with AgentAdapter (no signer — all signing done externally)
+      const apiIds = {
+        [defaultConfig.contracts.protocolDiamond.toLowerCase()]: {
+          executeMetaTransaction: META_TX_API_ID_BOSON
+        },
+        [(defaultConfig.contracts.testErc20 as string).toLowerCase()]: {
+          executeMetaTransaction: META_TX_API_ID_ERC20s
+        }
+      };
+      const buyerCoreSdk = CoreSDK.fromDefaultConfig({
+        envName: "local",
+        configId: "local-31337-0",
+        web3Lib: new AgentAdapter(provider, {
+          signerAddress: buyerFundedWallet.address
+        }),
+        metadataStorage: ipfsMetadataStorage,
+        theGraphStorage: graphMetadataStorage,
+        metaTx: {
+          apiKey: META_TX_API_KEY,
+          apiIds
+        }
+      });
+
+      const noCondition = {
+        method: EvaluationMethod.None,
+        tokenType: TokenType.MultiToken,
+        tokenAddress: constants.AddressZero,
+        gatingType: GatingType.PerAddress,
+        minTokenId: 0,
+        maxTokenId: 0,
+        threshold: 0,
+        maxCommits: 0
+      };
+
+      // Build full offer args for seller-initiated offer with ERC20 exchange token:
+      // seller is offer creator (deposits sellerDeposit=0), buyer is committer (pays price in ERC20)
+      const fullOfferArgsUnsigned = await buildFullOfferArgs(
+        buyerCoreSdk,
+        sellerCoreSDKNew,
+        noCondition,
+        {
+          committer: buyerFundedWallet.address,
+          offerCreator: sellerFundedWallet.address,
+          sellerId: seller.id,
+          sellerOfferParams: {
+            collectionIndex: 0,
+            mutualizerAddress: constants.AddressZero,
+            royaltyInfo: { recipients: [], bps: [] }
+          },
+          useDepositedFunds: true,
+          creator: OfferCreator.Seller,
+          feeLimit: parseEther("0.1")
+        },
+        {
+          offerParams: {
+            disputeResolverId: disputeResolver.id,
+            exchangeToken,
+            sellerDeposit
+          }
+        }
+      );
+
+      // Seller (offer creator) signs the full offer
+      const { signature } = await sellerCoreSDKNew.signFullOffer({
+        fullOfferArgsUnsigned
+      });
+      const fullOfferArgs: FullOfferArgs = {
+        ...fullOfferArgsUnsigned,
+        signature
+      };
+
+      // Buyer pre-approves ERC20 token via native meta tx with returnTypedDataToSign
+      const approveStructuredData =
+        await buyerCoreSdk.signNativeMetaTxApproveExchangeToken(
+          exchangeToken,
+          fullOfferArgsUnsigned.price,
+          { returnTypedDataToSign: true }
+        );
+      const { EIP712Domain: _approveDomain, ...approveTypesWithoutDomain } =
+        approveStructuredData.types;
+      const approveRawSignature = await buyerFundedWallet._signTypedData(
+        approveStructuredData.domain,
+        approveTypesWithoutDomain,
+        approveStructuredData.message
+      );
+      const {
+        r: approveR,
+        s: approveS,
+        v: approveV
+      } = getSignatureParameters(approveRawSignature);
+      const nativeMetaTx = await buyerCoreSdk.relayNativeMetaTransaction(
+        exchangeToken,
+        {
+          functionSignature: approveStructuredData.functionSignature,
+          sigR: approveR,
+          sigS: approveS,
+          sigV: approveV
+        }
+      );
+      const nativeMetaTxReceipt = await nativeMetaTx.wait();
+      expect(nativeMetaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(nativeMetaTxReceipt.effectiveGasPrice).gt(0)).toBe(
+        true
+      );
+
+      // Buyer signs meta-tx for createOfferAndCommit with returnTypedDataToSign
+      const commitNonce = Date.now();
+      const signCommit =
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        buyerCoreSdk.signMetaTxCreateOfferAndCommit.bind(buyerCoreSdk) as any;
+      const commitStructuredData = (await signCommit({
+        createOfferAndCommitArgs: fullOfferArgs,
+        nonce: commitNonce,
+        returnTypedDataToSign: true
+      })) as UnsignedMetaTx;
+      const { EIP712Domain: _commitDomain, ...commitTypesWithoutDomain } =
+        commitStructuredData.types;
+      const commitRawSignature = await buyerFundedWallet._signTypedData(
+        commitStructuredData.domain,
+        commitTypesWithoutDomain,
+        commitStructuredData.message
+      );
+      const {
+        r: commitR,
+        s: commitS,
+        v: commitV
+      } = getSignatureParameters(commitRawSignature);
+      const commitMetaTx = await buyerCoreSdk.relayMetaTransaction({
+        functionName: commitStructuredData.functionName,
+        functionSignature: commitStructuredData.functionSignature,
+        nonce: commitNonce,
+        sigR: commitR,
+        sigS: commitS,
+        sigV: commitV
+      });
+      const commitMetaTxReceipt = await commitMetaTx.wait();
+      expect(commitMetaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(commitMetaTxReceipt.effectiveGasPrice).gt(0)).toBe(
+        true
+      );
+
+      // Get the exchange ID from the commit receipt
+      const exchangeId = buyerCoreSdk.getCommittedExchangeIdFromLogs(
+        commitMetaTxReceipt.logs
+      );
+      expect(exchangeId).toBeTruthy();
+
+      // Buyer redeems the voucher via meta-tx with returnTypedDataToSign
+      const redeemNonce = Date.now();
+      const signRedeem =
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        buyerCoreSdk.signMetaTxRedeemVoucher.bind(buyerCoreSdk) as any;
+      const redeemStructuredData = (await signRedeem({
+        exchangeId: Number(exchangeId),
+        nonce: redeemNonce,
+        returnTypedDataToSign: true
+      })) as UnsignedMetaTx;
+      const { EIP712Domain: _redeemDomain, ...redeemTypesWithoutDomain } =
+        redeemStructuredData.types;
+      const redeemRawSignature = await buyerFundedWallet._signTypedData(
+        redeemStructuredData.domain,
+        redeemTypesWithoutDomain,
+        redeemStructuredData.message
+      );
+      const {
+        r: redeemR,
+        s: redeemS,
+        v: redeemV
+      } = getSignatureParameters(redeemRawSignature);
+      const redeemMetaTx = await buyerCoreSdk.relayMetaTransaction({
+        functionName: redeemStructuredData.functionName,
+        functionSignature: redeemStructuredData.functionSignature,
+        nonce: redeemNonce,
+        sigR: redeemR,
+        sigS: redeemS,
+        sigV: redeemV
+      });
+      const redeemMetaTxReceipt = await redeemMetaTx.wait();
+      expect(redeemMetaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(redeemMetaTxReceipt.effectiveGasPrice).gt(0)).toBe(
+        true
+      );
     });
   });
 

@@ -38,6 +38,7 @@ import {
 } from "../offers/interface";
 import {
   prepareDataSignatureParameters,
+  StructuredData,
   rebuildSignature
 } from "../utils/signature";
 import {
@@ -67,6 +68,11 @@ import { isTrustedForwarder } from "../voucher/handler";
 import { findCollectionSalt } from "../accounts/handler";
 import { storeMetadataItems } from "../metadata/storeMetadataItems";
 
+export type UnsignedMetaTx = StructuredData & {
+  functionName: string;
+  functionSignature: string;
+};
+
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
   nonce: BigNumberish;
@@ -95,12 +101,30 @@ export type SignedVoucherMetaTx = Omit<SignedMetaTx, "functionName"> & {
   domainSeparator?: string;
 };
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTx(
   args: BaseMetaTxArgs & {
     functionName: string;
     functionSignature: string;
+    returnTypedDataToSign: true;
   }
-): Promise<SignedMetaTx> {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTx(
+  args: BaseMetaTxArgs & {
+    functionName: string;
+    functionSignature: string;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTx(
+  args: BaseMetaTxArgs & {
+    functionName: string;
+    functionSignature: string;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   const metaTransactionType = [
     { name: "nonce", type: "uint256" },
     { name: "from", type: "address" },
@@ -116,12 +140,28 @@ export async function signMetaTx(
   const signerAddress = await args.web3Lib.getSignerAddress();
 
   const message = {
-    nonce: args.nonce,
+    nonce: args.nonce.toString(),
     from: signerAddress,
     contractAddress: args.metaTxHandlerAddress,
     functionName: args.functionName,
     functionSignature: args.functionSignature
   };
+
+  if (args.returnTypedDataToSign) {
+    const structuredData = await prepareDataSignatureParameters({
+      ...args,
+      verifyingContractAddress: args.metaTxHandlerAddress,
+      customSignatureType,
+      primaryType: "MetaTransaction",
+      message,
+      returnTypedDataToSign: true
+    });
+    return {
+      ...structuredData,
+      functionName: args.functionName,
+      functionSignature: args.functionSignature
+    };
+  }
 
   const signature = await prepareDataSignatureParameters({
     ...args,
@@ -400,13 +440,33 @@ export async function relayBiconomyMetaTransaction(args: {
   };
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxCreateSeller(
   args: BaseMetaTxArgs & {
     createSellerArgs: CreateSellerArgs;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign: true;
   }
-) {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCreateSeller(
+  args: BaseMetaTxArgs & {
+    createSellerArgs: CreateSellerArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCreateSeller(
+  args: BaseMetaTxArgs & {
+    createSellerArgs: CreateSellerArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   await Promise.all(
     [args.createSellerArgs.contractUri, args.createSellerArgs.metadataUri].map(
       (metadataUri) =>
@@ -422,53 +482,121 @@ export async function signMetaTxCreateSeller(
     contractAddress: args.metaTxHandlerAddress,
     ...args
   });
-  return signMetaTx({
+  const signMetaTxArgs = {
     ...args,
     functionName:
       "createSeller((uint256,address,address,address,address,bool,string),(uint256,uint8),(string,uint256,bytes32))",
     functionSignature: encodeCreateSeller(args.createSellerArgs, collectionSalt)
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxUpdateSeller(
   args: BaseMetaTxArgs & {
     updateSellerArgs: UpdateSellerArgs;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign: true;
   }
-) {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxUpdateSeller(
+  args: BaseMetaTxArgs & {
+    updateSellerArgs: UpdateSellerArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxUpdateSeller(
+  args: BaseMetaTxArgs & {
+    updateSellerArgs: UpdateSellerArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   await storeMetadataOnTheGraph({
     metadataUriOrHash: args.updateSellerArgs.metadataUri,
     metadataStorage: args.metadataStorage,
     theGraphStorage: args.theGraphStorage
   });
-  return signMetaTx({
+  const signMetaTxArgs = {
     ...args,
     functionName:
       "updateSeller((uint256,address,address,address,address,bool,string),(uint256,uint8))",
     functionSignature: encodeUpdateSeller(args.updateSellerArgs)
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxOptInToSellerUpdate(
   args: BaseMetaTxArgs & {
     optInToSellerUpdateArgs: OptInToSellerUpdateArgs;
+    returnTypedDataToSign: true;
   }
-) {
-  return signMetaTx({
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxOptInToSellerUpdate(
+  args: BaseMetaTxArgs & {
+    optInToSellerUpdateArgs: OptInToSellerUpdateArgs;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxOptInToSellerUpdate(
+  args: BaseMetaTxArgs & {
+    optInToSellerUpdateArgs: OptInToSellerUpdateArgs;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  const signMetaTxArgs = {
     ...args,
     functionName: "optInToSellerUpdate(uint256,uint8[])",
     functionSignature: encodeOptInToSellerUpdate(args.optInToSellerUpdateArgs)
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxCreateOffer(
   args: BaseMetaTxArgs & {
     createOfferArgs: CreateOfferArgs;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign: true;
   }
-) {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCreateOffer(
+  args: BaseMetaTxArgs & {
+    createOfferArgs: CreateOfferArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCreateOffer(
+  args: BaseMetaTxArgs & {
+    createOfferArgs: CreateOfferArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   utils.validation.createOfferArgsSchema.validateSync(args.createOfferArgs, {
     abortEarly: false
   });
@@ -483,21 +611,45 @@ export async function signMetaTxCreateOffer(
     createOffersArgs: [args.createOfferArgs]
   });
 
-  return signMetaTx({
+  const signMetaTxArgs = {
     ...args,
     functionName:
       "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),uint256,uint256)",
     functionSignature: encodeCreateOffer(args.createOfferArgs)
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxCreateOfferBatch(
   args: BaseMetaTxArgs & {
     createOffersArgs: CreateOfferArgs[];
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign: true;
   }
-) {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCreateOfferBatch(
+  args: BaseMetaTxArgs & {
+    createOffersArgs: CreateOfferArgs[];
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCreateOfferBatch(
+  args: BaseMetaTxArgs & {
+    createOffersArgs: CreateOfferArgs[];
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   for (const offerToCreate of args.createOffersArgs) {
     utils.validation.createOfferArgsSchema.validateSync(offerToCreate, {
       abortEarly: false
@@ -515,145 +667,337 @@ export async function signMetaTxCreateOfferBatch(
   );
   await storeMetadataItems(args);
 
-  return signMetaTx({
+  const signMetaTxArgs = {
     ...args,
     functionName:
       "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256)[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],(uint256,address)[],uint256[],uint256[])",
     functionSignature: encodeCreateOfferBatch(args.createOffersArgs)
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxVoidOffer(
   args: BaseMetaTxArgs & {
     offerId: BigNumberish;
+    returnTypedDataToSign: true;
   }
-) {
-  return signMetaTx({
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxVoidOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxVoidOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  const signMetaTxArgs = {
     ...args,
     functionName: "voidOffer(uint256)",
     functionSignature: bosonOfferHandlerIface.encodeFunctionData("voidOffer", [
       args.offerId
     ])
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxVoidOfferBatch(
   args: BaseMetaTxArgs & {
     offerIds: BigNumberish[];
+    returnTypedDataToSign: true;
   }
-) {
-  return signMetaTx({
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxVoidOfferBatch(
+  args: BaseMetaTxArgs & {
+    offerIds: BigNumberish[];
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxVoidOfferBatch(
+  args: BaseMetaTxArgs & {
+    offerIds: BigNumberish[];
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  const signMetaTxArgs = {
     ...args,
     functionName: "voidOfferBatch(uint256[])",
     functionSignature: bosonOfferHandlerIface.encodeFunctionData(
       "voidOfferBatch",
       [args.offerIds]
     )
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxExtendOffer(
   args: BaseMetaTxArgs & {
     offerId: BigNumberish;
     validUntil: BigNumberish;
+    returnTypedDataToSign: true;
   }
-) {
-  return signMetaTx({
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxExtendOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    validUntil: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxExtendOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    validUntil: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  const signMetaTxArgs = {
     ...args,
     functionName: "extendOffer(uint256,uint256)",
     functionSignature: bosonOfferHandlerIface.encodeFunctionData(
       "extendOffer",
       [args.offerId, args.validUntil]
     )
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxExtendOfferBatch(
   args: BaseMetaTxArgs & {
     offerIds: BigNumberish[];
     validUntil: BigNumberish;
+    returnTypedDataToSign: true;
   }
-) {
-  return signMetaTx({
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxExtendOfferBatch(
+  args: BaseMetaTxArgs & {
+    offerIds: BigNumberish[];
+    validUntil: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxExtendOfferBatch(
+  args: BaseMetaTxArgs & {
+    offerIds: BigNumberish[];
+    validUntil: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  const signMetaTxArgs = {
     ...args,
     functionName: "extendOfferBatch(uint256[],uint256)",
     functionSignature: bosonOfferHandlerIface.encodeFunctionData(
       "extendOfferBatch",
       [args.offerIds, args.validUntil]
     )
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxCompleteExchangeBatch(
   args: BaseMetaTxArgs & {
     exchangeIds: BigNumberish[];
+    returnTypedDataToSign: true;
   }
-) {
-  return signMetaTx({
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCompleteExchangeBatch(
+  args: BaseMetaTxArgs & {
+    exchangeIds: BigNumberish[];
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCompleteExchangeBatch(
+  args: BaseMetaTxArgs & {
+    exchangeIds: BigNumberish[];
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  const signMetaTxArgs = {
     ...args,
     functionName: "completeExchangeBatch(uint256[])",
     functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
       "completeExchangeBatch",
       [args.exchangeIds]
     )
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxExpireVoucher(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
+    returnTypedDataToSign: true;
   }
-) {
-  return signMetaTx({
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxExpireVoucher(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxExpireVoucher(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  const signMetaTxArgs = {
     ...args,
     functionName: "expireVoucher(uint256)",
     functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
       "expireVoucher",
       [args.exchangeId]
     )
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxRevokeVoucher(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
+    returnTypedDataToSign: true;
   }
-) {
-  return signMetaTx({
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxRevokeVoucher(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxRevokeVoucher(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  const signMetaTxArgs = {
     ...args,
     functionName: "revokeVoucher(uint256)",
     functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
       "revokeVoucher",
       [args.exchangeId]
     )
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxCreateGroup(
   args: BaseMetaTxArgs & {
     createGroupArgs: CreateGroupArgs;
+    returnTypedDataToSign: true;
   }
-) {
-  return signMetaTx({
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCreateGroup(
+  args: BaseMetaTxArgs & {
+    createGroupArgs: CreateGroupArgs;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCreateGroup(
+  args: BaseMetaTxArgs & {
+    createGroupArgs: CreateGroupArgs;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  const signMetaTxArgs = {
     ...args,
     functionName:
       "createGroup((uint256,uint256,uint256[]),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256))",
     functionSignature: encodeCreateGroup(args.createGroupArgs)
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxReserveRange(
   args: BaseMetaTxArgs & {
     offerId: BigNumberish;
     length: BigNumberish;
     to: string;
+    returnTypedDataToSign: true;
   }
-) {
-  return signMetaTx({
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxReserveRange(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    length: BigNumberish;
+    to: string;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxReserveRange(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    length: BigNumberish;
+    to: string;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  const signMetaTxArgs = {
     ...args,
     functionName: "reserveRange(uint256,uint256,address)",
     functionSignature: encodeReserveRange(args.offerId, args.length, args.to)
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
 function isLocal(chainId: number): boolean {
@@ -797,14 +1141,36 @@ export async function signMetaTxCallExternalContract(
   });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxCreateOfferWithCondition(
   args: BaseMetaTxArgs & {
     offerToCreate: CreateOfferArgs;
     condition: ConditionStruct;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign: true;
   }
-) {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCreateOfferWithCondition(
+  args: BaseMetaTxArgs & {
+    offerToCreate: CreateOfferArgs;
+    condition: ConditionStruct;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCreateOfferWithCondition(
+  args: BaseMetaTxArgs & {
+    offerToCreate: CreateOfferArgs;
+    condition: ConditionStruct;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   utils.validation.createOfferArgsSchema.validateSync(args.offerToCreate, {
     abortEarly: false
   });
@@ -820,7 +1186,7 @@ export async function signMetaTxCreateOfferWithCondition(
     createOffersArgs: [args.offerToCreate]
   });
 
-  return signMetaTx({
+  const signMetaTxArgs = {
     ...args,
     functionName:
       "createOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256)",
@@ -828,14 +1194,34 @@ export async function signMetaTxCreateOfferWithCondition(
       args.offerToCreate,
       args.condition
     )
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxCommitToOffer(
   args: BaseMetaTxArgs & {
     offerId: BigNumberish;
+    returnTypedDataToSign: true;
   }
-): Promise<SignedMetaTx> {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCommitToOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCommitToOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   const functionName = "commitToOffer(address,uint256)";
 
   const offerType = [
@@ -869,6 +1255,23 @@ export async function signMetaTxCommitToOffer(
     }
   };
 
+  const functionSignature = bosonExchangeCommitHandlerIface.encodeFunctionData(
+    "commitToOffer",
+    [buyerAddress, args.offerId]
+  );
+
+  if (args.returnTypedDataToSign) {
+    const structuredData = await prepareDataSignatureParameters({
+      ...args,
+      verifyingContractAddress: args.metaTxHandlerAddress,
+      customSignatureType,
+      primaryType: "MetaTxCommitToOffer",
+      message,
+      returnTypedDataToSign: true
+    });
+    return { ...structuredData, functionName, functionSignature };
+  }
+
   const signatureParams = await prepareDataSignatureParameters({
     ...args,
     verifyingContractAddress: args.metaTxHandlerAddress,
@@ -881,19 +1284,34 @@ export async function signMetaTxCommitToOffer(
   return {
     ...signatureParams,
     functionName,
-    functionSignature: bosonExchangeCommitHandlerIface.encodeFunctionData(
-      "commitToOffer",
-      [buyerAddress, args.offerId]
-    )
+    functionSignature
   };
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxCommitToConditionalOffer(
   args: BaseMetaTxArgs & {
     offerId: BigNumberish;
     tokenId: BigNumberish;
+    returnTypedDataToSign: true;
   }
-): Promise<SignedMetaTx> {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCommitToConditionalOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    tokenId: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCommitToConditionalOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    tokenId: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   const functionName = "commitToConditionalOffer(address,uint256,uint256)";
 
   const offerType = [
@@ -929,6 +1347,23 @@ export async function signMetaTxCommitToConditionalOffer(
     }
   };
 
+  const functionSignature = bosonExchangeCommitHandlerIface.encodeFunctionData(
+    "commitToConditionalOffer",
+    [buyerAddress, args.offerId, args.tokenId]
+  );
+
+  if (args.returnTypedDataToSign) {
+    const structuredData = await prepareDataSignatureParameters({
+      ...args,
+      verifyingContractAddress: args.metaTxHandlerAddress,
+      customSignatureType,
+      primaryType: "MetaTxCommitToConditionalOffer",
+      message,
+      returnTypedDataToSign: true
+    });
+    return { ...structuredData, functionName, functionSignature };
+  }
+
   const signatureParams = await prepareDataSignatureParameters({
     ...args,
     verifyingContractAddress: args.metaTxHandlerAddress,
@@ -941,36 +1376,75 @@ export async function signMetaTxCommitToConditionalOffer(
   return {
     ...signatureParams,
     functionName,
-    functionSignature: bosonExchangeCommitHandlerIface.encodeFunctionData(
-      "commitToConditionalOffer",
-      [buyerAddress, args.offerId, args.tokenId]
-    )
+    functionSignature
   };
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxCommitToBuyerOffer(
   args: BaseMetaTxArgs & {
     offerId: BigNumberish;
     sellerParams: SellerOfferArgs;
+    returnTypedDataToSign: true;
   }
-): Promise<SignedMetaTx> {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCommitToBuyerOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    sellerParams: SellerOfferArgs;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCommitToBuyerOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    sellerParams: SellerOfferArgs;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   const functionName =
     "commitToBuyerOffer(uint256,(uint256,(address[],uint256[]),address))";
 
-  return signMetaTx({
+  const signMetaTxArgs = {
     ...args,
     functionName,
     functionSignature: encodeCommitToBuyerOffer(args.offerId, args.sellerParams)
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxCreateOfferAndCommit(
   args: BaseMetaTxArgs & {
     createOfferAndCommitArgs: FullOfferArgs;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign: true;
   }
-): Promise<SignedMetaTx> {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCreateOfferAndCommit(
+  args: BaseMetaTxArgs & {
+    createOfferAndCommitArgs: FullOfferArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCreateOfferAndCommit(
+  args: BaseMetaTxArgs & {
+    createOfferAndCommitArgs: FullOfferArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   utils.validation.createOfferAndCommitArgsSchema.validateSync(
     args.createOfferAndCommitArgs,
     { abortEarly: false }
@@ -987,71 +1461,172 @@ export async function signMetaTxCreateOfferAndCommit(
     createOffersArgs: [args.createOfferAndCommitArgs]
   });
 
-  return signMetaTx({
+  const signMetaTxArgs = {
     ...args,
     functionName:
       "createOfferAndCommit(((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256,bool),address,address,bytes,uint256,(uint256,(address[],uint256[]),address))",
     functionSignature: encodeCreateOfferAndCommit(args.createOfferAndCommitArgs)
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxCancelVoucher(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
+    returnTypedDataToSign: true;
   }
-) {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCancelVoucher(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCancelVoucher(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   return makeExchangeMetaTxSigner("cancelVoucher(uint256)")(args);
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxRedeemVoucher(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
+    returnTypedDataToSign: true;
   }
-) {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxRedeemVoucher(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxRedeemVoucher(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   return makeExchangeMetaTxSigner("redeemVoucher(uint256)")(args);
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxCompleteExchange(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
+    returnTypedDataToSign: true;
   }
-) {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCompleteExchange(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCompleteExchange(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   return makeExchangeMetaTxSigner("completeExchange(uint256)")(args);
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxRetractDispute(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
+    returnTypedDataToSign: true;
   }
-) {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxRetractDispute(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxRetractDispute(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   return makeExchangeMetaTxSigner(
     "retractDispute(uint256)",
     bosonDisputeHandlerIface
   )(args);
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxEscalateDispute(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
+    returnTypedDataToSign: true;
   }
-) {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxEscalateDispute(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxEscalateDispute(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   return makeExchangeMetaTxSigner(
     "escalateDispute(uint256)",
     bosonDisputeHandlerIface
   )(args);
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxRaiseDispute(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
+    returnTypedDataToSign: true;
   }
-) {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxRaiseDispute(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxRaiseDispute(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   return makeExchangeMetaTxSigner(
     "raiseDispute(uint256)",
     bosonDisputeHandlerIface
   )(args);
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxResolveDispute(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
@@ -1063,8 +1638,39 @@ export async function signMetaTxResolveDispute(
           v: number;
         }
       | string;
+    returnTypedDataToSign: true;
   }
-): Promise<SignedMetaTx> {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxResolveDispute(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    buyerPercent: BigNumberish;
+    counterpartySig:
+      | {
+          r: string;
+          s: string;
+          v: number;
+        }
+      | string;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxResolveDispute(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    buyerPercent: BigNumberish;
+    counterpartySig:
+      | {
+          r: string;
+          s: string;
+          v: number;
+        }
+      | string;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   const functionName = "resolveDispute(uint256,uint256,bytes)";
   const counterpartySig =
     typeof args.counterpartySig === "string"
@@ -1102,6 +1708,24 @@ export async function signMetaTxResolveDispute(
     }
   };
 
+  const functionSignature = bosonDisputeHandlerIface.encodeFunctionData(
+    // remove params in brackets from string
+    functionName.replace(/\(([^)]*)\)[^(]*$/, ""),
+    [args.exchangeId, args.buyerPercent, counterpartySig]
+  );
+
+  if (args.returnTypedDataToSign) {
+    const structuredData = await prepareDataSignatureParameters({
+      ...args,
+      verifyingContractAddress: args.metaTxHandlerAddress,
+      customSignatureType,
+      primaryType: "MetaTxDisputeResolution",
+      message,
+      returnTypedDataToSign: true
+    });
+    return { ...structuredData, functionName, functionSignature };
+  }
+
   const signatureParams = await prepareDataSignatureParameters({
     ...args,
     verifyingContractAddress: args.metaTxHandlerAddress,
@@ -1114,37 +1738,75 @@ export async function signMetaTxResolveDispute(
   return {
     ...signatureParams,
     functionName,
-    functionSignature: bosonDisputeHandlerIface.encodeFunctionData(
-      // remove params in brackets from string
-      functionName.replace(/\(([^)]*)\)[^(]*$/, ""),
-      [args.exchangeId, args.buyerPercent, counterpartySig]
-    )
+    functionSignature
   };
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxExtendDisputeTimeout(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
     newTimeout: BigNumberish;
+    returnTypedDataToSign: true;
   }
-) {
-  return signMetaTx({
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxExtendDisputeTimeout(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    newTimeout: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxExtendDisputeTimeout(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    newTimeout: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  const signMetaTxArgs = {
     ...args,
     functionName: "extendDisputeTimeout(uint256,uint256)",
     functionSignature: bosonDisputeHandlerIface.encodeFunctionData(
       "extendDisputeTimeout",
       [args.exchangeId, args.newTimeout]
     )
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxWithdrawFunds(
   args: BaseMetaTxArgs & {
     entityId: BigNumberish;
     tokenList: string[];
     tokenAmounts: BigNumberish[];
+    returnTypedDataToSign: true;
   }
-): Promise<SignedMetaTx> {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxWithdrawFunds(
+  args: BaseMetaTxArgs & {
+    entityId: BigNumberish;
+    tokenList: string[];
+    tokenAmounts: BigNumberish[];
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxWithdrawFunds(
+  args: BaseMetaTxArgs & {
+    entityId: BigNumberish;
+    tokenList: string[];
+    tokenAmounts: BigNumberish[];
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   const functionName = "withdrawFunds(uint256,address[],uint256[])";
 
   const fundType = [
@@ -1178,6 +1840,24 @@ export async function signMetaTxWithdrawFunds(
     }
   };
 
+  const functionSignature = encodeWithdrawFunds(
+    args.entityId,
+    args.tokenList,
+    args.tokenAmounts
+  );
+
+  if (args.returnTypedDataToSign) {
+    const structuredData = await prepareDataSignatureParameters({
+      ...args,
+      verifyingContractAddress: args.metaTxHandlerAddress,
+      customSignatureType,
+      primaryType: "MetaTxFund",
+      message,
+      returnTypedDataToSign: true
+    });
+    return { ...structuredData, functionName, functionSignature };
+  }
+
   const signatureParams = await prepareDataSignatureParameters({
     ...args,
     verifyingContractAddress: args.metaTxHandlerAddress,
@@ -1190,21 +1870,37 @@ export async function signMetaTxWithdrawFunds(
   return {
     ...signatureParams,
     functionName,
-    functionSignature: encodeWithdrawFunds(
-      args.entityId,
-      args.tokenList,
-      args.tokenAmounts
-    )
+    functionSignature
   };
 }
 
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signMetaTxDepositFunds(
   args: BaseMetaTxArgs & {
     entityId: BigNumberish;
     fundsTokenAddress: string;
     fundsAmount: BigNumberish;
+    returnTypedDataToSign: true;
   }
-) {
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxDepositFunds(
+  args: BaseMetaTxArgs & {
+    entityId: BigNumberish;
+    fundsTokenAddress: string;
+    fundsAmount: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxDepositFunds(
+  args: BaseMetaTxArgs & {
+    entityId: BigNumberish;
+    fundsTokenAddress: string;
+    fundsAmount: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   if (!isAddress(args.fundsTokenAddress)) {
     throw new Error(`Invalid fundsTokenAddress: ${args.fundsTokenAddress}`);
   }
@@ -1215,7 +1911,7 @@ export async function signMetaTxDepositFunds(
     );
   }
 
-  return signMetaTx({
+  const signMetaTxArgs = {
     ...args,
     functionName: "depositFunds(uint256,address,uint256)",
     functionSignature: encodeDepositFunds(
@@ -1223,7 +1919,11 @@ export async function signMetaTxDepositFunds(
       args.fundsTokenAddress,
       args.fundsAmount
     )
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
 }
 
 function makeExchangeMetaTxSigner(
@@ -1239,8 +1939,9 @@ function makeExchangeMetaTxSigner(
   return async function signExchangeMetaTx(
     args: BaseMetaTxArgs & {
       exchangeId: BigNumberish;
+      returnTypedDataToSign?: boolean;
     }
-  ): Promise<SignedMetaTx> {
+  ): Promise<SignedMetaTx | UnsignedMetaTx> {
     const exchangeType = [{ name: "exchangeId", type: "uint256" }];
 
     const metaTransactionType = [
@@ -1268,6 +1969,24 @@ function makeExchangeMetaTxSigner(
       }
     };
 
+    const functionSignature = handlerIface.encodeFunctionData(
+      // remove params in brackets from string
+      functionName.replace(/\(([^)]*)\)[^(]*$/, ""),
+      [args.exchangeId]
+    );
+
+    if (args.returnTypedDataToSign) {
+      const structuredData = await prepareDataSignatureParameters({
+        ...args,
+        verifyingContractAddress: args.metaTxHandlerAddress,
+        customSignatureType,
+        primaryType: "MetaTxExchange",
+        message,
+        returnTypedDataToSign: true
+      });
+      return { ...structuredData, functionName, functionSignature };
+    }
+
     const signatureParams = await prepareDataSignatureParameters({
       ...args,
       verifyingContractAddress: args.metaTxHandlerAddress,
@@ -1280,11 +1999,7 @@ function makeExchangeMetaTxSigner(
     return {
       ...signatureParams,
       functionName,
-      functionSignature: handlerIface.encodeFunctionData(
-        // remove params in brackets from string
-        functionName.replace(/\(([^)]*)\)[^(]*$/, ""),
-        [args.exchangeId]
-      )
+      functionSignature
     };
   };
 }

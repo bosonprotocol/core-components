@@ -1,0 +1,159 @@
+{
+  "permissions": {
+    "allow": [
+      // ========== WEB FETCH ==========
+      "WebFetch(*)",
+
+      // ========== FILE OPERATIONS (read-only & safe writes) ==========
+      "Bash(ls:*)",
+      "Bash(pwd:*)",
+      "Bash(cat:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(sed:*)",
+      "Bash(awk:*)",
+      "Bash(sort:*)",
+      "Bash(uniq:*)",
+      "Bash(wc:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(touch:*)",
+      "Bash(tree:*)",
+      "Bash(du:*)",
+      "Bash(df:*)",
+
+      // ========== NODE.JS / PACKAGE MANAGEMENT ==========
+      "Bash(node:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(yarn:*)",
+      "Bash(pnpm:*)",
+
+      // ========== TYPESCRIPT / BUILD ==========
+      "Bash(tsc:*)",
+      "Bash(ts-node:*)",
+
+      // ========== TESTING ==========
+      "Bash(jest:*)",
+
+      // ========== LINTING / FORMATTING ==========
+      "Bash(eslint:*)",
+      "Bash(prettier:*)",
+
+      // ========== SAFE GIT OPERATIONS ==========
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git stash list:*)",
+      "Bash(git tag:*)",
+      "Bash(git remote -v:*)",
+      "Bash(git fetch:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)",
+      "Bash(git rebase:*)",
+
+      // ========== TEXT PROCESSING & UTILITIES ==========
+      "Bash(echo:*)",
+      "Bash(printf:*)",
+      "Bash(tr:*)",
+      "Bash(cut:*)",
+      "Bash(xargs:*)",
+      "Bash(jq:*)",
+      "Bash(base64:*)",
+
+      // ========== PROCESS INFO (read-only) ==========
+      "Bash(ps:*)",
+      "Bash(whoami:*)",
+      "Bash(which:*)",
+      "Bash(where:*)",
+
+      // ========== MISC UTILITIES ==========
+      "Bash(date:*)",
+      "Bash(sleep:*)",
+      "Bash(test:*)",
+      "Bash(zip:*)",
+      "Bash(unzip:*)"
+    ],
+
+    "deny": [
+      // ========== DESTRUCTIVE FILESYSTEM OPERATIONS ==========
+      "Bash(rm -rf /)",
+      "Bash(rm -rf *)",
+      "Bash(rm -rf ./*)",
+      "Bash(rm -rf ../*)",
+      "Bash(dd if=/dev/zero*)",
+      "Bash(mkfs.*)",
+      "Bash(format:*)",
+
+      // ========== DESTRUCTIVE GIT OPERATIONS ==========
+      "Bash(git push:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean -f:*)",
+      "Bash(git clean -fd:*)",
+      "Bash(git checkout -- .:*)",
+      "Bash(git branch -D:*)",
+      "Bash(git restore .:*)",
+
+      // ========== PRIVILEGE ESCALATION ==========
+      "Bash(sudo:*)",
+      "Bash(su:*)",
+      "Bash(doas:*)",
+
+      // ========== FORK BOMBS ==========
+      "Bash(:(){:|:&};:)",
+
+      // ========== REVERSE SHELLS ==========
+      "Bash(/dev/tcp/*)",
+      "Bash(/dev/udp/*)",
+      "Bash(nc -e /bin/bash*)",
+      "Bash(bash -c 'exec 1<>/dev/tcp/*')",
+
+      // ========== PIPE-EXEC FROM REMOTE ==========
+      "Bash(curl * | bash*)",
+      "Bash(curl * | sh*)",
+      "Bash(wget * | bash*)",
+      "Bash(wget * | sh*)",
+      "Bash(source <(curl*)",
+      "Bash(bash <(curl*)",
+
+      // ========== CREDENTIAL THEFT ==========
+      "Bash(cat /etc/shadow*)",
+      "Bash(cat /etc/passwd*)",
+      "Bash(cat ~/.ssh/id_rsa*)",
+      "Bash(cat ~/.aws/credentials*)",
+      "Bash(cat ~/.docker/config.json*)",
+      "Bash(cat ~/.kube/config*)",
+
+      // ========== PROCESS KILLING ==========
+      "Bash(kill -9:*)",
+      "Bash(killall:*)",
+
+      // ========== LOG & AUDIT DELETION ==========
+      "Bash(history -c*)",
+      "Bash(cat /dev/null > ~/.bash_history*)",
+
+      // ========== CLOUD METADATA EXPLOITS ==========
+      "Bash(curl http://169.254.169.254/*)",
+      "Bash(curl http://metadata.google.internal/*)",
+
+      // ========== DANGEROUS EVAL / INJECTION ==========
+      "Bash(eval:*)",
+
+      // ========== KERNEL / SYSTEM MODIFICATION ==========
+      "Bash(sysctl -w*)",
+      "Bash(modprobe:*)",
+      "Bash(insmod:*)",
+      "Bash(rmmod:*)",
+      "Bash(iptables -F*)"
+    ]
+  }
+}

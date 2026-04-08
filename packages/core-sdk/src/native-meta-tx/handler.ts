@@ -7,7 +7,11 @@ import {
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 import { Biconomy } from "../meta-tx/biconomy";
-import { BaseMetaTxArgs, SignedMetaTx } from "../meta-tx/handler";
+import {
+  BaseMetaTxArgs,
+  SignedMetaTx,
+  UnsignedMetaTx
+} from "../meta-tx/handler";
 import { prepareDataSignatureParameters } from "../utils/signature";
 import {
   nativeMetaTransactionsIface,
@@ -52,16 +56,27 @@ export async function getNonce(args: {
   }
 }
 
+type NativeMetaTxArgs = BaseMetaTxArgs & {
+  functionName: string;
+  functionSignature: string;
+  domain: {
+    name: string;
+    version: string;
+  };
+};
+
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signNativeMetaTx(
-  args: BaseMetaTxArgs & {
-    functionName: string;
-    functionSignature: string;
-    domain: {
-      name: string;
-      version: string;
-    };
-  }
-): Promise<SignedMetaTx> {
+  args: NativeMetaTxArgs & { returnTypedDataToSign: true }
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signNativeMetaTx(
+  args: NativeMetaTxArgs & { returnTypedDataToSign?: false | undefined }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signNativeMetaTx(
+  args: NativeMetaTxArgs & { returnTypedDataToSign?: boolean }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   const metaTransactionType = [
     { name: "nonce", type: "uint256" },
     { name: "from", type: "address" },
@@ -75,18 +90,34 @@ export async function signNativeMetaTx(
   const signerAddress = await args.web3Lib.getSignerAddress();
 
   const message = {
-    nonce: args.nonce,
+    nonce: args.nonce.toString(),
     from: signerAddress,
     functionSignature: args.functionSignature
   };
 
-  const signature = await prepareDataSignatureParameters({
+  const baseParams = {
     ...args,
     verifyingContractAddress: args.metaTxHandlerAddress,
     customSignatureType,
     customDomainData: args.domain,
     primaryType: "MetaTransaction",
-    message,
+    message
+  };
+
+  if (args.returnTypedDataToSign) {
+    const structuredData = await prepareDataSignatureParameters({
+      ...baseParams,
+      returnTypedDataToSign: true
+    });
+    return {
+      ...structuredData,
+      functionName: args.functionName,
+      functionSignature: args.functionSignature
+    };
+  }
+
+  const signature = await prepareDataSignatureParameters({
+    ...baseParams,
     returnTypedDataToSign: false
   });
 
@@ -97,14 +128,29 @@ export async function signNativeMetaTx(
   };
 }
 
-export async function signNativeMetaTxApproveExchangeToken(args: {
+type ApproveExchangeTokenBaseArgs = {
   web3Lib: Web3LibAdapter;
   chainId: number;
   user: string;
   exchangeToken: string;
   spender: string;
   value: BigNumberish;
-}) {
+};
+
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
+export async function signNativeMetaTxApproveExchangeToken(
+  args: ApproveExchangeTokenBaseArgs & { returnTypedDataToSign: true }
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signNativeMetaTxApproveExchangeToken(
+  args: ApproveExchangeTokenBaseArgs & {
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signNativeMetaTxApproveExchangeToken(
+  args: ApproveExchangeTokenBaseArgs & { returnTypedDataToSign?: boolean }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   const domain = {
     name: await getERC20Name({
       contractAddress: args.exchangeToken,
@@ -124,15 +170,19 @@ export async function signNativeMetaTxApproveExchangeToken(args: {
     args.spender,
     args.value
   ]);
-  return signNativeMetaTx({
+  const baseArgs = {
     web3Lib: args.web3Lib,
     metaTxHandlerAddress: args.exchangeToken,
     chainId: args.chainId,
-    nonce: nonce,
+    nonce,
     functionName,
     functionSignature,
     domain
-  });
+  };
+  if (args.returnTypedDataToSign) {
+    return signNativeMetaTx({ ...baseArgs, returnTypedDataToSign: true });
+  }
+  return signNativeMetaTx({ ...baseArgs, returnTypedDataToSign: false });
 }
 
 export async function relayNativeMetaTransaction(args: {
