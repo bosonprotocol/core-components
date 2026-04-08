@@ -1,7 +1,7 @@
 import { MockWeb3LibAdapter } from "@bosonprotocol/common/tests/mocks";
 import * as erc20Handler from "../../src/erc20/handler";
 import { signNativeMetaTxApproveExchangeToken } from "../../src/native-meta-tx/handler";
-import { StructuredData } from "../../src/utils/signature";
+import { UnsignedMetaTx } from "../../src/meta-tx/handler";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -79,7 +79,7 @@ describe("signNativeMetaTxApproveExchangeToken()", () => {
       ...baseArgs(),
       returnTypedDataToSign: true
     });
-    const data = result as StructuredData;
+    const data = result as UnsignedMetaTx;
     expect(data.primaryType).toBe("MetaTransaction");
     // verifyingContract is the exchange token (the native meta-tx contract)
     expect(data.domain.verifyingContract).toBe(EXCHANGE_TOKEN);
@@ -89,6 +89,9 @@ describe("signNativeMetaTxApproveExchangeToken()", () => {
     expect(data.message.from).toBe(USER);
     // Must NOT look like a SignedMetaTx
     expect((data as unknown as { r?: unknown }).r).toBeUndefined();
+    // Confirm UnsignedMetaTx fields are present
+    expect(data.functionName).toBe("approve(address,uint256)");
+    expect(typeof data.functionSignature).toBe("string");
   });
 
   test("uses the token name returned by getERC20Name as domain.name", async () => {
@@ -97,7 +100,7 @@ describe("signNativeMetaTxApproveExchangeToken()", () => {
       ...baseArgs(),
       returnTypedDataToSign: true
     });
-    expect((result as StructuredData).domain.name).toBe("USD Coin");
+    expect((result as UnsignedMetaTx).domain.name).toBe("USD Coin");
   });
 
   test("encodes the correct spender and value in functionSignature", async () => {

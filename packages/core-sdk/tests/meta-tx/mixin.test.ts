@@ -12,7 +12,7 @@ import {
 import { AddressZero } from "@ethersproject/constants";
 import { CoreSDK } from "../../src/core-sdk";
 import * as metaTxHandler from "../../src/meta-tx/handler";
-import { StructuredData } from "../../src/utils/signature";
+import { UnsignedMetaTx } from "../../src/meta-tx/handler";
 import {
   BICONOMY_URL,
   SUBGRAPH_URL,
@@ -78,13 +78,16 @@ function assertStructuredDataShape(
   result: unknown,
   expectedPrimaryType?: string
 ) {
-  const d = result as StructuredData;
+  const d = result as UnsignedMetaTx;
   expect(d.domain.verifyingContract).toBe(PROTOCOL_DIAMOND);
   expect(typeof d.primaryType).toBe("string");
   if (expectedPrimaryType) expect(d.primaryType).toBe(expectedPrimaryType);
   expect(typeof d.message).toBe("object");
   // Must NOT look like a SignedMetaTx
   expect((d as unknown as { r?: unknown }).r).toBeUndefined();
+  // Confirm UnsignedMetaTx fields are present
+  expect(typeof d.functionName).toBe("string");
+  expect(typeof d.functionSignature).toBe("string");
 }
 
 function assertSignedMetaTx(result: unknown) {
@@ -163,7 +166,7 @@ describe("MetaTxMixin#signMetaTxCommitToOffer()", () => {
       nonce: NONCE,
       returnTypedDataToSign: true
     });
-    const data = result as StructuredData;
+    const data = result as UnsignedMetaTx;
     expect(data.primaryType).toBe("MetaTxCommitToOffer");
     expect(data.domain.verifyingContract).toBe(PROTOCOL_DIAMOND);
   });
@@ -194,7 +197,7 @@ describe("MetaTxMixin#signMetaTxCommitToOffer()", () => {
       nonce: NONCE,
       returnTypedDataToSign: true
     });
-    const data = result as StructuredData;
+    const data = result as UnsignedMetaTx;
     expect(data.primaryType).toBe("MetaTxCommitToConditionalOffer");
   });
 });

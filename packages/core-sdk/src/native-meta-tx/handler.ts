@@ -7,11 +7,12 @@ import {
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 import { Biconomy } from "../meta-tx/biconomy";
-import { BaseMetaTxArgs, SignedMetaTx } from "../meta-tx/handler";
 import {
-  prepareDataSignatureParameters,
-  StructuredData
-} from "../utils/signature";
+  BaseMetaTxArgs,
+  SignedMetaTx,
+  UnsignedMetaTx
+} from "../meta-tx/handler";
+import { prepareDataSignatureParameters } from "../utils/signature";
 import {
   nativeMetaTransactionsIface,
   alternativeNonceIface
@@ -64,10 +65,10 @@ type NativeMetaTxArgs = BaseMetaTxArgs & {
   };
 };
 
-// Overload: returnTypedDataToSign is true → returns StructuredData
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signNativeMetaTx(
   args: NativeMetaTxArgs & { returnTypedDataToSign: true }
-): Promise<StructuredData>;
+): Promise<UnsignedMetaTx>;
 // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
 export async function signNativeMetaTx(
   args: NativeMetaTxArgs & { returnTypedDataToSign?: false | undefined }
@@ -75,7 +76,7 @@ export async function signNativeMetaTx(
 // Implementation
 export async function signNativeMetaTx(
   args: NativeMetaTxArgs & { returnTypedDataToSign?: boolean }
-): Promise<SignedMetaTx | StructuredData> {
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   const metaTransactionType = [
     { name: "nonce", type: "uint256" },
     { name: "from", type: "address" },
@@ -104,10 +105,15 @@ export async function signNativeMetaTx(
   };
 
   if (args.returnTypedDataToSign) {
-    return prepareDataSignatureParameters({
+    const structuredData = await prepareDataSignatureParameters({
       ...baseParams,
       returnTypedDataToSign: true
     });
+    return {
+      ...structuredData,
+      functionName: args.functionName,
+      functionSignature: args.functionSignature
+    };
   }
 
   const signature = await prepareDataSignatureParameters({
@@ -131,10 +137,10 @@ type ApproveExchangeTokenBaseArgs = {
   value: BigNumberish;
 };
 
-// Overload: returnTypedDataToSign is true → returns StructuredData
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
 export async function signNativeMetaTxApproveExchangeToken(
   args: ApproveExchangeTokenBaseArgs & { returnTypedDataToSign: true }
-): Promise<StructuredData>;
+): Promise<UnsignedMetaTx>;
 // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
 export async function signNativeMetaTxApproveExchangeToken(
   args: ApproveExchangeTokenBaseArgs & {
@@ -144,7 +150,7 @@ export async function signNativeMetaTxApproveExchangeToken(
 // Implementation
 export async function signNativeMetaTxApproveExchangeToken(
   args: ApproveExchangeTokenBaseArgs & { returnTypedDataToSign?: boolean }
-): Promise<SignedMetaTx | StructuredData> {
+): Promise<SignedMetaTx | UnsignedMetaTx> {
   const domain = {
     name: await getERC20Name({
       contractAddress: args.exchangeToken,

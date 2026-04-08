@@ -3,7 +3,7 @@ import { MockWeb3LibAdapter } from "@bosonprotocol/common/tests/mocks";
 import * as erc20Handler from "../../src/erc20/handler";
 import * as nativeMetaTxHandler from "../../src/native-meta-tx/handler";
 import { CoreSDK } from "../../src/core-sdk";
-import { StructuredData } from "../../src/utils/signature";
+import { UnsignedMetaTx } from "../../src/meta-tx/handler";
 import { BICONOMY_URL, SUBGRAPH_URL } from "../mocks";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -89,12 +89,15 @@ describe("NativeMetaTxMixin#signNativeMetaTxApproveExchangeToken()", () => {
     const result = await (
       makeCoreSDK().signNativeMetaTxApproveExchangeToken as any
     )(EXCHANGE_TOKEN, VALUE, { returnTypedDataToSign: true });
-    const data = result as StructuredData;
+    const data = result as UnsignedMetaTx;
     expect(data.primaryType).toBe("MetaTransaction");
     expect(data.domain.verifyingContract).toBe(EXCHANGE_TOKEN);
     expect(data.domain.name).toBe("TestToken");
     expect(typeof data.message).toBe("object");
     expect((data as unknown as { r?: unknown }).r).toBeUndefined();
+    // Confirm UnsignedMetaTx fields are present
+    expect(data.functionName).toBe("approve(address,uint256)");
+    expect(typeof data.functionSignature).toBe("string");
   });
 
   // ── argument injection ─────────────────────────────────────────────────────

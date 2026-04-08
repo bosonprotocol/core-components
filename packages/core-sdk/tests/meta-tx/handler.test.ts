@@ -38,7 +38,7 @@ import {
   getResubmitted
 } from "../../src/meta-tx/handler";
 import * as mockInterface from "../../src/forwarder/mock-interface";
-import { StructuredData } from "../../src/utils/signature";
+import { UnsignedMetaTx } from "../../src/meta-tx/handler";
 import nock from "nock";
 import { AddressZero } from "@ethersproject/constants";
 import {
@@ -104,7 +104,7 @@ function assertSignedMetaTx(result: unknown) {
 }
 
 function assertStructuredData(result: unknown, expectedPrimaryType: string) {
-  const d = result as StructuredData;
+  const d = result as UnsignedMetaTx;
   expect(d.primaryType).toBe(expectedPrimaryType);
   expect(d.domain.name).toBe("Boson Protocol");
   expect(d.domain.verifyingContract).toBe(META_TX_HANDLER);
@@ -112,6 +112,9 @@ function assertStructuredData(result: unknown, expectedPrimaryType: string) {
   expect(typeof d.message).toBe("object");
   // Confirm it is NOT a SignedMetaTx
   expect((d as unknown as { r?: unknown }).r).toBeUndefined();
+  // Confirm UnsignedMetaTx fields are present
+  expect(typeof d.functionName).toBe("string");
+  expect(typeof d.functionSignature).toBe("string");
 }
 
 // ─── Shared arg fixtures ─────────────────────────────────────────────────────
@@ -183,7 +186,7 @@ describe("meta-tx handler", () => {
         returnTypedDataToSign: true
       });
       assertStructuredData(result, "MetaTransaction");
-      expect((result as StructuredData).message).toMatchObject({
+      expect((result as UnsignedMetaTx).message).toMatchObject({
         functionName: extraArgs.functionName,
         from: SIGNER
       });
@@ -527,7 +530,7 @@ describe("meta-tx handler", () => {
         returnTypedDataToSign: true
       });
       assertStructuredData(result, "MetaTxCommitToOffer");
-      expect((result as StructuredData).message).toMatchObject({
+      expect((result as UnsignedMetaTx).message).toMatchObject({
         functionName: "commitToOffer(address,uint256)"
       });
     });
@@ -555,7 +558,7 @@ describe("meta-tx handler", () => {
         returnTypedDataToSign: true
       });
       assertStructuredData(result, "MetaTxCommitToConditionalOffer");
-      expect((result as StructuredData).message).toMatchObject({
+      expect((result as UnsignedMetaTx).message).toMatchObject({
         functionName: "commitToConditionalOffer(address,uint256,uint256)"
       });
     });
@@ -673,7 +676,7 @@ describe("meta-tx handler", () => {
         returnTypedDataToSign: true
       });
       assertStructuredData(result, "MetaTxExchange");
-      expect((result as StructuredData).message).toMatchObject({
+      expect((result as UnsignedMetaTx).message).toMatchObject({
         functionName: expectedFunctionName
       });
     });
@@ -726,7 +729,7 @@ describe("meta-tx handler", () => {
         returnTypedDataToSign: true
       });
       assertStructuredData(result, "MetaTxDisputeResolution");
-      expect((result as StructuredData).message).toMatchObject({
+      expect((result as UnsignedMetaTx).message).toMatchObject({
         functionName: "resolveDispute(uint256,uint256,bytes)"
       });
     });
@@ -779,7 +782,7 @@ describe("meta-tx handler", () => {
         returnTypedDataToSign: true
       });
       assertStructuredData(result, "MetaTxFund");
-      expect((result as StructuredData).message).toMatchObject({
+      expect((result as UnsignedMetaTx).message).toMatchObject({
         functionName: "withdrawFunds(uint256,address[],uint256[])"
       });
     });

@@ -6,9 +6,8 @@ import {
 import { BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 import { handler } from ".";
-import { SignedMetaTx } from "../meta-tx/handler";
+import { SignedMetaTx, UnsignedMetaTx } from "../meta-tx/handler";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
-import { StructuredData } from "../utils/signature";
 
 export class NativeMetaTxMixin<
   T extends Web3LibAdapter
@@ -21,12 +20,12 @@ export class NativeMetaTxMixin<
    *                    and/or set returnTypedDataToSign to control the return type.
    * @returns Signature or structured typed data.
    */
-  // Overload: returnTypedDataToSign is true → returns StructuredData
+  // Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
   public async signNativeMetaTxApproveExchangeToken(
     exchangeToken: string,
     value: BigNumberish,
     overrides: Partial<{ spender: string }> & { returnTypedDataToSign: true }
-  ): Promise<StructuredData>;
+  ): Promise<UnsignedMetaTx>;
   // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
   public async signNativeMetaTxApproveExchangeToken(
     exchangeToken: string,
@@ -41,7 +40,7 @@ export class NativeMetaTxMixin<
       spender: string;
       returnTypedDataToSign: boolean;
     }> = {}
-  ): Promise<SignedMetaTx | StructuredData> {
+  ): Promise<SignedMetaTx | UnsignedMetaTx> {
     const user = await this._web3Lib.getSignerAddress();
     const baseArgs = {
       web3Lib: this._web3Lib,
