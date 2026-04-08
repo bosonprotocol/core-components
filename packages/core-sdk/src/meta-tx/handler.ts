@@ -135,7 +135,7 @@ export async function signMetaTx(
   const signerAddress = await args.web3Lib.getSignerAddress();
 
   const message = {
-    nonce: args.nonce,
+    nonce: args.nonce.toString(),
     from: signerAddress,
     contractAddress: args.metaTxHandlerAddress,
     functionName: args.functionName,
