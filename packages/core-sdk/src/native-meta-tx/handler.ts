@@ -90,7 +90,7 @@ export async function signNativeMetaTx(
   const signerAddress = await args.web3Lib.getSignerAddress();
 
   const message = {
-    nonce: args.nonce,
+    nonce: args.nonce.toString(),
     from: signerAddress,
     functionSignature: args.functionSignature
   };
