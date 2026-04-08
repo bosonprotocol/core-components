@@ -1535,18 +1535,6 @@ describe("meta-tx", () => {
         s: approveS,
         v: approveV
       } = getSignatureParameters(approveRawSignature);
-      console.log(
-        "DEBUG approveStructuredData.message:",
-        JSON.stringify(approveStructuredData.message)
-      );
-      console.log(
-        "DEBUG approveStructuredData.domain:",
-        JSON.stringify(approveStructuredData.domain)
-      );
-      console.log("DEBUG approveR:", approveR);
-      console.log("DEBUG approveS:", approveS);
-      console.log("DEBUG approveV:", approveV);
-      console.log("DEBUG exchangeToken:", exchangeToken);
       const nativeMetaTx = await buyerCoreSdk.relayNativeMetaTransaction(
         exchangeToken,
         {
