@@ -65,7 +65,7 @@ export const Base = {
       ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
       sendDeliveryInfoThroughXMTP: true,
       raiseDisputeForExchangeUrl:
-        "https://boson-dr-center-staging.pages.dev/#/exchange/{id}/raise-dispute",
+        "https://boson-dr-center-testing.pages.dev/#/exchange/{id}/raise-dispute",
       showProductsPreLogin: true,
       roundness: "mid",
       layout: "vertical"
