@@ -40,7 +40,7 @@ Reasons to stay out of `contracts/`:
 - Contract ABIs consumed by the SDK are already exported as JSON into `packages/common/src/abis/` — use those instead.
 
 **Only enter `contracts/` when you need to:**
-- Read or modify Solidity source files (`.sol`)
+- Read Solidity source files (`.sol`)
 - Inspect Hardhat configuration or deployment scripts inside `contracts/`
 - Investigate a contract-level bug that cannot be understood from the ABI alone
 
