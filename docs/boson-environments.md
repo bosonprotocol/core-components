@@ -52,14 +52,14 @@ The following table recaps all configurations, per environment
 </table>
 <table>
 <tr><th>dApps</th><th></th></tr>
-<tr><td>Marketplace</td><td>https://interface-staging.on-fleek.app</td></tr>
-<tr><td>Dispute Resolution Center</td><td>https://drcenter-staging.on-fleek.app/</td></tr>
+<tr><td>Marketplace</td><td>https://boson-dapp-staging.pages.dev</td></tr>
+<tr><td>Dispute Resolution Center</td><td>https://boson-dr-center-staging.pages.dev/</td></tr>
 </table>
 <table>
 <tr><th>Widgets</th><th></th></tr>
-<tr><td>Redemption</td><td>https://widgets-staging.on-fleek.app/#/redeem</td></tr>
-<tr><td>Commit</td><td>https://widgets-staging.on-fleek.app/#/commit</td></tr>
-<tr><td>Finance</td><td>https://widgets-staging.on-fleek.app/#/finance</td></tr></table>
+<tr><td>Redemption</td><td>https://boson-widgets-staging.pages.dev/#/redeem</td></tr>
+<tr><td>Commit</td><td>https://boson-widgets-staging.pages.dev/#/commit</td></tr>
+<tr><td>Finance</td><td>https://boson-widgets-staging.pages.dev/#/finance</td></tr></table>
 </td></tr>
 <tr><td>testing</td><td>
 <table>
@@ -72,14 +72,14 @@ The following table recaps all configurations, per environment
 </table>
 <table>
 <tr><th>dApps</th><th></th></tr>
-<tr><td>Marketplace</td><td>https://interface-test.on-fleek.app</td></tr>
-<tr><td>Dispute Resolution Center</td><td>https://drcenter-test.on-fleek.app/</td></tr>
+<tr><td>Marketplace</td><td>https://interface-a9d.pages.dev</td></tr>
+<tr><td>Dispute Resolution Center</td><td>https://boson-dr-center-testing.pages.dev/</td></tr>
 </table>
 <table>
 <tr><th>Widgets</th><th></th></tr>
-<tr><td>Redemption</td><td>https://widgets-test.on-fleek.app/#/redeem</td></tr>
-<tr><td>Commit</td><td>https://widgets-test.on-fleek.app/#/commit</td></tr>
-<tr><td>Finance</td><td>https://widgets-test.on-fleek.app/#/finance</td></tr></table>
+<tr><td>Redemption</td><td>https://boson-widgets-testing.pages.dev/#/redeem</td></tr>
+<tr><td>Commit</td><td>https://boson-widgets-testing.pages.dev/#/commit</td></tr>
+<tr><td>Finance</td><td>https://boson-widgets-testing.pages.dev/#/finance</td></tr></table>
 </td></tr>
 <tr><td>local</td><td>
 <table>
