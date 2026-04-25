@@ -1,0 +1,25 @@
+# GIT repo
+.git/
+
+# Build artifacts
+dist/
+build/
+.next/
+.turbo/
+
+# Dependencies
+node_modules/
+vendor/
+
+# Large data files
+*.sql
+*.dump
+data/fixtures/
+
+# Generated code
+generated/
+__generated__/
+
+# Secrets
+.env*
+secrets/
