@@ -2,7 +2,7 @@
 
 ## Overview
 
-In a **buyer-initiated offer**, the buyer creates and signs the offer; the seller is the one who "commits" to it (i.e. accepts the deal). This is the reverse of the standard flow.
+In a **buyer-initiated offer**, the buyer creates the offer on-chain; the seller is the one who "commits" to it (i.e. accepts the deal). This is the reverse of the standard flow.
 
 Key constraint: `quantityAvailable` **must be 1** — buyer-initiated offers are always single-unit.
 
@@ -123,9 +123,9 @@ commitToBuyerOffer():
 
 - Test file: `e2e/tests/core-sdk-offers.test.ts`
 - Helpers: `e2e/tests/utils.ts`
-  - `commitToBuyerOffer` — `utils.ts:1272`
-  - `commitToOffer` — `utils.ts:1252`
-  - `createOffer` — `utils.ts:478`
-  - `createSeller` — `utils.ts:954`
-  - `createDisputeResolver` — `utils.ts:446`
-  - `initSellerAndBuyerSDKs` — `utils.ts:263`
+  - `commitToBuyerOffer`
+  - `commitToOffer`
+  - `createOffer`
+  - `createSeller`
+  - `createDisputeResolver`
+  - `initSellerAndBuyerSDKs`

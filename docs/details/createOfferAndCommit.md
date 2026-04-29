@@ -2,7 +2,7 @@
 
 ## What the method does
 
-`createOfferAndCommit` (helper in `e2e/tests/utils.ts:660`) atomically:
+`createOfferAndCommit` (helper in `e2e/tests/utils.ts`) atomically:
 1. Has the **offer creator** sign the offer (`signFullOffer`)
 2. Has the **committer** broadcast a single blockchain transaction that both *creates* the offer and *commits* to it
 3. Waits for the tx receipt, extracts `offerId` and `exchangeId` from logs
@@ -46,7 +46,7 @@ The underlying SDK method `CoreSDK.createOfferAndCommit()` also accepts `{ retur
 `initSellerAndBuyerSDKs` (`utils.ts:263`) creates two fresh wallets (seller + buyer), each funded with ETH from a seed wallet. Both parties must have enough native ETH to pay for gas (and for the commit price in native-ETH offers).
 
 ### 2. Seller account registered on-chain — `createSeller` is mandatory
-`createSeller` (`utils.ts:954`) must be called before any `createOfferAndCommit`. It:
+`createSeller` (`utils.ts`) must be called before any `createOfferAndCommit`. It:
 - Stores seller metadata on IPFS
 - Calls `coreSDK.createSeller()` on-chain (registering `assistant`, `admin`, `treasury` addresses)
 - Returns the `sellerId` that is embedded in `fullOfferArgsUnsigned`
