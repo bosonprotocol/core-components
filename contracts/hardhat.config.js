@@ -178,6 +178,7 @@ module.exports = {
     hardhat: {
       allowUnlimitedContractSize: true,
       chainId: 31337,
+      blockGasLimit: 16000000,
       accounts: ACCOUNTS.map(({ privateKey }) => ({
         privateKey,
         balance: "1000000000000000000000000000"
