@@ -138,17 +138,17 @@ module.exports = {
         },
       },
       {
-        version: "0.8.22",
+        version: "0.8.35",
         settings: {
           viaIR: false,
           optimizer: {
             enabled: true,
-            runs: 100,
+            runs: 50,
             details: {
               yul: true
             }
           },
-          evmVersion: "shanghai" // for ethereum mainnet, use shanghai, for polygon, use london
+          evmVersion: "cancun"
         }
       },
       {

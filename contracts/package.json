@@ -1,14 +1,14 @@
 {
   "name": "hardhat-project",
   "scripts": {
-    "postinstall": "patch-package && node ./scripts/postinstall.js --protocolVersion=2.5.0",
+    "postinstall": "patch-package && node ./scripts/postinstall.js --protocolVersion=2.5.1",
     "deploy": "hardhat run ./scripts/deploy.js --network localhost",
     "deploy:ropsten": "hardhat run ./scripts/deploy.js --network ropsten",
     "deploy:kovan": "hardhat run ./scripts/deploy.js --network kovan",
     "node": "hardhat node --hostname 0.0.0.0"
   },
   "devDependencies": {
-    "@bosonprotocol/boson-protocol-contracts": "github:bosonprotocol/boson-protocol-contracts#efd5d1a8f23c3bca7c25273ea4c912a367250119",
+    "@bosonprotocol/boson-protocol-contracts": "github:bosonprotocol/boson-protocol-contracts#858661679cc8ba2be97eedf3cbc3acd0f5c1903e",
     "@manifoldxyz/royalty-registry-solidity": "github:manifoldxyz/royalty-registry-solidity#e5369fc79279ce2e4c6ea2eb5914df51e89e8bd8",
     "@nomicfoundation/hardhat-ethers": "^3.0.9",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.13",
@@ -16,10 +16,10 @@
     "chai": "^4.3.6",
     "dotenv": "^16.0.1",
     "ethereum-waffle": "^3.4.4",
-    "ethers": "^6.15.0",
+    "ethers": "^6.16.0",
     "ethersv5": "npm:ethers@^5.7.2",
     "glob": "^9.1.0",
-    "hardhat": "^2.25.0",
+    "hardhat": "^2.28.6",
     "hardhat-abi-exporter": "^2.9.0",
     "patch-package": "^8.0.0",
     "seaport": "github:ProjectOpenSea/seaport#e9c5a9f17cb5ee658ccc9cb1a8eeab02c1f5a4cd"
