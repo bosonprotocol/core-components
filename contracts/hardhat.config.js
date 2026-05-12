@@ -134,21 +134,21 @@ module.exports = {
               yul: true
             }
           },
-          evmVersion: "shanghai" // for ethereum mainnet, use shanghai, for polygon, use london
+          evmVersion: "cancun"
         },
       },
       {
-        version: "0.8.22",
+        version: "0.8.35",
         settings: {
           viaIR: false,
           optimizer: {
             enabled: true,
-            runs: 100,
+            runs: 50,
             details: {
               yul: true
             }
           },
-          evmVersion: "shanghai" // for ethereum mainnet, use shanghai, for polygon, use london
+          evmVersion: "cancun"
         }
       },
       {
@@ -178,6 +178,8 @@ module.exports = {
     hardhat: {
       allowUnlimitedContractSize: true,
       chainId: 31337,
+      blockGasLimit: 16_000_000,
+      hardfork: "cancun",
       accounts: ACCOUNTS.map(({ privateKey }) => ({
         privateKey,
         balance: "1000000000000000000000000000"

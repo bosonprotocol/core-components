@@ -652,6 +652,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "OfferCreatorMustBeSeller",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "OfferExpiredOrVoided",
     type: "error",
   },

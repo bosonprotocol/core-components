@@ -652,6 +652,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "OfferCreatorMustBeSeller",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "OfferExpiredOrVoided",
     type: "error",
   },
@@ -1012,6 +1017,50 @@ const _abi = [
       },
     ],
     name: "executeMetaTransaction",
+    outputs: [
+      {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+    ],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_userAddress",
+        type: "address",
+      },
+      {
+        internalType: "string",
+        name: "_functionName",
+        type: "string",
+      },
+      {
+        internalType: "bytes",
+        name: "_functionSignature",
+        type: "bytes",
+      },
+      {
+        internalType: "uint256",
+        name: "_nonce",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes",
+        name: "_signature",
+        type: "bytes",
+      },
+      {
+        internalType: "bytes",
+        name: "_tokenTransferAuthorization",
+        type: "bytes",
+      },
+    ],
+    name: "executeMetaTransactionWithTokenTransferAuthorization",
     outputs: [
       {
         internalType: "bytes",

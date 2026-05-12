@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity 0.8.22;
+pragma solidity 0.8.35;
 import { IBosonExchangeHandler } from "../../protocol-contracts/contracts/interfaces/handlers/IBosonExchangeHandler.sol";
 import { IBosonOfferHandler } from "../../protocol-contracts/contracts/interfaces/handlers/IBosonOfferHandler.sol";
 import { DAIAliases as DAI } from "../../protocol-contracts/contracts/interfaces/DAIAliases.sol";

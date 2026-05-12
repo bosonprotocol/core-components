@@ -652,6 +652,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "OfferCreatorMustBeSeller",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "OfferExpiredOrVoided",
     type: "error",
   },
@@ -1177,6 +1182,25 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "uint256",
+        name: "mutualizerGasStipend",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "MutualizerGasStipendChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "address",
         name: "priceDiscoveryAddress",
@@ -1413,6 +1437,19 @@ const _abi = [
   {
     inputs: [],
     name: "getMinResolutionPeriod",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getMutualizerGasStipend",
     outputs: [
       {
         internalType: "uint256",
@@ -1704,6 +1741,19 @@ const _abi = [
       },
     ],
     name: "setMinResolutionPeriod",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_mutualizerGasStipend",
+        type: "uint256",
+      },
+    ],
+    name: "setMutualizerGasStipend",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
