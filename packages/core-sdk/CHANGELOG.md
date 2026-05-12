@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.47.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.46.1...@bosonprotocol/core-sdk@1.47.0) (2026-05-12)
+
+### Features
+
+- add search-products method ([#1004](https://github.com/bosonprotocol/core-components/issues/1004)) ([030f8f3](https://github.com/bosonprotocol/core-components/commit/030f8f37430351c054544dc28dae2e1c9d1b9885))
+- add signMetaTxCommitToBuyerOffer to meta-tx handler and mixin ([#1006](https://github.com/bosonprotocol/core-components/issues/1006)) ([d4b6208](https://github.com/bosonprotocol/core-components/commit/d4b62081b9e5e6cd0153a0feb5ab90efa145f295))
+- **core-sdk:** add signMetaTxCreateOfferAndCommit to meta-tx handler and mixin ([#1012](https://github.com/bosonprotocol/core-components/issues/1012)) ([ead2a8b](https://github.com/bosonprotocol/core-components/commit/ead2a8b1e2fae489e36e6175bad6c94ebb6571f9))
+- enhance meta-tx handler tests with comprehensive coverage for s… ([#1018](https://github.com/bosonprotocol/core-components/issues/1018)) ([e7a47d5](https://github.com/bosonprotocol/core-components/commit/e7a47d5b1a6f6cdddcea5ecba0a8f21796104938))
+
 ## [1.46.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.46.0...@bosonprotocol/core-sdk@1.46.1) (2026-02-16)
 
 **Note:** Version bump only for package @bosonprotocol/core-sdk

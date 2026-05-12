@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.42.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.42.1...@bosonprotocol/react-kit@0.42.2) (2026-05-12)
+
+### Bug Fixes
+
+- improve style of the offer overview in case of a bundle ([#1003](https://github.com/bosonprotocol/core-components/issues/1003)) ([822808b](https://github.com/bosonprotocol/core-components/commit/822808bd44dcdaeaf8fc40ef8369b9d2d4a53f1c))
+- update fleek links to new boson pages for testing and staging en… ([#1020](https://github.com/bosonprotocol/core-components/issues/1020)) ([0a95b9e](https://github.com/bosonprotocol/core-components/commit/0a95b9e88bddfd31056755e195bdc56f7d65ace1))
+
 ## [0.42.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.42.0...@bosonprotocol/react-kit@0.42.1) (2026-02-16)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit
