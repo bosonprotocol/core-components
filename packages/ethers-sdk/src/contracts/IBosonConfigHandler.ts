@@ -30,6 +30,7 @@ export interface IBosonConfigHandlerInterface extends utils.Interface {
     "getMaxTotalOfferFeePercentage()": FunctionFragment;
     "getMinDisputePeriod()": FunctionFragment;
     "getMinResolutionPeriod()": FunctionFragment;
+    "getMutualizerGasStipend()": FunctionFragment;
     "getPriceDiscoveryAddress()": FunctionFragment;
     "getProtocolFee(address,uint256)": FunctionFragment;
     "getProtocolFeeFlatBoson()": FunctionFragment;
@@ -48,6 +49,7 @@ export interface IBosonConfigHandlerInterface extends utils.Interface {
     "setMaxTotalOfferFeePercentage(uint16)": FunctionFragment;
     "setMinDisputePeriod(uint256)": FunctionFragment;
     "setMinResolutionPeriod(uint256)": FunctionFragment;
+    "setMutualizerGasStipend(uint256)": FunctionFragment;
     "setPriceDiscoveryAddress(address)": FunctionFragment;
     "setProtocolFeeFlatBoson(uint256)": FunctionFragment;
     "setProtocolFeePercentage(uint256)": FunctionFragment;
@@ -95,6 +97,10 @@ export interface IBosonConfigHandlerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getMinResolutionPeriod",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getMutualizerGasStipend",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -170,6 +176,10 @@ export interface IBosonConfigHandlerInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "setMutualizerGasStipend",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setPriceDiscoveryAddress",
     values: [string]
   ): string;
@@ -236,6 +246,10 @@ export interface IBosonConfigHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getMinResolutionPeriod",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getMutualizerGasStipend",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -311,6 +325,10 @@ export interface IBosonConfigHandlerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setMutualizerGasStipend",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setPriceDiscoveryAddress",
     data: BytesLike
   ): Result;
@@ -352,6 +370,7 @@ export interface IBosonConfigHandlerInterface extends utils.Interface {
     "MaxTotalOfferFeePercentageChanged(uint16,address)": EventFragment;
     "MinDisputePeriodChanged(uint256,address)": EventFragment;
     "MinResolutionPeriodChanged(uint256,address)": EventFragment;
+    "MutualizerGasStipendChanged(uint256,address)": EventFragment;
     "PriceDiscoveryAddressChanged(address,address)": EventFragment;
     "ProtocolFeeFlatBosonChanged(uint256,address)": EventFragment;
     "ProtocolFeePercentageChanged(uint256,address)": EventFragment;
@@ -384,6 +403,9 @@ export interface IBosonConfigHandlerInterface extends utils.Interface {
   ): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MinDisputePeriodChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MinResolutionPeriodChanged"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "MutualizerGasStipendChanged"
+  ): EventFragment;
   getEvent(
     nameOrSignatureOrTopic: "PriceDiscoveryAddressChanged"
   ): EventFragment;
@@ -500,6 +522,14 @@ export type MinResolutionPeriodChangedEvent = TypedEvent<
 export type MinResolutionPeriodChangedEventFilter =
   TypedEventFilter<MinResolutionPeriodChangedEvent>;
 
+export type MutualizerGasStipendChangedEvent = TypedEvent<
+  [BigNumber, string],
+  { mutualizerGasStipend: BigNumber; executedBy: string }
+>;
+
+export type MutualizerGasStipendChangedEventFilter =
+  TypedEventFilter<MutualizerGasStipendChangedEvent>;
+
 export type PriceDiscoveryAddressChangedEvent = TypedEvent<
   [string, string],
   { priceDiscoveryAddress: string; executedBy: string }
@@ -603,6 +633,8 @@ export interface IBosonConfigHandler extends BaseContract {
 
     getMinResolutionPeriod(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    getMutualizerGasStipend(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     getPriceDiscoveryAddress(overrides?: CallOverrides): Promise<[string]>;
 
     getProtocolFee(
@@ -690,6 +722,11 @@ export interface IBosonConfigHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setMutualizerGasStipend(
+      _mutualizerGasStipend: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     setPriceDiscoveryAddress(
       _priceDiscovery: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -752,6 +789,8 @@ export interface IBosonConfigHandler extends BaseContract {
   getMinDisputePeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
   getMinResolutionPeriod(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getMutualizerGasStipend(overrides?: CallOverrides): Promise<BigNumber>;
 
   getPriceDiscoveryAddress(overrides?: CallOverrides): Promise<string>;
 
@@ -838,6 +877,11 @@ export interface IBosonConfigHandler extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setMutualizerGasStipend(
+    _mutualizerGasStipend: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   setPriceDiscoveryAddress(
     _priceDiscovery: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -902,6 +946,8 @@ export interface IBosonConfigHandler extends BaseContract {
     getMinDisputePeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
     getMinResolutionPeriod(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getMutualizerGasStipend(overrides?: CallOverrides): Promise<BigNumber>;
 
     getPriceDiscoveryAddress(overrides?: CallOverrides): Promise<string>;
 
@@ -985,6 +1031,11 @@ export interface IBosonConfigHandler extends BaseContract {
 
     setMinResolutionPeriod(
       _minResolutionPeriod: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setMutualizerGasStipend(
+      _mutualizerGasStipend: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1141,6 +1192,15 @@ export interface IBosonConfigHandler extends BaseContract {
       executedBy?: string | null
     ): MinResolutionPeriodChangedEventFilter;
 
+    "MutualizerGasStipendChanged(uint256,address)"(
+      mutualizerGasStipend?: null,
+      executedBy?: string | null
+    ): MutualizerGasStipendChangedEventFilter;
+    MutualizerGasStipendChanged(
+      mutualizerGasStipend?: null,
+      executedBy?: string | null
+    ): MutualizerGasStipendChangedEventFilter;
+
     "PriceDiscoveryAddressChanged(address,address)"(
       priceDiscoveryAddress?: string | null,
       executedBy?: string | null
@@ -1226,6 +1286,8 @@ export interface IBosonConfigHandler extends BaseContract {
 
     getMinResolutionPeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getMutualizerGasStipend(overrides?: CallOverrides): Promise<BigNumber>;
+
     getPriceDiscoveryAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     getProtocolFee(
@@ -1306,6 +1368,11 @@ export interface IBosonConfigHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    setMutualizerGasStipend(
+      _mutualizerGasStipend: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     setPriceDiscoveryAddress(
       _priceDiscovery: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1383,6 +1450,10 @@ export interface IBosonConfigHandler extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getMinResolutionPeriod(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getMutualizerGasStipend(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1473,6 +1544,11 @@ export interface IBosonConfigHandler extends BaseContract {
 
     setMinResolutionPeriod(
       _minResolutionPeriod: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setMutualizerGasStipend(
+      _mutualizerGasStipend: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

@@ -52,6 +52,50 @@ export declare namespace BosonTypes {
     twinIds: BigNumber[];
   };
 
+  export type ExchangeStruct = {
+    id: BigNumberish;
+    offerId: BigNumberish;
+    buyerId: BigNumberish;
+    finalizedDate: BigNumberish;
+    state: BigNumberish;
+    mutualizerAddress: string;
+  };
+
+  export type ExchangeStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    number,
+    string
+  ] & {
+    id: BigNumber;
+    offerId: BigNumber;
+    buyerId: BigNumber;
+    finalizedDate: BigNumber;
+    state: number;
+    mutualizerAddress: string;
+  };
+
+  export type VoucherStruct = {
+    committedDate: BigNumberish;
+    validUntilDate: BigNumberish;
+    redeemedDate: BigNumberish;
+    expired: boolean;
+  };
+
+  export type VoucherStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    boolean
+  ] & {
+    committedDate: BigNumber;
+    validUntilDate: BigNumber;
+    redeemedDate: BigNumber;
+    expired: boolean;
+  };
+
   export type BuyerStruct = {
     id: BigNumberish;
     wallet: string;
@@ -62,6 +106,29 @@ export declare namespace BosonTypes {
     id: BigNumber;
     wallet: string;
     active: boolean;
+  };
+
+  export type RoyaltyInfoStruct = { recipients: string[]; bps: BigNumberish[] };
+
+  export type RoyaltyInfoStructOutput = [string[], BigNumber[]] & {
+    recipients: string[];
+    bps: BigNumber[];
+  };
+
+  export type SellerOfferParamsStruct = {
+    collectionIndex: BigNumberish;
+    royaltyInfo: BosonTypes.RoyaltyInfoStruct;
+    mutualizerAddress: string;
+  };
+
+  export type SellerOfferParamsStructOutput = [
+    BigNumber,
+    BosonTypes.RoyaltyInfoStructOutput,
+    string
+  ] & {
+    collectionIndex: BigNumber;
+    royaltyInfo: BosonTypes.RoyaltyInfoStructOutput;
+    mutualizerAddress: string;
   };
 
   export type DisputeResolverStruct = {
@@ -148,13 +215,6 @@ export declare namespace BosonTypes {
     threshold: BigNumber;
     maxCommits: BigNumber;
     maxTokenId: BigNumber;
-  };
-
-  export type RoyaltyInfoStruct = { recipients: string[]; bps: BigNumberish[] };
-
-  export type RoyaltyInfoStructOutput = [string[], BigNumber[]] & {
-    recipients: string[];
-    bps: BigNumber[];
   };
 
   export type OfferStruct = {
@@ -358,6 +418,37 @@ export declare namespace BosonTypes {
     mutualizerAddress: string;
   };
 
+  export type FullOfferStruct = {
+    offer: BosonTypes.OfferStruct;
+    offerDates: BosonTypes.OfferDatesStruct;
+    offerDurations: BosonTypes.OfferDurationsStruct;
+    drParameters: BosonTypes.DRParametersStruct;
+    condition: BosonTypes.ConditionStruct;
+    agentId: BigNumberish;
+    feeLimit: BigNumberish;
+    useDepositedFunds: boolean;
+  };
+
+  export type FullOfferStructOutput = [
+    BosonTypes.OfferStructOutput,
+    BosonTypes.OfferDatesStructOutput,
+    BosonTypes.OfferDurationsStructOutput,
+    BosonTypes.DRParametersStructOutput,
+    BosonTypes.ConditionStructOutput,
+    BigNumber,
+    BigNumber,
+    boolean
+  ] & {
+    offer: BosonTypes.OfferStructOutput;
+    offerDates: BosonTypes.OfferDatesStructOutput;
+    offerDurations: BosonTypes.OfferDurationsStructOutput;
+    drParameters: BosonTypes.DRParametersStructOutput;
+    condition: BosonTypes.ConditionStructOutput;
+    agentId: BigNumber;
+    feeLimit: BigNumber;
+    useDepositedFunds: boolean;
+  };
+
   export type PremintParametersStruct = {
     reservedRangeLength: BigNumberish;
     to: string;
@@ -384,8 +475,11 @@ export declare namespace BosonTypes {
 export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
   contractName: "IBosonOrchestrationHandler";
   functions: {
+    "commitToConditionalOfferAndRedeemVoucher(uint256,uint256)": FunctionFragment;
+    "commitToOfferAndRedeemVoucher(uint256)": FunctionFragment;
     "createOfferAddToGroup((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),uint256,uint256,uint256)": FunctionFragment;
     "createOfferAndTwinWithBundle((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint256,uint256,uint256,uint256,uint256,address,uint8),uint256,uint256)": FunctionFragment;
+    "createOfferCommitAndRedeem(((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256,bool),address,bytes,uint256)": FunctionFragment;
     "createOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256)": FunctionFragment;
     "createOfferWithConditionAndTwinAndBundle((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),uint256,uint256)": FunctionFragment;
     "createPremintedOfferAddToGroup((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint256,address),uint256,uint256,uint256)": FunctionFragment;
@@ -403,6 +497,14 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
     "raiseAndEscalateDispute(uint256)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "commitToConditionalOfferAndRedeemVoucher",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "commitToOfferAndRedeemVoucher",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "createOfferAddToGroup",
     values: [
@@ -426,6 +528,10 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BigNumberish,
       BigNumberish
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "createOfferCommitAndRedeem",
+    values: [BosonTypes.FullOfferStruct, string, BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "createOfferWithCondition",
@@ -635,11 +741,23 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(
+    functionFragment: "commitToConditionalOfferAndRedeemVoucher",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "commitToOfferAndRedeemVoucher",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "createOfferAddToGroup",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "createOfferAndTwinWithBundle",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "createOfferCommitAndRedeem",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -709,14 +827,25 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
     "AllowedSellersAdded(uint256,uint256[],address)": EventFragment;
     "AllowedSellersRemoved(uint256,uint256[],address)": EventFragment;
     "BundleCreated(uint256,uint256,tuple,address)": EventFragment;
+    "BuyerCommitted(uint256,uint256,uint256,tuple,tuple,address)": EventFragment;
     "BuyerCreated(uint256,tuple,address)": EventFragment;
+    "BuyerInitiatedOfferSetSellerParams(uint256,uint256,tuple,address)": EventFragment;
     "BuyerUpdated(uint256,tuple,address)": EventFragment;
     "CollectionCreated(uint256,uint256,address,string,address)": EventFragment;
+    "ConditionalCommitAuthorized(uint256,uint8,address,uint256,uint256,uint256)": EventFragment;
+    "DRFeeRequested(uint256,address,uint256,address,address)": EventFragment;
+    "DRFeeReturnFailed(uint256,address,uint256,address,address)": EventFragment;
+    "DRFeeReturned(uint256,address,uint256,address,address)": EventFragment;
     "DisputeResolverCreated(uint256,tuple,tuple[],uint256[],address)": EventFragment;
     "DisputeResolverFeesAdded(uint256,tuple[],address)": EventFragment;
     "DisputeResolverFeesRemoved(uint256,address[],address)": EventFragment;
     "DisputeResolverUpdateApplied(uint256,tuple,tuple,address)": EventFragment;
     "DisputeResolverUpdatePending(uint256,tuple,address)": EventFragment;
+    "ExchangeCompleted(uint256,uint256,uint256,address)": EventFragment;
+    "FundsDeposited(uint256,address,address,uint256)": EventFragment;
+    "FundsEncumbered(uint256,address,uint256,address)": EventFragment;
+    "FundsReleased(uint256,uint256,address,uint256,address)": EventFragment;
+    "FundsWithdrawn(uint256,address,address,uint256,address)": EventFragment;
     "GroupCreated(uint256,uint256,tuple,tuple,address)": EventFragment;
     "GroupUpdated(uint256,uint256,tuple,tuple,address)": EventFragment;
     "NonListedOfferVoided(bytes32,uint256,address)": EventFragment;
@@ -725,8 +854,10 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
     "OfferMutualizerUpdated(uint256,uint256,address,address)": EventFragment;
     "OfferRoyaltyInfoUpdated(uint256,uint256,tuple,address)": EventFragment;
     "OfferVoided(uint256,uint256,address)": EventFragment;
+    "ProtocolFeeCollected(uint256,address,uint256,address)": EventFragment;
     "RangeReserved(uint256,uint256,uint256,uint256,address,address)": EventFragment;
     "RoyaltyRecipientsChanged(uint256,tuple[],address)": EventFragment;
+    "SellerCommitted(uint256,uint256,uint256,tuple,tuple,address)": EventFragment;
     "SellerCreated(uint256,tuple,address,tuple,address)": EventFragment;
     "SellerUpdateApplied(uint256,tuple,tuple,tuple,tuple,address)": EventFragment;
     "SellerUpdatePending(uint256,tuple,tuple,address)": EventFragment;
@@ -735,6 +866,12 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
     "TwinTransferFailed(uint256,address,uint256,uint256,uint256,address)": EventFragment;
     "TwinTransferSkipped(uint256,uint256,address)": EventFragment;
     "TwinTransferred(uint256,address,uint256,uint256,uint256,address)": EventFragment;
+    "VoucherCanceled(uint256,uint256,address)": EventFragment;
+    "VoucherExpired(uint256,uint256,address)": EventFragment;
+    "VoucherExtended(uint256,uint256,uint256,address)": EventFragment;
+    "VoucherRedeemed(uint256,uint256,address)": EventFragment;
+    "VoucherRevoked(uint256,uint256,address)": EventFragment;
+    "VoucherTransferred(uint256,uint256,uint256,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AgentCreated"): EventFragment;
@@ -742,9 +879,19 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "AllowedSellersAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AllowedSellersRemoved"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BundleCreated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "BuyerCommitted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BuyerCreated"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "BuyerInitiatedOfferSetSellerParams"
+  ): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BuyerUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CollectionCreated"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "ConditionalCommitAuthorized"
+  ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DRFeeRequested"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DRFeeReturnFailed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DRFeeReturned"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisputeResolverCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisputeResolverFeesAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisputeResolverFeesRemoved"): EventFragment;
@@ -754,6 +901,11 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
   getEvent(
     nameOrSignatureOrTopic: "DisputeResolverUpdatePending"
   ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ExchangeCompleted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "FundsDeposited"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "FundsEncumbered"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "FundsReleased"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "FundsWithdrawn"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GroupCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GroupUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NonListedOfferVoided"): EventFragment;
@@ -762,8 +914,10 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "OfferMutualizerUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OfferRoyaltyInfoUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OfferVoided"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ProtocolFeeCollected"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RangeReserved"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoyaltyRecipientsChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SellerCommitted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SellerCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SellerUpdateApplied"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SellerUpdatePending"): EventFragment;
@@ -772,6 +926,12 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "TwinTransferFailed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TwinTransferSkipped"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TwinTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VoucherCanceled"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VoucherExpired"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VoucherExtended"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VoucherRedeemed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VoucherRevoked"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VoucherTransferred"): EventFragment;
 }
 
 export type AgentCreatedEvent = TypedEvent<
@@ -832,6 +992,27 @@ export type BundleCreatedEvent = TypedEvent<
 
 export type BundleCreatedEventFilter = TypedEventFilter<BundleCreatedEvent>;
 
+export type BuyerCommittedEvent = TypedEvent<
+  [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BosonTypes.ExchangeStructOutput,
+    BosonTypes.VoucherStructOutput,
+    string
+  ],
+  {
+    offerId: BigNumber;
+    buyerId: BigNumber;
+    exchangeId: BigNumber;
+    exchange: BosonTypes.ExchangeStructOutput;
+    voucher: BosonTypes.VoucherStructOutput;
+    executedBy: string;
+  }
+>;
+
+export type BuyerCommittedEventFilter = TypedEventFilter<BuyerCommittedEvent>;
+
 export type BuyerCreatedEvent = TypedEvent<
   [BigNumber, BosonTypes.BuyerStructOutput, string],
   {
@@ -842,6 +1023,19 @@ export type BuyerCreatedEvent = TypedEvent<
 >;
 
 export type BuyerCreatedEventFilter = TypedEventFilter<BuyerCreatedEvent>;
+
+export type BuyerInitiatedOfferSetSellerParamsEvent = TypedEvent<
+  [BigNumber, BigNumber, BosonTypes.SellerOfferParamsStructOutput, string],
+  {
+    offerId: BigNumber;
+    sellerId: BigNumber;
+    sellerParams: BosonTypes.SellerOfferParamsStructOutput;
+    executedBy: string;
+  }
+>;
+
+export type BuyerInitiatedOfferSetSellerParamsEventFilter =
+  TypedEventFilter<BuyerInitiatedOfferSetSellerParamsEvent>;
 
 export type BuyerUpdatedEvent = TypedEvent<
   [BigNumber, BosonTypes.BuyerStructOutput, string],
@@ -867,6 +1061,61 @@ export type CollectionCreatedEvent = TypedEvent<
 
 export type CollectionCreatedEventFilter =
   TypedEventFilter<CollectionCreatedEvent>;
+
+export type ConditionalCommitAuthorizedEvent = TypedEvent<
+  [BigNumber, number, string, BigNumber, BigNumber, BigNumber],
+  {
+    offerId: BigNumber;
+    gating: number;
+    buyerAddress: string;
+    tokenId: BigNumber;
+    commitCount: BigNumber;
+    maxCommits: BigNumber;
+  }
+>;
+
+export type ConditionalCommitAuthorizedEventFilter =
+  TypedEventFilter<ConditionalCommitAuthorizedEvent>;
+
+export type DRFeeRequestedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string, string],
+  {
+    exchangeId: BigNumber;
+    tokenAddress: string;
+    feeAmount: BigNumber;
+    mutualizerAddress: string;
+    executedBy: string;
+  }
+>;
+
+export type DRFeeRequestedEventFilter = TypedEventFilter<DRFeeRequestedEvent>;
+
+export type DRFeeReturnFailedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string, string],
+  {
+    exchangeId: BigNumber;
+    tokenAddress: string;
+    returnAmount: BigNumber;
+    mutualizerAddress: string;
+    executedBy: string;
+  }
+>;
+
+export type DRFeeReturnFailedEventFilter =
+  TypedEventFilter<DRFeeReturnFailedEvent>;
+
+export type DRFeeReturnedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string, string],
+  {
+    exchangeId: BigNumber;
+    tokenAddress: string;
+    returnAmount: BigNumber;
+    mutualizerAddress: string;
+    executedBy: string;
+  }
+>;
+
+export type DRFeeReturnedEventFilter = TypedEventFilter<DRFeeReturnedEvent>;
 
 export type DisputeResolverCreatedEvent = TypedEvent<
   [
@@ -941,6 +1190,69 @@ export type DisputeResolverUpdatePendingEvent = TypedEvent<
 
 export type DisputeResolverUpdatePendingEventFilter =
   TypedEventFilter<DisputeResolverUpdatePendingEvent>;
+
+export type ExchangeCompletedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber, string],
+  {
+    offerId: BigNumber;
+    buyerId: BigNumber;
+    exchangeId: BigNumber;
+    executedBy: string;
+  }
+>;
+
+export type ExchangeCompletedEventFilter =
+  TypedEventFilter<ExchangeCompletedEvent>;
+
+export type FundsDepositedEvent = TypedEvent<
+  [BigNumber, string, string, BigNumber],
+  {
+    entityId: BigNumber;
+    executedBy: string;
+    tokenAddress: string;
+    amount: BigNumber;
+  }
+>;
+
+export type FundsDepositedEventFilter = TypedEventFilter<FundsDepositedEvent>;
+
+export type FundsEncumberedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string],
+  {
+    entityId: BigNumber;
+    exchangeToken: string;
+    amount: BigNumber;
+    executedBy: string;
+  }
+>;
+
+export type FundsEncumberedEventFilter = TypedEventFilter<FundsEncumberedEvent>;
+
+export type FundsReleasedEvent = TypedEvent<
+  [BigNumber, BigNumber, string, BigNumber, string],
+  {
+    exchangeId: BigNumber;
+    entityId: BigNumber;
+    exchangeToken: string;
+    amount: BigNumber;
+    executedBy: string;
+  }
+>;
+
+export type FundsReleasedEventFilter = TypedEventFilter<FundsReleasedEvent>;
+
+export type FundsWithdrawnEvent = TypedEvent<
+  [BigNumber, string, string, BigNumber, string],
+  {
+    sellerId: BigNumber;
+    withdrawnTo: string;
+    tokenAddress: string;
+    amount: BigNumber;
+    executedBy: string;
+  }
+>;
+
+export type FundsWithdrawnEventFilter = TypedEventFilter<FundsWithdrawnEvent>;
 
 export type GroupCreatedEvent = TypedEvent<
   [
@@ -1060,6 +1372,19 @@ export type OfferVoidedEvent = TypedEvent<
 
 export type OfferVoidedEventFilter = TypedEventFilter<OfferVoidedEvent>;
 
+export type ProtocolFeeCollectedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string],
+  {
+    exchangeId: BigNumber;
+    exchangeToken: string;
+    amount: BigNumber;
+    executedBy: string;
+  }
+>;
+
+export type ProtocolFeeCollectedEventFilter =
+  TypedEventFilter<ProtocolFeeCollectedEvent>;
+
 export type RangeReservedEvent = TypedEvent<
   [BigNumber, BigNumber, BigNumber, BigNumber, string, string],
   {
@@ -1085,6 +1410,27 @@ export type RoyaltyRecipientsChangedEvent = TypedEvent<
 
 export type RoyaltyRecipientsChangedEventFilter =
   TypedEventFilter<RoyaltyRecipientsChangedEvent>;
+
+export type SellerCommittedEvent = TypedEvent<
+  [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BosonTypes.ExchangeStructOutput,
+    BosonTypes.VoucherStructOutput,
+    string
+  ],
+  {
+    offerId: BigNumber;
+    sellerId: BigNumber;
+    exchangeId: BigNumber;
+    exchange: BosonTypes.ExchangeStructOutput;
+    voucher: BosonTypes.VoucherStructOutput;
+    executedBy: string;
+  }
+>;
+
+export type SellerCommittedEventFilter = TypedEventFilter<SellerCommittedEvent>;
 
 export type SellerCreatedEvent = TypedEvent<
   [
@@ -1201,6 +1547,59 @@ export type TwinTransferredEvent = TypedEvent<
 
 export type TwinTransferredEventFilter = TypedEventFilter<TwinTransferredEvent>;
 
+export type VoucherCanceledEvent = TypedEvent<
+  [BigNumber, BigNumber, string],
+  { offerId: BigNumber; exchangeId: BigNumber; executedBy: string }
+>;
+
+export type VoucherCanceledEventFilter = TypedEventFilter<VoucherCanceledEvent>;
+
+export type VoucherExpiredEvent = TypedEvent<
+  [BigNumber, BigNumber, string],
+  { offerId: BigNumber; exchangeId: BigNumber; executedBy: string }
+>;
+
+export type VoucherExpiredEventFilter = TypedEventFilter<VoucherExpiredEvent>;
+
+export type VoucherExtendedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber, string],
+  {
+    offerId: BigNumber;
+    exchangeId: BigNumber;
+    validUntil: BigNumber;
+    executedBy: string;
+  }
+>;
+
+export type VoucherExtendedEventFilter = TypedEventFilter<VoucherExtendedEvent>;
+
+export type VoucherRedeemedEvent = TypedEvent<
+  [BigNumber, BigNumber, string],
+  { offerId: BigNumber; exchangeId: BigNumber; executedBy: string }
+>;
+
+export type VoucherRedeemedEventFilter = TypedEventFilter<VoucherRedeemedEvent>;
+
+export type VoucherRevokedEvent = TypedEvent<
+  [BigNumber, BigNumber, string],
+  { offerId: BigNumber; exchangeId: BigNumber; executedBy: string }
+>;
+
+export type VoucherRevokedEventFilter = TypedEventFilter<VoucherRevokedEvent>;
+
+export type VoucherTransferredEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber, string],
+  {
+    offerId: BigNumber;
+    exchangeId: BigNumber;
+    newBuyerId: BigNumber;
+    executedBy: string;
+  }
+>;
+
+export type VoucherTransferredEventFilter =
+  TypedEventFilter<VoucherTransferredEvent>;
+
 export interface IBosonOrchestrationHandler extends BaseContract {
   contractName: "IBosonOrchestrationHandler";
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -1229,6 +1628,17 @@ export interface IBosonOrchestrationHandler extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    commitToConditionalOfferAndRedeemVoucher(
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    commitToOfferAndRedeemVoucher(
+      _offerId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     createOfferAddToGroup(
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
@@ -1249,6 +1659,14 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    createOfferCommitAndRedeem(
+      _fullOffer: BosonTypes.FullOfferStruct,
+      _offerCreator: string,
+      _signature: BytesLike,
+      _conditionalTokenId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     createOfferWithCondition(
@@ -1445,6 +1863,17 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  commitToConditionalOfferAndRedeemVoucher(
+    _offerId: BigNumberish,
+    _tokenId: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  commitToOfferAndRedeemVoucher(
+    _offerId: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   createOfferAddToGroup(
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
@@ -1465,6 +1894,14 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _agentId: BigNumberish,
     _feeLimit: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  createOfferCommitAndRedeem(
+    _fullOffer: BosonTypes.FullOfferStruct,
+    _offerCreator: string,
+    _signature: BytesLike,
+    _conditionalTokenId: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   createOfferWithCondition(
@@ -1661,6 +2098,17 @@ export interface IBosonOrchestrationHandler extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    commitToConditionalOfferAndRedeemVoucher(
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    commitToOfferAndRedeemVoucher(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     createOfferAddToGroup(
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
@@ -1680,6 +2128,14 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _twin: BosonTypes.TwinStruct,
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    createOfferCommitAndRedeem(
+      _fullOffer: BosonTypes.FullOfferStruct,
+      _offerCreator: string,
+      _signature: BytesLike,
+      _conditionalTokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1935,6 +2391,23 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       executedBy?: string | null
     ): BundleCreatedEventFilter;
 
+    "BuyerCommitted(uint256,uint256,uint256,tuple,tuple,address)"(
+      offerId?: BigNumberish | null,
+      buyerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      exchange?: null,
+      voucher?: null,
+      executedBy?: null
+    ): BuyerCommittedEventFilter;
+    BuyerCommitted(
+      offerId?: BigNumberish | null,
+      buyerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      exchange?: null,
+      voucher?: null,
+      executedBy?: null
+    ): BuyerCommittedEventFilter;
+
     "BuyerCreated(uint256,tuple,address)"(
       buyerId?: BigNumberish | null,
       buyer?: null,
@@ -1945,6 +2418,19 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       buyer?: null,
       executedBy?: string | null
     ): BuyerCreatedEventFilter;
+
+    "BuyerInitiatedOfferSetSellerParams(uint256,uint256,tuple,address)"(
+      offerId?: BigNumberish | null,
+      sellerId?: BigNumberish | null,
+      sellerParams?: null,
+      executedBy?: null
+    ): BuyerInitiatedOfferSetSellerParamsEventFilter;
+    BuyerInitiatedOfferSetSellerParams(
+      offerId?: BigNumberish | null,
+      sellerId?: BigNumberish | null,
+      sellerParams?: null,
+      executedBy?: null
+    ): BuyerInitiatedOfferSetSellerParamsEventFilter;
 
     "BuyerUpdated(uint256,tuple,address)"(
       buyerId?: BigNumberish | null,
@@ -1971,6 +2457,68 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       externalId?: string | null,
       executedBy?: string | null
     ): CollectionCreatedEventFilter;
+
+    "ConditionalCommitAuthorized(uint256,uint8,address,uint256,uint256,uint256)"(
+      offerId?: BigNumberish | null,
+      gating?: null,
+      buyerAddress?: string | null,
+      tokenId?: BigNumberish | null,
+      commitCount?: null,
+      maxCommits?: null
+    ): ConditionalCommitAuthorizedEventFilter;
+    ConditionalCommitAuthorized(
+      offerId?: BigNumberish | null,
+      gating?: null,
+      buyerAddress?: string | null,
+      tokenId?: BigNumberish | null,
+      commitCount?: null,
+      maxCommits?: null
+    ): ConditionalCommitAuthorizedEventFilter;
+
+    "DRFeeRequested(uint256,address,uint256,address,address)"(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      feeAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeRequestedEventFilter;
+    DRFeeRequested(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      feeAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeRequestedEventFilter;
+
+    "DRFeeReturnFailed(uint256,address,uint256,address,address)"(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeReturnFailedEventFilter;
+    DRFeeReturnFailed(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeReturnFailedEventFilter;
+
+    "DRFeeReturned(uint256,address,uint256,address,address)"(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeReturnedEventFilter;
+    DRFeeReturned(
+      exchangeId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      returnAmount?: null,
+      mutualizerAddress?: string | null,
+      executedBy?: null
+    ): DRFeeReturnedEventFilter;
 
     "DisputeResolverCreated(uint256,tuple,tuple[],uint256[],address)"(
       disputeResolverId?: BigNumberish | null,
@@ -2032,6 +2580,75 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       pendingDisputeResolver?: null,
       executedBy?: string | null
     ): DisputeResolverUpdatePendingEventFilter;
+
+    "ExchangeCompleted(uint256,uint256,uint256,address)"(
+      offerId?: BigNumberish | null,
+      buyerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      executedBy?: null
+    ): ExchangeCompletedEventFilter;
+    ExchangeCompleted(
+      offerId?: BigNumberish | null,
+      buyerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      executedBy?: null
+    ): ExchangeCompletedEventFilter;
+
+    "FundsDeposited(uint256,address,address,uint256)"(
+      entityId?: BigNumberish | null,
+      executedBy?: string | null,
+      tokenAddress?: string | null,
+      amount?: null
+    ): FundsDepositedEventFilter;
+    FundsDeposited(
+      entityId?: BigNumberish | null,
+      executedBy?: string | null,
+      tokenAddress?: string | null,
+      amount?: null
+    ): FundsDepositedEventFilter;
+
+    "FundsEncumbered(uint256,address,uint256,address)"(
+      entityId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null,
+      executedBy?: string | null
+    ): FundsEncumberedEventFilter;
+    FundsEncumbered(
+      entityId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null,
+      executedBy?: string | null
+    ): FundsEncumberedEventFilter;
+
+    "FundsReleased(uint256,uint256,address,uint256,address)"(
+      exchangeId?: BigNumberish | null,
+      entityId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null,
+      executedBy?: null
+    ): FundsReleasedEventFilter;
+    FundsReleased(
+      exchangeId?: BigNumberish | null,
+      entityId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null,
+      executedBy?: null
+    ): FundsReleasedEventFilter;
+
+    "FundsWithdrawn(uint256,address,address,uint256,address)"(
+      sellerId?: BigNumberish | null,
+      withdrawnTo?: string | null,
+      tokenAddress?: string | null,
+      amount?: null,
+      executedBy?: null
+    ): FundsWithdrawnEventFilter;
+    FundsWithdrawn(
+      sellerId?: BigNumberish | null,
+      withdrawnTo?: string | null,
+      tokenAddress?: string | null,
+      amount?: null,
+      executedBy?: null
+    ): FundsWithdrawnEventFilter;
 
     "GroupCreated(uint256,uint256,tuple,tuple,address)"(
       groupId?: BigNumberish | null,
@@ -2147,6 +2764,19 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       executedBy?: string | null
     ): OfferVoidedEventFilter;
 
+    "ProtocolFeeCollected(uint256,address,uint256,address)"(
+      exchangeId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null,
+      executedBy?: string | null
+    ): ProtocolFeeCollectedEventFilter;
+    ProtocolFeeCollected(
+      exchangeId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null,
+      executedBy?: string | null
+    ): ProtocolFeeCollectedEventFilter;
+
     "RangeReserved(uint256,uint256,uint256,uint256,address,address)"(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
@@ -2174,6 +2804,23 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       royaltyRecipients?: null,
       executedBy?: string | null
     ): RoyaltyRecipientsChangedEventFilter;
+
+    "SellerCommitted(uint256,uint256,uint256,tuple,tuple,address)"(
+      offerId?: BigNumberish | null,
+      sellerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      exchange?: null,
+      voucher?: null,
+      executedBy?: null
+    ): SellerCommittedEventFilter;
+    SellerCommitted(
+      offerId?: BigNumberish | null,
+      sellerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      exchange?: null,
+      voucher?: null,
+      executedBy?: null
+    ): SellerCommittedEventFilter;
 
     "SellerCreated(uint256,tuple,address,tuple,address)"(
       sellerId?: BigNumberish | null,
@@ -2288,9 +2935,90 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       amount?: null,
       executedBy?: null
     ): TwinTransferredEventFilter;
+
+    "VoucherCanceled(uint256,uint256,address)"(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      executedBy?: string | null
+    ): VoucherCanceledEventFilter;
+    VoucherCanceled(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      executedBy?: string | null
+    ): VoucherCanceledEventFilter;
+
+    "VoucherExpired(uint256,uint256,address)"(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      executedBy?: string | null
+    ): VoucherExpiredEventFilter;
+    VoucherExpired(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      executedBy?: string | null
+    ): VoucherExpiredEventFilter;
+
+    "VoucherExtended(uint256,uint256,uint256,address)"(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      validUntil?: null,
+      executedBy?: string | null
+    ): VoucherExtendedEventFilter;
+    VoucherExtended(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      validUntil?: null,
+      executedBy?: string | null
+    ): VoucherExtendedEventFilter;
+
+    "VoucherRedeemed(uint256,uint256,address)"(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      executedBy?: string | null
+    ): VoucherRedeemedEventFilter;
+    VoucherRedeemed(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      executedBy?: string | null
+    ): VoucherRedeemedEventFilter;
+
+    "VoucherRevoked(uint256,uint256,address)"(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      executedBy?: string | null
+    ): VoucherRevokedEventFilter;
+    VoucherRevoked(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      executedBy?: string | null
+    ): VoucherRevokedEventFilter;
+
+    "VoucherTransferred(uint256,uint256,uint256,address)"(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      newBuyerId?: BigNumberish | null,
+      executedBy?: null
+    ): VoucherTransferredEventFilter;
+    VoucherTransferred(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      newBuyerId?: BigNumberish | null,
+      executedBy?: null
+    ): VoucherTransferredEventFilter;
   };
 
   estimateGas: {
+    commitToConditionalOfferAndRedeemVoucher(
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    commitToOfferAndRedeemVoucher(
+      _offerId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     createOfferAddToGroup(
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
@@ -2311,6 +3039,14 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    createOfferCommitAndRedeem(
+      _fullOffer: BosonTypes.FullOfferStruct,
+      _offerCreator: string,
+      _signature: BytesLike,
+      _conditionalTokenId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     createOfferWithCondition(
@@ -2508,6 +3244,17 @@ export interface IBosonOrchestrationHandler extends BaseContract {
   };
 
   populateTransaction: {
+    commitToConditionalOfferAndRedeemVoucher(
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    commitToOfferAndRedeemVoucher(
+      _offerId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     createOfferAddToGroup(
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
@@ -2528,6 +3275,14 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _agentId: BigNumberish,
       _feeLimit: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    createOfferCommitAndRedeem(
+      _fullOffer: BosonTypes.FullOfferStruct,
+      _offerCreator: string,
+      _signature: BytesLike,
+      _conditionalTokenId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     createOfferWithCondition(

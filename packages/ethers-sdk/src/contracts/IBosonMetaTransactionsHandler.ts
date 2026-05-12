@@ -23,6 +23,7 @@ export interface IBosonMetaTransactionsHandlerInterface
   contractName: "IBosonMetaTransactionsHandler";
   functions: {
     "executeMetaTransaction(address,string,bytes,uint256,bytes)": FunctionFragment;
+    "executeMetaTransactionWithTokenTransferAuthorization(address,string,bytes,uint256,bytes,bytes)": FunctionFragment;
     "isFunctionAllowlisted(string)": FunctionFragment;
     "isUsedNonce(address,uint256)": FunctionFragment;
     "setAllowlistedFunctions(bytes32[],bool)": FunctionFragment;
@@ -31,6 +32,10 @@ export interface IBosonMetaTransactionsHandlerInterface
   encodeFunctionData(
     functionFragment: "executeMetaTransaction",
     values: [string, string, BytesLike, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "executeMetaTransactionWithTokenTransferAuthorization",
+    values: [string, string, BytesLike, BigNumberish, BytesLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "isFunctionAllowlisted",
@@ -47,6 +52,10 @@ export interface IBosonMetaTransactionsHandlerInterface
 
   decodeFunctionResult(
     functionFragment: "executeMetaTransaction",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "executeMetaTransactionWithTokenTransferAuthorization",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -129,6 +138,16 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    executeMetaTransactionWithTokenTransferAuthorization(
+      _userAddress: string,
+      _functionName: string,
+      _functionSignature: BytesLike,
+      _nonce: BigNumberish,
+      _signature: BytesLike,
+      _tokenTransferAuthorization: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     "isFunctionAllowlisted(string)"(
       _functionName: string,
       overrides?: CallOverrides
@@ -161,6 +180,16 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  executeMetaTransactionWithTokenTransferAuthorization(
+    _userAddress: string,
+    _functionName: string,
+    _functionSignature: BytesLike,
+    _nonce: BigNumberish,
+    _signature: BytesLike,
+    _tokenTransferAuthorization: BytesLike,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   "isFunctionAllowlisted(string)"(
     _functionName: string,
     overrides?: CallOverrides
@@ -190,6 +219,16 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
       _functionSignature: BytesLike,
       _nonce: BigNumberish,
       _signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    executeMetaTransactionWithTokenTransferAuthorization(
+      _userAddress: string,
+      _functionName: string,
+      _functionSignature: BytesLike,
+      _nonce: BigNumberish,
+      _signature: BytesLike,
+      _tokenTransferAuthorization: BytesLike,
       overrides?: CallOverrides
     ): Promise<string>;
 
@@ -252,6 +291,16 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    executeMetaTransactionWithTokenTransferAuthorization(
+      _userAddress: string,
+      _functionName: string,
+      _functionSignature: BytesLike,
+      _nonce: BigNumberish,
+      _signature: BytesLike,
+      _tokenTransferAuthorization: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     "isFunctionAllowlisted(string)"(
       _functionName: string,
       overrides?: CallOverrides
@@ -282,6 +331,16 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
       _functionSignature: BytesLike,
       _nonce: BigNumberish,
       _signature: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    executeMetaTransactionWithTokenTransferAuthorization(
+      _userAddress: string,
+      _functionName: string,
+      _functionSignature: BytesLike,
+      _nonce: BigNumberish,
+      _signature: BytesLike,
+      _tokenTransferAuthorization: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
