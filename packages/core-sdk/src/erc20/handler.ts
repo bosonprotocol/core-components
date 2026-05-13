@@ -15,43 +15,80 @@ import {
   StructuredData
 } from "../utils/signature";
 
-export type SignedReceiveWithAuthorization = {
+export type UnsignedTransferAuthorization =
+  | {
+      strategy: "ERC3009";
+      data: {
+        validAfter: BigNumberish;
+        validBefore: BigNumberish;
+        nonce: string;
+      };
+    }
+  | {
+      strategy: "EIP2612";
+      data: { deadline: BigNumberish };
+    }
+  | {
+      strategy: "Permit2";
+      data: { nonce: BigNumberish; deadline: BigNumberish };
+    };
+
+export type TransferAuthorization = UnsignedTransferAuthorization & {
   r: string;
   s: string;
   v: number;
   signature: string;
-  // defaultAbiCoder.encode(
-  //   ["uint256","uint256","bytes32","uint8","bytes32","bytes32"],
-  //   [validAfter, validBefore, nonce, v, r, s]
-  // ) — drop-in payload for the protocol's TokenTransferAuthorization auth entry.
-  abiData: string;
 };
 
-export type SignedReceivePermit = {
-  r: string;
-  s: string;
-  v: number;
-  signature: string;
-  // defaultAbiCoder.encode(
-  //   ["uint256","uint8","bytes32","bytes32"],
-  //   [deadline, v, r, s]
-  // ) — drop-in payload for the protocol's TokenTransferAuthorization
-  //  EIP-2612 auth entry.
-  abiData: string;
-};
+const TRANSFER_STRATEGY_ID = {
+  ERC3009: 1,
+  EIP2612: 2,
+  Permit2: 3
+} as const;
 
-export type SignedReceiveWithPermit2 = {
-  r: string;
-  s: string;
-  v: number;
-  signature: string;
-  // defaultAbiCoder.encode(
-  //   ["uint256","uint256","bytes"],
-  //   [permit2Nonce, deadline, signature]
-  // ) — drop-in payload for the protocol's TokenTransferAuthorization
-  //  Permit2 auth entry.
-  abiData: string;
-};
+function encodeTransferAuthorizationEntry(auth: TransferAuthorization): string {
+  let innerData: string;
+  switch (auth.strategy) {
+    case "ERC3009":
+      innerData = defaultAbiCoder.encode(
+        ["uint256", "uint256", "bytes32", "uint8", "bytes32", "bytes32"],
+        [
+          auth.data.validAfter,
+          auth.data.validBefore,
+          auth.data.nonce,
+          auth.v,
+          auth.r,
+          auth.s
+        ]
+      );
+      break;
+    case "EIP2612":
+      innerData = defaultAbiCoder.encode(
+        ["uint256", "uint8", "bytes32", "bytes32"],
+        [auth.data.deadline, auth.v, auth.r, auth.s]
+      );
+      break;
+    case "Permit2":
+      innerData = defaultAbiCoder.encode(
+        ["uint256", "uint256", "bytes"],
+        [auth.data.nonce, auth.data.deadline, auth.signature]
+      );
+      break;
+  }
+  return defaultAbiCoder.encode(
+    ["uint8", "bytes"],
+    [TRANSFER_STRATEGY_ID[auth.strategy], innerData]
+  );
+}
+
+export function encodeTransferAuthorizationQueue(
+  auths: TransferAuthorization[]
+): string {
+  return defaultAbiCoder.encode(
+    ["bytes[]"],
+    [auths.map(encodeTransferAuthorizationEntry)]
+  );
+}
 
 // Overload: returnTxInfo is true -> returns TransactionRequest
 export async function approve(args: {
@@ -190,18 +227,18 @@ export async function signReceiveWithErc3009Authorization(
     returnTypedDataToSign: true;
   }
 ): Promise<StructuredData>;
-// Overload: returnTypedDataToSign is false or undefined → returns SignedReceiveWithAuthorization
+// Overload: returnTypedDataToSign is false or undefined → returns TransferAuthorization (ERC3009)
 export async function signReceiveWithErc3009Authorization(
   args: SignReceiveWithErc3009AuthorizationArgs & {
     returnTypedDataToSign?: false | undefined;
   }
-): Promise<SignedReceiveWithAuthorization>;
+): Promise<TransferAuthorization & { strategy: "ERC3009" }>;
 // Implementation
 export async function signReceiveWithErc3009Authorization(
   args: SignReceiveWithErc3009AuthorizationArgs & {
     returnTypedDataToSign?: boolean;
   }
-): Promise<SignedReceiveWithAuthorization | StructuredData> {
+): Promise<(TransferAuthorization & { strategy: "ERC3009" }) | StructuredData> {
   const nonce = hexlify(randomBytes(32));
 
   const customSignatureType = {
@@ -259,12 +296,15 @@ export async function signReceiveWithErc3009Authorization(
     returnTypedDataToSign: false
   });
 
-  const abiData = defaultAbiCoder.encode(
-    ["uint256", "uint256", "bytes32", "uint8", "bytes32", "bytes32"],
-    [args.validAfter, args.validBefore, nonce, sig.v, sig.r, sig.s]
-  );
-
-  return { ...sig, abiData };
+  return {
+    ...sig,
+    strategy: "ERC3009",
+    data: {
+      validAfter: args.validAfter,
+      validBefore: args.validBefore,
+      nonce
+    }
+  };
 }
 
 type SignReceiveWithErc2612PermitArgs = ApproveExchangeTokenBaseArgs & {
@@ -278,18 +318,18 @@ export async function signReceiveWithErc2612Permit(
     returnTypedDataToSign: true;
   }
 ): Promise<StructuredData>;
-// Overload: returnTypedDataToSign is false or undefined → returns SignedReceivePermit
+// Overload: returnTypedDataToSign is false or undefined → returns TransferAuthorization (EIP2612)
 export async function signReceiveWithErc2612Permit(
   args: SignReceiveWithErc2612PermitArgs & {
     returnTypedDataToSign?: false | undefined;
   }
-): Promise<SignedReceivePermit>;
+): Promise<TransferAuthorization & { strategy: "EIP2612" }>;
 // Implementation
 export async function signReceiveWithErc2612Permit(
   args: SignReceiveWithErc2612PermitArgs & {
     returnTypedDataToSign?: boolean;
   }
-): Promise<SignedReceivePermit | StructuredData> {
+): Promise<(TransferAuthorization & { strategy: "EIP2612" }) | StructuredData> {
   const nonceResult = await args.web3Lib.call({
     to: args.exchangeToken,
     data: alternativeNonceIface.encodeFunctionData("nonces", [args.user])
@@ -352,12 +392,11 @@ export async function signReceiveWithErc2612Permit(
     returnTypedDataToSign: false
   });
 
-  const abiData = defaultAbiCoder.encode(
-    ["uint256", "uint8", "bytes32", "bytes32"],
-    [args.deadline, sig.v, sig.r, sig.s]
-  );
-
-  return { ...sig, abiData };
+  return {
+    ...sig,
+    strategy: "EIP2612",
+    data: { deadline: args.deadline }
+  };
 }
 
 type SignReceiveWithPermit2Args = ApproveExchangeTokenBaseArgs & {
@@ -370,16 +409,16 @@ type SignReceiveWithPermit2Args = ApproveExchangeTokenBaseArgs & {
 export async function signReceiveWithPermit2(
   args: SignReceiveWithPermit2Args & { returnTypedDataToSign: true }
 ): Promise<StructuredData>;
-// Overload: returnTypedDataToSign is false or undefined → returns SignedReceiveWithPermit2
+// Overload: returnTypedDataToSign is false or undefined → returns TransferAuthorization (Permit2)
 export async function signReceiveWithPermit2(
   args: SignReceiveWithPermit2Args & {
     returnTypedDataToSign?: false | undefined;
   }
-): Promise<SignedReceiveWithPermit2>;
+): Promise<TransferAuthorization & { strategy: "Permit2" }>;
 // Implementation
 export async function signReceiveWithPermit2(
   args: SignReceiveWithPermit2Args & { returnTypedDataToSign?: boolean }
-): Promise<SignedReceiveWithPermit2 | StructuredData> {
+): Promise<(TransferAuthorization & { strategy: "Permit2" }) | StructuredData> {
   const permit2Nonce = args.permit2Nonce ?? BigNumber.from(randomBytes(32));
 
   const customSignatureType = {
@@ -439,10 +478,9 @@ export async function signReceiveWithPermit2(
     returnTypedDataToSign: false
   });
 
-  const abiData = defaultAbiCoder.encode(
-    ["uint256", "uint256", "bytes"],
-    [permit2Nonce, args.deadline, sig.signature]
-  );
-
-  return { ...sig, abiData };
+  return {
+    ...sig,
+    strategy: "Permit2",
+    data: { nonce: permit2Nonce, deadline: args.deadline }
+  };
 }

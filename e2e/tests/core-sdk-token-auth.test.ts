@@ -1,6 +1,5 @@
 import { abis } from "@bosonprotocol/common";
 import { BigNumber, constants, Contract, utils } from "ethers";
-import { defaultAbiCoder } from "@ethersproject/abi";
 import {
   createFundedWallet,
   initCoreSDKWithFundedWallet,
@@ -42,32 +41,25 @@ describe("core-sdk-token-auth", () => {
         recipientWallet.address
       );
 
-      const { r, s, v, signature, abiData } =
-        await coreSDK.signReceiveWithErc3009Authorization(
-          tokenAddress,
-          { name: "ERC3009Token", version: "1" },
-          amount,
-          0,
-          constants.MaxUint256,
-          { spender: recipientWallet.address }
-        );
+      const auth = await coreSDK.signReceiveWithErc3009Authorization(
+        tokenAddress,
+        { name: "ERC3009Token", version: "1" },
+        amount,
+        0,
+        constants.MaxUint256,
+        { spender: recipientWallet.address }
+      );
+      const { r, s, v, signature } = auth;
 
       expect(typeof r).toBe("string");
       expect(typeof s).toBe("string");
       expect(typeof v).toBe("number");
       expect(typeof signature).toBe("string");
-
-      // abiData round-trip
-      const [decValidAfter, decValidBefore, decNonce, decV, decR, decS] =
-        defaultAbiCoder.decode(
-          ["uint256", "uint256", "bytes32", "uint8", "bytes32", "bytes32"],
-          abiData
-        );
-      expect(decValidAfter.toString()).toBe("0");
-      expect(decValidBefore.toString()).toBe(constants.MaxUint256.toString());
-      expect(decR).toBe(r);
-      expect(decS).toBe(s);
-      expect(Number(decV)).toBe(v);
+      expect(auth.strategy).toBe("ERC3009");
+      expect(auth.data.validAfter.toString()).toBe("0");
+      expect(auth.data.validBefore.toString()).toBe(
+        constants.MaxUint256.toString()
+      );
 
       // The recipient pulls the funds by calling receiveWithAuthorization.
       const tokenAsRecipient = token.connect(recipientWallet);
@@ -76,12 +68,12 @@ describe("core-sdk-token-auth", () => {
           fundedWallet.address,
           recipientWallet.address,
           amount,
-          decValidAfter,
-          decValidBefore,
-          decNonce,
-          decV,
-          decR,
-          decS
+          auth.data.validAfter,
+          auth.data.validBefore,
+          auth.data.nonce,
+          v,
+          r,
+          s
         )
       ).wait();
 
@@ -96,7 +88,7 @@ describe("core-sdk-token-auth", () => {
 
       // Authorization nonce is now consumed.
       expect(
-        await token.authorizationState(fundedWallet.address, decNonce)
+        await token.authorizationState(fundedWallet.address, auth.data.nonce)
       ).toBe(true);
     });
 
@@ -199,29 +191,23 @@ describe("core-sdk-token-auth", () => {
       );
       const nonceBefore: BigNumber = await token.nonces(fundedWallet.address);
 
-      const { r, s, v, signature, abiData } =
-        await coreSDK.signReceiveWithErc2612Permit(
-          tokenAddress,
-          { name: "ERC2612Token", version: "1" },
-          amount,
-          constants.MaxUint256,
-          { spender: recipientWallet.address }
-        );
+      const auth = await coreSDK.signReceiveWithErc2612Permit(
+        tokenAddress,
+        { name: "ERC2612Token", version: "1" },
+        amount,
+        constants.MaxUint256,
+        { spender: recipientWallet.address }
+      );
+      const { r, s, v, signature } = auth;
 
       expect(typeof r).toBe("string");
       expect(typeof s).toBe("string");
       expect(typeof v).toBe("number");
       expect(typeof signature).toBe("string");
-
-      // abiData round-trip
-      const [decDeadline, decV, decR, decS] = defaultAbiCoder.decode(
-        ["uint256", "uint8", "bytes32", "bytes32"],
-        abiData
+      expect(auth.strategy).toBe("EIP2612");
+      expect(auth.data.deadline.toString()).toBe(
+        constants.MaxUint256.toString()
       );
-      expect(decDeadline.toString()).toBe(constants.MaxUint256.toString());
-      expect(decR).toBe(r);
-      expect(decS).toBe(s);
-      expect(Number(decV)).toBe(v);
 
       // 1. Apply permit (anyone can submit it; spender does it here).
       const tokenAsRecipient = token.connect(recipientWallet);
@@ -230,10 +216,10 @@ describe("core-sdk-token-auth", () => {
           fundedWallet.address,
           recipientWallet.address,
           amount,
-          decDeadline,
-          decV,
-          decR,
-          decS
+          auth.data.deadline,
+          v,
+          r,
+          s
         )
       ).wait();
       // 2. Spender pulls the funds via transferFrom.
@@ -366,30 +352,27 @@ describe("core-sdk-token-auth", () => {
         recipientWallet.address
       );
 
-      const { r, s, v, signature, abiData } =
-        await coreSDK.signReceiveWithPermit2(
-          tokenAddress,
-          amount,
-          constants.MaxUint256,
-          { spender: recipientWallet.address }
-        );
+      const auth = await coreSDK.signReceiveWithPermit2(
+        tokenAddress,
+        amount,
+        constants.MaxUint256,
+        { spender: recipientWallet.address }
+      );
+      const { r, s, v, signature } = auth;
 
       expect(typeof r).toBe("string");
       expect(typeof s).toBe("string");
       expect(typeof v).toBe("number");
       expect(typeof signature).toBe("string");
-
-      // abiData round-trip
-      const [decNonce, decDeadline, decSig] = defaultAbiCoder.decode(
-        ["uint256", "uint256", "bytes"],
-        abiData
+      expect(auth.strategy).toBe("Permit2");
+      expect(auth.data.deadline.toString()).toBe(
+        constants.MaxUint256.toString()
       );
-      expect(decDeadline.toString()).toBe(constants.MaxUint256.toString());
-      expect(decSig).toBe(signature);
 
       // Pre-check: Permit2 nonce bit is clear.
-      const wordPos = (decNonce as BigNumber).shr(8);
-      const bitPos = (decNonce as BigNumber).and(0xff);
+      const permit2Nonce = BigNumber.from(auth.data.nonce);
+      const wordPos = permit2Nonce.shr(8);
+      const bitPos = permit2Nonce.and(0xff);
       const bit = BigNumber.from(1).shl(bitPos.toNumber());
       const bitmapBefore: BigNumber = await permit2.nonceBitmap(
         fundedWallet.address,
@@ -402,8 +385,8 @@ describe("core-sdk-token-auth", () => {
         await permit2.permitTransferFrom(
           {
             permitted: { token: tokenAddress, amount },
-            nonce: decNonce,
-            deadline: decDeadline
+            nonce: auth.data.nonce,
+            deadline: auth.data.deadline
           },
           { to: recipientWallet.address, requestedAmount: amount },
           fundedWallet.address,

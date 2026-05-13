@@ -5,7 +5,9 @@ import { BigNumber } from "@ethersproject/bignumber";
 import {
   signReceiveWithErc3009Authorization,
   signReceiveWithErc2612Permit,
-  signReceiveWithPermit2
+  signReceiveWithPermit2,
+  encodeTransferAuthorizationQueue,
+  TransferAuthorization
 } from "../../src/erc20/handler";
 import { StructuredData } from "../../src/utils/signature";
 
@@ -51,20 +53,41 @@ function baseArgs() {
   };
 }
 
+function decodeQueueSingleEntry(encodedQueue: string): {
+  strategyId: number;
+  innerData: string;
+} {
+  const [entries] = defaultAbiCoder.decode(["bytes[]"], encodedQueue);
+  expect(Array.isArray(entries)).toBe(true);
+  expect((entries as string[]).length).toBe(1);
+  const [strategyId, innerData] = defaultAbiCoder.decode(
+    ["uint8", "bytes"],
+    (entries as string[])[0]
+  );
+  return { strategyId: Number(strategyId), innerData: innerData as string };
+}
+
 // ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe("signReceiveWithErc3009Authorization()", () => {
-  test("returns SignedReceiveWithAuthorization when returnTypedDataToSign is omitted", async () => {
+  test("returns a TransferAuthorization tagged ERC3009 when returnTypedDataToSign is omitted", async () => {
     const result = await signReceiveWithErc3009Authorization(baseArgs());
     expect(result.r).toBe(EXPECTED_R);
     expect(result.s).toBe(EXPECTED_S);
     expect(result.v).toBe(EXPECTED_V);
     expect(result.signature).toBe(MOCK_SIG);
-    expect(typeof result.abiData).toBe("string");
-    expect(result.abiData.startsWith("0x")).toBe(true);
+    expect(result.strategy).toBe("ERC3009");
+    expect(result.data.validAfter).toBe(VALID_AFTER);
+    expect(result.data.validBefore).toBe(VALID_BEFORE);
+    expect(typeof result.data.nonce).toBe("string");
+    expect(result.data.nonce.startsWith("0x")).toBe(true);
+    expect(result.data.nonce.length).toBe(2 + 64);
+    expect(
+      (result as unknown as { abiData?: unknown }).abiData
+    ).toBeUndefined();
   });
 
-  test("returns SignedReceiveWithAuthorization when returnTypedDataToSign: false", async () => {
+  test("returns a TransferAuthorization tagged ERC3009 when returnTypedDataToSign: false", async () => {
     const result = await signReceiveWithErc3009Authorization({
       ...baseArgs(),
       returnTypedDataToSign: false
@@ -72,20 +95,21 @@ describe("signReceiveWithErc3009Authorization()", () => {
     expect(result.r).toBe(EXPECTED_R);
     expect(result.s).toBe(EXPECTED_S);
     expect(result.v).toBe(EXPECTED_V);
-    expect(typeof result.abiData).toBe("string");
+    expect(result.strategy).toBe("ERC3009");
   });
 
-  test("abiData decodes to [validAfter, validBefore, nonce, v, r, s]", async () => {
+  test("encodeTransferAuthorizationQueue produces a strategy-1 entry whose inner data decodes to [validAfter, validBefore, nonce, v, r, s]", async () => {
     const result = await signReceiveWithErc3009Authorization(baseArgs());
+    const encoded = encodeTransferAuthorizationQueue([result]);
+    const { strategyId, innerData } = decodeQueueSingleEntry(encoded);
+    expect(strategyId).toBe(1); // ERC3009
     const [validAfter, validBefore, nonce, v, r, s] = defaultAbiCoder.decode(
       ["uint256", "uint256", "bytes32", "uint8", "bytes32", "bytes32"],
-      result.abiData
+      innerData
     );
     expect(validAfter.toString()).toBe(VALID_AFTER);
     expect(validBefore.toString()).toBe(VALID_BEFORE);
-    expect(typeof nonce).toBe("string");
-    expect((nonce as string).startsWith("0x")).toBe(true);
-    expect((nonce as string).length).toBe(2 + 64); // 32 bytes hex
+    expect(nonce).toBe(result.data.nonce);
     expect(Number(v)).toBe(EXPECTED_V);
     expect(r).toBe(EXPECTED_R);
     expect(s).toBe(EXPECTED_S);
@@ -123,9 +147,11 @@ describe("signReceiveWithErc3009Authorization()", () => {
     expect(typeof nonce).toBe("string");
     expect(nonce.startsWith("0x")).toBe(true);
     expect(nonce.length).toBe(2 + 64);
-    // Must NOT look like a SignedReceiveWithAuthorization
+    // Must NOT look like a TransferAuthorization
     expect((data as unknown as { r?: unknown }).r).toBeUndefined();
-    expect((data as unknown as { abiData?: unknown }).abiData).toBeUndefined();
+    expect(
+      (data as unknown as { strategy?: unknown }).strategy
+    ).toBeUndefined();
   });
 
   test("each call produces a fresh random nonce", async () => {
@@ -171,30 +197,37 @@ function permitBaseArgs() {
 }
 
 describe("signReceiveWithErc2612Permit()", () => {
-  test("returns SignedReceivePermit when returnTypedDataToSign is omitted", async () => {
+  test("returns a TransferAuthorization tagged EIP2612 when returnTypedDataToSign is omitted", async () => {
     const result = await signReceiveWithErc2612Permit(permitBaseArgs());
     expect(result.r).toBe(EXPECTED_R);
     expect(result.s).toBe(EXPECTED_S);
     expect(result.v).toBe(EXPECTED_V);
     expect(result.signature).toBe(MOCK_SIG);
-    expect(typeof result.abiData).toBe("string");
-    expect(result.abiData.startsWith("0x")).toBe(true);
+    expect(result.strategy).toBe("EIP2612");
+    expect(result.data.deadline).toBe(DEADLINE);
+    expect(
+      (result as unknown as { abiData?: unknown }).abiData
+    ).toBeUndefined();
   });
 
-  test("returns SignedReceivePermit when returnTypedDataToSign: false", async () => {
+  test("returns a TransferAuthorization tagged EIP2612 when returnTypedDataToSign: false", async () => {
     const result = await signReceiveWithErc2612Permit({
       ...permitBaseArgs(),
       returnTypedDataToSign: false
     });
     expect(result.r).toBe(EXPECTED_R);
-    expect(typeof result.abiData).toBe("string");
+    expect(result.strategy).toBe("EIP2612");
+    expect(result.data.deadline).toBe(DEADLINE);
   });
 
-  test("abiData decodes to [deadline, v, r, s]", async () => {
+  test("encodeTransferAuthorizationQueue produces a strategy-2 entry whose inner data decodes to [deadline, v, r, s]", async () => {
     const result = await signReceiveWithErc2612Permit(permitBaseArgs());
+    const encoded = encodeTransferAuthorizationQueue([result]);
+    const { strategyId, innerData } = decodeQueueSingleEntry(encoded);
+    expect(strategyId).toBe(2); // EIP2612
     const [deadline, v, r, s] = defaultAbiCoder.decode(
       ["uint256", "uint8", "bytes32", "bytes32"],
-      result.abiData
+      innerData
     );
     expect(deadline.toString()).toBe(DEADLINE);
     expect(Number(v)).toBe(EXPECTED_V);
@@ -227,9 +260,11 @@ describe("signReceiveWithErc2612Permit()", () => {
     expect(data.message.value).toBe(VALUE);
     expect(data.message.nonce).toBe("1");
     expect(data.message.deadline).toBe(DEADLINE);
-    // Must NOT look like a SignedReceivePermit
+    // Must NOT look like a TransferAuthorization
     expect((data as unknown as { r?: unknown }).r).toBeUndefined();
-    expect((data as unknown as { abiData?: unknown }).abiData).toBeUndefined();
+    expect(
+      (data as unknown as { strategy?: unknown }).strategy
+    ).toBeUndefined();
   });
 
   test("reads nonce from the token contract via nonces(owner)", async () => {
@@ -272,30 +307,38 @@ function permit2BaseArgs() {
 }
 
 describe("signReceiveWithPermit2()", () => {
-  test("returns SignedReceiveWithPermit2 when returnTypedDataToSign is omitted", async () => {
+  test("returns a TransferAuthorization tagged Permit2 when returnTypedDataToSign is omitted", async () => {
     const result = await signReceiveWithPermit2(permit2BaseArgs());
     expect(result.r).toBe(EXPECTED_R);
     expect(result.s).toBe(EXPECTED_S);
     expect(result.v).toBe(EXPECTED_V);
     expect(result.signature).toBe(MOCK_SIG);
-    expect(typeof result.abiData).toBe("string");
-    expect(result.abiData.startsWith("0x")).toBe(true);
+    expect(result.strategy).toBe("Permit2");
+    expect(result.data.nonce.toString()).toBe(PERMIT2_NONCE);
+    expect(result.data.deadline).toBe(DEADLINE);
+    expect(
+      (result as unknown as { abiData?: unknown }).abiData
+    ).toBeUndefined();
   });
 
-  test("returns SignedReceiveWithPermit2 when returnTypedDataToSign: false", async () => {
+  test("returns a TransferAuthorization tagged Permit2 when returnTypedDataToSign: false", async () => {
     const result = await signReceiveWithPermit2({
       ...permit2BaseArgs(),
       returnTypedDataToSign: false
     });
     expect(result.r).toBe(EXPECTED_R);
-    expect(typeof result.abiData).toBe("string");
+    expect(result.strategy).toBe("Permit2");
+    expect(result.data.nonce.toString()).toBe(PERMIT2_NONCE);
   });
 
-  test("abiData decodes to [permit2Nonce, deadline, signature]", async () => {
+  test("encodeTransferAuthorizationQueue produces a strategy-3 entry whose inner data decodes to [permit2Nonce, deadline, signature]", async () => {
     const result = await signReceiveWithPermit2(permit2BaseArgs());
+    const encoded = encodeTransferAuthorizationQueue([result]);
+    const { strategyId, innerData } = decodeQueueSingleEntry(encoded);
+    expect(strategyId).toBe(3); // Permit2
     const [nonce, deadline, signature] = defaultAbiCoder.decode(
       ["uint256", "uint256", "bytes"],
-      result.abiData
+      innerData
     );
     expect(nonce.toString()).toBe(PERMIT2_NONCE);
     expect(deadline.toString()).toBe(DEADLINE);
@@ -330,7 +373,9 @@ describe("signReceiveWithPermit2()", () => {
     expect(data.message.nonce).toBe(PERMIT2_NONCE);
     expect(data.message.deadline).toBe(DEADLINE);
     expect((data as unknown as { r?: unknown }).r).toBeUndefined();
-    expect((data as unknown as { abiData?: unknown }).abiData).toBeUndefined();
+    expect(
+      (data as unknown as { strategy?: unknown }).strategy
+    ).toBeUndefined();
   });
 
   test("generates a random uint256 nonce when permit2Nonce is omitted", async () => {
@@ -350,5 +395,30 @@ describe("signReceiveWithPermit2()", () => {
     // Each value is within uint256 range.
     expect(BigNumber.from(nonceA).gte(0)).toBe(true);
     expect(BigNumber.from(nonceB).gte(0)).toBe(true);
+  });
+});
+
+// ─── encodeTransferAuthorizationQueue tests ──────────────────────────────────
+
+describe("encodeTransferAuthorizationQueue()", () => {
+  test("encodes an empty queue as an empty bytes[]", () => {
+    const encoded = encodeTransferAuthorizationQueue([]);
+    const [entries] = defaultAbiCoder.decode(["bytes[]"], encoded);
+    expect((entries as string[]).length).toBe(0);
+  });
+
+  test("encodes a multi-strategy queue preserving order", async () => {
+    const erc3009 = await signReceiveWithErc3009Authorization(baseArgs());
+    const eip2612 = await signReceiveWithErc2612Permit(permitBaseArgs());
+    const permit2 = await signReceiveWithPermit2(permit2BaseArgs());
+    const queue: TransferAuthorization[] = [erc3009, eip2612, permit2];
+    const encoded = encodeTransferAuthorizationQueue(queue);
+    const [entries] = defaultAbiCoder.decode(["bytes[]"], encoded);
+    expect((entries as string[]).length).toBe(3);
+    const decodedIds = (entries as string[]).map((entry) => {
+      const [id] = defaultAbiCoder.decode(["uint8", "bytes"], entry);
+      return Number(id);
+    });
+    expect(decodedIds).toEqual([1, 2, 3]);
   });
 });

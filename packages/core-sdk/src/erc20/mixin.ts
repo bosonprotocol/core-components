@@ -14,11 +14,9 @@ import {
   ensureAllowance,
   balanceOf,
   signReceiveWithErc3009Authorization,
-  SignedReceiveWithAuthorization,
   signReceiveWithErc2612Permit,
-  SignedReceivePermit,
   signReceiveWithPermit2,
-  SignedReceiveWithPermit2
+  TransferAuthorization
 } from "./handler";
 import { StructuredData } from "../utils/signature";
 
@@ -133,9 +131,9 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /**
    * Signs an ERC-3009 `ReceiveWithAuthorization` payload that authorizes the
    * spender (default: protocol diamond) to pull `value` units of `exchangeToken`
-   * from the signer. The returned `abiData` is the ABI-encoded
-   * `[validAfter, validBefore, nonce, v, r, s]` payload consumed by the protocol's
-   * TokenTransferAuthorization flow.
+   * from the signer. Returns a `TransferAuthorization` tagged with strategy
+   * `"ERC3009"`, ready to feed into `relayMetaTransaction` via
+   * `transferAuthorizations`.
    */
   // Overload: returnTypedDataToSign is true → returns StructuredData
   public async signReceiveWithErc3009Authorization(
@@ -146,7 +144,7 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
     validBefore: BigNumberish,
     overrides: Partial<{ spender: string }> & { returnTypedDataToSign: true }
   ): Promise<StructuredData>;
-  // Overload: returnTypedDataToSign is false or undefined → returns SignedReceiveWithAuthorization
+  // Overload: returnTypedDataToSign is false or undefined → returns TransferAuthorization (ERC3009)
   public async signReceiveWithErc3009Authorization(
     exchangeToken: string,
     tokenDomain: { name: string; version: string },
@@ -154,7 +152,7 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
     validAfter: BigNumberish,
     validBefore: BigNumberish,
     overrides?: Partial<{ spender: string; returnTypedDataToSign?: false }>
-  ): Promise<SignedReceiveWithAuthorization>;
+  ): Promise<TransferAuthorization & { strategy: "ERC3009" }>;
   // Implementation
   public async signReceiveWithErc3009Authorization(
     exchangeToken: string,
@@ -166,7 +164,9 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       spender: string;
       returnTypedDataToSign: boolean;
     }> = {}
-  ): Promise<SignedReceiveWithAuthorization | StructuredData> {
+  ): Promise<
+    (TransferAuthorization & { strategy: "ERC3009" }) | StructuredData
+  > {
     const user = await this._web3Lib.getSignerAddress();
     const baseArgs = {
       web3Lib: this._web3Lib,
@@ -194,9 +194,9 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /**
    * Signs an EIP-2612 `Permit` payload that authorizes the spender (default:
    * protocol diamond) to pull `value` units of `exchangeToken` from the signer
-   * up to `deadline`. The returned `abiData` is the ABI-encoded
-   * `[deadline, v, r, s]` payload consumed by the protocol's
-   * TokenTransferAuthorization flow.
+   * up to `deadline`. Returns a `TransferAuthorization` tagged with strategy
+   * `"EIP2612"`, ready to feed into `relayMetaTransaction` via
+   * `transferAuthorizations`.
    */
   // Overload: returnTypedDataToSign is true → returns StructuredData
   public async signReceiveWithErc2612Permit(
@@ -206,14 +206,14 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
     deadline: BigNumberish,
     overrides: Partial<{ spender: string }> & { returnTypedDataToSign: true }
   ): Promise<StructuredData>;
-  // Overload: returnTypedDataToSign is false or undefined → returns SignedReceivePermit
+  // Overload: returnTypedDataToSign is false or undefined → returns TransferAuthorization (EIP2612)
   public async signReceiveWithErc2612Permit(
     exchangeToken: string,
     tokenDomain: { name: string; version: string },
     value: BigNumberish,
     deadline: BigNumberish,
     overrides?: Partial<{ spender: string; returnTypedDataToSign?: false }>
-  ): Promise<SignedReceivePermit>;
+  ): Promise<TransferAuthorization & { strategy: "EIP2612" }>;
   // Implementation
   public async signReceiveWithErc2612Permit(
     exchangeToken: string,
@@ -224,7 +224,9 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       spender: string;
       returnTypedDataToSign: boolean;
     }> = {}
-  ): Promise<SignedReceivePermit | StructuredData> {
+  ): Promise<
+    (TransferAuthorization & { strategy: "EIP2612" }) | StructuredData
+  > {
     const user = await this._web3Lib.getSignerAddress();
     const baseArgs = {
       web3Lib: this._web3Lib,
@@ -254,9 +256,9 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
    * `exchangeToken` from the signer up to `deadline`. The Permit2 contract
    * address defaults to `contracts.permit2` from SDK config and can be
    * overridden via `overrides.permit2Address`. If `overrides.permit2Nonce`
-   * is omitted, a random uint256 is generated. The returned `abiData` is the
-   * ABI-encoded `[permit2Nonce, deadline, signature]` payload consumed by the
-   * protocol's TokenTransferAuthorization flow.
+   * is omitted, a random uint256 is generated. Returns a `TransferAuthorization`
+   * tagged with strategy `"Permit2"`, ready to feed into `relayMetaTransaction`
+   * via `transferAuthorizations`.
    */
   // Overload: returnTypedDataToSign is true → returns StructuredData
   public async signReceiveWithPermit2(
@@ -269,7 +271,7 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       permit2Nonce: BigNumberish;
     }> & { returnTypedDataToSign: true }
   ): Promise<StructuredData>;
-  // Overload: returnTypedDataToSign is false or undefined → returns SignedReceiveWithPermit2
+  // Overload: returnTypedDataToSign is false or undefined → returns TransferAuthorization (Permit2)
   public async signReceiveWithPermit2(
     exchangeToken: string,
     value: BigNumberish,
@@ -280,7 +282,7 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       permit2Nonce: BigNumberish;
       returnTypedDataToSign?: false;
     }>
-  ): Promise<SignedReceiveWithPermit2>;
+  ): Promise<TransferAuthorization & { strategy: "Permit2" }>;
   // Implementation
   public async signReceiveWithPermit2(
     exchangeToken: string,
@@ -292,7 +294,9 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       permit2Nonce: BigNumberish;
       returnTypedDataToSign: boolean;
     }> = {}
-  ): Promise<SignedReceiveWithPermit2 | StructuredData> {
+  ): Promise<
+    (TransferAuthorization & { strategy: "Permit2" }) | StructuredData
+  > {
     const user = await this._web3Lib.getSignerAddress();
     const permit2Address = overrides.permit2Address || this._contracts?.permit2;
     if (!permit2Address) {

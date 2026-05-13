@@ -62,7 +62,7 @@ describe("ERC20Mixin#signReceiveWithErc3009Authorization()", () => {
 
   // ── overload dispatch ──────────────────────────────────────────────────────
 
-  test("returns SignedReceiveWithAuthorization when overrides is omitted", async () => {
+  test("returns a TransferAuthorization tagged ERC3009 when overrides is omitted", async () => {
     const result = await makeCoreSDK().signReceiveWithErc3009Authorization(
       EXCHANGE_TOKEN,
       TOKEN_DOMAIN,
@@ -74,10 +74,13 @@ describe("ERC20Mixin#signReceiveWithErc3009Authorization()", () => {
     expect(typeof result.s).toBe("string");
     expect(typeof result.v).toBe("number");
     expect(typeof result.signature).toBe("string");
-    expect(typeof result.abiData).toBe("string");
+    expect(result.strategy).toBe("ERC3009");
+    expect(result.data.validAfter).toBe(VALID_AFTER);
+    expect(result.data.validBefore).toBe(VALID_BEFORE);
+    expect(typeof result.data.nonce).toBe("string");
   });
 
-  test("returns SignedReceiveWithAuthorization when returnTypedDataToSign: false", async () => {
+  test("returns a TransferAuthorization tagged ERC3009 when returnTypedDataToSign: false", async () => {
     const result = await makeCoreSDK().signReceiveWithErc3009Authorization(
       EXCHANGE_TOKEN,
       TOKEN_DOMAIN,
@@ -86,7 +89,8 @@ describe("ERC20Mixin#signReceiveWithErc3009Authorization()", () => {
       VALID_BEFORE,
       { returnTypedDataToSign: false }
     );
-    expect(typeof result.abiData).toBe("string");
+    expect(result.strategy).toBe("ERC3009");
+    expect(result.data.validAfter).toBe(VALID_AFTER);
   });
 
   test("returns StructuredData when returnTypedDataToSign: true", async () => {
@@ -256,7 +260,7 @@ describe("ERC20Mixin#signReceiveWithErc2612Permit()", () => {
 
   // ── overload dispatch ──────────────────────────────────────────────────────
 
-  test("returns SignedReceivePermit when overrides is omitted", async () => {
+  test("returns a TransferAuthorization tagged EIP2612 when overrides is omitted", async () => {
     const result = await makeCoreSDKForPermit().signReceiveWithErc2612Permit(
       EXCHANGE_TOKEN,
       ERC2612_TOKEN_DOMAIN,
@@ -267,10 +271,11 @@ describe("ERC20Mixin#signReceiveWithErc2612Permit()", () => {
     expect(typeof result.s).toBe("string");
     expect(typeof result.v).toBe("number");
     expect(typeof result.signature).toBe("string");
-    expect(typeof result.abiData).toBe("string");
+    expect(result.strategy).toBe("EIP2612");
+    expect(result.data.deadline).toBe(DEADLINE);
   });
 
-  test("returns SignedReceivePermit when returnTypedDataToSign: false", async () => {
+  test("returns a TransferAuthorization tagged EIP2612 when returnTypedDataToSign: false", async () => {
     const result = await makeCoreSDKForPermit().signReceiveWithErc2612Permit(
       EXCHANGE_TOKEN,
       ERC2612_TOKEN_DOMAIN,
@@ -278,7 +283,8 @@ describe("ERC20Mixin#signReceiveWithErc2612Permit()", () => {
       DEADLINE,
       { returnTypedDataToSign: false }
     );
-    expect(typeof result.abiData).toBe("string");
+    expect(result.strategy).toBe("EIP2612");
+    expect(result.data.deadline).toBe(DEADLINE);
   });
 
   test("returns StructuredData when returnTypedDataToSign: true", async () => {
@@ -443,7 +449,7 @@ describe("ERC20Mixin#signReceiveWithPermit2()", () => {
 
   // ── overload dispatch ──────────────────────────────────────────────────────
 
-  test("returns SignedReceiveWithPermit2 when overrides is omitted", async () => {
+  test("returns a TransferAuthorization tagged Permit2 when overrides is omitted", async () => {
     const result = await makeCoreSDKForPermit2().signReceiveWithPermit2(
       EXCHANGE_TOKEN,
       VALUE,
@@ -453,17 +459,19 @@ describe("ERC20Mixin#signReceiveWithPermit2()", () => {
     expect(typeof result.s).toBe("string");
     expect(typeof result.v).toBe("number");
     expect(typeof result.signature).toBe("string");
-    expect(typeof result.abiData).toBe("string");
+    expect(result.strategy).toBe("Permit2");
+    expect(result.data.deadline).toBe(DEADLINE);
   });
 
-  test("returns SignedReceiveWithPermit2 when returnTypedDataToSign: false", async () => {
+  test("returns a TransferAuthorization tagged Permit2 when returnTypedDataToSign: false", async () => {
     const result = await makeCoreSDKForPermit2().signReceiveWithPermit2(
       EXCHANGE_TOKEN,
       VALUE,
       DEADLINE,
       { returnTypedDataToSign: false }
     );
-    expect(typeof result.abiData).toBe("string");
+    expect(result.strategy).toBe("Permit2");
+    expect(result.data.deadline).toBe(DEADLINE);
   });
 
   test("returns StructuredData when returnTypedDataToSign: true", async () => {
