@@ -1,5 +1,6 @@
 import {
   ConditionStruct,
+  FullOfferArgs,
   TransactionResponse,
   TransactionRequest,
   Web3LibAdapter
@@ -410,6 +411,192 @@ export class OrchestrationMixin<
     } else {
       return handler.createSellerAndPremintedOfferWithCondition({
         ...createArgs,
+        returnTxInfo: false
+      });
+    }
+  }
+
+  /**
+   * Commits to a seller-initiated offer and immediately redeems the voucher in
+   * a single transaction by calling the `OrchestrationHandler`.
+   * @param offerId - ID of offer to commit to.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  // Overload: returnTxInfo is true → returns TransactionRequest
+  public async commitToOfferAndRedeemVoucher(
+    offerId: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async commitToOfferAndRedeemVoucher(
+    offerId: BigNumberish,
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async commitToOfferAndRedeemVoucher(
+    offerId: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const commitArgs = {
+      offerId,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      metadataStorage: this._metadataStorage,
+      theGraphStorage: this._theGraphStorage,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    } as const satisfies Parameters<
+      typeof handler.commitToOfferAndRedeemVoucher
+    >[0];
+
+    if (returnTxInfo === true) {
+      return handler.commitToOfferAndRedeemVoucher({
+        ...commitArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return handler.commitToOfferAndRedeemVoucher({
+        ...commitArgs,
+        returnTxInfo: false
+      });
+    }
+  }
+
+  /**
+   * Commits to a conditional offer and immediately redeems the voucher in a
+   * single transaction by calling the `OrchestrationHandler`.
+   * @param offerId - ID of offer to commit to.
+   * @param tokenId - ID of the token to use for the conditional commit.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  // Overload: returnTxInfo is true → returns TransactionRequest
+  public async commitToConditionalOfferAndRedeemVoucher(
+    offerId: BigNumberish,
+    tokenId: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async commitToConditionalOfferAndRedeemVoucher(
+    offerId: BigNumberish,
+    tokenId: BigNumberish,
+    overrides?: Partial<{
+      contractAddress: string;
+      returnTxInfo?: false;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async commitToConditionalOfferAndRedeemVoucher(
+    offerId: BigNumberish,
+    tokenId: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const commitArgs = {
+      offerId,
+      tokenId,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      metadataStorage: this._metadataStorage,
+      theGraphStorage: this._theGraphStorage,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    } as const satisfies Parameters<
+      typeof handler.commitToConditionalOfferAndRedeemVoucher
+    >[0];
+
+    if (returnTxInfo === true) {
+      return handler.commitToConditionalOfferAndRedeemVoucher({
+        ...commitArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return handler.commitToConditionalOfferAndRedeemVoucher({
+        ...commitArgs,
+        returnTxInfo: false
+      });
+    }
+  }
+
+  /**
+   * Creates an offer, commits to it and immediately redeems the voucher in a
+   * single transaction by calling the `OrchestrationHandler`.
+   * @param createOfferAndCommitArgs - Offer and commit arguments.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  // Overload: returnTxInfo is true → returns TransactionRequest
+  public async createOfferCommitAndRedeem(
+    createOfferAndCommitArgs: FullOfferArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo: true;
+    }>
+  ): Promise<TransactionRequest>;
+
+  // Overload: returnTxInfo is false or undefined → returns TransactionResponse
+  public async createOfferCommitAndRedeem(
+    createOfferAndCommitArgs: FullOfferArgs,
+    overrides?: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: false;
+    }>
+  ): Promise<TransactionResponse>;
+
+  // Implementation
+  public async createOfferCommitAndRedeem(
+    createOfferAndCommitArgs: FullOfferArgs,
+    overrides: Partial<{
+      contractAddress: string;
+      txRequest: TransactionRequest;
+      returnTxInfo?: boolean;
+    }> = {}
+  ): Promise<TransactionResponse | TransactionRequest> {
+    const { returnTxInfo } = overrides;
+
+    const offerArgs = {
+      createOfferAndCommitArgs,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      metadataStorage: this._metadataStorage,
+      theGraphStorage: this._theGraphStorage,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      txRequest: overrides.txRequest
+    } as const satisfies Parameters<
+      typeof handler.createOfferCommitAndRedeem
+    >[0];
+
+    if (returnTxInfo === true) {
+      return handler.createOfferCommitAndRedeem({
+        ...offerArgs,
+        returnTxInfo: true
+      });
+    } else {
+      return handler.createOfferCommitAndRedeem({
+        ...offerArgs,
         returnTxInfo: false
       });
     }

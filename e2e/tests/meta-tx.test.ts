@@ -2,7 +2,10 @@ import { ZERO_ADDRESS } from "./../../packages/core-sdk/tests/mocks";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { parseEther } from "@ethersproject/units";
 import { Wallet, BigNumber, constants } from "ethers";
-import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
+import {
+  ExchangeState,
+  OfferFieldsFragment
+} from "../../packages/core-sdk/src/subgraph";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import { encodeValidate } from "../../packages/core-sdk/src/seaport/interface";
 
@@ -688,6 +691,55 @@ describe("meta-tx", () => {
     });
   });
 
+  describe("#signMetaTxCommitToOfferAndRedeemVoucher()", () => {
+    test("non-native exchange token offer", async () => {
+      const nonce = Date.now();
+
+      // `Buyer` signs native meta tx for the token approval
+      await approveErc20Token(
+        buyerCoreSDK,
+        MOCK_ERC20_ADDRESS,
+        offerToCommit.price
+      );
+
+      const allowanceAfter =
+        await buyerCoreSDK.getProtocolAllowance(MOCK_ERC20_ADDRESS);
+      expect(BigNumber.from(allowanceAfter).gte(offerToCommit.price)).toBe(
+        true
+      );
+
+      // `Buyer` signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDK.signMetaTxCommitToOfferAndRedeemVoucher({
+          offerId: offerToCommit.id,
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of `Buyer`
+      const metaTx = await buyerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      await buyerCoreSDK.waitForGraphNodeIndexing(metaTxReceipt);
+      const exchangeId =
+        buyerCoreSDK.getCommittedExchangeIdFromLogs(metaTxReceipt.logs);
+      expect(exchangeId).toBeTruthy();
+      const exchange = await buyerCoreSDK.getExchangeById(
+        exchangeId as string
+      );
+      expect(exchange.state).toBe(ExchangeState.REDEEMED);
+      expect(exchange.redeemedDate).toBeTruthy();
+    });
+  });
+
   describe("#signMetaTxCommitToConditionalOffer()", () => {
     test("non-native exchange token conditional offer", async () => {
       const tokenID = Date.now().toString();
@@ -745,6 +797,76 @@ describe("meta-tx", () => {
       const metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxCommitToConditionalOfferAndRedeemVoucher()", () => {
+    test("non-native exchange token conditional offer", async () => {
+      const tokenID = Date.now().toString();
+
+      // Ensure the condition token is minted
+      await ensureMintedERC1155(buyerWallet, tokenID, "5");
+
+      const condition = {
+        method: EvaluationMethod.Threshold,
+        tokenType: TokenType.MultiToken,
+        tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+        gatingType: GatingType.PerAddress,
+        minTokenId: tokenID,
+        maxTokenId: tokenID,
+        threshold: "1",
+        maxCommits: "3"
+      };
+      const createdOffer = await createOfferWithCondition(
+        sellerCoreSDK,
+        condition,
+        {
+          offerParams: { exchangeToken: MOCK_ERC20_ADDRESS }
+        }
+      );
+      const nonce = Date.now();
+
+      // `Buyer` signs native meta tx for the token approval
+      await approveErc20Token(
+        buyerCoreSDK,
+        MOCK_ERC20_ADDRESS,
+        createdOffer.price
+      );
+
+      const allowanceAfter =
+        await buyerCoreSDK.getProtocolAllowance(MOCK_ERC20_ADDRESS);
+      expect(BigNumber.from(allowanceAfter).gte(createdOffer.price)).toBe(true);
+
+      // `Buyer` signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDK.signMetaTxCommitToConditionalOfferAndRedeemVoucher({
+          offerId: createdOffer.id,
+          tokenId: tokenID,
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of `Buyer`
+      const metaTx = await buyerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      await buyerCoreSDK.waitForGraphNodeIndexing(metaTxReceipt);
+      const exchangeId =
+        buyerCoreSDK.getCommittedExchangeIdFromLogs(metaTxReceipt.logs);
+      expect(exchangeId).toBeTruthy();
+      const exchange = await buyerCoreSDK.getExchangeById(
+        exchangeId as string
+      );
+      expect(exchange.state).toBe(ExchangeState.REDEEMED);
+      expect(exchange.redeemedDate).toBeTruthy();
     });
   });
 
@@ -1392,6 +1514,149 @@ describe("meta-tx", () => {
       const metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxCreateOfferCommitAndRedeem()", () => {
+    const noCondition = {
+      method: EvaluationMethod.None,
+      tokenType: TokenType.MultiToken,
+      tokenAddress: constants.AddressZero,
+      gatingType: GatingType.PerAddress,
+      minTokenId: 0,
+      maxTokenId: 0,
+      threshold: 0,
+      maxCommits: 0
+    };
+
+    test("non-native exchange token seller-initiated offer", async () => {
+      const exchangeToken = MOCK_ERC20_ADDRESS;
+      // sellerDeposit and drFeeAmount are 0 so the seller doesn't need to
+      // deposit any funds prior to the commit
+      const sellerDeposit = "0";
+      const drFeeAmount = "0";
+
+      // Create a dispute resolver with zero ERC20 fee
+      const { fundedWallet: drFundedWallet } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
+      const drAddress = drFundedWallet.address.toLowerCase();
+      const { disputeResolver } = await createDisputeResolver(
+        drFundedWallet,
+        deployerWallet,
+        {
+          assistant: drAddress,
+          admin: drAddress,
+          treasury: drAddress,
+          metadataUri: "",
+          escalationResponsePeriodInMS: 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
+          fees: [
+            {
+              feeAmount: drFeeAmount,
+              tokenAddress: exchangeToken,
+              tokenName: "ERC20"
+            }
+          ],
+          sellerAllowList: []
+        }
+      );
+
+      // Create fresh buyer/seller wallets
+      const {
+        sellerCoreSDK: sellerCoreSDKNew,
+        buyerCoreSDK: buyerCoreSDKNew,
+        sellerWallet: sellerFundedWallet,
+        buyerWallet: buyerFundedWallet
+      } = await initSellerAndBuyerSDKs(sellerWallet);
+
+      // Mint ERC20 tokens to fresh wallets (they start with 0 ERC20 balance)
+      await ensureMintedAndAllowedTokens(
+        [buyerFundedWallet, sellerFundedWallet],
+        undefined,
+        false
+      );
+
+      // Create seller account (seller is offer creator for seller-initiated offer)
+      const seller = await createSeller(
+        sellerCoreSDKNew,
+        sellerFundedWallet.address
+      );
+
+      // Build full offer args for seller-initiated offer with ERC20 exchange token:
+      // seller is offer creator (deposits sellerDeposit=0), buyer is committer
+      // (pays price in ERC20)
+      const fullOfferArgsUnsigned = await buildFullOfferArgs(
+        buyerCoreSDKNew, // buyer calls createOfferCommitAndRedeem
+        sellerCoreSDKNew, // seller signs the offer
+        noCondition,
+        {
+          committer: buyerFundedWallet.address,
+          offerCreator: sellerFundedWallet.address,
+          sellerId: seller.id,
+          sellerOfferParams: {
+            collectionIndex: 0,
+            mutualizerAddress: constants.AddressZero,
+            royaltyInfo: { recipients: [], bps: [] }
+          },
+          useDepositedFunds: true,
+          creator: OfferCreator.Seller,
+          feeLimit: parseEther("0.1")
+        },
+        {
+          offerParams: {
+            disputeResolverId: disputeResolver.id,
+            exchangeToken,
+            sellerDeposit
+          }
+        }
+      );
+
+      // Seller (offer creator) signs the full offer
+      const { signature } = await sellerCoreSDKNew.signFullOffer({
+        fullOfferArgsUnsigned
+      });
+      const fullOfferArgs: FullOfferArgs = {
+        ...fullOfferArgsUnsigned,
+        signature
+      };
+
+      // Buyer (committer) pre-approves ERC20 token for price amount
+      await approveErc20Token(
+        buyerCoreSDKNew,
+        exchangeToken,
+        fullOfferArgsUnsigned.price
+      );
+
+      const nonce = Date.now();
+
+      // Buyer signs meta-tx for createOfferCommitAndRedeem
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDKNew.signMetaTxCreateOfferCommitAndRedeem({
+          createOfferAndCommitArgs: fullOfferArgs,
+          nonce
+        });
+
+      // Relayer executes meta-tx on behalf of buyer
+      const metaTx = await buyerCoreSDKNew.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      await buyerCoreSDKNew.waitForGraphNodeIndexing(metaTxReceipt);
+      const exchangeId =
+        buyerCoreSDKNew.getCommittedExchangeIdFromLogs(metaTxReceipt.logs);
+      expect(exchangeId).toBeTruthy();
+      const exchange = await buyerCoreSDKNew.getExchangeById(
+        exchangeId as string
+      );
+      expect(exchange.state).toBe(ExchangeState.REDEEMED);
+      expect(exchange.redeemedDate).toBeTruthy();
     });
   });
 

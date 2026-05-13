@@ -25,6 +25,9 @@ import {
   signMetaTxCommitToConditionalOffer,
   signMetaTxCommitToBuyerOffer,
   signMetaTxCreateOfferAndCommit,
+  signMetaTxCommitToOfferAndRedeemVoucher,
+  signMetaTxCommitToConditionalOfferAndRedeemVoucher,
+  signMetaTxCreateOfferCommitAndRedeem,
   signMetaTxCancelVoucher,
   signMetaTxRedeemVoucher,
   signMetaTxCompleteExchange,
@@ -622,6 +625,91 @@ describe("meta-tx handler", () => {
 
     test("returns StructuredData with returnTypedDataToSign: true", async () => {
       const result = await signMetaTxCreateOfferAndCommit({
+        ...base(),
+        createOfferAndCommitArgs,
+        returnTypedDataToSign: true
+      });
+      assertStructuredData(result, "MetaTransaction");
+    });
+  });
+
+  // ── signMetaTxCommitToOfferAndRedeemVoucher ────────────────────────────────
+  describe("#signMetaTxCommitToOfferAndRedeemVoucher()", () => {
+    test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+      const result = await signMetaTxCommitToOfferAndRedeemVoucher({
+        ...base(),
+        offerId: "1"
+      });
+      assertSignedMetaTx(result);
+      expect(result.functionName).toBe(
+        "commitToOfferAndRedeemVoucher(uint256)"
+      );
+    });
+
+    test("returns StructuredData with returnTypedDataToSign: true", async () => {
+      const result = await signMetaTxCommitToOfferAndRedeemVoucher({
+        ...base(),
+        offerId: "1",
+        returnTypedDataToSign: true
+      });
+      assertStructuredData(result, "MetaTransaction");
+    });
+  });
+
+  // ── signMetaTxCommitToConditionalOfferAndRedeemVoucher ─────────────────────
+  describe("#signMetaTxCommitToConditionalOfferAndRedeemVoucher()", () => {
+    test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+      const result = await signMetaTxCommitToConditionalOfferAndRedeemVoucher({
+        ...base(),
+        offerId: "1",
+        tokenId: "42"
+      });
+      assertSignedMetaTx(result);
+      expect(result.functionName).toBe(
+        "commitToConditionalOfferAndRedeemVoucher(uint256,uint256)"
+      );
+    });
+
+    test("returns StructuredData with returnTypedDataToSign: true", async () => {
+      const result = await signMetaTxCommitToConditionalOfferAndRedeemVoucher({
+        ...base(),
+        offerId: "1",
+        tokenId: "42",
+        returnTypedDataToSign: true
+      });
+      assertStructuredData(result, "MetaTransaction");
+    });
+  });
+
+  // ── signMetaTxCreateOfferCommitAndRedeem ───────────────────────────────────
+  describe("#signMetaTxCreateOfferCommitAndRedeem()", () => {
+    const createOfferAndCommitArgs = {
+      ...createOfferArgsMock,
+      offerCreator: SIGNER,
+      committer: SIGNER,
+      condition: conditionStruct,
+      useDepositedFunds: false,
+      signature: MOCK_SIG,
+      sellerId: "1",
+      buyerId: "1",
+      sellerOfferParams: {
+        collectionIndex: "0",
+        royaltyInfo: { recipients: [AddressZero], bps: ["0"] },
+        mutualizerAddress: AddressZero
+      }
+    };
+
+    test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+      const result = await signMetaTxCreateOfferCommitAndRedeem({
+        ...base(),
+        createOfferAndCommitArgs
+      });
+      assertSignedMetaTx(result);
+      expect(result.functionName).toContain("createOfferCommitAndRedeem");
+    });
+
+    test("returns StructuredData with returnTypedDataToSign: true", async () => {
+      const result = await signMetaTxCreateOfferCommitAndRedeem({
         ...base(),
         createOfferAndCommitArgs,
         returnTypedDataToSign: true

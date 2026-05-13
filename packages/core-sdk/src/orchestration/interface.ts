@@ -1,7 +1,8 @@
-import { abis, ConditionStruct } from "@bosonprotocol/common";
+import { abis, ConditionStruct, FullOfferArgs } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { createSellerArgsToStruct } from "../accounts/interface";
 import { createOfferArgsToStructs } from "../offers/interface";
+import { fullOfferArgsToStruct } from "../exchanges/interface";
 
 import { CreateSellerArgs } from "../accounts/types";
 import { CreateOfferArgs } from "../offers/types";
@@ -179,5 +180,34 @@ export function encodeRaiseAndEscalateDispute(exchangeId: BigNumberish) {
   return bosonOrchestrationHandlerIface.encodeFunctionData(
     "raiseAndEscalateDispute",
     [exchangeId]
+  );
+}
+
+export function encodeCommitToOfferAndRedeemVoucher(offerId: BigNumberish) {
+  return bosonOrchestrationHandlerIface.encodeFunctionData(
+    "commitToOfferAndRedeemVoucher",
+    [offerId]
+  );
+}
+
+export function encodeCommitToConditionalOfferAndRedeemVoucher(
+  offerId: BigNumberish,
+  tokenId: BigNumberish
+) {
+  return bosonOrchestrationHandlerIface.encodeFunctionData(
+    "commitToConditionalOfferAndRedeemVoucher",
+    [offerId, tokenId]
+  );
+}
+
+export function encodeCreateOfferCommitAndRedeem(args: FullOfferArgs) {
+  return bosonOrchestrationHandlerIface.encodeFunctionData(
+    "createOfferCommitAndRedeem",
+    [
+      fullOfferArgsToStruct(args),
+      args.offerCreator,
+      args.signature,
+      args.conditionalTokenId || "0"
+    ]
   );
 }
