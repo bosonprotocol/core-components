@@ -36,9 +36,12 @@ export const envConfigs = {
       contracts: {
         protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
         priceDiscoveryClient: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+        permit2: "0x1291Be112d480055DaFd8a610b7d1e203891C274", // MockPermi2
         testErc20: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49", // Foreign20 contract
         testErc721: "0x4826533B4897376654Bb4d4AD88B7faFD0C98528", // Foreign721 contract
         testErc1155: "0x99bbA657f2BbC93c02D617f8bA121cB8Fc104Acf", // Foreign1155 contract
+        testErc3009: "0x809d550fca64d94Bd9F66E60752A544199cfAC3D", // MockERC3009Token contract
+        testErc2612: "0x4c5859f0F772848b2D91F1D83E2Fe57935348029", // MockERC2612Token contract
         forwarder: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0", // MockForwarder contract
         seaport: "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf", // MockSeaport contract
         openseaWrapper: "0x9d4454B023096f34B160D6B654540c56A1F81688"
@@ -76,6 +79,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.testing[80002].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.testing[80002].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0", // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
         openseaWrapper: "0x6e9C25b48161A2aC6A854af3bc596d3190F0B5A3"
       },
@@ -110,6 +114,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.testing[11155111].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.testing[11155111].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: "0xbdeA59c8801658561a16fF58D68FC2b198DE4E93", // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L10
         openseaWrapper: "0xf4e888DfCBD71b08a3Aa5Cf15d5124Cfd7205433"
       },
@@ -138,6 +143,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.testing[84532].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.testing[84532].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: "",
         openseaWrapper: ""
       },
@@ -170,6 +176,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.testing[11155420].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.testing[11155420].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: "",
         openseaWrapper: ""
       },
@@ -202,6 +209,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.testing[421614].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.testing[421614].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: "",
         openseaWrapper: ""
       },
@@ -236,6 +244,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.staging[80002].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.staging[80002].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0", // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
         openseaWrapper: "0x6678663A66C228BA79C8B2ABB4b4D797C6215026"
       },
@@ -270,6 +279,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.staging[11155111].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.staging[11155111].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: "0xbdeA59c8801658561a16fF58D68FC2b198DE4E93" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L10
       },
       metaTx: undefined,
@@ -297,6 +307,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.staging[84532].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.staging[84532].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: ""
       },
       metaTx: {
@@ -328,6 +339,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.staging[11155420].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.staging[11155420].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: ""
       },
       metaTx: {
@@ -359,6 +371,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.staging[421614].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.staging[421614].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: ""
       },
       metaTx: {
@@ -392,6 +405,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.production[137].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.production[137].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: "0xf0511f123164602042ab2bCF02111fA5D3Fe97CD"
       },
       metaTx: {
@@ -424,6 +438,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.production[1].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.production[1].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: "0x84a0856b038eaAd1cC7E297cF34A7e72685A8693" // https://docs-gasless.biconomy.io/misc/contract-addresses
       },
       metaTx: undefined,
@@ -451,6 +466,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.production[8453].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.production[8453].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: ""
       },
       metaTx: {
@@ -482,6 +498,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.production[10].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.production[10].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: ""
       },
       metaTx: {
@@ -513,6 +530,7 @@ export const envConfigs = {
         protocolDiamond: protocolAddresses.production[42161].protocolDiamond,
         priceDiscoveryClient:
           protocolAddresses.production[42161].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         forwarder: ""
       },
       metaTx: {

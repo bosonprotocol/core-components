@@ -71,7 +71,8 @@ import {
   ACCOUNT_21,
   ACCOUNT_22,
   ACCOUNT_23,
-  ACCOUNT_24
+  ACCOUNT_24,
+  ACCOUNT_25
 } from "../../contracts/accounts";
 import {
   DR_FEE_MUTUALIZER_ABI,
@@ -110,6 +111,18 @@ export const MOCK_ERC721_ADDRESS =
 export const MOCK_ERC1155_ADDRESS =
   (getFirstEnvConfig("local").contracts.testErc1155 as string) ||
   "0x99bbA657f2BbC93c02D617f8bA121cB8Fc104Acf";
+
+export const MOCK_ERC3009_ADDRESS =
+  (getFirstEnvConfig("local").contracts.testErc3009 as string) ||
+  "0x809d550fca64d94Bd9F66E60752A544199cfAC3D";
+
+export const MOCK_ERC2612_ADDRESS =
+  (getFirstEnvConfig("local").contracts.testErc2612 as string) ||
+  "0x4c5859f0F772848b2D91F1D83E2Fe57935348029";
+
+export const MOCK_PERMIT2_ADDRESS =
+  (getFirstEnvConfig("local").contracts.permit2 as string) ||
+  "0x1291Be112d480055DaFd8a610b7d1e203891C274";
 
 export const MOCK_FORWARDER_ADDRESS =
   (getFirstEnvConfig("local").contracts.forwarder as string) ||
@@ -224,6 +237,8 @@ export const seedWallet22 = new Wallet(ACCOUNT_22.privateKey, provider);
 export const seedWallet23 = new Wallet(ACCOUNT_23.privateKey, provider);
 // seedWallets used by opensea-price-discovery.test.ts
 export const seedWallet24 = new Wallet(ACCOUNT_24.privateKey, provider);
+// seedWallets used by core-sdk-token-auth.test.ts
+export const seedWallet25 = new Wallet(ACCOUNT_25.privateKey, provider);
 
 export const mockErc20Contract = new Contract(
   MOCK_ERC20_ADDRESS,

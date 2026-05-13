@@ -7,9 +7,12 @@ export type ContractAddresses = {
   testErc721?: string;
   testErc20?: string;
   testErc1155?: string;
+  testErc3009?: string;
+  testErc2612?: string;
   forwarder: string;
   seaport?: string;
   openseaWrapper?: string;
+  permit2: string;
 };
 
 export type EnvironmentType = "local" | "testing" | "staging" | "production";

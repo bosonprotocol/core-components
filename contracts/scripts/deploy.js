@@ -25,7 +25,12 @@ const { deploySeaport } = require("./deploy-seaport");
 const { ZeroAddress } = require("ethers");
 const { deployWrappers } = require("./deploy-wrappers.js");
 const { deployDRFeeMutualizer } = require("./deploy-dRFeeMutualizer.js");
-const { deployWeth } = require("./deploy-weth.js");
+const {
+  deployWeth,
+  deployERC2612Token,
+  deployERC3009Token,
+  deployPermit2
+} = require("./deploy-other-tokens.js");
 
 async function main() {
   const { addresses } = await deployAndMintMockNFTAuthTokens();
@@ -42,7 +47,7 @@ async function main() {
   await deploySuite("localhost", undefined);
   const mockTokens = ["Foreign20", "Foreign721", "Foreign1155"];
   const deployedTokens = await deployMockTokens([...mockTokens]);
-  let foreign20Token;
+  const erc20sForDisputeResolver = new Map();
   for (const [index, mockToken] of Object.entries(mockTokens)) {
     console.log(
       `✅ Mock token ${mockToken} has been deployed at ${await deployedTokens[
@@ -50,7 +55,10 @@ async function main() {
       ].getAddress()}`
     );
     if (mockToken === "Foreign20") {
-      foreign20Token = await deployedTokens[index].getAddress();
+      erc20sForDisputeResolver.set(
+        mockToken,
+        await deployedTokens[index].getAddress()
+      );
     }
   }
   const file = await fs.readFile(
@@ -64,10 +72,65 @@ async function main() {
   const priceDiscoveryClient = deployedContracts.find(
     (c) => c.name === "BosonPriceDiscoveryClient"
   )?.address;
+
+  // Deploy Seaport contract
+  const mockSeaport = await deploySeaport();
+  const seaportAddress = await mockSeaport.getAddress();
+  console.log(`✅ Seaport Contract has been deployed at ${seaportAddress}`);
+  // Deploy wrappers contracts
+  const { openSeaWrapperFactory } = await deployWrappers(
+    protocolDiamond,
+    priceDiscoveryClient,
+    seaportAddress
+  );
+  console.log(
+    `✅ OpenSeaWrapperFactory Contract has been deployed at ${await openSeaWrapperFactory.getAddress()}`
+  );
+
+  // Deploy WETH contract
+  const weth = await deployWeth();
+  const wethAddress = await weth.getAddress();
+  console.log(`✅ WETH Contract has been deployed at ${wethAddress}`);
+  process.env.WETH_ADDRESS = wethAddress;
+  // Deploy DRFeeMutualizer
+  const dRFeeMutualizer = await deployDRFeeMutualizer(
+    protocolDiamond,
+    process.env.FORWARDER_ADDRESS,
+    wethAddress
+  );
+  const dRFeeMutualizerAddress = await dRFeeMutualizer.getAddress();
+  console.log(
+    `✅ DRFeeMutualizer Contract has been deployed at ${dRFeeMutualizerAddress}`
+  );
+
+  // Deploy MockERC3009Token contract
+  const mockERC3009Token = await deployERC3009Token();
+  const mockERC3009TokenAddress = await mockERC3009Token.getAddress();
+  console.log(
+    `✅ MockERC3009Token Contract has been deployed at ${mockERC3009TokenAddress}`
+  );
+  erc20sForDisputeResolver.set("MockERC3009Token", mockERC3009TokenAddress);
+
+  // Deploy MockERC2612Token contract
+  const mockERC2612Token = await deployERC2612Token();
+  const mockERC2612TokenAddress = await mockERC2612Token.getAddress();
+  console.log(
+    `✅ MockERC2612Token Contract has been deployed at ${mockERC2612TokenAddress}`
+  );
+  erc20sForDisputeResolver.set("MockERC2612Token", mockERC2612TokenAddress);
+
+  // Deploy MockPermit2 contract
+  const mockPermit2 = await deployPermit2();
+  const mockPermit2Address = await mockPermit2.getAddress();
+  console.log(
+    `✅ MockPermit2 Contract has been deployed at ${mockPermit2Address}`
+  );
+  erc20sForDisputeResolver.set("MockPermit2", mockPermit2Address);
+
+  // Create default dispute resolver
   const accounts = await ethers.getSigners();
   const disputeResolverSigner = accounts[1];
   const disputeResolver = disputeResolverSigner.address;
-  // Create default dispute resolver
   const accountHandler = await ethers.getContractAt(
     "IBosonAccountHandler",
     protocolDiamond
@@ -92,11 +155,13 @@ async function main() {
           tokenName: "Native",
           feeAmount: "0"
         },
-        {
-          tokenAddress: foreign20Token,
-          tokenName: "Foreign20",
-          feeAmount: "0"
-        }
+        ...Array.from(erc20sForDisputeResolver.entries()).map(
+          ([tokenName, tokenAddress]) => ({
+            tokenAddress,
+            tokenName,
+            feeAmount: "0"
+          })
+        )
       ],
       []
     );
@@ -108,34 +173,7 @@ async function main() {
   console.log(
     `✅ Dispute resolver created. ID: ${disputeResolverId} Wallet: ${disputeResolver}`
   );
-  // Deploy Seaport contract
-  const mockSeaport = await deploySeaport();
-  const seaportAddress = await mockSeaport.getAddress();
-  console.log(`✅ Seaport Contract has been deployed at ${seaportAddress}`);
-  // Deploy wrappers contracts
-  const { openSeaWrapperFactory } = await deployWrappers(
-    protocolDiamond,
-    priceDiscoveryClient,
-    seaportAddress
-  );
-  console.log(
-    `✅ OpenSeaWrapperFactory Contract has been deployed at ${await openSeaWrapperFactory.getAddress()}`
-  );
-  // Deploy WETH contract
-  const weth = await deployWeth();
-  const wethAddress = await weth.getAddress();
-  console.log(`✅ WETH Contract has been deployed at ${wethAddress}`);
-  process.env.WETH_ADDRESS = wethAddress;
-  // Deploy DRFeeMutualizer
-  const dRFeeMutualizer = await deployDRFeeMutualizer(
-    protocolDiamond,
-    process.env.FORWARDER_ADDRESS,
-    wethAddress
-  );
-  const dRFeeMutualizerAddress = await dRFeeMutualizer.getAddress();
-  console.log(
-    `✅ DRFeeMutualizer Contract has been deployed at ${dRFeeMutualizerAddress}`
-  );
+
   // Set specific configuration values (needed for tests)
   const deployer = accounts[0];
   const configHandler = await ethers.getContractAt(
