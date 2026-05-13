@@ -20,12 +20,19 @@ export type StructuredData = {
       type: string;
     }[];
   };
-  domain: {
-    name: string;
-    version: string;
-    verifyingContract: string;
-    salt: string;
-  };
+  domain:
+    | {
+        name: string;
+        version: string;
+        verifyingContract: string;
+        salt: string;
+      }
+    | {
+        name: string;
+        version: string;
+        verifyingContract: string;
+        chainId: number | string;
+      };
   primaryType: string;
   message: Record<string, unknown>;
 };

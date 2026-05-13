@@ -25,8 +25,11 @@ import IBosonOrchestrationHandlerABI from "./IBosonOrchestrationHandler.json";
 import IBosonPriceDiscoveryHandlerABI from "./IBosonPriceDiscoveryHandler.json";
 import IBosonVoucherABI from "./IBosonVoucher.json";
 import IDRFeeMutualizerABI from "./IDRFeeMutualizer.json";
+import ERC2612TokenABI from "./MockERC2612Token.json";
+import ERC3009TokenABI from "./MockERC3009Token.json";
 import MockForwarderABI from "./MockForwarder.json";
 import NativeMetaTransactionABI from "./MockNativeMetaTransaction.json";
+import Permit2ABI from "./MockPermit2.json";
 import OpenSeaWrapperABI from "./OpenSeaWrapper.json";
 import OpenSeaWrapperFactoryABI from "./OpenSeaWrapperFactory.json";
 import ProtocolDiamondABI from "./ProtocolDiamond.json";
@@ -59,8 +62,11 @@ export {
   IBosonPriceDiscoveryHandlerABI,
   IBosonVoucherABI,
   IDRFeeMutualizerABI,
+  ERC2612TokenABI,
+  ERC3009TokenABI,
   MockForwarderABI,
   NativeMetaTransactionABI,
+  Permit2ABI,
   OpenSeaWrapperABI,
   OpenSeaWrapperFactoryABI,
   ProtocolDiamondABI,

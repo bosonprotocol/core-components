@@ -3,6 +3,7 @@ import {
   TransactionResponse,
   TransactionRequest
 } from "@bosonprotocol/common";
+import { BigNumberish } from "@ethersproject/bignumber";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import {
   approve,
@@ -11,8 +12,11 @@ import {
   getSymbol,
   getName,
   ensureAllowance,
-  balanceOf
+  balanceOf,
+  signReceiveWithErc3009Authorization,
+  SignedReceiveWithAuthorization
 } from "./handler";
+import { StructuredData } from "../utils/signature";
 
 export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
@@ -120,5 +124,66 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
     args: Omit<Parameters<typeof balanceOf>[0], "web3Lib">
   ): Promise<ReturnType<typeof balanceOf>> {
     return balanceOf({ web3Lib: this._web3Lib, ...args });
+  }
+
+  /**
+   * Signs an ERC-3009 `ReceiveWithAuthorization` payload that authorizes the
+   * spender (default: protocol diamond) to pull `value` units of `exchangeToken`
+   * from the signer. The returned `abiData` is the ABI-encoded
+   * `[validAfter, validBefore, nonce, v, r, s]` payload consumed by the protocol's
+   * TokenTransferAuthorization flow.
+   */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signReceiveWithErc3009Authorization(
+    exchangeToken: string,
+    tokenDomain: { name: string; version: string },
+    value: BigNumberish,
+    validAfter: BigNumberish,
+    validBefore: BigNumberish,
+    overrides: Partial<{ spender: string }> & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedReceiveWithAuthorization
+  public async signReceiveWithErc3009Authorization(
+    exchangeToken: string,
+    tokenDomain: { name: string; version: string },
+    value: BigNumberish,
+    validAfter: BigNumberish,
+    validBefore: BigNumberish,
+    overrides?: Partial<{ spender: string; returnTypedDataToSign?: false }>
+  ): Promise<SignedReceiveWithAuthorization>;
+  // Implementation
+  public async signReceiveWithErc3009Authorization(
+    exchangeToken: string,
+    tokenDomain: { name: string; version: string },
+    value: BigNumberish,
+    validAfter: BigNumberish,
+    validBefore: BigNumberish,
+    overrides: Partial<{
+      spender: string;
+      returnTypedDataToSign: boolean;
+    }> = {}
+  ): Promise<SignedReceiveWithAuthorization | StructuredData> {
+    const user = await this._web3Lib.getSignerAddress();
+    const baseArgs = {
+      web3Lib: this._web3Lib,
+      chainId: this._chainId,
+      user,
+      exchangeToken,
+      spender: overrides.spender || this._protocolDiamond,
+      value,
+      tokenDomain,
+      validAfter,
+      validBefore
+    };
+    if (overrides.returnTypedDataToSign) {
+      return signReceiveWithErc3009Authorization({
+        ...baseArgs,
+        returnTypedDataToSign: true
+      });
+    }
+    return signReceiveWithErc3009Authorization({
+      ...baseArgs,
+      returnTypedDataToSign: false
+    });
   }
 }

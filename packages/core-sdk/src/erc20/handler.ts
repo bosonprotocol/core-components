@@ -3,8 +3,28 @@ import {
   TransactionRequest,
   TransactionResponse
 } from "@bosonprotocol/common";
+import { defaultAbiCoder } from "@ethersproject/abi";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
+import { hexlify } from "@ethersproject/bytes";
+import { randomBytes } from "@ethersproject/random";
 import { erc20Iface } from "./interface";
+import type { ApproveExchangeTokenBaseArgs } from "../native-meta-tx/handler";
+import {
+  prepareDataSignatureParameters,
+  StructuredData
+} from "../utils/signature";
+
+export type SignedReceiveWithAuthorization = {
+  r: string;
+  s: string;
+  v: number;
+  signature: string;
+  // defaultAbiCoder.encode(
+  //   ["uint256","uint256","bytes32","uint8","bytes32","bytes32"],
+  //   [validAfter, validBefore, nonce, v, r, s]
+  // ) — drop-in payload for the protocol's TokenTransferAuthorization auth entry.
+  abiData: string;
+};
 
 // Overload: returnTxInfo is true -> returns TransactionRequest
 export async function approve(args: {
@@ -129,4 +149,93 @@ export async function balanceOf(args: {
 
   const [balance] = erc20Iface.decodeFunctionResult("balanceOf", result);
   return String(balance);
+}
+
+type SignReceiveWithErc3009AuthorizationArgs = ApproveExchangeTokenBaseArgs & {
+  tokenDomain: { name: string; version: string };
+  validAfter: BigNumberish;
+  validBefore: BigNumberish;
+};
+
+// Overload: returnTypedDataToSign is true → returns StructuredData
+export async function signReceiveWithErc3009Authorization(
+  args: SignReceiveWithErc3009AuthorizationArgs & {
+    returnTypedDataToSign: true;
+  }
+): Promise<StructuredData>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedReceiveWithAuthorization
+export async function signReceiveWithErc3009Authorization(
+  args: SignReceiveWithErc3009AuthorizationArgs & {
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedReceiveWithAuthorization>;
+// Implementation
+export async function signReceiveWithErc3009Authorization(
+  args: SignReceiveWithErc3009AuthorizationArgs & {
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedReceiveWithAuthorization | StructuredData> {
+  const nonce = hexlify(randomBytes(32));
+
+  const customSignatureType = {
+    EIP712Domain: [
+      { name: "name", type: "string" },
+      { name: "version", type: "string" },
+      { name: "chainId", type: "uint256" },
+      { name: "verifyingContract", type: "address" }
+    ],
+    ReceiveWithAuthorization: [
+      { name: "from", type: "address" },
+      { name: "to", type: "address" },
+      { name: "value", type: "uint256" },
+      { name: "validAfter", type: "uint256" },
+      { name: "validBefore", type: "uint256" },
+      { name: "nonce", type: "bytes32" }
+    ]
+  };
+
+  const customDomainData = {
+    name: args.tokenDomain.name,
+    version: args.tokenDomain.version,
+    chainId: args.chainId,
+    salt: undefined
+  };
+
+  const message = {
+    from: args.user,
+    to: args.spender,
+    value: args.value.toString(),
+    validAfter: args.validAfter.toString(),
+    validBefore: args.validBefore.toString(),
+    nonce
+  };
+
+  const baseParams = {
+    web3Lib: args.web3Lib,
+    chainId: args.chainId,
+    verifyingContractAddress: args.exchangeToken,
+    customSignatureType,
+    customDomainData,
+    primaryType: "ReceiveWithAuthorization",
+    message
+  };
+
+  if (args.returnTypedDataToSign) {
+    return prepareDataSignatureParameters({
+      ...baseParams,
+      returnTypedDataToSign: true
+    });
+  }
+
+  const sig = await prepareDataSignatureParameters({
+    ...baseParams,
+    returnTypedDataToSign: false
+  });
+
+  const abiData = defaultAbiCoder.encode(
+    ["uint256", "uint256", "bytes32", "uint8", "bytes32", "bytes32"],
+    [args.validAfter, args.validBefore, nonce, sig.v, sig.r, sig.s]
+  );
+
+  return { ...sig, abiData };
 }

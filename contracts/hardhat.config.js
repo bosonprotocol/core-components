@@ -254,7 +254,10 @@ module.exports = {
       "Seaport",
       "OpenSeaWrapper",
       "OpenSeaWrapperFactory",
-      "DRFeeMutualizer"
+      "DRFeeMutualizer",
+      "MockERC2612Token",
+      "MockERC3009Token",
+      "MockPermit2"
     ],
     except: ["MockDRFeeMutualizer"]
   }
