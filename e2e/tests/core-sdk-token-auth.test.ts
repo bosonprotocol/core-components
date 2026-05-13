@@ -175,21 +175,165 @@ describe("core-sdk-token-auth", () => {
   });
   describe("erc2612", () => {
     test("sign and verify ERC2612 token transfer", async () => {
-    const { coreSDK, fundedWallet } =
-      await initCoreSDKWithFundedWallet(seedWallet);
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
+      const recipientWallet = await createFundedWallet(seedWallet);
       const tokenAddress = MOCK_ERC2612_ADDRESS;
-      const recipient = "0x000000000000000000000000000000000000dEaD";
-      const amount = "1000000000000000000"; // 1000 tokens with 18 decimals
-      expect(false).toBe(true); // Just to avoid "no assertion" error, to be removed when test will be implemented
-      // const { r, s, v, functionSignature } =
-      //   await coreSDK.signReceiveWithPermit(
-      //     tokenAddress,
-      //     recipient,
-      //     amount,
-      //     {
-      //       validForSeconds: 3600 // Authorization valid for 1 hour
-      //     }
-      //   );
+      const amount = "1000000000000000000"; // 1 token with 18 decimals
+
+      const token = new Contract(
+        tokenAddress,
+        abis.ERC2612TokenABI,
+        fundedWallet
+      );
+
+      await (await token.mint(fundedWallet.address, amount)).wait();
+
+      const balanceBeforeFrom: BigNumber = await token.balanceOf(
+        fundedWallet.address
+      );
+      const balanceBeforeTo: BigNumber = await token.balanceOf(
+        recipientWallet.address
+      );
+      const nonceBefore: BigNumber = await token.nonces(fundedWallet.address);
+
+      const { r, s, v, signature, abiData } =
+        await coreSDK.signReceiveWithErc2612Permit(
+          tokenAddress,
+          { name: "ERC2612Token", version: "1" },
+          amount,
+          constants.MaxUint256,
+          { spender: recipientWallet.address }
+        );
+
+      expect(typeof r).toBe("string");
+      expect(typeof s).toBe("string");
+      expect(typeof v).toBe("number");
+      expect(typeof signature).toBe("string");
+
+      // abiData round-trip
+      const [decDeadline, decV, decR, decS] = defaultAbiCoder.decode(
+        ["uint256", "uint8", "bytes32", "bytes32"],
+        abiData
+      );
+      expect(decDeadline.toString()).toBe(constants.MaxUint256.toString());
+      expect(decR).toBe(r);
+      expect(decS).toBe(s);
+      expect(Number(decV)).toBe(v);
+
+      // 1. Apply permit (anyone can submit it; spender does it here).
+      const tokenAsRecipient = token.connect(recipientWallet);
+      await (
+        await tokenAsRecipient.permit(
+          fundedWallet.address,
+          recipientWallet.address,
+          amount,
+          decDeadline,
+          decV,
+          decR,
+          decS
+        )
+      ).wait();
+      // 2. Spender pulls the funds via transferFrom.
+      await (
+        await tokenAsRecipient.transferFrom(
+          fundedWallet.address,
+          recipientWallet.address,
+          amount
+        )
+      ).wait();
+
+      const balanceAfterFrom: BigNumber = await token.balanceOf(
+        fundedWallet.address
+      );
+      const balanceAfterTo: BigNumber = await token.balanceOf(
+        recipientWallet.address
+      );
+      expect(balanceBeforeFrom.sub(balanceAfterFrom).toString()).toBe(amount);
+      expect(balanceAfterTo.sub(balanceBeforeTo).toString()).toBe(amount);
+
+      // Permit nonce was advanced.
+      const nonceAfter: BigNumber = await token.nonces(fundedWallet.address);
+      expect(nonceAfter.sub(nonceBefore).toString()).toBe("1");
+    });
+
+    test("sign typed data externally (returnTypedDataToSign: true) and verify ERC2612 token transfer", async () => {
+      const { coreSDK, fundedWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet);
+      const recipientWallet = await createFundedWallet(seedWallet);
+      const tokenAddress = MOCK_ERC2612_ADDRESS;
+      const amount = "1000000000000000000";
+
+      const token = new Contract(
+        tokenAddress,
+        abis.ERC2612TokenABI,
+        fundedWallet
+      );
+
+      await (await token.mint(fundedWallet.address, amount)).wait();
+
+      const balanceBeforeFrom: BigNumber = await token.balanceOf(
+        fundedWallet.address
+      );
+      const balanceBeforeTo: BigNumber = await token.balanceOf(
+        recipientWallet.address
+      );
+      const nonceBefore: BigNumber = await token.nonces(fundedWallet.address);
+
+      // 1. Ask the SDK for the EIP-712 payload to be signed externally.
+      const typedData = await coreSDK.signReceiveWithErc2612Permit(
+        tokenAddress,
+        { name: "ERC2612Token", version: "1" },
+        amount,
+        constants.MaxUint256,
+        { spender: recipientWallet.address, returnTypedDataToSign: true }
+      );
+
+      // 2. Sign with the user wallet directly.
+      const allTypes = typedData.types as Record<
+        string,
+        { name: string; type: string }[]
+      >;
+      const signature = await fundedWallet._signTypedData(
+        typedData.domain,
+        { Permit: allTypes.Permit },
+        typedData.message
+      );
+      const { r, s, v } = utils.splitSignature(signature);
+      const deadline = typedData.message.deadline as string;
+
+      // 3. Apply permit then transferFrom from the recipient.
+      const tokenAsRecipient = token.connect(recipientWallet);
+      await (
+        await tokenAsRecipient.permit(
+          fundedWallet.address,
+          recipientWallet.address,
+          amount,
+          deadline,
+          v,
+          r,
+          s
+        )
+      ).wait();
+      await (
+        await tokenAsRecipient.transferFrom(
+          fundedWallet.address,
+          recipientWallet.address,
+          amount
+        )
+      ).wait();
+
+      const balanceAfterFrom: BigNumber = await token.balanceOf(
+        fundedWallet.address
+      );
+      const balanceAfterTo: BigNumber = await token.balanceOf(
+        recipientWallet.address
+      );
+      expect(balanceBeforeFrom.sub(balanceAfterFrom).toString()).toBe(amount);
+      expect(balanceAfterTo.sub(balanceBeforeTo).toString()).toBe(amount);
+
+      const nonceAfter: BigNumber = await token.nonces(fundedWallet.address);
+      expect(nonceAfter.sub(nonceBefore).toString()).toBe("1");
     });
   });
   describe("Permit2", () => {

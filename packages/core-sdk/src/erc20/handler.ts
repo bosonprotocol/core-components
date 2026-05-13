@@ -9,6 +9,7 @@ import { hexlify } from "@ethersproject/bytes";
 import { randomBytes } from "@ethersproject/random";
 import { erc20Iface } from "./interface";
 import type { ApproveExchangeTokenBaseArgs } from "../native-meta-tx/handler";
+import { alternativeNonceIface } from "../native-meta-tx/interface";
 import {
   prepareDataSignatureParameters,
   StructuredData
@@ -23,6 +24,19 @@ export type SignedReceiveWithAuthorization = {
   //   ["uint256","uint256","bytes32","uint8","bytes32","bytes32"],
   //   [validAfter, validBefore, nonce, v, r, s]
   // ) — drop-in payload for the protocol's TokenTransferAuthorization auth entry.
+  abiData: string;
+};
+
+export type SignedReceivePermit = {
+  r: string;
+  s: string;
+  v: number;
+  signature: string;
+  // defaultAbiCoder.encode(
+  //   ["uint256","uint8","bytes32","bytes32"],
+  //   [deadline, v, r, s]
+  // ) — drop-in payload for the protocol's TokenTransferAuthorization
+  //  EIP-2612 auth entry.
   abiData: string;
 };
 
@@ -235,6 +249,99 @@ export async function signReceiveWithErc3009Authorization(
   const abiData = defaultAbiCoder.encode(
     ["uint256", "uint256", "bytes32", "uint8", "bytes32", "bytes32"],
     [args.validAfter, args.validBefore, nonce, sig.v, sig.r, sig.s]
+  );
+
+  return { ...sig, abiData };
+}
+
+type SignReceiveWithErc2612PermitArgs = ApproveExchangeTokenBaseArgs & {
+  tokenDomain: { name: string; version: string };
+  deadline: BigNumberish;
+};
+
+// Overload: returnTypedDataToSign is true → returns StructuredData
+export async function signReceiveWithErc2612Permit(
+  args: SignReceiveWithErc2612PermitArgs & {
+    returnTypedDataToSign: true;
+  }
+): Promise<StructuredData>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedReceivePermit
+export async function signReceiveWithErc2612Permit(
+  args: SignReceiveWithErc2612PermitArgs & {
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedReceivePermit>;
+// Implementation
+export async function signReceiveWithErc2612Permit(
+  args: SignReceiveWithErc2612PermitArgs & {
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedReceivePermit | StructuredData> {
+  const nonceResult = await args.web3Lib.call({
+    to: args.exchangeToken,
+    data: alternativeNonceIface.encodeFunctionData("nonces", [args.user])
+  });
+  const [nonce] = alternativeNonceIface.decodeFunctionResult(
+    "nonces",
+    nonceResult
+  );
+
+  const customSignatureType = {
+    EIP712Domain: [
+      { name: "name", type: "string" },
+      { name: "version", type: "string" },
+      { name: "chainId", type: "uint256" },
+      { name: "verifyingContract", type: "address" }
+    ],
+    Permit: [
+      { name: "owner", type: "address" },
+      { name: "spender", type: "address" },
+      { name: "value", type: "uint256" },
+      { name: "nonce", type: "uint256" },
+      { name: "deadline", type: "uint256" }
+    ]
+  };
+
+  const customDomainData = {
+    name: args.tokenDomain.name,
+    version: args.tokenDomain.version,
+    chainId: args.chainId,
+    salt: undefined
+  };
+
+  const message = {
+    owner: args.user,
+    spender: args.spender,
+    value: args.value.toString(),
+    nonce: nonce.toString(),
+    deadline: args.deadline.toString()
+  };
+
+  const baseParams = {
+    web3Lib: args.web3Lib,
+    chainId: args.chainId,
+    verifyingContractAddress: args.exchangeToken,
+    customSignatureType,
+    customDomainData,
+    primaryType: "Permit",
+    message
+  };
+
+  if (args.returnTypedDataToSign) {
+    return prepareDataSignatureParameters({
+      ...baseParams,
+      returnTypedDataToSign: true
+    });
+  }
+
+  const sig = await prepareDataSignatureParameters({
+    ...baseParams,
+    returnTypedDataToSign: false
+  });
+
+  const abiData = defaultAbiCoder.encode(
+    ["uint256", "uint8", "bytes32", "bytes32"],
+    [args.deadline, sig.v, sig.r, sig.s]
   );
 
   return { ...sig, abiData };

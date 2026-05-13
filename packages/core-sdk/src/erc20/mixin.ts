@@ -14,7 +14,9 @@ import {
   ensureAllowance,
   balanceOf,
   signReceiveWithErc3009Authorization,
-  SignedReceiveWithAuthorization
+  SignedReceiveWithAuthorization,
+  signReceiveWithErc2612Permit,
+  SignedReceivePermit
 } from "./handler";
 import { StructuredData } from "../utils/signature";
 
@@ -182,6 +184,63 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       });
     }
     return signReceiveWithErc3009Authorization({
+      ...baseArgs,
+      returnTypedDataToSign: false
+    });
+  }
+
+  /**
+   * Signs an EIP-2612 `Permit` payload that authorizes the spender (default:
+   * protocol diamond) to pull `value` units of `exchangeToken` from the signer
+   * up to `deadline`. The returned `abiData` is the ABI-encoded
+   * `[deadline, v, r, s]` payload consumed by the protocol's
+   * TokenTransferAuthorization flow.
+   */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signReceiveWithErc2612Permit(
+    exchangeToken: string,
+    tokenDomain: { name: string; version: string },
+    value: BigNumberish,
+    deadline: BigNumberish,
+    overrides: Partial<{ spender: string }> & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedReceivePermit
+  public async signReceiveWithErc2612Permit(
+    exchangeToken: string,
+    tokenDomain: { name: string; version: string },
+    value: BigNumberish,
+    deadline: BigNumberish,
+    overrides?: Partial<{ spender: string; returnTypedDataToSign?: false }>
+  ): Promise<SignedReceivePermit>;
+  // Implementation
+  public async signReceiveWithErc2612Permit(
+    exchangeToken: string,
+    tokenDomain: { name: string; version: string },
+    value: BigNumberish,
+    deadline: BigNumberish,
+    overrides: Partial<{
+      spender: string;
+      returnTypedDataToSign: boolean;
+    }> = {}
+  ): Promise<SignedReceivePermit | StructuredData> {
+    const user = await this._web3Lib.getSignerAddress();
+    const baseArgs = {
+      web3Lib: this._web3Lib,
+      chainId: this._chainId,
+      user,
+      exchangeToken,
+      spender: overrides.spender || this._protocolDiamond,
+      value,
+      tokenDomain,
+      deadline
+    };
+    if (overrides.returnTypedDataToSign) {
+      return signReceiveWithErc2612Permit({
+        ...baseArgs,
+        returnTypedDataToSign: true
+      });
+    }
+    return signReceiveWithErc2612Permit({
       ...baseArgs,
       returnTypedDataToSign: false
     });

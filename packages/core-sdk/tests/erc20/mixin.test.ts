@@ -212,3 +212,189 @@ describe("ERC20Mixin#signReceiveWithErc3009Authorization()", () => {
     );
   });
 });
+
+// ─── EIP-2612 mixin tests ─────────────────────────────────────────────────────
+
+const DEADLINE = MaxUint256.toString();
+const ERC2612_TOKEN_DOMAIN = { name: "ERC2612Token", version: "1" };
+const ABI_UINT256_ONE =
+  "0x0000000000000000000000000000000000000000000000000000000000000001";
+
+function makeCoreSDKForPermit() {
+  return new CoreSDK({
+    web3Lib: new MockWeb3LibAdapter({
+      getSignerAddress: SIGNER,
+      send: MOCK_SIG,
+      call: ABI_UINT256_ONE
+    }),
+    subgraphUrl: SUBGRAPH_URL,
+    protocolDiamond: PROTOCOL_DIAMOND,
+    chainId: CHAIN_ID,
+    metaTx: {
+      relayerUrl: BICONOMY_URL,
+      apiKey: "test-api-key",
+      apiIds: {
+        [PROTOCOL_DIAMOND.toLowerCase()]: {
+          executeMetaTransaction: "test-api-id"
+        }
+      },
+      forwarderAbi: abis.MockForwarderABI
+    },
+    contracts: {
+      protocolDiamond: PROTOCOL_DIAMOND,
+      priceDiscoveryClient: PRICE_DISCOVERY,
+      forwarder: FORWARDER,
+      permit2: PERMIT2
+    }
+  });
+}
+
+describe("ERC20Mixin#signReceiveWithErc2612Permit()", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  // ── overload dispatch ──────────────────────────────────────────────────────
+
+  test("returns SignedReceivePermit when overrides is omitted", async () => {
+    const result = await makeCoreSDKForPermit().signReceiveWithErc2612Permit(
+      EXCHANGE_TOKEN,
+      ERC2612_TOKEN_DOMAIN,
+      VALUE,
+      DEADLINE
+    );
+    expect(typeof result.r).toBe("string");
+    expect(typeof result.s).toBe("string");
+    expect(typeof result.v).toBe("number");
+    expect(typeof result.signature).toBe("string");
+    expect(typeof result.abiData).toBe("string");
+  });
+
+  test("returns SignedReceivePermit when returnTypedDataToSign: false", async () => {
+    const result = await makeCoreSDKForPermit().signReceiveWithErc2612Permit(
+      EXCHANGE_TOKEN,
+      ERC2612_TOKEN_DOMAIN,
+      VALUE,
+      DEADLINE,
+      { returnTypedDataToSign: false }
+    );
+    expect(typeof result.abiData).toBe("string");
+  });
+
+  test("returns StructuredData when returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (
+      makeCoreSDKForPermit().signReceiveWithErc2612Permit as any
+    )(EXCHANGE_TOKEN, ERC2612_TOKEN_DOMAIN, VALUE, DEADLINE, {
+      returnTypedDataToSign: true
+    });
+    const data = result as StructuredData;
+    expect(data.primaryType).toBe("Permit");
+    expect(data.domain.verifyingContract).toBe(EXCHANGE_TOKEN);
+    expect(data.domain.name).toBe(ERC2612_TOKEN_DOMAIN.name);
+    expect((data.domain as { chainId?: number }).chainId).toBe(CHAIN_ID);
+    expect((data.domain as { salt?: string }).salt).toBeUndefined();
+    expect(data.message.owner).toBe(SIGNER);
+    expect(data.message.spender).toBe(PROTOCOL_DIAMOND);
+    expect((data as unknown as { r?: unknown }).r).toBeUndefined();
+  });
+
+  // ── argument injection ─────────────────────────────────────────────────────
+
+  test("defaults spender to protocolDiamond when not provided", async () => {
+    const spy = jest
+      .spyOn(erc20Handler, "signReceiveWithErc2612Permit")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({} as any);
+
+    await makeCoreSDKForPermit().signReceiveWithErc2612Permit(
+      EXCHANGE_TOKEN,
+      ERC2612_TOKEN_DOMAIN,
+      VALUE,
+      DEADLINE
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ spender: PROTOCOL_DIAMOND })
+    );
+  });
+
+  test("uses the provided spender override", async () => {
+    const spy = jest
+      .spyOn(erc20Handler, "signReceiveWithErc2612Permit")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({} as any);
+
+    await makeCoreSDKForPermit().signReceiveWithErc2612Permit(
+      EXCHANGE_TOKEN,
+      ERC2612_TOKEN_DOMAIN,
+      VALUE,
+      DEADLINE,
+      { spender: CUSTOM_SPENDER }
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ spender: CUSTOM_SPENDER })
+    );
+  });
+
+  test("injects the signer address as user", async () => {
+    const spy = jest
+      .spyOn(erc20Handler, "signReceiveWithErc2612Permit")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({} as any);
+
+    await makeCoreSDKForPermit().signReceiveWithErc2612Permit(
+      EXCHANGE_TOKEN,
+      ERC2612_TOKEN_DOMAIN,
+      VALUE,
+      DEADLINE
+    );
+
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining({ user: SIGNER }));
+  });
+
+  test("passes returnTypedDataToSign: true through to the handler", async () => {
+    const spy = jest
+      .spyOn(erc20Handler, "signReceiveWithErc2612Permit")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({} as any);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (makeCoreSDKForPermit().signReceiveWithErc2612Permit as any)(
+      EXCHANGE_TOKEN,
+      ERC2612_TOKEN_DOMAIN,
+      VALUE,
+      DEADLINE,
+      { returnTypedDataToSign: true }
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ returnTypedDataToSign: true })
+    );
+  });
+
+  test("forwards tokenDomain and deadline to the handler", async () => {
+    const spy = jest
+      .spyOn(erc20Handler, "signReceiveWithErc2612Permit")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({} as any);
+
+    await makeCoreSDKForPermit().signReceiveWithErc2612Permit(
+      EXCHANGE_TOKEN,
+      ERC2612_TOKEN_DOMAIN,
+      VALUE,
+      DEADLINE
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        tokenDomain: ERC2612_TOKEN_DOMAIN,
+        deadline: DEADLINE,
+        exchangeToken: EXCHANGE_TOKEN,
+        value: VALUE,
+        chainId: CHAIN_ID
+      })
+    );
+  });
+});

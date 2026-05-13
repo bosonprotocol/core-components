@@ -301,7 +301,8 @@
       "Bash(npx vitest *)",
       "Bash(git mv *)",
       "Bash(git rm *)",
-      "Bash(npx --no-install tsc --noEmit -p tsconfig.json)"
+      "Bash(npx --no-install tsc --noEmit -p tsconfig.json)",
+      "Bash(npx tsc *)"
     ],
     "deny": [
       "Bash(rm -rf /*)",

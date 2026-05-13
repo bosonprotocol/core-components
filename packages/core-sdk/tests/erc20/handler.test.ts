@@ -1,7 +1,10 @@
 import { MockWeb3LibAdapter } from "@bosonprotocol/common/tests/mocks";
 import { defaultAbiCoder } from "@ethersproject/abi";
 import { MaxUint256 } from "@ethersproject/constants";
-import { signReceiveWithErc3009Authorization } from "../../src/erc20/handler";
+import {
+  signReceiveWithErc3009Authorization,
+  signReceiveWithErc2612Permit
+} from "../../src/erc20/handler";
 import { StructuredData } from "../../src/utils/signature";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -131,5 +134,111 @@ describe("signReceiveWithErc3009Authorization()", () => {
       returnTypedDataToSign: true
     });
     expect(a.message.nonce).not.toBe(b.message.nonce);
+  });
+});
+
+// ─── EIP-2612 tests ───────────────────────────────────────────────────────────
+
+const DEADLINE = MaxUint256.toString();
+const ERC2612_TOKEN_DOMAIN = { name: "ERC2612Token", version: "1" };
+// ABI-encoded uint256(1) — returned as the on-chain `nonces(owner)` value.
+const ABI_UINT256_ONE =
+  "0x0000000000000000000000000000000000000000000000000000000000000001";
+
+function makeWeb3LibForPermit() {
+  return new MockWeb3LibAdapter({
+    getSignerAddress: USER,
+    send: MOCK_SIG,
+    call: ABI_UINT256_ONE
+  });
+}
+
+function permitBaseArgs() {
+  return {
+    web3Lib: makeWeb3LibForPermit(),
+    chainId: CHAIN_ID,
+    user: USER,
+    exchangeToken: EXCHANGE_TOKEN,
+    spender: SPENDER,
+    value: VALUE,
+    tokenDomain: ERC2612_TOKEN_DOMAIN,
+    deadline: DEADLINE
+  };
+}
+
+describe("signReceiveWithErc2612Permit()", () => {
+  test("returns SignedReceivePermit when returnTypedDataToSign is omitted", async () => {
+    const result = await signReceiveWithErc2612Permit(permitBaseArgs());
+    expect(result.r).toBe(EXPECTED_R);
+    expect(result.s).toBe(EXPECTED_S);
+    expect(result.v).toBe(EXPECTED_V);
+    expect(result.signature).toBe(MOCK_SIG);
+    expect(typeof result.abiData).toBe("string");
+    expect(result.abiData.startsWith("0x")).toBe(true);
+  });
+
+  test("returns SignedReceivePermit when returnTypedDataToSign: false", async () => {
+    const result = await signReceiveWithErc2612Permit({
+      ...permitBaseArgs(),
+      returnTypedDataToSign: false
+    });
+    expect(result.r).toBe(EXPECTED_R);
+    expect(typeof result.abiData).toBe("string");
+  });
+
+  test("abiData decodes to [deadline, v, r, s]", async () => {
+    const result = await signReceiveWithErc2612Permit(permitBaseArgs());
+    const [deadline, v, r, s] = defaultAbiCoder.decode(
+      ["uint256", "uint8", "bytes32", "bytes32"],
+      result.abiData
+    );
+    expect(deadline.toString()).toBe(DEADLINE);
+    expect(Number(v)).toBe(EXPECTED_V);
+    expect(r).toBe(EXPECTED_R);
+    expect(s).toBe(EXPECTED_S);
+  });
+
+  test("returns StructuredData when returnTypedDataToSign: true", async () => {
+    const result = await signReceiveWithErc2612Permit({
+      ...permitBaseArgs(),
+      returnTypedDataToSign: true
+    });
+    const data = result as StructuredData;
+    expect(data.primaryType).toBe("Permit");
+    expect(data.domain.verifyingContract).toBe(EXCHANGE_TOKEN);
+    expect(data.domain.name).toBe(ERC2612_TOKEN_DOMAIN.name);
+    expect(data.domain.version).toBe(ERC2612_TOKEN_DOMAIN.version);
+    expect((data.domain as { chainId?: number | string }).chainId).toBe(
+      CHAIN_ID
+    );
+    expect((data.domain as { salt?: string }).salt).toBeUndefined();
+    const domainTypeNames = data.types.EIP712Domain.map((t) => t.name);
+    expect(domainTypeNames).toContain("chainId");
+    expect(domainTypeNames).not.toContain("salt");
+    // Message fields use the EIP-2612 schema.
+    expect(data.message.owner).toBe(USER);
+    expect(data.message.spender).toBe(SPENDER);
+    expect(data.message.value).toBe(VALUE);
+    expect(data.message.nonce).toBe("1");
+    expect(data.message.deadline).toBe(DEADLINE);
+    // Must NOT look like a SignedReceivePermit
+    expect((data as unknown as { r?: unknown }).r).toBeUndefined();
+    expect((data as unknown as { abiData?: unknown }).abiData).toBeUndefined();
+  });
+
+  test("reads nonce from the token contract via nonces(owner)", async () => {
+    const ABI_UINT256_SEVEN =
+      "0x0000000000000000000000000000000000000000000000000000000000000007";
+    const web3Lib = new MockWeb3LibAdapter({
+      getSignerAddress: USER,
+      send: MOCK_SIG,
+      call: ABI_UINT256_SEVEN
+    });
+    const data = await signReceiveWithErc2612Permit({
+      ...permitBaseArgs(),
+      web3Lib,
+      returnTypedDataToSign: true
+    });
+    expect(data.message.nonce).toBe("7");
   });
 });
