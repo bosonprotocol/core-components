@@ -1,9 +1,11 @@
 import { MockWeb3LibAdapter } from "@bosonprotocol/common/tests/mocks";
 import { defaultAbiCoder } from "@ethersproject/abi";
 import { MaxUint256 } from "@ethersproject/constants";
+import { BigNumber } from "@ethersproject/bignumber";
 import {
   signReceiveWithErc3009Authorization,
-  signReceiveWithErc2612Permit
+  signReceiveWithErc2612Permit,
+  signReceiveWithPermit2
 } from "../../src/erc20/handler";
 import { StructuredData } from "../../src/utils/signature";
 
@@ -98,7 +100,9 @@ describe("signReceiveWithErc3009Authorization()", () => {
     expect(data.primaryType).toBe("ReceiveWithAuthorization");
     expect(data.domain.verifyingContract).toBe(EXCHANGE_TOKEN);
     expect(data.domain.name).toBe(TOKEN_DOMAIN.name);
-    expect(data.domain.version).toBe(TOKEN_DOMAIN.version);
+    expect((data.domain as { version?: string }).version).toBe(
+      TOKEN_DOMAIN.version
+    );
     // chainId-form domain, NOT salt-form
     expect((data.domain as { chainId?: number | string }).chainId).toBe(
       CHAIN_ID
@@ -207,7 +211,9 @@ describe("signReceiveWithErc2612Permit()", () => {
     expect(data.primaryType).toBe("Permit");
     expect(data.domain.verifyingContract).toBe(EXCHANGE_TOKEN);
     expect(data.domain.name).toBe(ERC2612_TOKEN_DOMAIN.name);
-    expect(data.domain.version).toBe(ERC2612_TOKEN_DOMAIN.version);
+    expect((data.domain as { version?: string }).version).toBe(
+      ERC2612_TOKEN_DOMAIN.version
+    );
     expect((data.domain as { chainId?: number | string }).chainId).toBe(
       CHAIN_ID
     );
@@ -240,5 +246,109 @@ describe("signReceiveWithErc2612Permit()", () => {
       returnTypedDataToSign: true
     });
     expect(data.message.nonce).toBe("7");
+  });
+});
+
+// ─── Permit2 tests ────────────────────────────────────────────────────────────
+
+const PERMIT2_ADDRESS = "0x000000000022D473030F116dDEE9F6B43aC78BA3";
+const PERMIT2_NONCE = "42";
+
+function permit2BaseArgs() {
+  return {
+    web3Lib: new MockWeb3LibAdapter({
+      getSignerAddress: USER,
+      send: MOCK_SIG
+    }),
+    chainId: CHAIN_ID,
+    user: USER,
+    exchangeToken: EXCHANGE_TOKEN,
+    spender: SPENDER,
+    value: VALUE,
+    permit2Address: PERMIT2_ADDRESS,
+    deadline: DEADLINE,
+    permit2Nonce: PERMIT2_NONCE
+  };
+}
+
+describe("signReceiveWithPermit2()", () => {
+  test("returns SignedReceiveWithPermit2 when returnTypedDataToSign is omitted", async () => {
+    const result = await signReceiveWithPermit2(permit2BaseArgs());
+    expect(result.r).toBe(EXPECTED_R);
+    expect(result.s).toBe(EXPECTED_S);
+    expect(result.v).toBe(EXPECTED_V);
+    expect(result.signature).toBe(MOCK_SIG);
+    expect(typeof result.abiData).toBe("string");
+    expect(result.abiData.startsWith("0x")).toBe(true);
+  });
+
+  test("returns SignedReceiveWithPermit2 when returnTypedDataToSign: false", async () => {
+    const result = await signReceiveWithPermit2({
+      ...permit2BaseArgs(),
+      returnTypedDataToSign: false
+    });
+    expect(result.r).toBe(EXPECTED_R);
+    expect(typeof result.abiData).toBe("string");
+  });
+
+  test("abiData decodes to [permit2Nonce, deadline, signature]", async () => {
+    const result = await signReceiveWithPermit2(permit2BaseArgs());
+    const [nonce, deadline, signature] = defaultAbiCoder.decode(
+      ["uint256", "uint256", "bytes"],
+      result.abiData
+    );
+    expect(nonce.toString()).toBe(PERMIT2_NONCE);
+    expect(deadline.toString()).toBe(DEADLINE);
+    expect(signature).toBe(MOCK_SIG);
+  });
+
+  test("returns StructuredData when returnTypedDataToSign: true", async () => {
+    const result = await signReceiveWithPermit2({
+      ...permit2BaseArgs(),
+      returnTypedDataToSign: true
+    });
+    const data = result as StructuredData;
+    expect(data.primaryType).toBe("PermitTransferFrom");
+    // 3-field Permit2 domain — name + chainId + verifyingContract, NO version, NO salt.
+    expect(data.domain.name).toBe("Permit2");
+    expect(data.domain.verifyingContract).toBe(PERMIT2_ADDRESS);
+    expect((data.domain as { chainId?: number | string }).chainId).toBe(
+      CHAIN_ID
+    );
+    expect((data.domain as { version?: string }).version).toBeUndefined();
+    expect((data.domain as { salt?: string }).salt).toBeUndefined();
+    const domainTypeNames = data.types.EIP712Domain.map((t) => t.name);
+    expect(domainTypeNames).toEqual(["name", "chainId", "verifyingContract"]);
+    // Message fields (note: token + amount nested under `permitted`).
+    const permitted = data.message.permitted as {
+      token: string;
+      amount: string;
+    };
+    expect(permitted.token).toBe(EXCHANGE_TOKEN);
+    expect(permitted.amount).toBe(VALUE);
+    expect(data.message.spender).toBe(SPENDER);
+    expect(data.message.nonce).toBe(PERMIT2_NONCE);
+    expect(data.message.deadline).toBe(DEADLINE);
+    expect((data as unknown as { r?: unknown }).r).toBeUndefined();
+    expect((data as unknown as { abiData?: unknown }).abiData).toBeUndefined();
+  });
+
+  test("generates a random uint256 nonce when permit2Nonce is omitted", async () => {
+    const args = permit2BaseArgs();
+    delete (args as { permit2Nonce?: unknown }).permit2Nonce;
+    const a = await signReceiveWithPermit2({
+      ...args,
+      returnTypedDataToSign: true
+    });
+    const b = await signReceiveWithPermit2({
+      ...args,
+      returnTypedDataToSign: true
+    });
+    const nonceA = a.message.nonce as string;
+    const nonceB = b.message.nonce as string;
+    expect(nonceA).not.toBe(nonceB);
+    // Each value is within uint256 range.
+    expect(BigNumber.from(nonceA).gte(0)).toBe(true);
+    expect(BigNumber.from(nonceB).gte(0)).toBe(true);
   });
 });

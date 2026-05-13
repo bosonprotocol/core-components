@@ -16,7 +16,9 @@ import {
   signReceiveWithErc3009Authorization,
   SignedReceiveWithAuthorization,
   signReceiveWithErc2612Permit,
-  SignedReceivePermit
+  SignedReceivePermit,
+  signReceiveWithPermit2,
+  SignedReceiveWithPermit2
 } from "./handler";
 import { StructuredData } from "../utils/signature";
 
@@ -241,6 +243,81 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       });
     }
     return signReceiveWithErc2612Permit({
+      ...baseArgs,
+      returnTypedDataToSign: false
+    });
+  }
+
+  /**
+   * Signs a Uniswap Permit2 `PermitTransferFrom` payload authorizing the
+   * spender (default: protocol diamond) to pull `value` units of
+   * `exchangeToken` from the signer up to `deadline`. The Permit2 contract
+   * address defaults to `contracts.permit2` from SDK config and can be
+   * overridden via `overrides.permit2Address`. If `overrides.permit2Nonce`
+   * is omitted, a random uint256 is generated. The returned `abiData` is the
+   * ABI-encoded `[permit2Nonce, deadline, signature]` payload consumed by the
+   * protocol's TokenTransferAuthorization flow.
+   */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signReceiveWithPermit2(
+    exchangeToken: string,
+    value: BigNumberish,
+    deadline: BigNumberish,
+    overrides: Partial<{
+      spender: string;
+      permit2Address: string;
+      permit2Nonce: BigNumberish;
+    }> & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedReceiveWithPermit2
+  public async signReceiveWithPermit2(
+    exchangeToken: string,
+    value: BigNumberish,
+    deadline: BigNumberish,
+    overrides?: Partial<{
+      spender: string;
+      permit2Address: string;
+      permit2Nonce: BigNumberish;
+      returnTypedDataToSign?: false;
+    }>
+  ): Promise<SignedReceiveWithPermit2>;
+  // Implementation
+  public async signReceiveWithPermit2(
+    exchangeToken: string,
+    value: BigNumberish,
+    deadline: BigNumberish,
+    overrides: Partial<{
+      spender: string;
+      permit2Address: string;
+      permit2Nonce: BigNumberish;
+      returnTypedDataToSign: boolean;
+    }> = {}
+  ): Promise<SignedReceiveWithPermit2 | StructuredData> {
+    const user = await this._web3Lib.getSignerAddress();
+    const permit2Address = overrides.permit2Address || this._contracts?.permit2;
+    if (!permit2Address) {
+      throw new Error(
+        "Permit2 contract address not configured. Provide overrides.permit2Address or initialize CoreSDK with contracts.permit2."
+      );
+    }
+    const baseArgs = {
+      web3Lib: this._web3Lib,
+      chainId: this._chainId,
+      user,
+      exchangeToken,
+      spender: overrides.spender || this._protocolDiamond,
+      value,
+      permit2Address,
+      deadline,
+      permit2Nonce: overrides.permit2Nonce
+    };
+    if (overrides.returnTypedDataToSign) {
+      return signReceiveWithPermit2({
+        ...baseArgs,
+        returnTypedDataToSign: true
+      });
+    }
+    return signReceiveWithPermit2({
       ...baseArgs,
       returnTypedDataToSign: false
     });

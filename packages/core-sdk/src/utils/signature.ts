@@ -32,6 +32,11 @@ export type StructuredData = {
         version: string;
         verifyingContract: string;
         chainId: number | string;
+      }
+    | {
+        name: string;
+        verifyingContract: string;
+        chainId: number | string;
       };
   primaryType: string;
   message: Record<string, unknown>;

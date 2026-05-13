@@ -40,6 +40,19 @@ export type SignedReceivePermit = {
   abiData: string;
 };
 
+export type SignedReceiveWithPermit2 = {
+  r: string;
+  s: string;
+  v: number;
+  signature: string;
+  // defaultAbiCoder.encode(
+  //   ["uint256","uint256","bytes"],
+  //   [permit2Nonce, deadline, signature]
+  // ) — drop-in payload for the protocol's TokenTransferAuthorization
+  //  Permit2 auth entry.
+  abiData: string;
+};
+
 // Overload: returnTxInfo is true -> returns TransactionRequest
 export async function approve(args: {
   contractAddress: string;
@@ -342,6 +355,93 @@ export async function signReceiveWithErc2612Permit(
   const abiData = defaultAbiCoder.encode(
     ["uint256", "uint8", "bytes32", "bytes32"],
     [args.deadline, sig.v, sig.r, sig.s]
+  );
+
+  return { ...sig, abiData };
+}
+
+type SignReceiveWithPermit2Args = ApproveExchangeTokenBaseArgs & {
+  permit2Address: string;
+  deadline: BigNumberish;
+  permit2Nonce?: BigNumberish;
+};
+
+// Overload: returnTypedDataToSign is true → returns StructuredData
+export async function signReceiveWithPermit2(
+  args: SignReceiveWithPermit2Args & { returnTypedDataToSign: true }
+): Promise<StructuredData>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedReceiveWithPermit2
+export async function signReceiveWithPermit2(
+  args: SignReceiveWithPermit2Args & {
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedReceiveWithPermit2>;
+// Implementation
+export async function signReceiveWithPermit2(
+  args: SignReceiveWithPermit2Args & { returnTypedDataToSign?: boolean }
+): Promise<SignedReceiveWithPermit2 | StructuredData> {
+  const permit2Nonce = args.permit2Nonce ?? BigNumber.from(randomBytes(32));
+
+  const customSignatureType = {
+    EIP712Domain: [
+      { name: "name", type: "string" },
+      { name: "chainId", type: "uint256" },
+      { name: "verifyingContract", type: "address" }
+    ],
+    PermitTransferFrom: [
+      { name: "permitted", type: "TokenPermissions" },
+      { name: "spender", type: "address" },
+      { name: "nonce", type: "uint256" },
+      { name: "deadline", type: "uint256" }
+    ],
+    TokenPermissions: [
+      { name: "token", type: "address" },
+      { name: "amount", type: "uint256" }
+    ]
+  };
+
+  const customDomainData = {
+    name: "Permit2",
+    chainId: args.chainId,
+    version: undefined,
+    salt: undefined
+  };
+
+  const message = {
+    permitted: {
+      token: args.exchangeToken,
+      amount: args.value.toString()
+    },
+    spender: args.spender,
+    nonce: permit2Nonce.toString(),
+    deadline: args.deadline.toString()
+  };
+
+  const baseParams = {
+    web3Lib: args.web3Lib,
+    chainId: args.chainId,
+    verifyingContractAddress: args.permit2Address,
+    customSignatureType,
+    customDomainData,
+    primaryType: "PermitTransferFrom",
+    message
+  };
+
+  if (args.returnTypedDataToSign) {
+    return prepareDataSignatureParameters({
+      ...baseParams,
+      returnTypedDataToSign: true
+    });
+  }
+
+  const sig = await prepareDataSignatureParameters({
+    ...baseParams,
+    returnTypedDataToSign: false
+  });
+
+  const abiData = defaultAbiCoder.encode(
+    ["uint256", "uint256", "bytes"],
+    [permit2Nonce, args.deadline, sig.signature]
   );
 
   return { ...sig, abiData };

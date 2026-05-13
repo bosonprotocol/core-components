@@ -398,3 +398,184 @@ describe("ERC20Mixin#signReceiveWithErc2612Permit()", () => {
     );
   });
 });
+
+// ─── Permit2 mixin tests ──────────────────────────────────────────────────────
+
+const PERMIT2_ADDRESS = "0x000000000022D473030F116dDEE9F6B43aC78BA3";
+const PERMIT2_OVERRIDE = "0x000000000000000000000000000000000000ABCD";
+const PERMIT2_NONCE = "42";
+
+function makeCoreSDKForPermit2(opts: { withPermit2?: boolean } = {}) {
+  return new CoreSDK({
+    web3Lib: new MockWeb3LibAdapter({
+      getSignerAddress: SIGNER,
+      send: MOCK_SIG
+    }),
+    subgraphUrl: SUBGRAPH_URL,
+    protocolDiamond: PROTOCOL_DIAMOND,
+    chainId: CHAIN_ID,
+    metaTx: {
+      relayerUrl: BICONOMY_URL,
+      apiKey: "test-api-key",
+      apiIds: {
+        [PROTOCOL_DIAMOND.toLowerCase()]: {
+          executeMetaTransaction: "test-api-id"
+        }
+      },
+      forwarderAbi: abis.MockForwarderABI
+    },
+    contracts:
+      opts.withPermit2 === false
+        ? undefined
+        : {
+            protocolDiamond: PROTOCOL_DIAMOND,
+            priceDiscoveryClient: PRICE_DISCOVERY,
+            forwarder: FORWARDER,
+            permit2: PERMIT2_ADDRESS
+          }
+  });
+}
+
+describe("ERC20Mixin#signReceiveWithPermit2()", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  // ── overload dispatch ──────────────────────────────────────────────────────
+
+  test("returns SignedReceiveWithPermit2 when overrides is omitted", async () => {
+    const result = await makeCoreSDKForPermit2().signReceiveWithPermit2(
+      EXCHANGE_TOKEN,
+      VALUE,
+      DEADLINE
+    );
+    expect(typeof result.r).toBe("string");
+    expect(typeof result.s).toBe("string");
+    expect(typeof result.v).toBe("number");
+    expect(typeof result.signature).toBe("string");
+    expect(typeof result.abiData).toBe("string");
+  });
+
+  test("returns SignedReceiveWithPermit2 when returnTypedDataToSign: false", async () => {
+    const result = await makeCoreSDKForPermit2().signReceiveWithPermit2(
+      EXCHANGE_TOKEN,
+      VALUE,
+      DEADLINE,
+      { returnTypedDataToSign: false }
+    );
+    expect(typeof result.abiData).toBe("string");
+  });
+
+  test("returns StructuredData when returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (
+      makeCoreSDKForPermit2().signReceiveWithPermit2 as any
+    )(EXCHANGE_TOKEN, VALUE, DEADLINE, { returnTypedDataToSign: true });
+    const data = result as StructuredData;
+    expect(data.primaryType).toBe("PermitTransferFrom");
+    expect(data.domain.name).toBe("Permit2");
+    expect(data.domain.verifyingContract).toBe(PERMIT2_ADDRESS);
+    expect((data.domain as { version?: string }).version).toBeUndefined();
+    expect((data as unknown as { r?: unknown }).r).toBeUndefined();
+  });
+
+  // ── argument injection ─────────────────────────────────────────────────────
+
+  test("defaults permit2Address to _contracts.permit2", async () => {
+    const spy = jest
+      .spyOn(erc20Handler, "signReceiveWithPermit2")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({} as any);
+
+    await makeCoreSDKForPermit2().signReceiveWithPermit2(
+      EXCHANGE_TOKEN,
+      VALUE,
+      DEADLINE
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ permit2Address: PERMIT2_ADDRESS })
+    );
+  });
+
+  test("uses the provided permit2Address override", async () => {
+    const spy = jest
+      .spyOn(erc20Handler, "signReceiveWithPermit2")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({} as any);
+
+    await makeCoreSDKForPermit2().signReceiveWithPermit2(
+      EXCHANGE_TOKEN,
+      VALUE,
+      DEADLINE,
+      { permit2Address: PERMIT2_OVERRIDE }
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ permit2Address: PERMIT2_OVERRIDE })
+    );
+  });
+
+  test("throws when neither config nor override supplies permit2Address", async () => {
+    await expect(
+      makeCoreSDKForPermit2({ withPermit2: false }).signReceiveWithPermit2(
+        EXCHANGE_TOKEN,
+        VALUE,
+        DEADLINE
+      )
+    ).rejects.toThrow(/Permit2 contract address not configured/);
+  });
+
+  test("defaults spender to protocolDiamond when not provided", async () => {
+    const spy = jest
+      .spyOn(erc20Handler, "signReceiveWithPermit2")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({} as any);
+
+    await makeCoreSDKForPermit2().signReceiveWithPermit2(
+      EXCHANGE_TOKEN,
+      VALUE,
+      DEADLINE
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ spender: PROTOCOL_DIAMOND })
+    );
+  });
+
+  test("uses the provided spender override", async () => {
+    const spy = jest
+      .spyOn(erc20Handler, "signReceiveWithPermit2")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({} as any);
+
+    await makeCoreSDKForPermit2().signReceiveWithPermit2(
+      EXCHANGE_TOKEN,
+      VALUE,
+      DEADLINE,
+      { spender: CUSTOM_SPENDER }
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ spender: CUSTOM_SPENDER })
+    );
+  });
+
+  test("forwards permit2Nonce when supplied", async () => {
+    const spy = jest
+      .spyOn(erc20Handler, "signReceiveWithPermit2")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({} as any);
+
+    await makeCoreSDKForPermit2().signReceiveWithPermit2(
+      EXCHANGE_TOKEN,
+      VALUE,
+      DEADLINE,
+      { permit2Nonce: PERMIT2_NONCE }
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ permit2Nonce: PERMIT2_NONCE })
+    );
+  });
+});
