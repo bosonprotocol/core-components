@@ -3,8 +3,92 @@ import {
   TransactionRequest,
   TransactionResponse
 } from "@bosonprotocol/common";
+import { defaultAbiCoder } from "@ethersproject/abi";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
+import { hexlify } from "@ethersproject/bytes";
+import { randomBytes } from "@ethersproject/random";
 import { erc20Iface } from "./interface";
+import type { ApproveExchangeTokenBaseArgs } from "../native-meta-tx/handler";
+import { alternativeNonceIface } from "../native-meta-tx/interface";
+import {
+  prepareDataSignatureParameters,
+  StructuredData
+} from "../utils/signature";
+
+export type UnsignedTransferAuthorization =
+  | {
+      strategy: "ERC3009";
+      data: {
+        validAfter: BigNumberish;
+        validBefore: BigNumberish;
+        nonce: string;
+      };
+    }
+  | {
+      strategy: "EIP2612";
+      data: { deadline: BigNumberish };
+    }
+  | {
+      strategy: "Permit2";
+      data: { nonce: BigNumberish; deadline: BigNumberish };
+    };
+
+export type TransferAuthorization = UnsignedTransferAuthorization & {
+  r: string;
+  s: string;
+  v: number;
+  signature: string;
+};
+
+const TRANSFER_STRATEGY_ID = {
+  ERC3009: 1,
+  EIP2612: 2,
+  Permit2: 3
+} as const;
+
+function encodeTransferAuthorizationEntry(auth: TransferAuthorization): string {
+  let innerData: string;
+  switch (auth.strategy) {
+    case "ERC3009":
+      innerData = defaultAbiCoder.encode(
+        ["uint256", "uint256", "bytes32", "uint8", "bytes32", "bytes32"],
+        [
+          auth.data.validAfter,
+          auth.data.validBefore,
+          auth.data.nonce,
+          auth.v,
+          auth.r,
+          auth.s
+        ]
+      );
+      break;
+    case "EIP2612":
+      innerData = defaultAbiCoder.encode(
+        ["uint256", "uint8", "bytes32", "bytes32"],
+        [auth.data.deadline, auth.v, auth.r, auth.s]
+      );
+      break;
+    case "Permit2":
+      innerData = defaultAbiCoder.encode(
+        ["uint256", "uint256", "bytes"],
+        [auth.data.nonce, auth.data.deadline, auth.signature]
+      );
+      break;
+  }
+  return defaultAbiCoder.encode(
+    ["uint8", "bytes"],
+    [TRANSFER_STRATEGY_ID[auth.strategy], innerData]
+  );
+}
+
+export function encodeTransferAuthorizationQueue(
+  auths: TransferAuthorization[]
+): string {
+  return defaultAbiCoder.encode(
+    ["bytes[]"],
+    [auths.map(encodeTransferAuthorizationEntry)]
+  );
+}
 
 // Overload: returnTxInfo is true -> returns TransactionRequest
 export async function approve(args: {
@@ -129,4 +213,274 @@ export async function balanceOf(args: {
 
   const [balance] = erc20Iface.decodeFunctionResult("balanceOf", result);
   return String(balance);
+}
+
+type SignReceiveWithErc3009AuthorizationArgs = ApproveExchangeTokenBaseArgs & {
+  tokenDomain: { name: string; version: string };
+  validAfter: BigNumberish;
+  validBefore: BigNumberish;
+};
+
+// Overload: returnTypedDataToSign is true → returns StructuredData
+export async function signReceiveWithErc3009Authorization(
+  args: SignReceiveWithErc3009AuthorizationArgs & {
+    returnTypedDataToSign: true;
+  }
+): Promise<StructuredData>;
+// Overload: returnTypedDataToSign is false or undefined → returns TransferAuthorization (ERC3009)
+export async function signReceiveWithErc3009Authorization(
+  args: SignReceiveWithErc3009AuthorizationArgs & {
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<TransferAuthorization & { strategy: "ERC3009" }>;
+// Implementation
+export async function signReceiveWithErc3009Authorization(
+  args: SignReceiveWithErc3009AuthorizationArgs & {
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<(TransferAuthorization & { strategy: "ERC3009" }) | StructuredData> {
+  const nonce = hexlify(randomBytes(32));
+
+  const customSignatureType = {
+    EIP712Domain: [
+      { name: "name", type: "string" },
+      { name: "version", type: "string" },
+      { name: "chainId", type: "uint256" },
+      { name: "verifyingContract", type: "address" }
+    ],
+    ReceiveWithAuthorization: [
+      { name: "from", type: "address" },
+      { name: "to", type: "address" },
+      { name: "value", type: "uint256" },
+      { name: "validAfter", type: "uint256" },
+      { name: "validBefore", type: "uint256" },
+      { name: "nonce", type: "bytes32" }
+    ]
+  };
+
+  const customDomainData = {
+    name: args.tokenDomain.name,
+    version: args.tokenDomain.version,
+    chainId: args.chainId,
+    salt: undefined
+  };
+
+  const message = {
+    from: args.user,
+    to: args.spender,
+    value: args.value.toString(),
+    validAfter: args.validAfter.toString(),
+    validBefore: args.validBefore.toString(),
+    nonce
+  };
+
+  const baseParams = {
+    web3Lib: args.web3Lib,
+    chainId: args.chainId,
+    verifyingContractAddress: args.exchangeToken,
+    customSignatureType,
+    customDomainData,
+    primaryType: "ReceiveWithAuthorization",
+    message
+  };
+
+  if (args.returnTypedDataToSign) {
+    return prepareDataSignatureParameters({
+      ...baseParams,
+      returnTypedDataToSign: true
+    });
+  }
+
+  const sig = await prepareDataSignatureParameters({
+    ...baseParams,
+    returnTypedDataToSign: false
+  });
+
+  return {
+    ...sig,
+    strategy: "ERC3009",
+    data: {
+      validAfter: args.validAfter,
+      validBefore: args.validBefore,
+      nonce
+    }
+  };
+}
+
+type SignReceiveWithErc2612PermitArgs = ApproveExchangeTokenBaseArgs & {
+  tokenDomain: { name: string; version: string };
+  deadline: BigNumberish;
+};
+
+// Overload: returnTypedDataToSign is true → returns StructuredData
+export async function signReceiveWithErc2612Permit(
+  args: SignReceiveWithErc2612PermitArgs & {
+    returnTypedDataToSign: true;
+  }
+): Promise<StructuredData>;
+// Overload: returnTypedDataToSign is false or undefined → returns TransferAuthorization (EIP2612)
+export async function signReceiveWithErc2612Permit(
+  args: SignReceiveWithErc2612PermitArgs & {
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<TransferAuthorization & { strategy: "EIP2612" }>;
+// Implementation
+export async function signReceiveWithErc2612Permit(
+  args: SignReceiveWithErc2612PermitArgs & {
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<(TransferAuthorization & { strategy: "EIP2612" }) | StructuredData> {
+  const nonceResult = await args.web3Lib.call({
+    to: args.exchangeToken,
+    data: alternativeNonceIface.encodeFunctionData("nonces", [args.user])
+  });
+  const [nonce] = alternativeNonceIface.decodeFunctionResult(
+    "nonces",
+    nonceResult
+  );
+
+  const customSignatureType = {
+    EIP712Domain: [
+      { name: "name", type: "string" },
+      { name: "version", type: "string" },
+      { name: "chainId", type: "uint256" },
+      { name: "verifyingContract", type: "address" }
+    ],
+    Permit: [
+      { name: "owner", type: "address" },
+      { name: "spender", type: "address" },
+      { name: "value", type: "uint256" },
+      { name: "nonce", type: "uint256" },
+      { name: "deadline", type: "uint256" }
+    ]
+  };
+
+  const customDomainData = {
+    name: args.tokenDomain.name,
+    version: args.tokenDomain.version,
+    chainId: args.chainId,
+    salt: undefined
+  };
+
+  const message = {
+    owner: args.user,
+    spender: args.spender,
+    value: args.value.toString(),
+    nonce: nonce.toString(),
+    deadline: args.deadline.toString()
+  };
+
+  const baseParams = {
+    web3Lib: args.web3Lib,
+    chainId: args.chainId,
+    verifyingContractAddress: args.exchangeToken,
+    customSignatureType,
+    customDomainData,
+    primaryType: "Permit",
+    message
+  };
+
+  if (args.returnTypedDataToSign) {
+    return prepareDataSignatureParameters({
+      ...baseParams,
+      returnTypedDataToSign: true
+    });
+  }
+
+  const sig = await prepareDataSignatureParameters({
+    ...baseParams,
+    returnTypedDataToSign: false
+  });
+
+  return {
+    ...sig,
+    strategy: "EIP2612",
+    data: { deadline: args.deadline }
+  };
+}
+
+type SignReceiveWithPermit2Args = ApproveExchangeTokenBaseArgs & {
+  permit2Address: string;
+  deadline: BigNumberish;
+  permit2Nonce?: BigNumberish;
+};
+
+// Overload: returnTypedDataToSign is true → returns StructuredData
+export async function signReceiveWithPermit2(
+  args: SignReceiveWithPermit2Args & { returnTypedDataToSign: true }
+): Promise<StructuredData>;
+// Overload: returnTypedDataToSign is false or undefined → returns TransferAuthorization (Permit2)
+export async function signReceiveWithPermit2(
+  args: SignReceiveWithPermit2Args & {
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<TransferAuthorization & { strategy: "Permit2" }>;
+// Implementation
+export async function signReceiveWithPermit2(
+  args: SignReceiveWithPermit2Args & { returnTypedDataToSign?: boolean }
+): Promise<(TransferAuthorization & { strategy: "Permit2" }) | StructuredData> {
+  const permit2Nonce = args.permit2Nonce ?? BigNumber.from(randomBytes(32));
+
+  const customSignatureType = {
+    EIP712Domain: [
+      { name: "name", type: "string" },
+      { name: "chainId", type: "uint256" },
+      { name: "verifyingContract", type: "address" }
+    ],
+    PermitTransferFrom: [
+      { name: "permitted", type: "TokenPermissions" },
+      { name: "spender", type: "address" },
+      { name: "nonce", type: "uint256" },
+      { name: "deadline", type: "uint256" }
+    ],
+    TokenPermissions: [
+      { name: "token", type: "address" },
+      { name: "amount", type: "uint256" }
+    ]
+  };
+
+  const customDomainData = {
+    name: "Permit2",
+    chainId: args.chainId,
+    version: undefined,
+    salt: undefined
+  };
+
+  const message = {
+    permitted: {
+      token: args.exchangeToken,
+      amount: args.value.toString()
+    },
+    spender: args.spender,
+    nonce: permit2Nonce.toString(),
+    deadline: args.deadline.toString()
+  };
+
+  const baseParams = {
+    web3Lib: args.web3Lib,
+    chainId: args.chainId,
+    verifyingContractAddress: args.permit2Address,
+    customSignatureType,
+    customDomainData,
+    primaryType: "PermitTransferFrom",
+    message
+  };
+
+  if (args.returnTypedDataToSign) {
+    return prepareDataSignatureParameters({
+      ...baseParams,
+      returnTypedDataToSign: true
+    });
+  }
+
+  const sig = await prepareDataSignatureParameters({
+    ...baseParams,
+    returnTypedDataToSign: false
+  });
+
+  return {
+    ...sig,
+    strategy: "Permit2",
+    data: { nonce: permit2Nonce, deadline: args.deadline }
+  };
 }

@@ -66,6 +66,10 @@ import {
 import { keccak256 } from "@ethersproject/keccak256";
 import { id } from "@ethersproject/hash";
 import { defaultAbiCoder } from "@ethersproject/abi";
+import {
+  TransferAuthorization,
+  encodeTransferAuthorizationQueue
+} from "../erc20/handler";
 import { ERC20ForwardRequest } from "../forwarder/biconomy-interface";
 import { getNonce, verifyEIP712 } from "../forwarder/handler";
 import { MockForwardRequest } from "../forwarder/mock-interface";
@@ -2150,6 +2154,7 @@ export async function relayMetaTransaction(args: {
       sigR: BytesLike;
       sigS: BytesLike;
       sigV: BigNumberish;
+      transferAuthorizations?: TransferAuthorization[];
     };
   };
 }): Promise<TransactionResponse> {
@@ -2161,19 +2166,27 @@ export async function relayMetaTransaction(args: {
     metaTx.config.apiId
   );
 
+  const baseParams: unknown[] = [
+    metaTx.params.userAddress,
+    metaTx.params.functionName,
+    metaTx.params.functionSignature,
+    metaTx.params.nonce,
+    rebuildSignature({
+      r: metaTx.params.sigR.toString(),
+      s: metaTx.params.sigS.toString(),
+      v: Number(metaTx.params.sigV)
+    })
+  ];
+  const params = metaTx.params.transferAuthorizations?.length
+    ? [
+        ...baseParams,
+        encodeTransferAuthorizationQueue(metaTx.params.transferAuthorizations)
+      ]
+    : baseParams;
+
   const relayTxResponse = await biconomy.relayTransaction({
     to: contractAddress,
-    params: [
-      metaTx.params.userAddress,
-      metaTx.params.functionName,
-      metaTx.params.functionSignature,
-      metaTx.params.nonce,
-      rebuildSignature({
-        r: metaTx.params.sigR.toString(),
-        s: metaTx.params.sigS.toString(),
-        v: Number(metaTx.params.sigV)
-      })
-    ],
+    params,
     from: metaTx.params.userAddress
   });
 
