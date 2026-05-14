@@ -39,8 +39,11 @@ import {
   signMetaTxWithdrawFunds,
   signMetaTxDepositFunds,
   getResubmitted,
-  relayMetaTransaction
+  relayMetaTransaction,
+  executeMetaTransaction,
+  executeMetaTransactionWithTokenTransferAuthorization
 } from "../../src/meta-tx/handler";
+import { metaTransactionsHandlerIface } from "../../src/meta-tx/interface";
 import {
   encodeTransferAuthorizationQueue,
   TransferAuthorization
@@ -1108,6 +1111,145 @@ describe("meta-tx handler", () => {
       });
 
       expect((capturedBody as { params: unknown[] }).params.length).toBe(5);
+    });
+  });
+
+  // ── executeMetaTransaction (direct on-chain, no Biconomy) ──────────────────
+  describe("#executeMetaTransaction()", () => {
+    const CONTRACT = "0x0000000000000000000000000000000000000099";
+    const USER_ADDRESS = "0x0000000000000000000000000000000000000088";
+    const FUNCTION_NAME = "commitToOffer(address,uint256)";
+    const FUNCTION_SIGNATURE = "0xdeadbeef";
+
+    const baseExecuteArgs = (web3Lib: MockWeb3LibAdapter) => ({
+      web3Lib,
+      contractAddress: CONTRACT,
+      userAddress: USER_ADDRESS,
+      functionName: FUNCTION_NAME,
+      functionSignature: FUNCTION_SIGNATURE,
+      nonce: 1,
+      sigR: EXPECTED_R,
+      sigS: EXPECTED_S,
+      sigV: EXPECTED_V
+    });
+
+    test("returnTxInfo=true returns calldata and does not call sendTransaction", async () => {
+      const web3Lib = makeWeb3Lib();
+      const tx = await executeMetaTransaction({
+        ...baseExecuteArgs(web3Lib),
+        returnTxInfo: true
+      });
+
+      expect(tx.to).toBe(CONTRACT);
+      expect(web3Lib.sendTransactionArgs.length).toBe(0);
+
+      const decoded = metaTransactionsHandlerIface.decodeFunctionData(
+        "executeMetaTransaction",
+        tx.data as string
+      );
+      expect(decoded[0].toLowerCase()).toBe(USER_ADDRESS.toLowerCase());
+      expect(decoded[1]).toBe(FUNCTION_NAME);
+      expect(decoded[2]).toBe(FUNCTION_SIGNATURE);
+      expect(decoded[3].toString()).toBe("1");
+      // Reassembled signature = r || s || v
+      expect(decoded[4]).toBe(MOCK_SIG);
+    });
+
+    test("default path calls web3Lib.sendTransaction with the executeMetaTransaction calldata", async () => {
+      const web3Lib = makeWeb3Lib();
+      await executeMetaTransaction(baseExecuteArgs(web3Lib));
+
+      expect(web3Lib.sendTransactionArgs.length).toBe(1);
+      const sent = web3Lib.sendTransactionArgs[0];
+      expect(sent.to).toBe(CONTRACT);
+
+      const expectedSelector = metaTransactionsHandlerIface.getSighash(
+        "executeMetaTransaction"
+      );
+      expect((sent.data as string).slice(0, 10)).toBe(expectedSelector);
+    });
+  });
+
+  // ── executeMetaTransactionWithTokenTransferAuthorization ───────────────────
+  describe("#executeMetaTransactionWithTokenTransferAuthorization()", () => {
+    const CONTRACT = "0x0000000000000000000000000000000000000099";
+    const USER_ADDRESS = "0x0000000000000000000000000000000000000088";
+    const FUNCTION_NAME = "commitToOffer(address,uint256)";
+    const FUNCTION_SIGNATURE = "0xdeadbeef";
+
+    const authorizations: TransferAuthorization[] = [
+      {
+        strategy: "ERC3009",
+        data: {
+          validAfter: "0",
+          validBefore: "1",
+          nonce:
+            "0x1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        r: EXPECTED_R,
+        s: EXPECTED_S,
+        v: EXPECTED_V,
+        signature: MOCK_SIG
+      },
+      {
+        strategy: "Permit2",
+        data: { nonce: "42", deadline: "9999999999" },
+        r: EXPECTED_R,
+        s: EXPECTED_S,
+        v: EXPECTED_V,
+        signature: MOCK_SIG
+      }
+    ];
+
+    const baseExecuteArgs = (web3Lib: MockWeb3LibAdapter) => ({
+      web3Lib,
+      contractAddress: CONTRACT,
+      userAddress: USER_ADDRESS,
+      functionName: FUNCTION_NAME,
+      functionSignature: FUNCTION_SIGNATURE,
+      nonce: 1,
+      sigR: EXPECTED_R,
+      sigS: EXPECTED_S,
+      sigV: EXPECTED_V,
+      transferAuthorizations: authorizations
+    });
+
+    test("returnTxInfo=true returns calldata with the encoded auth queue as the final bytes arg", async () => {
+      const web3Lib = makeWeb3Lib();
+      const tx = await executeMetaTransactionWithTokenTransferAuthorization({
+        ...baseExecuteArgs(web3Lib),
+        returnTxInfo: true
+      });
+
+      expect(tx.to).toBe(CONTRACT);
+      expect(web3Lib.sendTransactionArgs.length).toBe(0);
+
+      const decoded = metaTransactionsHandlerIface.decodeFunctionData(
+        "executeMetaTransactionWithTokenTransferAuthorization",
+        tx.data as string
+      );
+      expect(decoded[0].toLowerCase()).toBe(USER_ADDRESS.toLowerCase());
+      expect(decoded[1]).toBe(FUNCTION_NAME);
+      expect(decoded[2]).toBe(FUNCTION_SIGNATURE);
+      expect(decoded[3].toString()).toBe("1");
+      expect(decoded[4]).toBe(MOCK_SIG);
+      expect(decoded[5]).toBe(encodeTransferAuthorizationQueue(authorizations));
+    });
+
+    test("default path calls web3Lib.sendTransaction with the WithTokenTransferAuthorization selector", async () => {
+      const web3Lib = makeWeb3Lib();
+      await executeMetaTransactionWithTokenTransferAuthorization(
+        baseExecuteArgs(web3Lib)
+      );
+
+      expect(web3Lib.sendTransactionArgs.length).toBe(1);
+      const sent = web3Lib.sendTransactionArgs[0];
+      expect(sent.to).toBe(CONTRACT);
+
+      const expectedSelector = metaTransactionsHandlerIface.getSighash(
+        "executeMetaTransactionWithTokenTransferAuthorization"
+      );
+      expect((sent.data as string).slice(0, 10)).toBe(expectedSelector);
     });
   });
 

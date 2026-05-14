@@ -1856,6 +1856,63 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   }
 
   /**
+   * Execute a signed meta transaction directly on-chain (no Biconomy relayer).
+   * Routes to `executeMetaTransaction` or `executeMetaTransactionWithTokenTransferAuthorization`
+   * depending on whether `transferAuthorizations` is provided and non-empty.
+   * The wallet backing the SDK pays the gas; pass `overrides.userAddress` when
+   * the meta-tx signer differs from that wallet.
+   * @param metaTxParams - Required params for meta transaction.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async executeMetaTransaction(
+    metaTxParams: {
+      functionName: string;
+      functionSignature: BytesLike;
+      nonce: BigNumberish;
+      sigR: BytesLike;
+      sigS: BytesLike;
+      sigV: BigNumberish;
+      transferAuthorizations?: TransferAuthorization[];
+    },
+    overrides: Partial<{
+      userAddress: string;
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    const userAddress =
+      overrides.userAddress || (await this._web3Lib.getSignerAddress());
+    const contractAddress = overrides.contractAddress || this._protocolDiamond;
+
+    if (metaTxParams.transferAuthorizations?.length) {
+      return handler.executeMetaTransactionWithTokenTransferAuthorization({
+        web3Lib: this._web3Lib,
+        contractAddress,
+        userAddress,
+        functionName: metaTxParams.functionName,
+        functionSignature: metaTxParams.functionSignature,
+        nonce: metaTxParams.nonce,
+        sigR: metaTxParams.sigR,
+        sigS: metaTxParams.sigS,
+        sigV: metaTxParams.sigV,
+        transferAuthorizations: metaTxParams.transferAuthorizations
+      });
+    }
+
+    return handler.executeMetaTransaction({
+      web3Lib: this._web3Lib,
+      contractAddress,
+      userAddress,
+      functionName: metaTxParams.functionName,
+      functionSignature: metaTxParams.functionSignature,
+      nonce: metaTxParams.nonce,
+      sigR: metaTxParams.sigR,
+      sigS: metaTxParams.sigS,
+      sigV: metaTxParams.sigV
+    });
+  }
+
+  /**
    * Returns information of submitted meta transaction.
    * See https://docs.biconomy.io/api/native-meta-tx/get-retried-hashes.
    * @param originalMetaTxHash - Original meta transaction as returned by `coreSDK.relayMetaTransaction`

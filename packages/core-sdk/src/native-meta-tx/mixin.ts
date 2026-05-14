@@ -108,4 +108,39 @@ export class NativeMetaTxMixin<
       }
     });
   }
+
+  /**
+   * Execute a signed native meta transaction directly on-chain (no Biconomy relayer).
+   * The wallet backing the SDK pays the gas; pass `overrides.userAddress` when the
+   * meta-tx signer differs from that wallet.
+   * @param contractAddress - The token contract address.
+   * @param metaTxParams - Required params for the native meta transaction.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async executeNativeMetaTransaction(
+    contractAddress: string,
+    metaTxParams: {
+      functionSignature: BytesLike;
+      sigR: BytesLike;
+      sigS: BytesLike;
+      sigV: BigNumberish;
+    },
+    overrides: Partial<{
+      userAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    const userAddress =
+      overrides.userAddress || (await this._web3Lib.getSignerAddress());
+
+    return handler.executeNativeMetaTransaction({
+      web3Lib: this._web3Lib,
+      contractAddress,
+      userAddress,
+      functionSignature: metaTxParams.functionSignature,
+      sigR: metaTxParams.sigR,
+      sigS: metaTxParams.sigS,
+      sigV: metaTxParams.sigV
+    });
+  }
 }

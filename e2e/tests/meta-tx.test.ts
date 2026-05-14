@@ -1,7 +1,7 @@
 import { ZERO_ADDRESS } from "./../../packages/core-sdk/tests/mocks";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { parseEther } from "@ethersproject/units";
-import { Wallet, BigNumber, constants } from "ethers";
+import { Wallet, BigNumber, Contract, constants } from "ethers";
 import {
   ExchangeState,
   OfferFieldsFragment
@@ -12,6 +12,7 @@ import { encodeValidate } from "../../packages/core-sdk/src/seaport/interface";
 import {
   initCoreSDKWithWallet,
   MOCK_ERC20_ADDRESS,
+  MOCK_ERC3009_ADDRESS,
   ensureCreatedSeller,
   ensureMintedAndAllowedTokens,
   seedWallet7,
@@ -46,14 +47,17 @@ import {
 import { CoreSDK, forwarder } from "../../packages/core-sdk/src";
 import { getSignatureParameters } from "../../packages/core-sdk/src/utils/signature";
 import { UnsignedMetaTx } from "../../packages/core-sdk/src/meta-tx/handler";
+import { TransferAuthorization } from "../../packages/core-sdk/src/erc20/handler";
 import { AgentAdapter } from "../../packages/ethers-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
 import TokenType from "../../contracts/protocol-contracts/scripts/domain/TokenType";
 import {
+  abis,
   AuthTokenType,
   GatingType,
   OfferCreator,
-  FullOfferArgs
+  FullOfferArgs,
+  CreateOfferArgs
 } from "../../packages/common";
 import {
   MSEC_PER_DAY,
@@ -79,7 +83,9 @@ describe("meta-tx", () => {
     await ensureMintedAndAllowedTokens([sellerWallet]);
     // do not approve for buyer (we expect commit to do it when needed)
     await ensureMintedAndAllowedTokens([buyerWallet], undefined, false);
-    const createdOfferId = await createOfferAndDepositFunds(sellerWallet);
+    const createdOfferId = await createOfferAndDepositFunds(sellerWallet, {
+      quantityAvailable: 20
+    });
     offerToCommit = await sellerCoreSDK.getOfferById(createdOfferId);
   });
 
@@ -729,12 +735,11 @@ describe("meta-tx", () => {
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
       await buyerCoreSDK.waitForGraphNodeIndexing(metaTxReceipt);
-      const exchangeId =
-        buyerCoreSDK.getCommittedExchangeIdFromLogs(metaTxReceipt.logs);
-      expect(exchangeId).toBeTruthy();
-      const exchange = await buyerCoreSDK.getExchangeById(
-        exchangeId as string
+      const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
+        metaTxReceipt.logs
       );
+      expect(exchangeId).toBeTruthy();
+      const exchange = await buyerCoreSDK.getExchangeById(exchangeId as string);
       expect(exchange.state).toBe(ExchangeState.REDEEMED);
       expect(exchange.redeemedDate).toBeTruthy();
     });
@@ -859,12 +864,11 @@ describe("meta-tx", () => {
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
       await buyerCoreSDK.waitForGraphNodeIndexing(metaTxReceipt);
-      const exchangeId =
-        buyerCoreSDK.getCommittedExchangeIdFromLogs(metaTxReceipt.logs);
-      expect(exchangeId).toBeTruthy();
-      const exchange = await buyerCoreSDK.getExchangeById(
-        exchangeId as string
+      const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
+        metaTxReceipt.logs
       );
+      expect(exchangeId).toBeTruthy();
+      const exchange = await buyerCoreSDK.getExchangeById(exchangeId as string);
       expect(exchange.state).toBe(ExchangeState.REDEEMED);
       expect(exchange.redeemedDate).toBeTruthy();
     });
@@ -1649,8 +1653,9 @@ describe("meta-tx", () => {
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
       await buyerCoreSDKNew.waitForGraphNodeIndexing(metaTxReceipt);
-      const exchangeId =
-        buyerCoreSDKNew.getCommittedExchangeIdFromLogs(metaTxReceipt.logs);
+      const exchangeId = buyerCoreSDKNew.getCommittedExchangeIdFromLogs(
+        metaTxReceipt.logs
+      );
       expect(exchangeId).toBeTruthy();
       const exchange = await buyerCoreSDKNew.getExchangeById(
         exchangeId as string
@@ -2570,9 +2575,151 @@ describe("meta-tx", () => {
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
     });
   });
+
+  describe("#executeMetaTransaction()", () => {
+    test("without transferAuthorizations: signed by buyer, paid by random funded wallet", async () => {
+      const nonce = Date.now();
+
+      // Buyer pre-approves the protocol to pull the exchange token.
+      await approveErc20Token(
+        buyerCoreSDK,
+        MOCK_ERC20_ADDRESS,
+        offerToCommit.price
+      );
+
+      // Buyer signs commit meta-tx.
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDK.signMetaTxCommitToOffer({
+          offerId: offerToCommit.id,
+          nonce
+        });
+
+      // A separate random wallet (funded by the seller) executes the meta-tx
+      // on-chain, paying gas — not the buyer.
+      const { coreSDK: senderCoreSDK, fundedWallet: senderWallet } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
+
+      const metaTx = await senderCoreSDK.executeMetaTransaction(
+        {
+          functionName,
+          functionSignature,
+          nonce,
+          sigR: r,
+          sigS: s,
+          sigV: v
+        },
+        { userAddress: buyerWallet.address }
+      );
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+      // Sanity-check the gas was paid by the random sender, not the buyer.
+      expect(metaTxReceipt.from.toLowerCase()).toBe(
+        senderWallet.address.toLowerCase()
+      );
+    });
+
+    test("with transferAuthorizations (ERC3009): signed by buyer, paid by random funded wallet", async () => {
+      // 1. Set up a DR that accepts the ERC3009 token (drFee = 0).
+      const { fundedWallet: drFundedWallet } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
+      const drAddress = drFundedWallet.address.toLowerCase();
+      const { disputeResolver } = await createDisputeResolver(
+        drFundedWallet,
+        deployerWallet,
+        {
+          assistant: drAddress,
+          admin: drAddress,
+          treasury: drAddress,
+          metadataUri: "",
+          escalationResponsePeriodInMS: 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
+          fees: [
+            {
+              feeAmount: "0",
+              tokenAddress: MOCK_ERC3009_ADDRESS,
+              tokenName: "ERC3009Token"
+            }
+          ],
+          sellerAllowList: []
+        }
+      );
+
+      // 2. Spin up a fresh seller+buyer pair and create the seller account.
+      const {
+        sellerCoreSDK: localSellerCoreSDK,
+        buyerCoreSDK: localBuyerCoreSDK,
+        buyerWallet: localBuyerWallet,
+        sellerWallet: localSellerWallet
+      } = await initSellerAndBuyerSDKs(sellerWallet);
+      await createSeller(localSellerCoreSDK, localSellerWallet.address);
+
+      // 3. Create an offer that uses ERC3009 as the exchange token.
+      const erc3009Offer = await createOffer(localSellerCoreSDK, {
+        exchangeToken: MOCK_ERC3009_ADDRESS,
+        disputeResolverId: disputeResolver.id,
+        sellerDeposit: "0",
+        quantityAvailable: 1
+      });
+
+      // 4. Mint ERC3009 tokens to the buyer so the auth has funds to draw on.
+      const erc3009Token = new Contract(
+        MOCK_ERC3009_ADDRESS,
+        abis.ERC3009TokenABI,
+        localBuyerWallet
+      );
+      await (
+        await erc3009Token.mint(localBuyerWallet.address, erc3009Offer.price)
+      ).wait();
+
+      // 5. Buyer signs the ERC3009 receive-with-authorization.
+      const erc3009Domain = { name: "ERC3009Token", version: "1" };
+      const buyerAuth: TransferAuthorization =
+        await localBuyerCoreSDK.signReceiveWithErc3009Authorization(
+          MOCK_ERC3009_ADDRESS,
+          erc3009Domain,
+          erc3009Offer.price,
+          0,
+          constants.MaxUint256
+        );
+
+      // 6. Buyer signs the commit meta-tx.
+      const nonce = Date.now();
+      const { r, s, v, functionName, functionSignature } =
+        await localBuyerCoreSDK.signMetaTxCommitToOffer({
+          offerId: erc3009Offer.id,
+          nonce
+        });
+
+      // 7. A random funded wallet executes the meta-tx with the transfer auth.
+      const { coreSDK: senderCoreSDK, fundedWallet: senderWallet } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
+
+      const metaTx = await senderCoreSDK.executeMetaTransaction(
+        {
+          functionName,
+          functionSignature,
+          nonce,
+          sigR: r,
+          sigS: s,
+          sigV: v,
+          transferAuthorizations: [buyerAuth]
+        },
+        { userAddress: localBuyerWallet.address }
+      );
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+      expect(metaTxReceipt.from.toLowerCase()).toBe(
+        senderWallet.address.toLowerCase()
+      );
+    });
+  });
 });
 
-async function createOfferAndDepositFunds(sellerWallet: Wallet) {
+async function createOfferAndDepositFunds(
+  sellerWallet: Wallet,
+  overrides?: Partial<CreateOfferArgs>
+) {
   const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
   const sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
   const [seller] = sellers;
@@ -2592,7 +2739,8 @@ async function createOfferAndDepositFunds(sellerWallet: Wallet) {
   const offerArgs = mockCreateOfferArgs({
     metadataHash,
     metadataUri,
-    exchangeToken: MOCK_ERC20_ADDRESS
+    exchangeToken: MOCK_ERC20_ADDRESS,
+    ...(overrides || {})
   });
   const createOfferTx = await sellerCoreSDK.createOffer(offerArgs);
   const createOfferReceipt = await createOfferTx.wait();
@@ -2604,7 +2752,7 @@ async function createOfferAndDepositFunds(sellerWallet: Wallet) {
   const depositFundsTx = await sellerCoreSDK.depositFunds(
     seller.id,
     BigNumber.from(offerArgs.quantityAvailable).mul(offerArgs.sellerDeposit),
-    MOCK_ERC20_ADDRESS
+    overrides?.exchangeToken || MOCK_ERC20_ADDRESS
   );
   await depositFundsTx.wait();
   await sellerCoreSDK.waitForGraphNodeIndexing(depositFundsTx);

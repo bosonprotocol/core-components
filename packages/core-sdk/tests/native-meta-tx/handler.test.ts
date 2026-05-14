@@ -1,6 +1,10 @@
 import { MockWeb3LibAdapter } from "@bosonprotocol/common/tests/mocks";
 import * as erc20Handler from "../../src/erc20/handler";
-import { signNativeMetaTxApproveExchangeToken } from "../../src/native-meta-tx/handler";
+import {
+  signNativeMetaTxApproveExchangeToken,
+  executeNativeMetaTransaction
+} from "../../src/native-meta-tx/handler";
+import { nativeMetaTransactionsIface } from "../../src/native-meta-tx/interface";
 import { UnsignedMetaTx } from "../../src/meta-tx/handler";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -108,5 +112,55 @@ describe("signNativeMetaTxApproveExchangeToken()", () => {
     // functionSignature should be the ABI encoding of approve(spender, value)
     // Selector for approve(address,uint256) is 0x095ea7b3
     expect(result.functionSignature.startsWith("0x095ea7b3")).toBe(true);
+  });
+});
+
+describe("executeNativeMetaTransaction()", () => {
+  const CONTRACT = "0x0000000000000000000000000000000000000099";
+  const FUNCTION_SIGNATURE = "0xdeadbeef";
+
+  const baseExecuteArgs = (web3Lib: MockWeb3LibAdapter) => ({
+    web3Lib,
+    contractAddress: CONTRACT,
+    userAddress: USER,
+    functionSignature: FUNCTION_SIGNATURE,
+    sigR: EXPECTED_R,
+    sigS: EXPECTED_S,
+    sigV: EXPECTED_V
+  });
+
+  test("returnTxInfo=true returns calldata and does not call sendTransaction", async () => {
+    const web3Lib = makeWeb3Lib();
+    const tx = await executeNativeMetaTransaction({
+      ...baseExecuteArgs(web3Lib),
+      returnTxInfo: true
+    });
+
+    expect(tx.to).toBe(CONTRACT);
+    expect(web3Lib.sendTransactionArgs.length).toBe(0);
+
+    const decoded = nativeMetaTransactionsIface.decodeFunctionData(
+      "executeMetaTransaction",
+      tx.data as string
+    );
+    expect(decoded[0].toLowerCase()).toBe(USER.toLowerCase());
+    expect(decoded[1]).toBe(FUNCTION_SIGNATURE);
+    expect(decoded[2]).toBe(EXPECTED_R);
+    expect(decoded[3]).toBe(EXPECTED_S);
+    expect(Number(decoded[4])).toBe(EXPECTED_V);
+  });
+
+  test("default path calls web3Lib.sendTransaction with the executeMetaTransaction calldata", async () => {
+    const web3Lib = makeWeb3Lib();
+    await executeNativeMetaTransaction(baseExecuteArgs(web3Lib));
+
+    expect(web3Lib.sendTransactionArgs.length).toBe(1);
+    const sent = web3Lib.sendTransactionArgs[0];
+    expect(sent.to).toBe(CONTRACT);
+
+    const expectedSelector = nativeMetaTransactionsIface.getSighash(
+      "executeMetaTransaction"
+    );
+    expect((sent.data as string).slice(0, 10)).toBe(expectedSelector);
   });
 });
