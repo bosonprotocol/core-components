@@ -1048,6 +1048,79 @@ describe("MetaTxMixin#signMetaTxCreateOfferAndCommit() overload dispatch", () =>
   });
 });
 
+describe("MetaTxMixin#signMetaTxCommitToOfferAndRedeemVoucher() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxCommitToOfferAndRedeemVoucher({
+      offerId: "1",
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toBe("commitToOfferAndRedeemVoucher(uint256)");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    const result =
+      await // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (makeCoreSDK().signMetaTxCommitToOfferAndRedeemVoucher as any)({
+        offerId: "1",
+        nonce: NONCE,
+        returnTypedDataToSign: true
+      });
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
+describe("MetaTxMixin#signMetaTxCommitToConditionalOfferAndRedeemVoucher() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result =
+      await makeCoreSDK().signMetaTxCommitToConditionalOfferAndRedeemVoucher({
+        offerId: "1",
+        tokenId: "42",
+        nonce: NONCE
+      });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toBe(
+      "commitToConditionalOfferAndRedeemVoucher(uint256,uint256)"
+    );
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    const result =
+      await // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (makeCoreSDK().signMetaTxCommitToConditionalOfferAndRedeemVoucher as any)(
+        {
+          offerId: "1",
+          tokenId: "42",
+          nonce: NONCE,
+          returnTypedDataToSign: true
+        }
+      );
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
+describe("MetaTxMixin#signMetaTxCreateOfferCommitAndRedeem() overload dispatch", () => {
+  test("returns SignedMetaTx without returnTypedDataToSign", async () => {
+    const result = await makeCoreSDK().signMetaTxCreateOfferCommitAndRedeem({
+      createOfferAndCommitArgs: createOfferAndCommitArgsMock,
+      nonce: NONCE
+    });
+    assertSignedMetaTx(result);
+    expect(result.functionName).toContain("createOfferCommitAndRedeem");
+  });
+
+  test("returns StructuredData with returnTypedDataToSign: true", async () => {
+    const result =
+      await // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (makeCoreSDK().signMetaTxCreateOfferCommitAndRedeem as any)({
+        createOfferAndCommitArgs: createOfferAndCommitArgsMock,
+        nonce: NONCE,
+        returnTypedDataToSign: true
+      });
+    assertStructuredDataShape(result, "MetaTransaction");
+  });
+});
+
 // ─── Tier 2-E: exchange / dispute methods (exchangeId-only) ──────────────────
 
 describe.each([

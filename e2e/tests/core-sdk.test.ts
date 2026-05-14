@@ -264,6 +264,27 @@ describe("core-sdk", () => {
             buyerWallet.address.toLowerCase()
           );
         });
+        test("createOfferCommitAndRedeem", async () => {
+          // Offer creator signs the full offer
+          const { signature } = await sellerCoreSDK.signFullOffer({
+            fullOfferArgsUnsigned: fullOfferArgs
+          });
+          const txResponse = await buyerCoreSDK.createOfferCommitAndRedeem({
+            ...fullOfferArgs,
+            signature
+          });
+          const txReceipt = await txResponse.wait();
+          const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
+            txReceipt.logs
+          );
+          expect(exchangeId).toBeTruthy();
+          await buyerCoreSDK.waitForGraphNodeIndexing(txReceipt);
+          const exchange = await buyerCoreSDK.getExchangeById(
+            exchangeId as string
+          );
+          expect(exchange.state).toBe(ExchangeState.REDEEMED);
+          expect(exchange.redeemedDate).toBeTruthy();
+        });
         test("buyer commits to ERC20 offer", async () => {
           await ensureMintedAndAllowedTokens(
             [buyerWallet, sellerWallet],
@@ -765,6 +786,35 @@ describe("core-sdk", () => {
       expect(exchange).toBeTruthy();
     });
 
+    test("commitToOfferAndRedeemVoucher", async () => {
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
+      const createdOffer = await createSellerAndOffer(
+        sellerCoreSDK,
+        sellerWallet.address
+      );
+      await depositFunds({
+        coreSDK: sellerCoreSDK,
+        sellerId: createdOffer.seller.id
+      });
+
+      const txResponse = await buyerCoreSDK.commitToOfferAndRedeemVoucher(
+        createdOffer.id
+      );
+      const txReceipt = await txResponse.wait();
+      const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
+        txReceipt.logs
+      );
+      expect(exchangeId).toBeTruthy();
+      await buyerCoreSDK.waitForGraphNodeIndexing(txReceipt);
+
+      const exchange = await buyerCoreSDK.getExchangeById(
+        exchangeId as string
+      );
+      expect(exchange.state).toBe(ExchangeState.REDEEMED);
+      expect(exchange.redeemedDate).toBeTruthy();
+    });
+
     test("commitToOffer: check transaction data", async () => {
       const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
@@ -1247,6 +1297,58 @@ describe("core-sdk", () => {
         expect(exchange).toBeTruthy();
       }
     );
+
+    test("commitToConditionalOfferAndRedeemVoucher (ERC721 group)", async () => {
+      const tokenId = Date.now().toString();
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
+
+      const createdOffer = await createSellerAndOffer(
+        sellerCoreSDK,
+        sellerWallet.address
+      );
+
+      await depositFunds({
+        coreSDK: sellerCoreSDK,
+        sellerId: createdOffer.seller.id
+      });
+
+      await ensureMintedERC721(buyerWallet, tokenId);
+      const groupToCreate = {
+        sellerId: createdOffer.seller.id,
+        offerIds: [createdOffer.id],
+        method: EvaluationMethod.TokenRange,
+        tokenType: TokenType.NonFungibleToken,
+        tokenAddress: MOCK_ERC721_ADDRESS,
+        gatingType: GatingType.PerAddress,
+        minTokenId: tokenId,
+        maxTokenId: tokenId,
+        threshold: "0",
+        maxCommits: "3"
+      };
+
+      const createdGroupTx = await sellerCoreSDK.createGroup(groupToCreate);
+      await createdGroupTx.wait();
+      await sellerCoreSDK.waitForGraphNodeIndexing(createdGroupTx);
+
+      const txResponse =
+        await buyerCoreSDK.commitToConditionalOfferAndRedeemVoucher(
+          createdOffer.id,
+          tokenId
+        );
+      const txReceipt = await txResponse.wait();
+      const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
+        txReceipt.logs
+      );
+      expect(exchangeId).toBeTruthy();
+      await buyerCoreSDK.waitForGraphNodeIndexing(txReceipt);
+
+      const exchange = await buyerCoreSDK.getExchangeById(
+        exchangeId as string
+      );
+      expect(exchange.state).toBe(ExchangeState.REDEEMED);
+      expect(exchange.redeemedDate).toBeTruthy();
+    });
 
     test.each(["ERC721", "ERC1155", "ERC20"])(
       `create an offer with condition on %p and buyer can commit to it`,

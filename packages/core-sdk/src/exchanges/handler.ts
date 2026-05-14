@@ -403,7 +403,7 @@ export async function createOfferAndCommit(args: {
   }
 }
 
-async function isFullOfferVoided(args: {
+export async function isFullOfferVoided(args: {
   fullOfferArgsUnsigned: Omit<FullOfferArgs, "signature">;
   contractAddress: string;
   web3Lib: Web3LibAdapter;

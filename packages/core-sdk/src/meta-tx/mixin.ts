@@ -1176,6 +1176,151 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   }
 
   /**
+   * Encodes and signs a meta transaction for `commitToOfferAndRedeemVoucher`
+   * that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  // Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
+  public async signMetaTxCommitToOfferAndRedeemVoucher(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCommitToOfferAndRedeemVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<UnsignedMetaTx>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCommitToOfferAndRedeemVoucher(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCommitToOfferAndRedeemVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
+  public async signMetaTxCommitToOfferAndRedeemVoucher(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCommitToOfferAndRedeemVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ): Promise<SignedMetaTx | UnsignedMetaTx> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCommitToOfferAndRedeemVoucher({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
+    return handler.signMetaTxCommitToOfferAndRedeemVoucher({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args,
+      returnTypedDataToSign: false
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for
+   * `commitToConditionalOfferAndRedeemVoucher` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  // Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
+  public async signMetaTxCommitToConditionalOfferAndRedeemVoucher(
+    args: Omit<
+      Parameters<
+        typeof handler.signMetaTxCommitToConditionalOfferAndRedeemVoucher
+      >[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<UnsignedMetaTx>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCommitToConditionalOfferAndRedeemVoucher(
+    args: Omit<
+      Parameters<
+        typeof handler.signMetaTxCommitToConditionalOfferAndRedeemVoucher
+      >[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
+  public async signMetaTxCommitToConditionalOfferAndRedeemVoucher(
+    args: Omit<
+      Parameters<
+        typeof handler.signMetaTxCommitToConditionalOfferAndRedeemVoucher
+      >[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ): Promise<SignedMetaTx | UnsignedMetaTx> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCommitToConditionalOfferAndRedeemVoucher({
+        web3Lib: this._web3Lib,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
+    return handler.signMetaTxCommitToConditionalOfferAndRedeemVoucher({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args,
+      returnTypedDataToSign: false
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `createOfferCommitAndRedeem` that
+   * can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  // Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
+  public async signMetaTxCreateOfferCommitAndRedeem(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateOfferCommitAndRedeem>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign: true }
+  ): Promise<UnsignedMetaTx>;
+  // Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+  public async signMetaTxCreateOfferCommitAndRedeem(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateOfferCommitAndRedeem>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    > & { returnTypedDataToSign?: false | undefined }
+  ): Promise<SignedMetaTx>;
+  // Implementation
+  public async signMetaTxCreateOfferCommitAndRedeem(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCreateOfferCommitAndRedeem>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ): Promise<SignedMetaTx | UnsignedMetaTx> {
+    if (args.returnTypedDataToSign) {
+      return handler.signMetaTxCreateOfferCommitAndRedeem({
+        web3Lib: this._web3Lib,
+        theGraphStorage: this._theGraphStorage,
+        metadataStorage: this._metadataStorage,
+        metaTxHandlerAddress: this._protocolDiamond,
+        chainId: this._chainId,
+        ...args,
+        returnTypedDataToSign: true
+      });
+    }
+    return handler.signMetaTxCreateOfferCommitAndRedeem({
+      web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args,
+      returnTypedDataToSign: false
+    });
+  }
+
+  /**
    * Encodes and signs a meta transaction for `cancelVoucher` that can be relayed.
    * @param args - Meta transaction args.
    * @returns Signature.

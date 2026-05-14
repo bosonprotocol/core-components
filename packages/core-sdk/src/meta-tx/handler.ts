@@ -51,7 +51,12 @@ import { AddressZero } from "@ethersproject/constants";
 import { encodeDepositFunds, encodeWithdrawFunds } from "../funds/interface";
 import { bosonDisputeHandlerIface } from "../disputes/interface";
 import { encodeCreateGroup } from "../groups/interface";
-import { encodeCreateOfferWithCondition } from "../orchestration/interface";
+import {
+  encodeCommitToConditionalOfferAndRedeemVoucher,
+  encodeCommitToOfferAndRedeemVoucher,
+  encodeCreateOfferCommitAndRedeem,
+  encodeCreateOfferWithCondition
+} from "../orchestration/interface";
 import {
   encodeCallExternalContract,
   encodePreMint,
@@ -1470,6 +1475,133 @@ export async function signMetaTxCreateOfferAndCommit(
     functionName:
       "createOfferAndCommit(((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256,bool),address,address,bytes,uint256,(uint256,(address[],uint256[]),address))",
     functionSignature: encodeCreateOfferAndCommit(args.createOfferAndCommitArgs)
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
+}
+
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
+export async function signMetaTxCommitToOfferAndRedeemVoucher(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    returnTypedDataToSign: true;
+  }
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCommitToOfferAndRedeemVoucher(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCommitToOfferAndRedeemVoucher(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  const signMetaTxArgs = {
+    ...args,
+    functionName: "commitToOfferAndRedeemVoucher(uint256)",
+    functionSignature: encodeCommitToOfferAndRedeemVoucher(args.offerId)
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
+}
+
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
+export async function signMetaTxCommitToConditionalOfferAndRedeemVoucher(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    tokenId: BigNumberish;
+    returnTypedDataToSign: true;
+  }
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCommitToConditionalOfferAndRedeemVoucher(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    tokenId: BigNumberish;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCommitToConditionalOfferAndRedeemVoucher(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    tokenId: BigNumberish;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  const signMetaTxArgs = {
+    ...args,
+    functionName: "commitToConditionalOfferAndRedeemVoucher(uint256,uint256)",
+    functionSignature: encodeCommitToConditionalOfferAndRedeemVoucher(
+      args.offerId,
+      args.tokenId
+    )
+  };
+  if (args.returnTypedDataToSign) {
+    return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
+  }
+  return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: false });
+}
+
+// Overload: returnTypedDataToSign is true → returns UnsignedMetaTx
+export async function signMetaTxCreateOfferCommitAndRedeem(
+  args: BaseMetaTxArgs & {
+    createOfferAndCommitArgs: FullOfferArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign: true;
+  }
+): Promise<UnsignedMetaTx>;
+// Overload: returnTypedDataToSign is false or undefined → returns SignedMetaTx
+export async function signMetaTxCreateOfferCommitAndRedeem(
+  args: BaseMetaTxArgs & {
+    createOfferAndCommitArgs: FullOfferArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<SignedMetaTx>;
+// Implementation
+export async function signMetaTxCreateOfferCommitAndRedeem(
+  args: BaseMetaTxArgs & {
+    createOfferAndCommitArgs: FullOfferArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    returnTypedDataToSign?: boolean;
+  }
+): Promise<SignedMetaTx | UnsignedMetaTx> {
+  utils.validation.createOfferAndCommitArgsSchema.validateSync(
+    args.createOfferAndCommitArgs,
+    { abortEarly: false }
+  );
+
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.createOfferAndCommitArgs.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
+
+  await storeMetadataItems({
+    ...args,
+    createOffersArgs: [args.createOfferAndCommitArgs]
+  });
+
+  const signMetaTxArgs = {
+    ...args,
+    functionName:
+      "createOfferCommitAndRedeem(((uint256,uint256,uint256,uint256,uint256,uint256,address,uint8,uint8,string,string,bool,uint256,(address[],uint256[])[],uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,address),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256,uint256,bool),address,bytes,uint256)",
+    functionSignature: encodeCreateOfferCommitAndRedeem(
+      args.createOfferAndCommitArgs
+    )
   };
   if (args.returnTypedDataToSign) {
     return signMetaTx({ ...signMetaTxArgs, returnTypedDataToSign: true });
