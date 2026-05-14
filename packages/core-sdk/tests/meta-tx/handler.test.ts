@@ -35,8 +35,13 @@ import {
   signMetaTxExtendDisputeTimeout,
   signMetaTxWithdrawFunds,
   signMetaTxDepositFunds,
-  getResubmitted
+  getResubmitted,
+  relayMetaTransaction
 } from "../../src/meta-tx/handler";
+import {
+  encodeTransferAuthorizationQueue,
+  TransferAuthorization
+} from "../../src/erc20/handler";
 import * as mockInterface from "../../src/forwarder/mock-interface";
 import { UnsignedMetaTx } from "../../src/meta-tx/handler";
 import nock from "nock";
@@ -893,6 +898,128 @@ describe("meta-tx handler", () => {
       expect(signedMetaTx.r).toEqual(EXPECTED_R);
       expect(signedMetaTx.s).toEqual(EXPECTED_S);
       expect(signedMetaTx.v).toEqual(EXPECTED_V);
+    });
+  });
+
+  // ── relayMetaTransaction ───────────────────────────────────────────────────
+  describe("#relayMetaTransaction()", () => {
+    const biconomyUrl = "https://api.biconomy.io";
+    const CONTRACT = "0x0000000000000000000000000000000000000099";
+    const USER_ADDRESS = "0x0000000000000000000000000000000000000088";
+    const TX_HASH =
+      "0xabcdef0000000000000000000000000000000000000000000000000000000001";
+
+    const baseRelayArgs = () => ({
+      web3LibAdapter: new MockWeb3LibAdapter({
+        getSignerAddress: USER_ADDRESS,
+        send: MOCK_SIG,
+        getChainId: 1
+      }),
+      chainId: 1,
+      contractAddress: CONTRACT,
+      metaTx: {
+        config: {
+          relayerUrl: biconomyUrl,
+          apiId: "test-api-id",
+          apiKey: "test-api-key"
+        },
+        params: {
+          userAddress: USER_ADDRESS,
+          functionName: "executeMetaTransaction(...)",
+          functionSignature: "0xdeadbeef",
+          nonce: 1,
+          sigR: EXPECTED_R,
+          sigS: EXPECTED_S,
+          sigV: EXPECTED_V
+        }
+      }
+    });
+
+    test("omits the auth queue when transferAuthorizations is undefined", async () => {
+      let capturedBody: { params: unknown[] } | undefined;
+      nock(biconomyUrl)
+        .post("/api/v2/meta-tx/native", (body) => {
+          capturedBody = body as { params: unknown[] };
+          return true;
+        })
+        .reply(200, { txHash: TX_HASH, log: "", retryDuration: 0, flag: 144 });
+
+      await relayMetaTransaction(baseRelayArgs());
+
+      expect(capturedBody?.params).toBeDefined();
+      expect((capturedBody as { params: unknown[] }).params.length).toBe(5);
+    });
+
+    test("appends the encoded auth queue when transferAuthorizations is provided", async () => {
+      const authorizations: TransferAuthorization[] = [
+        {
+          strategy: "ERC3009",
+          data: {
+            validAfter: "0",
+            validBefore: "1",
+            nonce:
+              "0x1111111111111111111111111111111111111111111111111111111111111111"
+          },
+          r: EXPECTED_R,
+          s: EXPECTED_S,
+          v: EXPECTED_V,
+          signature: MOCK_SIG
+        },
+        {
+          strategy: "Permit2",
+          data: { nonce: "42", deadline: "9999999999" },
+          r: EXPECTED_R,
+          s: EXPECTED_S,
+          v: EXPECTED_V,
+          signature: MOCK_SIG
+        }
+      ];
+
+      let capturedBody: { params: unknown[] } | undefined;
+      nock(biconomyUrl)
+        .post("/api/v2/meta-tx/native", (body) => {
+          capturedBody = body as { params: unknown[] };
+          return true;
+        })
+        .reply(200, { txHash: TX_HASH, log: "", retryDuration: 0, flag: 144 });
+
+      const args = baseRelayArgs();
+      await relayMetaTransaction({
+        ...args,
+        metaTx: {
+          ...args.metaTx,
+          params: {
+            ...args.metaTx.params,
+            transferAuthorizations: authorizations
+          }
+        }
+      });
+
+      expect(capturedBody?.params).toBeDefined();
+      const params = (capturedBody as { params: unknown[] }).params;
+      expect(params.length).toBe(6);
+      expect(params[5]).toBe(encodeTransferAuthorizationQueue(authorizations));
+    });
+
+    test("omits the auth queue when transferAuthorizations is an empty array", async () => {
+      let capturedBody: { params: unknown[] } | undefined;
+      nock(biconomyUrl)
+        .post("/api/v2/meta-tx/native", (body) => {
+          capturedBody = body as { params: unknown[] };
+          return true;
+        })
+        .reply(200, { txHash: TX_HASH, log: "", retryDuration: 0, flag: 144 });
+
+      const args = baseRelayArgs();
+      await relayMetaTransaction({
+        ...args,
+        metaTx: {
+          ...args.metaTx,
+          params: { ...args.metaTx.params, transferAuthorizations: [] }
+        }
+      });
+
+      expect((capturedBody as { params: unknown[] }).params.length).toBe(5);
     });
   });
 

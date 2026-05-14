@@ -14,6 +14,7 @@ import { accounts } from "..";
 import { AccountsMixin } from "../accounts/mixin";
 import { SellerFieldsFragment } from "../subgraph";
 import { SignedMetaTx, UnsignedMetaTx } from "./handler";
+import { TransferAuthorization } from "../erc20/handler";
 export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /* -------------------------------------------------------------------------- */
   /*                           Meta Tx related methods                          */
@@ -1672,6 +1673,7 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       sigR: BytesLike;
       sigS: BytesLike;
       sigV: BigNumberish;
+      transferAuthorizations?: TransferAuthorization[];
     },
     overrides: Partial<{
       userAddress: string;
@@ -1701,7 +1703,8 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
           nonce: metaTxParams.nonce,
           sigR: metaTxParams.sigR,
           sigS: metaTxParams.sigS,
-          sigV: metaTxParams.sigV
+          sigV: metaTxParams.sigV,
+          transferAuthorizations: metaTxParams.transferAuthorizations
         }
       }
     });

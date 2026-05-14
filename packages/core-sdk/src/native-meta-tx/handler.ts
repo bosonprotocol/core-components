@@ -128,7 +128,7 @@ export async function signNativeMetaTx(
   };
 }
 
-type ApproveExchangeTokenBaseArgs = {
+export type ApproveExchangeTokenBaseArgs = {
   web3Lib: Web3LibAdapter;
   chainId: number;
   user: string;
