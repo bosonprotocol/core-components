@@ -2,6 +2,7 @@ import { BigNumber } from "ethers";
 import {
   seedWallet12,
   initCoreSDKWithWallet,
+  initCoreSDKWithFundedWallet,
   MOCK_ERC20_ADDRESS
 } from "./utils";
 
@@ -43,6 +44,40 @@ describe("native-meta-tx", () => {
     const allowanceAfter =
       await coreSDK.getProtocolAllowance(MOCK_ERC20_ADDRESS);
 
+    expect(BigNumber.from(allowanceAfter).eq(newAllowance)).toBe(true);
+  });
+
+  test("approve ERC20 token via executeNativeMetaTransaction from a funded random wallet", async () => {
+    const allowanceBefore =
+      await coreSDK.getProtocolAllowance(MOCK_ERC20_ADDRESS);
+    const newAllowance = BigNumber.from(allowanceBefore).add("100");
+
+    // User (seedWallet12) signs the approve meta-tx.
+    const { r, s, v, functionSignature } =
+      await coreSDK.signNativeMetaTxApproveExchangeToken(
+        MOCK_ERC20_ADDRESS,
+        newAllowance
+      );
+
+    // A separate random funded wallet pays the gas.
+    const { coreSDK: senderCoreSDK, fundedWallet: senderWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+
+    const metaTx = await senderCoreSDK.executeNativeMetaTransaction(
+      MOCK_ERC20_ADDRESS,
+      { functionSignature, sigR: r, sigS: s, sigV: v },
+      { userAddress: seedWallet.address }
+    );
+    const metaTxReceipt = await metaTx.wait(2);
+    expect(metaTxReceipt.transactionHash).toBeTruthy();
+    expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    // Sanity-check: gas was paid by the random sender, not the user.
+    expect(metaTxReceipt.from.toLowerCase()).toBe(
+      senderWallet.address.toLowerCase()
+    );
+
+    const allowanceAfter =
+      await coreSDK.getProtocolAllowance(MOCK_ERC20_ADDRESS);
     expect(BigNumber.from(allowanceAfter).eq(newAllowance)).toBe(true);
   });
 });

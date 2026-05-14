@@ -2,6 +2,7 @@ import { tokenSpecifics } from "./tokenSpecifics";
 import {
   MetaTxConfig,
   Web3LibAdapter,
+  TransactionRequest,
   TransactionResponse
 } from "@bosonprotocol/common";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
@@ -241,4 +242,34 @@ export async function relayNativeMetaTransaction(args: {
     },
     hash: relayTxResponse.txHash
   };
+}
+
+export type ExecuteNativeMetaTxBaseArgs = {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  userAddress: string;
+  functionSignature: BytesLike;
+  sigR: BytesLike;
+  sigS: BytesLike;
+  sigV: BigNumberish;
+};
+
+// Overload: returnTxInfo is true -> returns TransactionRequest
+export async function executeNativeMetaTransaction(
+  args: ExecuteNativeMetaTxBaseArgs & { returnTxInfo: true }
+): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined -> returns TransactionResponse
+export async function executeNativeMetaTransaction(
+  args: ExecuteNativeMetaTxBaseArgs & { returnTxInfo?: false | undefined }
+): Promise<TransactionResponse>;
+// Implementation
+export async function executeNativeMetaTransaction(
+  args: ExecuteNativeMetaTxBaseArgs & { returnTxInfo?: boolean }
+): Promise<TransactionRequest | TransactionResponse> {
+  const data = nativeMetaTransactionsIface.encodeFunctionData(
+    "executeMetaTransaction",
+    [args.userAddress, args.functionSignature, args.sigR, args.sigS, args.sigV]
+  );
+  const tx: TransactionRequest = { to: args.contractAddress, data };
+  return args.returnTxInfo ? tx : args.web3Lib.sendTransaction(tx);
 }

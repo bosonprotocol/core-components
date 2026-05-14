@@ -2,6 +2,7 @@ import { abis } from "@bosonprotocol/common";
 import { MockWeb3LibAdapter } from "@bosonprotocol/common/tests/mocks";
 import * as erc20Handler from "../../src/erc20/handler";
 import * as nativeMetaTxHandler from "../../src/native-meta-tx/handler";
+import { nativeMetaTransactionsIface } from "../../src/native-meta-tx/interface";
 import { CoreSDK } from "../../src/core-sdk";
 import { UnsignedMetaTx } from "../../src/meta-tx/handler";
 import { BICONOMY_URL, SUBGRAPH_URL } from "../mocks";
@@ -167,5 +168,64 @@ describe("NativeMetaTxMixin#signNativeMetaTxApproveExchangeToken()", () => {
     expect(spy).toHaveBeenCalledWith(
       expect.objectContaining({ returnTypedDataToSign: true })
     );
+  });
+});
+
+describe("NativeMetaTxMixin#executeNativeMetaTransaction()", () => {
+  const FUNCTION_SIGNATURE = "0xdeadbeef";
+  const SIG_R =
+    "0x020d671b80fbd20466d8cb65cef79a24e3bca3fdf82e9dd89d78e7a4c4c045bd";
+  const SIG_S =
+    "0x72944c20bb1d839e76ee6bb69fed61f64376c37799598b40b8c49148f3cdd88a";
+  const SIG_V = 27;
+
+  const baseParams = {
+    functionSignature: FUNCTION_SIGNATURE,
+    sigR: SIG_R,
+    sigS: SIG_S,
+    sigV: SIG_V
+  };
+
+  function getWeb3Lib(sdk: CoreSDK): MockWeb3LibAdapter {
+    return (sdk as unknown as { _web3Lib: MockWeb3LibAdapter })._web3Lib;
+  }
+
+  test("default user → calldata _userAddress = SIGNER; tx.to = contractAddress", async () => {
+    const sdk = makeCoreSDK();
+    await sdk.executeNativeMetaTransaction(EXCHANGE_TOKEN, baseParams);
+
+    const web3Lib = getWeb3Lib(sdk);
+    expect(web3Lib.sendTransactionArgs.length).toBe(1);
+    const sent = web3Lib.sendTransactionArgs[0];
+    expect(sent.to).toBe(EXCHANGE_TOKEN);
+
+    const expectedSelector = nativeMetaTransactionsIface.getSighash(
+      "executeMetaTransaction"
+    );
+    expect((sent.data as string).slice(0, 10)).toBe(expectedSelector);
+
+    const decoded = nativeMetaTransactionsIface.decodeFunctionData(
+      "executeMetaTransaction",
+      sent.data as string
+    );
+    expect(decoded[0].toLowerCase()).toBe(SIGNER.toLowerCase());
+    expect(decoded[1]).toBe(FUNCTION_SIGNATURE);
+  });
+
+  test("overrides.userAddress is forwarded into the calldata _userAddress", async () => {
+    const customUser = "0x000000000000000000000000000000000000abcd";
+    const sdk = makeCoreSDK();
+    await sdk.executeNativeMetaTransaction(EXCHANGE_TOKEN, baseParams, {
+      userAddress: customUser
+    });
+
+    const web3Lib = getWeb3Lib(sdk);
+    const sent = web3Lib.sendTransactionArgs[0];
+    expect(sent.to).toBe(EXCHANGE_TOKEN);
+    const decoded = nativeMetaTransactionsIface.decodeFunctionData(
+      "executeMetaTransaction",
+      sent.data as string
+    );
+    expect(decoded[0].toLowerCase()).toBe(customUser.toLowerCase());
   });
 });
