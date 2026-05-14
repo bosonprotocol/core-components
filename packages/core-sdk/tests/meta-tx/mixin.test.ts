@@ -13,6 +13,11 @@ import { AddressZero } from "@ethersproject/constants";
 import { CoreSDK } from "../../src/core-sdk";
 import * as metaTxHandler from "../../src/meta-tx/handler";
 import { UnsignedMetaTx } from "../../src/meta-tx/handler";
+import { metaTransactionsHandlerIface } from "../../src/meta-tx/interface";
+import {
+  TransferAuthorization,
+  encodeTransferAuthorizationQueue
+} from "../../src/erc20/handler";
 import {
   BICONOMY_URL,
   SUBGRAPH_URL,
@@ -1233,6 +1238,120 @@ describe("MetaTxMixin#signMetaTxWithdrawFunds() overload dispatch", () => {
       returnTypedDataToSign: true
     });
     assertStructuredDataShape(result, "MetaTxFund");
+  });
+});
+
+describe("MetaTxMixin#executeMetaTransaction()", () => {
+  const FUNCTION_NAME = "commitToOffer(address,uint256)";
+  const FUNCTION_SIGNATURE = "0xdeadbeef";
+  const SIG_R =
+    "0x020d671b80fbd20466d8cb65cef79a24e3bca3fdf82e9dd89d78e7a4c4c045bd";
+  const SIG_S =
+    "0x72944c20bb1d839e76ee6bb69fed61f64376c37799598b40b8c49148f3cdd88a";
+  const SIG_V = 27;
+
+  const baseParams = {
+    functionName: FUNCTION_NAME,
+    functionSignature: FUNCTION_SIGNATURE,
+    nonce: 1,
+    sigR: SIG_R,
+    sigS: SIG_S,
+    sigV: SIG_V
+  };
+
+  const auth: TransferAuthorization = {
+    strategy: "ERC3009",
+    data: {
+      validAfter: "0",
+      validBefore: "1",
+      nonce:
+        "0x1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    r: SIG_R,
+    s: SIG_S,
+    v: SIG_V,
+    signature: MOCK_SIG
+  };
+
+  function getWeb3Lib(sdk: CoreSDK): MockWeb3LibAdapter {
+    return (sdk as unknown as { _web3Lib: MockWeb3LibAdapter })._web3Lib;
+  }
+
+  test("without transferAuthorizations → calls executeMetaTransaction selector with default user & contract", async () => {
+    const sdk = makeCoreSDK();
+    await sdk.executeMetaTransaction(baseParams);
+
+    const web3Lib = getWeb3Lib(sdk);
+    expect(web3Lib.sendTransactionArgs.length).toBe(1);
+    const sent = web3Lib.sendTransactionArgs[0];
+    expect(sent.to).toBe(PROTOCOL_DIAMOND);
+
+    const expectedSelector = metaTransactionsHandlerIface.getSighash(
+      "executeMetaTransaction"
+    );
+    expect((sent.data as string).slice(0, 10)).toBe(expectedSelector);
+
+    const decoded = metaTransactionsHandlerIface.decodeFunctionData(
+      "executeMetaTransaction",
+      sent.data as string
+    );
+    expect(decoded[0].toLowerCase()).toBe(SIGNER.toLowerCase());
+    expect(decoded[1]).toBe(FUNCTION_NAME);
+  });
+
+  test("transferAuthorizations: [] → still routes to executeMetaTransaction (parity with relayMetaTransaction)", async () => {
+    const sdk = makeCoreSDK();
+    await sdk.executeMetaTransaction({
+      ...baseParams,
+      transferAuthorizations: []
+    });
+
+    const web3Lib = getWeb3Lib(sdk);
+    const sent = web3Lib.sendTransactionArgs[0];
+    const expectedSelector = metaTransactionsHandlerIface.getSighash(
+      "executeMetaTransaction"
+    );
+    expect((sent.data as string).slice(0, 10)).toBe(expectedSelector);
+  });
+
+  test("non-empty transferAuthorizations → routes to executeMetaTransactionWithTokenTransferAuthorization with encoded queue", async () => {
+    const sdk = makeCoreSDK();
+    await sdk.executeMetaTransaction({
+      ...baseParams,
+      transferAuthorizations: [auth]
+    });
+
+    const web3Lib = getWeb3Lib(sdk);
+    const sent = web3Lib.sendTransactionArgs[0];
+    const expectedSelector = metaTransactionsHandlerIface.getSighash(
+      "executeMetaTransactionWithTokenTransferAuthorization"
+    );
+    expect((sent.data as string).slice(0, 10)).toBe(expectedSelector);
+
+    const decoded = metaTransactionsHandlerIface.decodeFunctionData(
+      "executeMetaTransactionWithTokenTransferAuthorization",
+      sent.data as string
+    );
+    expect(decoded[5]).toBe(encodeTransferAuthorizationQueue([auth]));
+  });
+
+  test("overrides.userAddress and overrides.contractAddress are forwarded", async () => {
+    const customUser = "0x000000000000000000000000000000000000abcd";
+    const customContract = "0x000000000000000000000000000000000000beef";
+    const sdk = makeCoreSDK();
+    await sdk.executeMetaTransaction(baseParams, {
+      userAddress: customUser,
+      contractAddress: customContract
+    });
+
+    const web3Lib = getWeb3Lib(sdk);
+    const sent = web3Lib.sendTransactionArgs[0];
+    expect(sent.to).toBe(customContract);
+    const decoded = metaTransactionsHandlerIface.decodeFunctionData(
+      "executeMetaTransaction",
+      sent.data as string
+    );
+    expect(decoded[0].toLowerCase()).toBe(customUser.toLowerCase());
   });
 });
 

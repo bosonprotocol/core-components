@@ -3,6 +3,7 @@ import {
   CreateSellerArgs,
   MetaTxConfig,
   Web3LibAdapter,
+  TransactionRequest,
   TransactionResponse,
   utils,
   MetadataStorage,
@@ -46,6 +47,7 @@ import {
   ForwarderDomainData,
   GetRetriedHashesData
 } from "./biconomy";
+import { metaTransactionsHandlerIface } from "./interface";
 import { isAddress } from "@ethersproject/address";
 import { AddressZero } from "@ethersproject/constants";
 import { encodeDepositFunds, encodeWithdrawFunds } from "../funds/interface";
@@ -2211,6 +2213,83 @@ export async function relayMetaTransaction(args: {
     },
     hash: relayTxResponse.txHash
   };
+}
+
+export type ExecuteMetaTxBaseArgs = {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  userAddress: string;
+  functionName: string;
+  functionSignature: BytesLike;
+  nonce: BigNumberish;
+  sigR: BytesLike;
+  sigS: BytesLike;
+  sigV: BigNumberish;
+};
+
+// Overload: returnTxInfo is true -> returns TransactionRequest
+export async function executeMetaTransaction(
+  args: ExecuteMetaTxBaseArgs & { returnTxInfo: true }
+): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined -> returns TransactionResponse
+export async function executeMetaTransaction(
+  args: ExecuteMetaTxBaseArgs & { returnTxInfo?: false | undefined }
+): Promise<TransactionResponse>;
+// Implementation
+export async function executeMetaTransaction(
+  args: ExecuteMetaTxBaseArgs & { returnTxInfo?: boolean }
+): Promise<TransactionRequest | TransactionResponse> {
+  const data = metaTransactionsHandlerIface.encodeFunctionData(
+    "executeMetaTransaction",
+    [
+      args.userAddress,
+      args.functionName,
+      args.functionSignature,
+      args.nonce,
+      rebuildSignature({
+        r: args.sigR.toString(),
+        s: args.sigS.toString(),
+        v: Number(args.sigV)
+      })
+    ]
+  );
+  const tx: TransactionRequest = { to: args.contractAddress, data };
+  return args.returnTxInfo ? tx : args.web3Lib.sendTransaction(tx);
+}
+
+export type ExecuteMetaTxWithAuthArgs = ExecuteMetaTxBaseArgs & {
+  transferAuthorizations: TransferAuthorization[];
+};
+
+// Overload: returnTxInfo is true -> returns TransactionRequest
+export async function executeMetaTransactionWithTokenTransferAuthorization(
+  args: ExecuteMetaTxWithAuthArgs & { returnTxInfo: true }
+): Promise<TransactionRequest>;
+// Overload: returnTxInfo is false or undefined -> returns TransactionResponse
+export async function executeMetaTransactionWithTokenTransferAuthorization(
+  args: ExecuteMetaTxWithAuthArgs & { returnTxInfo?: false | undefined }
+): Promise<TransactionResponse>;
+// Implementation
+export async function executeMetaTransactionWithTokenTransferAuthorization(
+  args: ExecuteMetaTxWithAuthArgs & { returnTxInfo?: boolean }
+): Promise<TransactionRequest | TransactionResponse> {
+  const data = metaTransactionsHandlerIface.encodeFunctionData(
+    "executeMetaTransactionWithTokenTransferAuthorization",
+    [
+      args.userAddress,
+      args.functionName,
+      args.functionSignature,
+      args.nonce,
+      rebuildSignature({
+        r: args.sigR.toString(),
+        s: args.sigS.toString(),
+        v: Number(args.sigV)
+      }),
+      encodeTransferAuthorizationQueue(args.transferAuthorizations)
+    ]
+  );
+  const tx: TransactionRequest = { to: args.contractAddress, data };
+  return args.returnTxInfo ? tx : args.web3Lib.sendTransaction(tx);
 }
 
 export async function getResubmitted(args: {
