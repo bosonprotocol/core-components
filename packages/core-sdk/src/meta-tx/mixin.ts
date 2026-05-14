@@ -1858,7 +1858,7 @@ export class MetaTxMixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
   /**
    * Execute a signed meta transaction directly on-chain (no Biconomy relayer).
    * Routes to `executeMetaTransaction` or `executeMetaTransactionWithTokenTransferAuthorization`
-   * depending on whether `transferAuthorizations` is provided.
+   * depending on whether `transferAuthorizations` is provided and non-empty.
    * The wallet backing the SDK pays the gas; pass `overrides.userAddress` when
    * the meta-tx signer differs from that wallet.
    * @param metaTxParams - Required params for meta transaction.
