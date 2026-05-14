@@ -36,7 +36,7 @@ export const envConfigs = {
       contracts: {
         protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
         priceDiscoveryClient: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
-        permit2: "0x1291Be112d480055DaFd8a610b7d1e203891C274", // MockPermi2
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
         testErc20: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49", // Foreign20 contract
         testErc721: "0x4826533B4897376654Bb4d4AD88B7faFD0C98528", // Foreign721 contract
         testErc1155: "0x99bbA657f2BbC93c02D617f8bA121cB8Fc104Acf", // Foreign1155 contract

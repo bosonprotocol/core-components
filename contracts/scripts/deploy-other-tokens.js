@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const { Contract } = require("ethers");
 const hre = require("hardhat");
 const ethers = hre.ethers;
+const PERMIT2_ADDRESS = "0x000000000022D473030F116dDEE9F6B43aC78BA3";
 
 async function deployWeth() {
   const WETH9 = await ethers.getContractFactory("WETH9");
@@ -33,7 +35,12 @@ async function deployPermit2() {
   const MockPermit2 = await ethers.getContractFactory("MockPermit2");
   const mockPermit2 = await MockPermit2.deploy();
   await mockPermit2.waitForDeployment();
-  return mockPermit2;
+  // Inject MockPermit2 at the canonical Permit2 address. The Permit2
+  // sub-context relies on this code being present at PERMIT2_ADDRESS so
+  // `TokenTransferAuthorizationLib._consumePermit2` calls land on it.
+  const code = await ethers.provider.getCode(await mockPermit2.getAddress());
+  await hre.network.provider.send("hardhat_setCode", [PERMIT2_ADDRESS, code]);
+  return new Contract(PERMIT2_ADDRESS, MockPermit2.interface, ethers.provider);
 }
 
 exports.deployERC3009Token = deployERC3009Token;

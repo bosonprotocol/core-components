@@ -302,7 +302,9 @@
       "Bash(git mv *)",
       "Bash(git rm *)",
       "Bash(npx --no-install tsc --noEmit -p tsconfig.json)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)"
     ],
     "deny": [
       "Bash(rm -rf /*)",

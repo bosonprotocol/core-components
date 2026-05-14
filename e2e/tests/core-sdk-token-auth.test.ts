@@ -1,20 +1,186 @@
-import { abis } from "@bosonprotocol/common";
-import { BigNumber, constants, Contract, utils } from "ethers";
 import {
+  abis,
+  FullOfferArgs,
+  GatingType,
+  OfferCreator
+} from "@bosonprotocol/common";
+import { parseEther } from "@ethersproject/units";
+import {
+  BigNumber,
+  BigNumberish,
+  constants,
+  Contract,
+  utils,
+  Wallet
+} from "ethers";
+import { CoreSDK } from "../../packages/core-sdk/src";
+import { TransferAuthorization } from "../../packages/core-sdk/src/erc20/handler";
+import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
+import TokenType from "../../contracts/protocol-contracts/scripts/domain/TokenType";
+import {
+  MSEC_PER_DAY,
+  MSEC_PER_SEC
+} from "../../packages/common/src/utils/timestamp";
+import {
+  buildFullOfferArgs,
+  createDisputeResolver,
   createFundedWallet,
+  createOffer,
+  createOfferWithCondition,
+  createSeller,
+  deployerWallet,
+  ensureMintedERC1155,
   initCoreSDKWithFundedWallet,
-  initCoreSDKWithWallet,
+  initSellerAndBuyerSDKs,
   mockErc20Contract,
-  MOCK_ERC3009_ADDRESS,
+  MOCK_ERC1155_ADDRESS,
+  MOCK_ERC20_ADDRESS,
   MOCK_ERC2612_ADDRESS,
+  MOCK_ERC3009_ADDRESS,
   MOCK_PERMIT2_ADDRESS,
-  seedWallet25,
-  MOCK_ERC20_ADDRESS
+  seedWallet25
 } from "./utils";
+import { MOCK_ERC20_ABI } from "./mockAbis";
 
-jest.setTimeout(60_000);
+jest.setTimeout(120_000);
 
 const seedWallet = seedWallet25; // be sure the seedWallet is not used by another test (to allow concurrent run)
+
+// ─── Strategy table ────────────────────────────────────────────────────────────
+
+type Strategy = "ERC3009" | "EIP2612" | "Permit2";
+const STRATEGIES: Strategy[] = ["ERC3009", "EIP2612", "Permit2"];
+
+const ERC3009_DOMAIN = { name: "ERC3009Token", version: "1" };
+const ERC2612_DOMAIN = { name: "ERC2612Token", version: "1" };
+
+function exchangeTokenFor(strategy: Strategy): string {
+  switch (strategy) {
+    case "ERC3009":
+      return MOCK_ERC3009_ADDRESS;
+    case "EIP2612":
+      return MOCK_ERC2612_ADDRESS;
+    case "Permit2":
+      return MOCK_ERC20_ADDRESS;
+  }
+}
+
+function tokenAbiFor(strategy: Strategy): unknown[] {
+  switch (strategy) {
+    case "ERC3009":
+      return abis.ERC3009TokenABI;
+    case "EIP2612":
+      return abis.ERC2612TokenABI;
+    case "Permit2":
+      return MOCK_ERC20_ABI;
+  }
+}
+
+// ─── Helpers ───────────────────────────────────────────────────────────────────
+
+async function mintMockToken(
+  wallet: Wallet,
+  strategy: Strategy,
+  amount: BigNumberish
+): Promise<void> {
+  const token = new Contract(
+    exchangeTokenFor(strategy),
+    tokenAbiFor(strategy),
+    wallet
+  );
+  await (await token.mint(wallet.address, amount)).wait();
+}
+
+async function approvePermit2(wallet: Wallet): Promise<void> {
+  const token = new Contract(MOCK_ERC20_ADDRESS, abis.ERC20ABI, wallet);
+  await (
+    await token.approve(MOCK_PERMIT2_ADDRESS, constants.MaxUint256)
+  ).wait();
+}
+
+async function setUpFunderWallet(
+  wallet: Wallet,
+  strategy: Strategy,
+  amount: BigNumberish
+): Promise<void> {
+  await mintMockToken(wallet, strategy, amount);
+  if (strategy === "Permit2") {
+    await approvePermit2(wallet);
+  }
+}
+
+async function signAuth(
+  coreSDK: CoreSDK,
+  strategy: Strategy,
+  exchangeToken: string,
+  value: BigNumberish
+): Promise<TransferAuthorization> {
+  switch (strategy) {
+    case "ERC3009":
+      return coreSDK.signReceiveWithErc3009Authorization(
+        exchangeToken,
+        ERC3009_DOMAIN,
+        value,
+        0,
+        constants.MaxUint256
+      );
+    case "EIP2612":
+      return coreSDK.signReceiveWithErc2612Permit(
+        exchangeToken,
+        ERC2612_DOMAIN,
+        value,
+        constants.MaxUint256
+      );
+    case "Permit2":
+      return coreSDK.signReceiveWithPermit2(
+        exchangeToken,
+        value,
+        constants.MaxUint256
+      );
+  }
+}
+
+async function createDrForToken(
+  exchangeToken: string,
+  drFeeAmount: BigNumberish
+) {
+  const { fundedWallet: drFundedWallet } =
+    await initCoreSDKWithFundedWallet(seedWallet);
+  const drAddress = drFundedWallet.address.toLowerCase();
+  const { disputeResolver } = await createDisputeResolver(
+    drFundedWallet,
+    deployerWallet,
+    {
+      assistant: drAddress,
+      admin: drAddress,
+      treasury: drAddress,
+      metadataUri: "",
+      escalationResponsePeriodInMS: 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC,
+      fees: [
+        {
+          feeAmount: drFeeAmount,
+          tokenAddress: exchangeToken,
+          tokenName: "ERC20"
+        }
+      ],
+      sellerAllowList: []
+    }
+  );
+  return disputeResolver;
+}
+
+const noCondition = {
+  method: EvaluationMethod.None,
+  tokenType: TokenType.MultiToken,
+  tokenAddress: constants.AddressZero,
+  gatingType: GatingType.PerAddress,
+  minTokenId: "0",
+  maxTokenId: "0",
+  threshold: "0",
+  maxCommits: "0"
+};
+
+// ─── Tests ─────────────────────────────────────────────────────────────────────
 
 describe("core-sdk-token-auth", () => {
   describe("erc3009", () => {
@@ -498,6 +664,383 @@ describe("core-sdk-token-auth", () => {
         wordPos
       );
       expect(bitmap.and(bit).eq(bit)).toBe(true);
+    });
+  });
+
+  describe("meta-tx with transfer authorizations", () => {
+    describe("commitToOffer", () => {
+      STRATEGIES.forEach((strategy) => {
+        test(`${strategy} auth — non-native exchange token offer`, async () => {
+          const exchangeToken = exchangeTokenFor(strategy);
+
+          // Fresh DR that accepts this token (drFee = 0 to keep things simple).
+          const disputeResolver = await createDrForToken(exchangeToken, "0");
+
+          // Fresh seller + buyer wallets (parallel-safe).
+          const { sellerCoreSDK, buyerCoreSDK, buyerWallet, sellerWallet } =
+            await initSellerAndBuyerSDKs(seedWallet);
+
+          // Seller account is required to create an offer.
+          await createSeller(sellerCoreSDK, sellerWallet.address);
+
+          // sellerDeposit = 0 so the seller doesn't need to pre-deposit anything.
+          const offer = await createOffer(sellerCoreSDK, {
+            exchangeToken,
+            disputeResolverId: disputeResolver.id,
+            sellerDeposit: "0",
+            quantityAvailable: 1
+          });
+
+          // Mint exchange token to the buyer (and Permit2-approve, for Permit2).
+          await setUpFunderWallet(buyerWallet, strategy, offer.price);
+
+          // Buyer signs the transfer authorization for offer.price.
+          const buyerAuth = await signAuth(
+            buyerCoreSDK,
+            strategy,
+            exchangeToken,
+            offer.price
+          );
+
+          const nonce = Date.now();
+          const { r, s, v, functionName, functionSignature } =
+            await buyerCoreSDK.signMetaTxCommitToOffer({
+              offerId: offer.id,
+              nonce
+            });
+
+          const metaTx = await buyerCoreSDK.relayMetaTransaction({
+            functionName,
+            functionSignature,
+            nonce,
+            sigR: r,
+            sigS: s,
+            sigV: v,
+            transferAuthorizations: [buyerAuth]
+          });
+          const metaTxReceipt = await metaTx.wait();
+          expect(metaTxReceipt.transactionHash).toBeTruthy();
+          expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(
+            true
+          );
+        });
+      });
+    });
+
+    describe("commitToConditionalOffer", () => {
+      STRATEGIES.forEach((strategy) => {
+        test(`${strategy} auth — non-native exchange token conditional offer`, async () => {
+          const exchangeToken = exchangeTokenFor(strategy);
+          const tokenID = Date.now().toString();
+
+          const disputeResolver = await createDrForToken(exchangeToken, "0");
+
+          const { sellerCoreSDK, buyerCoreSDK, buyerWallet, sellerWallet } =
+            await initSellerAndBuyerSDKs(seedWallet);
+
+          await createSeller(sellerCoreSDK, sellerWallet.address);
+
+          // Mint the gating ERC1155 token to the buyer so the condition holds.
+          await ensureMintedERC1155(buyerWallet, tokenID, "5");
+
+          const condition = {
+            method: EvaluationMethod.Threshold,
+            tokenType: TokenType.MultiToken,
+            tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenID,
+            maxTokenId: tokenID,
+            threshold: "1",
+            maxCommits: "3"
+          };
+
+          const offer = await createOfferWithCondition(
+            sellerCoreSDK,
+            condition,
+            {
+              offerParams: {
+                exchangeToken,
+                disputeResolverId: disputeResolver.id,
+                sellerDeposit: "0",
+                quantityAvailable: 1
+              }
+            }
+          );
+
+          await setUpFunderWallet(buyerWallet, strategy, offer.price);
+
+          const buyerAuth = await signAuth(
+            buyerCoreSDK,
+            strategy,
+            exchangeToken,
+            offer.price
+          );
+
+          const nonce = Date.now();
+          const { r, s, v, functionName, functionSignature } =
+            await buyerCoreSDK.signMetaTxCommitToConditionalOffer({
+              offerId: offer.id,
+              tokenId: tokenID,
+              nonce
+            });
+
+          const metaTx = await buyerCoreSDK.relayMetaTransaction({
+            functionName,
+            functionSignature,
+            nonce,
+            sigR: r,
+            sigS: s,
+            sigV: v,
+            transferAuthorizations: [buyerAuth]
+          });
+          const metaTxReceipt = await metaTx.wait();
+          expect(metaTxReceipt.transactionHash).toBeTruthy();
+          expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(
+            true
+          );
+        });
+      });
+    });
+
+    describe("commitToBuyerOffer", () => {
+      STRATEGIES.forEach((strategy) => {
+        test(`${strategy} auth — non-native exchange token buyer-initiated offer`, async () => {
+          // `commitToBuyerOffer` consumes pre-deposited "available funds" rather
+          // than pulling tokens inline (unlike `commitToOffer`). The auth feature
+          // is therefore exercised on the `depositFunds` meta-tx that precedes
+          // the commit: the auth pulls tokens into the protocol AND the inner
+          // `depositFunds` call credits them to the user's account. The commit
+          // itself runs as a regular meta-tx, no auths needed.
+          const exchangeToken = exchangeTokenFor(strategy);
+          const drFeeAmount = parseEther("0.001");
+
+          const disputeResolver = await createDrForToken(
+            exchangeToken,
+            drFeeAmount
+          );
+
+          const {
+            sellerCoreSDK: sellerCoreSDKBuyer,
+            buyerCoreSDK: buyerCoreSDKBuyer,
+            sellerWallet: sellerFundedWallet,
+            buyerWallet: buyerFundedWallet
+          } = await initSellerAndBuyerSDKs(seedWallet);
+
+          // Buyer-initiated offer with the chosen exchange token.
+          // sellerDeposit = 0 so the seller doesn't need to deposit funds upfront.
+          const buyerInitiatedOffer = await createOffer(buyerCoreSDKBuyer, {
+            creator: OfferCreator.Buyer,
+            quantityAvailable: 1,
+            disputeResolverId: disputeResolver.id,
+            exchangeToken,
+            sellerDeposit: "0"
+          });
+
+          await setUpFunderWallet(
+            buyerFundedWallet,
+            strategy,
+            buyerInitiatedOffer.price
+          );
+          await setUpFunderWallet(sellerFundedWallet, strategy, drFeeAmount);
+
+          // Seller account is required so the seller can receive a deposit.
+          const seller = await createSeller(
+            sellerCoreSDKBuyer,
+            sellerFundedWallet.address
+          );
+
+          // 1. Buyer: sign auth, then relay a depositFunds meta-tx carrying it.
+          //    The auth pulls offer.price into the protocol; the inner deposit
+          //    credits it to the buyer's account.
+          const buyerAuth = await signAuth(
+            buyerCoreSDKBuyer,
+            strategy,
+            exchangeToken,
+            buyerInitiatedOffer.price
+          );
+          const buyerDepositNonce = Date.now();
+          const buyerDepositSig =
+            await buyerCoreSDKBuyer.signMetaTxDepositFunds({
+              entityId: buyerInitiatedOffer.buyerId,
+              fundsTokenAddress: exchangeToken,
+              fundsAmount: buyerInitiatedOffer.price,
+              nonce: buyerDepositNonce
+            });
+          const buyerDepositTx = await buyerCoreSDKBuyer.relayMetaTransaction({
+            functionName: buyerDepositSig.functionName,
+            functionSignature: buyerDepositSig.functionSignature,
+            nonce: buyerDepositNonce,
+            sigR: buyerDepositSig.r,
+            sigS: buyerDepositSig.s,
+            sigV: buyerDepositSig.v,
+            transferAuthorizations: [buyerAuth]
+          });
+          await buyerDepositTx.wait();
+
+          // 2. Seller: same pattern for drFeeAmount.
+          const sellerAuth = await signAuth(
+            sellerCoreSDKBuyer,
+            strategy,
+            exchangeToken,
+            drFeeAmount
+          );
+          const sellerDepositNonce = Date.now() + 1;
+          const sellerDepositSig =
+            await sellerCoreSDKBuyer.signMetaTxDepositFunds({
+              entityId: seller.id,
+              fundsTokenAddress: exchangeToken,
+              fundsAmount: drFeeAmount,
+              nonce: sellerDepositNonce
+            });
+          const sellerDepositTx = await sellerCoreSDKBuyer.relayMetaTransaction(
+            {
+              functionName: sellerDepositSig.functionName,
+              functionSignature: sellerDepositSig.functionSignature,
+              nonce: sellerDepositNonce,
+              sigR: sellerDepositSig.r,
+              sigS: sellerDepositSig.s,
+              sigV: sellerDepositSig.v,
+              transferAuthorizations: [sellerAuth]
+            }
+          );
+          await sellerDepositTx.wait();
+
+          // 3. Seller commits — funds are now available, no auths needed.
+          const commitNonce = Date.now() + 2;
+          const { r, s, v, functionName, functionSignature } =
+            await sellerCoreSDKBuyer.signMetaTxCommitToBuyerOffer({
+              offerId: buyerInitiatedOffer.id,
+              sellerParams: {},
+              nonce: commitNonce
+            });
+
+          const metaTx = await sellerCoreSDKBuyer.relayMetaTransaction({
+            functionName,
+            functionSignature,
+            nonce: commitNonce,
+            sigR: r,
+            sigS: s,
+            sigV: v
+          });
+          const metaTxReceipt = await metaTx.wait();
+          expect(metaTxReceipt.transactionHash).toBeTruthy();
+          expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(
+            true
+          );
+        });
+      });
+    });
+
+    describe("createOfferAndCommit", () => {
+      STRATEGIES.forEach((strategy) => {
+        test(`${strategy} auth — non-native exchange token seller-initiated offer`, async () => {
+          const exchangeToken = exchangeTokenFor(strategy);
+          const sellerDeposit = "0";
+          const drFeeAmount = "0";
+
+          const disputeResolver = await createDrForToken(
+            exchangeToken,
+            drFeeAmount
+          );
+
+          const {
+            sellerCoreSDK: sellerCoreSDKNew,
+            buyerCoreSDK: buyerCoreSDKNew,
+            sellerWallet: sellerFundedWallet,
+            buyerWallet: buyerFundedWallet
+          } = await initSellerAndBuyerSDKs(seedWallet);
+
+          // Seller is offer creator for seller-initiated offer.
+          const seller = await createSeller(
+            sellerCoreSDKNew,
+            sellerFundedWallet.address
+          );
+
+          const fullOfferArgsUnsigned = await buildFullOfferArgs(
+            buyerCoreSDKNew, // buyer calls createOfferAndCommit
+            sellerCoreSDKNew, // seller signs the offer
+            noCondition,
+            {
+              committer: buyerFundedWallet.address,
+              offerCreator: sellerFundedWallet.address,
+              sellerId: seller.id,
+              sellerOfferParams: {
+                collectionIndex: 0,
+                mutualizerAddress: constants.AddressZero,
+                royaltyInfo: { recipients: [], bps: [] }
+              },
+              useDepositedFunds: true,
+              creator: OfferCreator.Seller,
+              feeLimit: parseEther("0.1")
+            },
+            {
+              offerParams: {
+                disputeResolverId: disputeResolver.id,
+                exchangeToken,
+                sellerDeposit
+              }
+            }
+          );
+
+          const { signature } = await sellerCoreSDKNew.signFullOffer({
+            fullOfferArgsUnsigned
+          });
+          const fullOfferArgs: FullOfferArgs = {
+            ...fullOfferArgsUnsigned,
+            signature
+          };
+
+          // Buyer (committer) is the one whose funds get pulled.
+          await setUpFunderWallet(
+            buyerFundedWallet,
+            strategy,
+            fullOfferArgsUnsigned.price
+          );
+          // The seller doesn't actually transfer anything (sellerDeposit=0 and
+          // useDepositedFunds=true), but `prepareOfferForCommit` still advances
+          // the queue head for the seller-deposit slot, so a signed entry must
+          // be supplied there. A zero-amount auth is enough.
+          if (strategy === "Permit2") {
+            await approvePermit2(sellerFundedWallet);
+          }
+
+          const sellerDiscardAuth = await signAuth(
+            sellerCoreSDKNew,
+            strategy,
+            exchangeToken,
+            sellerDeposit
+          );
+          const buyerAuth = await signAuth(
+            buyerCoreSDKNew,
+            strategy,
+            exchangeToken,
+            fullOfferArgsUnsigned.price
+          );
+
+          const nonce = Date.now();
+          const { r, s, v, functionName, functionSignature } =
+            await buyerCoreSDKNew.signMetaTxCreateOfferAndCommit({
+              createOfferAndCommitArgs: fullOfferArgs,
+              nonce
+            });
+
+          const metaTx = await buyerCoreSDKNew.relayMetaTransaction({
+            functionName,
+            functionSignature,
+            nonce,
+            sigR: r,
+            sigS: s,
+            sigV: v,
+            // Queue layout: [seller-deposit slot (discarded), buyer's price].
+            transferAuthorizations: [sellerDiscardAuth, buyerAuth]
+          });
+          const metaTxReceipt = await metaTx.wait();
+          expect(metaTxReceipt.transactionHash).toBeTruthy();
+          expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(
+            true
+          );
+        });
+      });
     });
   });
 });

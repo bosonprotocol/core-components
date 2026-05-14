@@ -122,7 +122,7 @@ export const MOCK_ERC2612_ADDRESS =
 
 export const MOCK_PERMIT2_ADDRESS =
   (getFirstEnvConfig("local").contracts.permit2 as string) ||
-  "0x1291Be112d480055DaFd8a610b7d1e203891C274";
+  "0x000000000022D473030F116dDEE9F6B43aC78BA3";
 
 export const MOCK_FORWARDER_ADDRESS =
   (getFirstEnvConfig("local").contracts.forwarder as string) ||
