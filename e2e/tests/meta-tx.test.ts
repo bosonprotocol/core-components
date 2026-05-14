@@ -56,7 +56,8 @@ import {
   AuthTokenType,
   GatingType,
   OfferCreator,
-  FullOfferArgs
+  FullOfferArgs,
+  CreateOfferArgs
 } from "../../packages/common";
 import {
   MSEC_PER_DAY,
@@ -82,7 +83,9 @@ describe("meta-tx", () => {
     await ensureMintedAndAllowedTokens([sellerWallet]);
     // do not approve for buyer (we expect commit to do it when needed)
     await ensureMintedAndAllowedTokens([buyerWallet], undefined, false);
-    const createdOfferId = await createOfferAndDepositFunds(sellerWallet);
+    const createdOfferId = await createOfferAndDepositFunds(sellerWallet, {
+      quantityAvailable: 20
+    });
     offerToCommit = await sellerCoreSDK.getOfferById(createdOfferId);
   });
 
@@ -732,12 +735,11 @@ describe("meta-tx", () => {
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
       await buyerCoreSDK.waitForGraphNodeIndexing(metaTxReceipt);
-      const exchangeId =
-        buyerCoreSDK.getCommittedExchangeIdFromLogs(metaTxReceipt.logs);
-      expect(exchangeId).toBeTruthy();
-      const exchange = await buyerCoreSDK.getExchangeById(
-        exchangeId as string
+      const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
+        metaTxReceipt.logs
       );
+      expect(exchangeId).toBeTruthy();
+      const exchange = await buyerCoreSDK.getExchangeById(exchangeId as string);
       expect(exchange.state).toBe(ExchangeState.REDEEMED);
       expect(exchange.redeemedDate).toBeTruthy();
     });
@@ -862,12 +864,11 @@ describe("meta-tx", () => {
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
       await buyerCoreSDK.waitForGraphNodeIndexing(metaTxReceipt);
-      const exchangeId =
-        buyerCoreSDK.getCommittedExchangeIdFromLogs(metaTxReceipt.logs);
-      expect(exchangeId).toBeTruthy();
-      const exchange = await buyerCoreSDK.getExchangeById(
-        exchangeId as string
+      const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
+        metaTxReceipt.logs
       );
+      expect(exchangeId).toBeTruthy();
+      const exchange = await buyerCoreSDK.getExchangeById(exchangeId as string);
       expect(exchange.state).toBe(ExchangeState.REDEEMED);
       expect(exchange.redeemedDate).toBeTruthy();
     });
@@ -1652,8 +1653,9 @@ describe("meta-tx", () => {
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
       await buyerCoreSDKNew.waitForGraphNodeIndexing(metaTxReceipt);
-      const exchangeId =
-        buyerCoreSDKNew.getCommittedExchangeIdFromLogs(metaTxReceipt.logs);
+      const exchangeId = buyerCoreSDKNew.getCommittedExchangeIdFromLogs(
+        metaTxReceipt.logs
+      );
       expect(exchangeId).toBeTruthy();
       const exchange = await buyerCoreSDKNew.getExchangeById(
         exchangeId as string
@@ -2714,7 +2716,10 @@ describe("meta-tx", () => {
   });
 });
 
-async function createOfferAndDepositFunds(sellerWallet: Wallet) {
+async function createOfferAndDepositFunds(
+  sellerWallet: Wallet,
+  overrides?: Partial<CreateOfferArgs>
+) {
   const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
   const sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
   const [seller] = sellers;
@@ -2734,7 +2739,8 @@ async function createOfferAndDepositFunds(sellerWallet: Wallet) {
   const offerArgs = mockCreateOfferArgs({
     metadataHash,
     metadataUri,
-    exchangeToken: MOCK_ERC20_ADDRESS
+    exchangeToken: MOCK_ERC20_ADDRESS,
+    ...(overrides || {})
   });
   const createOfferTx = await sellerCoreSDK.createOffer(offerArgs);
   const createOfferReceipt = await createOfferTx.wait();
@@ -2746,7 +2752,7 @@ async function createOfferAndDepositFunds(sellerWallet: Wallet) {
   const depositFundsTx = await sellerCoreSDK.depositFunds(
     seller.id,
     BigNumber.from(offerArgs.quantityAvailable).mul(offerArgs.sellerDeposit),
-    MOCK_ERC20_ADDRESS
+    overrides?.exchangeToken || MOCK_ERC20_ADDRESS
   );
   await depositFundsTx.wait();
   await sellerCoreSDK.waitForGraphNodeIndexing(depositFundsTx);
