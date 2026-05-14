@@ -18,7 +18,7 @@ import {
 } from "@bosonprotocol/common";
 import { storeMetadataOnTheGraph } from "../offers/storage";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
-import { BytesLike } from "@ethersproject/bytes";
+import { BytesLike, hexlify } from "@ethersproject/bytes";
 
 import {
   encodeCreateSeller,
@@ -2247,8 +2247,8 @@ export async function executeMetaTransaction(
       args.functionSignature,
       args.nonce,
       rebuildSignature({
-        r: args.sigR.toString(),
-        s: args.sigS.toString(),
+        r: hexlify(args.sigR),
+        s: hexlify(args.sigS),
         v: Number(args.sigV)
       })
     ]
@@ -2281,8 +2281,8 @@ export async function executeMetaTransactionWithTokenTransferAuthorization(
       args.functionSignature,
       args.nonce,
       rebuildSignature({
-        r: args.sigR.toString(),
-        s: args.sigS.toString(),
+        r: hexlify(args.sigR),
+        s: hexlify(args.sigS),
         v: Number(args.sigV)
       }),
       encodeTransferAuthorizationQueue(args.transferAuthorizations)
