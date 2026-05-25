@@ -6,7 +6,7 @@ import {
   signReceiveWithErc3009Authorization,
   signReceiveWithErc2612Permit,
   signReceiveWithPermit2,
-  encodeTransferAuthorizationQueue,
+  encodeTransferAuthorizationEntry,
   TransferAuthorization
 } from "../../src/erc20/handler";
 import { StructuredData } from "../../src/utils/signature";
@@ -53,16 +53,13 @@ function baseArgs() {
   };
 }
 
-function decodeQueueSingleEntry(encodedQueue: string): {
+function decodeEntry(encodedEntry: string): {
   strategyId: number;
   innerData: string;
 } {
-  const [entries] = defaultAbiCoder.decode(["bytes[]"], encodedQueue);
-  expect(Array.isArray(entries)).toBe(true);
-  expect((entries as string[]).length).toBe(1);
   const [strategyId, innerData] = defaultAbiCoder.decode(
     ["uint8", "bytes"],
-    (entries as string[])[0]
+    encodedEntry
   );
   return { strategyId: Number(strategyId), innerData: innerData as string };
 }
@@ -98,10 +95,10 @@ describe("signReceiveWithErc3009Authorization()", () => {
     expect(result.strategy).toBe("ERC3009");
   });
 
-  test("encodeTransferAuthorizationQueue produces a strategy-1 entry whose inner data decodes to [validAfter, validBefore, nonce, v, r, s]", async () => {
+  test("encodeTransferAuthorizationEntry produces a strategy-1 entry whose inner data decodes to [validAfter, validBefore, nonce, v, r, s]", async () => {
     const result = await signReceiveWithErc3009Authorization(baseArgs());
-    const encoded = encodeTransferAuthorizationQueue([result]);
-    const { strategyId, innerData } = decodeQueueSingleEntry(encoded);
+    const encoded = encodeTransferAuthorizationEntry(result);
+    const { strategyId, innerData } = decodeEntry(encoded);
     expect(strategyId).toBe(1); // ERC3009
     const [validAfter, validBefore, nonce, v, r, s] = defaultAbiCoder.decode(
       ["uint256", "uint256", "bytes32", "uint8", "bytes32", "bytes32"],
@@ -220,10 +217,10 @@ describe("signReceiveWithErc2612Permit()", () => {
     expect(result.data.deadline).toBe(DEADLINE);
   });
 
-  test("encodeTransferAuthorizationQueue produces a strategy-2 entry whose inner data decodes to [deadline, v, r, s]", async () => {
+  test("encodeTransferAuthorizationEntry produces a strategy-2 entry whose inner data decodes to [deadline, v, r, s]", async () => {
     const result = await signReceiveWithErc2612Permit(permitBaseArgs());
-    const encoded = encodeTransferAuthorizationQueue([result]);
-    const { strategyId, innerData } = decodeQueueSingleEntry(encoded);
+    const encoded = encodeTransferAuthorizationEntry(result);
+    const { strategyId, innerData } = decodeEntry(encoded);
     expect(strategyId).toBe(2); // EIP2612
     const [deadline, v, r, s] = defaultAbiCoder.decode(
       ["uint256", "uint8", "bytes32", "bytes32"],
@@ -331,10 +328,10 @@ describe("signReceiveWithPermit2()", () => {
     expect(result.data.nonce.toString()).toBe(PERMIT2_NONCE);
   });
 
-  test("encodeTransferAuthorizationQueue produces a strategy-3 entry whose inner data decodes to [permit2Nonce, deadline, signature]", async () => {
+  test("encodeTransferAuthorizationEntry produces a strategy-3 entry whose inner data decodes to [permit2Nonce, deadline, signature]", async () => {
     const result = await signReceiveWithPermit2(permit2BaseArgs());
-    const encoded = encodeTransferAuthorizationQueue([result]);
-    const { strategyId, innerData } = decodeQueueSingleEntry(encoded);
+    const encoded = encodeTransferAuthorizationEntry(result);
+    const { strategyId, innerData } = decodeEntry(encoded);
     expect(strategyId).toBe(3); // Permit2
     const [nonce, deadline, signature] = defaultAbiCoder.decode(
       ["uint256", "uint256", "bytes"],
@@ -398,24 +395,17 @@ describe("signReceiveWithPermit2()", () => {
   });
 });
 
-// ─── encodeTransferAuthorizationQueue tests ──────────────────────────────────
+// ─── encodeTransferAuthorizationEntry tests ──────────────────────────────────
 
-describe("encodeTransferAuthorizationQueue()", () => {
-  test("encodes an empty queue as an empty bytes[]", () => {
-    const encoded = encodeTransferAuthorizationQueue([]);
-    const [entries] = defaultAbiCoder.decode(["bytes[]"], encoded);
-    expect((entries as string[]).length).toBe(0);
-  });
-
-  test("encodes a multi-strategy queue preserving order", async () => {
+describe("encodeTransferAuthorizationEntry()", () => {
+  test("maps a multi-strategy queue preserving order", async () => {
     const erc3009 = await signReceiveWithErc3009Authorization(baseArgs());
     const eip2612 = await signReceiveWithErc2612Permit(permitBaseArgs());
     const permit2 = await signReceiveWithPermit2(permit2BaseArgs());
     const queue: TransferAuthorization[] = [erc3009, eip2612, permit2];
-    const encoded = encodeTransferAuthorizationQueue(queue);
-    const [entries] = defaultAbiCoder.decode(["bytes[]"], encoded);
-    expect((entries as string[]).length).toBe(3);
-    const decodedIds = (entries as string[]).map((entry) => {
+    const entries = queue.map(encodeTransferAuthorizationEntry);
+    expect(entries.length).toBe(3);
+    const decodedIds = entries.map((entry) => {
       const [id] = defaultAbiCoder.decode(["uint8", "bytes"], entry);
       return Number(id);
     });

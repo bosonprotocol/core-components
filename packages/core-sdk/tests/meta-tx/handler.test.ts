@@ -45,7 +45,7 @@ import {
 } from "../../src/meta-tx/handler";
 import { metaTransactionsHandlerIface } from "../../src/meta-tx/interface";
 import {
-  encodeTransferAuthorizationQueue,
+  encodeTransferAuthorizationEntry,
   TransferAuthorization
 } from "../../src/erc20/handler";
 import * as mockInterface from "../../src/forwarder/mock-interface";
@@ -1089,7 +1089,9 @@ describe("meta-tx handler", () => {
       expect(capturedBody?.params).toBeDefined();
       const params = (capturedBody as { params: unknown[] }).params;
       expect(params.length).toBe(6);
-      expect(params[5]).toBe(encodeTransferAuthorizationQueue(authorizations));
+      expect(params[5]).toEqual(
+        authorizations.map(encodeTransferAuthorizationEntry)
+      );
     });
 
     test("omits the auth queue when transferAuthorizations is an empty array", async () => {
@@ -1214,10 +1216,7 @@ describe("meta-tx handler", () => {
       transferAuthorizations: authorizations
     });
 
-    // Skipped: SDK still wraps transferAuthorizations as `bytes`; the
-    // regenerated ABI expects `bytes[]`. Re-enabled in the follow-up PR that
-    // drops the encodeTransferAuthorizationQueue wrapper.
-    test.skip("returnTxInfo=true returns calldata with the encoded auth queue as the final bytes arg", async () => {
+    test("returnTxInfo=true returns calldata with the encoded auth queue as the final bytes arg", async () => {
       const web3Lib = makeWeb3Lib();
       const tx = await executeMetaTransactionWithTokenTransferAuthorization({
         ...baseExecuteArgs(web3Lib),
@@ -1236,13 +1235,12 @@ describe("meta-tx handler", () => {
       expect(decoded[2]).toBe(FUNCTION_SIGNATURE);
       expect(decoded[3].toString()).toBe("1");
       expect(decoded[4]).toBe(MOCK_SIG);
-      expect(decoded[5]).toBe(encodeTransferAuthorizationQueue(authorizations));
+      expect(decoded[5]).toEqual(
+        authorizations.map(encodeTransferAuthorizationEntry)
+      );
     });
 
-    // Skipped: SDK still wraps transferAuthorizations as `bytes`; the
-    // regenerated ABI expects `bytes[]`. Re-enabled in the follow-up PR that
-    // drops the encodeTransferAuthorizationQueue wrapper.
-    test.skip("default path calls web3Lib.sendTransaction with the WithTokenTransferAuthorization selector", async () => {
+    test("default path calls web3Lib.sendTransaction with the WithTokenTransferAuthorization selector", async () => {
       const web3Lib = makeWeb3Lib();
       await executeMetaTransactionWithTokenTransferAuthorization(
         baseExecuteArgs(web3Lib)

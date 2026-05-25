@@ -16,7 +16,7 @@ import { UnsignedMetaTx } from "../../src/meta-tx/handler";
 import { metaTransactionsHandlerIface } from "../../src/meta-tx/interface";
 import {
   TransferAuthorization,
-  encodeTransferAuthorizationQueue
+  encodeTransferAuthorizationEntry
 } from "../../src/erc20/handler";
 import {
   BICONOMY_URL,
@@ -1314,10 +1314,7 @@ describe("MetaTxMixin#executeMetaTransaction()", () => {
     expect((sent.data as string).slice(0, 10)).toBe(expectedSelector);
   });
 
-  // Skipped: SDK still wraps transferAuthorizations as `bytes`; the
-  // regenerated ABI expects `bytes[]`. Re-enabled in the follow-up PR that
-  // drops the encodeTransferAuthorizationQueue wrapper.
-  test.skip("non-empty transferAuthorizations → routes to executeMetaTransactionWithTokenTransferAuthorization with encoded queue", async () => {
+  test("non-empty transferAuthorizations → routes to executeMetaTransactionWithTokenTransferAuthorization with encoded queue", async () => {
     const sdk = makeCoreSDK();
     await sdk.executeMetaTransaction({
       ...baseParams,
@@ -1335,7 +1332,7 @@ describe("MetaTxMixin#executeMetaTransaction()", () => {
       "executeMetaTransactionWithTokenTransferAuthorization",
       sent.data as string
     );
-    expect(decoded[5]).toBe(encodeTransferAuthorizationQueue([auth]));
+    expect(decoded[5]).toEqual([auth].map(encodeTransferAuthorizationEntry));
   });
 
   test("overrides.userAddress and overrides.contractAddress are forwarded", async () => {

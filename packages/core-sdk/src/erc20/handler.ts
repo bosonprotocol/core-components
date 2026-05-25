@@ -46,7 +46,9 @@ const TRANSFER_STRATEGY_ID = {
   Permit2: 3
 } as const;
 
-function encodeTransferAuthorizationEntry(auth: TransferAuthorization): string {
+export function encodeTransferAuthorizationEntry(
+  auth: TransferAuthorization
+): string {
   let innerData: string;
   switch (auth.strategy) {
     case "ERC3009":
@@ -78,15 +80,6 @@ function encodeTransferAuthorizationEntry(auth: TransferAuthorization): string {
   return defaultAbiCoder.encode(
     ["uint8", "bytes"],
     [TRANSFER_STRATEGY_ID[auth.strategy], innerData]
-  );
-}
-
-export function encodeTransferAuthorizationQueue(
-  auths: TransferAuthorization[]
-): string {
-  return defaultAbiCoder.encode(
-    ["bytes[]"],
-    [auths.map(encodeTransferAuthorizationEntry)]
   );
 }
 

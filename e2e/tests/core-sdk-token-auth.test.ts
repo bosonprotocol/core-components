@@ -667,11 +667,7 @@ describe("core-sdk-token-auth", () => {
     });
   });
 
-  // Skipped: meta-tx-gateway image still expects the legacy `bytes`
-  // transferAuthorizations form; this branch ships the regenerated ABI
-  // (bytes[]) only. Re-enabled once the gateway image is rebuilt + the
-  // SDK-side wrapper-drop PR lands.
-  describe.skip("meta-tx with transfer authorizations", () => {
+  describe("meta-tx with transfer authorizations", () => {
     describe("commitToOffer", () => {
       STRATEGIES.forEach((strategy) => {
         test(`${strategy} auth — non-native exchange token offer`, async () => {

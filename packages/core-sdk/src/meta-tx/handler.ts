@@ -70,7 +70,7 @@ import { id } from "@ethersproject/hash";
 import { defaultAbiCoder } from "@ethersproject/abi";
 import {
   TransferAuthorization,
-  encodeTransferAuthorizationQueue
+  encodeTransferAuthorizationEntry
 } from "../erc20/handler";
 import { ERC20ForwardRequest } from "../forwarder/biconomy-interface";
 import { getNonce, verifyEIP712 } from "../forwarder/handler";
@@ -2182,7 +2182,9 @@ export async function relayMetaTransaction(args: {
   const params = metaTx.params.transferAuthorizations?.length
     ? [
         ...baseParams,
-        encodeTransferAuthorizationQueue(metaTx.params.transferAuthorizations)
+        metaTx.params.transferAuthorizations.map(
+          encodeTransferAuthorizationEntry
+        )
       ]
     : baseParams;
 
@@ -2285,7 +2287,7 @@ export async function executeMetaTransactionWithTokenTransferAuthorization(
         s: hexlify(args.sigS),
         v: Number(args.sigV)
       }),
-      encodeTransferAuthorizationQueue(args.transferAuthorizations)
+      args.transferAuthorizations.map(encodeTransferAuthorizationEntry)
     ]
   );
   const tx: TransactionRequest = { to: args.contractAddress, data };
