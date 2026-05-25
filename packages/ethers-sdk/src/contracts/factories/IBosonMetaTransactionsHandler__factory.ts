@@ -1055,9 +1055,9 @@ const _abi = [
         type: "bytes",
       },
       {
-        internalType: "bytes",
+        internalType: "bytes[]",
         name: "_tokenTransferAuthorization",
-        type: "bytes",
+        type: "bytes[]",
       },
     ],
     name: "executeMetaTransactionWithTokenTransferAuthorization",
