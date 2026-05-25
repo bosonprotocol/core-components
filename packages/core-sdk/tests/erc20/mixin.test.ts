@@ -587,3 +587,104 @@ describe("ERC20Mixin#signReceiveWithPermit2()", () => {
     );
   });
 });
+
+// ─── DAI permit mixin tests ───────────────────────────────────────────────────
+
+const EXPIRY = MaxUint256.toString();
+const DAI_TOKEN_DOMAIN = { name: "Dai Stablecoin" };
+
+describe("ERC20Mixin#signReceiveWithDaiPermit()", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test("returns a TransferAuthorization tagged DAIPermit when overrides is omitted", async () => {
+    const result = await makeCoreSDKForPermit().signReceiveWithDaiPermit(
+      EXCHANGE_TOKEN,
+      DAI_TOKEN_DOMAIN,
+      VALUE,
+      EXPIRY
+    );
+    expect(result.strategy).toBe("DAIPermit");
+    expect(result.data.expiry).toBe(EXPIRY);
+  });
+
+  test("returns StructuredData when returnTypedDataToSign: true", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (
+      makeCoreSDKForPermit().signReceiveWithDaiPermit as any
+    )(EXCHANGE_TOKEN, DAI_TOKEN_DOMAIN, VALUE, EXPIRY, {
+      returnTypedDataToSign: true
+    });
+    const data = result as StructuredData;
+    expect(data.primaryType).toBe("Permit");
+    expect(data.domain.verifyingContract).toBe(EXCHANGE_TOKEN);
+    expect(data.domain.name).toBe(DAI_TOKEN_DOMAIN.name);
+    expect((data.domain as { version?: string }).version).toBe("1");
+    expect(data.message.holder).toBe(SIGNER);
+    expect(data.message.spender).toBe(PROTOCOL_DIAMOND);
+    expect(data.message.allowed).toBe(true);
+  });
+
+  test("defaults spender to protocolDiamond when not provided", async () => {
+    const spy = jest
+      .spyOn(erc20Handler, "signReceiveWithDaiPermit")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({} as any);
+
+    await makeCoreSDKForPermit().signReceiveWithDaiPermit(
+      EXCHANGE_TOKEN,
+      DAI_TOKEN_DOMAIN,
+      VALUE,
+      EXPIRY
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ spender: PROTOCOL_DIAMOND })
+    );
+  });
+
+  test("uses the provided spender override", async () => {
+    const spy = jest
+      .spyOn(erc20Handler, "signReceiveWithDaiPermit")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({} as any);
+
+    await makeCoreSDKForPermit().signReceiveWithDaiPermit(
+      EXCHANGE_TOKEN,
+      DAI_TOKEN_DOMAIN,
+      VALUE,
+      EXPIRY,
+      { spender: CUSTOM_SPENDER }
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ spender: CUSTOM_SPENDER })
+    );
+  });
+
+  test("forwards tokenDomain and expiry to the handler", async () => {
+    const spy = jest
+      .spyOn(erc20Handler, "signReceiveWithDaiPermit")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValueOnce({} as any);
+
+    await makeCoreSDKForPermit().signReceiveWithDaiPermit(
+      EXCHANGE_TOKEN,
+      DAI_TOKEN_DOMAIN,
+      VALUE,
+      EXPIRY
+    );
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        tokenDomain: DAI_TOKEN_DOMAIN,
+        expiry: EXPIRY,
+        exchangeToken: EXCHANGE_TOKEN,
+        value: VALUE,
+        chainId: CHAIN_ID,
+        user: SIGNER
+      })
+    );
+  });
+});

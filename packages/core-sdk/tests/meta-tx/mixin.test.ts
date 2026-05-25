@@ -16,7 +16,7 @@ import { UnsignedMetaTx } from "../../src/meta-tx/handler";
 import { metaTransactionsHandlerIface } from "../../src/meta-tx/interface";
 import {
   TransferAuthorization,
-  encodeTransferAuthorizationQueue
+  encodeTransferAuthorizationEntry
 } from "../../src/erc20/handler";
 import {
   BICONOMY_URL,
@@ -1335,7 +1335,7 @@ describe("MetaTxMixin#executeMetaTransaction()", () => {
       "executeMetaTransactionWithTokenTransferAuthorization",
       sent.data as string
     );
-    expect(decoded[5]).toBe(encodeTransferAuthorizationQueue([auth]));
+    expect(decoded[5]).toEqual([auth].map(encodeTransferAuthorizationEntry));
   });
 
   test("overrides.userAddress and overrides.contractAddress are forwarded", async () => {

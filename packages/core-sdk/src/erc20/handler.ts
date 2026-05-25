@@ -31,6 +31,10 @@ export type UnsignedTransferAuthorization =
   | {
       strategy: "Permit2";
       data: { nonce: BigNumberish; deadline: BigNumberish };
+    }
+  | {
+      strategy: "DAIPermit";
+      data: { nonce: BigNumberish; expiry: BigNumberish };
     };
 
 export type TransferAuthorization = UnsignedTransferAuthorization & {
@@ -43,10 +47,13 @@ export type TransferAuthorization = UnsignedTransferAuthorization & {
 const TRANSFER_STRATEGY_ID = {
   ERC3009: 1,
   EIP2612: 2,
-  Permit2: 3
+  Permit2: 3,
+  DAIPermit: 4
 } as const;
 
-function encodeTransferAuthorizationEntry(auth: TransferAuthorization): string {
+export function encodeTransferAuthorizationEntry(
+  auth: TransferAuthorization
+): string {
   let innerData: string;
   switch (auth.strategy) {
     case "ERC3009":
@@ -74,19 +81,16 @@ function encodeTransferAuthorizationEntry(auth: TransferAuthorization): string {
         [auth.data.nonce, auth.data.deadline, auth.signature]
       );
       break;
+    case "DAIPermit":
+      innerData = defaultAbiCoder.encode(
+        ["uint256", "uint256", "uint8", "bytes32", "bytes32"],
+        [auth.data.nonce, auth.data.expiry, auth.v, auth.r, auth.s]
+      );
+      break;
   }
   return defaultAbiCoder.encode(
     ["uint8", "bytes"],
     [TRANSFER_STRATEGY_ID[auth.strategy], innerData]
-  );
-}
-
-export function encodeTransferAuthorizationQueue(
-  auths: TransferAuthorization[]
-): string {
-  return defaultAbiCoder.encode(
-    ["bytes[]"],
-    [auths.map(encodeTransferAuthorizationEntry)]
   );
 }
 
@@ -482,5 +486,95 @@ export async function signReceiveWithPermit2(
     ...sig,
     strategy: "Permit2",
     data: { nonce: permit2Nonce, deadline: args.deadline }
+  };
+}
+
+type SignReceiveWithDaiPermitArgs = ApproveExchangeTokenBaseArgs & {
+  tokenDomain: { name: string };
+  expiry: BigNumberish;
+};
+
+// Overload: returnTypedDataToSign is true → returns StructuredData
+export async function signReceiveWithDaiPermit(
+  args: SignReceiveWithDaiPermitArgs & { returnTypedDataToSign: true }
+): Promise<StructuredData>;
+// Overload: returnTypedDataToSign is false or undefined → returns TransferAuthorization (DAIPermit)
+export async function signReceiveWithDaiPermit(
+  args: SignReceiveWithDaiPermitArgs & {
+    returnTypedDataToSign?: false | undefined;
+  }
+): Promise<TransferAuthorization & { strategy: "DAIPermit" }>;
+// Implementation
+export async function signReceiveWithDaiPermit(
+  args: SignReceiveWithDaiPermitArgs & { returnTypedDataToSign?: boolean }
+): Promise<
+  (TransferAuthorization & { strategy: "DAIPermit" }) | StructuredData
+> {
+  const nonceResult = await args.web3Lib.call({
+    to: args.exchangeToken,
+    data: alternativeNonceIface.encodeFunctionData("nonces", [args.user])
+  });
+  const [nonce] = alternativeNonceIface.decodeFunctionResult(
+    "nonces",
+    nonceResult
+  );
+
+  const customSignatureType = {
+    EIP712Domain: [
+      { name: "name", type: "string" },
+      { name: "version", type: "string" },
+      { name: "chainId", type: "uint256" },
+      { name: "verifyingContract", type: "address" }
+    ],
+    Permit: [
+      { name: "holder", type: "address" },
+      { name: "spender", type: "address" },
+      { name: "nonce", type: "uint256" },
+      { name: "expiry", type: "uint256" },
+      { name: "allowed", type: "bool" }
+    ]
+  };
+
+  const customDomainData = {
+    name: args.tokenDomain.name,
+    version: "1",
+    chainId: args.chainId,
+    salt: undefined
+  };
+
+  const message = {
+    holder: args.user,
+    spender: args.spender,
+    nonce: nonce.toString(),
+    expiry: args.expiry.toString(),
+    allowed: true
+  };
+
+  const baseParams = {
+    web3Lib: args.web3Lib,
+    chainId: args.chainId,
+    verifyingContractAddress: args.exchangeToken,
+    customSignatureType,
+    customDomainData,
+    primaryType: "Permit",
+    message
+  };
+
+  if (args.returnTypedDataToSign) {
+    return prepareDataSignatureParameters({
+      ...baseParams,
+      returnTypedDataToSign: true
+    });
+  }
+
+  const sig = await prepareDataSignatureParameters({
+    ...baseParams,
+    returnTypedDataToSign: false
+  });
+
+  return {
+    ...sig,
+    strategy: "DAIPermit",
+    data: { nonce: nonce.toString(), expiry: args.expiry }
   };
 }
