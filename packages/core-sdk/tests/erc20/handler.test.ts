@@ -6,6 +6,7 @@ import {
   signReceiveWithErc3009Authorization,
   signReceiveWithErc2612Permit,
   signReceiveWithPermit2,
+  signReceiveWithDaiPermit,
   encodeTransferAuthorizationEntry,
   TransferAuthorization
 } from "../../src/erc20/handler";
@@ -395,6 +396,90 @@ describe("signReceiveWithPermit2()", () => {
   });
 });
 
+// ─── DAI permit tests ────────────────────────────────────────────────────────
+
+const EXPIRY = MaxUint256.toString();
+const DAI_TOKEN_DOMAIN = { name: "Dai Stablecoin" };
+
+function daiPermitBaseArgs() {
+  return {
+    web3Lib: makeWeb3LibForPermit(),
+    chainId: CHAIN_ID,
+    user: USER,
+    exchangeToken: EXCHANGE_TOKEN,
+    spender: SPENDER,
+    value: VALUE,
+    tokenDomain: DAI_TOKEN_DOMAIN,
+    expiry: EXPIRY
+  };
+}
+
+describe("signReceiveWithDaiPermit()", () => {
+  test("returns a TransferAuthorization tagged DAIPermit when returnTypedDataToSign is omitted", async () => {
+    const result = await signReceiveWithDaiPermit(daiPermitBaseArgs());
+    expect(result.r).toBe(EXPECTED_R);
+    expect(result.s).toBe(EXPECTED_S);
+    expect(result.v).toBe(EXPECTED_V);
+    expect(result.signature).toBe(MOCK_SIG);
+    expect(result.strategy).toBe("DAIPermit");
+    expect(result.data.expiry).toBe(EXPIRY);
+    expect(result.data.nonce).toBe("1");
+  });
+
+  test("encodeTransferAuthorizationEntry produces a strategy-4 entry whose inner data decodes to [nonce, expiry, v, r, s]", async () => {
+    const result = await signReceiveWithDaiPermit(daiPermitBaseArgs());
+    const encoded = encodeTransferAuthorizationEntry(result);
+    const { strategyId, innerData } = decodeEntry(encoded);
+    expect(strategyId).toBe(4); // DAIPermit
+    const [nonce, expiry, v, r, s] = defaultAbiCoder.decode(
+      ["uint256", "uint256", "uint8", "bytes32", "bytes32"],
+      innerData
+    );
+    expect(nonce.toString()).toBe("1");
+    expect(expiry.toString()).toBe(EXPIRY);
+    expect(Number(v)).toBe(EXPECTED_V);
+    expect(r).toBe(EXPECTED_R);
+    expect(s).toBe(EXPECTED_S);
+  });
+
+  test("returns StructuredData when returnTypedDataToSign: true", async () => {
+    const result = await signReceiveWithDaiPermit({
+      ...daiPermitBaseArgs(),
+      returnTypedDataToSign: true
+    });
+    const data = result as StructuredData;
+    expect(data.primaryType).toBe("Permit");
+    expect(data.domain.verifyingContract).toBe(EXCHANGE_TOKEN);
+    expect(data.domain.name).toBe(DAI_TOKEN_DOMAIN.name);
+    expect((data.domain as { version?: string }).version).toBe("1");
+    expect((data.domain as { chainId?: number | string }).chainId).toBe(
+      CHAIN_ID
+    );
+    // DAI permit message schema
+    expect(data.message.holder).toBe(USER);
+    expect(data.message.spender).toBe(SPENDER);
+    expect(data.message.nonce).toBe("1");
+    expect(data.message.expiry).toBe(EXPIRY);
+    expect(data.message.allowed).toBe(true);
+  });
+
+  test("reads nonce from the token contract via nonces(holder)", async () => {
+    const ABI_UINT256_SEVEN =
+      "0x0000000000000000000000000000000000000000000000000000000000000007";
+    const web3Lib = new MockWeb3LibAdapter({
+      getSignerAddress: USER,
+      send: MOCK_SIG,
+      call: ABI_UINT256_SEVEN
+    });
+    const data = await signReceiveWithDaiPermit({
+      ...daiPermitBaseArgs(),
+      web3Lib,
+      returnTypedDataToSign: true
+    });
+    expect(data.message.nonce).toBe("7");
+  });
+});
+
 // ─── encodeTransferAuthorizationEntry tests ──────────────────────────────────
 
 describe("encodeTransferAuthorizationEntry()", () => {
@@ -402,13 +487,19 @@ describe("encodeTransferAuthorizationEntry()", () => {
     const erc3009 = await signReceiveWithErc3009Authorization(baseArgs());
     const eip2612 = await signReceiveWithErc2612Permit(permitBaseArgs());
     const permit2 = await signReceiveWithPermit2(permit2BaseArgs());
-    const queue: TransferAuthorization[] = [erc3009, eip2612, permit2];
+    const daiPermit = await signReceiveWithDaiPermit(daiPermitBaseArgs());
+    const queue: TransferAuthorization[] = [
+      erc3009,
+      eip2612,
+      permit2,
+      daiPermit
+    ];
     const entries = queue.map(encodeTransferAuthorizationEntry);
-    expect(entries.length).toBe(3);
+    expect(entries.length).toBe(4);
     const decodedIds = entries.map((entry) => {
       const [id] = defaultAbiCoder.decode(["uint8", "bytes"], entry);
       return Number(id);
     });
-    expect(decodedIds).toEqual([1, 2, 3]);
+    expect(decodedIds).toEqual([1, 2, 3, 4]);
   });
 });

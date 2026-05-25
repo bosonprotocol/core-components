@@ -16,6 +16,7 @@ import {
   signReceiveWithErc3009Authorization,
   signReceiveWithErc2612Permit,
   signReceiveWithPermit2,
+  signReceiveWithDaiPermit,
   TransferAuthorization
 } from "./handler";
 import { StructuredData } from "../utils/signature";
@@ -322,6 +323,64 @@ export class ERC20Mixin<T extends Web3LibAdapter> extends BaseCoreSDK<T> {
       });
     }
     return signReceiveWithPermit2({
+      ...baseArgs,
+      returnTypedDataToSign: false
+    });
+  }
+
+  /**
+   * Signs a DAI-style `Permit` payload authorizing the spender (default:
+   * protocol diamond) to pull `exchangeToken` from the signer up to `expiry`.
+   * Returns a `TransferAuthorization` tagged with strategy `"DAIPermit"`,
+   * ready to feed into `relayMetaTransaction` via `transferAuthorizations`.
+   */
+  // Overload: returnTypedDataToSign is true → returns StructuredData
+  public async signReceiveWithDaiPermit(
+    exchangeToken: string,
+    tokenDomain: { name: string },
+    value: BigNumberish,
+    expiry: BigNumberish,
+    overrides: Partial<{ spender: string }> & { returnTypedDataToSign: true }
+  ): Promise<StructuredData>;
+  // Overload: returnTypedDataToSign is false or undefined → returns TransferAuthorization (DAIPermit)
+  public async signReceiveWithDaiPermit(
+    exchangeToken: string,
+    tokenDomain: { name: string },
+    value: BigNumberish,
+    expiry: BigNumberish,
+    overrides?: Partial<{ spender: string; returnTypedDataToSign?: false }>
+  ): Promise<TransferAuthorization & { strategy: "DAIPermit" }>;
+  // Implementation
+  public async signReceiveWithDaiPermit(
+    exchangeToken: string,
+    tokenDomain: { name: string },
+    value: BigNumberish,
+    expiry: BigNumberish,
+    overrides: Partial<{
+      spender: string;
+      returnTypedDataToSign: boolean;
+    }> = {}
+  ): Promise<
+    (TransferAuthorization & { strategy: "DAIPermit" }) | StructuredData
+  > {
+    const user = await this._web3Lib.getSignerAddress();
+    const baseArgs = {
+      web3Lib: this._web3Lib,
+      chainId: this._chainId,
+      user,
+      exchangeToken,
+      spender: overrides.spender || this._protocolDiamond,
+      value,
+      tokenDomain,
+      expiry
+    };
+    if (overrides.returnTypedDataToSign) {
+      return signReceiveWithDaiPermit({
+        ...baseArgs,
+        returnTypedDataToSign: true
+      });
+    }
+    return signReceiveWithDaiPermit({
       ...baseArgs,
       returnTypedDataToSign: false
     });
