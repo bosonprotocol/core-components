@@ -38,7 +38,7 @@ services:
       - host.docker.internal:host-gateway
 
   boson-protocol-node:
-    image: boson-protocol-node:858661679cc8ba2be97eedf3cbc3acd0f5c1903e_4
+    image: boson-protocol-node:ee0aaed0e9b3b3a1eac304eb6f859eadb2416da4_4
     build:
       context: ../.
       dockerfile: ./contracts/Dockerfile
@@ -46,7 +46,7 @@ services:
       - "8545:8545"
 
   boson-subgraph:
-    image: boson-subgraph:858661679cc8ba2be97eedf3cbc3acd0f5c1903e_1
+    image: boson-subgraph:ee0aaed0e9b3b3a1eac304eb6f859eadb2416da4_1
     build:
       context: ../
       dockerfile: ./packages/subgraph/Dockerfile
