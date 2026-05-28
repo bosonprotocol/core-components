@@ -15,7 +15,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "24"
-          cache: "npm"
+          # NOTE: cache: "npm" is intentionally disabled — actions/setup-node's
+          # npm cache restore hangs indefinitely on this monorepo
+          # (see https://github.com/actions/setup-node/issues/516).
       - name: Turbo Cache
         id: turbo-cache
         uses: actions/cache@v3
@@ -24,7 +26,7 @@ jobs:
           key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ runner.os }}
-      - run: npm ci --prefer-offline --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund
       - id: build
         run: npm run build -- --cache-dir=".turbo"
       - name: Set current date as env variable

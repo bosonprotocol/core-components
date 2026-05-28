@@ -33,7 +33,9 @@ jobs:
         with:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
-          cache: "npm"
+          # NOTE: cache: "npm" is intentionally disabled — actions/setup-node's
+          # npm cache restore hangs indefinitely on this monorepo
+          # (see https://github.com/actions/setup-node/issues/516).
       - name: Turbo Cache
         id: turbo-cache
         uses: actions/cache@v3
@@ -42,7 +44,7 @@ jobs:
           key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ runner.os }}
-      - run: npm ci --prefer-offline --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund
       - run: npm run build -- --cache-dir=".turbo"
       - name: Set github bot
         run: |
@@ -117,7 +119,9 @@ jobs:
         with:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
-          cache: "npm"
+          # NOTE: cache: "npm" is intentionally disabled — actions/setup-node's
+          # npm cache restore hangs indefinitely on this monorepo
+          # (see https://github.com/actions/setup-node/issues/516).
       - name: Turbo Cache
         id: turbo-cache
         uses: actions/cache@v3
@@ -126,7 +130,7 @@ jobs:
           key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ runner.os }}
-      - run: npm ci --prefer-offline --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund
       - run: npm run build -- --cache-dir=".turbo"
       - name: Publish
         env:
