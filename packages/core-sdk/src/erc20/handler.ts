@@ -200,7 +200,7 @@ export async function ensureAllowance(args: {
   }
   const allowance = await getAllowance(args);
   if (BigNumber.from(allowance).lt(args.value)) {
-    const approveTx = await approve(args);
+    const approveTx = await approve({ ...args, returnTxInfo: false });
     await approveTx.wait();
   }
 }
