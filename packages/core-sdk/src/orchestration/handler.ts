@@ -751,7 +751,7 @@ export async function createOfferCommitAndRedeem(args: {
   const committerPayment =
     creator === OfferCreator.Buyer ? sellerDeposit : price;
 
-  if (exchangeToken !== AddressZero) {
+  if (exchangeToken !== AddressZero && !args.returnTxInfo) {
     const owner = await args.web3Lib.getSignerAddress();
     await ensureAllowance({
       owner,
