@@ -586,7 +586,8 @@ export async function commitToOfferAndRedeemVoucher(args: {
       spender: args.contractAddress,
       contractAddress: offer.exchangeToken.address,
       value: offer.price,
-      web3Lib: args.web3Lib
+      web3Lib: args.web3Lib,
+      returnTxInfo: args.returnTxInfo
     });
   }
 
@@ -647,7 +648,8 @@ export async function commitToConditionalOfferAndRedeemVoucher(args: {
       spender: args.contractAddress,
       contractAddress: offer.exchangeToken.address,
       value: offer.price,
-      web3Lib: args.web3Lib
+      web3Lib: args.web3Lib,
+      returnTxInfo: args.returnTxInfo
     });
   }
 
@@ -751,14 +753,15 @@ export async function createOfferCommitAndRedeem(args: {
   const committerPayment =
     creator === OfferCreator.Buyer ? sellerDeposit : price;
 
-  if (exchangeToken !== AddressZero && !args.returnTxInfo) {
+  if (exchangeToken !== AddressZero) {
     const owner = await args.web3Lib.getSignerAddress();
     await ensureAllowance({
       owner,
       spender: args.contractAddress,
       contractAddress: exchangeToken,
       value: committerPayment,
-      web3Lib: args.web3Lib
+      web3Lib: args.web3Lib,
+      returnTxInfo: args.returnTxInfo
     });
   }
 
