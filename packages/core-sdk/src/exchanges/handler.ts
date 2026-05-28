@@ -141,7 +141,8 @@ export async function commitToOffer(
       spender: args.contractAddress,
       contractAddress: offer.exchangeToken.address,
       value: offer.price,
-      web3Lib: args.web3Lib
+      web3Lib: args.web3Lib,
+      returnTxInfo: args.returnTxInfo
     });
   }
 
@@ -203,7 +204,8 @@ export async function commitToBuyerOffer(
       spender: args.contractAddress,
       contractAddress: offer.exchangeToken.address,
       value: offer.price,
-      web3Lib: args.web3Lib
+      web3Lib: args.web3Lib,
+      returnTxInfo: args.returnTxInfo
     });
   }
 
@@ -263,7 +265,8 @@ export async function commitToConditionalOffer(
       spender: args.contractAddress,
       contractAddress: offer.exchangeToken.address,
       value: offer.price,
-      web3Lib: args.web3Lib
+      web3Lib: args.web3Lib,
+      returnTxInfo: args.returnTxInfo
     });
   }
 
@@ -384,7 +387,8 @@ export async function createOfferAndCommit(args: {
       spender: args.contractAddress,
       contractAddress: exchangeToken,
       value: committerPayment,
-      web3Lib: args.web3Lib
+      web3Lib: args.web3Lib,
+      returnTxInfo: args.returnTxInfo
     });
   }
 

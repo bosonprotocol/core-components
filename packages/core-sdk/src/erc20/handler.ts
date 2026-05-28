@@ -197,10 +197,14 @@ export async function ensureAllowance(args: {
   value: BigNumberish;
   web3Lib: Web3LibAdapter;
   txRequest?: TransactionRequest;
+  returnTxInfo?: boolean;
 }) {
+  if (args.returnTxInfo) {
+    return;
+  }
   const allowance = await getAllowance(args);
   if (BigNumber.from(allowance).lt(args.value)) {
-    const approveTx = await approve(args);
+    const approveTx = await approve({ ...args, returnTxInfo: false });
     await approveTx.wait();
   }
 }
