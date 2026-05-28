@@ -23,13 +23,13 @@ jobs:
       id-token: write # Required for trusted publishing (https://docs.npmjs.com/trusted-publishers)
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
           # pulls all commits (needed for lerna / semantic release to correctly version)
           fetch-depth: "0"
       - name: Setup .npmrc file for publish
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
@@ -38,7 +38,7 @@ jobs:
           # (see https://github.com/actions/setup-node/issues/516).
       - name: Turbo Cache
         id: turbo-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .turbo
           key: turbo-${{ runner.os }}-${{ github.sha }}
@@ -109,13 +109,13 @@ jobs:
       id-token: write # Required for trusted publishing (https://docs.npmjs.com/trusted-publishers)
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
           # pulls all commits (needed for lerna / semantic release to correctly version)
           fetch-depth: "0"
       - name: Setup .npmrc file for publish
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
@@ -124,7 +124,7 @@ jobs:
           # (see https://github.com/actions/setup-node/issues/516).
       - name: Turbo Cache
         id: turbo-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .turbo
           key: turbo-${{ runner.os }}-${{ github.sha }}

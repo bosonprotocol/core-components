@@ -16,8 +16,8 @@ jobs:
       JOB_TEST: ${{ steps.test.outcome }}
       JOB_BUILD: ${{ steps.build.outcome }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "24"
           # NOTE: cache: "npm" is intentionally disabled — actions/setup-node's
@@ -25,7 +25,7 @@ jobs:
           # (see https://github.com/actions/setup-node/issues/516).
       - name: Turbo Cache
         id: turbo-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .turbo
           key: turbo-${{ runner.os }}-${{ github.sha }}
@@ -45,17 +45,17 @@ jobs:
     timeout-minutes: 60
     needs: [lint-build-test]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: "recursive"
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: "24"
           # NOTE: Disabled until https://github.com/actions/setup-node/issues/516 is resolved
           # cache: "npm"
       - name: Turbo Cache
         id: turbo-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .turbo
           key: turbo-${{ runner.os }}-${{ github.sha }}
@@ -130,7 +130,7 @@ jobs:
       JOB_TEST: ${{ needs.lint-build-test.outputs.JOB_TEST }}
       JOB_BUILD: ${{ needs.lint-build-test.outputs.JOB_BUILD }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Adding Job Summary
         run: |
           echo "| Command | Status |" >> $GITHUB_STEP_SUMMARY
