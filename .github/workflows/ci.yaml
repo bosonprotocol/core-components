@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: "22"
           # NOTE: cache: "npm" is intentionally disabled — actions/setup-node's
           # npm cache restore hangs indefinitely on this monorepo
           # (see https://github.com/actions/setup-node/issues/516).
@@ -50,7 +50,7 @@ jobs:
           submodules: "recursive"
       - uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: "22"
           # NOTE: Disabled until https://github.com/actions/setup-node/issues/516 is resolved
           # cache: "npm"
       - name: Turbo Cache
