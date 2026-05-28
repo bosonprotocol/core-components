@@ -586,7 +586,8 @@ export async function commitToOfferAndRedeemVoucher(args: {
       spender: args.contractAddress,
       contractAddress: offer.exchangeToken.address,
       value: offer.price,
-      web3Lib: args.web3Lib
+      web3Lib: args.web3Lib,
+      returnTxInfo: args.returnTxInfo
     });
   }
 
@@ -647,7 +648,8 @@ export async function commitToConditionalOfferAndRedeemVoucher(args: {
       spender: args.contractAddress,
       contractAddress: offer.exchangeToken.address,
       value: offer.price,
-      web3Lib: args.web3Lib
+      web3Lib: args.web3Lib,
+      returnTxInfo: args.returnTxInfo
     });
   }
 
@@ -758,7 +760,8 @@ export async function createOfferCommitAndRedeem(args: {
       spender: args.contractAddress,
       contractAddress: exchangeToken,
       value: committerPayment,
-      web3Lib: args.web3Lib
+      web3Lib: args.web3Lib,
+      returnTxInfo: args.returnTxInfo
     });
   }
 
