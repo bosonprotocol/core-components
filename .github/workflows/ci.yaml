@@ -10,6 +10,7 @@ jobs:
   lint-build-test:
     name: Lint, build and test
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
     outputs:
       JOB_LINT: ${{ steps.lint.outcome }}
       JOB_TEST: ${{ steps.test.outcome }}
@@ -28,7 +29,7 @@ jobs:
           key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ runner.os }}
-      - run: npm ci
+      - run: npm ci --prefer-offline --no-audit --no-fund
       - id: lint
         run: npm run lint -- --cache-dir=".turbo"
       - id: build
@@ -39,6 +40,7 @@ jobs:
   e2e-tests:
     name: Run e2e tests
     runs-on: ubuntu-24.04
+    timeout-minutes: 60
     needs: [lint-build-test]
     steps:
       - uses: actions/checkout@v3
@@ -57,7 +59,7 @@ jobs:
           key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ runner.os }}
-      - run: npm ci
+      - run: npm ci --prefer-offline --no-audit --no-fund
       - name: Build
         run: |
           npm run build -- --cache-dir=".turbo"

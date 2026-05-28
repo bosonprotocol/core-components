@@ -12,6 +12,7 @@ jobs:
   publish:
     name: Publish alpha packages
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     if: ${{ github.event_name != 'workflow_dispatch' }}
     # is automatically triggered on push to main
     outputs:
@@ -41,7 +42,7 @@ jobs:
           key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ runner.os }}
-      - run: npm ci
+      - run: npm ci --prefer-offline --no-audit --no-fund
       - run: npm run build -- --cache-dir=".turbo"
       - name: Set github bot
         run: |
@@ -97,6 +98,7 @@ jobs:
   publish_latest_release:
     name: Publish latest packages
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     if: ${{ github.event_name == 'workflow_dispatch' }}
     # is manually triggered to publish latest release
     permissions:
@@ -124,7 +126,7 @@ jobs:
           key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ runner.os }}
-      - run: npm ci
+      - run: npm ci --prefer-offline --no-audit --no-fund
       - run: npm run build -- --cache-dir=".turbo"
       - name: Publish
         env:

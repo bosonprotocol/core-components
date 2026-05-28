@@ -9,6 +9,7 @@ jobs:
   pin-to-pinata:
     name: Pin images to Pinata
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -23,7 +24,7 @@ jobs:
           key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ runner.os }}
-      - run: npm ci
+      - run: npm ci --prefer-offline --no-audit --no-fund
       - id: build
         run: npm run build -- --cache-dir=".turbo"
       - name: Set current date as env variable
