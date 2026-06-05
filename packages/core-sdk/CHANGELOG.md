@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.48.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.47.0...@bosonprotocol/core-sdk@1.48.0) (2026-06-05)
+
+### Bug Fixes
+
+- short-circuit ensureAllowance when returnTxInfo is set ([#1034](https://github.com/bosonprotocol/core-components/issues/1034)) ([5207679](https://github.com/bosonprotocol/core-components/commit/520767955bf5ba64aae5fad7eb8ef25e75943ea4))
+
+### Features
+
+- [protocol upgrade v2.5.1] - add support for ERC3009, ERC2612, and Permit2 token transfers ([#1023](https://github.com/bosonprotocol/core-components/issues/1023)) ([15b59d5](https://github.com/bosonprotocol/core-components/commit/15b59d5689f8f91a6e04bffe6f4021f7ede27b44))
+- [protocol upgrade v2.5.1] - new Orchestration methods commitToConditionalOfferAndRedeemVoucher, commitToOfferAndRedeemVoucher, createOfferCommitAndRedeem ([#1025](https://github.com/bosonprotocol/core-components/issues/1025)) ([4405e05](https://github.com/bosonprotocol/core-components/commit/4405e055028736cd3d36b0074bfb57468dc1b0d6))
+- add peer dependency for @ethersproject/random and update package-lock.json ([#1027](https://github.com/bosonprotocol/core-components/issues/1027)) ([54fb524](https://github.com/bosonprotocol/core-components/commit/54fb52457594c8a796ca548700cdd41c61b4805d))
+- drop transferAuthorizationQueue wrapper and add DAI permit ([#1029](https://github.com/bosonprotocol/core-components/issues/1029)) ([3d1ac4c](https://github.com/bosonprotocol/core-components/commit/3d1ac4c4f01535075b3c6187109b921c0fa6e1ae))
+- implement executeMetaTransaction and executeMetaTransactionWith… ([#1028](https://github.com/bosonprotocol/core-components/issues/1028)) ([80e571d](https://github.com/bosonprotocol/core-components/commit/80e571ddaa8e41724852bf40c0d2888b08eed6ac))
+- upgrade protocol to 2.5.1-rc.2 (ee0aaed0) ([#1030](https://github.com/bosonprotocol/core-components/issues/1030)) ([1d74934](https://github.com/bosonprotocol/core-components/commit/1d749343e0c8d41ab1bb696769d204db8e8af2ec))
+
 # [1.47.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.46.1...@bosonprotocol/core-sdk@1.47.0) (2026-05-12)
 
 ### Features

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.17.2...@bosonprotocol/ethers-sdk@1.18.0) (2026-06-05)
+
+### Features
+
+- upgrade protocol 2.5.1 rc.1 no new features ([#1022](https://github.com/bosonprotocol/core-components/issues/1022)) ([3a59b65](https://github.com/bosonprotocol/core-components/commit/3a59b6537535e412572938c0e1b8d1c447fb94f9))
+- upgrade protocol to 2.5.1-rc.2 (ee0aaed0) ([#1030](https://github.com/bosonprotocol/core-components/issues/1030)) ([1d74934](https://github.com/bosonprotocol/core-components/commit/1d749343e0c8d41ab1bb696769d204db8e8af2ec))
+
 ## [1.17.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.17.1...@bosonprotocol/ethers-sdk@1.17.2) (2026-02-16)
 
 **Note:** Version bump only for package @bosonprotocol/ethers-sdk

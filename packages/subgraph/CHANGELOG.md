@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.36.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.35.2...@bosonprotocol/subgraph@1.36.0) (2026-06-05)
+
+### Features
+
+- upgrade protocol 2.5.1 rc.1 no new features ([#1022](https://github.com/bosonprotocol/core-components/issues/1022)) ([3a59b65](https://github.com/bosonprotocol/core-components/commit/3a59b6537535e412572938c0e1b8d1c447fb94f9))
+
 ## [1.35.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.35.1...@bosonprotocol/subgraph@1.35.2) (2026-02-16)
 
 **Note:** Version bump only for package @bosonprotocol/subgraph
