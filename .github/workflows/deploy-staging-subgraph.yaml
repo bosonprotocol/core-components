@@ -5,11 +5,29 @@ on:
   release:
     types: [published]
 
+# Deployments wait for the new version to be synced, so a run can last hours: queue
+# overlapping runs instead of cancelling one in the middle of a tag move
+concurrency:
+  group: deploy-staging-subgraph
+  cancel-in-progress: false
+
 jobs:
   deploy:
     if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, '@bosonprotocol/subgraph@')
+    name: Deploy ${{ matrix.label }} subgraph
     runs-on: ubuntu-latest
-    name: Deploy subgraph
+    # Each network gets its own runner, so the whole job budget is available for a
+    # single GOLDSKY_SYNC_TIMEOUT_MINUTES wait plus the install and build steps
+    timeout-minutes: 350
+    strategy:
+      # A network that fails to sync must not cancel the others
+      fail-fast: false
+      matrix:
+        include:
+          - network: sepolia
+            label: Sepolia
+          - network: base
+            label: Base Sepolia
     steps:
       - uses: actions/checkout@v3
         with:
@@ -33,35 +51,11 @@ jobs:
       - run: npm ci
       - id: build
         run: npm run build -- --cache-dir=".turbo"
-      - name: Set github bot
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-      - name: Deploy subgraph to amoy
-        run: cd ./packages/subgraph && npm run deploy:staging:amoy
+      # GOLDSKY_WAIT_FOR_SYNC makes the 'latest' tag move - and the previously tagged
+      # version get deleted - only once the new version is synced and healthy
+      - name: Deploy subgraph
+        run: cd ./packages/subgraph && npm run deploy:staging:${{ matrix.network }}
         env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_STAGING }}
-      - name: Deploy subgraph to sepolia
-        run: cd ./packages/subgraph && npm run deploy:staging:sepolia
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_STAGING }}
-      - name: Deploy subgraph to base sepolia
-        run: cd ./packages/subgraph && npm run deploy:staging:base
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_STAGING }}
-      - name: Deploy subgraph to optimism sepolia
-        run: cd ./packages/subgraph && npm run deploy:staging:optimism
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_STAGING }}
-      - name: Deploy subgraph to arbitrum sepolia
-        run: cd ./packages/subgraph && npm run deploy:staging:arbitrum
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_STAGING }}
-      - name: Commit & Push
-        env:
-          GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-          GITHUB_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-        run: |
-          git add .
-          git commit -m "chore: deploy staging subgraphs [skip ci]"
-          git push origin HEAD:main
+          GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_STAGING }}
+          GOLDSKY_WAIT_FOR_SYNC: "true"
+          GOLDSKY_SYNC_TIMEOUT_MINUTES: "300"

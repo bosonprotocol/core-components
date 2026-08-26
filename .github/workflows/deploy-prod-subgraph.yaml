@@ -7,10 +7,28 @@ on:
         description: "The subgraph version to deploy. For example, 1.34.0. The given number should correspond to an existing tag @bosonprotocol/subgraph@<VERSION>"
         required: true
 
+# Deployments wait for the new version to be synced, so a run can last hours: queue
+# overlapping runs instead of cancelling one in the middle of a tag move
+concurrency:
+  group: deploy-prod-subgraph
+  cancel-in-progress: false
+
 jobs:
   deploy:
+    name: Deploy ${{ matrix.label }} subgraph
     runs-on: ubuntu-latest
-    name: Deploy subgraph
+    # Each network gets its own runner, so the whole job budget is available for a
+    # single GOLDSKY_SYNC_TIMEOUT_MINUTES wait plus the install and build steps
+    timeout-minutes: 350
+    strategy:
+      # A network that fails to sync must not cancel the others
+      fail-fast: false
+      matrix:
+        include:
+          - network: ethereum
+            label: Ethereum
+          - network: base
+            label: Base
     steps:
       - uses: actions/checkout@v3
         with:
@@ -36,36 +54,11 @@ jobs:
       - run: npm ci
       - id: build
         run: npm run build -- --cache-dir=".turbo"
-      - name: Set github bot
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-      - name: Deploy subgraph to Polygon
-        run: cd ./packages/subgraph && npm run deploy:production:polygon
+      # GOLDSKY_WAIT_FOR_SYNC makes the 'latest' tag move - and the previously tagged
+      # version get deleted - only once the new version is synced and healthy
+      - name: Deploy subgraph
+        run: cd ./packages/subgraph && npm run deploy:production:${{ matrix.network }}
         env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
-      - name: Deploy subgraph to Ethereum
-        run: cd ./packages/subgraph && npm run deploy:production:ethereum
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
-      - name: Deploy subgraph to Base
-        run: cd ./packages/subgraph && npm run deploy:production:base
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
-      - name: Deploy subgraph to Optimism
-        run: cd ./packages/subgraph && npm run deploy:production:optimism
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
-      - name: Deploy subgraph to Arbitrum
-        run: cd ./packages/subgraph && npm run deploy:production:arbitrum
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
-      - name: Commit & Push
-        env:
-          GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-          GITHUB_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-        run: |
-          git pull origin main
-          git add .
-          git commit -m "chore: deploy production subgraphs [skip ci]"
-          git push origin HEAD:main
+          GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_PRODUCTION }}
+          GOLDSKY_WAIT_FOR_SYNC: "true"
+          GOLDSKY_SYNC_TIMEOUT_MINUTES: "300"

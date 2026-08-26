@@ -21,11 +21,20 @@ concurrency:
 
 jobs:
   deploy:
+    name: Deploy ${{ matrix.label }} subgraph
     runs-on: ubuntu-latest
-    name: Deploy subgraph
-    # Both deployments wait for the new version to be synced, capped at
-    # GOLDSKY_SYNC_TIMEOUT_MINUTES each, and have to fit in GitHub's 6h job limit
-    timeout-minutes: 330
+    # Each network gets its own runner, so the whole job budget is available for a
+    # single GOLDSKY_SYNC_TIMEOUT_MINUTES wait plus the install and build steps
+    timeout-minutes: 350
+    strategy:
+      # A network that fails to sync must not cancel the others
+      fail-fast: false
+      matrix:
+        include:
+          - network: sepolia
+            label: Sepolia
+          - network: base
+            label: Base Sepolia
     steps:
       - uses: actions/checkout@v3
         with:
@@ -49,32 +58,11 @@ jobs:
       - run: npm ci
       - id: build
         run: npm run build -- --cache-dir=".turbo"
-      - name: Set github bot
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git pull
       # GOLDSKY_WAIT_FOR_SYNC makes the 'latest' tag move - and the previously tagged
       # version get deleted - only once the new version is synced and healthy
-      - name: Deploy subgraph to sepolia
-        run: cd ./packages/subgraph && npm run deploy:testing:sepolia
+      - name: Deploy subgraph
+        run: cd ./packages/subgraph && npm run deploy:testing:${{ matrix.network }}
         env:
           GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_TESTING }}
           GOLDSKY_WAIT_FOR_SYNC: "true"
-          GOLDSKY_SYNC_TIMEOUT_MINUTES: "150"
-      - name: Deploy subgraph to base sepolia
-        run: cd ./packages/subgraph && npm run deploy:testing:base
-        env:
-          GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_TESTING }}
-          GOLDSKY_WAIT_FOR_SYNC: "true"
-          GOLDSKY_SYNC_TIMEOUT_MINUTES: "150"
-      - name: Commit & Push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          git add .
-          # Goldsky itself records which version is deployed, so a run usually has
-          # nothing to commit - which must not fail the job
-          git diff --cached --quiet || git commit -m "chore: deploy testing subgraphs [skip ci]"
-          git push origin HEAD
+          GOLDSKY_SYNC_TIMEOUT_MINUTES: "300"
