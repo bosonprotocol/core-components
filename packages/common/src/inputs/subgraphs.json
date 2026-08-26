@@ -9,10 +9,10 @@
       "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-amoy/latest/gn"
     ],
     "testing-11155111-0": [
-      "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-sepolia/latest/gn"
+      "https://api.goldsky.com/api/public/project_cmsd7juc4rocz01u5566b9h93/subgraphs/boson-testing-sepolia/latest/gn"
     ],
     "testing-84532-0": [
-      "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-base/latest/gn"
+      "https://api.goldsky.com/api/public/project_cmsd7juc4rocz01u5566b9h93/subgraphs/boson-testing-base/latest/gn"
     ],
     "testing-11155420-0": [
       "https://api.0xgraph.xyz/api/public/c56471f5-5b1d-4a62-b1de-450044cb7ebc/subgraphs/boson-testing-optimism/latest/gn"

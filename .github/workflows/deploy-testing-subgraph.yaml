@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   workflow_call:
     secrets:
+      GOLDSKY_API_KEY_TESTING:
+        required: true
       ORMI_0x_GRAPH_API_KEY_TESTING:
         required: true
       THE_GRAPH_STUDIO_DEPLOY_KEY:
@@ -11,10 +13,19 @@ on:
       GH_TOKEN:
         required: true
 
+# Deployments wait for the new version to be synced, so a run can last hours: queue
+# overlapping runs instead of cancelling one in the middle of a tag move
+concurrency:
+  group: deploy-testing-subgraph
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy subgraph
+    # Both deployments wait for the new version to be synced, capped at
+    # GOLDSKY_SYNC_TIMEOUT_MINUTES each, and have to fit in GitHub's 6h job limit
+    timeout-minutes: 330
     steps:
       - uses: actions/checkout@v3
         with:
@@ -39,31 +50,27 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git pull
-      - name: Deploy subgraph to amoy
-        run: cd ./packages/subgraph && npm run deploy:testing:amoy
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
+      # GOLDSKY_WAIT_FOR_SYNC makes the 'latest' tag move - and the previously tagged
+      # version get deleted - only once the new version is synced and healthy
       - name: Deploy subgraph to sepolia
         run: cd ./packages/subgraph && npm run deploy:testing:sepolia
         env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
+          GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_TESTING }}
+          GOLDSKY_WAIT_FOR_SYNC: "true"
+          GOLDSKY_SYNC_TIMEOUT_MINUTES: "150"
       - name: Deploy subgraph to base sepolia
         run: cd ./packages/subgraph && npm run deploy:testing:base
         env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
-      - name: Deploy subgraph to optimism sepolia
-        run: cd ./packages/subgraph && npm run deploy:testing:optimism
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
-      - name: Deploy subgraph to arbitrum sepolia
-        run: cd ./packages/subgraph && npm run deploy:testing:arbitrum
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_TESTING }}
+          GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_TESTING }}
+          GOLDSKY_WAIT_FOR_SYNC: "true"
+          GOLDSKY_SYNC_TIMEOUT_MINUTES: "150"
       - name: Commit & Push
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git add .
-          git commit -m "chore: deploy testing subgraphs [skip ci]"
+          # Goldsky itself records which version is deployed, so a run usually has
+          # nothing to commit - which must not fail the job
+          git diff --cached --quiet || git commit -m "chore: deploy testing subgraphs [skip ci]"
           git push origin HEAD
