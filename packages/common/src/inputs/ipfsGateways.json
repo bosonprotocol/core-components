@@ -11,8 +11,8 @@
       "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
     },
     "testing-11155111-0": {
-      "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "theGraphIpfsUrl": "https://uploads.pinata.cloud/v3/files",
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     },
     "testing-84532-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",

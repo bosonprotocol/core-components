@@ -1,5 +1,6 @@
 import { create, IPFSHTTPClient, Options } from "ipfs-http-client";
 import fetch from "cross-fetch";
+import FormData from "form-data";
 import { concat, toString } from "uint8arrays";
 import { CID } from "multiformats/cid";
 
@@ -8,16 +9,102 @@ import { CID } from "multiformats/cid";
  */
 export class BaseIpfsStorage {
   public ipfsClient: IPFSHTTPClient;
+  private readonly url: string;
+  private readonly headers?: Headers | Record<string, string>;
 
   constructor(opts: Options) {
     this.ipfsClient = create(opts);
+    this.url = String(opts.url || "");
+    this.headers = opts.headers as Headers | Record<string, string> | undefined;
   }
 
   public async add(value: Parameters<IPFSHTTPClient["add"]>[0]) {
+    if (this.isPinataUploadEndpoint()) {
+      return this.addToPinata(value);
+    }
+
     const addResult = await this.ipfsClient.add(value, {
       pin: true
     });
     const cid = addResult.cid.toString();
+    return cid;
+  }
+
+  private isPinataUploadEndpoint() {
+    return (
+      this.url.includes("uploads.pinata.cloud/v3/files") ||
+      this.url.includes("api.pinata.cloud/pinning/pinFileToIPFS")
+    );
+  }
+
+  private getAuthHeaderValue() {
+    const headers = this.headers;
+    if (!headers) {
+      return undefined;
+    }
+
+    if (typeof (headers as Headers).get === "function") {
+      const auth = (headers as Headers).get("authorization");
+      return auth || undefined;
+    }
+
+    const normalized = Object.entries(headers).reduce<Record<string, string>>(
+      (acc, [key, value]) => {
+        acc[key.toLowerCase()] = value;
+        return acc;
+      },
+      {}
+    );
+    return normalized.authorization;
+  }
+
+  private async addToPinata(value: Parameters<IPFSHTTPClient["add"]>[0]) {
+    if (!(typeof value === "string" || value instanceof Uint8Array)) {
+      throw new Error(
+        "Unsupported Pinata upload payload for BaseIpfsStorage.add(). Use string or Uint8Array"
+      );
+    }
+
+    const formData = new FormData();
+    const content =
+      typeof value === "string" ? Buffer.from(value) : Buffer.from(value);
+    formData.append("file", content, {
+      filename: "file"
+    });
+
+    if (this.url.includes("uploads.pinata.cloud/v3/files")) {
+      formData.append("network", "public");
+    }
+
+    const auth = this.getAuthHeaderValue();
+    const response = await fetch(this.url, {
+      method: "POST",
+      headers: {
+        ...formData.getHeaders(),
+        ...(auth ? { Authorization: auth } : {})
+      },
+      body: formData as unknown as BodyInit
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      throw new Error(
+        `Pinata upload failed (${response.status} ${response.statusText}): ${errorBody}`
+      );
+    }
+
+    const payload = (await response.json()) as {
+      data?: { cid?: string };
+      cid?: string;
+      IpfsHash?: string;
+    };
+    const cid = payload?.data?.cid || payload?.cid || payload?.IpfsHash;
+    if (!cid) {
+      throw new Error(
+        "Pinata upload succeeded but response did not include a CID"
+      );
+    }
+
     return cid;
   }
 
@@ -30,7 +117,7 @@ export class BaseIpfsStorage {
       throw new Error("Invalid input: uriOrHash must be a non-empty string");
     }
 
-    let cid: CID = null;
+    let cid: CID | null = null;
     const isIpfsUri = uriOrHash.startsWith("ipfs://");
     const hasProtocol = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(uriOrHash);
 
@@ -50,8 +137,10 @@ export class BaseIpfsStorage {
     } catch (error) {
       if (isIpfsUri) {
         // If it's an ipfs:// URI but CID parsing fails, throw error
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
         throw new Error(
-          `Invalid IPFS URI: ${uriOrHash}. CID parsing failed: ${error.message}`
+          `Invalid IPFS URI: ${uriOrHash}. CID parsing failed: ${errorMessage}`
         );
       } else if (!hasProtocol) {
         // If it has no protocol and is not a valid CID, throw error
@@ -93,13 +182,13 @@ export class BaseIpfsStorage {
     asJson = true,
     asBlob = false
   ): Promise<Uint8Array | Blob | T> {
-    const chunks = [];
+    const chunks: Uint8Array[] = [];
     for await (const chunk of this.ipfsClient.cat(cid)) {
-      chunks.push(chunk);
+      chunks.push(chunk as Uint8Array);
     }
     const data = concat(chunks);
     if (!asJson && asBlob) {
-      return new Blob([data]);
+      return new Blob([Buffer.from(data)]);
     } else if (!asJson) {
       return data;
     }

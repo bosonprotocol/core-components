@@ -55,6 +55,60 @@ describe("#storeMetadata()", () => {
   });
 });
 
+describe("#add() - BaseIpfsStorage", () => {
+  it("uploads to Pinata v3 endpoint and returns CID", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({
+          data: {
+            cid: IPFS_HASH
+          }
+        })
+      )
+    );
+
+    const ipfsStorage = new BaseIpfsStorage({
+      url: "https://uploads.pinata.cloud/v3/files",
+      headers: {
+        Authorization: "Bearer token"
+      }
+    });
+
+    const cid = await ipfsStorage.add(Buffer.from("hello"));
+
+    expect(cid).toEqual(IPFS_HASH);
+    expect(mockedFetch).toHaveBeenCalledWith(
+      "https://uploads.pinata.cloud/v3/files",
+      expect.objectContaining({ method: "POST" })
+    );
+  });
+
+  it("uploads to legacy Pinata endpoint and returns IpfsHash", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({
+          IpfsHash: IPFS_HASH
+        })
+      )
+    );
+
+    const ipfsStorage = new BaseIpfsStorage({
+      url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      headers: {
+        Authorization: "Bearer token"
+      }
+    });
+
+    const cid = await ipfsStorage.add(Buffer.from("hello"));
+
+    expect(cid).toEqual(IPFS_HASH);
+    expect(mockedFetch).toHaveBeenCalledWith(
+      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      expect.objectContaining({ method: "POST" })
+    );
+  });
+});
+
 describe("#getMetadata()", () => {
   const METADATA_FROM_IPFS = {
     name: "name",

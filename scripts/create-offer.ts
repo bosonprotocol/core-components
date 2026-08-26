@@ -5,6 +5,22 @@ import { program } from "commander";
 import { getEnvConfigById } from "@bosonprotocol/common/src";
 import { CoreSDK } from "../packages/core-sdk/src";
 import { EthersAdapter } from "../packages/ethers-sdk/src";
+import { BaseIpfsStorage } from "../packages/ipfs-storage/src/ipfs/base";
+
+const ONE_MONTH_FROM_NOW = () => {
+  const date = new Date();
+  date.setMonth(date.getMonth() + 1);
+  return date.getTime();
+};
+
+const normalizeUntilDate = (value: unknown): number | undefined => {
+  if (value === undefined || value === null) {
+    return undefined;
+  }
+
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+};
 
 program
   .description("Create an Offer.")
@@ -14,7 +30,12 @@ program
   )
   .argument("<OFFER_DATA>", "JSON file with the Offer parameters")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80002-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-11155111-0")
+  .option("--metadata <FILEPATH>", "Metadata file to upload to IPFS")
+  .option(
+    "--pinata <PINATA_JWT>",
+    "JWT required to address Pinata IPFS gateway"
+  )
   .parse(process.argv);
 
 async function main() {
@@ -23,10 +44,46 @@ async function main() {
   const opts = program.opts();
   const envName = opts.env || "testing";
   const configId = opts.configId || "testing-80002-0";
+  const metadataFilePath = opts.metadata as string | undefined;
+  const pinataJwt = opts.pinata as string | undefined;
   const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const chainId = defaultConfig.chainId;
   const rawData = fs.readFileSync(offerDataJsonFile);
   const offerDataJson = JSON.parse(rawData.toString());
+
+  const now = Date.now();
+  const validUntilDateInMS = normalizeUntilDate(
+    offerDataJson.validUntilDateInMS
+  );
+  if (validUntilDateInMS !== undefined && validUntilDateInMS < now) {
+    offerDataJson.validUntilDateInMS = ONE_MONTH_FROM_NOW();
+  }
+
+  const voucherRedeemableUntilDateInMS = normalizeUntilDate(
+    offerDataJson.voucherRedeemableUntilDateInMS
+  );
+  if (
+    voucherRedeemableUntilDateInMS !== undefined &&
+    voucherRedeemableUntilDateInMS < now
+  ) {
+    offerDataJson.voucherRedeemableUntilDateInMS = ONE_MONTH_FROM_NOW();
+  }
+
+  if (metadataFilePath) {
+    console.log(`Uploading metadata file ${metadataFilePath} to IPFS...`);
+    const storage = new BaseIpfsStorage({
+      url: pinataJwt
+        ? "https://uploads.pinata.cloud/v3/files"
+        : defaultConfig.ipfsMetadataUrl,
+      headers: pinataJwt ? { Authorization: `Bearer ${pinataJwt}` } : undefined
+    });
+
+    const metadataRawData = fs.readFileSync(metadataFilePath);
+    const metadataHash = await storage.add(metadataRawData);
+    offerDataJson.metadataHash = metadataHash;
+    offerDataJson.metadataUri = `ipfs://${metadataHash}`;
+    console.log(`Uploaded metadata CID: ${metadataHash}`);
+  }
 
   console.log(`Create Offer with Data ${JSON.stringify(offerDataJson)}`);
   console.log("defaultConfig", defaultConfig);
