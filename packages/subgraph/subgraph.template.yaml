@@ -19,8 +19,8 @@ dataSources:
         - BaseMetadataEntity
         - ProductV1MetadataEntity
         - Offer
-        - ExchangeToken
         - ProductV1Brand
+        - ExchangeToken
       abis:
         - name: IBosonOfferHandler
           file: ../common/src/abis/IBosonOfferHandler.json

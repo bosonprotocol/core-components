@@ -27,6 +27,7 @@
     }
   },
   "dependencies": {
+    "@goldskycom/cli": "^13.8.0",
     "@graphprotocol/graph-cli": "0.98.1",
     "@graphprotocol/graph-ts": "0.38.2"
   },
@@ -60,9 +61,11 @@
     "manifest:production:optimism": "npm run manifest -- production production-10-0 && npm run codegen",
     "manifest:production:arbitrum": "npm run manifest -- production production-42161-0 && npm run codegen",
     "codegen": "graph codegen",
+    "build:subgraph": "graph build",
     "create:local": "graph create --node http://localhost:8020/ boson/corecomponents",
     "remove:local": "graph remove --node http://localhost:8020/ boson/corecomponents",
     "post-deploy:ormi": "ts-node -P ../../tsconfig.base.json ./scripts/post-deploy-on-ormi.ts",
+    "deploy:goldsky": "ts-node -P ../../tsconfig.base.json ./scripts/deploy-on-goldsky.ts",
     "deploy:cmd:local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 boson/corecomponents -l 0.0.1",
     "deploy:cmd:testing:amoy": "run-script-os",
     "deploy:cmd:testing:amoy:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version --deploy-key $ORMI_0x_GRAPH_API_KEY $npm_package_config_testing_amoy",
@@ -111,8 +114,8 @@
     "deploy:cmd:production:arbitrum:win32": "graph deploy --node %npm_package_config_node% --ipfs %npm_package_config_ipfs% -l %npm_package_version% --deploy-key %ORMI_0x_GRAPH_API_KEY% %npm_package_config_production_arbitrum%",
     "deploy:local": "npm run manifest:local && npm run create:local && npm run deploy:cmd:local",
     "deploy:testing:amoy": "npm run manifest:testing:amoy && npm run deploy:cmd:testing:amoy && npm run post-deploy:ormi -- --env=testing_amoy",
-    "deploy:testing:sepolia": "npm run manifest:testing:sepolia && npm run deploy:cmd:testing:sepolia && npm run post-deploy:ormi -- --env=testing_sepolia",
-    "deploy:testing:base": "npm run manifest:testing:base && npm run deploy:cmd:testing:base && npm run post-deploy:ormi -- --env=testing_base",
+    "deploy:testing:sepolia": "npm run manifest:testing:sepolia && npm run build:subgraph && npm run deploy:goldsky -- --env=testing_sepolia",
+    "deploy:testing:base": "npm run manifest:testing:base && npm run build:subgraph && npm run deploy:goldsky -- --env=testing_base",
     "deploy:testing:optimism": "npm run manifest:testing:optimism && npm run deploy:cmd:testing:optimism && npm run post-deploy:ormi -- --env=testing_optimism",
     "deploy:testing:arbitrum": "npm run manifest:testing:arbitrum && npm run deploy:cmd:testing:arbitrum && npm run post-deploy:ormi -- --env=testing_arbitrum",
     "deploy:staging:amoy": "npm run manifest:staging:amoy && npm run deploy:cmd:staging:amoy && npm run post-deploy:ormi -- --env=staging_amoy",
