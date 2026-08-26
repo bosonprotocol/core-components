@@ -16,7 +16,11 @@ jobs:
           token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
       - uses: actions/setup-node@v3
         with:
-          node-version: "24"
+          # Must stay on the Node (and so npm) version pinned by the root
+          # package.json volta config: npm 11 and npm 10 resolve the root
+          # typescript override differently, and no single lock file
+          # satisfies both, so `npm ci` fails on whichever is out of step.
+          node-version: "22"
           cache: "npm"
       - name: Turbo Cache
         id: turbo-cache
