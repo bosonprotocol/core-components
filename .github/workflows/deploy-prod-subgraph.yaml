@@ -4,64 +4,74 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "The subgraph version to deploy. For example, 1.34.0. The given number should correspond to an existing tag @bosonprotocol/subgraph@<VERSION>"
+        description: "The subgraph version to deploy. For example, 1.34.0. The given number should correspond to an existing tag @bosonprotocol/subgraph@<VERSION>. Only a release that already deploys on Goldsky can be deployed from here."
         required: true
 
+permissions:
+  contents: read
+
+# Every network is deployed on its own runner, so that a network which fails to deploy
+# does not hold back the others. Indexing the new version takes far longer than a job may
+# run, so no job waits for it: each deployment is flagged in a repository variable, and
+# the 'Promote deployed subgraphs' schedule moves the 'latest' tag once it is indexed.
 jobs:
   deploy:
+    name: Deploy ${{ matrix.label }} subgraph
     runs-on: ubuntu-latest
-    name: Deploy subgraph
+    timeout-minutes: 45
+    strategy:
+      # A network that fails to deploy must not cancel the others
+      fail-fast: false
+      matrix:
+        include:
+          - network: ethereum
+            label: Ethereum
+            variable: SUBGRAPH_PENDING_PRODUCTION_ETHEREUM
+          - network: base
+            label: Base
+            variable: SUBGRAPH_PENDING_PRODUCTION_BASE
+    # Do not let two runs deploy the same subgraph at the same time, and never cancel one
+    # mid-deployment
+    concurrency:
+      group: subgraph-deploy-production-${{ matrix.network }}
+      cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out the released version to deploy
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
           ref: "@bosonprotocol/subgraph@${{ inputs.version }}"
           fetch-depth: "0"
-      - uses: actions/setup-node@v3
+      # The workspace now holds a release, whose './.github' is whatever that release
+      # shipped - a release older than the setup action does not carry it at all. So take
+      # the action from the ref this workflow itself is running from, where it is
+      # maintained, rather than from the workspace. v4 is what supports sparse-checkout.
+      - name: Check out this workflow's own actions
+        uses: actions/checkout@v4
         with:
-          node-version: "24"
-          cache: "npm"
-      - name: Turbo Cache
-        id: turbo-cache
-        uses: actions/cache@v3
-        with:
-          path: .turbo
-          key: turbo-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            turbo-${{ runner.os }}
-      - run: npm ci
-      - id: build
-        run: npm run build -- --cache-dir=".turbo"
-      - name: Set github bot
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-      - name: Deploy subgraph to Polygon
-        run: cd ./packages/subgraph && npm run deploy:production:polygon
+          path: .workflow
+          sparse-checkout: .github/actions
+      - uses: ./.workflow/.github/actions/setup-subgraph
+      # Deploys the new version and watches it for a few minutes, long enough to catch a
+      # deployment that cannot index at all. The 'latest' tag is left on the version
+      # currently served: moving it is the promotion schedule's business.
+      - id: deploy
+        name: Deploy subgraph
+        run: cd ./packages/subgraph && npm run deploy:production:${{ matrix.network }}
         env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
-      - name: Deploy subgraph to Ethereum
-        run: cd ./packages/subgraph && npm run deploy:production:ethereum
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
-      - name: Deploy subgraph to Base
-        run: cd ./packages/subgraph && npm run deploy:production:base
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
-      - name: Deploy subgraph to Optimism
-        run: cd ./packages/subgraph && npm run deploy:production:optimism
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
-      - name: Deploy subgraph to Arbitrum
-        run: cd ./packages/subgraph && npm run deploy:production:arbitrum
-        env:
-          ORMI_0x_GRAPH_API_KEY: ${{ secrets.ORMI_0x_GRAPH_API_KEY_PRODUCTION }}
-      - name: Commit & Push
+          GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_PRODUCTION }}
+          GOLDSKY_FATAL_ERROR_WATCH_MINUTES: "5"
+      - name: Flag the deployment for promotion
         env:
           GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-          GITHUB_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+          VARIABLE: ${{ matrix.variable }}
+          VERSION: ${{ steps.deploy.outputs.version }}
         run: |
-          git pull origin main
-          git add .
-          git commit -m "chore: deploy production subgraphs [skip ci]"
-          git push origin HEAD:main
+          set -euo pipefail
+          # The flag is read back into a job matrix and onto a command line, so never
+          # write one that does not look like the version that was just deployed
+          if [[ ! "$VERSION" =~ ^[A-Za-z0-9.+-]+$ ]]; then
+            echo "::error::'$VERSION' does not look like a deployed version"
+            exit 1
+          fi
+          gh variable set "$VARIABLE" --repo "$GITHUB_REPOSITORY" --body "$VERSION"
