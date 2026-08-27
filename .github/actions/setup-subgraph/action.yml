@@ -1,0 +1,35 @@
+name: "Set up the subgraph workspace"
+description: "Install the monorepo dependencies and, when the built subgraph is needed, build them. The repository must already be checked out."
+
+inputs:
+  build:
+    description: "Build the monorepo. Only the deployment needs it, as 'goldsky subgraph deploy' uploads the ./build directory - tagging an already deployed version does not."
+    required: false
+    default: "true"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        # Must stay on the Node (and so npm) version pinned by the root
+        # package.json volta config: npm 11 and npm 10 resolve the root
+        # typescript override differently, and no single lock file
+        # satisfies both, so `npm ci` fails on whichever is out of step.
+        node-version: "22"
+        cache: "npm"
+    - name: Turbo Cache
+      if: inputs.build == 'true'
+      uses: actions/cache@v3
+      with:
+        path: .turbo
+        key: turbo-${{ runner.os }}-${{ github.sha }}
+        restore-keys: |
+          turbo-${{ runner.os }}
+    - name: Install dependencies
+      shell: bash
+      run: npm ci
+    - name: Build
+      if: inputs.build == 'true'
+      shell: bash
+      run: npm run build -- --cache-dir=".turbo"

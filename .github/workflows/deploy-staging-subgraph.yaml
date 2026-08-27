@@ -5,57 +5,63 @@ on:
   release:
     types: [published]
 
-# Deployments wait for the new version to be synced, so a run can last hours: queue
-# overlapping runs instead of cancelling one in the middle of a tag move
-concurrency:
-  group: deploy-staging-subgraph
-  cancel-in-progress: false
+permissions:
+  contents: read
 
+# Every network is deployed by its own job, so that a network which fails to deploy does
+# not hold back the others. Indexing the new version takes far longer than a job may run,
+# so no job waits for it: each deployment is flagged in a repository variable, and the
+# 'Promote deployed subgraphs' schedule moves the 'latest' tag once the version is indexed.
 jobs:
-  deploy:
+  deploy-sepolia:
     if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, '@bosonprotocol/subgraph@')
-    name: Deploy ${{ matrix.label }} subgraph
+    name: Deploy Sepolia subgraph
     runs-on: ubuntu-latest
-    # Each network gets its own runner, so the whole job budget is available for a
-    # single GOLDSKY_SYNC_TIMEOUT_MINUTES wait plus the install and build steps
-    timeout-minutes: 350
-    strategy:
-      # A network that fails to sync must not cancel the others
-      fail-fast: false
-      matrix:
-        include:
-          - network: sepolia
-            label: Sepolia
-          - network: base
-            label: Base Sepolia
+    timeout-minutes: 45
+    # Do not let two runs deploy the same subgraph at the same time, and never cancel one
+    # mid-deployment
+    concurrency:
+      group: subgraph-deploy-staging-sepolia
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-      - uses: actions/setup-node@v3
-        with:
-          # Must stay on the Node (and so npm) version pinned by the root
-          # package.json volta config: npm 11 and npm 10 resolve the root
-          # typescript override differently, and no single lock file
-          # satisfies both, so `npm ci` fails on whichever is out of step.
-          node-version: "22"
-          cache: "npm"
-      - name: Turbo Cache
-        id: turbo-cache
-        uses: actions/cache@v3
-        with:
-          path: .turbo
-          key: turbo-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            turbo-${{ runner.os }}
-      - run: npm ci
-      - id: build
-        run: npm run build -- --cache-dir=".turbo"
-      # GOLDSKY_WAIT_FOR_SYNC makes the 'latest' tag move - and the previously tagged
-      # version get deleted - only once the new version is synced and healthy
-      - name: Deploy subgraph
-        run: cd ./packages/subgraph && npm run deploy:staging:${{ matrix.network }}
+      - uses: ./.github/actions/setup-subgraph
+      # Deploys the new version and watches it for a few minutes, long enough to catch a
+      # deployment that cannot index at all. The 'latest' tag is left on the version
+      # currently served: moving it is the promotion schedule's business.
+      - id: deploy
+        name: Deploy subgraph
+        run: cd ./packages/subgraph && npm run deploy:staging:sepolia
         env:
           GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_STAGING }}
-          GOLDSKY_WAIT_FOR_SYNC: "true"
-          GOLDSKY_SYNC_TIMEOUT_MINUTES: "300"
+          GOLDSKY_FATAL_ERROR_WATCH_MINUTES: "5"
+      - name: Flag the deployment for promotion
+        env:
+          GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+        run: gh variable set SUBGRAPH_PENDING_STAGING_SEPOLIA --repo "$GITHUB_REPOSITORY" --body "${{ steps.deploy.outputs.version }}"
+
+  deploy-base:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, '@bosonprotocol/subgraph@')
+    name: Deploy Base Sepolia subgraph
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    concurrency:
+      group: subgraph-deploy-staging-base
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+      - uses: ./.github/actions/setup-subgraph
+      - id: deploy
+        name: Deploy subgraph
+        run: cd ./packages/subgraph && npm run deploy:staging:base
+        env:
+          GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_STAGING }}
+          GOLDSKY_FATAL_ERROR_WATCH_MINUTES: "5"
+      - name: Flag the deployment for promotion
+        env:
+          GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+        run: gh variable set SUBGRAPH_PENDING_STAGING_BASE --repo "$GITHUB_REPOSITORY" --body "${{ steps.deploy.outputs.version }}"

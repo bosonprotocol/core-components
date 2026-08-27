@@ -66,6 +66,7 @@
     "remove:local": "graph remove --node http://localhost:8020/ boson/corecomponents",
     "post-deploy:ormi": "ts-node -P ../../tsconfig.base.json ./scripts/post-deploy-on-ormi.ts",
     "deploy:goldsky": "ts-node -P ../../tsconfig.base.json ./scripts/deploy-on-goldsky.ts",
+    "promote:goldsky": "ts-node -P ../../tsconfig.base.json ./scripts/promote-on-goldsky.ts",
     "deploy:cmd:local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 boson/corecomponents -l 0.0.1",
     "deploy:cmd:testing:amoy": "run-script-os",
     "deploy:cmd:testing:amoy:default": "graph deploy --node $npm_package_config_node --ipfs $npm_package_config_ipfs -l $npm_package_version --deploy-key $ORMI_0x_GRAPH_API_KEY $npm_package_config_testing_amoy",
@@ -128,6 +129,12 @@
     "deploy:production:base": "npm run manifest:production:base && npm run build:subgraph && npm run deploy:goldsky -- --env=production_base",
     "deploy:production:optimism": "npm run manifest:production:optimism && npm run deploy:cmd:production:optimism && npm run post-deploy:ormi -- --env=production_optimism",
     "deploy:production:arbitrum": "npm run manifest:production:arbitrum && npm run deploy:cmd:production:arbitrum && npm run post-deploy:ormi -- --env=production_arbitrum",
+    "promote:testing:sepolia": "npm run promote:goldsky -- --env=testing_sepolia",
+    "promote:testing:base": "npm run promote:goldsky -- --env=testing_base",
+    "promote:staging:sepolia": "npm run promote:goldsky -- --env=staging_sepolia",
+    "promote:staging:base": "npm run promote:goldsky -- --env=staging_base",
+    "promote:production:ethereum": "npm run promote:goldsky -- --env=production_ethereum",
+    "promote:production:base": "npm run promote:goldsky -- --env=production_base",
     "test": "npm run manifest:local && graph test"
   }
 }

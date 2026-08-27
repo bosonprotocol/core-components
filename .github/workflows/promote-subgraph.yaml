@@ -1,0 +1,113 @@
+name: Promote deployed subgraphs
+
+# A subgraph can take hours to index, far longer than a job may run, so the deployment
+# workflows do not wait for it: they flag the version they deployed in a repository
+# variable named SUBGRAPH_PENDING_<ENV>_<NETWORK>, and this schedule picks it up.
+#
+# Every 30 minutes it checks each flagged deployment and, as soon as it is fully indexed,
+# moves the 'latest' tag onto it and deletes the version the tag was pointing to. The flag
+# is then cleared - as it is when the indexing failed, which fails the job so the failure
+# is reported. Nothing flagged means nothing to do, and the run costs a few seconds.
+#
+# To watch a deployment again - typically after a failed indexing has been fixed and
+# restarted - set the variable back to the deployed version (Settings > Secrets and
+# variables > Actions > Variables) and run this workflow.
+on:
+  schedule:
+    # Scheduled workflows only ever run from the default branch, and GitHub disables them
+    # after 60 days without any repository activity
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  list-pending:
+    name: List the deployments waiting for promotion
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      pending: ${{ steps.list.outputs.pending }}
+    steps:
+      # No checkout and no install: on the vast majority of runs nothing is flagged and
+      # this is all the schedule does
+      - id: list
+        name: Read the pending deployment flags
+        env:
+          SUBGRAPH_PENDING_TESTING_SEPOLIA: ${{ vars.SUBGRAPH_PENDING_TESTING_SEPOLIA }}
+          SUBGRAPH_PENDING_TESTING_BASE: ${{ vars.SUBGRAPH_PENDING_TESTING_BASE }}
+          SUBGRAPH_PENDING_STAGING_SEPOLIA: ${{ vars.SUBGRAPH_PENDING_STAGING_SEPOLIA }}
+          SUBGRAPH_PENDING_STAGING_BASE: ${{ vars.SUBGRAPH_PENDING_STAGING_BASE }}
+          SUBGRAPH_PENDING_PRODUCTION_ETHEREUM: ${{ vars.SUBGRAPH_PENDING_PRODUCTION_ETHEREUM }}
+          SUBGRAPH_PENDING_PRODUCTION_BASE: ${{ vars.SUBGRAPH_PENDING_PRODUCTION_BASE }}
+        run: |
+          set -euo pipefail
+          # "<boson env>|<network>|<env key>|<label>", one per Goldsky hosted subgraph
+          subgraphs=(
+            "testing|sepolia|TESTING|Sepolia (testing)"
+            "testing|base|TESTING|Base Sepolia (testing)"
+            "staging|sepolia|STAGING|Sepolia (staging)"
+            "staging|base|STAGING|Base Sepolia (staging)"
+            "production|ethereum|PRODUCTION|Ethereum (production)"
+            "production|base|PRODUCTION|Base (production)"
+          )
+          entries=""
+          for subgraph in "${subgraphs[@]}"; do
+            IFS="|" read -r boson_env network key label <<< "$subgraph"
+            variable="SUBGRAPH_PENDING_${key}_${network^^}"
+            version="${!variable:-}"
+            if [ -z "$version" ]; then
+              continue
+            fi
+            # The version goes into a JSON matrix and onto a command line, so only ever
+            # trust one that still looks like the version the deployment flagged
+            if [[ ! "$version" =~ ^[A-Za-z0-9.+-]+$ ]]; then
+              echo "::error::Repository variable $variable does not hold a version: $version"
+              exit 1
+            fi
+            entry='{"boson_env":"'"$boson_env"'","network":"'"$network"'","key":"'"$key"'","label":"'"$label"'","variable":"'"$variable"'","version":"'"$version"'"}'
+            entries="$entries${entries:+,}$entry"
+          done
+          echo "pending=[$entries]" | tee -a "$GITHUB_OUTPUT"
+
+  promote:
+    name: Promote ${{ matrix.label }} subgraph
+    needs: list-pending
+    if: needs.list-pending.outputs.pending != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      # A subgraph that failed to index must not stop the others from being promoted
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.list-pending.outputs.pending) }}
+    # Two runs must never move the same 'latest' tag at the same time. A tick that is
+    # still running when the next one fires is the one holding the fresher answer, so let
+    # it finish rather than cancel it.
+    concurrency:
+      group: subgraph-promote-${{ matrix.boson_env }}-${{ matrix.network }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+      - uses: ./.github/actions/setup-subgraph
+        with:
+          # Tagging an already deployed version does not need the built subgraph
+          build: "false"
+      # Reports 'promoted', 'pending' or 'failed' on its 'outcome' output. Anything else
+      # going wrong - Goldsky being unreachable, say - leaves the output unset, so the
+      # deployment stays flagged and is checked again on the next run.
+      - id: promote
+        name: Promote subgraph
+        run: cd ./packages/subgraph && npm run promote:${{ matrix.boson_env }}:${{ matrix.network }} -- --deployed-version=${{ matrix.version }}
+        env:
+          GOLDSKY_API_KEY: ${{ secrets[format('GOLDSKY_API_KEY_{0}', matrix.key)] }}
+      - name: Clear the pending deployment flag
+        # Either the 'latest' tag has been moved, or the version will never index: both
+        # end the watch, and a failed indexing has already failed the step above
+        if: always() && contains(fromJSON('["promoted", "failed"]'), steps.promote.outputs.outcome)
+        env:
+          GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+        run: gh variable delete "${{ matrix.variable }}" --repo "$GITHUB_REPOSITORY"
