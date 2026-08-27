@@ -18,9 +18,14 @@ name: Promote deployed subgraphs
 # variables > Actions > Variables) and run this workflow.
 on:
   schedule:
+    # Every half hour, at :20 and :50 rather than on the hour and the half hour: GitHub
+    # delays - and drops - scheduled runs when Actions is busy, and those two minutes are
+    # where every other repository's cron lands. Nothing here needs a tick at a set time.
+    #
     # Scheduled workflows only ever run from the default branch, and GitHub disables them
-    # after 60 days without any repository activity
-    - cron: "*/30 * * * *"
+    # after 60 days without any repository activity, which is what stopped the
+    # 'pin-to-pinata' schedule on 2026-08-04.
+    - cron: "20,50 * * * *"
   workflow_dispatch:
 
 permissions:
