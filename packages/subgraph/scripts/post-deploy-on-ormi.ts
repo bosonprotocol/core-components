@@ -1,31 +1,9 @@
-import { Option, program } from "commander";
+import { program } from "commander";
 import fs from "fs";
+import { envOption } from "./deploy-envs";
 program
   .description("Post subgraph deployment treatment with Ormi")
-  .addOption(
-    new Option(
-      "--env <ENV>",
-      `Deployed environment (Boson env + chain): "testing_amoy", "testing_sepolia", ...`
-    )
-      .makeOptionMandatory(true)
-      .choices([
-        "testing_amoy",
-        "testing_sepolia",
-        "testing_base",
-        "testing_optimism",
-        "testing_arbitrum",
-        "staging_amoy",
-        "staging_sepolia",
-        "staging_base",
-        "staging_optimism",
-        "staging_arbitrum",
-        "production_polygon",
-        "production_ethereum",
-        "production_base",
-        "production_optimism",
-        "production_arbitrum"
-      ])
-  )
+  .addOption(envOption())
   .parse(process.argv);
 
 const { env } = program.opts();

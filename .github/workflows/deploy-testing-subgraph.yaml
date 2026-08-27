@@ -13,68 +13,71 @@ on:
       GH_TOKEN:
         required: true
 
-# Deployments wait for the new version to be synced, so a run can last hours: queue
-# overlapping runs instead of cancelling one in the middle of a tag move
-concurrency:
-  group: deploy-testing-subgraph
-  cancel-in-progress: false
+permissions:
+  contents: read
 
+# Every network is deployed on its own runner, so that a network which fails to deploy
+# does not hold back the others. Indexing the new version takes far longer than a job may
+# run, so no job waits for it: each deployment is flagged in a repository variable, and
+# the 'Promote deployed subgraphs' schedule moves the 'latest' tag once it is indexed.
 jobs:
   deploy:
+    name: Deploy ${{ matrix.label }} subgraph
     runs-on: ubuntu-latest
-    name: Deploy subgraph
-    # Both deployments wait for the new version to be synced, capped at
-    # GOLDSKY_SYNC_TIMEOUT_MINUTES each, and have to fit in GitHub's 6h job limit
-    timeout-minutes: 330
+    timeout-minutes: 45
+    strategy:
+      # A network that fails to deploy must not cancel the others
+      fail-fast: false
+      matrix:
+        include:
+          - network: sepolia
+            label: Sepolia
+            variable: SUBGRAPH_PENDING_TESTING_SEPOLIA
+          - network: base
+            label: Base Sepolia
+            variable: SUBGRAPH_PENDING_TESTING_BASE
+    # Do not let two runs deploy the same subgraph at the same time, and never cancel one
+    # mid-deployment
+    concurrency:
+      group: subgraph-deploy-testing-${{ matrix.network }}
+      cancel-in-progress: false
     steps:
+      # GH_TOKEN is only ever passed by the workflow that calls this one, so a manual run
+      # falls back to the repository secret. Checked up front: a run that cannot flag its
+      # deployment must not deploy one, as nothing would ever promote it.
+      - name: Check the token the deployment is flagged with
+        env:
+          TOKEN: ${{ secrets.GH_TOKEN || secrets.BSNORG_ACTIONS_SECRET }}
+        run: |
+          set -euo pipefail
+          if [ -z "$TOKEN" ]; then
+            echo "::error::Neither the GH_TOKEN passed by the calling workflow nor the BSNORG_ACTIONS_SECRET repository secret is set"
+            exit 1
+          fi
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GH_TOKEN }}
-      - uses: actions/setup-node@v3
-        with:
-          # Must stay on the Node (and so npm) version pinned by the root
-          # package.json volta config: npm 11 and npm 10 resolve the root
-          # typescript override differently, and no single lock file
-          # satisfies both, so `npm ci` fails on whichever is out of step.
-          node-version: "22"
-          cache: "npm"
-      - name: Turbo Cache
-        id: turbo-cache
-        uses: actions/cache@v3
-        with:
-          path: .turbo
-          key: turbo-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            turbo-${{ runner.os }}
-      - run: npm ci
-      - id: build
-        run: npm run build -- --cache-dir=".turbo"
-      - name: Set github bot
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git pull
-      # GOLDSKY_WAIT_FOR_SYNC makes the 'latest' tag move - and the previously tagged
-      # version get deleted - only once the new version is synced and healthy
-      - name: Deploy subgraph to sepolia
-        run: cd ./packages/subgraph && npm run deploy:testing:sepolia
+          token: ${{ secrets.GH_TOKEN || secrets.BSNORG_ACTIONS_SECRET }}
+      - uses: ./.github/actions/setup-subgraph
+      # Deploys the new version and watches it for a few minutes, long enough to catch a
+      # deployment that cannot index at all. The 'latest' tag is left on the version
+      # currently served: moving it is the promotion schedule's business.
+      - id: deploy
+        name: Deploy subgraph
+        run: cd ./packages/subgraph && npm run deploy:testing:${{ matrix.network }}
         env:
           GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_TESTING }}
-          GOLDSKY_WAIT_FOR_SYNC: "true"
-          GOLDSKY_SYNC_TIMEOUT_MINUTES: "150"
-      - name: Deploy subgraph to base sepolia
-        run: cd ./packages/subgraph && npm run deploy:testing:base
+          GOLDSKY_FATAL_ERROR_WATCH_MINUTES: "5"
+      - name: Flag the deployment for promotion
         env:
-          GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_TESTING }}
-          GOLDSKY_WAIT_FOR_SYNC: "true"
-          GOLDSKY_SYNC_TIMEOUT_MINUTES: "150"
-      - name: Commit & Push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.BSNORG_ACTIONS_SECRET }}
+          VARIABLE: ${{ matrix.variable }}
+          VERSION: ${{ steps.deploy.outputs.version }}
         run: |
-          git add .
-          # Goldsky itself records which version is deployed, so a run usually has
-          # nothing to commit - which must not fail the job
-          git diff --cached --quiet || git commit -m "chore: deploy testing subgraphs [skip ci]"
-          git push origin HEAD
+          set -euo pipefail
+          # The flag is read back into a job matrix and onto a command line, so never
+          # write one that does not look like the version that was just deployed
+          if [[ ! "$VERSION" =~ ^[A-Za-z0-9.+-]+$ ]]; then
+            echo "::error::'$VERSION' does not look like a deployed version"
+            exit 1
+          fi
+          gh variable set "$VARIABLE" --repo "$GITHUB_REPOSITORY" --body "$VERSION"

@@ -1,0 +1,183 @@
+name: Promote deployed subgraphs
+
+# A subgraph can take hours to index, far longer than a job may run, so the deployment
+# workflows do not wait for it: they flag the version they deployed in a repository
+# variable named SUBGRAPH_PENDING_<ENV>_<NETWORK>, and this schedule picks it up.
+#
+# Every 30 minutes it checks each flagged deployment and, as soon as it is fully indexed,
+# moves the 'latest' tag onto it and deletes the version the tag was pointing to. The flag
+# is then cleared - as it is when the indexing failed, which fails the job so the failure
+# is reported. Nothing flagged means nothing to do, and the run costs a few seconds.
+#
+# A deployment that neither indexes nor fails is watched for PROMOTION_DEADLINE_HOURS and
+# given up on after that: a version nobody is ever going to promote gets reported once,
+# rather than checked over and over forever.
+#
+# To watch a deployment again - typically after a failed indexing has been fixed and
+# restarted - set the variable back to the deployed version (Settings > Secrets and
+# variables > Actions > Variables) and run this workflow.
+on:
+  schedule:
+    # Scheduled workflows only ever run from the default branch, and GitHub disables them
+    # after 60 days without any repository activity
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # Indexing a new version takes hours, and indexing a busy chain from scratch can take
+  # most of a day, so this is deliberately wide: it is the point where a deployment is
+  # declared never going to make it, not an indexing budget.
+  PROMOTION_DEADLINE_HOURS: "24"
+
+jobs:
+  list-pending:
+    name: List the deployments waiting for promotion
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      pending: ${{ steps.list.outputs.pending }}
+    steps:
+      # No checkout and no install: on the vast majority of runs nothing is flagged and
+      # this is all the schedule does
+      - id: list
+        name: Read the pending deployment flags
+        env:
+          SUBGRAPH_PENDING_TESTING_SEPOLIA: ${{ vars.SUBGRAPH_PENDING_TESTING_SEPOLIA }}
+          SUBGRAPH_PENDING_TESTING_BASE: ${{ vars.SUBGRAPH_PENDING_TESTING_BASE }}
+          SUBGRAPH_PENDING_STAGING_SEPOLIA: ${{ vars.SUBGRAPH_PENDING_STAGING_SEPOLIA }}
+          SUBGRAPH_PENDING_STAGING_BASE: ${{ vars.SUBGRAPH_PENDING_STAGING_BASE }}
+          SUBGRAPH_PENDING_PRODUCTION_ETHEREUM: ${{ vars.SUBGRAPH_PENDING_PRODUCTION_ETHEREUM }}
+          SUBGRAPH_PENDING_PRODUCTION_BASE: ${{ vars.SUBGRAPH_PENDING_PRODUCTION_BASE }}
+        run: |
+          set -euo pipefail
+          # "<boson env>|<network>|<label>", one per Goldsky hosted subgraph. Doubles as
+          # the allow list a promotion job is built out of: the env key and the variable
+          # name are derived from the first two fields, never spelled out a second time.
+          subgraphs=(
+            "testing|sepolia|Sepolia (testing)"
+            "testing|base|Base Sepolia (testing)"
+            "staging|sepolia|Sepolia (staging)"
+            "staging|base|Base Sepolia (staging)"
+            "production|ethereum|Ethereum (production)"
+            "production|base|Base (production)"
+          )
+          entries=""
+          malformed=""
+          for subgraph in "${subgraphs[@]}"; do
+            IFS="|" read -r boson_env network label <<< "$subgraph"
+            key="${boson_env^^}"
+            variable="SUBGRAPH_PENDING_${key}_${network^^}"
+            version="${!variable:-}"
+            if [ -z "$version" ]; then
+              continue
+            fi
+            # The version goes into a JSON matrix and onto a command line, so only ever
+            # trust one that still looks like the version the deployment flagged. Skip the
+            # subgraph rather than stop here: the other networks have a deployment of
+            # their own waiting, and this run is failed at the end anyway.
+            if [[ ! "$version" =~ ^[A-Za-z0-9.+-]+$ ]]; then
+              echo "::error::Repository variable $variable does not hold a version: $version"
+              malformed="$malformed $variable"
+              continue
+            fi
+            entry='{"boson_env":"'"$boson_env"'","network":"'"$network"'","key":"'"$key"'","label":"'"$label"'","variable":"'"$variable"'","version":"'"$version"'"}'
+            entries="$entries${entries:+,}$entry"
+          done
+          echo "pending=[$entries]" | tee -a "$GITHUB_OUTPUT"
+          if [ -n "$malformed" ]; then
+            echo "Not holding a version:$malformed"
+            exit 1
+          fi
+
+  promote:
+    name: Promote ${{ matrix.label }} subgraph
+    needs: list-pending
+    # A malformed variable fails 'list-pending' only once it has listed the sound ones,
+    # which are promoted all the same
+    if: ${{ !cancelled() && needs.list-pending.outputs.pending != '' && needs.list-pending.outputs.pending != '[]' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      # A subgraph that failed to index must not stop the others from being promoted
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.list-pending.outputs.pending) }}
+    # Two runs must never move the same 'latest' tag at the same time. A tick that is
+    # still running when the next one fires is the one holding the fresher answer, so let
+    # it finish rather than cancel it.
+    concurrency:
+      group: subgraph-promote-${{ matrix.boson_env }}-${{ matrix.network }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+      - uses: ./.github/actions/setup-subgraph
+        with:
+          # Tagging an already deployed version runs a single script out of the subgraph
+          # workspace: it needs neither the other workspaces nor the built subgraph
+          build: "false"
+          workspace: packages/subgraph
+      # Reports 'promoted', 'pending' or 'failed' on its 'outcome' output. Anything else
+      # going wrong - Goldsky being unreachable, say - leaves the output unset, so the
+      # deployment stays flagged and is checked again on the next run.
+      - id: promote
+        name: Promote subgraph
+        run: cd ./packages/subgraph && npm run promote:${{ matrix.boson_env }}:${{ matrix.network }} -- --deployed-version=${{ matrix.version }}
+        env:
+          GOLDSKY_API_KEY: ${{ secrets[format('GOLDSKY_API_KEY_{0}', matrix.key)] }}
+      - name: Clear the pending deployment flag
+        # Either the 'latest' tag has been moved, or the version will never index: both
+        # end the watch, and a failed indexing has already failed the step above
+        if: ${{ !cancelled() && contains(fromJSON('["promoted", "failed"]'), steps.promote.outputs.outcome) }}
+        env:
+          GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+          VARIABLE: ${{ matrix.variable }}
+          VERSION: ${{ matrix.version }}
+        run: |
+          set -euo pipefail
+          # A deployment that landed while this job was running has flagged the version it
+          # deployed: clearing the flag now would drop that one silently
+          flagged=$(gh api "repos/$GITHUB_REPOSITORY/actions/variables/$VARIABLE" --jq ".value" 2>/dev/null || true)
+          if [ "$flagged" != "$VERSION" ]; then
+            echo "::notice::$VARIABLE holds '$flagged' and no longer '$VERSION' - leaving it to the next run"
+            exit 0
+          fi
+          gh variable delete "$VARIABLE" --repo "$GITHUB_REPOSITORY"
+      - name: Give up on a deployment that never promotes
+        # Whatever left the flag in place: a version still indexing, or a step that failed
+        # before reporting an outcome at all - a missing API key, a version deleted by
+        # hand on Goldsky. Without this, that flag is picked up again every 30 minutes,
+        # forever, and nothing ever says so.
+        if: ${{ !cancelled() && !contains(fromJSON('["promoted", "failed"]'), steps.promote.outputs.outcome) }}
+        env:
+          GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+          VARIABLE: ${{ matrix.variable }}
+          VERSION: ${{ matrix.version }}
+          LABEL: ${{ matrix.label }}
+        run: |
+          set -euo pipefail
+          flag=$(gh api "repos/$GITHUB_REPOSITORY/actions/variables/$VARIABLE" 2>/dev/null || true)
+          if [ -z "$flag" ]; then
+            echo "::notice::$VARIABLE is gone - nothing left to watch"
+            exit 0
+          fi
+          flagged=$(jq -r ".value" <<< "$flag")
+          if [ "$flagged" != "$VERSION" ]; then
+            echo "::notice::$VARIABLE holds '$flagged' and no longer '$VERSION' - leaving it to the next run"
+            exit 0
+          fi
+          # The flag is written once, by the deployment that raised it, so how long it has
+          # been waiting is how long ago it was last written
+          flagged_at=$(jq -r ".updated_at" <<< "$flag")
+          waited_hours=$(( ( $(date -u +%s) - $(date -u -d "$flagged_at" +%s) ) / 3600 ))
+          if [ "$waited_hours" -lt "$PROMOTION_DEADLINE_HOURS" ]; then
+            echo "::notice::$LABEL $VERSION has been waiting for promotion for ${waited_hours}h - checked again on the next run"
+            exit 0
+          fi
+          echo "::error::$LABEL $VERSION has been waiting for promotion for ${waited_hours}h, past the ${PROMOTION_DEADLINE_HOURS}h deadline - giving up on it. Once the deployment is fixed, set $VARIABLE back to a deployed version to watch it again."
+          gh variable delete "$VARIABLE" --repo "$GITHUB_REPOSITORY"
+          exit 1
