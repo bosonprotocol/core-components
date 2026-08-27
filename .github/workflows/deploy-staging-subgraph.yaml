@@ -8,20 +8,31 @@ on:
 permissions:
   contents: read
 
-# Every network is deployed by its own job, so that a network which fails to deploy does
-# not hold back the others. Indexing the new version takes far longer than a job may run,
-# so no job waits for it: each deployment is flagged in a repository variable, and the
-# 'Promote deployed subgraphs' schedule moves the 'latest' tag once the version is indexed.
+# Every network is deployed on its own runner, so that a network which fails to deploy
+# does not hold back the others. Indexing the new version takes far longer than a job may
+# run, so no job waits for it: each deployment is flagged in a repository variable, and
+# the 'Promote deployed subgraphs' schedule moves the 'latest' tag once it is indexed.
 jobs:
-  deploy-sepolia:
+  deploy:
     if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, '@bosonprotocol/subgraph@')
-    name: Deploy Sepolia subgraph
+    name: Deploy ${{ matrix.label }} subgraph
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    strategy:
+      # A network that fails to deploy must not cancel the others
+      fail-fast: false
+      matrix:
+        include:
+          - network: sepolia
+            label: Sepolia
+            variable: SUBGRAPH_PENDING_STAGING_SEPOLIA
+          - network: base
+            label: Base Sepolia
+            variable: SUBGRAPH_PENDING_STAGING_BASE
     # Do not let two runs deploy the same subgraph at the same time, and never cancel one
     # mid-deployment
     concurrency:
-      group: subgraph-deploy-staging-sepolia
+      group: subgraph-deploy-staging-${{ matrix.network }}
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v3
@@ -33,35 +44,11 @@ jobs:
       # currently served: moving it is the promotion schedule's business.
       - id: deploy
         name: Deploy subgraph
-        run: cd ./packages/subgraph && npm run deploy:staging:sepolia
+        run: cd ./packages/subgraph && npm run deploy:staging:${{ matrix.network }}
         env:
           GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_STAGING }}
           GOLDSKY_FATAL_ERROR_WATCH_MINUTES: "5"
       - name: Flag the deployment for promotion
         env:
           GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-        run: gh variable set SUBGRAPH_PENDING_STAGING_SEPOLIA --repo "$GITHUB_REPOSITORY" --body "${{ steps.deploy.outputs.version }}"
-
-  deploy-base:
-    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, '@bosonprotocol/subgraph@')
-    name: Deploy Base Sepolia subgraph
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    concurrency:
-      group: subgraph-deploy-staging-base
-      cancel-in-progress: false
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-      - uses: ./.github/actions/setup-subgraph
-      - id: deploy
-        name: Deploy subgraph
-        run: cd ./packages/subgraph && npm run deploy:staging:base
-        env:
-          GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_STAGING }}
-          GOLDSKY_FATAL_ERROR_WATCH_MINUTES: "5"
-      - name: Flag the deployment for promotion
-        env:
-          GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-        run: gh variable set SUBGRAPH_PENDING_STAGING_BASE --repo "$GITHUB_REPOSITORY" --body "${{ steps.deploy.outputs.version }}"
+        run: gh variable set ${{ matrix.variable }} --repo "$GITHUB_REPOSITORY" --body "${{ steps.deploy.outputs.version }}"

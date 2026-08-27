@@ -10,19 +10,30 @@ on:
 permissions:
   contents: read
 
-# Every network is deployed by its own job, so that a network which fails to deploy does
-# not hold back the others. Indexing the new version takes far longer than a job may run,
-# so no job waits for it: each deployment is flagged in a repository variable, and the
-# 'Promote deployed subgraphs' schedule moves the 'latest' tag once the version is indexed.
+# Every network is deployed on its own runner, so that a network which fails to deploy
+# does not hold back the others. Indexing the new version takes far longer than a job may
+# run, so no job waits for it: each deployment is flagged in a repository variable, and
+# the 'Promote deployed subgraphs' schedule moves the 'latest' tag once it is indexed.
 jobs:
-  deploy-ethereum:
-    name: Deploy Ethereum subgraph
+  deploy:
+    name: Deploy ${{ matrix.label }} subgraph
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    strategy:
+      # A network that fails to deploy must not cancel the others
+      fail-fast: false
+      matrix:
+        include:
+          - network: ethereum
+            label: Ethereum
+            variable: SUBGRAPH_PENDING_PRODUCTION_ETHEREUM
+          - network: base
+            label: Base
+            variable: SUBGRAPH_PENDING_PRODUCTION_BASE
     # Do not let two runs deploy the same subgraph at the same time, and never cancel one
     # mid-deployment
     concurrency:
-      group: subgraph-deploy-production-ethereum
+      group: subgraph-deploy-production-${{ matrix.network }}
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v3
@@ -36,36 +47,11 @@ jobs:
       # currently served: moving it is the promotion schedule's business.
       - id: deploy
         name: Deploy subgraph
-        run: cd ./packages/subgraph && npm run deploy:production:ethereum
+        run: cd ./packages/subgraph && npm run deploy:production:${{ matrix.network }}
         env:
           GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_PRODUCTION }}
           GOLDSKY_FATAL_ERROR_WATCH_MINUTES: "5"
       - name: Flag the deployment for promotion
         env:
           GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-        run: gh variable set SUBGRAPH_PENDING_PRODUCTION_ETHEREUM --repo "$GITHUB_REPOSITORY" --body "${{ steps.deploy.outputs.version }}"
-
-  deploy-base:
-    name: Deploy Base subgraph
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    concurrency:
-      group: subgraph-deploy-production-base
-      cancel-in-progress: false
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-          ref: "@bosonprotocol/subgraph@${{ inputs.version }}"
-          fetch-depth: "0"
-      - uses: ./.github/actions/setup-subgraph
-      - id: deploy
-        name: Deploy subgraph
-        run: cd ./packages/subgraph && npm run deploy:production:base
-        env:
-          GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY_PRODUCTION }}
-          GOLDSKY_FATAL_ERROR_WATCH_MINUTES: "5"
-      - name: Flag the deployment for promotion
-        env:
-          GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-        run: gh variable set SUBGRAPH_PENDING_PRODUCTION_BASE --repo "$GITHUB_REPOSITORY" --body "${{ steps.deploy.outputs.version }}"
+        run: gh variable set ${{ matrix.variable }} --repo "$GITHUB_REPOSITORY" --body "${{ steps.deploy.outputs.version }}"
