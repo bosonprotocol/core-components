@@ -16,9 +16,9 @@ dataSources:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - BaseMetadataEntity
         - Offer
         - ExchangeToken
+        - BaseMetadataEntity
         - ProductV1Brand
         - ProductV1MetadataEntity
       abis:
@@ -59,8 +59,8 @@ dataSources:
         - Offer
         - ExchangeToken
         - BaseMetadataEntity
-        - ProductV1MetadataEntity
         - ProductV1Brand
+        - ProductV1MetadataEntity
       abis:
         - name: IBosonOfferHandler240
           file: ../common/src/abis/IBosonOfferHandler240.json
@@ -88,11 +88,11 @@ dataSources:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - BaseMetadataEntity
-        - ProductV1MetadataEntity
         - Offer
         - ExchangeToken
+        - BaseMetadataEntity
         - ProductV1Brand
+        - ProductV1MetadataEntity
       abis:
         - name: IBosonOfferHandler230
           file: ../common/src/abis/IBosonOfferHandler230.json
