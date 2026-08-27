@@ -35,7 +35,10 @@ jobs:
       group: subgraph-deploy-staging-${{ matrix.network }}
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v3
+      # A release runs the workflow, and so this action, off the released commit itself:
+      # both come from the tag, so they are always the pair that was released together
+      - name: Check out the released version to deploy
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
       - uses: ./.github/actions/setup-subgraph
@@ -51,4 +54,14 @@ jobs:
       - name: Flag the deployment for promotion
         env:
           GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-        run: gh variable set ${{ matrix.variable }} --repo "$GITHUB_REPOSITORY" --body "${{ steps.deploy.outputs.version }}"
+          VARIABLE: ${{ matrix.variable }}
+          VERSION: ${{ steps.deploy.outputs.version }}
+        run: |
+          set -euo pipefail
+          # The flag is read back into a job matrix and onto a command line, so never
+          # write one that does not look like the version that was just deployed
+          if [[ ! "$VERSION" =~ ^[A-Za-z0-9.+-]+$ ]]; then
+            echo "::error::'$VERSION' does not look like a deployed version"
+            exit 1
+          fi
+          gh variable set "$VARIABLE" --repo "$GITHUB_REPOSITORY" --body "$VERSION"

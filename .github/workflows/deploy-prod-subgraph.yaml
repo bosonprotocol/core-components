@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "The subgraph version to deploy. For example, 1.34.0. The given number should correspond to an existing tag @bosonprotocol/subgraph@<VERSION>"
+        description: "The subgraph version to deploy. For example, 1.34.0. The given number should correspond to an existing tag @bosonprotocol/subgraph@<VERSION>. Only a release that already deploys on Goldsky can be deployed from here."
         required: true
 
 permissions:
@@ -36,12 +36,22 @@ jobs:
       group: subgraph-deploy-production-${{ matrix.network }}
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out the released version to deploy
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
           ref: "@bosonprotocol/subgraph@${{ inputs.version }}"
           fetch-depth: "0"
-      - uses: ./.github/actions/setup-subgraph
+      # The workspace now holds a release, whose './.github' is whatever that release
+      # shipped - a release older than the setup action does not carry it at all. So take
+      # the action from the ref this workflow itself is running from, where it is
+      # maintained, rather than from the workspace. v4 is what supports sparse-checkout.
+      - name: Check out this workflow's own actions
+        uses: actions/checkout@v4
+        with:
+          path: .workflow
+          sparse-checkout: .github/actions
+      - uses: ./.workflow/.github/actions/setup-subgraph
       # Deploys the new version and watches it for a few minutes, long enough to catch a
       # deployment that cannot index at all. The 'latest' tag is left on the version
       # currently served: moving it is the promotion schedule's business.
@@ -54,4 +64,14 @@ jobs:
       - name: Flag the deployment for promotion
         env:
           GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-        run: gh variable set ${{ matrix.variable }} --repo "$GITHUB_REPOSITORY" --body "${{ steps.deploy.outputs.version }}"
+          VARIABLE: ${{ matrix.variable }}
+          VERSION: ${{ steps.deploy.outputs.version }}
+        run: |
+          set -euo pipefail
+          # The flag is read back into a job matrix and onto a command line, so never
+          # write one that does not look like the version that was just deployed
+          if [[ ! "$VERSION" =~ ^[A-Za-z0-9.+-]+$ ]]; then
+            echo "::error::'$VERSION' does not look like a deployed version"
+            exit 1
+          fi
+          gh variable set "$VARIABLE" --repo "$GITHUB_REPOSITORY" --body "$VERSION"

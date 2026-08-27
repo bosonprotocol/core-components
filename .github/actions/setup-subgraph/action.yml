@@ -3,9 +3,13 @@ description: "Install the monorepo dependencies and, when the built subgraph is 
 
 inputs:
   build:
-    description: "Build the monorepo. Only the deployment needs it, as 'goldsky subgraph deploy' uploads the ./build directory - tagging an already deployed version does not."
+    description: "Run the monorepo build. The deployment needs the workspace packages the subgraph manifest and mappings pull in; the './build' directory 'goldsky subgraph deploy' uploads is not produced here, but by the 'graph build' that the 'deploy:<env>:<network>' npm script runs itself. Tagging an already deployed version needs neither."
     required: false
     default: "true"
+  workspace:
+    description: "Install this workspace and the repository root only, rather than every workspace of the monorepo. A job that just runs a script out of one package has no use for the others - and cannot build, as what a build would need is not installed."
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -28,7 +32,15 @@ runs:
           turbo-${{ runner.os }}
     - name: Install dependencies
       shell: bash
-      run: npm ci
+      env:
+        WORKSPACE: ${{ inputs.workspace }}
+      run: |
+        set -euo pipefail
+        if [ -n "$WORKSPACE" ]; then
+          npm ci --workspace "$WORKSPACE" --include-workspace-root
+        else
+          npm ci
+        fi
     - name: Build
       if: inputs.build == 'true'
       shell: bash

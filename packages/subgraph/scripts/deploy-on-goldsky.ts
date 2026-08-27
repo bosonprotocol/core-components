@@ -1,7 +1,7 @@
 import { program } from "commander";
+import { envOption } from "./deploy-envs";
 import {
   DeploymentStatus,
-  envOption,
   getDeploymentStatus,
   goldsky,
   hasFailed,

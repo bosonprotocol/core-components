@@ -1,6 +1,6 @@
 import { Option, program } from "commander";
+import { envOption } from "./deploy-envs";
 import {
-  envOption,
   getDeploymentStatus,
   getTaggedVersion,
   goldsky,
@@ -71,7 +71,8 @@ async function main() {
   const newVersion: string = deployedVersion || subgraphVersion;
 
   // A transient failure throws here: nothing is reported on the 'outcome' output, so the
-  // workflow keeps the deployment flagged and checks it again on the next run
+  // workflow keeps the deployment flagged and checks it again on the next run - until it
+  // has waited long enough to give up on it
   const status = await getDeploymentStatus(subgraphName, newVersion);
 
   if (hasFailed(status)) {

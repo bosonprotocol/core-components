@@ -2,7 +2,6 @@ import { spawn } from "child_process";
 import { appendFileSync } from "fs";
 import { EOL } from "os";
 import path from "path";
-import { Option } from "commander";
 
 /**
  * The mutable tag every consumer queries: it points to the version currently served, and
@@ -14,35 +13,6 @@ const subgraphDir = path.join(__dirname, "..");
 // `bin/goldsky` is a thin `require("../dist/index.js")` shim, so the CLI entry point can
 // be run directly with the current node binary - which behaves the same way on win32.
 const goldskyCli = require.resolve("@goldskycom/cli");
-
-/** Deployed environments (Boson env + chain) the Goldsky scripts accept */
-const deployEnvs = [
-  "testing_amoy",
-  "testing_sepolia",
-  "testing_base",
-  "testing_optimism",
-  "testing_arbitrum",
-  "staging_amoy",
-  "staging_sepolia",
-  "staging_base",
-  "staging_optimism",
-  "staging_arbitrum",
-  "production_polygon",
-  "production_ethereum",
-  "production_base",
-  "production_optimism",
-  "production_arbitrum"
-];
-
-/** The `--env` option, shared by the deployment and the promotion scripts */
-export function envOption(): Option {
-  return new Option(
-    "--env <ENV>",
-    `Deployed environment (Boson env + chain): "testing_amoy", "testing_sepolia", ...`
-  )
-    .makeOptionMandatory(true)
-    .choices(deployEnvs);
-}
 
 /**
  * Read the subgraph name and version out of the environment. Both are exposed by npm from
@@ -140,24 +110,18 @@ export async function goldsky(
 /**
  * Ask Goldsky which version a tag currently points to. `goldsky subgraph list` prints one
  * line per tag, formatted as "* <subgraphName>/<tag> -> <subgraphName>/<targetVersion>".
+ * Returns undefined when the subgraph carries no such tag - which is what a first
+ * deployment looks like. A listing that fails throws instead: it decides whether the
+ * previously served version gets deleted, so it must never be read as "nothing is tagged".
  */
 export async function getTaggedVersion(
   subgraphName: string,
   tag: string
 ): Promise<string | undefined> {
-  let stdout: string;
-  try {
-    stdout = await goldsky(
-      ["subgraph", "list", subgraphName, "--filter", "tags", "--summary"],
-      { capture: true }
-    );
-  } catch (e) {
-    // Either the subgraph does not exist yet (first deployment on Goldsky), or the
-    // listing failed. Either way we know of no previous version, which only means that
-    // no old version will be deleted.
-    console.warn(`Could not list the tags of '${subgraphName}'`, e);
-    return undefined;
-  }
+  const stdout = await goldsky(
+    ["subgraph", "list", subgraphName, "--filter", "tags", "--summary"],
+    { capture: true }
+  );
   const pattern = new RegExp(
     `^\\*\\s+${escapeRegExp(`${subgraphName}/${tag}`)}\\s+->\\s+${escapeRegExp(
       subgraphName
@@ -175,6 +139,9 @@ export type DeploymentStatus = {
   progress: string | undefined;
   fatalError: boolean;
 };
+
+/** What the CLI prints on the "Synced:" line of a deployment it reports as synced */
+const syncedMarker = /^(?:[✓✔☑✅]️?|true|yes)$/i;
 
 /**
  * Read the indexing status of a deployed version out of `goldsky subgraph list`, which
@@ -198,7 +165,10 @@ export async function getDeploymentStatus(
     // indexing progress until then. That flag is not reliable - a fully indexed, healthy
     // deployment can sit at "100%" for weeks - so a reported 100% counts as synced too.
     // The CLI rounds the progress to 3 significant digits, so "100%" means ">= 99.95%".
-    synced: !!syncState && (!progress || progress === "100%"),
+    // Anything else, a line this does not recognise included, counts as not synced: it
+    // gates moving the 'latest' tag and deleting the version that tag was on, so it must
+    // never read "not there yet" as "done".
+    synced: progress === "100%" || syncedMarker.test(syncState ?? ""),
     progress,
     fatalError: /^\s*Fatal error:/m.test(stdout)
   };
