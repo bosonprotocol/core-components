@@ -36,31 +36,89 @@ async function toBytes(value: PinataUploadPayload): Promise<Uint8Array> {
   return new Uint8Array(await value.arrayBuffer());
 }
 
+export type IpfsStorageProvider = "ipfs-api" | "pinata";
+
+/** Pinata's legacy pinning route, the one that takes no `network` field. */
+const PINATA_LEGACY_PIN_FILE = "api.pinata.cloud/pinning/pinFileToIPFS";
+
+/** Upload endpoints that are Pinata's by default, without an explicit `provider`. */
+const PINATA_UPLOAD_ENDPOINTS = [
+  "uploads.pinata.cloud/v3/files",
+  PINATA_LEGACY_PIN_FILE
+];
+
+/** Dedicated Pinata gateways are the only ones that take a gateway token. */
+function isDedicatedPinataGateway(url: string): boolean {
+  try {
+    return /\.mypinata\.cloud$/i.test(new URL(url).hostname);
+  } catch {
+    return false;
+  }
+}
+
 export type BaseIpfsStorageOptions = Options & {
   /**
+   * Which kind of endpoint `url` addresses. `"pinata"` uploads over Pinata's
+   * HTTP upload API and reads back through `gatewayUrl`; `"ipfs-api"` speaks the
+   * IPFS HTTP API. Defaults to `"pinata"` for the two known Pinata upload
+   * endpoints and to `"ipfs-api"` otherwise, so any other Pinata route (a proxy
+   * in front of it, a future API version) has to be declared here.
+   */
+  provider?: IpfsStorageProvider;
+  /**
    * Base URL of an IPFS HTTP gateway to read through, e.g.
-   * `https://my-gateway.mypinata.cloud/ipfs/`. Only consulted when `url` is an
-   * upload-only endpoint rather than an IPFS HTTP API; wherever `url` can serve
-   * reads itself, `ipfsClient.cat()` is preferred.
+   * `https://my-gateway.mypinata.cloud/ipfs/`. A URL with no path gets `/ipfs`
+   * appended. Only consulted when `url` is an upload-only endpoint rather than
+   * an IPFS HTTP API; wherever `url` can serve reads itself,
+   * `ipfsClient.cat()` is preferred.
    */
   gatewayUrl?: string;
+  /**
+   * Token for a dedicated Pinata gateway (`*.mypinata.cloud`), sent as
+   * `x-pinata-gateway-token`. Those gateways reject unauthenticated reads with
+   * 403, and they do NOT accept the API JWT. Ignored for any other gateway
+   * host, so it is safe to set alongside a public fallback.
+   */
+  gatewayToken?: string;
 };
 
 /**
- * Base IPFS storage class that wraps an instance of `IPFSHTTPClient`.
+ * Base IPFS storage. Wraps an `IPFSHTTPClient` for a real IPFS HTTP API, and
+ * Pinata's upload API plus a read gateway when `provider` says so.
  */
 export class BaseIpfsStorage {
-  public ipfsClient: IPFSHTTPClient;
+  private readonly clientOpts: Options;
   private readonly url: string;
   private readonly headers?: Headers | Record<string, string>;
+  private readonly provider: IpfsStorageProvider;
   private readonly gatewayUrl?: string;
+  private readonly gatewayToken?: string;
+  private client: IPFSHTTPClient | undefined;
 
   constructor(opts: BaseIpfsStorageOptions) {
-    const { gatewayUrl, ...clientOpts } = opts;
-    this.ipfsClient = create(clientOpts);
+    const { provider, gatewayUrl, gatewayToken, ...clientOpts } = opts;
+    this.clientOpts = clientOpts;
     this.url = String(opts.url || "");
     this.headers = opts.headers as Headers | Record<string, string> | undefined;
+    this.provider =
+      provider ??
+      (PINATA_UPLOAD_ENDPOINTS.some((endpoint) => this.url.includes(endpoint))
+        ? "pinata"
+        : "ipfs-api");
     this.gatewayUrl = gatewayUrl;
+    this.gatewayToken = gatewayToken;
+  }
+
+  /**
+   * The IPFS HTTP API client, built on first use. On the Pinata path every
+   * method routes around it, so a `url` that is not an IPFS API never has to be
+   * handed to `create()` at all.
+   */
+  public get ipfsClient(): IPFSHTTPClient {
+    if (!this.client) {
+      this.client = create(this.clientOpts);
+    }
+    return this.client;
   }
 
   /**
@@ -74,15 +132,35 @@ export class BaseIpfsStorage {
    * that also has to work for image URLs.
    */
   private getReadGatewayUrl(): string | undefined {
-    if (!this.isPinataUploadEndpoint()) {
+    if (!this.isPinataUpload()) {
       return undefined;
     }
-    const gateway = this.gatewayUrl || DEFAULT_READ_GATEWAY;
-    return `${gateway.replace(/\/+$/, "")}/`;
+    const gateway = (this.gatewayUrl || DEFAULT_READ_GATEWAY).replace(
+      /\/+$/,
+      ""
+    );
+    // A gateway origin on its own serves nothing: the path prefix carries the
+    // addressing scheme. Supply the usual one rather than 404 on every read.
+    try {
+      const parsed = new URL(gateway);
+      if (parsed.pathname === "/" || parsed.pathname === "") {
+        return `${gateway}/ipfs/`;
+      }
+    } catch {
+      // Not parseable as an absolute URL - leave it exactly as given.
+    }
+    return `${gateway}/`;
+  }
+
+  /** Headers a read through `gatewayUrl` needs, if any. */
+  private getGatewayHeaders(gatewayUrl: string): Record<string, string> {
+    return this.gatewayToken && isDedicatedPinataGateway(gatewayUrl)
+      ? { "x-pinata-gateway-token": this.gatewayToken }
+      : {};
   }
 
   public async add(value: Parameters<IPFSHTTPClient["add"]>[0]) {
-    if (this.isPinataUploadEndpoint()) {
+    if (this.isPinataUpload()) {
       return this.addToPinata(value);
     }
 
@@ -98,17 +176,14 @@ export class BaseIpfsStorage {
    * not an IPFS HTTP API, so this is a no-op there rather than a failure.
    */
   public async unpin(cid: string): Promise<void> {
-    if (this.isPinataUploadEndpoint()) {
+    if (this.isPinataUpload()) {
       return;
     }
     await this.ipfsClient.pin.rm(cid);
   }
 
-  private isPinataUploadEndpoint() {
-    return (
-      this.url.includes("uploads.pinata.cloud/v3/files") ||
-      this.url.includes("api.pinata.cloud/pinning/pinFileToIPFS")
-    );
+  private isPinataUpload() {
+    return this.provider === "pinata";
   }
 
   private getAuthHeaderValue() {
@@ -169,7 +244,9 @@ export class BaseIpfsStorage {
       formData.append("file", blob, filename);
     }
 
-    if (this.url.includes("uploads.pinata.cloud/v3/files")) {
+    // The legacy pinning route takes no `network`; every other Pinata upload
+    // route is a v3 `/files` one, which requires it.
+    if (!this.url.includes(PINATA_LEGACY_PIN_FILE)) {
       formData.append("network", "public");
     }
 
@@ -270,7 +347,9 @@ export class BaseIpfsStorage {
   private async readByCID(cid: string): Promise<Uint8Array> {
     const gatewayUrl = this.getReadGatewayUrl();
     if (gatewayUrl) {
-      const response = await fetch(`${gatewayUrl}${cid}`);
+      const response = await fetch(`${gatewayUrl}${cid}`, {
+        headers: this.getGatewayHeaders(gatewayUrl)
+      });
       if (!response.ok) {
         throw new Error(
           `Failed to fetch ${cid} from ${gatewayUrl} (${response.status} ${response.statusText})`

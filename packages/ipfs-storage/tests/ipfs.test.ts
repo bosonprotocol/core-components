@@ -120,6 +120,22 @@ describe("#add() - BaseIpfsStorage", () => {
       expect.objectContaining({ method: "POST" })
     );
   });
+
+  it("uploads over an explicitly declared Pinata url the sniff misses", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ data: { cid: IPFS_HASH } }))
+    );
+    const url = "https://ipfs.example.com/pinata-proxy/v4/files";
+    const ipfsStorage = new BaseIpfsStorage({ url, provider: "pinata" });
+
+    const cid = await ipfsStorage.add(Buffer.from("hello"));
+
+    expect(cid).toEqual(IPFS_HASH);
+    expect(mockedFetch).toHaveBeenCalledWith(
+      url,
+      expect.objectContaining({ method: "POST" })
+    );
+  });
 });
 
 describe("#getMetadata()", () => {
@@ -419,6 +435,9 @@ const PINATA_LEGACY_URL = "https://api.pinata.cloud/pinning/pinFileToIPFS";
 describe("#getByCID() - read path", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    // `ipfsClient` is built lazily, so a value queued by a test that never
+    // reads through it would otherwise leak into the next one.
+    mockedIpfsHttpClient.create.mockReset();
   });
 
   it("reads through a gateway when the url is a Pinata upload endpoint", async () => {
@@ -429,7 +448,10 @@ describe("#getByCID() - read path", () => {
 
     // cat() would have been spoken at an endpoint that has no IPFS HTTP API.
     expect(mockedFetch).toHaveBeenCalledWith(
-      `https://ipfs.io/ipfs/${IPFS_HASH}`
+      `https://ipfs.io/ipfs/${IPFS_HASH}`,
+      {
+        headers: {}
+      }
     );
     expect(Buffer.from(data).toString()).toEqual("hello");
   });
@@ -444,7 +466,8 @@ describe("#getByCID() - read path", () => {
     await ipfsStorage.getByCID(IPFS_HASH, false, false);
 
     expect(mockedFetch).toHaveBeenCalledWith(
-      `https://dedicated.mypinata.cloud/ipfs/${IPFS_HASH}`
+      `https://dedicated.mypinata.cloud/ipfs/${IPFS_HASH}`,
+      { headers: {} }
     );
   });
 
@@ -469,6 +492,73 @@ describe("#getByCID() - read path", () => {
 
     expect(mockedFetch).not.toHaveBeenCalled();
     expect(data).toEqual(new Uint8Array([1, 2, 3]));
+  });
+
+  it("sends the gateway token to a dedicated Pinata gateway", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response("hello"));
+    const ipfsStorage = new BaseIpfsStorage({
+      url: PINATA_V3_URL,
+      gatewayUrl: "https://dedicated.mypinata.cloud/ipfs",
+      gatewayToken: "gateway-token"
+    });
+
+    await ipfsStorage.getByCID(IPFS_HASH, false, false);
+
+    expect(mockedFetch).toHaveBeenCalledWith(
+      `https://dedicated.mypinata.cloud/ipfs/${IPFS_HASH}`,
+      { headers: { "x-pinata-gateway-token": "gateway-token" } }
+    );
+  });
+
+  it("does not leak the gateway token to a public gateway", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response("hello"));
+    const ipfsStorage = new BaseIpfsStorage({
+      url: PINATA_V3_URL,
+      gatewayUrl: "https://ipfs.io/ipfs",
+      gatewayToken: "gateway-token"
+    });
+
+    await ipfsStorage.getByCID(IPFS_HASH, false, false);
+
+    expect(mockedFetch).toHaveBeenCalledWith(
+      `https://ipfs.io/ipfs/${IPFS_HASH}`,
+      {
+        headers: {}
+      }
+    );
+  });
+
+  it("supplies the /ipfs segment when the gateway is a bare origin", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response("hello"));
+    const ipfsStorage = new BaseIpfsStorage({
+      url: PINATA_V3_URL,
+      gatewayUrl: "https://dedicated.mypinata.cloud"
+    });
+
+    await ipfsStorage.getByCID(IPFS_HASH, false, false);
+
+    expect(mockedFetch).toHaveBeenCalledWith(
+      `https://dedicated.mypinata.cloud/ipfs/${IPFS_HASH}`,
+      { headers: {} }
+    );
+  });
+
+  it("reads through the gateway for a Pinata url the sniff does not know", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response("hello"));
+    const ipfsStorage = new BaseIpfsStorage({
+      url: "https://ipfs.example.com/pinata-proxy/v4/files",
+      provider: "pinata",
+      gatewayUrl: "https://ipfs.io/ipfs"
+    });
+
+    await ipfsStorage.getByCID(IPFS_HASH, false, false);
+
+    expect(mockedFetch).toHaveBeenCalledWith(
+      `https://ipfs.io/ipfs/${IPFS_HASH}`,
+      {
+        headers: {}
+      }
+    );
   });
 
   it("throws with the status when the gateway rejects the read", async () => {
@@ -777,6 +867,7 @@ describe("#add() - browser FormData", () => {
 describe("#unpin()", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockedIpfsHttpClient.create.mockReset();
   });
 
   it("delegates to ipfsClient.pin.rm for a real IPFS API", async () => {
