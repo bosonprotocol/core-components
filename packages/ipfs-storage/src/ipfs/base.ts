@@ -5,17 +5,50 @@ import { concat, toString } from "uint8arrays";
 import { CID } from "multiformats/cid";
 
 /**
+ * Read gateway used when the configured `url` is a Pinata upload endpoint and
+ * no `gatewayUrl` was supplied. Callers with a dedicated gateway should pass
+ * their own.
+ */
+const DEFAULT_READ_GATEWAY = "https://ipfs.io/ipfs/";
+
+export type BaseIpfsStorageOptions = Options & {
+  /**
+   * Base URL of an IPFS HTTP gateway to read through, e.g.
+   * `https://my-gateway.mypinata.cloud/ipfs/`. Required for reads whenever
+   * `url` is an upload-only endpoint rather than an IPFS HTTP API.
+   */
+  gatewayUrl?: string;
+};
+
+/**
  * Base IPFS storage class that wraps an instance of `IPFSHTTPClient`.
  */
 export class BaseIpfsStorage {
   public ipfsClient: IPFSHTTPClient;
   private readonly url: string;
   private readonly headers?: Headers | Record<string, string>;
+  private readonly gatewayUrl?: string;
 
-  constructor(opts: Options) {
-    this.ipfsClient = create(opts);
+  constructor(opts: BaseIpfsStorageOptions) {
+    const { gatewayUrl, ...clientOpts } = opts;
+    this.ipfsClient = create(clientOpts);
     this.url = String(opts.url || "");
     this.headers = opts.headers as Headers | Record<string, string> | undefined;
+    this.gatewayUrl = gatewayUrl;
+  }
+
+  /**
+   * Base gateway URL to read through, or `undefined` when `ipfsClient.cat()`
+   * can be used directly.
+   *
+   * `cat()` speaks the IPFS HTTP API, which a Pinata upload endpoint is not, so
+   * reads there have to go through a gateway or they fail outright.
+   */
+  private getReadGatewayUrl(): string | undefined {
+    const gateway =
+      this.gatewayUrl ||
+      (this.isPinataUploadEndpoint() ? DEFAULT_READ_GATEWAY : undefined);
+    return gateway ? `${gateway.replace(/\/+$/, "")}/` : undefined;
   }
 
   public async add(value: Parameters<IPFSHTTPClient["add"]>[0]) {
@@ -157,6 +190,29 @@ export class BaseIpfsStorage {
       : this.getByURL<T>(uriOrHash, asJson, asBlob));
     return value;
   }
+  /**
+   * Fetch a CID's bytes, through the IPFS HTTP API when one is configured and
+   * through a gateway otherwise.
+   */
+  private async readByCID(cid: string): Promise<Uint8Array> {
+    const gatewayUrl = this.getReadGatewayUrl();
+    if (gatewayUrl) {
+      const response = await fetch(`${gatewayUrl}${cid}`);
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch ${cid} from ${gatewayUrl} (${response.status} ${response.statusText})`
+        );
+      }
+      return new Uint8Array(await response.arrayBuffer());
+    }
+
+    const chunks: Uint8Array[] = [];
+    for await (const chunk of this.ipfsClient.cat(cid)) {
+      chunks.push(chunk as Uint8Array);
+    }
+    return concat(chunks);
+  }
+
   public async getByCID<T>(
     cid: string,
     asJson: true,
@@ -182,13 +238,14 @@ export class BaseIpfsStorage {
     asJson = true,
     asBlob = false
   ): Promise<Uint8Array | Blob | T> {
-    const chunks: Uint8Array[] = [];
-    for await (const chunk of this.ipfsClient.cat(cid)) {
-      chunks.push(chunk as Uint8Array);
-    }
-    const data = concat(chunks);
+    const data = await this.readByCID(cid);
     if (!asJson && asBlob) {
-      return new Blob([Buffer.from(data)]);
+      // Copy into an ArrayBuffer-backed view. Blob does not accept a possibly
+      // SharedArrayBuffer-backed one, and going through Buffer instead would
+      // make this Node-only.
+      const bytes = new Uint8Array(data.byteLength);
+      bytes.set(data);
+      return new Blob([bytes]);
     } else if (!asJson) {
       return data;
     }
