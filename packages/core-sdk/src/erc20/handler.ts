@@ -15,7 +15,7 @@ import {
   StructuredData
 } from "../utils/signature";
 
-export type UnsignedTransferAuthorization =
+type SignableTransferAuthorization =
   | {
       strategy: "ERC3009";
       data: {
@@ -37,12 +37,18 @@ export type UnsignedTransferAuthorization =
       data: { nonce: BigNumberish; expiry: BigNumberish };
     };
 
-export type TransferAuthorization = UnsignedTransferAuthorization & {
-  r: string;
-  s: string;
-  v: number;
-  signature: string;
-};
+export type UnsignedTransferAuthorization =
+  | { strategy: "None" }
+  | SignableTransferAuthorization;
+
+export type TransferAuthorization =
+  | { strategy: "None" }
+  | (SignableTransferAuthorization & {
+      r: string;
+      s: string;
+      v: number;
+      signature: string;
+    });
 
 const TRANSFER_STRATEGY_ID = {
   ERC3009: 1,
@@ -54,6 +60,9 @@ const TRANSFER_STRATEGY_ID = {
 export function encodeTransferAuthorizationEntry(
   auth: TransferAuthorization
 ): string {
+  if (auth.strategy === "None") {
+    return "0x";
+  }
   let innerData: string;
   switch (auth.strategy) {
     case "ERC3009":
