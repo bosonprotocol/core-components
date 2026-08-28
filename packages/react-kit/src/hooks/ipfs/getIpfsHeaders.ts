@@ -34,7 +34,9 @@ export function getIpfsHeaders({
   }
 
   return {
-    authorization: `Basic ${Buffer.from(
+    // Same spelling as the JWT branch above: this is a public export, so a
+    // consumer reading `headers.Authorization` has to work for both pairs.
+    Authorization: `Basic ${Buffer.from(
       ipfsProjectId + ":" + ipfsProjectSecret
     ).toString("base64")}`
   };

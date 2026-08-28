@@ -27,7 +27,7 @@ describe("#getIpfsHeaders()", () => {
         ipfsProjectId: "project-id",
         ipfsProjectSecret: "project-secret"
       })
-    ).toEqual({ authorization: BASIC });
+    ).toEqual({ Authorization: BASIC });
   });
 
   it("returns no header when only half of the legacy pair is set", () => {
@@ -42,7 +42,7 @@ describe("#getIpfsHeaders()", () => {
         ipfsProjectId: "project-id",
         ipfsProjectSecret: "project-secret"
       })
-    ).toEqual({ authorization: BASIC });
+    ).toEqual({ Authorization: BASIC });
   });
 
   it("returns no header when nothing is configured", () => {

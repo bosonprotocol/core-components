@@ -16,6 +16,7 @@ import { EnvironmentType } from "@bosonprotocol/common/src/types";
  * @param gatewayUrl - Optional IPFS gateway to read through. Only used when
  * `url` is an upload-only endpoint, such as Pinata's; a `url` that is a real
  * IPFS HTTP API is read through directly.
+ * @param gatewayToken - Optional token for a dedicated Pinata gateway.
  * @returns Instance of `IpfsMetadataStorage`.
  */
 export function useIpfsMetadataStorage(
@@ -24,7 +25,8 @@ export function useIpfsMetadataStorage(
   validateMetadata: (metadata: AnyMetadata) => void,
   url?: string,
   headers?: Headers | Record<string, string>,
-  gatewayUrl?: string
+  gatewayUrl?: string,
+  gatewayToken?: string
 ) {
   const [ipfsMetadataStorage, setIpfsMetadataStorage] =
     useState<IpfsMetadataStorage>(
@@ -34,7 +36,8 @@ export function useIpfsMetadataStorage(
         validateMetadata,
         url,
         headers,
-        gatewayUrl
+        gatewayUrl,
+        gatewayToken
       )
     );
 
@@ -46,10 +49,19 @@ export function useIpfsMetadataStorage(
         validateMetadata,
         url,
         headers,
-        gatewayUrl
+        gatewayUrl,
+        gatewayToken
       )
     );
-  }, [envName, configId, validateMetadata, url, headers, gatewayUrl]);
+  }, [
+    envName,
+    configId,
+    validateMetadata,
+    url,
+    headers,
+    gatewayUrl,
+    gatewayToken
+  ]);
 
   return ipfsMetadataStorage;
 }
@@ -60,11 +72,13 @@ function initIpfsMetadataStorage(
   validateMetadata: (metadata: AnyMetadata) => void,
   url?: string,
   headers?: Headers | Record<string, string>,
-  gatewayUrl?: string
+  gatewayUrl?: string,
+  gatewayToken?: string
 ) {
   return new IpfsMetadataStorage(validateMetadata, {
     url: url || getEnvConfigById(envName, configId).ipfsMetadataUrl,
     headers,
-    gatewayUrl
+    gatewayUrl,
+    gatewayToken
   });
 }

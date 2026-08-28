@@ -61,6 +61,7 @@ export const Base = {
       walletConnectProjectId:
         process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? "",
       ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
+      ipfsGatewayToken: process.env.STORYBOOK_DATA_IPFS_GATEWAY_TOKEN,
       ipfsJwt: process.env.STORYBOOK_DATA_IPFS_JWT,
       sendDeliveryInfoThroughXMTP: true,
       raiseDisputeForExchangeUrl:

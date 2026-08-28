@@ -54,6 +54,11 @@ export type CoreSdkConfig = {
    */
   ipfsGateway?: string;
   /**
+   * Optional token for a dedicated Pinata gateway (`*.mypinata.cloud`). Those
+   * gateways answer 403 without one, and they do NOT accept the API JWT.
+   */
+  ipfsGatewayToken?: string;
+  /**
    * Optional override for The Graph IPFS storage to use.
    */
   theGraphIpfsUrl?: string;
@@ -97,7 +102,16 @@ export function useCoreSdk(
       setCoreSdk(newCoreSdk);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [config.web3Provider, config.configId, overrides, options.enabled]);
+  }, [
+    config.web3Provider,
+    config.configId,
+    config.ipfsMetadataStorageUrl,
+    config.ipfsMetadataStorageHeaders,
+    config.ipfsGateway,
+    config.ipfsGatewayToken,
+    overrides,
+    options.enabled
+  ]);
 
   return coreSdk as CoreSDK; // Force cast as CoreSDK since it's enabled by default
 }
@@ -130,12 +144,14 @@ function initCoreSdk(config: CoreSdkConfig, overrides?: CoreSdkOverrides) {
         (theGraphStorageUrl === metadataStorageUrl
           ? config.ipfsMetadataStorageHeaders
           : undefined),
-      gatewayUrl: config.ipfsGateway
+      gatewayUrl: config.ipfsGateway,
+      gatewayToken: config.ipfsGatewayToken
     }),
     metadataStorage: new IpfsMetadataStorage(validateMetadata, {
       url: metadataStorageUrl,
       headers: config.ipfsMetadataStorageHeaders,
-      gatewayUrl: config.ipfsGateway
+      gatewayUrl: config.ipfsGateway,
+      gatewayToken: config.ipfsGatewayToken
     }),
     chainId: defaultConfig.chainId,
     metaTx,

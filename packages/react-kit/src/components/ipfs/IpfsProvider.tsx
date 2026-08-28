@@ -1,6 +1,6 @@
 import { Optional } from "utility-types";
 import { getEnvConfigById } from "@bosonprotocol/core-sdk";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo } from "react";
 import { useEnvContext } from "../environment/EnvironmentContext";
 import { Context, IpfsContextProps } from "./IpfsContext";
 import { getIpfsHeaders } from "../../hooks/ipfs/getIpfsHeaders";
@@ -33,11 +33,18 @@ export function IpfsProvider({ children, ...rest }: IpfsProviderProps) {
   const { ipfsMetadataUrl } = getEnvConfigById(envName, configId);
   const ipfsMetadataStorageUrl = rest.ipfsMetadataStorageUrl || ipfsMetadataUrl;
   const ipfsGateway = rest.ipfsGateway || "https://ipfs.io/ipfs";
-  const ipfsMetadataStorageHeaders = getIpfsHeaders({
-    ipfsJwt: rest.ipfsJwt,
-    ipfsProjectId: rest.ipfsProjectId,
-    ipfsProjectSecret: rest.ipfsProjectSecret
-  });
+  // A fresh object every render would re-create the IpfsMetadataStorage (and
+  // its IPFS client) in every consumer keyed on it, so key the identity on the
+  // credentials themselves.
+  const ipfsMetadataStorageHeaders = useMemo(
+    () =>
+      getIpfsHeaders({
+        ipfsJwt: rest.ipfsJwt,
+        ipfsProjectId: rest.ipfsProjectId,
+        ipfsProjectSecret: rest.ipfsProjectSecret
+      }),
+    [rest.ipfsJwt, rest.ipfsProjectId, rest.ipfsProjectSecret]
+  );
   return (
     <Context.Provider
       value={{

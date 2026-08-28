@@ -5,15 +5,20 @@ import { validateMetadata } from "@bosonprotocol/core-sdk";
 
 export function useIpfsStorage() {
   const { envName, configId } = useEnvContext();
-  const { ipfsMetadataStorageUrl, ipfsMetadataStorageHeaders, ipfsGateway } =
-    useIpfsContext();
+  const {
+    ipfsMetadataStorageUrl,
+    ipfsMetadataStorageHeaders,
+    ipfsGateway,
+    ipfsGatewayToken
+  } = useIpfsContext();
   const storage = useIpfsMetadataStorage(
     envName,
     configId,
     validateMetadata,
     ipfsMetadataStorageUrl,
     ipfsMetadataStorageHeaders,
-    ipfsGateway
+    ipfsGateway,
+    ipfsGatewayToken
   );
   return storage;
 }

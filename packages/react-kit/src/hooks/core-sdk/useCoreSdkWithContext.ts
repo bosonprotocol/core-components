@@ -6,6 +6,7 @@ import { Token } from "../../components/widgets/finance/convertion-rate/Converti
 import { useSigner } from "../connection/connection";
 import { useMemo } from "react";
 import { useExternalSigner } from "../../components/signer/useExternalSigner";
+import { useIpfsContextIfAvailable } from "../../components/ipfs/IpfsContext";
 import { hooks } from "../..";
 
 export function useCoreSDKWithContext(): CoreSDK {
@@ -18,11 +19,21 @@ export function useCoreSDKWithContext(): CoreSDK {
       ? { web3Lib: externalSigner.externalWeb3LibAdapter }
       : undefined;
   }, [externalSigner]);
+  // Optional: IpfsProvider sits inside the widget provider stack, so this hook
+  // is also called from above it. Where it is mounted, the CoreSDK has to use
+  // the same IPFS credentials and read gateway as the rest of the widget -
+  // otherwise metadata writes reach Pinata unauthenticated and reads fall back
+  // to the default public gateway.
+  const ipfs = useIpfsContextIfAvailable();
   return hooks.useCoreSdk(
     {
       envName,
       configId,
       web3Provider: signer?.provider as providers.Web3Provider,
+      ipfsMetadataStorageUrl: ipfs?.ipfsMetadataStorageUrl,
+      ipfsMetadataStorageHeaders: ipfs?.ipfsMetadataStorageHeaders,
+      ipfsGateway: ipfs?.ipfsGateway,
+      ipfsGatewayToken: ipfs?.ipfsGatewayToken,
       metaTx: {
         ...defaultConfig.metaTx,
         apiKey: metaTx?.apiKey,
