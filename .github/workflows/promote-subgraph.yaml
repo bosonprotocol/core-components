@@ -4,10 +4,11 @@ name: Promote deployed subgraphs
 # workflows do not wait for it: they flag the version they deployed in a repository
 # variable named SUBGRAPH_PENDING_<ENV>_<NETWORK>, and this schedule picks it up.
 #
-# Every 30 minutes it checks each flagged deployment and, as soon as it is fully indexed,
-# moves the 'latest' tag onto it and deletes the version the tag was pointing to. The flag
-# is then cleared - as it is when the indexing failed, which fails the job so the failure
-# is reported. Nothing flagged means nothing to do, and the run costs a few seconds.
+# Roughly once an hour it checks each flagged deployment and, as soon as it is fully
+# indexed, moves the 'latest' tag onto it and deletes the version the tag was pointing
+# to. The flag is then cleared - as it is when the indexing failed, which fails the job
+# so the failure is reported. Nothing flagged means nothing to do, and the run costs a
+# few seconds.
 #
 # A deployment that neither indexes nor fails is watched for PROMOTION_DEADLINE_HOURS and
 # given up on after that: a version nobody is ever going to promote gets reported once,
@@ -18,14 +19,18 @@ name: Promote deployed subgraphs
 # variables > Actions > Variables) and run this workflow.
 on:
   schedule:
-    # Every half hour, at :20 and :50 rather than on the hour and the half hour: GitHub
-    # delays - and drops - scheduled runs when Actions is busy, and those two minutes are
-    # where every other repository's cron lands. Nothing here needs a tick at a set time.
+    # Once an hour, at :25 rather than on the hour, and best-effort rather than on time:
+    # GitHub dispatches scheduled runs when it gets to them - tens of minutes late here,
+    # and later still on the hour, where every other repository's cron lands - and a tick
+    # still undelivered when the next one is due is dropped rather than queued. Asking for
+    # more than one an hour buys nothing: the ':20 and :50' this replaced was delivered
+    # about once every three hours, one tick in six. Nothing here needs a tick at a set
+    # time, and a missed one only leaves the flag to the following run.
     #
     # Scheduled workflows only ever run from the default branch, and GitHub disables them
     # after 60 days without any repository activity, which is what stopped the
     # 'pin-to-pinata' schedule on 2026-08-04.
-    - cron: "20,50 * * * *"
+    - cron: "25 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -155,7 +160,7 @@ jobs:
       - name: Give up on a deployment that never promotes
         # Whatever left the flag in place: a version still indexing, or a step that failed
         # before reporting an outcome at all - a missing API key, a version deleted by
-        # hand on Goldsky. Without this, that flag is picked up again every 30 minutes,
+        # hand on Goldsky. Without this, that flag is picked up again on every run,
         # forever, and nothing ever says so.
         if: ${{ !cancelled() && !contains(fromJSON('["promoted", "failed"]'), steps.promote.outputs.outcome) }}
         env:
