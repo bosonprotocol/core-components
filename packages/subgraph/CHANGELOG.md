@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.37.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.36.0...@bosonprotocol/subgraph@1.37.0) (2026-08-28)
+
+### Bug Fixes
+
+- reorder entities in subgraph template to generate a new hash (needed to redeploy) ([585feec](https://github.com/bosonprotocol/core-components/commit/585feec67231dab3f88070248c6e50108f1afe60))
+
+### Features
+
+- migrate subgraph provider from Ormi to Goldsky ([#1037](https://github.com/bosonprotocol/core-components/issues/1037)) ([e56d458](https://github.com/bosonprotocol/core-components/commit/e56d4582b78629efeace72197553fe34f68b27e5)), closes [#1036](https://github.com/bosonprotocol/core-components/issues/1036)
+
 # [1.36.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.35.2...@bosonprotocol/subgraph@1.36.0) (2026-06-05)
 
 ### Features

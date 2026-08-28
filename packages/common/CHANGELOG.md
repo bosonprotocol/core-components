@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.34.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.33.0...@bosonprotocol/common@1.34.0) (2026-08-28)
+
+### Features
+
+- migrate subgraph provider from Ormi to Goldsky ([#1037](https://github.com/bosonprotocol/core-components/issues/1037)) ([e56d458](https://github.com/bosonprotocol/core-components/commit/e56d4582b78629efeace72197553fe34f68b27e5)), closes [#1036](https://github.com/bosonprotocol/core-components/issues/1036)
+
 # [1.33.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.32.2...@bosonprotocol/common@1.33.0) (2026-06-05)
 
 ### Features
