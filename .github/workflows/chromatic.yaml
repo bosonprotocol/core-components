@@ -16,10 +16,10 @@ jobs:
           envkey_REACT_APP_WALLET_CONNECT_PROJECT_ID: ${{ secrets.REACT_APP_WALLET_CONNECT_PROJECT_ID }}
           envkey_STORYBOOK_REACT_APP_INFURA_KEY: ${{ secrets.REACT_APP_INFURA_KEY }}
           envkey_STORYBOOK_REACT_APP_MAGIC_API_KEY: ${{ secrets.REACT_APP_MAGIC_API_KEY }}
+          envkey_STORYBOOK_DATA_IPFS_JWT: ${{ secrets.REACT_APP_PINATA_JWT }}
+          envkey_STORYBOOK_DATA_IPFS_GATEWAY: ${{ secrets.REACT_APP_IPFS_GATEWAY }}
           directory: ./packages/react-kit
           file_name: .env
-      - run: cat .env
-        working-directory: ./packages/react-kit
       - name: Install dependencies
         run: npm ci
       - id: build

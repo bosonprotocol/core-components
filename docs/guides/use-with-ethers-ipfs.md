@@ -17,7 +17,8 @@ The `core-sdk` can be initialized by explicitly passing in the required argument
 ```js
 import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
-import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
+import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
+import { validateMetadata } from "@bosonprotocol/metadata";
 import { ethers } from "ethers";
 
 // injected web3 provider
@@ -30,11 +31,18 @@ const coreSDK = new CoreSDK({
   protocolDiamond: "0x5E3f5127e320aD0C38a21970E327eefEf12561E5",
   chainId: 137,
   // optional
-  metadataStorage: new IpfsMetadata({
-    url: "https://ipfs.infura.io:5001"
+  metadataStorage: new IpfsMetadataStorage(validateMetadata, {
+    url: "https://uploads.pinata.cloud/v3/files",
+    headers: { Authorization: `Bearer ${process.env.PINATA_JWT}` },
+    // Pinata's upload endpoint is not an IPFS HTTP API, so reads go through a
+    // gateway. Defaults to https://ipfs.io/ipfs when omitted.
+    gatewayUrl: "https://my-gateway.mypinata.cloud/ipfs",
+    // Dedicated *.mypinata.cloud gateways answer 403 without a gateway token,
+    // and they do NOT accept the API JWT. Omit for a public gateway.
+    gatewayToken: process.env.PINATA_GATEWAY_TOKEN
   }),
   // optional
-  theGraphStorage: new IpfsMetadata({
+  theGraphStorage: new IpfsMetadataStorage(validateMetadata, {
     url: "https://api.thegraph.com/ipfs/api/v0"
   })
 });
@@ -48,7 +56,6 @@ Take a look at [`configs.ts`](/packages/common/src/configs.ts) to see the availa
 ```js
 import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
-import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
 import { ethers } from "ethers";
 
 // injected web3 provider

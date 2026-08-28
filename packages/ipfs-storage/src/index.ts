@@ -1,2 +1,6 @@
 export { IpfsMetadataStorage } from "./ipfs/metadata";
-export { BaseIpfsStorage } from "./ipfs/base";
+export {
+  BaseIpfsStorage,
+  BaseIpfsStorageOptions,
+  IpfsStorageProvider
+} from "./ipfs/base";
