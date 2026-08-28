@@ -399,3 +399,244 @@ describe("#get() - BaseIpfsStorage", () => {
     });
   });
 });
+
+const PINATA_V3_URL = "https://uploads.pinata.cloud/v3/files";
+const PINATA_LEGACY_URL = "https://api.pinata.cloud/pinning/pinFileToIPFS";
+
+describe("#getByCID() - read path", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("reads through a gateway when the url is a Pinata upload endpoint", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response("hello"));
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    const data = await ipfsStorage.getByCID(IPFS_HASH, false, false);
+
+    // cat() would have been spoken at an endpoint that has no IPFS HTTP API.
+    expect(mockedFetch).toHaveBeenCalledWith(
+      `https://ipfs.io/ipfs/${IPFS_HASH}`
+    );
+    expect(Buffer.from(data).toString()).toEqual("hello");
+  });
+
+  it("prefers an explicit gatewayUrl and normalises its trailing slash", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response("hello"));
+    const ipfsStorage = new BaseIpfsStorage({
+      url: PINATA_V3_URL,
+      gatewayUrl: "https://dedicated.mypinata.cloud/ipfs"
+    });
+
+    await ipfsStorage.getByCID(IPFS_HASH, false, false);
+
+    expect(mockedFetch).toHaveBeenCalledWith(
+      `https://dedicated.mypinata.cloud/ipfs/${IPFS_HASH}`
+    );
+  });
+
+  it("uses a gatewayUrl even when the url is a normal IPFS API", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response("hello"));
+    const ipfsStorage = new BaseIpfsStorage({
+      url: IPFS_URL,
+      gatewayUrl: "https://dedicated.mypinata.cloud/ipfs/"
+    });
+
+    await ipfsStorage.getByCID(IPFS_HASH, false, false);
+
+    expect(mockedFetch).toHaveBeenCalledWith(
+      `https://dedicated.mypinata.cloud/ipfs/${IPFS_HASH}`
+    );
+  });
+
+  it("throws with the status when the gateway rejects the read", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response("nope", { status: 504, statusText: "Gateway Timeout" })
+    );
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    await expect(ipfsStorage.getByCID(IPFS_HASH, false, false)).rejects.toThrow(
+      `Failed to fetch ${IPFS_HASH}`
+    );
+  });
+
+  it("still uses ipfsClient.cat() when no gateway applies", async () => {
+    mockedIpfsHttpClient.create.mockReturnValueOnce({
+      ...create({ url: IPFS_URL }),
+      cat: () => ({
+        async *[Symbol.asyncIterator]() {
+          yield new Uint8Array([1, 2]);
+          yield new Uint8Array([3]);
+        }
+      })
+    });
+    mockedUint8arrays.concat.mockReturnValueOnce(new Uint8Array([1, 2, 3]));
+    const ipfsStorage = new BaseIpfsStorage({ url: IPFS_URL });
+
+    const data = await ipfsStorage.getByCID(IPFS_HASH, false, false);
+
+    expect(mockedFetch).not.toHaveBeenCalled();
+    expect(mockedUint8arrays.concat).toHaveBeenCalledWith([
+      new Uint8Array([1, 2]),
+      new Uint8Array([3])
+    ]);
+    expect(data).toEqual(new Uint8Array([1, 2, 3]));
+  });
+
+  it("returns a Blob without going through Buffer", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response("hello"));
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    const blob = await ipfsStorage.getByCID(IPFS_HASH, false, true);
+
+    expect(blob).toBeInstanceOf(Blob);
+    expect(blob.size).toEqual(5);
+    expect(await blob.text()).toEqual("hello");
+  });
+
+  it("parses JSON when asJson is set", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response('{"a":1}'));
+    mockedUint8arrays.toString.mockReturnValueOnce('{"a":1}');
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    await expect(ipfsStorage.getByCID(IPFS_HASH, true, false)).resolves.toEqual(
+      { a: 1 }
+    );
+  });
+});
+
+describe("#add() - Pinata failure modes", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("rejects a payload that is neither string nor Uint8Array", async () => {
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    await expect(ipfsStorage.add(42 as never)).rejects.toThrow(
+      "Unsupported Pinata upload payload"
+    );
+    expect(mockedFetch).not.toHaveBeenCalled();
+  });
+
+  it("surfaces the status and body when the upload is rejected", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response("quota exceeded", {
+        status: 500,
+        statusText: "Internal Server Error"
+      })
+    );
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    await expect(ipfsStorage.add("hello")).rejects.toThrow(
+      "Pinata upload failed (500 Internal Server Error): quota exceeded"
+    );
+  });
+
+  it("throws when the upload succeeds but no CID comes back", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response(JSON.stringify({})));
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    await expect(ipfsStorage.add("hello")).rejects.toThrow(
+      "Pinata upload succeeded but response did not include a CID"
+    );
+  });
+});
+
+describe("#add() - authorization header", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("sends no Authorization when no headers are configured", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ IpfsHash: IPFS_HASH }))
+    );
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_LEGACY_URL });
+
+    await ipfsStorage.add("hello");
+
+    const init = mockedFetch.mock.calls[0][1] as { headers: object };
+    expect(init.headers).not.toHaveProperty("Authorization");
+  });
+
+  it("reads the token from a Headers instance", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ cid: IPFS_HASH }))
+    );
+    const ipfsStorage = new BaseIpfsStorage({
+      url: PINATA_V3_URL,
+      headers: new Headers({ authorization: "Bearer from-headers-object" })
+    });
+
+    await ipfsStorage.add("hello");
+
+    const init = mockedFetch.mock.calls[0][1] as {
+      headers: Record<string, string>;
+    };
+    expect(init.headers.Authorization).toEqual("Bearer from-headers-object");
+  });
+
+  it("sends no Authorization when a Headers instance carries none", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ cid: IPFS_HASH }))
+    );
+    const ipfsStorage = new BaseIpfsStorage({
+      url: PINATA_V3_URL,
+      headers: new Headers({ "content-language": "en" })
+    });
+
+    await ipfsStorage.add("hello");
+
+    const init = mockedFetch.mock.calls[0][1] as { headers: object };
+    expect(init.headers).not.toHaveProperty("Authorization");
+  });
+
+  it("reads the token case-insensitively from a plain record", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ cid: IPFS_HASH }))
+    );
+    const ipfsStorage = new BaseIpfsStorage({
+      url: PINATA_V3_URL,
+      headers: { AUTHORIZATION: "Bearer from-record" }
+    });
+
+    await ipfsStorage.add("hello");
+
+    const init = mockedFetch.mock.calls[0][1] as {
+      headers: Record<string, string>;
+    };
+    expect(init.headers.Authorization).toEqual("Bearer from-record");
+  });
+});
+
+describe("#getByURL() - response shapes", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("returns text when asJson and asBlob are both false", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response("plain body"));
+    const ipfsStorage = new BaseIpfsStorage({ url: IPFS_URL });
+
+    await expect(
+      ipfsStorage.getByURL("https://ipfs.api.com/thing", false, false)
+    ).resolves.toEqual("plain body");
+  });
+
+  it("returns a Blob when asBlob is set", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response("plain body"));
+    const ipfsStorage = new BaseIpfsStorage({ url: IPFS_URL });
+
+    const blob = await ipfsStorage.getByURL(
+      "https://ipfs.api.com/thing",
+      false,
+      true
+    );
+
+    // Not an `instanceof Blob` check: this comes straight from the fetch
+    // implementation's own Blob class, which is not the global one.
+    expect(blob.size).toEqual("plain body".length);
+    expect(await blob.text()).toEqual("plain body");
+  });
+});
