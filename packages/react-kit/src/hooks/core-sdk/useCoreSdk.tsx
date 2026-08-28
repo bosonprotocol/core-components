@@ -47,6 +47,13 @@ export type CoreSdkConfig = {
    */
   ipfsMetadataStorageHeaders?: Headers | Record<string, string>;
   /**
+   * Optional IPFS gateway to read metadata through, e.g.
+   * `https://my-gateway.mypinata.cloud/ipfs`. Only used when the storage url is
+   * an upload-only endpoint, such as Pinata's; a url that is a real IPFS HTTP
+   * API is read through directly.
+   */
+  ipfsGateway?: string;
+  /**
    * Optional override for The Graph IPFS storage to use.
    */
   theGraphIpfsUrl?: string;
@@ -116,15 +123,19 @@ function initCoreSdk(config: CoreSdkConfig, overrides?: CoreSdkOverrides) {
     subgraphUrl: config.subgraphUrl || defaultConfig.subgraphUrl,
     theGraphStorage: new IpfsMetadataStorage(validateMetadata, {
       url: theGraphStorageUrl,
+      // Parenthesised: `||` binds tighter than `?:`, so without it the
+      // dedicated theGraph headers were computed and then thrown away.
       headers:
         config.theGraphIpfsStorageHeaders ||
-        theGraphStorageUrl === metadataStorageUrl
+        (theGraphStorageUrl === metadataStorageUrl
           ? config.ipfsMetadataStorageHeaders
-          : undefined
+          : undefined),
+      gatewayUrl: config.ipfsGateway
     }),
     metadataStorage: new IpfsMetadataStorage(validateMetadata, {
       url: metadataStorageUrl,
-      headers: config.ipfsMetadataStorageHeaders
+      headers: config.ipfsMetadataStorageHeaders,
+      gatewayUrl: config.ipfsGateway
     }),
     chainId: defaultConfig.chainId,
     metaTx,

@@ -47,8 +47,7 @@ Commit.args = {
   fairExchangePolicyRules:
     "ipfs://QmXn43S2aKbDmqW3EDjHvt8pwUVLHpVE1mcradDpcmgiHm",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
-  ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
-  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  ipfsJwt: process.env.STORYBOOK_DATA_IPFS_JWT,
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
   productUuid: "f4bb0f8-2f2c-d151-2801-0d3c6250461", // with size variations
@@ -82,8 +81,7 @@ CommitTokenGated_ERC20.args = {
   fairExchangePolicyRules:
     "ipfs://QmXn43S2aKbDmqW3EDjHvt8pwUVLHpVE1mcradDpcmgiHm",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
-  ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
-  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  ipfsJwt: process.env.STORYBOOK_DATA_IPFS_JWT,
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
@@ -116,8 +114,7 @@ CommitWithColorAndSizeVariations.args = {
   fairExchangePolicyRules:
     "ipfs://QmXn43S2aKbDmqW3EDjHvt8pwUVLHpVE1mcradDpcmgiHm",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
-  ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
-  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  ipfsJwt: process.env.STORYBOOK_DATA_IPFS_JWT,
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
@@ -153,8 +150,7 @@ CommitTokenGated_ERC721.args = {
   fairExchangePolicyRules:
     "ipfs://QmXn43S2aKbDmqW3EDjHvt8pwUVLHpVE1mcradDpcmgiHm",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
-  ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
-  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  ipfsJwt: process.env.STORYBOOK_DATA_IPFS_JWT,
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
@@ -190,8 +186,7 @@ CommitTokenGated_ERC721_2.args = {
   fairExchangePolicyRules:
     "ipfs://QmXn43S2aKbDmqW3EDjHvt8pwUVLHpVE1mcradDpcmgiHm",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
-  ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
-  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  ipfsJwt: process.env.STORYBOOK_DATA_IPFS_JWT,
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
@@ -227,8 +222,7 @@ CommitTokenGated_ERC1155.args = {
   fairExchangePolicyRules:
     "ipfs://QmXn43S2aKbDmqW3EDjHvt8pwUVLHpVE1mcradDpcmgiHm",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
-  ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
-  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  ipfsJwt: process.env.STORYBOOK_DATA_IPFS_JWT,
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
@@ -264,8 +258,7 @@ CommitBundle.args = {
   fairExchangePolicyRules:
     "ipfs://QmXn43S2aKbDmqW3EDjHvt8pwUVLHpVE1mcradDpcmgiHm",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
-  ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
-  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  ipfsJwt: process.env.STORYBOOK_DATA_IPFS_JWT,
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,

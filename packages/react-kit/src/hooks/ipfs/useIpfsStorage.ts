@@ -5,14 +5,15 @@ import { useIpfsMetadataStorage } from "../useIpfsMetadataStorage";
 
 export function useIpfsStorage() {
   const { config } = useConfigContext();
-  const { ipfsMetadataStorageHeaders, ipfsMetadataStorageUrl } =
+  const { ipfsMetadataStorageHeaders, ipfsMetadataStorageUrl, ipfsGateway } =
     useIpfsContext();
   const storage = useIpfsMetadataStorage(
     config.envName,
     config.configId,
     validateMetadata,
     ipfsMetadataStorageUrl,
-    ipfsMetadataStorageHeaders
+    ipfsMetadataStorageHeaders,
+    ipfsGateway
   );
   return storage;
 }

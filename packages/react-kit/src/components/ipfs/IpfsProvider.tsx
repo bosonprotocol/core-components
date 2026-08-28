@@ -12,7 +12,18 @@ export type IpfsProviderProps = Omit<
   >,
   "ipfsMetadataStorageHeaders"
 > & {
+  /**
+   * Pinata JWT used to authenticate IPFS uploads. Takes precedence over the
+   * legacy `ipfsProjectId` / `ipfsProjectSecret` pair.
+   */
+  ipfsJwt?: string;
+  /**
+   * @deprecated Infura's IPFS service is decommissioned. Use `ipfsJwt`.
+   */
   ipfsProjectId?: string;
+  /**
+   * @deprecated Infura's IPFS service is decommissioned. Use `ipfsJwt`.
+   */
   ipfsProjectSecret?: string;
   children: ReactNode;
 };
@@ -22,10 +33,11 @@ export function IpfsProvider({ children, ...rest }: IpfsProviderProps) {
   const { ipfsMetadataUrl } = getEnvConfigById(envName, configId);
   const ipfsMetadataStorageUrl = rest.ipfsMetadataStorageUrl || ipfsMetadataUrl;
   const ipfsGateway = rest.ipfsGateway || "https://ipfs.io/ipfs";
-  const ipfsMetadataStorageHeaders = getIpfsHeaders(
-    rest.ipfsProjectId,
-    rest.ipfsProjectSecret
-  );
+  const ipfsMetadataStorageHeaders = getIpfsHeaders({
+    ipfsJwt: rest.ipfsJwt,
+    ipfsProjectId: rest.ipfsProjectId,
+    ipfsProjectSecret: rest.ipfsProjectSecret
+  });
   return (
     <Context.Provider
       value={{

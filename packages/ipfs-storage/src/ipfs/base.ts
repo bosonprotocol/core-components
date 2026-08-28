@@ -11,11 +11,37 @@ import { CID } from "multiformats/cid";
  */
 const DEFAULT_READ_GATEWAY = "https://ipfs.io/ipfs/";
 
+/** Payload shapes the Pinata upload path knows how to turn into a file part. */
+type PinataUploadPayload = string | Uint8Array | ArrayBuffer | Blob;
+
+function isPinataUploadPayload(value: unknown): value is PinataUploadPayload {
+  return (
+    typeof value === "string" ||
+    value instanceof Uint8Array ||
+    value instanceof ArrayBuffer ||
+    (typeof Blob !== "undefined" && value instanceof Blob)
+  );
+}
+
+async function toBytes(value: PinataUploadPayload): Promise<Uint8Array> {
+  if (typeof value === "string") {
+    return new TextEncoder().encode(value);
+  }
+  if (value instanceof Uint8Array) {
+    return value;
+  }
+  if (value instanceof ArrayBuffer) {
+    return new Uint8Array(value);
+  }
+  return new Uint8Array(await value.arrayBuffer());
+}
+
 export type BaseIpfsStorageOptions = Options & {
   /**
    * Base URL of an IPFS HTTP gateway to read through, e.g.
-   * `https://my-gateway.mypinata.cloud/ipfs/`. Required for reads whenever
-   * `url` is an upload-only endpoint rather than an IPFS HTTP API.
+   * `https://my-gateway.mypinata.cloud/ipfs/`. Only consulted when `url` is an
+   * upload-only endpoint rather than an IPFS HTTP API; wherever `url` can serve
+   * reads itself, `ipfsClient.cat()` is preferred.
    */
   gatewayUrl?: string;
 };
@@ -42,13 +68,17 @@ export class BaseIpfsStorage {
    * can be used directly.
    *
    * `cat()` speaks the IPFS HTTP API, which a Pinata upload endpoint is not, so
-   * reads there have to go through a gateway or they fail outright.
+   * reads there have to go through a gateway or they fail outright. Everywhere
+   * else `cat()` wins even when a `gatewayUrl` was supplied: a self-hosted node
+   * serves content no gateway has seen, and callers pass a single gateway value
+   * that also has to work for image URLs.
    */
   private getReadGatewayUrl(): string | undefined {
-    const gateway =
-      this.gatewayUrl ||
-      (this.isPinataUploadEndpoint() ? DEFAULT_READ_GATEWAY : undefined);
-    return gateway ? `${gateway.replace(/\/+$/, "")}/` : undefined;
+    if (!this.isPinataUploadEndpoint()) {
+      return undefined;
+    }
+    const gateway = this.gatewayUrl || DEFAULT_READ_GATEWAY;
+    return `${gateway.replace(/\/+$/, "")}/`;
   }
 
   public async add(value: Parameters<IPFSHTTPClient["add"]>[0]) {
@@ -61,6 +91,17 @@ export class BaseIpfsStorage {
     });
     const cid = addResult.cid.toString();
     return cid;
+  }
+
+  /**
+   * Remove a pin. Pinata's upload endpoints expose no unpin operation and are
+   * not an IPFS HTTP API, so this is a no-op there rather than a failure.
+   */
+  public async unpin(cid: string): Promise<void> {
+    if (this.isPinataUploadEndpoint()) {
+      return;
+    }
+    await this.ipfsClient.pin.rm(cid);
   }
 
   private isPinataUploadEndpoint() {
@@ -92,18 +133,41 @@ export class BaseIpfsStorage {
   }
 
   private async addToPinata(value: Parameters<IPFSHTTPClient["add"]>[0]) {
-    if (!(typeof value === "string" || value instanceof Uint8Array)) {
+    if (!isPinataUploadPayload(value)) {
       throw new Error(
-        "Unsupported Pinata upload payload for BaseIpfsStorage.add(). Use string or Uint8Array"
+        "Unsupported Pinata upload payload for BaseIpfsStorage.add(). Use string, Uint8Array, ArrayBuffer, Blob or File"
       );
     }
 
+    const isBlob = typeof Blob !== "undefined" && value instanceof Blob;
+    const filename =
+      (typeof File !== "undefined" && value instanceof File && value.name) ||
+      "file";
+    const contentType = (isBlob && (value as Blob).type) || undefined;
+
     const formData = new FormData();
-    const content =
-      typeof value === "string" ? Buffer.from(value) : Buffer.from(value);
-    formData.append("file", content, {
-      filename: "file"
-    });
+    // `form-data` declares `"browser": "./lib/browser"` in its package.json, so
+    // bundlers hand us the native `FormData` instead. That one has no
+    // `getHeaders()` and takes the filename as a plain string, so branch on the
+    // capability rather than on the environment.
+    const isNodeFormData =
+      typeof (formData as unknown as { getHeaders?: unknown }).getHeaders ===
+      "function";
+
+    if (isNodeFormData) {
+      formData.append("file", Buffer.from(await toBytes(value)), {
+        filename,
+        contentType
+      });
+    } else {
+      const blob = isBlob
+        ? (value as Blob)
+        : new Blob(
+            [await toBytes(value)],
+            contentType ? { type: contentType } : {}
+          );
+      formData.append("file", blob, filename);
+    }
 
     if (this.url.includes("uploads.pinata.cloud/v3/files")) {
       formData.append("network", "public");
@@ -113,7 +177,16 @@ export class BaseIpfsStorage {
     const response = await fetch(this.url, {
       method: "POST",
       headers: {
-        ...formData.getHeaders(),
+        // Only the node implementation can name its own boundary. The browser
+        // must be left to set `content-type` itself, or the boundary in the
+        // header will not match the one in the body.
+        ...(isNodeFormData
+          ? (
+              formData as unknown as {
+                getHeaders(): Record<string, string>;
+              }
+            ).getHeaders()
+          : {}),
         ...(auth ? { Authorization: auth } : {})
       },
       body: formData as unknown as BodyInit

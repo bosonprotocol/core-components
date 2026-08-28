@@ -12,6 +12,19 @@ import * as uint8arrays from "uint8arrays";
 jest.mock("uint8arrays");
 const mockedUint8arrays = jest.mocked(uint8arrays, { shallow: true });
 
+import type NodeFormData from "form-data";
+// `form-data` resolves to native `FormData` under a bundler's `browser`
+// field. Swap between the two implementations to cover both runtimes.
+let mockBrowserFormData = false;
+jest.mock("form-data", () => {
+  const ActualFormData = jest.requireActual("form-data");
+  return function MockFormData() {
+    return mockBrowserFormData
+      ? new globalThis.FormData()
+      : new ActualFormData();
+  };
+});
+
 import * as ipfsHttpClient from "ipfs-http-client";
 jest.mock("ipfs-http-client");
 const mockedIpfsHttpClient = jest.mocked(ipfsHttpClient, { shallow: true });
@@ -435,18 +448,27 @@ describe("#getByCID() - read path", () => {
     );
   });
 
-  it("uses a gatewayUrl even when the url is a normal IPFS API", async () => {
-    mockedFetch.mockResolvedValueOnce(new Response("hello"));
+  it("ignores a gatewayUrl when the url is a real IPFS API", async () => {
+    // The local env points at a node holding content no gateway has seen, and
+    // its ipfsGateway is the API port - so cat() has to keep winning here.
+    mockedIpfsHttpClient.create.mockReturnValueOnce({
+      ...create({ url: IPFS_URL }),
+      cat: () => ({
+        async *[Symbol.asyncIterator]() {
+          yield new Uint8Array([1, 2, 3]);
+        }
+      })
+    });
+    mockedUint8arrays.concat.mockReturnValueOnce(new Uint8Array([1, 2, 3]));
     const ipfsStorage = new BaseIpfsStorage({
-      url: IPFS_URL,
-      gatewayUrl: "https://dedicated.mypinata.cloud/ipfs/"
+      url: "http://127.0.0.1:5001",
+      gatewayUrl: "http://127.0.0.1:5001"
     });
 
-    await ipfsStorage.getByCID(IPFS_HASH, false, false);
+    const data = await ipfsStorage.getByCID(IPFS_HASH, false, false);
 
-    expect(mockedFetch).toHaveBeenCalledWith(
-      `https://dedicated.mypinata.cloud/ipfs/${IPFS_HASH}`
-    );
+    expect(mockedFetch).not.toHaveBeenCalled();
+    expect(data).toEqual(new Uint8Array([1, 2, 3]));
   });
 
   it("throws with the status when the gateway rejects the read", async () => {
@@ -508,15 +530,6 @@ describe("#getByCID() - read path", () => {
 describe("#add() - Pinata failure modes", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  it("rejects a payload that is neither string nor Uint8Array", async () => {
-    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
-
-    await expect(ipfsStorage.add(42 as never)).rejects.toThrow(
-      "Unsupported Pinata upload payload"
-    );
-    expect(mockedFetch).not.toHaveBeenCalled();
   });
 
   it("surfaces the status and body when the upload is rejected", async () => {
@@ -638,5 +651,157 @@ describe("#getByURL() - response shapes", () => {
     // implementation's own Blob class, which is not the global one.
     expect(blob.size).toEqual("plain body".length);
     expect(await blob.text()).toEqual("plain body");
+  });
+});
+
+describe("#add() - Pinata payload shapes", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockBrowserFormData = false;
+  });
+
+  async function addAndReadNodeBody(
+    value: Parameters<BaseIpfsStorage["add"]>[0]
+  ) {
+    mockedFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ data: { cid: IPFS_HASH } }))
+    );
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    const cid = await ipfsStorage.add(value);
+
+    const init = mockedFetch.mock.calls[0][1] as unknown as {
+      headers: Record<string, string>;
+      body: NodeFormData;
+    };
+    return { cid, init, body: init.body.getBuffer().toString("latin1") };
+  }
+
+  it("uploads a File under its own name and content type", async () => {
+    const { cid, init, body } = await addAndReadNodeBody(
+      new File(["hello"], "avatar.png", { type: "image/png" })
+    );
+
+    expect(cid).toEqual(IPFS_HASH);
+    expect(body).toContain('filename="avatar.png"');
+    expect(body).toContain("Content-Type: image/png");
+    expect(body).toContain("hello");
+    // The v3 endpoint rejects an upload that does not name a network.
+    expect(body).toContain('name="network"');
+    expect(init.headers["content-type"]).toMatch(/^multipart\/form-data;/);
+  });
+
+  it("uploads a Blob under the default filename", async () => {
+    const { body } = await addAndReadNodeBody(
+      new Blob(["blob body"], { type: "text/plain" })
+    );
+
+    expect(body).toContain('filename="file"');
+    expect(body).toContain("blob body");
+  });
+
+  it("uploads an ArrayBuffer", async () => {
+    const { body } = await addAndReadNodeBody(
+      new TextEncoder().encode("buffered").buffer as ArrayBuffer
+    );
+
+    expect(body).toContain("buffered");
+  });
+
+  it("rejects a payload it cannot turn into a file part", async () => {
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    await expect(ipfsStorage.add(42 as never)).rejects.toThrow(
+      "Unsupported Pinata upload payload"
+    );
+    expect(mockedFetch).not.toHaveBeenCalled();
+  });
+});
+
+describe("#add() - browser FormData", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockBrowserFormData = true;
+  });
+
+  afterEach(() => {
+    mockBrowserFormData = false;
+  });
+
+  it("builds a native FormData and leaves content-type to the runtime", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ data: { cid: IPFS_HASH } }))
+    );
+    const ipfsStorage = new BaseIpfsStorage({
+      url: PINATA_V3_URL,
+      headers: { Authorization: "Bearer token" }
+    });
+
+    const cid = await ipfsStorage.add(
+      new File(["hello"], "avatar.png", { type: "image/png" })
+    );
+
+    expect(cid).toEqual(IPFS_HASH);
+    const init = mockedFetch.mock.calls[0][1] as unknown as {
+      headers: Record<string, string>;
+      body: FormData;
+    };
+    // A boundary the runtime has not chosen yet cannot be announced up front.
+    expect(Object.keys(init.headers).map((key) => key.toLowerCase())).toEqual([
+      "authorization"
+    ]);
+    expect(init.body).toBeInstanceOf(FormData);
+    const file = init.body.get("file") as File;
+    expect(file.name).toEqual("avatar.png");
+    expect(file.type).toEqual("image/png");
+    expect(await file.text()).toEqual("hello");
+    expect(init.body.get("network")).toEqual("public");
+  });
+
+  it("wraps a string payload in a Blob", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ cid: IPFS_HASH }))
+    );
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_LEGACY_URL });
+
+    await ipfsStorage.add("plain text");
+
+    const init = mockedFetch.mock.calls[0][1] as unknown as { body: FormData };
+    const file = init.body.get("file") as File;
+    expect(await file.text()).toEqual("plain text");
+    // The legacy endpoint takes no `network` field.
+    expect(init.body.get("network")).toBeNull();
+  });
+});
+
+describe("#unpin()", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("delegates to ipfsClient.pin.rm for a real IPFS API", async () => {
+    const rm = jest.fn().mockResolvedValue(undefined);
+    mockedIpfsHttpClient.create.mockReturnValueOnce({
+      ...create({ url: IPFS_URL }),
+      pin: { rm }
+    });
+    const ipfsStorage = new BaseIpfsStorage({ url: IPFS_URL });
+
+    await ipfsStorage.unpin(IPFS_HASH);
+
+    expect(rm).toHaveBeenCalledWith(IPFS_HASH);
+  });
+
+  it("is a no-op against a Pinata upload endpoint", async () => {
+    const rm = jest.fn();
+    mockedIpfsHttpClient.create.mockReturnValueOnce({
+      ...create({ url: PINATA_V3_URL }),
+      pin: { rm }
+    });
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    await expect(ipfsStorage.unpin(IPFS_HASH)).resolves.toBeUndefined();
+
+    expect(rm).not.toHaveBeenCalled();
   });
 });

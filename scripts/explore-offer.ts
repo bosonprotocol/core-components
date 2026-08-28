@@ -9,6 +9,7 @@ import { providers, Contract } from "ethers";
 import { program } from "commander";
 import { abis } from "@bosonprotocol/common";
 import { getEnvConfigById } from "../packages/common/src";
+import { defaultGateways } from "./utils/pinata";
 import {
   extractAgentId,
   extractOfferData,
@@ -19,8 +20,7 @@ import {
   ITokenInfo,
   NATIVE_TOKENS
 } from "../packages/core-sdk/src/utils/tokenInfoManager";
-import { buildInfuraHeaders } from "./utils/infura";
-import { CoreSDK } from "../packages/core-sdk/src";
+import { CoreSDK, validateMetadata } from "../packages/core-sdk/src";
 import { EthersAdapter } from "../packages/ethers-sdk/src";
 
 program
@@ -30,8 +30,8 @@ program
   .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80002-0")
   .option("--export <FILEPATH>", "Export offer data to a JSON file")
   .option(
-    "--infura <INFURA_PROJECT_ID>/<INFURA_PROJECT_SECRET>",
-    "ProjectId and Secret required to address Infura IPFS gateway"
+    "--pinata <PINATA_JWT>",
+    "JWT required to address Pinata IPFS gateway"
   )
   .parse(process.argv);
 
@@ -69,11 +69,16 @@ async function main() {
   console.log("extendedOfferData", extendedOfferData);
 
   console.log("Fetching offer metadata...");
-  const ipfsMetadataStorage = new IpfsMetadataStorage({
-    url: opts.infura
-      ? defaultConfig.ipfsMetadataUrl
-      : defaultConfig.theGraphIpfsUrl,
-    headers: opts.infura ? buildInfuraHeaders(opts.infura) : undefined
+  const ipfsUrl =
+    defaultConfig.theGraphIpfsUrl || defaultConfig.ipfsMetadataUrl;
+  const ipfsMetadataStorage = new IpfsMetadataStorage(validateMetadata, {
+    url: ipfsUrl,
+    headers: opts.pinata
+      ? { Authorization: `Bearer ${opts.pinata}` }
+      : undefined,
+    // Only used when ipfsUrl is a Pinata upload endpoint, which has no IPFS
+    // HTTP API to read back through.
+    gatewayUrl: defaultGateways(envName)[0]
   });
   const metadata = await ipfsMetadataStorage.get(offerData.offer.metadataHash);
   console.log("metadata", metadata);

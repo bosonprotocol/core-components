@@ -13,6 +13,9 @@ import { EnvironmentType } from "@bosonprotocol/common/src/types";
  * @param envName - envName to use default IPFS url.
  * @param url - optional custom url.
  * @param headers - Optional IPFS http client headers.
+ * @param gatewayUrl - Optional IPFS gateway to read through. Only used when
+ * `url` is an upload-only endpoint, such as Pinata's; a `url` that is a real
+ * IPFS HTTP API is read through directly.
  * @returns Instance of `IpfsMetadataStorage`.
  */
 export function useIpfsMetadataStorage(
@@ -20,18 +23,33 @@ export function useIpfsMetadataStorage(
   configId: ConfigId,
   validateMetadata: (metadata: AnyMetadata) => void,
   url?: string,
-  headers?: Headers | Record<string, string>
+  headers?: Headers | Record<string, string>,
+  gatewayUrl?: string
 ) {
   const [ipfsMetadataStorage, setIpfsMetadataStorage] =
     useState<IpfsMetadataStorage>(
-      initIpfsMetadataStorage(envName, configId, validateMetadata, url, headers)
+      initIpfsMetadataStorage(
+        envName,
+        configId,
+        validateMetadata,
+        url,
+        headers,
+        gatewayUrl
+      )
     );
 
   useEffect(() => {
     setIpfsMetadataStorage(
-      initIpfsMetadataStorage(envName, configId, validateMetadata, url, headers)
+      initIpfsMetadataStorage(
+        envName,
+        configId,
+        validateMetadata,
+        url,
+        headers,
+        gatewayUrl
+      )
     );
-  }, [envName, configId, validateMetadata, url, headers]);
+  }, [envName, configId, validateMetadata, url, headers, gatewayUrl]);
 
   return ipfsMetadataStorage;
 }
@@ -41,10 +59,12 @@ function initIpfsMetadataStorage(
   configId: ConfigId,
   validateMetadata: (metadata: AnyMetadata) => void,
   url?: string,
-  headers?: Headers | Record<string, string>
+  headers?: Headers | Record<string, string>,
+  gatewayUrl?: string
 ) {
   return new IpfsMetadataStorage(validateMetadata, {
     url: url || getEnvConfigById(envName, configId).ipfsMetadataUrl,
-    headers
+    headers,
+    gatewayUrl
   });
 }
