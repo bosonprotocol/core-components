@@ -43,7 +43,7 @@ async function main() {
 
   const opts = program.opts();
   const envName = opts.env || "testing";
-  const configId = opts.configId || "testing-80002-0";
+  const configId = opts.configId || "testing-11155111-0";
   const metadataFilePath = opts.metadata as string | undefined;
   const pinataJwt = opts.pinata as string | undefined;
   const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
