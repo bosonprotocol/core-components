@@ -226,9 +226,12 @@ async function main() {
     cids = cids.slice(0, limit);
   }
 
+  const gatewayToken = opts.gatewayToken || process.env.PINATA_GATEWAY_TOKEN;
+  // Without a token the environment's dedicated gateway answers 403 for every
+  // CID, so leave it out rather than spend a round trip per CID on it.
   const gateways: string[] = opts.gateway?.length
     ? opts.gateway
-    : defaultGateways(envName);
+    : defaultGateways(envName, { hasGatewayToken: !!gatewayToken });
 
   console.log(`environment: ${envName}`);
   console.log(`input:       ${inputPath}`);
@@ -240,7 +243,7 @@ async function main() {
       console.log(`[${index + 1}/${cids.length}] ${cid} would be pinned`)
     );
     console.log(`\n--dry-run: ${cids.length} CIDs would be processed`);
-    return;
+    return 0;
   }
 
   const jwt = opts.pinata || process.env.PINATA_JWT;
@@ -249,13 +252,9 @@ async function main() {
       "No Pinata JWT provided. Pass --pinata <JWT> or set PINATA_JWT."
     );
   }
-  const gatewayToken = opts.gatewayToken || process.env.PINATA_GATEWAY_TOKEN;
-  if (
-    !gatewayToken &&
-    gateways.some((gateway) => /\.mypinata\.cloud/i.test(gateway))
-  ) {
+  if (!gatewayToken) {
     console.warn(
-      "No --gateway-token / PINATA_GATEWAY_TOKEN set: the dedicated Pinata gateway will answer 403 and be skipped.\n"
+      "No --gateway-token / PINATA_GATEWAY_TOKEN set: reading through public gateways only."
     );
   }
 
@@ -333,13 +332,16 @@ async function main() {
     console.warn(
       `\nWARNING: ${problems.length} CID(s) are still not usable on Pinata. See the report.`
     );
+    return 1;
   }
+
+  return 0;
 }
 
 main()
-  .then(() => {
+  .then((exitCode) => {
     console.log("\ndone");
-    process.exit(0);
+    process.exit(exitCode);
   })
   .catch((e) => {
     console.error(e);

@@ -13,13 +13,19 @@ const ONE_MONTH_FROM_NOW = () => {
   return date.getTime();
 };
 
+/**
+ * Read an "until" date from the offer JSON. `0` is the protocol's "not set"
+ * sentinel - `voucherRedeemableUntilDateInMS` is 0 whenever the offer uses
+ * `voucherValidDurationInMS` instead - so it is left alone rather than treated
+ * as a date in the past.
+ */
 const normalizeUntilDate = (value: unknown): number | undefined => {
   if (value === undefined || value === null) {
     return undefined;
   }
 
   const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : undefined;
+  return Number.isFinite(parsed) && parsed !== 0 ? parsed : undefined;
 };
 
 program
@@ -67,6 +73,28 @@ async function main() {
     voucherRedeemableUntilDateInMS < now
   ) {
     offerDataJson.voucherRedeemableUntilDateInMS = ONE_MONTH_FROM_NOW();
+  }
+
+  // voucherRedeemableUntilDateInMS has to be at or after validUntilDateInMS, on
+  // chain and in the SDK's own offer validation. Bumping the two dates
+  // independently above can turn a consistent pair into one that is not, so
+  // re-align them here rather than reverting on chain after the metadata has
+  // already been uploaded and paid for.
+  const normalizedValidUntil = normalizeUntilDate(
+    offerDataJson.validUntilDateInMS
+  );
+  const normalizedRedeemableUntil = normalizeUntilDate(
+    offerDataJson.voucherRedeemableUntilDateInMS
+  );
+  if (
+    normalizedValidUntil !== undefined &&
+    normalizedRedeemableUntil !== undefined &&
+    normalizedRedeemableUntil < normalizedValidUntil
+  ) {
+    console.warn(
+      `voucherRedeemableUntilDateInMS (${normalizedRedeemableUntil}) is before validUntilDateInMS (${normalizedValidUntil}); raising it to match`
+    );
+    offerDataJson.voucherRedeemableUntilDateInMS = normalizedValidUntil;
   }
 
   if (metadataFilePath) {

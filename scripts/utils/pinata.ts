@@ -26,9 +26,19 @@ export const PUBLIC_IPFS_GATEWAYS = [
 /**
  * Default read gateway chain: the environment's dedicated Pinata gateway first
  * (already-pinned CIDs resolve immediately), then public gateways.
+ *
+ * The dedicated gateway is only worth trying with a gateway token - without one
+ * it answers 403 for every CID - so pass `hasGatewayToken: false` to leave it
+ * out and start from the public gateways.
  */
-export function defaultGateways(envName: string): string[] {
-  return [...(PINATA_GATEWAYS_BY_ENV[envName] || []), ...PUBLIC_IPFS_GATEWAYS];
+export function defaultGateways(
+  envName: string,
+  { hasGatewayToken = true }: { hasGatewayToken?: boolean } = {}
+): string[] {
+  const dedicated = hasGatewayToken
+    ? PINATA_GATEWAYS_BY_ENV[envName] || []
+    : [];
+  return [...dedicated, ...PUBLIC_IPFS_GATEWAYS];
 }
 
 /**
@@ -192,8 +202,12 @@ export class PinataClient {
       if (response.ok) {
         this.v3FilesAvailable = true;
         const files = response.json?.data?.files;
-        if (Array.isArray(files)) {
-          return files.length > 0;
+        // Only a hit is conclusive. `uploadBytesAsDagPb` pins through the
+        // legacy endpoint, and those pins do not always show up in the v3
+        // files listing - so an empty page has to fall through to pinList
+        // rather than report a successful pin as missing.
+        if (Array.isArray(files) && files.length > 0) {
+          return true;
         }
       } else if ([400, 401, 403, 404, 405].includes(response.status)) {
         this.v3FilesAvailable = false;

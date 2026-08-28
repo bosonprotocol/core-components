@@ -404,13 +404,16 @@ async function main() {
     console.warn(
       `WARNING: ${failedRoots.length} root field(s) failed and were skipped: ${failedRoots.join(", ")}`
     );
+    return 1;
   }
+
+  return 0;
 }
 
 main()
-  .then(() => {
+  .then((exitCode) => {
     console.log("\ndone");
-    process.exit(0);
+    process.exit(exitCode);
   })
   .catch((e) => {
     console.error(e);

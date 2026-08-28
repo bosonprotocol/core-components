@@ -33,6 +33,10 @@ program
     "--pinata <PINATA_JWT>",
     "JWT required to address Pinata IPFS gateway"
   )
+  .option(
+    "--gateway-token <TOKEN>",
+    "Pinata dedicated gateway token (defaults to PINATA_GATEWAY_TOKEN); without it *.mypinata.cloud answers 403"
+  )
   .parse(process.argv);
 
 async function main() {
@@ -69,16 +73,24 @@ async function main() {
   console.log("extendedOfferData", extendedOfferData);
 
   console.log("Fetching offer metadata...");
-  const ipfsUrl =
-    defaultConfig.theGraphIpfsUrl || defaultConfig.ipfsMetadataUrl;
+  // Without a Pinata JWT, read from the graph node's IPFS API - it holds the
+  // metadata the indexer resolved and serves `cat()` without credentials.
+  const gatewayToken = opts.gatewayToken || process.env.PINATA_GATEWAY_TOKEN;
   const ipfsMetadataStorage = new IpfsMetadataStorage(validateMetadata, {
-    url: ipfsUrl,
+    url: opts.pinata
+      ? defaultConfig.ipfsMetadataUrl
+      : defaultConfig.theGraphIpfsUrl,
     headers: opts.pinata
       ? { Authorization: `Bearer ${opts.pinata}` }
       : undefined,
-    // Only used when ipfsUrl is a Pinata upload endpoint, which has no IPFS
-    // HTTP API to read back through.
-    gatewayUrl: defaultGateways(envName)[0]
+    // Only used when the url is a Pinata upload endpoint, which has no IPFS
+    // HTTP API to read back through. The environment's dedicated gateway comes
+    // first only when there is a token for it; without one it 403s on every CID
+    // and a public gateway is what can actually serve the read.
+    gatewayUrl: defaultGateways(envName, {
+      hasGatewayToken: !!gatewayToken
+    })[0],
+    gatewayToken
   });
   const metadata = await ipfsMetadataStorage.get(offerData.offer.metadataHash);
   console.log("metadata", metadata);

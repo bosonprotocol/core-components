@@ -119,7 +119,9 @@ async function main() {
     console.log(
       `\n--check: ${mismatched.length} of ${entries.length} recorded CIDs do not match their source file`
     );
-    return;
+    // A stale record is what --check exists to catch, so a CI step can gate on
+    // its exit code.
+    return mismatched.length ? 1 : 0;
   }
 
   if (opts.recordOnly) {
@@ -134,7 +136,7 @@ async function main() {
       );
     }
     console.log("   nothing was uploaded - run without --record-only to pin");
-    return;
+    return 0;
   }
 
   const jwt = opts.pinata || process.env.PINATA_JWT;
@@ -197,13 +199,16 @@ async function main() {
   if (problems.length) {
     console.warn("\nWARNING:");
     problems.forEach((problem) => console.warn(`  ${problem}`));
+    return 1;
   }
+
+  return 0;
 }
 
 main()
-  .then(() => {
+  .then((exitCode) => {
     console.log("\ndone");
-    process.exit(0);
+    process.exit(exitCode);
   })
   .catch((e) => {
     console.error(e);
