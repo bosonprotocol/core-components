@@ -36,16 +36,33 @@ async function toBytes(value: PinataUploadPayload): Promise<Uint8Array> {
   return new Uint8Array(await value.arrayBuffer());
 }
 
-export type IpfsStorageProvider = "ipfs-api" | "pinata";
+/**
+ * Which API the configured `url` speaks. `"pinata"` is Pinata's v3 `/files`
+ * upload API and `"pinata-legacy"` its `pinFileToIPFS` route - they disagree
+ * about the `network` field on upload and about how a pin is removed - while
+ * `"ipfs-api"` is an IPFS HTTP API.
+ */
+export type IpfsStorageProvider = "ipfs-api" | "pinata" | "pinata-legacy";
 
 /** Pinata's legacy pinning route, the one that takes no `network` field. */
 const PINATA_LEGACY_PIN_FILE = "api.pinata.cloud/pinning/pinFileToIPFS";
 
-/** Upload endpoints that are Pinata's by default, without an explicit `provider`. */
-const PINATA_UPLOAD_ENDPOINTS = [
-  "uploads.pinata.cloud/v3/files",
-  PINATA_LEGACY_PIN_FILE
-];
+/** Pinata's v3 upload route. */
+const PINATA_V3_UPLOAD = "uploads.pinata.cloud/v3/files";
+
+/**
+ * Where Pinata serves everything that is not an upload. Uploads go to
+ * `uploads.pinata.cloud`, the CID lookup and the unpin to `api.pinata.cloud`.
+ */
+const PINATA_API_ORIGIN = "https://api.pinata.cloud";
+
+/** The provider a `url` implies when the caller declared none. */
+function sniffProvider(url: string): IpfsStorageProvider {
+  if (url.includes(PINATA_LEGACY_PIN_FILE)) {
+    return "pinata-legacy";
+  }
+  return url.includes(PINATA_V3_UPLOAD) ? "pinata" : "ipfs-api";
+}
 
 /** Dedicated Pinata gateways are the only ones that take a gateway token. */
 function isDedicatedPinataGateway(url: string): boolean {
@@ -56,15 +73,84 @@ function isDedicatedPinataGateway(url: string): boolean {
   }
 }
 
+/** The same CID in two encodings still addresses the same block. */
+function isSameCid(a: string, b: string): boolean {
+  try {
+    return CID.parse(a).toV1().toString() === CID.parse(b).toV1().toString();
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Whether a gateway answered with its generated directory index instead of a
+ * file's bytes. `ipfsClient.cat()` throws for a directory CID, but a gateway
+ * answers 200 with HTML, so without this the index would be handed back as if
+ * it were the content.
+ *
+ * The ETag is the one signal that survives both gateway styles: a file response
+ * carries `W/"<cid>"` naming the block served, a generated index carries no CID
+ * ETag at all. A trailing slash only means something off a subdomain gateway,
+ * which redirects every CID - files included - onto `https://<cid>.ipfs.<host>/`.
+ */
+function looksLikeDirectoryResponse(response: Response, cid: string): boolean {
+  const etag = response.headers.get("etag");
+  const taggedCid = etag ? etag.replace(/^W\//i, "").replace(/^"|"$/g, "") : "";
+  if (taggedCid && isSameCid(taggedCid, cid)) {
+    return false;
+  }
+
+  let onSubdomainGateway = false;
+  try {
+    onSubdomainGateway = /\.ipfs\./i.test(new URL(response.url).hostname);
+  } catch {
+    // an unparseable (or empty) url keeps the path-gateway reading below
+  }
+
+  if (onSubdomainGateway) {
+    // A genuine HTML *file* is caught by the ETag above, so HTML the gateway
+    // declined to tag with a CID is what a generated index looks like.
+    return /^text\/html\b/i.test(response.headers.get("content-type") || "");
+  }
+
+  try {
+    if (new URL(response.url).pathname.endsWith("/")) {
+      return true;
+    }
+  } catch {
+    // fall through to the header check
+  }
+  return (response.headers.get("x-ipfs-path") || "").endsWith("/");
+}
+
+/** Turn a failed Pinata response into an error carrying its body. */
+async function pinataError(action: string, response: Response): Promise<Error> {
+  const body = await response.text().catch(() => "");
+  return new Error(
+    `Pinata ${action} failed (${response.status} ${response.statusText}): ${body}`
+  );
+}
+
 export type BaseIpfsStorageOptions = Options & {
   /**
-   * Which kind of endpoint `url` addresses. `"pinata"` uploads over Pinata's
-   * HTTP upload API and reads back through `gatewayUrl`; `"ipfs-api"` speaks the
-   * IPFS HTTP API. Defaults to `"pinata"` for the two known Pinata upload
-   * endpoints and to `"ipfs-api"` otherwise, so any other Pinata route (a proxy
-   * in front of it, a future API version) has to be declared here.
+   * Which kind of endpoint `url` addresses. The two `"pinata"` providers upload
+   * over Pinata's HTTP upload API and read back through `gatewayUrl`;
+   * `"ipfs-api"` speaks the IPFS HTTP API. Defaults to the matching provider for
+   * the two known Pinata upload endpoints and to `"ipfs-api"` otherwise, so any
+   * other Pinata route (a proxy in front of it, a future API version) has to be
+   * declared here - including which of the two routes it fronts, since nothing
+   * about the URL says.
    */
   provider?: IpfsStorageProvider;
+  /**
+   * Base URL of the Pinata API serving everything that is not an upload: the
+   * CID-to-file-id lookup and the unpin itself. Defaults to
+   * `https://api.pinata.cloud` for Pinata's own hosts - uploads go to
+   * `uploads.pinata.cloud`, the rest does not - and to `url`'s origin otherwise,
+   * which is where a proxy fronting Pinata would serve them. Ignored by the
+   * `"ipfs-api"` provider.
+   */
+  apiUrl?: string;
   /**
    * Base URL of an IPFS HTTP gateway to read through, e.g.
    * `https://my-gateway.mypinata.cloud/ipfs/`. A URL with no path gets `/ipfs`
@@ -91,20 +177,18 @@ export class BaseIpfsStorage {
   private readonly url: string;
   private readonly headers?: Headers | Record<string, string>;
   private readonly provider: IpfsStorageProvider;
+  private readonly apiUrl?: string;
   private readonly gatewayUrl?: string;
   private readonly gatewayToken?: string;
   private client: IPFSHTTPClient | undefined;
 
   constructor(opts: BaseIpfsStorageOptions) {
-    const { provider, gatewayUrl, gatewayToken, ...clientOpts } = opts;
+    const { provider, apiUrl, gatewayUrl, gatewayToken, ...clientOpts } = opts;
     this.clientOpts = clientOpts;
     this.url = String(opts.url || "");
     this.headers = opts.headers as Headers | Record<string, string> | undefined;
-    this.provider =
-      provider ??
-      (PINATA_UPLOAD_ENDPOINTS.some((endpoint) => this.url.includes(endpoint))
-        ? "pinata"
-        : "ipfs-api");
+    this.provider = provider ?? sniffProvider(this.url);
+    this.apiUrl = apiUrl;
     this.gatewayUrl = gatewayUrl;
     this.gatewayToken = gatewayToken;
   }
@@ -172,18 +256,90 @@ export class BaseIpfsStorage {
   }
 
   /**
-   * Remove a pin. Pinata's upload endpoints expose no unpin operation and are
-   * not an IPFS HTTP API, so this is a no-op there rather than a failure.
+   * Remove a pin, over whichever API `provider` names. Unpinning a CID the
+   * account no longer holds succeeds rather than throwing, so a half-finished
+   * removal can be retried.
    */
   public async unpin(cid: string): Promise<void> {
-    if (this.isPinataUpload()) {
+    if (!this.isPinataUpload()) {
+      await this.ipfsClient.pin.rm(cid);
       return;
     }
-    await this.ipfsClient.pin.rm(cid);
+    if (this.provider === "pinata-legacy") {
+      await this.unpinFromPinataLegacy(cid);
+      return;
+    }
+    await this.unpinFromPinataV3(cid);
+  }
+
+  /** The legacy route unpins by CID directly. */
+  private async unpinFromPinataLegacy(cid: string): Promise<void> {
+    const response = await fetch(
+      `${this.getPinataApiUrl()}/pinning/unpin/${encodeURIComponent(cid)}`,
+      { method: "DELETE", headers: this.getPinataAuthHeaders() }
+    );
+    if (!response.ok && response.status !== 404) {
+      throw await pinataError(`unpin of ${cid}`, response);
+    }
+  }
+
+  /**
+   * The v3 API deletes by file id rather than by CID, so the id has to be
+   * looked up first. One CID can back several file records - the same bytes
+   * uploaded twice - and leaving any of them behind leaves the content pinned.
+   */
+  private async unpinFromPinataV3(cid: string): Promise<void> {
+    const apiUrl = this.getPinataApiUrl();
+    const headers = this.getPinataAuthHeaders();
+    const listResponse = await fetch(
+      `${apiUrl}/v3/files/public?cid=${encodeURIComponent(cid)}`,
+      { headers }
+    );
+    if (!listResponse.ok) {
+      throw await pinataError(`file lookup for ${cid}`, listResponse);
+    }
+
+    const payload = (await listResponse.json()) as {
+      data?: { files?: { id?: string }[] };
+    };
+    const ids = (payload?.data?.files || [])
+      .map((file) => file?.id)
+      .filter((id): id is string => !!id);
+
+    for (const id of ids) {
+      const response = await fetch(
+        `${apiUrl}/v3/files/public/${encodeURIComponent(id)}`,
+        { method: "DELETE", headers }
+      );
+      if (!response.ok && response.status !== 404) {
+        throw await pinataError(`unpin of ${cid} (file ${id})`, response);
+      }
+    }
+  }
+
+  /** Where the Pinata routes that are not uploads live. See `apiUrl`. */
+  private getPinataApiUrl(): string {
+    if (this.apiUrl) {
+      return this.apiUrl.replace(/\/+$/, "");
+    }
+    try {
+      const { origin, hostname } = new URL(this.url);
+      return /(^|\.)pinata\.cloud$/i.test(hostname)
+        ? PINATA_API_ORIGIN
+        : origin;
+    } catch {
+      return PINATA_API_ORIGIN;
+    }
+  }
+
+  /** The credentials `url` was configured with, as request headers. */
+  private getPinataAuthHeaders(): Record<string, string> {
+    const auth = this.getAuthHeaderValue();
+    return auth ? { Authorization: auth } : {};
   }
 
   private isPinataUpload() {
-    return this.provider === "pinata";
+    return this.provider === "pinata" || this.provider === "pinata-legacy";
   }
 
   private getAuthHeaderValue() {
@@ -244,13 +400,12 @@ export class BaseIpfsStorage {
       formData.append("file", blob, filename);
     }
 
-    // The legacy pinning route takes no `network`; every other Pinata upload
-    // route is a v3 `/files` one, which requires it.
-    if (!this.url.includes(PINATA_LEGACY_PIN_FILE)) {
+    // The legacy pinning route takes no `network`; the v3 `/files` one requires
+    // it. Which of the two a proxy fronts is what `provider` declares.
+    if (this.provider === "pinata") {
       formData.append("network", "public");
     }
 
-    const auth = this.getAuthHeaderValue();
     const response = await fetch(this.url, {
       method: "POST",
       headers: {
@@ -264,7 +419,7 @@ export class BaseIpfsStorage {
               }
             ).getHeaders()
           : {}),
-        ...(auth ? { Authorization: auth } : {})
+        ...this.getPinataAuthHeaders()
       },
       body: formData as unknown as BodyInit
     });
@@ -353,6 +508,11 @@ export class BaseIpfsStorage {
       if (!response.ok) {
         throw new Error(
           `Failed to fetch ${cid} from ${gatewayUrl} (${response.status} ${response.statusText})`
+        );
+      }
+      if (looksLikeDirectoryResponse(response, cid)) {
+        throw new Error(
+          `Failed to fetch ${cid} from ${gatewayUrl}: it resolves to a directory, and the gateway served its index instead of the file content`
         );
       }
       return new Uint8Array(await response.arrayBuffer());

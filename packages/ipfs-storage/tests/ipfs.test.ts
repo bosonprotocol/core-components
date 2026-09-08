@@ -31,6 +31,9 @@ const mockedIpfsHttpClient = jest.mocked(ipfsHttpClient, { shallow: true });
 const { create } = jest.requireActual("ipfs-http-client");
 
 const IPFS_URL = "https://ipfs.api.com:5001";
+/** `IPFS_HASH` as CIDv1 - what a gateway ETag names it by. */
+const IPFS_HASH_V1 =
+  "bafybeiexmmzc3qgfld2kd2kn6fwgffyev6osenlnje23hxgaxrlzi4okja";
 
 describe("#storeMetadata()", () => {
   it("throw if invalid metadata", async () => {
@@ -561,6 +564,68 @@ describe("#getByCID() - read path", () => {
     );
   });
 
+  it("rejects a gateway's directory index instead of returning it", async () => {
+    // cat() throws `this dag node is a directory`; a gateway answers 200 with
+    // HTML, which would otherwise be handed back as if it were the file.
+    mockedFetch.mockResolvedValueOnce(
+      new Response("<html><body>Index of ...</body></html>", {
+        headers: {
+          "content-type": "text/html",
+          "x-ipfs-path": `/ipfs/${IPFS_HASH}/`
+        }
+      })
+    );
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    await expect(ipfsStorage.getByCID(IPFS_HASH, false, false)).rejects.toThrow(
+      "it resolves to a directory"
+    );
+  });
+
+  it("rejects a subdomain gateway's directory index", async () => {
+    // A subdomain gateway redirects every CID onto a trailing slash, files
+    // included, so there the tell is untagged HTML rather than the slash.
+    mockedFetch.mockResolvedValueOnce(
+      new Response("<html><body>Index of ...</body></html>", {
+        url: `https://${IPFS_HASH_V1}.ipfs.dweb.link/`,
+        headers: { "content-type": "text/html" }
+      })
+    );
+    const ipfsStorage = new BaseIpfsStorage({
+      url: PINATA_V3_URL,
+      gatewayUrl: "https://dweb.link/ipfs"
+    });
+
+    await expect(ipfsStorage.getByCID(IPFS_HASH, false, false)).rejects.toThrow(
+      "it resolves to a directory"
+    );
+  });
+
+  it("returns an HTML file the gateway tagged with the CID", async () => {
+    // The ETag names the block served - in whichever encoding - so this is a
+    // genuine HTML *file*, not a generated index.
+    mockedFetch.mockResolvedValueOnce(
+      new Response("<html><body>a real page</body></html>", {
+        url: `https://${IPFS_HASH_V1}.ipfs.dweb.link/`,
+        headers: {
+          etag: `W/"${IPFS_HASH_V1}"`,
+          "content-type": "text/html",
+          "x-ipfs-path": `/ipfs/${IPFS_HASH}/`
+        }
+      })
+    );
+    const ipfsStorage = new BaseIpfsStorage({
+      url: PINATA_V3_URL,
+      gatewayUrl: "https://dweb.link/ipfs"
+    });
+
+    const data = await ipfsStorage.getByCID(IPFS_HASH, false, false);
+
+    expect(Buffer.from(data).toString()).toEqual(
+      "<html><body>a real page</body></html>"
+    );
+  });
+
   it("throws with the status when the gateway rejects the read", async () => {
     mockedFetch.mockResolvedValueOnce(
       new Response("nope", { status: 504, statusText: "Gateway Timeout" })
@@ -862,6 +927,37 @@ describe("#add() - browser FormData", () => {
     // The legacy endpoint takes no `network` field.
     expect(init.body.get("network")).toBeNull();
   });
+
+  it("omits the network field for a proxy fronting the legacy route", async () => {
+    // The host is not Pinata's, so only `provider` says which route this is.
+    mockedFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ IpfsHash: IPFS_HASH }))
+    );
+    const ipfsStorage = new BaseIpfsStorage({
+      url: "https://ipfs-proxy.internal/pinning/pinFileToIPFS",
+      provider: "pinata-legacy"
+    });
+
+    await ipfsStorage.add("plain text");
+
+    const init = mockedFetch.mock.calls[0][1] as unknown as { body: FormData };
+    expect(init.body.get("network")).toBeNull();
+  });
+
+  it("sends the network field for a proxy fronting the v3 route", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ data: { cid: IPFS_HASH } }))
+    );
+    const ipfsStorage = new BaseIpfsStorage({
+      url: "https://ipfs-proxy.internal/pinata-proxy/v4/files",
+      provider: "pinata"
+    });
+
+    await ipfsStorage.add("plain text");
+
+    const init = mockedFetch.mock.calls[0][1] as unknown as { body: FormData };
+    expect(init.body.get("network")).toEqual("public");
+  });
 });
 
 describe("#unpin()", () => {
@@ -883,16 +979,150 @@ describe("#unpin()", () => {
     expect(rm).toHaveBeenCalledWith(IPFS_HASH);
   });
 
-  it("is a no-op against a Pinata upload endpoint", async () => {
-    const rm = jest.fn();
-    mockedIpfsHttpClient.create.mockReturnValueOnce({
-      ...create({ url: PINATA_V3_URL }),
-      pin: { rm }
+  it("deletes the v3 file record the CID resolves to", async () => {
+    mockedFetch
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ data: { files: [{ id: "file-1" }] } }))
+      )
+      .mockResolvedValueOnce(new Response(null, { status: 200 }));
+    const ipfsStorage = new BaseIpfsStorage({
+      url: PINATA_V3_URL,
+      headers: { authorization: "Bearer jwt" }
     });
+
+    await ipfsStorage.unpin(IPFS_HASH);
+
+    // v3 deletes by file id, so the id has to be looked up first - and only
+    // uploads live on uploads.pinata.cloud, the file routes on api.
+    expect(mockedFetch.mock.calls[0]).toEqual([
+      `https://api.pinata.cloud/v3/files/public?cid=${IPFS_HASH}`,
+      { headers: { Authorization: "Bearer jwt" } }
+    ]);
+    expect(mockedFetch.mock.calls[1]).toEqual([
+      "https://api.pinata.cloud/v3/files/public/file-1",
+      { method: "DELETE", headers: { Authorization: "Bearer jwt" } }
+    ]);
+  });
+
+  it("deletes every file record sharing the CID", async () => {
+    // The same bytes uploaded twice are two records; leaving one behind would
+    // leave the content pinned.
+    mockedFetch
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({ data: { files: [{ id: "one" }, { id: "two" }] } })
+        )
+      )
+      .mockResolvedValueOnce(new Response(null, { status: 200 }))
+      .mockResolvedValueOnce(new Response(null, { status: 200 }));
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    await ipfsStorage.unpin(IPFS_HASH);
+
+    expect(mockedFetch.mock.calls[1][0]).toEqual(
+      "https://api.pinata.cloud/v3/files/public/one"
+    );
+    expect(mockedFetch.mock.calls[2][0]).toEqual(
+      "https://api.pinata.cloud/v3/files/public/two"
+    );
+  });
+
+  it("succeeds when the account no longer holds the CID", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ data: { files: [] } }))
+    );
     const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
 
     await expect(ipfsStorage.unpin(IPFS_HASH)).resolves.toBeUndefined();
 
-    expect(rm).not.toHaveBeenCalled();
+    expect(mockedFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("throws when the lookup is rejected", async () => {
+    mockedFetch.mockResolvedValueOnce(
+      new Response("bad jwt", { status: 401, statusText: "Unauthorized" })
+    );
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    await expect(ipfsStorage.unpin(IPFS_HASH)).rejects.toThrow(
+      `Pinata file lookup for ${IPFS_HASH} failed (401 Unauthorized): bad jwt`
+    );
+  });
+
+  it("throws when the delete is rejected", async () => {
+    mockedFetch
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ data: { files: [{ id: "file-1" }] } }))
+      )
+      .mockResolvedValueOnce(
+        new Response("boom", { status: 500, statusText: "Server Error" })
+      );
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    await expect(ipfsStorage.unpin(IPFS_HASH)).rejects.toThrow(
+      `Pinata unpin of ${IPFS_HASH} (file file-1) failed (500 Server Error)`
+    );
+  });
+
+  it("treats a 404 from the delete as already unpinned", async () => {
+    mockedFetch
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ data: { files: [{ id: "file-1" }] } }))
+      )
+      .mockResolvedValueOnce(
+        new Response("gone", { status: 404, statusText: "Not Found" })
+      );
+    const ipfsStorage = new BaseIpfsStorage({ url: PINATA_V3_URL });
+
+    await expect(ipfsStorage.unpin(IPFS_HASH)).resolves.toBeUndefined();
+  });
+
+  it("unpins by CID on the legacy route", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response(null, { status: 200 }));
+    const ipfsStorage = new BaseIpfsStorage({
+      url: PINATA_LEGACY_URL,
+      headers: { authorization: "Bearer jwt" }
+    });
+
+    await ipfsStorage.unpin(IPFS_HASH);
+
+    expect(mockedFetch).toHaveBeenCalledWith(
+      `https://api.pinata.cloud/pinning/unpin/${IPFS_HASH}`,
+      { method: "DELETE", headers: { Authorization: "Bearer jwt" } }
+    );
+  });
+
+  it("unpins through a proxy fronting the legacy route", async () => {
+    mockedFetch.mockResolvedValueOnce(new Response(null, { status: 200 }));
+    const ipfsStorage = new BaseIpfsStorage({
+      url: "https://ipfs-proxy.internal/pinning/pinFileToIPFS",
+      provider: "pinata-legacy"
+    });
+
+    await ipfsStorage.unpin(IPFS_HASH);
+
+    expect(mockedFetch).toHaveBeenCalledWith(
+      `https://ipfs-proxy.internal/pinning/unpin/${IPFS_HASH}`,
+      { method: "DELETE", headers: {} }
+    );
+  });
+
+  it("sends the file routes to an explicit apiUrl", async () => {
+    mockedFetch
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ data: { files: [{ id: "file-1" }] } }))
+      )
+      .mockResolvedValueOnce(new Response(null, { status: 200 }));
+    const ipfsStorage = new BaseIpfsStorage({
+      url: "https://ipfs-proxy.internal/upload",
+      provider: "pinata",
+      apiUrl: "https://ipfs-proxy.internal/pinata/"
+    });
+
+    await ipfsStorage.unpin(IPFS_HASH);
+
+    expect(mockedFetch.mock.calls[0][0]).toEqual(
+      `https://ipfs-proxy.internal/pinata/v3/files/public?cid=${IPFS_HASH}`
+    );
   });
 });
