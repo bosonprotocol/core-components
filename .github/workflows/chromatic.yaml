@@ -18,6 +18,9 @@ jobs:
           envkey_STORYBOOK_REACT_APP_MAGIC_API_KEY: ${{ secrets.REACT_APP_MAGIC_API_KEY }}
           envkey_STORYBOOK_DATA_IPFS_JWT: ${{ secrets.REACT_APP_PINATA_JWT }}
           envkey_STORYBOOK_DATA_IPFS_GATEWAY: ${{ secrets.REACT_APP_IPFS_GATEWAY }}
+          # A dedicated *.mypinata.cloud gateway answers 403 without its token,
+          # which would leave every story with no metadata and no images.
+          envkey_STORYBOOK_DATA_IPFS_GATEWAY_TOKEN: ${{ secrets.REACT_APP_IPFS_GATEWAY_TOKEN }}
           directory: ./packages/react-kit
           file_name: .env
       - name: Install dependencies
