@@ -1,0 +1,675 @@
+{
+  "env": "production",
+  "updatedAt": "2026-09-01T09:50:07.540Z",
+  "configIds": [
+    "production-1-0",
+    "production-8453-0"
+  ],
+  "cids": {
+    "QmXyYTbY4nereoDQBqtJMay8UsZEnezceTbTGLbT9ZuWMD": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #10"
+      ]
+    },
+    "QmUJ6CgXJfTpstZoxYFqaqBmzKBPyfqvGe3PQCyZqAa4Hu": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #11"
+      ]
+    },
+    "QmNNUWRb9uUzzWRHqsho4augQM4UwNnjQCSMZvf587Y1PS": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #13"
+      ]
+    },
+    "QmYyskeNGJwu3EECPqFHYhF97AyxFmAU15WSqhst321LrC": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #17"
+      ]
+    },
+    "QmV5AuzddgtegZF9hLHN4e4nyJEee6b45De9KLZsc9idZE": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #18"
+      ]
+    },
+    "QmSsMzddHBYEjw24HxLbZ8JjL6GThR343srtt3uwhb8DA1": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #2"
+      ]
+    },
+    "QmcDbfnyvcpTpwciWcnAfGH28TCM7mkTWJxPVjoNyc9tMP": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #20"
+      ]
+    },
+    "QmRxvnYYXpSehpmGtrsmL9xMR9mBDjmrAB1DBRvuXNP3nU": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #21"
+      ]
+    },
+    "Qmf3ZfymptAEYnqNCEpPhr3gy6BmiirPm2ea8T2ysZdsMd": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #3"
+      ]
+    },
+    "QmX476xfT1U8Lhyx68WvqcP2g7uGcj52nGAhJtZakxwYBz": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #4"
+      ]
+    },
+    "QmZGHeWcEVmqH5TNXE5oxbX2MVH232ZU821uJxAf9YYSic": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #5"
+      ]
+    },
+    "QmXXGkFH7Y9th9ZubtmPjbyCiNPb4jHujD8jdTr8o1trJr": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #6"
+      ]
+    },
+    "QmPbUS2AhdvkiVYHJFypaCptYjHJkNPcqariwhUceNDvfp": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #7"
+      ]
+    },
+    "QmTdfhKoC1BTdQZH36c1GD24WgKDQikukSvtJjwAb99KCp": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #8"
+      ]
+    },
+    "QmVLQ4JWTktwPvx6urwpwfdX9sV4QJx9qe4rBQCzYVB9Tm": {
+      "sources": [
+        "production-1-0 sellers.metadataUri #9"
+      ]
+    },
+    "QmQxNE1xtorbg5bK7RUrobpxEpF9x52nwYgYeaxEDpZabX": {
+      "sources": [
+        "production-1-0 offers.metadataUri #1"
+      ]
+    },
+    "QmaKvQRGwef4vWieJEZ8bAzABkKYzVgBTDC8qEW1JjBDY2": {
+      "sources": [
+        "production-1-0 offers.metadataUri #10"
+      ]
+    },
+    "QmejJBBtZ7EDgCk9VnLipgkmKZK4WWctW1Ry3Esc3xd9KG": {
+      "sources": [
+        "production-1-0 offers.metadataUri #11"
+      ]
+    },
+    "QmeVoMMwPz4qtHWtnWSFmJpwu9yW4SHdxYvDPhwXEbwbpC": {
+      "sources": [
+        "production-1-0 offers.metadataUri #12"
+      ]
+    },
+    "QmZMVh4EfajE8Nd2PRCcjCbNtafJrkSwobaovW1DhFFPRt": {
+      "sources": [
+        "production-1-0 offers.metadataUri #13"
+      ]
+    },
+    "QmUi4e1wLu6iDyi3eQrQyDXAhzyPWfpohyDUgYE6tEKSCa": {
+      "sources": [
+        "production-1-0 offers.metadataUri #14"
+      ]
+    },
+    "Qmc8442GvM83p7S3yeV1KRJeEFCyodVSiDDDkXxGPCTa1T": {
+      "sources": [
+        "production-1-0 offers.metadataUri #15"
+      ]
+    },
+    "QmTH4Nf2pxbFsriLHUpjLcmtvin2mqNjJuTR8AUhLT8Hxy": {
+      "sources": [
+        "production-1-0 offers.metadataUri #16"
+      ]
+    },
+    "QmcHN5anPTAr6Kjjm2Aps9xQA3v1iVjFmqjVQ23k4cUkL8": {
+      "sources": [
+        "production-1-0 offers.metadataUri #17"
+      ]
+    },
+    "QmbLCPeHx1YMxB9pyBGcoa8SjxpV8zoeFJEsdq7uR5mzKf": {
+      "sources": [
+        "production-1-0 offers.metadataUri #18"
+      ]
+    },
+    "Qme5qZpGPvuHovxwGcos94qCav1Zz7uwYABbWhpFbvURhH": {
+      "sources": [
+        "production-1-0 offers.metadataUri #19"
+      ]
+    },
+    "QmbJRK4uREHhFb6pqCnF1WYug6LsSt3U29EFHXrdFWVrtX": {
+      "sources": [
+        "production-1-0 offers.metadataUri #2"
+      ]
+    },
+    "Qmd3HNh46Lod1h7ca92NMj6F1XjegcN7T2acthAomMWLhv": {
+      "sources": [
+        "production-1-0 offers.metadataUri #20"
+      ]
+    },
+    "QmRGyJswb7P5XYud4ReQWnzgVPToNE9RazPDjJVKhsk7qa": {
+      "sources": [
+        "production-1-0 offers.metadataUri #21"
+      ]
+    },
+    "QmWQwaG3fwpF46dNATXCoqP2TbdHWrt4QZxh634ZShjrqb": {
+      "sources": [
+        "production-1-0 offers.metadataUri #22"
+      ]
+    },
+    "QmY5two4zbUSvbp6Jp8wBCkhqwhkGotNmHgyYuyRiBsiMd": {
+      "sources": [
+        "production-1-0 offers.metadataUri #23"
+      ]
+    },
+    "QmbbpUidRr2dzofhqPw83DFcKbY1dkqjNTormLnkH7KWph": {
+      "sources": [
+        "production-1-0 offers.metadataUri #24"
+      ]
+    },
+    "QmTQuJi9jCWFMMF24RE6o2o2rFWp9ukNGV3VaasCcEYoax": {
+      "sources": [
+        "production-1-0 offers.metadataUri #25"
+      ]
+    },
+    "QmSkZAbyabX7MfZgRaDyHRZtfN2g7uWmcXPobB2rSb5Dnt": {
+      "sources": [
+        "production-1-0 offers.metadataUri #26"
+      ]
+    },
+    "QmWcyFgRSuRpa4vRpgBz5QhkuxuLgYun5jYk6dkFyqYyKX": {
+      "sources": [
+        "production-1-0 offers.metadataUri #27"
+      ]
+    },
+    "QmSiwANYadNJBzVrP3T1wMyZrNP58no6EgmdRaZZpXqJDY": {
+      "sources": [
+        "production-1-0 offers.metadataUri #28"
+      ]
+    },
+    "Qmak3KNjbggUFBQvanP2WAR74AgMi8hoqgBrn5Rffjc9rD": {
+      "sources": [
+        "production-1-0 offers.metadataUri #29"
+      ]
+    },
+    "QmRTJ61o2JxXvURCc6vRaSfGvVdScMhjfFzTucU3RyNGA9": {
+      "sources": [
+        "production-1-0 offers.metadataUri #3"
+      ]
+    },
+    "QmWD32QfLxJsE1pPST2u2dnPzmtMJGk4p2xcSxvjDcsNE6": {
+      "sources": [
+        "production-1-0 offers.metadataUri #30"
+      ]
+    },
+    "QmXba9nK5XKZyZV5USwYA2dt4sZwKjdhyH5KVwuL9t3w3L": {
+      "sources": [
+        "production-1-0 offers.metadataUri #31"
+      ]
+    },
+    "QmQQjFFEuhpYVowjMNCaGfJv57wH6Q6xuM18nRyeTPLwS8": {
+      "sources": [
+        "production-1-0 offers.metadataUri #32"
+      ]
+    },
+    "QmYeNZJxu6xtEr5hcDDNi5gaSFWc2wZcH2x4Wky3stsNem": {
+      "sources": [
+        "production-1-0 offers.metadataUri #33"
+      ]
+    },
+    "QmUyNfrsCGqUfuKWcV81TpyWNvR1vCBpSgfHpFiVJyptcS": {
+      "sources": [
+        "production-1-0 offers.metadataUri #34"
+      ]
+    },
+    "QmNhzStCwFAPY5cTpzMv7cYFi4hRKRSiU4cpBYB7NgHUxZ": {
+      "sources": [
+        "production-1-0 offers.metadataUri #35"
+      ]
+    },
+    "QmSsiFjjUWyTE4WUvMSEUkTKntaAZyM4e7Ffzem3gFxs6A": {
+      "sources": [
+        "production-1-0 offers.metadataUri #4"
+      ]
+    },
+    "QmbgK9k3tqryN9SCfodTZ33Bmqk5Whk8orod8YbJqbte89": {
+      "sources": [
+        "production-1-0 offers.metadataUri #5"
+      ]
+    },
+    "QmNdECyn12WKNRDr8ZsenyTLzkh2hRK4Lnwt1Ebo9vt2qP": {
+      "sources": [
+        "production-1-0 offers.metadataUri #6"
+      ]
+    },
+    "QmUiNCscELQhBMnnbumZ9pwuXhom9jjd5NjgjUYpWbLVrE": {
+      "sources": [
+        "production-1-0 offers.metadataUri #7"
+      ]
+    },
+    "Qmb4dVh1hSHRC58qb8Zh6my7hzCWNEjyDbH7Sy1LYw5Rw2": {
+      "sources": [
+        "production-1-0 offers.metadataUri #8"
+      ]
+    },
+    "Qmb1376qYhWfrsDpw9AENB6nQwVPXFiA6f9xMFiB87jVcj": {
+      "sources": [
+        "production-1-0 offers.metadataUri #9"
+      ]
+    },
+    "QmU8My56DnugHttbQc7Hm7VXd8TYDYdZ3VfpCabWGY2WBQ": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmu8my56dnughttbqc7hm7vxd8tydydz3vfpcabwgy2wbq-product_image",
+        "production-1-0 productV1MetadataEntities.image #1-metadata",
+        "production-1-0 productV1MetadataEntities.image #2-metadata",
+        "production-1-0 productV1MetadataEntities.image #3-metadata",
+        "production-1-0 productV1MetadataEntities.image #4-metadata"
+      ]
+    },
+    "QmY9U4j4xoYcTPhZiXyAaL3TvJcPAGLAiU93X6rfizHbkS": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmy9u4j4xoyctphzixyaal3tvjcpaglaiu93x6rfizhbks-product_image",
+        "production-1-0 productV1MetadataEntities.image #10-metadata",
+        "production-1-0 productV1MetadataEntities.image #19-metadata",
+        "production-1-0 productV1MetadataEntities.image #21-metadata",
+        "production-1-0 productV1MetadataEntities.image #6-metadata"
+      ]
+    },
+    "QmcgtaRks42a8enYVKJ151V2Ry61peP4kzVUmpYd5CMTLM": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmcgtarks42a8enyvkj151v2ry61pep4kzvumpyd5cmtlm-product_image",
+        "production-1-0 productV1MetadataEntities.image #11-metadata",
+        "production-1-0 productV1MetadataEntities.image #12-metadata",
+        "production-1-0 productV1Products.visuals_images[2].url #2-3f27ad-d13-8f15-df8-df018271d0a-1",
+        "production-1-0 productV1Products.visuals_images[2].url #2-f52423-50eb-bf60-b73-d363a33f8da-1"
+      ]
+    },
+    "QmRWaKKZLnL99uZYxBkijxhzjok27Gif5DPZzmqYrmuSU6": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmrwakkzlnl99uzyxbkijxhzjok27gif5dpzzmqyrmusu6-product_image",
+        "production-1-0 productV1MetadataEntities.image #23-metadata",
+        "production-1-0 productV1Products.visuals_images[0].url #9-263516-3ed7-1a7-8818-58bb07cdf0-1"
+      ]
+    },
+    "QmeQw55v9SoRN5gQJVuFAfTbj9SX7W7QNoJPEjxDiiLYdW": {
+      "sources": [
+        "production-1-0 productV1Medias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmeqw55v9sorn5gqjvufaftbj9sx7w7qnojpejxdiilydw-",
+        "production-1-0 productV1MetadataEntities.animationUrl #23-metadata",
+        "production-1-0 productV1Products.visuals_videos[0].url #9-263516-3ed7-1a7-8818-58bb07cdf0-1"
+      ]
+    },
+    "Qmbe8pdfB7jsYQ328ZrQAJM88q4fJA7PQGNgPqmFLmLUvo": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmbe8pdfb7jsyq328zrqajm88q4fja7pqgngpqmflmluvo-product_image",
+        "production-1-0 productV1Products.visuals_images[0].url #2-3f27ad-d13-8f15-df8-df018271d0a-1",
+        "production-1-0 productV1Products.visuals_images[0].url #2-f52423-50eb-bf60-b73-d363a33f8da-1"
+      ]
+    },
+    "QmbZtszvxenYWCfmPjK7x4W82peABWqVbbxSTpsqqwtr8A": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmbztszvxenywcfmpjk7x4w82peabwqvbbxstpsqqwtr8a-product_image",
+        "production-1-0 productV1Products.visuals_images[1].url #2-3f27ad-d13-8f15-df8-df018271d0a-1",
+        "production-1-0 productV1Products.visuals_images[1].url #2-f52423-50eb-bf60-b73-d363a33f8da-1"
+      ]
+    },
+    "QmTXcRpLGKSiY44Ztf9ykcL2xzY6XDNrjF6z22j2TLha6k": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmtxcrplgksiy44ztf9ykcl2xzy6xdnrjf6z22j2tlha6k-product_image",
+        "production-1-0 productV1Products.visuals_images[3].url #2-3f27ad-d13-8f15-df8-df018271d0a-1",
+        "production-1-0 productV1Products.visuals_images[3].url #2-f52423-50eb-bf60-b73-d363a33f8da-1"
+      ]
+    },
+    "Qmb1xFkbm3B5a2NxpVn8d6WuTVw6Z3gMhcvAqJVFDrNFJu": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmb1xfkbm3b5a2nxpvn8d6wutvw6z3gmhcvaqjvfdrnfju-product_image",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[0].url #2-overrides-10",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[0].url #2-overrides-6",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[0].url #2-overrides-7",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[0].url #2-overrides-8"
+      ]
+    },
+    "QmdBJFjCkbwnuvGRy6mrghcJ6DoPkvEdaZWR3PDyFV2XZX": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmdbjfjckbwnuvgry6mrghcj6dopkvedazwr3pdyfv2xzx-product_image",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[1].url #2-overrides-10",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[1].url #2-overrides-6",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[1].url #2-overrides-7",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[1].url #2-overrides-8"
+      ]
+    },
+    "QmPjp6Y5vH2jTeirhCvjgLG1oGkSHLUYQ2tfH7w1eZi8jS": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmpjp6y5vh2jteirhcvjglg1ogkshluyq2tfh7w1ezi8js-product_image",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[2].url #2-overrides-10",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[2].url #2-overrides-6",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[2].url #2-overrides-7",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[2].url #2-overrides-8"
+      ]
+    },
+    "QmRaXf3macL6f2zPPzzUoNicY8FYFJwXVtrBQp88XpH2cW": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmraxf3macl6f2zppzzuonicy8fyfjwxvtrbqp88xph2cw-product_image",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[3].url #2-overrides-10",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[3].url #2-overrides-6",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[3].url #2-overrides-7",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[3].url #2-overrides-8"
+      ]
+    },
+    "Qmb4GHp9gyjcaxUfCbpkKpgB3tysmrehcZa2e9bdS6gkD8": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmb4ghp9gyjcaxufcbpkkpgb3tysmrehcza2e9bds6gkd8-product_image",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[0].url #2-overrides-1",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[0].url #2-overrides-2",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[0].url #2-overrides-3",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[0].url #2-overrides-4"
+      ]
+    },
+    "QmcokydAY3Ho9HwqMpLU9SqM7dcaTGStRAkvVCR9kUeg1F": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmcokyday3ho9hwqmplu9sqm7dcatgstrakvvcr9kueg1f-product_image",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[1].url #2-overrides-1",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[1].url #2-overrides-2",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[1].url #2-overrides-3",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[1].url #2-overrides-4"
+      ]
+    },
+    "QmPZySgnjt2GUhX98QFyTm5uy86LvnrgoiBEttGXvQFmtm": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmpzysgnjt2guhx98qfytm5uy86lvnrgoibettgxvqfmtm-product_image",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[2].url #2-overrides-1",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[2].url #2-overrides-2",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[2].url #2-overrides-3",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[2].url #2-overrides-4"
+      ]
+    },
+    "QmZYegFhjSqr62zDTYnhf6A9us4q44e5WhgCXNE1KdTAz8": {
+      "sources": [
+        "production-1-0 productV1Medias.url #ipfs://qmzyegfhjsqr62zdtynhf6a9us4q44e5whgcxne1kdtaz8-product_image",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[4].url #2-overrides-1",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[4].url #2-overrides-2",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[4].url #2-overrides-3",
+        "production-1-0 productV1ProductOverrides_collection.visuals_images[4].url #2-overrides-4"
+      ]
+    },
+    "QmPyFWuFEJGxgn5AFwJScPpT9ThhzE46n69rYPQFZou1CK": {
+      "sources": [
+        "production-1-0 productV1Medias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmpyfwufejgxgn5afwjscppt9thhze46n69rypqfzou1ck-cover",
+        "production-1-0 productV1Sellers.images[0].url #9-product-v1",
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmpyfwufejgxgn5afwjscppt9thhze46n69rypqfzou1ck-cover",
+        "production-1-0 sellerMetadata_collection.images[0].url #9-seller-metadata"
+      ]
+    },
+    "QmRFBMaLXLxWSGkABuiXiLjSZ4ci2LFcWP3M18nBK5sxFF": {
+      "sources": [
+        "production-1-0 productV1Medias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmrfbmalxlxwsgkabuixiljsz4ci2lfcwp3m18nbk5sxff-profile",
+        "production-1-0 productV1Sellers.images[1].url #9-product-v1",
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmrfbmalxlxwsgkabuixiljsz4ci2lfcwp3m18nbk5sxff-profile",
+        "production-1-0 sellerMetadata_collection.images[1].url #9-seller-metadata"
+      ]
+    },
+    "QmUtGFyiz5HMFdJByqoBhRJXiaCR7HqQMrhDAgmVqEQrYJ": {
+      "sources": [
+        "production-1-0 productV1Medias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmutgfyiz5hmfdjbyqobhrjxiacr7hqqmrhdagmvqeqryj-cover",
+        "production-1-0 productV1Sellers.images[0].url #2-product-v1",
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmutgfyiz5hmfdjbyqobhrjxiacr7hqqmrhdagmvqeqryj-cover",
+        "production-1-0 sellerMetadata_collection.images[0].url #2-seller-metadata"
+      ]
+    },
+    "QmYBkTFBS4bLWX6dAZKuMxT6GxXVuXbaybPHSgzVJfesvz": {
+      "sources": [
+        "production-1-0 productV1Medias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmybktfbs4blwx6dazkumxt6gxxvuxbaybphsgzvjfesvz-profile",
+        "production-1-0 productV1Sellers.images[1].url #2-product-v1",
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmybktfbs4blwx6dazkumxt6gxxvuxbaybphsgzvjfesvz-profile",
+        "production-1-0 sellerMetadata_collection.images[1].url #2-seller-metadata"
+      ]
+    },
+    "QmZEYfG31PR1SgStg1wCFawQPxtbY9N44vDK9fjj3J9oz2": {
+      "sources": [
+        "production-1-0 productV1ExchangePolicies.template #1-metadata-exchange-policy",
+        "production-1-0 productV1ExchangePolicies.template #10-metadata-exchange-policy",
+        "production-1-0 productV1ExchangePolicies.template #11-metadata-exchange-policy",
+        "production-1-0 productV1ExchangePolicies.template #12-metadata-exchange-policy",
+        "production-1-0 productV1ExchangePolicies.template #19-metadata-exchange-policy"
+      ]
+    },
+    "QmaUobgQYrMnm2jZ3WowPtwRs4MpMR2TSinp3ChebjnZwe": {
+      "sources": [
+        "data/ipfs.txt contractualAgreement.template.md",
+        "production-1-0 productV1ExchangePolicies.template #23-metadata-exchange-policy"
+      ]
+    },
+    "QmTgenQY2fvvCZeHPMpMu63zGZrUHzgKAJAerBXN4fPY15": {
+      "sources": [
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmtgenqy2fvvczehpmpmu63zgzruhzgkajaerbxn4fpy15-profile",
+        "production-1-0 sellerMetadata_collection.images[0].url #10-seller-metadata"
+      ]
+    },
+    "QmVDCLa5PMeufkifB9tomx8QGGncTxafQwQdrPgfW9ujcZ": {
+      "sources": [
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmvdcla5pmeufkifb9tomx8qggnctxafqwqdrpgfw9ujcz-cover",
+        "production-1-0 sellerMetadata_collection.images[1].url #10-seller-metadata"
+      ]
+    },
+    "QmcjwbmRtMSnjBNyK6FYijx4CFhdKUC54cQ4FpWFsjJcF6": {
+      "sources": [
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmcjwbmrtmsnjbnyk6fyijx4cfhdkuc54cq4fpwfsjjcf6-cover",
+        "production-1-0 sellerMetadata_collection.images[0].url #4-seller-metadata"
+      ]
+    },
+    "QmZwJQH9byPvr5csGMY949xUG6oCGjLpictKWTi61xR9fX": {
+      "sources": [
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmzwjqh9bypvr5csgmy949xug6ocgjlpictkwti61xr9fx-profile",
+        "production-1-0 sellerMetadata_collection.images[1].url #4-seller-metadata"
+      ]
+    },
+    "QmfDnNpGtLwuFpcag676Pfbj8Rp5BcGNYfq98kBvnKK4nP": {
+      "sources": [
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmfdnnpgtlwufpcag676pfbj8rp5bcgnyfq98kbvnkk4np-profile",
+        "production-1-0 sellerMetadata_collection.images[0].url #5-seller-metadata"
+      ]
+    },
+    "QmYyh7j1f8ncpBUWMtMDV4SmkvCkKEtBGhg2Zyh5UyeZrC": {
+      "sources": [
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmyyh7j1f8ncpbuwmtmdv4smkvckketbghg2zyh5uyezrc-cover",
+        "production-1-0 sellerMetadata_collection.images[1].url #5-seller-metadata"
+      ]
+    },
+    "QmcmH9DkbCrXiMQLjqvUPbUwa9konyz22td82X1hCkgtGg": {
+      "sources": [
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmcmh9dkbcrximqljqvupbuwa9konyz22td82x1hckgtgg-profile",
+        "production-1-0 sellerMetadata_collection.images[0].url #6-seller-metadata"
+      ]
+    },
+    "QmZvRdXyfZzMFuMvuiJ87ipGW5QigMXFrVxeKMzZa1mHE9": {
+      "sources": [
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmzvrdxyfzzmfumvuij87ipgw5qigmxfrvxekmzza1mhe9-cover",
+        "production-1-0 sellerMetadata_collection.images[1].url #6-seller-metadata"
+      ]
+    },
+    "QmdYBePAV9EGVPekdR1gBSf7H7tUFLDDJEFx8cqGaxbD5B": {
+      "sources": [
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmdybepav9egvpekdr1gbsf7h7tuflddjefx8cqgaxbd5b-cover",
+        "production-1-0 sellerMetadata_collection.images[0].url #7-seller-metadata"
+      ]
+    },
+    "QmRwHTAAuchoEjAYR1fPvue7nGLtKoHaSKc9hR1qNx8dic": {
+      "sources": [
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmrwhtaauchoejayr1fpvue7ngltkohaskc9hr1qnx8dic-profile",
+        "production-1-0 sellerMetadata_collection.images[1].url #7-seller-metadata"
+      ]
+    },
+    "QmckGNQB7xCtvgjwa8FtSN6xrUccnrT9LjzjuuKNFh8Ve2": {
+      "sources": [
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmckgnqb7xctvgjwa8ftsn6xruccnrt9ljzjuuknfh8ve2-profile",
+        "production-1-0 sellerMetadata_collection.images[0].url #8-seller-metadata"
+      ]
+    },
+    "QmVmRVeUPoChfN3wMuwkmSojWhW7ZY7nsdbvBkdu7muXTT": {
+      "sources": [
+        "production-1-0 sellerMetadataMedias.url #https://bosonprotocol.infura-ipfs.io/ipfs/qmvmrveupochfn3wmuwkmsojwhw7zy7nsdbvbkdu7muxtt-cover",
+        "production-1-0 sellerMetadata_collection.images[1].url #8-seller-metadata"
+      ]
+    },
+    "QmfLRubW3ErKBgzQ8rse5YEQYJMAMhVWhA3Hcn4H2JPLAX": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0x286b8d2d9ef36209333926782d6817145e70e07d"
+      ]
+    },
+    "Qmaiw8YHGXLinbxpdFy23zGv7p3SWaxLigVj4B45UZBQKm": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0x28ff06f64659e8efc1d1688b95eb79f4cb36e252"
+      ]
+    },
+    "QmUJNe4QziK72bJAvrxCxp5Whn4teTTDiGaGYFje3fC6EM": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0x322afd142353f911485b98d77ef5db2c79973eaa"
+      ]
+    },
+    "Qmd7X9ZAkhjAimw6inSFg8U1fApLXJDj1o382wh89MRrZN": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0x32a13c2dbf288a41d52f7d446692f9f902935be7"
+      ]
+    },
+    "QmaLWrZv2DmM4CoLjeLWjTCndFgA81Dtd5YzCk5yNQMkMh": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0x35549331faae39eb3ed1e872846206202fd2ee1c"
+      ]
+    },
+    "QmNTr1bdr7SmkEJ64QuPdrERDDLneLgmAkb9eDfaaU6wvo": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0x3d1e2a991a8853a825151503f3f184c1e9d49b42"
+      ]
+    },
+    "QmciWbuxMXYzy2WrvPvj6gcwEeskHk3mvetQ3zbubDkU6V": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0x3dff6a23189c9813189c44bb06650454cc76a581"
+      ]
+    },
+    "QmUmfsqNeGYd2368HwrdXNBQo983wewyARFRW5f11p2KsJ": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0x47c4e7ea0f4b516ae54b3910504b8058e9f877ef"
+      ]
+    },
+    "QmTnpRSYk8F7g1L84En1YP5xHoHTp6ZS9H7rumxzn22hpY": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0x768455bd2aed679a1abf2a99fecbd2b17990b7c9"
+      ]
+    },
+    "QmYumk1ADu2d8jDKYcnYRTFDVz6DxREVRvR8J6bxpGQ2BE": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0xa01e866ce173f92e16c3264ee4c7e915cf1d7b5e"
+      ]
+    },
+    "QmP2iRnKAKBmWEWuT765gEnp8mtQDSRgsBBnr5WKTU4E4S": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0xad127cdad67d7d0e2a5807739b146920d19349e9"
+      ]
+    },
+    "QmRkZujsAKenQZ95WK7WVmaynpFpkzvPVhBEw2yMhM9GCF": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0xbe80e9941251d139391355e5fc52f2dc0a06d603"
+      ]
+    },
+    "QmbFC8JcsGYnKZJPE7AUfUdpwZx9VJk2fCwLjzHS9Ksxtv": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0xf2c27163f177d68deae3ffd13bb3cd9ab8d4af7d"
+      ]
+    },
+    "QmQxDZd6Kvmn167fx8V6tDXpzrgwr42d6w6wUDfqK3kUfW": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0xf430730b33a4981d4878f85b84623775c910a561"
+      ]
+    },
+    "QmbVkYXG4FxbkWKGGE1vXuzNphchW6jNQBQjyhBLsQpbKY": {
+      "sources": [
+        "production-1-0 collectionContracts.contractUri #0xfeb7f22ec66673217d334a3f08a99400a6446d06"
+      ]
+    },
+    "QmPbzbp7xcSKhQPjT5VacLRMVgM1U6DB4LiF2GVyHhvcA7": {
+      "sources": [
+        "data/ipfs.txt rNFTLicense.template.md"
+      ]
+    },
+    "QmXn43S2aKbDmqW3EDjHvt8pwUVLHpVE1mcradDpcmgiHm": {
+      "sources": [
+        "data/ipfs.txt exchangePolicyRules.template.json"
+      ]
+    },
+    "Qmcy5SebGksw4XZFR8mzytWwvutvzyWFsPDy2vNsNrfVU5": {
+      "sources": [
+        "production-8453-0 sellers.metadataUri #10"
+      ]
+    },
+    "QmWjNSCUfgfzAHmWzEkWF5rH3pKS5TyntMnC6fHR7DGqTs": {
+      "sources": [
+        "production-8453-0 sellers.metadataUri #11"
+      ]
+    },
+    "QmeNU1jmCBcsuar8DaXwWL3KGZqAwAatQPT86sJb7x5u3j": {
+      "sources": [
+        "production-8453-0 sellers.metadataUri #5"
+      ]
+    },
+    "QmXMVD6b5NtcqaRph6iZwUfncjcqVQnTUyfTvWX3SD3f9L": {
+      "sources": [
+        "production-8453-0 sellers.metadataUri #6"
+      ]
+    },
+    "QmPup5LHNWJ7PdwTfxEGmr7RWsA3MYXjQo4A8ZmbnHPxrY": {
+      "sources": [
+        "production-8453-0 sellers.metadataUri #7"
+      ]
+    },
+    "QmUL44hqQBtyVkx8nqG6aVcJvDDe4HK2wRG4eMeEL3qsSq": {
+      "sources": [
+        "production-8453-0 sellers.metadataUri #9"
+      ]
+    },
+    "QmSjjtBbPCCuHCDRsXCjttndzHojsU8inJWxk8sYj5mDZZ": {
+      "sources": [
+        "production-8453-0 offers.metadataUri #1"
+      ]
+    },
+    "Qmdr64GjDiZRAYwVvD4AKQyvdgwPcG4psYQ69ecBZqA22M": {
+      "sources": [
+        "production-8453-0 offers.metadataUri #2"
+      ]
+    },
+    "QmSBtxKuCz7oN5aipUhbPdpeem73SpNiAyKhk9tJ1xyj7B": {
+      "sources": [
+        "production-8453-0 productV1Medias.url #ipfs://qmsbtxkucz7on5aipuhbpdpeem73spniaykhk9tj1xyj7b-product_image",
+        "production-8453-0 productV1MetadataEntities.image #2-metadata",
+        "production-8453-0 productV1Products.visuals_images[0].url #11-4d08c2ba-7d08-436f-bcbb-e97ce1cb6913-1"
+      ]
+    },
+    "QmP7KiqUuBmqc3ohFLJimcZ1ase53cEYruPRdMJrMfvzTe": {
+      "sources": [
+        "production-8453-0 collectionContracts.contractUri #0x0289d2eb8389f865e4ba853794cbeb7de94fa50c"
+      ]
+    },
+    "QmfGBzVAQWuPPLcD42FRPqCdWsMuxAKeA3oRPLs2cPxB9M": {
+      "sources": [
+        "production-8453-0 collectionContracts.contractUri #0x21f9e3b84880448292a889e1d971ab4ac8a79887"
+      ]
+    },
+    "Qmcor5VNf4m9CgPY2hiVPJjnbs6UUPDTUmVCXLPUPd2mkT": {
+      "sources": [
+        "production-8453-0 collectionContracts.contractUri #0x597817387f58b6948e4c49b72e8620aeab228867"
+      ]
+    },
+    "Qmd3ySYMNGtJVjruZbUrCnmyvf5r8dtCThQJ1aNxFULtgk": {
+      "sources": [
+        "production-8453-0 collectionContracts.contractUri #0x63b7adbfc812889ed4d2862a4501ce9785c3c506"
+      ]
+    },
+    "QmWREJxL5GjiAUySzDpKmz4ELjjq5i5c6y4kcZoo41Vh1o": {
+      "sources": [
+        "production-8453-0 collectionContracts.contractUri #0xa269b7101ea31d9f14dc65159c71174473b536c6"
+      ]
+    },
+    "QmREVxRZADf25TZovDmTvp2F3L6GVctPiUjAA9MrdB68iu": {
+      "sources": [
+        "production-8453-0 collectionContracts.contractUri #0xd261429da06030d4fead109ffad020e3c081891b"
+      ]
+    }
+  }
+}

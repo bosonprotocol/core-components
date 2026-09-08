@@ -37,7 +37,7 @@ export function useSaveImageToIpfs() {
         return;
       }
       const cid = fileUrl.replace("ipfs://", "");
-      await ipfsMetadataStorage?.ipfsClient?.pin?.rm(cid);
+      await ipfsMetadataStorage?.unpin(cid);
     },
     [ipfsMetadataStorage]
   );

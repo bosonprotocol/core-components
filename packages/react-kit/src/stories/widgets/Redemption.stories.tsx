@@ -50,8 +50,8 @@ Redemption.args = {
   fairExchangePolicyRules:
     "ipfs://QmV3Wy2wmrFdEXzhyhvvaW25Q8w2wTd2UypFVyhwsdBE8T",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
-  ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
-  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  ipfsGatewayToken: process.env.STORYBOOK_DATA_IPFS_GATEWAY_TOKEN,
+  ipfsJwt: process.env.STORYBOOK_DATA_IPFS_JWT,
   exchangeId: "",
   metaTx: {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,

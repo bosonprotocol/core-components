@@ -23,7 +23,7 @@ async function main() {
   const opts = program.opts();
   const envName = opts.env || process.env.ENV_NAME || "testing";
   const configId =
-    opts.configId || process.env.ENV_CONFIG_ID || "testing-80002-0";
+    opts.configId || process.env.ENV_CONFIG_ID || "testing-11155111-0";
   const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const chainId = defaultConfig.chainId;
   const sellerWallet = new Wallet(sellerPrivateKey);

@@ -23,8 +23,8 @@ const ConnectRobloxWrapper = (props: ConnectRobloxProps) => {
       configId={configId}
       envName={envName}
       ipfsGateway={process.env.STORYBOOK_DATA_IPFS_GATEWAY}
-      ipfsProjectId={process.env.STORYBOOK_DATA_IPFS_PROJECT_ID}
-      ipfsProjectSecret={process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET}
+      ipfsGatewayToken={process.env.STORYBOOK_DATA_IPFS_GATEWAY_TOKEN}
+      ipfsJwt={process.env.STORYBOOK_DATA_IPFS_JWT}
       walletConnectProjectId={
         process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID ?? ""
       }

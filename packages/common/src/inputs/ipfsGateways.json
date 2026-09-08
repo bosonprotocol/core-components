@@ -8,67 +8,67 @@
   "testing": {
     "testing-80002-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     },
     "testing-11155111-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     },
     "testing-84532-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     },
     "testing-11155420-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     },
     "testing-421614-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     }
   },
   "staging": {
     "staging-80002-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     },
     "staging-11155111-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     },
     "staging-84532-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     },
     "staging-11155420-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     },
     "staging-421614-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     }
   },
   "production": {
     "production-137-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     },
     "production-1-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     },
     "production-8453-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     },
     "production-10-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     },
     "production-42161-0": {
       "theGraphIpfsUrl": "https://api.0xgraph.xyz/ipfs",
-      "ipfsMetadataUrl": "https://ipfs.infura.io:5001"
+      "ipfsMetadataUrl": "https://uploads.pinata.cloud/v3/files"
     }
   }
 }

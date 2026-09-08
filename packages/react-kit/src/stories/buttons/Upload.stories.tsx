@@ -47,10 +47,7 @@ export default {
       return (
         <QueryClientProviderCustom>
           <EnvironmentProvider configId="testing-80002-0" envName="testing">
-            <IpfsProvider
-              ipfsProjectId={process.env.STORYBOOK_DATA_IPFS_PROJECT_ID}
-              ipfsProjectSecret={process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET}
-            >
+            <IpfsProvider ipfsJwt={process.env.STORYBOOK_DATA_IPFS_JWT}>
               <Formik initialValues={{ [name]: [] }} onSubmit={console.log}>
                 <Story
                   args={{

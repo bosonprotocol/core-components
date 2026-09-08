@@ -44,3 +44,6 @@ storybook-static
 
 # claude
 .claude/settings.local.json
+
+# per-run output of scripts/pin-cids-to-pinata.ts
+data/ipfs-cids/*.pin-report.json

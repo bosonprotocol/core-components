@@ -1,0 +1,90 @@
+name: pin-ipfs-cids
+
+# Replaces the removed hourly `pin-to-pinata` workflow, which re-pinned through
+# Infura. The sweep is a full subgraph pass rather than a 24h window, so it runs
+# daily instead of hourly.
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+# One run at a time: concurrent runs would re-pin the same CIDs and burn the
+# Pinata rate limit against each other. Never cancel a run mid-pin.
+concurrency:
+  group: pin-ipfs-cids
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  pin:
+    name: Pin ${{ matrix.env }} CIDs
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      # One environment failing must not stop the other two from being re-pinned.
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - env: testing
+            configIds: >-
+              testing-80002-0 testing-11155111-0 testing-84532-0
+              testing-11155420-0 testing-421614-0
+          - env: staging
+            configIds: >-
+              staging-80002-0 staging-11155111-0 staging-84532-0
+              staging-11155420-0 staging-421614-0
+          - env: production
+            configIds: >-
+              production-137-0 production-1-0 production-8453-0
+              production-10-0 production-42161-0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          # NOTE: cache: "npm" is intentionally disabled — actions/setup-node's
+          # npm cache restore hangs indefinitely on this monorepo
+          # (see https://github.com/actions/setup-node/issues/516).
+      - name: Turbo Cache
+        id: turbo-cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build -- --cache-dir=".turbo"
+
+      # Sweeps every subgraph of the environment and merges what it finds into
+      # the committed data/ipfs-cids/<env>.txt list. Nothing is committed back:
+      # the list only has to survive until the pin step below reads it.
+      - name: Collect the CIDs each subgraph references
+        env:
+          CONFIG_IDS: ${{ matrix.configIds }}
+        run: |
+          for configId in $CONFIG_IDS; do
+            echo "::group::collect $configId"
+            npm run collect-ipfs-cids -- -c "$configId"
+            echo "::endgroup::"
+          done
+
+      - name: Re-pin them on Pinata
+        env:
+          PINATA_JWT: ${{ secrets.PINATA_JWT }}
+          PINATA_GATEWAY_TOKEN: ${{ secrets.PINATA_GATEWAY_TOKEN }}
+          ENV_NAME: ${{ matrix.env }}
+        run: npm run pin-cids-to-pinata -- -e "$ENV_NAME"
+
+      # The report names every CID that is still unretrievable, which is what
+      # a failing exit code above is pointing at.
+      - name: Upload the pin report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pin-report-${{ matrix.env }}
+          path: data/ipfs-cids/${{ matrix.env }}.pin-report.json
+          if-no-files-found: warn

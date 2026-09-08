@@ -21,6 +21,7 @@ export * from "./contracts/erc1155/useErc1155Uris";
 export * from "./contracts/useGetTokenUriImages";
 export { useCoreSdk } from "./core-sdk/useCoreSdk";
 export * from "./form/useForm";
+export * from "./ipfs/getIpfsHeaders";
 export * from "./ipfs/useIpfsStorage";
 export * from "./location/buildUseSearchParams";
 export * from "./magic";

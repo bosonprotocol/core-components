@@ -1,6 +1,5 @@
 import { convertToERC721Metadata, ERC721Metadata, sortObjKeys } from "../utils";
-import { BaseIpfsStorage } from "./base";
-import { Options } from "ipfs-http-client";
+import { BaseIpfsStorage, BaseIpfsStorageOptions } from "./base";
 import { AnyMetadata, MetadataStorage } from "@bosonprotocol/metadata-storage";
 
 /**
@@ -12,7 +11,7 @@ export class IpfsMetadataStorage
 {
   constructor(
     protected validateMetadata: (metadata: AnyMetadata) => void,
-    opts: Options
+    opts: BaseIpfsStorageOptions
   ) {
     super(opts);
   }
