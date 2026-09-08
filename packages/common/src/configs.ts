@@ -59,38 +59,36 @@ export const envConfigs = {
   testing: [
     {
       envName: "testing",
-      chainId: 80002,
-      configId: "testing-80002-0",
+      chainId: 84532,
+      configId: "testing-84532-0",
       sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-80002-0/sellers/blacklist.json",
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-84532-0/sellers/blacklist.json",
       offersWhiteList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/testing-80002-0/offers/whitelist.json",
-      defaultDisputeResolverId: "1",
-      defaultTokens: chainIdToDefaultTokens.get(80002),
-      nativeCoin: chainIdToInfo.get(80002),
-      getTxExplorerUrl: chainIdToGraphTx.get(80002),
-      subgraphUrl: subgraphsJson.testing["testing-80002-0"][0],
-      jsonRpcUrl: rpcUrlsJson.testing["testing-80002-0"][0],
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/testing-84532-0/offers/whitelist.json",
+      defaultDisputeResolverId: "4",
+      defaultTokens: chainIdToDefaultTokens.get(84532),
+      nativeCoin: chainIdToInfo.get(84532),
+      getTxExplorerUrl: chainIdToGraphTx.get(84532),
+      subgraphUrl: subgraphsJson.testing["testing-84532-0"][0],
+      jsonRpcUrl: rpcUrlsJson.testing["testing-84532-0"][0],
       theGraphIpfsUrl:
-        ipfsGatewaysJson.testing["testing-80002-0"].theGraphIpfsUrl,
+        ipfsGatewaysJson.testing["testing-84532-0"].theGraphIpfsUrl,
       ipfsMetadataUrl:
-        ipfsGatewaysJson.testing["testing-80002-0"].ipfsMetadataUrl,
+        ipfsGatewaysJson.testing["testing-84532-0"].ipfsMetadataUrl,
       contracts: {
-        protocolDiamond: protocolAddresses.testing[80002].protocolDiamond,
+        protocolDiamond: protocolAddresses.testing[84532].protocolDiamond,
         priceDiscoveryClient:
-          protocolAddresses.testing[80002].priceDiscoveryClient,
+          protocolAddresses.testing[84532].priceDiscoveryClient,
         permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
-        forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0", // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
-        openseaWrapper: "0x6e9C25b48161A2aC6A854af3bc596d3190F0B5A3"
+        forwarder: "",
+        openseaWrapper: ""
       },
       metaTx: {
         relayerUrl:
-          "https://meta-tx-gateway-testing-114403180314.europe-west2.run.app",
+          "https://meta-tx-gateway-testing-base-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
-      lens: {
-        ...(chainIdToLensInfo.has(80002) && chainIdToLensInfo.get(80002))
-      }
+      lens: undefined
     },
     {
       envName: "testing",
@@ -123,36 +121,38 @@ export const envConfigs = {
     },
     {
       envName: "testing",
-      chainId: 84532,
-      configId: "testing-84532-0",
+      chainId: 80002,
+      configId: "testing-80002-0",
       sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-84532-0/sellers/blacklist.json",
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-80002-0/sellers/blacklist.json",
       offersWhiteList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/testing-84532-0/offers/whitelist.json",
-      defaultDisputeResolverId: "4",
-      defaultTokens: chainIdToDefaultTokens.get(84532),
-      nativeCoin: chainIdToInfo.get(84532),
-      getTxExplorerUrl: chainIdToGraphTx.get(84532),
-      subgraphUrl: subgraphsJson.testing["testing-84532-0"][0],
-      jsonRpcUrl: rpcUrlsJson.testing["testing-84532-0"][0],
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/testing-80002-0/offers/whitelist.json",
+      defaultDisputeResolverId: "1",
+      defaultTokens: chainIdToDefaultTokens.get(80002),
+      nativeCoin: chainIdToInfo.get(80002),
+      getTxExplorerUrl: chainIdToGraphTx.get(80002),
+      subgraphUrl: subgraphsJson.testing["testing-80002-0"][0],
+      jsonRpcUrl: rpcUrlsJson.testing["testing-80002-0"][0],
       theGraphIpfsUrl:
-        ipfsGatewaysJson.testing["testing-84532-0"].theGraphIpfsUrl,
+        ipfsGatewaysJson.testing["testing-80002-0"].theGraphIpfsUrl,
       ipfsMetadataUrl:
-        ipfsGatewaysJson.testing["testing-84532-0"].ipfsMetadataUrl,
+        ipfsGatewaysJson.testing["testing-80002-0"].ipfsMetadataUrl,
       contracts: {
-        protocolDiamond: protocolAddresses.testing[84532].protocolDiamond,
+        protocolDiamond: protocolAddresses.testing[80002].protocolDiamond,
         priceDiscoveryClient:
-          protocolAddresses.testing[84532].priceDiscoveryClient,
+          protocolAddresses.testing[80002].priceDiscoveryClient,
         permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
-        forwarder: "",
-        openseaWrapper: ""
+        forwarder: "0xd240234dacd7ffdca7e4effcf6c7190885d7e2f0", // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L11
+        openseaWrapper: "0x6e9C25b48161A2aC6A854af3bc596d3190F0B5A3"
       },
       metaTx: {
         relayerUrl:
-          "https://meta-tx-gateway-testing-base-114403180314.europe-west2.run.app",
+          "https://meta-tx-gateway-testing-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
-      lens: undefined
+      lens: {
+        ...(chainIdToLensInfo.has(80002) && chainIdToLensInfo.get(80002))
+      }
     },
     {
       envName: "testing",
@@ -224,6 +224,66 @@ export const envConfigs = {
   staging: [
     {
       envName: "staging",
+      chainId: 84532,
+      configId: "staging-84532-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-84532-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/staging-84532-0/offers/whitelist.json",
+      defaultDisputeResolverId: "4",
+      defaultTokens: chainIdToDefaultTokens.get(84532),
+      nativeCoin: chainIdToInfo.get(84532),
+      getTxExplorerUrl: chainIdToGraphTx.get(84532),
+      subgraphUrl: subgraphsJson.staging["staging-84532-0"][0],
+      jsonRpcUrl: rpcUrlsJson.staging["staging-84532-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.staging["staging-84532-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.staging["staging-84532-0"].ipfsMetadataUrl,
+      contracts: {
+        protocolDiamond: protocolAddresses.staging[84532].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.staging[84532].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+        forwarder: ""
+      },
+      metaTx: {
+        relayerUrl:
+          "https://meta-tx-gateway-staging-base-114403180314.europe-west2.run.app",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: undefined
+    },
+    {
+      envName: "staging",
+      chainId: 11155111,
+      configId: "staging-11155111-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-11155111-0/sellers/blacklist.json",
+      offersWhiteList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/staging-11155111-0/offers/whitelist.json",
+      defaultDisputeResolverId: "1",
+      defaultTokens: chainIdToDefaultTokens.get(11155111),
+      nativeCoin: chainIdToInfo.get(11155111),
+      getTxExplorerUrl: chainIdToGraphTx.get(11155111),
+      subgraphUrl: subgraphsJson.staging["staging-11155111-0"][0],
+      jsonRpcUrl: rpcUrlsJson.staging["staging-11155111-0"][0],
+      theGraphIpfsUrl:
+        ipfsGatewaysJson.staging["staging-11155111-0"].theGraphIpfsUrl,
+      ipfsMetadataUrl:
+        ipfsGatewaysJson.staging["staging-11155111-0"].ipfsMetadataUrl,
+      contracts: {
+        protocolDiamond: protocolAddresses.staging[11155111].protocolDiamond,
+        priceDiscoveryClient:
+          protocolAddresses.staging[11155111].priceDiscoveryClient,
+        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+        forwarder: "0xbdeA59c8801658561a16fF58D68FC2b198DE4E93" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L10
+      },
+      metaTx: undefined,
+      lens: undefined
+    },
+    {
+      envName: "staging",
       chainId: 80002,
       configId: "staging-80002-0",
       sellersBlackList:
@@ -256,66 +316,6 @@ export const envConfigs = {
       lens: {
         ...(chainIdToLensInfo.has(80002) && chainIdToLensInfo.get(80002))
       }
-    },
-    {
-      envName: "staging",
-      chainId: 11155111,
-      configId: "staging-11155111-0",
-      sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-11155111-0/sellers/blacklist.json",
-      offersWhiteList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/staging-11155111-0/offers/whitelist.json",
-      defaultDisputeResolverId: "1",
-      defaultTokens: chainIdToDefaultTokens.get(11155111),
-      nativeCoin: chainIdToInfo.get(11155111),
-      getTxExplorerUrl: chainIdToGraphTx.get(11155111),
-      subgraphUrl: subgraphsJson.staging["staging-11155111-0"][0],
-      jsonRpcUrl: rpcUrlsJson.staging["staging-11155111-0"][0],
-      theGraphIpfsUrl:
-        ipfsGatewaysJson.staging["staging-11155111-0"].theGraphIpfsUrl,
-      ipfsMetadataUrl:
-        ipfsGatewaysJson.staging["staging-11155111-0"].ipfsMetadataUrl,
-      contracts: {
-        protocolDiamond: protocolAddresses.staging[11155111].protocolDiamond,
-        priceDiscoveryClient:
-          protocolAddresses.staging[11155111].priceDiscoveryClient,
-        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
-        forwarder: "0xbdeA59c8801658561a16fF58D68FC2b198DE4E93" // https://github.com/bosonprotocol/boson-protocol-contracts/blob/main/scripts/config/client-upgrade.js#L10
-      },
-      metaTx: undefined,
-      lens: undefined
-    },
-    {
-      envName: "staging",
-      chainId: 84532,
-      configId: "staging-84532-0",
-      sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-84532-0/sellers/blacklist.json",
-      offersWhiteList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/staging-84532-0/offers/whitelist.json",
-      defaultDisputeResolverId: "4",
-      defaultTokens: chainIdToDefaultTokens.get(84532),
-      nativeCoin: chainIdToInfo.get(84532),
-      getTxExplorerUrl: chainIdToGraphTx.get(84532),
-      subgraphUrl: subgraphsJson.staging["staging-84532-0"][0],
-      jsonRpcUrl: rpcUrlsJson.staging["staging-84532-0"][0],
-      theGraphIpfsUrl:
-        ipfsGatewaysJson.staging["staging-84532-0"].theGraphIpfsUrl,
-      ipfsMetadataUrl:
-        ipfsGatewaysJson.staging["staging-84532-0"].ipfsMetadataUrl,
-      contracts: {
-        protocolDiamond: protocolAddresses.staging[84532].protocolDiamond,
-        priceDiscoveryClient:
-          protocolAddresses.staging[84532].priceDiscoveryClient,
-        permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
-        forwarder: ""
-      },
-      metaTx: {
-        relayerUrl:
-          "https://meta-tx-gateway-staging-base-114403180314.europe-west2.run.app",
-        forwarderAbi: abis.BiconomyForwarderABI
-      },
-      lens: undefined
     },
     {
       envName: "staging",
@@ -385,36 +385,35 @@ export const envConfigs = {
   production: [
     {
       envName: "production",
-      chainId: 137,
-      configId: "production-137-0",
+      chainId: 8453,
+      configId: "production-8453-0",
       sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-137-0/sellers/blacklist.json",
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-8453-0/sellers/blacklist.json",
       offersWhiteList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-137-0/offers/whitelist.json",
-      defaultDisputeResolverId: "1",
-      defaultTokens: chainIdToDefaultTokens.get(137),
-      nativeCoin: chainIdToInfo.get(137),
-      getTxExplorerUrl: chainIdToGraphTx.get(137),
-      subgraphUrl: subgraphsJson.production["production-137-0"][0],
-      jsonRpcUrl: rpcUrlsJson.production["production-137-0"][0],
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-8453-0/offers/whitelist.json",
+      defaultDisputeResolverId: "4",
+      defaultTokens: chainIdToDefaultTokens.get(8453),
+      nativeCoin: chainIdToInfo.get(8453),
+      getTxExplorerUrl: chainIdToGraphTx.get(8453),
+      subgraphUrl: subgraphsJson.production["production-8453-0"][0],
+      jsonRpcUrl: rpcUrlsJson.production["production-8453-0"][0],
       theGraphIpfsUrl:
-        ipfsGatewaysJson.production["production-137-0"].theGraphIpfsUrl,
+        ipfsGatewaysJson.production["production-8453-0"].theGraphIpfsUrl,
       ipfsMetadataUrl:
-        ipfsGatewaysJson.production["production-137-0"].ipfsMetadataUrl,
+        ipfsGatewaysJson.production["production-8453-0"].ipfsMetadataUrl,
       contracts: {
-        protocolDiamond: protocolAddresses.production[137].protocolDiamond,
+        protocolDiamond: protocolAddresses.production[8453].protocolDiamond,
         priceDiscoveryClient:
-          protocolAddresses.production[137].priceDiscoveryClient,
+          protocolAddresses.production[8453].priceDiscoveryClient,
         permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
-        forwarder: "0xf0511f123164602042ab2bCF02111fA5D3Fe97CD"
+        forwarder: ""
       },
       metaTx: {
-        relayerUrl: "https://meta-tx-gateway-114403180314.europe-west2.run.app",
+        relayerUrl:
+          "https://meta-tx-gateway-base-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
-      lens: {
-        ...(chainIdToLensInfo.has(137) && chainIdToLensInfo.get(137))
-      }
+      lens: undefined
     },
     {
       envName: "production",
@@ -446,35 +445,36 @@ export const envConfigs = {
     },
     {
       envName: "production",
-      chainId: 8453,
-      configId: "production-8453-0",
+      chainId: 137,
+      configId: "production-137-0",
       sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-8453-0/sellers/blacklist.json",
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-137-0/sellers/blacklist.json",
       offersWhiteList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-8453-0/offers/whitelist.json",
-      defaultDisputeResolverId: "4",
-      defaultTokens: chainIdToDefaultTokens.get(8453),
-      nativeCoin: chainIdToInfo.get(8453),
-      getTxExplorerUrl: chainIdToGraphTx.get(8453),
-      subgraphUrl: subgraphsJson.production["production-8453-0"][0],
-      jsonRpcUrl: rpcUrlsJson.production["production-8453-0"][0],
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/refs/heads/main/bosonApp.io/production-137-0/offers/whitelist.json",
+      defaultDisputeResolverId: "1",
+      defaultTokens: chainIdToDefaultTokens.get(137),
+      nativeCoin: chainIdToInfo.get(137),
+      getTxExplorerUrl: chainIdToGraphTx.get(137),
+      subgraphUrl: subgraphsJson.production["production-137-0"][0],
+      jsonRpcUrl: rpcUrlsJson.production["production-137-0"][0],
       theGraphIpfsUrl:
-        ipfsGatewaysJson.production["production-8453-0"].theGraphIpfsUrl,
+        ipfsGatewaysJson.production["production-137-0"].theGraphIpfsUrl,
       ipfsMetadataUrl:
-        ipfsGatewaysJson.production["production-8453-0"].ipfsMetadataUrl,
+        ipfsGatewaysJson.production["production-137-0"].ipfsMetadataUrl,
       contracts: {
-        protocolDiamond: protocolAddresses.production[8453].protocolDiamond,
+        protocolDiamond: protocolAddresses.production[137].protocolDiamond,
         priceDiscoveryClient:
-          protocolAddresses.production[8453].priceDiscoveryClient,
+          protocolAddresses.production[137].priceDiscoveryClient,
         permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
-        forwarder: ""
+        forwarder: "0xf0511f123164602042ab2bCF02111fA5D3Fe97CD"
       },
       metaTx: {
-        relayerUrl:
-          "https://meta-tx-gateway-base-114403180314.europe-west2.run.app",
+        relayerUrl: "https://meta-tx-gateway-114403180314.europe-west2.run.app",
         forwarderAbi: abis.BiconomyForwarderABI
       },
-      lens: undefined
+      lens: {
+        ...(chainIdToLensInfo.has(137) && chainIdToLensInfo.get(137))
+      }
     },
     {
       envName: "production",
