@@ -1,5 +1,11 @@
 FROM graphprotocol/graph-node:v0.33.0
 
+# Debian 11 (bullseye) left LTS on 2026-08-31, so deb.debian.org stopped
+# refreshing its bullseye-security Release file and apt-get update now aborts on
+# the expired signature. Nothing below comes from that repo -- curl and
+# supervisor are in bullseye main, nodejs comes from NodeSource -- so drop it.
+RUN sed -i '/-security/d' /etc/apt/sources.list
+
 RUN apt-get update
 RUN apt-get install -y curl
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
