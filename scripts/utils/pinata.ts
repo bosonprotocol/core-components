@@ -1,6 +1,7 @@
 import FormData from "form-data";
 
 import { BaseIpfsStorage } from "../../packages/ipfs-storage/src/ipfs/base";
+import { normalizeCid, parseCid } from "./ipfs";
 
 export const PINATA_API_URL = "https://api.pinata.cloud";
 export const PINATA_V3_API_URL = "https://api.pinata.cloud/v3";
@@ -452,19 +453,50 @@ export type DownloadResult = {
 };
 
 /**
- * A gateway answers a directory CID by redirecting to a trailing-slash URL and
- * rendering an HTML index. That redirect is the reliable signal - the HTML body
- * itself is not distinguishable from a genuine HTML file.
+ * Whether the gateway answered with a generated directory index rather than the
+ * addressed content.
+ *
+ * A trailing slash cannot decide this. Subdomain gateways (dweb.link, w3s.link)
+ * rewrite *every* CID - files included - onto `https://<cidv1>.ipfs.<host>/`,
+ * whose pathname is `/` and whose `x-ipfs-path` gains a trailing slash too, so
+ * the slash test reported ordinary files as directories and abandoned them.
+ *
+ * The ETag survives both gateway styles: a file response carries `W/"<cid>"`
+ * naming the content served, while a generated index carries no ETag at all. A
+ * matching ETag is therefore positive proof of a file, and only without one do
+ * the weaker signals get a say.
  */
-function looksLikeDirectoryResponse(response: Response): boolean {
-  try {
-    if (new URL(response.url).pathname.endsWith("/")) {
-      return true;
-    }
-  } catch {
-    // fall through to the header check
+function looksLikeDirectoryResponse(response: Response, cid: string): boolean {
+  const etag = response.headers.get("etag");
+  const taggedCid = etag
+    ? parseCid(etag.replace(/^W\//i, "").replace(/^"|"$/g, ""))
+    : undefined;
+  if (taggedCid && normalizeCid(taggedCid) === normalizeCid(cid)) {
+    return false;
   }
-  return (response.headers.get("x-ipfs-path") || "").endsWith("/");
+
+  let onSubdomainGateway = false;
+  try {
+    onSubdomainGateway = /\.ipfs\./i.test(new URL(response.url).hostname);
+  } catch {
+    // an unparseable URL keeps the path-gateway reading below
+  }
+
+  if (!onSubdomainGateway) {
+    try {
+      if (new URL(response.url).pathname.endsWith("/")) {
+        return true;
+      }
+    } catch {
+      // fall through to the header check
+    }
+    return (response.headers.get("x-ipfs-path") || "").endsWith("/");
+  }
+
+  // On a subdomain gateway the slash means nothing, so the remaining tell is
+  // HTML the gateway declined to tag with a CID - which is what a generated
+  // index looks like. A genuine HTML *file* is caught by the ETag above.
+  return /^text\/html\b/i.test(response.headers.get("content-type") || "");
 }
 
 /**
@@ -512,7 +544,7 @@ export async function downloadFromGateways(
       return {
         bytes,
         gateway,
-        isDirectory: looksLikeDirectoryResponse(response)
+        isDirectory: looksLikeDirectoryResponse(response, cid)
       };
     } catch (error) {
       errors.push(`${gateway} -> ${(error as Error).message}`);
