@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.43.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.42.4...@bosonprotocol/react-kit@0.43.0) (2026-09-08)
+
+### Features
+
+- migrate IPFS hosting from Infura to Pinata ([#1040](https://github.com/bosonprotocol/core-components/issues/1040)) ([132faae](https://github.com/bosonprotocol/core-components/commit/132faae8cf8d184d98dd0f64833b334a8e9fcca6))
+
 ## [0.42.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.42.3...@bosonprotocol/react-kit@0.42.4) (2026-08-28)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.38.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.37.0...@bosonprotocol/subgraph@1.38.0) (2026-09-08)
+
+### Features
+
+- migrate IPFS hosting from Infura to Pinata ([#1040](https://github.com/bosonprotocol/core-components/issues/1040)) ([132faae](https://github.com/bosonprotocol/core-components/commit/132faae8cf8d184d98dd0f64833b334a8e9fcca6))
+
 # [1.37.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.36.0...@bosonprotocol/subgraph@1.37.0) (2026-08-28)
 
 ### Bug Fixes
