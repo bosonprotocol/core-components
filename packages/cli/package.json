@@ -1,0 +1,52 @@
+{
+  "name": "@bosonprotocol/cli",
+  "version": "0.1.0",
+  "description": "CLI for interacting with the Boson Protocol core-sdk",
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "bin": {
+    "boson": "./bin/run.js"
+  },
+  "scripts": {
+    "dev": "tsc --build tsconfig.json --watch --preserveWatchOutput",
+    "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
+    "lint:fix": "npm run lint -- --fix",
+    "build": "rimraf dist && tsc --build tsconfig.json",
+    "clean": "rimraf dist coverage .turbo node_modules"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bosonprotocol/core-components.git"
+  },
+  "author": "Boson Protocol",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/bosonprotocol/core-components/issues"
+  },
+  "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/cli#readme",
+  "files": [
+    "dist/*",
+    "src/*",
+    "bin/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@bosonprotocol/common": "^1.32.2",
+    "@bosonprotocol/core-sdk": "^1.47.0-alpha.4",
+    "@bosonprotocol/ethers-sdk": "^1.17.2",
+    "@bosonprotocol/ipfs-storage": "^1.13.0",
+    "commander": "^9.4.0",
+    "dotenv": "^16.4.5",
+    "ethers": "^5.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.10.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^5.1.6"
+  },
+  "overrides": {
+    "typescript": "^5.1.6"
+  }
+}
