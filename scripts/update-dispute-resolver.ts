@@ -24,6 +24,10 @@ program
     "--rmSellers <...SELLERS>",
     "Comma-separated list of seller IDs. to remove"
   )
+  .option(
+    "-p, --escalationResponsePeriod <SECONDS>",
+    "New escalation response period, in seconds."
+  )
   .parse(process.argv);
 
 async function main() {
@@ -48,6 +52,16 @@ async function main() {
     ? (opts.addSellers as string).split(",")
     : [];
   const rmSellers = opts.rmSellers ? (opts.rmSellers as string).split(",") : [];
+  let escalationResponsePeriodInMS: number | undefined;
+  if (opts.escalationResponsePeriod !== undefined) {
+    const seconds = Number(opts.escalationResponsePeriod);
+    if (!Number.isInteger(seconds) || seconds <= 0) {
+      throw new Error(
+        `Invalid escalationResponsePeriod: ${opts.escalationResponsePeriod} (expected a positive integer number of seconds)`
+      );
+    }
+    escalationResponsePeriodInMS = seconds * 1000;
+  }
 
   const drAdminWallet = new Wallet(drAdminPrivateKey);
   const coreSDK = CoreSDK.fromDefaultConfig({
@@ -79,6 +93,9 @@ async function main() {
   console.log(
     `DisputeResolver Current Sellers: ${JSON.stringify(drs[0].sellerAllowList)}`
   );
+  console.log(
+    `DisputeResolver Current Escalation Response Period (s): ${drs[0].escalationResponsePeriod}`
+  );
 
   if (addFees.length > 0) {
     await addFeesFn(coreSDK, drs[0].id, addFees);
@@ -94,6 +111,14 @@ async function main() {
 
   if (rmSellers.length > 0) {
     await rmSellersFn(coreSDK, drs[0].id, rmSellers);
+  }
+
+  if (escalationResponsePeriodInMS !== undefined) {
+    await updateEscalationResponsePeriodFn(
+      coreSDK,
+      drs[0].id,
+      escalationResponsePeriodInMS
+    );
   }
 }
 
@@ -159,6 +184,22 @@ async function rmSellersFn(
     disputeResolverId,
     sellers
   );
+  console.log(`Tx hash: ${txResponse.hash}`);
+  await txResponse.wait();
+  console.log(`Dispute resolver with id ${disputeResolverId} updated.`);
+}
+
+async function updateEscalationResponsePeriodFn(
+  coreSDK: CoreSDK,
+  disputeResolverId: string,
+  escalationResponsePeriodInMS: number
+) {
+  console.log(
+    `Update escalation response period: ${escalationResponsePeriodInMS / 1000}s`
+  );
+  const txResponse = await coreSDK.updateDisputeResolver(disputeResolverId, {
+    escalationResponsePeriodInMS
+  });
   console.log(`Tx hash: ${txResponse.hash}`);
   await txResponse.wait();
   console.log(`Dispute resolver with id ${disputeResolverId} updated.`);
