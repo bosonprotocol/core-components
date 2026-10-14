@@ -8,7 +8,8 @@ import {
   signReceiveWithPermit2,
   signReceiveWithDaiPermit,
   encodeTransferAuthorizationEntry,
-  TransferAuthorization
+  TransferAuthorization,
+  UnsignedTransferAuthorization
 } from "../../src/erc20/handler";
 import { StructuredData } from "../../src/utils/signature";
 
@@ -501,5 +502,23 @@ describe("encodeTransferAuthorizationEntry()", () => {
       return Number(id);
     });
     expect(decodedIds).toEqual([1, 2, 3, 4]);
+  });
+
+  test('returns "0x" for strategy "None"', () => {
+    const noneAuth: UnsignedTransferAuthorization = { strategy: "None" };
+    const encoded = encodeTransferAuthorizationEntry(noneAuth);
+    expect(encoded).toBe("0x");
+  });
+
+  test("round-trips a [None, ERC3009] queue matching protocol expectation", async () => {
+    const erc3009 = await signReceiveWithErc3009Authorization(baseArgs());
+    const queue: TransferAuthorization[] = [{ strategy: "None" }, erc3009];
+    const entries = queue.map(encodeTransferAuthorizationEntry);
+    expect(entries.length).toBe(2);
+    // First entry is the empty/fallback slot.
+    expect(entries[0]).toBe("0x");
+    // Second entry is the ERC3009 strategy-typed entry.
+    const { strategyId } = decodeEntry(entries[1]);
+    expect(strategyId).toBe(1); // ERC3009
   });
 });
