@@ -11,7 +11,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Make envfile
-        uses: SpicyPizza/create-envfile@v2.0
+        uses: SpicyPizza/create-envfile@ace6d4f5d7802b600276c23ca417e669f1a06f6f # v2.0.3
         with:
           envkey_REACT_APP_WALLET_CONNECT_PROJECT_ID: ${{ secrets.REACT_APP_WALLET_CONNECT_PROJECT_ID }}
           envkey_STORYBOOK_REACT_APP_INFURA_KEY: ${{ secrets.REACT_APP_INFURA_KEY }}
@@ -28,7 +28,7 @@ jobs:
       - id: build
         run: npm run build -- --cache-dir=".turbo"
       - name: Publish to Chromatic
-        uses: chromaui/action@latest
+        uses: chromaui/action@882b4728513a3720bfcd27bd9ad1260c603c6090 # v18.13.2
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/react-kit
