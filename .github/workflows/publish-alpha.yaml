@@ -63,7 +63,7 @@ jobs:
             --no-push
       - name: Get all changed files in subgraph workspace
         id: changed-subgraph-files
-        uses: tj-actions/verify-changed-files@v20
+        uses: tj-actions/verify-changed-files@a1c6acee9df209257a246f2cc6ae8cb6581c1edf # v20.0.4
         with:
           files: packages/subgraph/**
       - name: Export if changed files in subgraph workspace
